@@ -64,6 +64,8 @@
     <Compile Include="Menus\RExRoadsGroupPanel.cs" />
     <Compile Include="RExModule.Path.cs" />
     <Compile Include="RExModule.Parts.cs" />
+    <Compile Include="Roads\Alley2L\Alley2LBuilder.cs" />
+    <Compile Include="Roads\OneWay1L\OneWAy1LBuilder.cs" />
     <Compile Include="Roads\OneWay3L\OneWay3LBuilder.cs" />
     <Compile Include="Roads\OneWay4L\OneWay4LBuilder.cs" />
     <Compile Include="Roads\MediumAvenue4L\MediumAvenue4LBuilder.cs" />
@@ -88,6 +90,24 @@
     <Content Include="Menus\Textures\AdditionnalSubBar.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Roads\Alley2L\infotooltip.png" />
+    <Content Include="Roads\Alley2L\Textures\Ground_Node__AlphaMap.png" />
+    <Content Include="Roads\Alley2L\Textures\Ground_Node__MainTex.png" />
+    <Content Include="Roads\Alley2L\Textures\Ground_Segment__AlphaMap.png" />
+    <Content Include="Roads\Alley2L\Textures\Ground_Segment__MainTex.png" />
+    <Content Include="Roads\Alley2L\thumbnails.png" />
+    <Content Include="Roads\OneWay1L\infotooltip.png" />
+    <Content Include="Roads\OneWay1L\Textures\Ground_NodeLOD__AlphaMap.png" />
+    <Content Include="Roads\OneWay1L\Textures\Ground_NodeLOD__MainTex.png" />
+    <Content Include="Roads\OneWay1L\Textures\Ground_NodeLOD__XYSMap.png" />
+    <Content Include="Roads\OneWay1L\Textures\Ground_Node__AlphaMap.png" />
+    <Content Include="Roads\OneWay1L\Textures\Ground_Node__MainTex.png" />
+    <Content Include="Roads\OneWay1L\Textures\Ground_SegmentLOD__AlphaMap.png" />
+    <Content Include="Roads\OneWay1L\Textures\Ground_SegmentLOD__MainTex.png" />
+    <Content Include="Roads\OneWay1L\Textures\Ground_SegmentLOD__XYSMap.png" />
+    <Content Include="Roads\OneWay1L\Textures\Ground_Segment__AlphaMap.png" />
+    <Content Include="Roads\OneWay1L\Textures\Ground_Segment__MainTex.png" />
+    <Content Include="Roads\OneWay1L\thumbnails.png" />
     <Content Include="Roads\OneWay3L\infotooltip.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -372,6 +392,9 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <None Include="Roads\Alley2L\Meshes\Ground.obj" />
+    <None Include="Roads\Alley2L\Meshes\Ground_LOD.obj" />
+    <None Include="Roads\Alley2L\Meshes\Ground_Node_LOD.obj" />
     <None Include="Roads\Highway2L\Meshes\Ground_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -399,6 +422,8 @@
     <None Include="Roads\Highway6L\Meshes\Ground_Trans_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Roads\OneWay1L\Meshes\Ground.obj" />
+    <None Include="Roads\OneWay1L\Meshes\Ground_LOD.obj" />
     <None Include="Roads\SmallHeavyRoads\Meshes\Ground.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
