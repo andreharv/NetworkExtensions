@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7DFBABEB-DED8-4E16-8AA5-B38C3EF64305}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Transit.Addon.Deploy</RootNamespace>
+    <AssemblyName>Transit.Addon.Deploy</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Transit.Addon.TrafficAI\Transit.Addon.TrafficAI.csproj">
+      <Project>{20F6A0DC-131C-49CD-9D9B-95B6E41CDDFF}</Project>
+      <Name>Transit.Addon.TrafficAI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Transit.Addon.TrafficTools\Transit.Addon.TrafficTools.csproj">
+      <Project>{4499042E-DCD1-4F9F-A3C8-4830108169CD}</Project>
+      <Name>Transit.Addon.TrafficTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Transit.Addon\Transit.Addon.csproj">
+      <Project>{80C47696-4D41-4BB6-9CAE-C477FE528ADF}</Project>
+      <Name>Transit.Addon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Transit.Addon.RoadExtensions\Transit.Addon.RoadExtensions.csproj">
+      <Project>{19FA21B2-39CC-4B90-BE7E-B6BDCCB09208}</Project>
+      <Name>Transit.Addon.RoadExtensions</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>del "$(TargetDir)*.pdb"
+del "$(TargetDir)Transit.Addon.Deploy.dll"
+rd /s /q  "d:\jeux\Steam\SteamApps\workshop\content\255710\478820060"
+mkdir "d:\jeux\Steam\SteamApps\workshop\content\255710\478820060"
+xcopy /q /y /e "$(ProjectDir)bin\$(ConfigurationName)" "d:\jeux\Steam\SteamApps\workshop\content\255710\478820060"</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

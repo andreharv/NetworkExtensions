@@ -1,0 +1,88 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_References", "_References", "{FC5D316C-D7B8-4986-9E91-D3784D4A8CBB}"
+	ProjectSection(SolutionItems) = preProject
+		References\Assembly-CSharp-firstpass.dll = References\Assembly-CSharp-firstpass.dll
+		References\Assembly-CSharp.dll = References\Assembly-CSharp.dll
+		References\Assembly-UnityScript-firstpass.dll = References\Assembly-UnityScript-firstpass.dll
+		References\ColossalManaged.dll = References\ColossalManaged.dll
+		References\ICities.dll = References\ICities.dll
+		References\Mono.Posix.dll = References\Mono.Posix.dll
+		References\Mono.Security.dll = References\Mono.Security.dll
+		References\UnityEngine.Analytics.dll = References\UnityEngine.Analytics.dll
+		References\UnityEngine.dll = References\UnityEngine.dll
+		References\UnityEngine.Networking.dll = References\UnityEngine.Networking.dll
+		References\UnityEngine.UI.dll = References\UnityEngine.UI.dll
+		References\UnityEngine.xml = References\UnityEngine.xml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjUnity3D", "ObjUnity3D\ObjUnity3D.csproj", "{97D70503-6567-41A1-92FC-66D813A53370}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSL-Traffic", "CSL-Traffic\CSL-Traffic.csproj", "{8229C9FB-A4EC-43CD-9539-2B3E391C4C29}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Framework.Unsafe", "Transit.Framework.Unsafe\Transit.Framework.Unsafe.csproj", "{7DCC08EF-DC85-47A4-BD6F-79FC52C7EF13}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Framework", "Transit.Framework\Transit.Framework.csproj", "{8891467E-C88E-46B0-96F9-4413DF6DC205}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Addon.TrafficTools", "Transit.Addon.TrafficTools\Transit.Addon.TrafficTools.csproj", "{4499042E-DCD1-4F9F-A3C8-4830108169CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Addon.TrafficAI", "Transit.Addon.TrafficAI\Transit.Addon.TrafficAI.csproj", "{20F6A0DC-131C-49CD-9D9B-95B6E41CDDFF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Addon.RoadExtensions", "Transit.Addon.RoadExtensions\Transit.Addon.RoadExtensions.csproj", "{19FA21B2-39CC-4B90-BE7E-B6BDCCB09208}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Addon.Deploy", "Transit.Addon.Deploy\Transit.Addon.Deploy.csproj", "{7DFBABEB-DED8-4E16-8AA5-B38C3EF64305}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Addon", "Transit.Addon\Transit.Addon.csproj", "{80C47696-4D41-4BB6-9CAE-C477FE528ADF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deploy", "Deploy", "{309D6357-1B62-4C4B-9239-4E2FD95FE267}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{97D70503-6567-41A1-92FC-66D813A53370}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97D70503-6567-41A1-92FC-66D813A53370}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97D70503-6567-41A1-92FC-66D813A53370}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97D70503-6567-41A1-92FC-66D813A53370}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8229C9FB-A4EC-43CD-9539-2B3E391C4C29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8229C9FB-A4EC-43CD-9539-2B3E391C4C29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8229C9FB-A4EC-43CD-9539-2B3E391C4C29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DCC08EF-DC85-47A4-BD6F-79FC52C7EF13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DCC08EF-DC85-47A4-BD6F-79FC52C7EF13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DCC08EF-DC85-47A4-BD6F-79FC52C7EF13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DCC08EF-DC85-47A4-BD6F-79FC52C7EF13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8891467E-C88E-46B0-96F9-4413DF6DC205}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8891467E-C88E-46B0-96F9-4413DF6DC205}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8891467E-C88E-46B0-96F9-4413DF6DC205}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8891467E-C88E-46B0-96F9-4413DF6DC205}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4499042E-DCD1-4F9F-A3C8-4830108169CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4499042E-DCD1-4F9F-A3C8-4830108169CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4499042E-DCD1-4F9F-A3C8-4830108169CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4499042E-DCD1-4F9F-A3C8-4830108169CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20F6A0DC-131C-49CD-9D9B-95B6E41CDDFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20F6A0DC-131C-49CD-9D9B-95B6E41CDDFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20F6A0DC-131C-49CD-9D9B-95B6E41CDDFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20F6A0DC-131C-49CD-9D9B-95B6E41CDDFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19FA21B2-39CC-4B90-BE7E-B6BDCCB09208}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19FA21B2-39CC-4B90-BE7E-B6BDCCB09208}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19FA21B2-39CC-4B90-BE7E-B6BDCCB09208}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19FA21B2-39CC-4B90-BE7E-B6BDCCB09208}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DFBABEB-DED8-4E16-8AA5-B38C3EF64305}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DFBABEB-DED8-4E16-8AA5-B38C3EF64305}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DFBABEB-DED8-4E16-8AA5-B38C3EF64305}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DFBABEB-DED8-4E16-8AA5-B38C3EF64305}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80C47696-4D41-4BB6-9CAE-C477FE528ADF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80C47696-4D41-4BB6-9CAE-C477FE528ADF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80C47696-4D41-4BB6-9CAE-C477FE528ADF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80C47696-4D41-4BB6-9CAE-C477FE528ADF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7DFBABEB-DED8-4E16-8AA5-B38C3EF64305} = {309D6357-1B62-4C4B-9239-4E2FD95FE267}
+	EndGlobalSection
+EndGlobal

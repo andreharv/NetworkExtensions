@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8891467E-C88E-46B0-96F9-4413DF6DC205}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Transit.Framework</RootNamespace>
+    <AssemblyName>Transit.Framework</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\References\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ColossalManaged">
+      <HintPath>..\References\ColossalManaged.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ICities">
+      <HintPath>..\References\ICities.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine">
+      <HintPath>..\References\UnityEngine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Installer.cs" />
+    <Compile Include="Interfaces\IIdentifiable.cs" />
+    <Compile Include="Interfaces\IDisplayable.cs" />
+    <Compile Include="Interfaces\IOrderable.cs" />
+    <Compile Include="Interfaces\IActivable.cs" />
+    <Compile Include="Modularity\IModule.cs" />
+    <Compile Include="Modularity\ModuleBase.cs" />
+    <Compile Include="Notification.cs" />
+    <Compile Include="AssetAccess.cs" />
+    <Compile Include="_Extensions\AssetManagerExtensions.cs" />
+    <Compile Include="_Extensions\CloningExtensions.cs" />
+    <Compile Include="_Extensions\NetInfoBuilderExtensions.cs" />
+    <Compile Include="_Extensions\NetInfoExtensions.Lane.cs" />
+    <Compile Include="_Extensions\NetInfoExtensions.Segment.cs" />
+    <Compile Include="_Extensions\NetInfoExtensions.Node.cs" />
+    <Compile Include="_Extensions\EnumerableExtensions.cs" />
+    <Compile Include="_Extensions\TextureExtensions.cs" />
+    <Compile Include="AssetManager.cs" />
+    <Compile Include="Debug.cs" />
+    <Compile Include="_Extensions\EnumExtensions.cs" />
+    <Compile Include="_Extensions\ExpressionExtensions.cs" />
+    <Compile Include="_Extensions\ItemClassExtensions.cs" />
+    <Compile Include="_Extensions\LocaleExtensions.cs" />
+    <Compile Include="_Extensions\LocaleManagerExtensions.cs" />
+    <Compile Include="_Extensions\MaterialExtensions.cs" />
+    <Compile Include="_Extensions\NetInfoExtensions.cs" />
+    <Compile Include="_Extensions\PluginManagerExtensions.cs" />
+    <Compile Include="_Extensions\TypeExtensions.cs" />
+    <Compile Include="Modularity\IActivablePart.cs" />
+    <Compile Include="Modularity\ICompatibilityPart.cs" />
+    <Compile Include="Modularity\IModulePart.cs" />
+    <Compile Include="Modularity\INetInfoBuilder.cs" />
+    <Compile Include="Modularity\INetInfoModifier.cs" />
+    <Compile Include="Loading.cs" />
+    <Compile Include="Selector.cs" />
+    <Compile Include="TexturesSet.cs" />
+    <Compile Include="Prefabs.cs" />
+    <Compile Include="Tools.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="NetInfos.cs" />
+    <Compile Include="_Extensions\XmlExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ObjUnity3D\ObjUnity3D.csproj">
+      <Project>{97D70503-6567-41A1-92FC-66D813A53370}</Project>
+      <Name>ObjUnity3D</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
