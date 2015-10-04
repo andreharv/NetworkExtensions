@@ -76,7 +76,6 @@
     <Compile Include="Roads\NetInfoBuilderBase.cs" />
     <Compile Include="Roads\SmallAvenue4L\SmallAvenue4LBuilder.cs" />
     <Compile Include="Roads\HighwayHelper.cs" />
-    <Compile Include="Roads\OneWayMedium4L\OneWayMedium4LBuilder.cs" />
     <Compile Include="Roads\Highway2L\Highway2LBuilder.cs" />
     <Compile Include="RExModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -347,24 +346,6 @@
     <Content Include="Roads\MediumAvenue4LTL\thumbnails.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\OneWayMedium4L\infotooltip.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\OneWayMedium4L\Textures\Ground_Node__AlphaMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\OneWayMedium4L\Textures\Ground_Node__MainTex.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\OneWayMedium4L\Textures\Ground_Segment__AlphaMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\OneWayMedium4L\Textures\Ground_Segment__MainTex.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\OneWayMedium4L\thumbnails.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Roads\SmallAvenue4L\infotooltip.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -422,15 +403,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\SmallHeavyRoads\Meshes\Ground_LOD.obj">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Roads\OneWayMedium4L\Meshes\Ground.obj">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Roads\OneWayMedium4L\Meshes\Ground_LOD.obj">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Roads\OneWayMedium4L\Meshes\Ground_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\SmallHeavyRoads\Meshes\Ground_Node_LOD.obj">
