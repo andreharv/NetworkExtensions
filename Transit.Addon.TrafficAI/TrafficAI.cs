@@ -9,7 +9,7 @@ namespace Transit.Addon.TrafficAI
     {
         public override string Name
         {
-            get { return "TrafficAI"; }
+            get { return "Traffic AI"; }
         }
     }
 }
