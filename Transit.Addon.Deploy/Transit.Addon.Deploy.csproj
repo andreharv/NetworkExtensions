@@ -56,15 +56,9 @@
   <PropertyGroup>
     <PostBuildEvent>del "$(TargetDir)*.pdb"
 del "$(TargetDir)Transit.Addon.Deploy.dll"
-if $(ConfigurationName) == Debug (
-rd /s /q  "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\Transit Addon Mod"
-mkdir "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\Transit Addon Mod"
-xcopy /q /y /e "$(ProjectDir)bin\$(ConfigurationName)" "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\Transit Addon Mod"
-) else (
 rd /s /q  "c:\Program Files (x86)\Steam\SteamApps\workshop\content\255710\478820060"
 mkdir "c:\Program Files (x86)\Steam\SteamApps\workshop\content\255710\478820060"
-xcopy /q /y /e "$(ProjectDir)bin\$(ConfigurationName)" "c:\Program Files (x86)\Steam\SteamApps\workshop\content\255710\478820060"
-)</PostBuildEvent>
+xcopy /q /y /e "$(ProjectDir)bin\$(ConfigurationName)" "c:\Program Files (x86)\Steam\SteamApps\workshop\content\255710\478820060"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
