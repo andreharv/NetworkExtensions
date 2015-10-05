@@ -7,14 +7,19 @@ namespace Transit.Framework.Unsafe
 {
     public abstract class RedirectAttribute : Attribute
     {
-        public RedirectAttribute(Type classType, string methodName = null)
+        public RedirectAttribute(Type classType, string methodName = null, Func<bool> canRedirectCallback = null)
         {
             ClassType = classType;
             MethodName = methodName;
         }
 
+        public RedirectAttribute(Type classType, Func<bool> canRedirectCallback = null)
+            : this(classType, null, canRedirectCallback)
+        { }
+
         public Type ClassType { get; set; }
         public string MethodName { get; set; }
+        public Func<bool> CanRedirect { get; set; }
     }
 
     /// <summary>
@@ -31,6 +36,10 @@ namespace Transit.Framework.Unsafe
         public RedirectFromAttribute(Type classType, string methodName = null)
             : base(classType, methodName)
         { }
+
+        public RedirectFromAttribute(Type classType, Func<bool> canRedirectCallback = null)
+            : base(classType, canRedirectCallback)
+        { }
     }
 
     /// <summary>
@@ -46,6 +55,10 @@ namespace Transit.Framework.Unsafe
         /// the name of the attribute's target method will be used.</param>
         public RedirectToAttribute(Type classType, string methodName = null)
             : base(classType, methodName)
+        { }
+
+        public RedirectToAttribute(Type classType, Func<bool> canRedirectCallback = null)
+            : base(classType, canRedirectCallback)
         { }
     }
 
@@ -98,7 +111,8 @@ namespace Transit.Framework.Unsafe
             {
                 foreach (RedirectAttribute redirectAttr in method.GetCustomAttributes(typeof(RedirectAttribute), false))
                 {
-                    // TODO: check for options
+                    if (redirectAttr.CanRedirect != null && !redirectAttr.CanRedirect())
+                        continue;
 
                     string originalName = String.IsNullOrEmpty(redirectAttr.MethodName) ? method.Name : redirectAttr.MethodName;
 

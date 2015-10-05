@@ -48,11 +48,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="TrafficAI.cs" />
+    <Compile Include="TrafficAI.Loading.cs" />
     <Compile Include="TrafficAI.Parts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TrafficAI.Settings.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Transit.Framework.Unsafe\Transit.Framework.Unsafe.csproj">
+      <Project>{7dcc08ef-dc85-47a4-bd6f-79fc52c7ef13}</Project>
+      <Name>Transit.Framework.Unsafe</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Transit.Framework\Transit.Framework.csproj">
       <Project>{8891467e-c88e-46b0-96f9-4413df6dc205}</Project>
       <Name>Transit.Framework</Name>
