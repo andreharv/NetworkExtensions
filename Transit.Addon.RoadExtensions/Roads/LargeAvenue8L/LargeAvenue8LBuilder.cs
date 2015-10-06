@@ -104,10 +104,18 @@ namespace Transit.Addon.RoadExtensions.Roads.LargeAvenue8L
 
 				if (brPlayerNetAI != null && playerNetAI != null)
 				{
-					playerNetAI.m_constructionCost = brPlayerNetAI.m_constructionCost * 125 / 100; // 25% increase
-					playerNetAI.m_maintenanceCost = brPlayerNetAI.m_maintenanceCost * 125 / 100; // 25% increase
+					playerNetAI.m_constructionCost = brPlayerNetAI.m_constructionCost * 9 / 10; // 10% decrease
+					playerNetAI.m_maintenanceCost = brPlayerNetAI.m_maintenanceCost * 9 / 10; // 10% decrease
 				}
 
+				var brRoadBaseAI = largeRoadInfo.GetComponent<RoadBaseAI>();
+				var roadBaseAI = info.GetComponent<RoadBaseAI>();
+
+				if (brRoadBaseAI != null && roadBaseAI != null) 
+				{
+					roadBaseAI.m_noiseAccumulation = brRoadBaseAI.m_noiseAccumulation;
+					roadBaseAI.m_noiseRadius = brRoadBaseAI.m_noiseRadius;
+				}
 			}
 			else // Same as the original large road specs
 			{

@@ -81,6 +81,7 @@
     <Compile Include="Roads\Highway6L\Highway6LBuilder.cs" />
     <Compile Include="SomeRoads\PlanningRoadLargeBuilder.cs" />
     <Compile Include="SomeRoads\PlanningRoadSmallBuilder.cs" />
+    <Compile Include="Roads\LargeAvenue6LM\LargeAvenue6LMBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Menus\Textures\AdditionnalSubBar.png">
@@ -376,6 +377,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Roads\LargeAvenue8L\Textures\" />
+    <Folder Include="Roads\LargeAvenue6LM\" />
+    <Folder Include="Roads\LargeAvenue8L\Meshes\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Roads\Highway2L\Meshes\Ground_Node_LOD.obj">
@@ -414,6 +417,13 @@
     <None Include="Roads\SmallHeavyRoads\Meshes\Ground_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Roads\LargeAvenue6LM\infotooltip.png" />
+    <None Include="Roads\LargeAvenue6LM\thumbnails.png" />
+    <None Include="Roads\LargeAvenue6LM\Meshes\Ground.obj" />
+    <None Include="Roads\LargeAvenue6LM\Textures\Ground_Segment__AlphaMap.png" />
+    <None Include="Roads\LargeAvenue6LM\Textures\Ground_Segment__MainTex.png" />
+    <None Include="Roads\LargeAvenue8L\Textures\Ground_Segment__AlphaMap.png" />
+    <None Include="Roads\LargeAvenue8L\Textures\Ground_Segment__MainTex.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Transit.Framework.Unsafe\Transit.Framework.Unsafe.csproj">
