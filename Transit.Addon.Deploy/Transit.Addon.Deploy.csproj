@@ -3,8 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{7DFBABEB-DED8-4E16-8AA5-B38C3EF64305}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -35,10 +33,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Transit.Addon.TrafficAI\Transit.Addon.TrafficAI.csproj">
-      <Project>{20F6A0DC-131C-49CD-9D9B-95B6E41CDDFF}</Project>
-      <Name>Transit.Addon.TrafficAI</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Transit.Addon.TrafficTools\Transit.Addon.TrafficTools.csproj">
       <Project>{4499042E-DCD1-4F9F-A3C8-4830108169CD}</Project>
       <Name>Transit.Addon.TrafficTools</Name>

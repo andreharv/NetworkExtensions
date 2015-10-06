@@ -1,0 +1,5 @@
+﻿<Properties StartupItem="ObjUnity3D\ObjUnity3D.csproj">
+  <DisabledProjects>
+    <String>Transit.Addon.TrafficAI\Transit.Addon.TrafficAI.csproj</String>
+  </DisabledProjects>
+</Properties>

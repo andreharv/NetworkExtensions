@@ -3,8 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{19FA21B2-39CC-4B90-BE7E-B6BDCCB09208}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -30,7 +28,6 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
@@ -428,11 +425,11 @@
       <Name>Transit.Framework</Name>
     </ProjectReference>
     <ProjectReference Include="..\ObjUnity3D\ObjUnity3D.csproj">
-      <Project>{97d70503-6567-41a1-92fc-66d813a53370}</Project>
+      <Project>{97D70503-6567-41A1-92FC-66D813A53370}</Project>
       <Name>ObjUnity3D</Name>
     </ProjectReference>
     <ProjectReference Include="..\Transit.Addon\Transit.Addon.csproj">
-      <Project>{80c47696-4d41-4bb6-9cae-c477fe528adf}</Project>
+      <Project>{80C47696-4D41-4BB6-9CAE-C477FE528ADF}</Project>
       <Name>Transit.Addon</Name>
     </ProjectReference>
   </ItemGroup>
