@@ -42,8 +42,8 @@ namespace Transit.Addon.RoadExtensions.Roads.LargeAvenue8L
 			case NetInfoVersion.Ground:
 				info.SetAllSegmentsTexture (
 					new TexturesSet (
-						@"NewNetwork\LargeAvenue8L\Textures\Ground_Segment__MainTex.png",
-						@"NewNetwork\LargeAvenue8L\Textures\Ground_Segment__AlphaMap.png"));
+						@"Roads\LargeAvenue8L\Textures\Ground_Segment__MainTex.png",
+						@"Roads\LargeAvenue8L\Textures\Ground_Segment__AlphaMap.png"));
 				break;
 			}
 
