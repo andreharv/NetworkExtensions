@@ -7,13 +7,14 @@ namespace Transit.Framework.Unsafe
 {
     public abstract class RedirectAttribute : Attribute
     {
-        public RedirectAttribute(Type classType, string methodName = null, Func<bool> canRedirectCallback = null)
+        public RedirectAttribute(Type classType, string methodName, object canRedirectCallback = null)
         {
             ClassType = classType;
             MethodName = methodName;
+            CanRedirect = (Func<bool>)canRedirectCallback;
         }
 
-        public RedirectAttribute(Type classType, Func<bool> canRedirectCallback = null)
+        public RedirectAttribute(Type classType, object canRedirectCallback = null)
             : this(classType, null, canRedirectCallback)
         { }
 
@@ -33,11 +34,11 @@ namespace Transit.Framework.Unsafe
         /// <param name="classType">The class of the method that will be redirected</param>
         /// <param name="methodName">The name of the method that will be redirected. If null,
         /// the name of the attribute's target method will be used.</param>
-        public RedirectFromAttribute(Type classType, string methodName = null)
-            : base(classType, methodName)
+        public RedirectFromAttribute(Type classType, string methodName, object canRedirectCallback = null)
+            : base(classType, methodName, canRedirectCallback)
         { }
 
-        public RedirectFromAttribute(Type classType, Func<bool> canRedirectCallback = null)
+        public RedirectFromAttribute(Type classType, object canRedirectCallback = null)
             : base(classType, canRedirectCallback)
         { }
     }
@@ -53,11 +54,11 @@ namespace Transit.Framework.Unsafe
         /// <param name="classType">The class of the target method</param>
         /// <param name="methodName">The name of the target method. If null,
         /// the name of the attribute's target method will be used.</param>
-        public RedirectToAttribute(Type classType, string methodName = null)
-            : base(classType, methodName)
+        public RedirectToAttribute(Type classType, string methodName, object canRedirectCallback = null)
+            : base(classType, methodName, canRedirectCallback)
         { }
 
-        public RedirectToAttribute(Type classType, Func<bool> canRedirectCallback = null)
+        public RedirectToAttribute(Type classType, object canRedirectCallback = null)
             : base(classType, canRedirectCallback)
         { }
     }

@@ -30,6 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\References\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="ColossalManaged">
+      <HintPath>..\References\ColossalManaged.dll</HintPath>
+    </Reference>
     <Reference Include="ICities">
       <HintPath>..\References\ICities.dll</HintPath>
       <Private>False</Private>
@@ -47,6 +53,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AI\CustomCarAI.cs" />
     <Compile Include="TrafficAI.cs" />
     <Compile Include="TrafficAI.Loading.cs" />
     <Compile Include="TrafficAI.Parts.cs" />
