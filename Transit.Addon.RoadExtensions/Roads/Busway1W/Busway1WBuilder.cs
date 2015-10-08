@@ -14,7 +14,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway1W
     public class Busway1WBuilder : NetInfoBuilderBase, INetInfoBuilder
     {
         public int Order { get { return 120; } }
-        public int Priority { get { return 21; } }
+        public int Priority { get { return 22; } }
 
         public string TemplatePrefabName { get { return NetInfos.Vanilla.ONEWAY_2L; } }
         public string Name { get { return "Small Busway OneWay"; } }

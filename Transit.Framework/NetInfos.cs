@@ -17,6 +17,9 @@ namespace Transit.Framework
 
             public const string HIGHWAY_3L = "Highway";
 
+            public const string ROAD_2L_GRASS = "Basic Road Decoration Grass";
+            public const string ROAD_2L_TREES = "Basic Road Decoration Trees";
+
             public static string GetPrefabName(string groundName, NetInfoVersion version)
             {
                 switch (groundName)
@@ -55,6 +58,21 @@ namespace Transit.Framework
                                 return groundName + " Road Tunnel";
                             case NetInfoVersion.Slope:
                                 return groundName + " Road Slope";
+                            default:
+                                throw new NotImplementedException();
+                        }
+
+                    case ROAD_2L_GRASS:
+                    case ROAD_2L_TREES:
+                        switch (version)
+                        {
+                            case NetInfoVersion.Ground:
+                                return groundName;
+                            case NetInfoVersion.Elevated:
+                            case NetInfoVersion.Bridge:
+                            case NetInfoVersion.Tunnel:
+                            case NetInfoVersion.Slope:
+                                return ROAD_2L + " " + version;
                             default:
                                 throw new NotImplementedException();
                         }
