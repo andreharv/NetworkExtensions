@@ -7,6 +7,7 @@ namespace Transit.Addon.RoadExtensions.Menus
     public static class AdditionnalMenus
     {
         public const string ROADS_SMALL_HV = "RoadsSmallHV";
+        public const string ROADS_BUSWAYS = "RoadsBusways";
 
         private static UITextureAtlas s_thumbnailAtlas = null;
 

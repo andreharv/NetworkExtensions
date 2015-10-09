@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Transit.Addon.RoadExtensions.Menus;
 using Transit.Framework;
 using Transit.Framework.Modularity;
 
@@ -9,7 +10,7 @@ namespace Transit.Addon.RoadExtensions.Roads
 {
     public abstract class SmallBuswayBuilderBase : NetInfoBuilderBase
     {
-        public string UICategory { get { return "RoadsSmall"; } }
+        public string UICategory { get { return AdditionnalMenus.ROADS_BUSWAYS; } }
 
         public NetInfoVersion SupportedVersions
         {

@@ -6,14 +6,6 @@ namespace Transit.Addon.RoadExtensions.Menus
     {
         protected override int GetCategoryOrder(string name)
         {
-            var isMapEditor =
-                Singleton<ToolManager>.exists &&
-                Singleton<ToolManager>.instance.m_properties.m_mode.IsFlagSet(ItemClass.Availability.MapEditor);
-
-            var isAssetEditor =
-                Singleton<ToolManager>.exists && 
-                Singleton<ToolManager>.instance.m_properties.m_mode.IsFlagSet(ItemClass.Availability.AssetEditor);
-
             if (isMapEditor)
             {
                 switch (name)
@@ -57,10 +49,12 @@ namespace Transit.Addon.RoadExtensions.Menus
                         return 3;
                     case "RoadsHighway":
                         return 4;
-                    case "PublicTransportTrain":
+                    case AdditionnalMenus.ROADS_BUSWAYS:
                         return 5;
-                    case "RoadsIntersection":
+                    case "PublicTransportTrain":
                         return 6;
+                    case "RoadsIntersection":
+                        return 7;
                 }
                 return 2147483647;
             }
@@ -77,8 +71,10 @@ namespace Transit.Addon.RoadExtensions.Menus
                     return 3;
                 case "RoadsHighway":
                     return 4;
-                case "RoadsIntersection":
+                case AdditionnalMenus.ROADS_BUSWAYS:
                     return 5;
+                case "RoadsIntersection":
+                    return 6;
             }
             return 2147483647;
         }
