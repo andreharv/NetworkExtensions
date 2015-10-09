@@ -22,7 +22,7 @@ namespace Transit.Addon.RoadExtensions
         {
             if (s_path == null)
             {
-                s_path = AssetAccess.GetPath("RoadExtensions", WORKSHOP_ID);
+                s_path = AssetAccess.GetPath("Transit Addon Mod", WORKSHOP_ID);
 
                 if (s_path != PATH_NOT_FOUND)
                 {
