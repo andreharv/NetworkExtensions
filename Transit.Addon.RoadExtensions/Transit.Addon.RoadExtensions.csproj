@@ -67,6 +67,7 @@
     <Compile Include="Roads\Busway2L1W\Busway2L1WBuilder.cs" />
     <Compile Include="Roads\Busway2L1W\Busway2L1WGrassBuilder.cs" />
     <Compile Include="Roads\Busway2L1W\Busway2L1WTreesBuilder.cs" />
+    <Compile Include="Roads\Busway6L\Busway6LBuilder.cs" />
     <Compile Include="Roads\Busway2L\Busway2LBuilder.cs" />
     <Compile Include="Roads\Busway2L\Busway2LGrassBuilder.cs" />
     <Compile Include="Roads\Busway2L\Busway2LTreesBuilder.cs" />
