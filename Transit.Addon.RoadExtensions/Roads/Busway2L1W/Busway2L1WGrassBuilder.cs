@@ -1,21 +1,21 @@
 ﻿using Transit.Framework;
 using Transit.Framework.Modularity;
 
-namespace Transit.Addon.RoadExtensions.Roads.Busway1W
+namespace Transit.Addon.RoadExtensions.Roads.Busway2L1W
 {
-    public class Busway1WTreesBuilder : SmallBuswayBuilderBase, INetInfoBuilder
+    public class Busway2L1WGrassBuilder : SmallBuswayBuilderBase, INetInfoBuilder
     {
-        public int Order { get { return 160; } }
-        public int Priority { get { return 25; } }
+        public int Order { get { return 150; } }
+        public int Priority { get { return 24; } }
 
-        public string TemplatePrefabName { get { return NetInfos.Vanilla.ONEWAY_2L_TREES; } }
-        public string Name { get { return "Small Busway OneWay Trees"; } } // TODO: Make sur the name fit with the existing T++ name
-        public string DisplayName { get { return "Busway OneWay with Trees"; } }
-        public string CodeName { get { return "BUSWAY_1W_TREES"; } }
+        public string TemplatePrefabName { get { return NetInfos.Vanilla.ONEWAY_2L_GRASS; } }
+        public string Name { get { return "Small Busway OneWay Grass"; } } // TODO: Make sur the name fit with the existing T++ name
+        public string DisplayName { get { return "Busway OneWay with Grass"; } }
+        public string CodeName { get { return "BUSWAY_1W_GRASS"; } }
         public string Description { get { return "A two-lane, one-way road suitable for buses only. Busway does not allow zoning next to it!"; } }
 
-        public string ThumbnailsPath { get { return @"Roads\Busway1W\thumbnails_trees.png"; } }
-        public string InfoTooltipPath { get { return @"Roads\Busway1W\infotooltip_trees.png"; } }
+        public string ThumbnailsPath { get { return @"Roads\Busway2L1W\thumbnails_grass.png"; } }
+        public string InfoTooltipPath { get { return @"Roads\Busway2L1W\infotooltip_grass.png"; } }
 
         public override void BuildUp(NetInfo info, NetInfoVersion version)
         {
@@ -34,22 +34,22 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway1W
                                 case NetSegment.Flags.StopRight:
                                     segment.SetTextures(
                                         new TexturesSet
-                                           (@"Roads\Busway1W\Textures_Grass\Ground_Segment__MainTex.png",
-                                            @"Roads\Busway2W\Textures_Grass\Ground_Segment_Bus__AlphaMap.png"));
+                                           (@"Roads\Busway2L1W\Textures_Grass\Ground_Segment__MainTex.png",
+                                            @"Roads\Busway2L\Textures_Grass\Ground_Segment_Bus__AlphaMap.png"));
                                     break;
 
                                 case NetSegment.Flags.StopBoth:
                                     segment.SetTextures(
                                         new TexturesSet
-                                           (@"Roads\Busway1W\Textures_Grass\Ground_Segment__MainTex.png",
-                                            @"Roads\Busway2W\Textures_Grass\Ground_Segment_BusBoth__AlphaMap.png"));
+                                           (@"Roads\Busway2L1W\Textures_Grass\Ground_Segment__MainTex.png",
+                                            @"Roads\Busway2L\Textures_Grass\Ground_Segment_BusBoth__AlphaMap.png"));
                                     break;
 
                                 default:
                                     segment.SetTextures(
                                         new TexturesSet
-                                           (@"Roads\Busway1W\Textures_Grass\Ground_Segment__MainTex.png",
-                                            @"Roads\Busway2W\Textures_Grass\Ground_Segment__AlphaMap.png"));
+                                           (@"Roads\Busway2L1W\Textures_Grass\Ground_Segment__MainTex.png",
+                                            @"Roads\Busway2L\Textures_Grass\Ground_Segment__AlphaMap.png"));
                                     break;
                             }
                         }
@@ -63,8 +63,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway1W
                         {
                             segment.SetTextures(
                                 new TexturesSet
-                                    (@"Roads\Busway2W\Textures\Elevated_Segment__MainTex.png",
-                                     @"Roads\Busway2W\Textures\Elevated_Segment__AlphaMap.png"));
+                                    (@"Roads\Busway2L\Textures\Elevated_Segment__MainTex.png",
+                                     @"Roads\Busway2L\Textures\Elevated_Segment__AlphaMap.png"));
                         }
                     }
                     break;
@@ -74,8 +74,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway1W
                         {
                             segment.SetTextures(
                                 new TexturesSet
-                                    (@"Roads\Busway2W\Textures\Slope_Segment__MainTex.png",
-                                     @"Roads\Busway2W\Textures\Slope_Segment__AlphaMap.png"));
+                                    (@"Roads\Busway2L\Textures\Slope_Segment__MainTex.png",
+                                     @"Roads\Busway2L\Textures\Slope_Segment__AlphaMap.png"));
                         }
                     }
                     break;
