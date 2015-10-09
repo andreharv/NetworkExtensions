@@ -1,43 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Transit.Framework;
+﻿using Transit.Framework;
 using Transit.Framework.Modularity;
-using UnityEngine;
-
-#if DEBUG
-using Debug = Transit.Framework.Debug;
-#endif
 
 namespace Transit.Addon.RoadExtensions.Roads.Busway1W
 {
-    public class Busway1WBuilder : NetInfoBuilderBase, INetInfoBuilder
+    public class Busway1WBuilder : SmallBuswayBuilderBase, INetInfoBuilder
     {
-        public int Order { get { return 120; } }
-        public int Priority { get { return 22; } }
+        public int Order { get { return 140; } }
+        public int Priority { get { return 23; } }
 
         public string TemplatePrefabName { get { return NetInfos.Vanilla.ONEWAY_2L; } }
         public string Name { get { return "Small Busway OneWay"; } }
         public string DisplayName { get { return "Busway OneWay"; } }
         public string CodeName { get { return "BUSWAY_1W"; } }
         public string Description { get { return "A two-lane, one-way road suitable for buses only. Busway does not allow zoning next to it!"; } }
-        public string UICategory { get { return "RoadsSmall"; } }
 
         public string ThumbnailsPath { get { return @"Roads\Busway1W\thumbnails.png"; } }
         public string InfoTooltipPath { get { return @"Roads\Busway1W\infotooltip.png"; } }
 
-        public NetInfoVersion SupportedVersions
+        public override void BuildUp(NetInfo info, NetInfoVersion version)
         {
-            get { return NetInfoVersion.All; }
-        }
-
-        public void BuildUp(NetInfo info, NetInfoVersion version)
-        {
-            ///////////////////////////
-            // Templates             //
-            ///////////////////////////
-            var highwayInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L);
-
             ///////////////////////////
             // Texturing             //
             ///////////////////////////
@@ -122,32 +103,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway1W
                     break;
             }
 
-            ///////////////////////////
-            // Set up                //
-            ///////////////////////////
-            info.m_UnlockMilestone = highwayInfo.m_UnlockMilestone;
-
-            foreach (var lane in info.m_lanes)
-            {
-                if (lane.m_laneType == NetInfo.LaneType.Vehicle)
-                {
-                    lane.m_speedLimit = 1.6f;
-                    lane.m_laneType = NetInfo.LaneType.TransportVehicle;
-                }
-            }
-
-            var roadBaseAI = info.GetComponent<RoadBaseAI>();
-
-            if (roadBaseAI != null)
-            {
-            }
-
-            var roadAI = info.GetComponent<RoadAI>();
-
-            if (roadAI != null)
-            {
-                roadAI.m_enableZoning = false;
-            }
+            base.BuildUp(info, version);
         }
     }
 }

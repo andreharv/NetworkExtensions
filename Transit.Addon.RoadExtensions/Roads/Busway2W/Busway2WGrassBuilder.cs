@@ -1,9 +1,9 @@
 ﻿using Transit.Framework;
 using Transit.Framework.Modularity;
 
-namespace Transit.Addon.RoadExtensions.Roads.Busway2WGrass
+namespace Transit.Addon.RoadExtensions.Roads.Busway2W
 {
-    public class Busway2WGrassBuilder : NetInfoBuilderBase, INetInfoBuilder
+    public class Busway2WGrassBuilder : SmallBuswayBuilderBase, INetInfoBuilder
     {
         public int Order { get { return 120; } }
         public int Priority { get { return 21; } }
@@ -13,23 +13,12 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway2WGrass
         public string DisplayName { get { return "Busway with Grass"; } }
         public string CodeName { get { return "BUSWAY_2W_GRASS"; } }
         public string Description { get { return "A two-lane, two-way road suitable for buses only. Busway does not allow zoning next to it!"; } }
-        public string UICategory { get { return "RoadsSmall"; } }
 
-        public string ThumbnailsPath { get { return @"Roads\Busway2WGrass\thumbnails.png"; } }
-        public string InfoTooltipPath { get { return @"Roads\Busway2WGrass\infotooltip.png"; } }
+        public string ThumbnailsPath { get { return @"Roads\Busway2W\thumbnails_grass.png"; } }
+        public string InfoTooltipPath { get { return @"Roads\Busway2W\infotooltip_grass.png"; } }
 
-        public NetInfoVersion SupportedVersions
+        public override void BuildUp(NetInfo info, NetInfoVersion version)
         {
-            get { return NetInfoVersion.All; }
-        }
-
-        public void BuildUp(NetInfo info, NetInfoVersion version)
-        {
-            ///////////////////////////
-            // Templates             //
-            ///////////////////////////
-            var highwayInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L);
-
             ///////////////////////////
             // Texturing             //
             ///////////////////////////
@@ -45,22 +34,22 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway2WGrass
                                 case NetSegment.Flags.StopRight:
                                     segment.SetTextures(
                                         new TexturesSet
-                                           (@"Roads\Busway2WGrass\Textures\Ground_Segment__MainTex.png",
-                                            @"Roads\Busway2WGrass\Textures\Ground_Segment_Bus__AlphaMap.png"));
+                                           (@"Roads\Busway2W\Textures_Grass\Ground_Segment__MainTex.png",
+                                            @"Roads\Busway2W\Textures_Grass\Ground_Segment_Bus__AlphaMap.png"));
                                     break;
 
                                 case NetSegment.Flags.StopBoth:
                                     segment.SetTextures(
                                         new TexturesSet
-                                           (@"Roads\Busway2WGrass\Textures\Ground_Segment__MainTex.png",
-                                            @"Roads\Busway2WGrass\Textures\Ground_Segment_BusBoth__AlphaMap.png"));
+                                           (@"Roads\Busway2W\Textures_Grass\Ground_Segment__MainTex.png",
+                                            @"Roads\Busway2W\Textures_Grass\Ground_Segment_BusBoth__AlphaMap.png"));
                                     break;
 
                                 default:
                                     segment.SetTextures(
                                         new TexturesSet
-                                           (@"Roads\Busway2WGrass\Textures\Ground_Segment__MainTex.png",
-                                            @"Roads\Busway2WGrass\Textures\Ground_Segment__AlphaMap.png"));
+                                           (@"Roads\Busway2W\Textures_Grass\Ground_Segment__MainTex.png",
+                                            @"Roads\Busway2W\Textures_Grass\Ground_Segment__AlphaMap.png"));
                                     break;
                             }
                         }
@@ -94,32 +83,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway2WGrass
                     break;
             }
 
-            ///////////////////////////
-            // Set up                //
-            ///////////////////////////
-            info.m_UnlockMilestone = highwayInfo.m_UnlockMilestone;
-
-            foreach (var lane in info.m_lanes)
-            {
-                if (lane.m_laneType == NetInfo.LaneType.Vehicle)
-                {
-                    lane.m_speedLimit = 1.6f;
-                    lane.m_laneType = NetInfo.LaneType.TransportVehicle;
-                }
-            }
-
-            var roadBaseAI = info.GetComponent<RoadBaseAI>();
-
-            if (roadBaseAI != null)
-            {
-            }
-
-            var roadAI = info.GetComponent<RoadAI>();
-
-            if (roadAI != null)
-            {
-                roadAI.m_enableZoning = false;
-            }
+            base.BuildUp(info, version);
         }
     }
 }
