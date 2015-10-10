@@ -58,6 +58,8 @@
     <Compile Include="Interfaces\IDisplayable.cs" />
     <Compile Include="Interfaces\IOrderable.cs" />
     <Compile Include="Interfaces\IActivable.cs" />
+    <Compile Include="Modularity\ModuleAttribute.cs" />
+    <Compile Include="Modularity\ModuleBase.Parts.cs" />
     <Compile Include="Modularity\IModule.cs" />
     <Compile Include="Modularity\ModuleBase.cs" />
     <Compile Include="Notification.cs" />

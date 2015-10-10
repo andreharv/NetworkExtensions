@@ -10,7 +10,7 @@ namespace Transit.Addon.RoadExtensions
     {
         private bool _isReleased = true;
         private GameObject _container = null;
-        private NetCollection _newRoads = null;
+        private NetCollection _roads = null;
 
         private Initializer _initializer = null;
         private LocalizationInstaller _localizationInstaller = null;
@@ -27,9 +27,6 @@ namespace Transit.Addon.RoadExtensions
                 if (GetPath() != PATH_NOT_FOUND)
                 {
                     _container = new GameObject(REX_OBJECT_NAME);
-
-                    _newRoads = _container.AddComponent<NetCollection>();
-                    _newRoads.name = REX_NETCOLLECTION;
 
                     _initializer = _container.AddComponent<Initializer>();
                     _initializer.InstallationCompleted += InitializationCompleted;
@@ -52,13 +49,14 @@ namespace Transit.Addon.RoadExtensions
                 if (_container != null)
                 {
                     _localizationInstaller = _container.AddComponent<LocalizationInstaller>();
+                    _localizationInstaller.Host = this;
                     _localizationInstaller.InstallationCompleted += LocInstallationCompleted;
 
                     _assetsInstaller = _container.AddComponent<AssetsInstaller>();
                     _assetsInstaller.InstallationCompleted += AssetsInstallationCompleted;
 
                     _roadsInstaller = _container.AddComponent<RoadsInstaller>();
-                    _roadsInstaller.NewRoads = _newRoads;
+                    _roadsInstaller.Host = this;
                     _roadsInstaller.InstallationCompleted += RoadsInstallationCompleted;
                 }
             });
@@ -70,6 +68,7 @@ namespace Transit.Addon.RoadExtensions
             {
                 if (_localizationInstaller != null)
                 {
+                    _localizationInstaller.Host = null;
                     Object.Destroy(_localizationInstaller);
                     _localizationInstaller = null;
                 }
@@ -94,7 +93,7 @@ namespace Transit.Addon.RoadExtensions
             {
                 if (_roadsInstaller != null)
                 {
-                    _roadsInstaller.NewRoads = null;
+                    _roadsInstaller.Host = null;
                     Object.Destroy(_roadsInstaller);
                     _roadsInstaller = null;
                 }
@@ -163,10 +162,10 @@ namespace Transit.Addon.RoadExtensions
                 _menusInstaller = null;
             }
 
-            if (_newRoads != null)
+            if (_roads != null)
             {
-                Object.Destroy(_newRoads);
-                _newRoads = null;
+                Object.Destroy(_roads);
+                _roads = null;
             }
 
             if (_container != null)

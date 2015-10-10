@@ -56,6 +56,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Compatibility\RoadColorChanger.cs" />
+    <Compile Include="RExModule.Install.Menus.cs" />
+    <Compile Include="RExModule.Install.Localization.cs" />
+    <Compile Include="RExModule.Install.Roads.cs" />
     <Compile Include="Install\AssetsInstaller.cs" />
     <Compile Include="Install\Initializer.cs" />
     <Compile Include="Install\LocalizationInstaller.cs" />
@@ -78,7 +81,7 @@
     <Compile Include="Roads\MediumAvenueHelper.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="RExModule.Settings.cs" />
-    <Compile Include="RExModule.Loading.cs" />
+    <Compile Include="RExModule.Install.cs" />
     <Compile Include="Roads\Highway1L\Highway1LBuilder.cs" />
     <Compile Include="Roads\NetInfoBuilderBase.cs" />
     <Compile Include="Roads\SmallAvenue4L\SmallAvenue4LBuilder.cs" />
