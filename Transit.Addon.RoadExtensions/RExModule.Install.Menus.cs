@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Linq;
-using ColossalFramework;
-using ColossalFramework.Globalization;
 using ColossalFramework.UI;
-using Transit.Addon.RoadExtensions.Install;
+using JetBrains.Annotations;
 using Transit.Addon.RoadExtensions.Menus;
 using Transit.Framework;
 using UnityEngine;
@@ -16,6 +14,7 @@ namespace Transit.Addon.RoadExtensions
 {
     public partial class RExModule
     {
+        [UsedImplicitly]
         private class MenusInstaller : Installer
         {
             protected override bool ValidatePrerequisites()

@@ -1,6 +1,7 @@
 ﻿using System;
 using ColossalFramework;
 using ColossalFramework.Globalization;
+using JetBrains.Annotations;
 using Transit.Framework;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ namespace Transit.Addon.RoadExtensions
 {
     public partial class RExModule
     {
+        [UsedImplicitly]
         private class LocalizationInstaller : Installer<RExModule>
         {
             public static bool Done { get; private set; } //Only one localization throughout the application

@@ -8,7 +8,12 @@ namespace Transit.Framework
 {
     public delegate void InstallationCompletedEventHandler();
 
-    public abstract class Installer : MonoBehaviour
+    public interface IInstaller
+    {
+        event InstallationCompletedEventHandler InstallationCompleted;
+    }
+
+    public abstract class Installer : MonoBehaviour, IInstaller
     {
         public event InstallationCompletedEventHandler InstallationCompleted;
 
@@ -44,7 +49,7 @@ namespace Transit.Framework
             {
                 if (InstallationCompleted != null)
                 {
-                    InstallationCompleted();
+                    Loading.QueueAction(() => InstallationCompleted());
                 }
             }
         }
@@ -53,7 +58,7 @@ namespace Transit.Framework
         protected abstract void Install();
     }
 
-    public abstract class Installer<THost> : MonoBehaviour
+    public abstract class Installer<THost> : MonoBehaviour, IInstaller
     {
         public THost Host { get; set; }
 
@@ -91,7 +96,7 @@ namespace Transit.Framework
             {
                 if (InstallationCompleted != null)
                 {
-                    InstallationCompleted();
+                    Loading.QueueAction(() => InstallationCompleted());
                 }
             }
         }

@@ -59,11 +59,9 @@
     <Compile Include="RExModule.Install.Menus.cs" />
     <Compile Include="RExModule.Install.Localization.cs" />
     <Compile Include="RExModule.Install.Roads.cs" />
-    <Compile Include="Install\AssetsInstaller.cs" />
-    <Compile Include="Install\Initializer.cs" />
-    <Compile Include="Install\LocalizationInstaller.cs" />
+    <Compile Include="RExModule.Install.Assets.cs" />
+    <Compile Include="RExModule.Install.Init.cs" />
     <Compile Include="Menus\AdditionnalMenus.cs" />
-    <Compile Include="Install\MenusInstaller.cs" />
     <Compile Include="Menus\RExRoadsGroupPanel.cs" />
     <Compile Include="RExModule.Path.cs" />
     <Compile Include="RExModule.Parts.cs" />
@@ -89,7 +87,6 @@
     <Compile Include="Roads\Highway2L\Highway2LBuilder.cs" />
     <Compile Include="RExModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Install\RoadsInstaller.cs" />
     <Compile Include="Roads\Highway6L\Highway6LBuilder.cs" />
     <Compile Include="Roads\SmallBuswayBuilderBase.cs" />
     <Compile Include="SomeRoads\PlanningRoadLargeBuilder.cs" />

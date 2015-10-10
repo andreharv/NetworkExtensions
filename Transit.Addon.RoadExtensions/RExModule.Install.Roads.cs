@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Transit.Addon.RoadExtensions.Install;
+using JetBrains.Annotations;
 using Transit.Framework;
 using UnityEngine;
 
@@ -13,6 +13,7 @@ namespace Transit.Addon.RoadExtensions
 {
     public partial class RExModule
     {
+        [UsedImplicitly]
         private class RoadsInstaller : Installer<RExModule>
         {
             protected override bool ValidatePrerequisites()

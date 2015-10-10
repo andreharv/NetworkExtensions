@@ -66,6 +66,7 @@
     <Compile Include="AssetAccess.cs" />
     <Compile Include="_Extensions\AssetManagerExtensions.cs" />
     <Compile Include="_Extensions\CloningExtensions.cs" />
+    <Compile Include="_Extensions\GameObjectExtensions.cs" />
     <Compile Include="_Extensions\NetInfoBuilderExtensions.cs" />
     <Compile Include="_Extensions\NetInfoExtensions.Lane.cs" />
     <Compile Include="_Extensions\NetInfoExtensions.Segment.cs" />
