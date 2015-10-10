@@ -72,6 +72,7 @@ namespace Transit.Addon.RoadExtensions.Roads.LargeAvenue6LM
 			info.m_class = mediumRoadInfo.m_class.Clone(NetInfoClasses.NEXT_MEDIUM_ROAD);
 			info.m_UnlockMilestone = mediumRoadInfo.m_UnlockMilestone;
 			info.m_hasParkingSpaces = false;
+			info.m_pavementWidth = 6.6f;
 
             // Setting up traffic lanes
             var vehicleLaneTypes = new[]
@@ -89,6 +90,13 @@ namespace Transit.Addon.RoadExtensions.Roads.LargeAvenue6LM
 				.OrderBy(l => l.m_position)
 				.ToArray();
             
+			const float outerCarLanePosition = 9.5f;
+			const float middleCarLanePosition = 6.5f;
+			const float innerCarLanePosition = 3.5f;
+			const float laneWidth = 3f;
+			const float pedLanePosition = 16f;
+			const float pedLaneWidth = 5f;
+
 			for (int i = 0; i < vehicleLanes.Length; i++)
 			{
 				var lane = vehicleLanes [i];
@@ -114,6 +122,36 @@ namespace Transit.Addon.RoadExtensions.Roads.LargeAvenue6LM
 
 					SetLane(lane, closestVehicleLane);
 				}
+
+				switch (i)
+				{
+				case 0: lane.m_position = -outerCarLanePosition; break;
+				case 1: lane.m_position = -middleCarLanePosition; break;
+				case 2: lane.m_position = -innerCarLanePosition; break;
+				case 3: lane.m_position = innerCarLanePosition; break;
+				case 4: lane.m_position = middleCarLanePosition; break;
+				case 5: lane.m_position = outerCarLanePosition; break;
+				}
+				lane.m_width = laneWidth;
+			}
+
+			var pedestrianLanes = info.m_lanes
+				.Where(l => l.m_laneType == NetInfo.LaneType.Pedestrian)
+				.OrderBy(l => l.m_position)
+				.ToArray();
+
+			foreach (var lane in pedestrianLanes)
+			{
+				if (lane.m_position < 0)
+				{
+					lane.m_position = -pedLanePosition;
+				}
+				else
+				{
+					lane.m_position = pedLanePosition;
+				}
+
+				lane.m_width = pedLaneWidth;
 			}
 
             info.Setup50LimitProps();
@@ -128,8 +166,8 @@ namespace Transit.Addon.RoadExtensions.Roads.LargeAvenue6LM
 
 				if (mrPlayerNetAI != null && playerNetAI != null)
 				{
-					playerNetAI.m_constructionCost = mrPlayerNetAI.m_constructionCost * 9 / 10; // 10% decrease
-					playerNetAI.m_maintenanceCost = mrPlayerNetAI.m_maintenanceCost * 9 / 10; // 10% decrease
+					playerNetAI.m_constructionCost = mrPlayerNetAI.m_constructionCost * 12 / 10; // 20% increase
+					playerNetAI.m_maintenanceCost = mrPlayerNetAI.m_maintenanceCost * 12 / 10; // 10% increase
 				}
 
 				var mrRoadBaseAI = mediumRoadInfo.GetComponent<RoadBaseAI>();

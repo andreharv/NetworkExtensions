@@ -1,5 +1,18 @@
 ﻿<Properties StartupItem="ObjUnity3D\ObjUnity3D.csproj">
-  <DisabledProjects>
-    <String>Transit.Addon.TrafficAI\Transit.Addon.TrafficAI.csproj</String>
-  </DisabledProjects>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Transit.Addon.RoadExtensions\Roads\LargeAvenue6LM\LargeAvenue6LMBuilder.cs">
+    <Files>
+      <File FileName="Transit.Addon.RoadExtensions\Roads\LargeAvenue6LM\LargeAvenue6LMBuilder.cs" Line="87" Column="16" />
+      <File FileName="Transit.Addon.RoadExtensions\Roads\MediumAvenue4L\MediumAvenue4LBuilder.cs" Line="107" Column="26" />
+      <File FileName="Transit.Addon.RoadExtensions\Roads\SmallAvenue4L\SmallAvenue4LBuilder.cs" Line="107" Column="4" />
+      <File FileName="Transit.Addon.RoadExtensions\Roads\LargeAvenue8L\LargeAvenue8LBuilder.cs" Line="56" Column="11" />
+      <File FileName="Transit.Addon.RoadExtensions\Roads\OneWay4L\OneWay4LBuilder.cs" Line="84" Column="20" />
+      <File FileName="Transit.Addon.RoadExtensions\Roads\OneWay3L\OneWay3LBuilder.cs" Line="84" Column="20" />
+      <File FileName="Transit.Addon.RoadExtensions\Roads\MediumAvenue4LTL\MediumAvenue4LTLBuilder.cs" Line="92" Column="29" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

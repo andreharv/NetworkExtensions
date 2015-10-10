@@ -52,8 +52,9 @@ namespace Transit.Addon.RoadExtensions.Roads.LargeAvenue8L
 			// Set up                //
 			///////////////////////////
 			info.m_class = largeRoadInfo.m_class.Clone(NetInfoClasses.NEXT_LARGE_ROAD);
-			info.m_UnlockMilestone = largeRoadInfo.m_UnlockMilestone;
 			info.m_hasParkingSpaces = false;
+			info.m_pavementWidth = 6.4f;
+
 
 			//Setting up Lanes
 			var vehicleLaneTypes = new[]
@@ -70,6 +71,15 @@ namespace Transit.Addon.RoadExtensions.Roads.LargeAvenue8L
 					vehicleLaneTypes.Contains(l.m_laneType))
 				.OrderBy(l => l.m_position)
 				.ToArray();
+
+			const float carLanePosition0 = 1.4f;
+			const float carLanePosition1 = 4.2f;
+			const float carLanePosition2 = 7.0f;
+			const float carLanePosition3 = 9.8f;
+			const float laneWidth = 2.8f;
+			const float pedLanePosition = 16f;
+			const float pedLaneWidth = 4.8f;
+
 
 			for (int i = 0; i < vehicleLanes.Length; i++)
 			{
@@ -96,7 +106,40 @@ namespace Transit.Addon.RoadExtensions.Roads.LargeAvenue8L
 
 					SetLane(lane, closestVehicleLane);
 				}
+
+				switch (i)
+				{
+				case 0: lane.m_position = -carLanePosition3; break;
+				case 1: lane.m_position = -carLanePosition2; break;
+				case 2: lane.m_position = -carLanePosition1; break;
+				case 3: lane.m_position = -carLanePosition0; break;
+				case 4: lane.m_position = carLanePosition0; break;
+				case 5: lane.m_position = carLanePosition1; break;
+				case 6: lane.m_position = carLanePosition2; break;
+				case 7: lane.m_position = carLanePosition3; break;
+				}
+				lane.m_width = laneWidth;
 			}
+
+			var pedestrianLanes = info.m_lanes
+				.Where(l => l.m_laneType == NetInfo.LaneType.Pedestrian)
+				.OrderBy(l => l.m_position)
+				.ToArray();
+
+			foreach (var lane in pedestrianLanes)
+			{
+				if (lane.m_position < 0)
+				{
+					lane.m_position = -pedLanePosition;
+				}
+				else
+				{
+					lane.m_position = pedLanePosition;
+				}
+
+				lane.m_width = pedLaneWidth;
+			}
+
 			if (version == NetInfoVersion.Ground)
 			{
 				var brPlayerNetAI = largeRoadInfo.GetComponent<PlayerNetAI>();
@@ -104,8 +147,8 @@ namespace Transit.Addon.RoadExtensions.Roads.LargeAvenue8L
 
 				if (brPlayerNetAI != null && playerNetAI != null)
 				{
-					playerNetAI.m_constructionCost = brPlayerNetAI.m_constructionCost * 9 / 10; // 10% decrease
-					playerNetAI.m_maintenanceCost = brPlayerNetAI.m_maintenanceCost * 9 / 10; // 10% decrease
+					playerNetAI.m_constructionCost = brPlayerNetAI.m_constructionCost * 12 / 10; // 20% increase
+					playerNetAI.m_maintenanceCost = brPlayerNetAI.m_maintenanceCost * 12 / 10; // 20% increase
 				}
 
 				var brRoadBaseAI = largeRoadInfo.GetComponent<RoadBaseAI>();
