@@ -14,7 +14,7 @@ namespace Transit.Addon.TrafficAI
         {
             if (mode == LoadMode.NewGame || mode == LoadMode.LoadGame)
             {
-                Redirector.PerformRedirections();
+                Redirector.PerformRedirections((ulong)TrafficAIOptions);
             }
         }
 

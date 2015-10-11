@@ -11,11 +11,15 @@ namespace Transit.Addon.TrafficAI
 {
     public class CustomCarAI : VehicleAI
     {
-        [RedirectFrom(typeof(CarAI))]
+        // This is the 31th bit in Vehicle.Flags. If CO adds more flags, we'll need to review this
+        public const Vehicle.Flags AvoidingCongestionFlag = (Vehicle.Flags)((int)Vehicle.Flags.Transition << 1);
+
+        [RedirectFrom(typeof(CarAI), (uint)TrafficAIModule.Options.CongestionAvoidance)]
         public override void SimulationStep(ushort vehicleID, ref Vehicle vehicleData, ref Vehicle.Frame frameData, ushort leaderID, ref Vehicle leaderData, int lodPhysics)
         {
             uint currentFrameIndex = SimulationManager.instance.m_currentFrameIndex;
 
+            // apply half of the last calculated velocity. The first half is applied when it's calculated, at the end of this method
             frameData.m_position += frameData.m_velocity * 0.5f;
             frameData.m_swayPosition += frameData.m_swayVelocity * 0.5f;
 
@@ -139,6 +143,8 @@ namespace Transit.Addon.TrafficAI
                     uint pathUnitID = leaderData.m_path;
                     int pathID = pathIndex >> 1;
                     bool invalid, congested = true;
+                    bool congestionAvoidanceEnabled = (TrafficAIModule.TrafficAIOptions & TrafficAIModule.Options.CongestionAvoidance) != 0;
+                    int congestedLanes = 0;
                     for (int j = 0; j < 5; ++j)
                     {
                         if (PathUnit.GetNextPosition(ref pathUnitID, ref pathID, out pathPos, out invalid))
@@ -146,11 +152,14 @@ namespace Transit.Addon.TrafficAI
                             uint laneID3 = PathManager.GetLaneID(pathPos);
                             if (laneID3 != 0u && !netManager.m_lanes.m_buffer[laneID3].CheckSpace(vehicleLength))
                             {
+                                ++congestedLanes;
                                 continue;
                             }
-                        }
 
-                        if (invalid)
+                            if (congestionAvoidanceEnabled)
+                                continue;
+                        }
+                        else if (invalid)
                         {
                             this.InvalidPath(vehicleID, ref vehicleData, leaderID, ref leaderData);
                         }
@@ -159,7 +168,23 @@ namespace Transit.Addon.TrafficAI
                         break;
                     }
 
-                    if (congested)
+                    if (congestionAvoidanceEnabled)
+                    {
+                        if (congestedLanes >= 2 && (leaderData.m_flags & AvoidingCongestionFlag) == 0)
+                        {
+                            leaderData.m_flags |= AvoidingCongestionFlag;
+                            this.InvalidPath(vehicleID, ref vehicleData, leaderID, ref leaderData);
+                        }
+                        else if (congestedLanes == 0 && (leaderData.m_flags & AvoidingCongestionFlag) != 0)
+                        {
+                            leaderData.m_flags &= ~AvoidingCongestionFlag;
+                        }
+                        else if (congestedLanes == 5)
+                        {
+                            leaderData.m_flags |= Vehicle.Flags.Congestion;
+                        }
+                    }
+                    else if (congested)
                     {
                         leaderData.m_flags |= Vehicle.Flags.Congestion;
                     }
