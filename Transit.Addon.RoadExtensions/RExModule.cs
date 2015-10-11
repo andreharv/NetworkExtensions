@@ -15,6 +15,11 @@ namespace Transit.Addon.RoadExtensions
         public const string ROAD_NETCOLLECTION = "Road";
         public const string REX_NETCOLLECTION = "REXCollection";
 
+        public RExModule(Mod mod)
+        {
+            this.Mod = mod;
+        }
+
         public override string Name
         {
             get { return "Road Extensions"; }
@@ -24,5 +29,7 @@ namespace Transit.Addon.RoadExtensions
         {
             get { return "An addition of highways and roads"; }
         }
+
+        public Mod Mod { get; private set; }
     }
 }

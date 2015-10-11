@@ -3,6 +3,7 @@ using Transit.Framework.Modularity;
 using ICities;
 using System.Xml;
 using System;
+using ColossalFramework.UI;
 
 namespace Transit.Addon.TrafficAI
 {
@@ -14,7 +15,6 @@ namespace Transit.Addon.TrafficAI
             None = 0,
 
             CongestionAvoidance = 1,
-            LaneRestriction = 2
         }
 
         private static Options s_options = Options.CongestionAvoidance;
@@ -23,23 +23,33 @@ namespace Transit.Addon.TrafficAI
         public override void OnSettingsUI(UIHelperBase helper)
         {
             base.OnSettingsUI(helper);
-        }
+
+            helper.AddCheckbox("Congestion Avoidance", "Vehicles will actively avoid congestions", true, OnCheckboxChanged, true, Options.CongestionAvoidance);
+        }        
 
         public override void OnSaveSettings(XmlElement moduleElement)
         {
-            Options opt = Options.CongestionAvoidance | Options.LaneRestriction;
-
-            opt.ToXml(moduleElement);
+            TrafficAIOptions.ToXml(moduleElement);
         }
 
         public override void OnLoadSettings(XmlElement moduleElement)
         {
-            Options opt = Options.None;
-            opt = (Options)opt.FromXml(moduleElement);
-
-            System.IO.File.AppendAllText("xmlLoad.txt", opt.ToString());
+            s_options = (Options)s_options.FromXml(moduleElement);
         }
 
+        private void OnCheckboxChanged(UIComponent c, bool isChecked)
+        {
+            UICheckBox checkBox = c as UICheckBox;
+            if (checkBox != null && checkBox.objectUserData != null)
+            {
+                Options checkboxOption = (Options)checkBox.objectUserData;
+                if (isChecked)
+                    s_options |= checkboxOption;
+                else
+                    s_options &= ~checkboxOption;
 
+                Mod.OnSaveSettings();
+            }
+        }
     }
 }
