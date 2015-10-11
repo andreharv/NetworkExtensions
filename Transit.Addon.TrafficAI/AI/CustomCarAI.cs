@@ -1,9 +1,6 @@
-﻿using ColossalFramework;
-using ColossalFramework.Math;
+﻿using ColossalFramework.Math;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Runtime.CompilerServices;
 using Transit.Framework.Unsafe;
 using UnityEngine;
 
@@ -367,14 +364,25 @@ namespace Transit.Addon.TrafficAI
             base.SimulationStep(vehicleID, ref vehicleData, ref frameData, leaderID, ref leaderData, lodPhysics);
         }
 
-
+        [MethodImpl(MethodImplOptions.NoInlining)]
         [RedirectTo(typeof(CarAI))]
-        private static float CalculateMaxSpeed(float targetDistance, float targetSpeed, float maxBraking) { return 0f; }
+        private static float CalculateMaxSpeed(float targetDistance, float targetSpeed, float maxBraking)
+        {
+            throw new NotImplementedException("CalculateMaxSpeed is target of redirection and is not implemented.");
+        }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         [RedirectTo(typeof(CarAI))]
-        private static bool DisableCollisionCheck(ushort vehicleID, ref Vehicle vehicleData) { return false; }
+        private static bool DisableCollisionCheck(ushort vehicleID, ref Vehicle vehicleData)
+        {
+            throw new NotImplementedException("DisableCollisionCheck is target of redirection and is not implemented.");
+        }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         [RedirectTo(typeof(CarAI))]
-        private void CheckOtherVehicles(ushort vehicleID, ref Vehicle vehicleData, ref Vehicle.Frame frameData, ref float maxSpeed, ref bool blocked, ref Vector3 collisionPush, float maxDistance, float maxBraking, int lodPhysics) { }
+        private void CheckOtherVehicles(ushort vehicleID, ref Vehicle vehicleData, ref Vehicle.Frame frameData, ref float maxSpeed, ref bool blocked, ref Vector3 collisionPush, float maxDistance, float maxBraking, int lodPhysics)
+        {
+            throw new NotImplementedException("CheckOtherVehicles is target of redirection and is not implemented.");
+        }
     }
 }

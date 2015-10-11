@@ -18,7 +18,7 @@ namespace Transit.Addon.TrafficAI
             }
         }
 
-        public override void OnLevelUnloading()
+        public override void OnReleased()
         {
             Redirector.RevertRedirections();
         }

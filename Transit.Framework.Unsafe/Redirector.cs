@@ -123,7 +123,7 @@ namespace Transit.Framework.Unsafe
                         if (m.Name != originalName)
                             continue;
 
-                        if (method.IsCompatibleWith(originalMethod))
+                        if (method.IsCompatibleWith(m))
                         {
                             originalMethod = m;
                             break;

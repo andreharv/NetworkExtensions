@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AI\CustomCarAI.cs" />
+    <Compile Include="PathFinding\CustomPathFind.cs" />
     <Compile Include="TrafficAI.cs" />
     <Compile Include="TrafficAI.Loading.cs" />
     <Compile Include="TrafficAI.Parts.cs" />
