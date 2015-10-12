@@ -60,20 +60,19 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway6L
                 nodes1.m_flagsRequired = NetNode.Flags.Transition;
 
                 segments0.SetMeshes
-                    (@"Roads\Highway6L\Meshes\Ground.obj",
-                     @"Roads\Highway6L\Meshes\Ground_LOD.obj");
+                    (@"Roads\aHighwayTemplates\Meshes\32m\Ground.obj",
+                     @"Roads\aHighwayTemplates\Meshes\32m\Ground_LOD.obj");
 
                 nodes0.SetMeshes
-                    (@"Roads\Highway6L\Meshes\Ground.obj",
-                     @"Roads\Highway6L\Meshes\Ground_Node_LOD.obj");
+                    (@"Roads\aHighwayTemplates\Meshes\32m\Ground.obj",
+                     @"Roads\aHighwayTemplates\Meshes\32m\Ground_Node_LOD.obj");
 
                 nodes1.SetMeshes
-                    (@"Roads\Highway6L\Meshes\Ground_Trans.obj",
-                     @"Roads\Highway6L\Meshes\Ground_Trans_LOD.obj");
+                    (@"Roads\aHighwayTemplates\Meshes\32m\Ground_Trans.obj",
+                     @"Roads\aHighwayTemplates\Meshes\32m\Ground_Trans_LOD.obj");
 
                 info.m_segments = new[] { segments0 };
-                info.m_nodes = new[] { nodes0, nodes1 };
-                Framework.Debug.Log("REx: Ground Done");
+                info.m_nodes = new[] { nodes0, nodes1 };  
             }
             else if (version == NetInfoVersion.Elevated)
             {
@@ -98,20 +97,19 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway6L
                 nodes1.m_flagsRequired = NetNode.Flags.Transition;
 
                 segments0.SetMeshes
-                    (@"Roads\Highway6L\Meshes\Elevated.obj",
-                    @"Roads\Highway6L\Meshes\Elevated_LOD.obj");
+                    (@"Roads\aHighwayTemplates\Meshes\32m\Elevated.obj",
+                    @"Roads\aHighwayTemplates\Meshes\32m\Elevated_LOD.obj");
 
                 nodes0.SetMeshes
-                    (@"Roads\Highway6L\Meshes\Elevated.obj",
-                    @"Roads\Highway6L\Meshes\Elevated_Node_LOD.obj");
+                    (@"Roads\aHighwayTemplates\Meshes\32m\Elevated.obj",
+                    @"Roads\aHighwayTemplates\Meshes\32m\Elevated_Node_LOD.obj");
 
                 nodes1.SetMeshes
-                    (@"Roads\Highway6L\Meshes\Elevated_Trans.obj",
-                    @"Roads\Highway6L\Meshes\Elevated_Trans_LOD.obj");
+                    (@"Roads\aHighwayTemplates\Meshes\32m\Elevated_Trans.obj",
+                    @"Roads\aHighwayTemplates\Meshes\32m\Elevated_Trans_LOD.obj");
 
                 info.m_segments = new[] { segments0 };
                 info.m_nodes = new[] { nodes0, nodes1 };
-                Framework.Debug.Log("REx: Elevated Done");
             }
             else if (version == NetInfoVersion.Bridge)
             {
@@ -137,20 +135,19 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway6L
                 nodes1.m_flagsRequired = NetNode.Flags.Transition;
 
                 segments0.SetMeshes
-                    (@"Roads\Highway6L\Meshes\Elevated.obj",
-                    @"Roads\Highway6L\Meshes\Elevated_LOD.obj");
+                    (@"Roads\aHighwayTemplates\Meshes\32m\Elevated.obj",
+                    @"Roads\aHighwayTemplates\Meshes\32m\Elevated_LOD.obj");
 
                 nodes0.SetMeshes
-                    (@"Roads\Highway6L\Meshes\Elevated.obj",
-                    @"Roads\Highway6L\Meshes\Elevated_Node_LOD.obj");
+                    (@"Roads\aHighwayTemplates\Meshes\32m\Elevated.obj",
+                    @"Roads\aHighwayTemplates\Meshes\32m\Elevated_Node_LOD.obj");
 
                 nodes1.SetMeshes
-                    (@"Roads\Highway6L\Meshes\Elevated_Trans.obj",
-                    @"Roads\Highway6L\Meshes\Elevated_Trans_LOD.obj");
+                    (@"Roads\aHighwayTemplates\Meshes\32m\Elevated_Trans.obj",
+                    @"Roads\aHighwayTemplates\Meshes\32m\Elevated_Trans_LOD.obj");
 
                 info.m_segments = new[] { segments0, segments1 };
                 info.m_nodes = new[] { nodes0, nodes1 };
-                Framework.Debug.Log("REx: Bridge Done Done");
             }
             else if (version == NetInfoVersion.Slope)
             {
@@ -196,29 +193,28 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway6L
                 //nodes3.m_flagsRequired = NetNode.Flags.Transition;
 
                 segments0.SetMeshes
-                    (@"Roads\Highway6L\Meshes\Slope_Gray.obj",
-                     @"Roads\Highway6L\Meshes\Slope_Gray_LOD.obj");
+                    (@"Roads\aHighwayTemplates\Meshes\32m\Slope_Gray.obj",
+                     @"Roads\aHighwayTemplates\Meshes\32m\Slope_Gray_LOD.obj");
                 segments2.SetMeshes
-                    (@"Roads\Highway6L\Meshes\Slope.obj",
-                     @"Roads\Highway6L\Meshes\Slope_LOD.obj");
+                    (@"Roads\aHighwayTemplates\Meshes\32m\Slope.obj",
+                     @"Roads\aHighwayTemplates\Meshes\32m\Slope_LOD.obj");
 
                 nodes0.SetMeshes
-                    (@"Roads\Highway6L\Meshes\Slope_U_Node.obj",
-                     @"Roads\Highway6L\Meshes\Ground_LOD.obj");
+                    (@"Roads\aHighwayTemplates\Meshes\32m\Slope_U_Node.obj",
+                     @"Roads\aHighwayTemplates\Meshes\32m\Ground_LOD.obj");
                 nodes1.SetMeshes
-                    (@"Roads\Highway6L\Meshes\Ground.obj",
-                    @"Roads\Highway6L\Meshes\Ground_Node_LOD.obj");
+                    (@"Roads\aHighwayTemplates\Meshes\32m\Ground.obj",
+                    @"Roads\aHighwayTemplates\Meshes\32m\Ground_Node_LOD.obj");
                 nodes2.SetMeshes
-                    (@"Roads\Highway6L\Meshes\Slope_U_Node.obj");
+                    (@"Roads\aHighwayTemplates\Meshes\32m\Slope_U_Node.obj");
                 nodes3.SetMeshes
-                    (@"Roads\Highway6L\Meshes\Ground_Trans.obj",
-                     @"Roads\Highway6L\Meshes\Ground_Trans_LOD.obj");
+                    (@"Roads\aHighwayTemplates\Meshes\32m\Ground_Trans.obj",
+                     @"Roads\aHighwayTemplates\Meshes\32m\Ground_Trans_LOD.obj");
 
                 nodes2.m_material = defaultMaterial;
 
                 info.m_segments = new[] { segments0, segments1, segments2 };
                 info.m_nodes = new[] { nodes0, nodes1, nodes2, nodes3 };
-                Framework.Debug.Log("REx: Slope Done");
             }
             else if (version == NetInfoVersion.Tunnel)
             {
@@ -234,25 +230,28 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway6L
                 //segments1.m_forwardForbidden = NetSegment.Flags.None;
                 //segments1.m_forwardRequired = NetSegment.Flags.None;
 
-                //nodes1.m_flagsForbidden = NetNode.Flags.Transition;
-                //nodes1.m_flagsRequired = NetNode.Flags.Underground;
+                nodes0.m_flagsForbidden = NetNode.Flags.None;
+                nodes0.m_flagsRequired = NetNode.Flags.None;
+
+                nodes1.m_flagsForbidden = NetNode.Flags.None;
+                nodes1.m_flagsRequired = NetNode.Flags.None;
 
                 //nodes2.m_flagsForbidden = NetNode.Flags.None;
                 // nodes2.m_flagsRequired = NetNode.Flags.UndergroundTransition;
 
                 segments0.SetMeshes
-                    (@"Roads\Highway6L\Meshes\Tunnel.obj",
-                    @"Roads\Highway6L\Meshes\Tunnel_LOD.obj");
+                    (@"Roads\aHighwayTemplates\Meshes\32m\Tunnel.obj",
+                    @"Roads\aHighwayTemplates\Meshes\32m\Tunnel_LOD.obj");
                 segments1.SetMeshes
-                    (@"Roads\Highway6L\Meshes\Tunnel.obj",
-                    @"Roads\Highway6L\Meshes\Tunnel_LOD.obj");
+                    (@"Roads\aHighwayTemplates\Meshes\32m\Tunnel.obj",
+                    @"Roads\aHighwayTemplates\Meshes\32m\Tunnel_LOD.obj");
                 nodes0.SetMeshes
-                     (@"Roads\Highway6L\Meshes\Tunnel.obj");
+                     (@"Roads\aHighwayTemplates\Meshes\32m\Tunnel_Node.obj");
                 nodes1.SetMeshes
-                    (@"Roads\Highway6L\Meshes\Tunnel.obj");
+                    (@"Roads\aHighwayTemplates\Meshes\32m\Tunnel_Node.obj");
                 // nodes2.SetMeshes
-                //    (@"Roads\Highway6L\Meshes\Tunnel.obj",
-                //    @"Roads\Highway6L\Meshes\Ground_LOD.obj");
+                //    (@"Roads\aHighwayTemplates\Meshes\32m\Tunnel.obj",
+                //    @"Roads\aHighwayTemplates\Meshes\32m\Ground_LOD.obj");
 
                 segments1.m_material = defaultMaterial;
                 nodes1.m_material = defaultMaterial;
@@ -264,7 +263,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway6L
 
                 info.m_segments = new[] { segments0, segments1 };
                 info.m_nodes = new[] { nodes0, nodes1 };
-                Framework.Debug.Log("REx: Tunnel Done");
             }
 
             ///////////////////////////
@@ -277,57 +275,57 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway6L
                 case NetInfoVersion.Bridge:
                     info.SetAllSegmentsTexture(
                         new TexturesSet(
-                            @"Roads\Highway6L\Textures\Ground_Elevated_Segment__MainTex.png",
-                            @"Roads\Highway6L\Textures\Ground_Elevated_Segment__APRMap.png"),
+                            @"Roads\aHighwayTemplates\Textures\Ground_Elevated_Segment__MainTex.png",
+                            @"Roads\aHighwayTemplates\Textures\Ground_Elevated_Segment__APRMap.png"),
                         new TexturesSet
-                           (@"Roads\Highway6L\Textures\Ground_Elevated_SegmentLOD__MainTex.png",
-                            @"Roads\Highway6L\Textures\Ground_Elevated_SegmentLOD__APRMap.png",
-                            @"Roads\Highway6L\Textures\Elevated_NodeLOD__XYSMap.png"));
+                           (@"Roads\aHighwayTemplates\Textures\Ground_Elevated_SegmentLOD__MainTex.png",
+                            @"Roads\aHighwayTemplates\Textures\Ground_Elevated_SegmentLOD__APRMap.png",
+                            @"Roads\aHighwayTemplates\Textures\Elevated_NodeLOD__XYSMap.png"));
                     info.SetAllNodesTexture(
                         new TexturesSet
-                           (@"Roads\Highway6L\Textures\Ground_Elevated_Node__MainTex.png",
-                            @"Roads\Highway6L\Textures\Ground_Elevated_Node__APRMap.png"),
+                           (@"Roads\aHighwayTemplates\Textures\Ground_Elevated_Node__MainTex.png",
+                            @"Roads\aHighwayTemplates\Textures\Ground_Elevated_Node__APRMap.png"),
                         new TexturesSet
-                           (@"Roads\Highway6L\Textures\Ground_Elevated_NodeLOD__MainTex.png",
-                            @"Roads\Highway6L\Textures\Ground_Elevated_NodeLOD__APRMap.png",
-                            @"Roads\Highway6L\Textures\Elevated_NodeLOD__XYSMap.png"));
+                           (@"Roads\aHighwayTemplates\Textures\Ground_Elevated_NodeLOD__MainTex.png",
+                            @"Roads\aHighwayTemplates\Textures\Ground_Elevated_NodeLOD__APRMap.png",
+                            @"Roads\aHighwayTemplates\Textures\Elevated_NodeLOD__XYSMap.png"));
                     break;
 
                 case NetInfoVersion.Slope:
                     info.SetAllSegmentsTexture(
                         new TexturesSet
-                           (@"Roads\Highway6L\Textures\Slope_Segment__MainTex.png",
-                            @"Roads\Highway6L\Textures\Slope_Segment_Open__APRMap.png"));
+                           (@"Roads\aHighwayTemplates\Textures\Slope_Segment__MainTex.png",
+                            @"Roads\aHighwayTemplates\Textures\Slope_Segment_Open__APRMap.png"));
                         //new TexturesSet
-                        //    (@"Roads\Highway6L\Textures\Slope_SegmentLOD__MainTex.png",
-                        //    @"Roads\Highway6L\Textures\Slope_Segment_OpenLOD__APRMap.png",
-                        //    @"Roads\Highway6L\Textures\Slope_NodeLOD__XYSMap.png"));
+                        //    (@"Roads\aHighwayTemplates\Textures\Slope_SegmentLOD__MainTex.png",
+                        //    @"Roads\aHighwayTemplates\Textures\Slope_Segment_OpenLOD__APRMap.png",
+                        //    @"Roads\aHighwayTemplates\Textures\Slope_NodeLOD__XYSMap.png"));
                     info.SetAllNodesTexture(
                         new TexturesSet
-                           (@"Roads\Highway6L\Textures\Slope_Node__MainTex.png",
-                            @"Roads\Highway6L\Textures\Slope_Node__APRMap.png"),
+                           (@"Roads\aHighwayTemplates\Textures\Slope_Node__MainTex.png",
+                            @"Roads\aHighwayTemplates\Textures\Slope_Node__APRMap.png"),
                         new TexturesSet
-                           (@"Roads\Highway6L\Textures\Slope_NodeLOD__MainTex.png",
-                            @"Roads\Highway6L\Textures\Slope_NodeLOD__APRMap.png",
-                            @"Roads\Highway6L\Textures\Slope_NodeLOD__XYSMap.png"));
+                           (@"Roads\aHighwayTemplates\Textures\Slope_NodeLOD__MainTex.png",
+                            @"Roads\aHighwayTemplates\Textures\Slope_NodeLOD__APRMap.png",
+                            @"Roads\aHighwayTemplates\Textures\Slope_NodeLOD__XYSMap.png"));
                     break;
                 case NetInfoVersion.Tunnel:
                     info.SetAllSegmentsTexture(
                         new TexturesSet
-                           (@"Roads\Highway6L\Textures\Tunnel_Segment__MainTex.png",
-                            @"Roads\Highway6L\Textures\Tunnel_Segment__APRMap.png"));
+                           (@"Roads\aHighwayTemplates\Textures\Tunnel_Segment__MainTex.png",
+                            @"Roads\aHighwayTemplates\Textures\Tunnel_Segment__APRMap.png"));
                         //new TexturesSet
-                        //   (@"Roads\Highway6L\Textures\Tunnel_SegmentLOD__MainTex.png",
-                        //    @"Roads\Highway6L\Textures\Tunnel_SegmentLOD__APRMap.png",
-                        //    @"Roads\Highway6L\Textures\Slope_NodeLOD__XYSMap.png"));
+                        //   (@"Roads\aHighwayTemplates\Textures\Tunnel_SegmentLOD__MainTex.png",
+                        //    @"Roads\aHighwayTemplates\Textures\Tunnel_SegmentLOD__APRMap.png",
+                        //    @"Roads\aHighwayTemplates\Textures\Slope_NodeLOD__XYSMap.png"));
                     info.SetAllNodesTexture(
                         new TexturesSet
-                           (@"Roads\Highway6L\Textures\Tunnel_Node__MainTex.png",
-                            @"Roads\Highway6L\Textures\Tunnel_Segment__APRMap.png"),
+                           (@"Roads\aHighwayTemplates\Textures\Tunnel_Node__MainTex.png",
+                            @"Roads\aHighwayTemplates\Textures\Tunnel_Segment__APRMap.png"),
                         new TexturesSet
-                           (@"Roads\Highway6L\Textures\Tunnel_NodeLOD__MainTex.png",
-                            @"Roads\Highway6L\Textures\Tunnel_SegmentLOD__APRMap.png",
-                            @"Roads\Highway6L\Textures\Slope_NodeLOD__XYSMap.png"));
+                           (@"Roads\aHighwayTemplates\Textures\Tunnel_NodeLOD__MainTex.png",
+                            @"Roads\aHighwayTemplates\Textures\Tunnel_SegmentLOD__APRMap.png",
+                            @"Roads\aHighwayTemplates\Textures\Slope_NodeLOD__XYSMap.png"));
                     break;
             }
 
@@ -467,7 +465,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway6L
                         .ToArray();
 
                     rightHwLane.m_laneProps = newProps;
-                    Framework.Debug.Log("REx: Tunnel Props Initialized Done");
                 }
             }
             else
@@ -481,7 +478,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway6L
                   .m_lanes
                   .Where(l => l != null && l.m_laneProps != null && l.m_laneProps.name != null && l.m_laneProps.m_props != null)
                   .FirstOrDefault(l => l.m_laneProps.name.ToLower().Contains("right")).ShallowClone();
-                Framework.Debug.Log("REx: Other Props Initialized Done");
             }
 
             if (leftHwLane != null && rightHwLane != null)
@@ -525,7 +521,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway6L
                         leftHwProps.Add(streetLightLeft);
 
                         rightHwProps.Add(streetLightRight);
-                        Framework.Debug.Log("REx: Tunnel Props set");
                     }
                     else if (version == NetInfoVersion.Slope)
                     {
@@ -557,7 +552,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway6L
 
                         rightHwProps.Add(streetLightRight);
                         rightHwProps.Add(wallLightPropRight);
-                        Framework.Debug.Log("REx: Slope Props set");
                     }
                     else
                     {
@@ -578,13 +572,11 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway6L
                         }
 
                         leftHwProps.Add(streetLightLeft);
-                        Framework.Debug.Log("REx: Other Props set");
                     }
                 }
 
                 leftHwLane.m_laneProps.m_props = leftHwProps.ToArray();
                 rightHwLane.m_laneProps.m_props = rightHwProps.ToArray();
-                Framework.Debug.Log("REx: Props Added");
 
                 foreach (var lane in vehicleLanes)
                 {
@@ -596,7 +588,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway6L
                         }
                     }
                 }
-                Framework.Debug.Log("REx: Vehicle Props Centered");
                 foreach (var lane in propLanes)
                 {
                     if (lane.m_laneProps != null && lane.m_laneProps.m_props.Length > 0)
@@ -612,7 +603,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway6L
                         }
                     }
                 }
-                Framework.Debug.Log("REx: Proplane Props Centered");
             }
         }
 

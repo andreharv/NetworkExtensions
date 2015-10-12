@@ -88,85 +88,265 @@
     <Content Include="Menus\Textures\AdditionnalSubBar.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Elevated_SegmentLOD__XYSMap.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Elevated_SegmentLOD__XYSMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Ground_Elevated_NodeLOD__APRMap.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Ground_Elevated_NodeLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Ground_Elevated_NodeLOD__MainTex.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Ground_Elevated_NodeLOD__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Ground_Elevated_Node__APRMap.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Ground_Elevated_Node__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Ground_Elevated_Node__MainTex.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Ground_Elevated_Node__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Ground_Elevated_Segment2__APRMap.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Ground_Elevated_Segment2__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Ground_Elevated_SegmentLOD__APRMap.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Ground_Elevated_SegmentLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Ground_Elevated_SegmentLOD__MainTex.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Ground_Elevated_SegmentLOD__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Ground_Elevated_Segment__APRMap.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Ground_Elevated_Segment__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Ground_Elevated_Segment__MainTex.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Ground_Elevated_Segment__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Slope_SegmentLOD__APRMap.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Slope_SegmentLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Slope_SegmentLOD__MainTex.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Slope_SegmentLOD__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Slope_Segment_OpenLOD__APRMap.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Slope_Segment_OpenLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Slope_Segment_Open__APRMap.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Slope_Segment_Open__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Slope_Segment__APRMap.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Slope_Segment__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Slope_Segment__MainTex.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Slope_Segment__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Slope_Tunnel_Node__APRMap.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Slope_Tunnel_Node__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Slope_Tunnel_Node__MainTex.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Slope_Tunnel_Node__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Slope_Tunnel_Segment_Open__APRMap.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Slope_Tunnel_Segment_Open__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Slope_Tunnel_Segment__APRMap.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Slope_Tunnel_Segment__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Slope_Tunnel_Segment__MainTex.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Slope_Tunnel_Segment__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Tunnel_NodeLOD__MainTex.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Tunnel_NodeLOD__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Tunnel_Node__MainTex.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Tunnel_Node__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Tunnel_SegmentLOD__APRMap.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Tunnel_SegmentLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Tunnel_SegmentLOD__MainTex.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Tunnel_SegmentLOD__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Tunnel_Segment__APRMap.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Tunnel_Segment__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Tunnel_Segment__MainTex.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Tunnel_Segment__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway1L\Textures\Elevated_NodeLOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway1L\Textures\Elevated_NodeLOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway1L\Textures\Elevated_NodeLOD__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway1L\Textures\Elevated_Node__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway1L\Textures\Elevated_SegmentLOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway1L\Textures\Elevated_SegmentLOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway1L\Textures\Elevated_Segment__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway1L\Textures\Ground_Elevated_Node__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway1L\Textures\Ground_Elevated_Segment__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway1L\Textures\Ground_LOD__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway1L\Textures\Ground_NodeLOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway1L\Textures\Ground_NodeLOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway1L\Textures\Ground_Node__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway1L\Textures\Ground_SegmentLOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway1L\Textures\Ground_SegmentLOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway1L\Textures\Ground_Segment__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway1L\Textures\Slope_NodeLOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway1L\Textures\Slope_NodeLOD__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway1L\Textures\Slope_SegmentLOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway1L\Textures\Slope_Segment_OpenLOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway1L\Textures\Slope_Segment__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway1L\Textures\Slope_Node__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway1L\Textures\Slope_Segment_Open__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway1L\Textures\TunnelLOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway1L\Textures\Tunnel_NodeLOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway1L\Textures\Tunnel_NodeLOD__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway1L\Textures\Tunnel_Node__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway1L\Textures\Tunnel_SegmentLOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway1L\Textures\Tunnel__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway1L\Textures\Tunnel_Segment__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway2L\Textures\Elevated_NodeLOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway2L\Textures\Elevated_NodeLOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway2L\Textures\Elevated_NodeLOD__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway2L\Textures\Elevated_Node__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway2L\Textures\Elevated_SegmentLOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway2L\Textures\Elevated_SegmentLOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway2L\Textures\Elevated_Segment__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway2L\Textures\Ground_Elevated_Node__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway2L\Textures\Ground_Elevated_Segment__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway2L\Textures\Ground_LOD__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway2L\Textures\Ground_NodeLOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway2L\Textures\Ground_NodeLOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway2L\Textures\Ground_Node__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway2L\Textures\Ground_SegmentLOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway2L\Textures\Ground_SegmentLOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway2L\Textures\Ground_Segment__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway2L\Textures\Slope_NodeLOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway2L\Textures\Slope_NodeLOD__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway2L\Textures\Slope_SegmentLOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway2L\Textures\Slope_Segment_OpenLOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway2L\Textures\Slope_Segment__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway2L\Textures\Slope_Node__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway2L\Textures\Slope_Segment_Open__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway2L\Textures\TunnelLOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway2L\Textures\Tunnel_NodeLOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway2L\Textures\Tunnel_NodeLOD__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway2L\Textures\Tunnel_Node__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway2L\Textures\Tunnel_SegmentLOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway2L\Textures\Tunnel__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Highway2L\Textures\Tunnel_Segment__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\OneWay3L\infotooltip.png">
@@ -211,40 +391,13 @@
     <Content Include="Roads\OneWay4L\thumbnails.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway1L\Textures\Ground_NodeLOD__AlphaMap.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Ground_SegmentLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway1L\Textures\Ground_NodeLOD__MainTex.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Ground_SegmentLOD__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway1L\Textures\Ground_NodeLOD__XYSMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Highway1L\Textures\Ground_SegmentLOD__AlphaMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Highway1L\Textures\Ground_SegmentLOD__MainTex.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Highway1L\Textures\Ground_SegmentLOD__XYSMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Highway2L\Textures\Ground_SegmentLOD__AlphaMap.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Highway2L\Textures\Ground_SegmentLOD__MainTex.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Highway2L\Textures\Ground_SegmentLOD__XYSMap.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Highway6L\Textures\Ground_SegmentLOD__APRMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Highway6L\Textures\Ground_SegmentLOD__MainTex.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Highway6L\Textures\Ground_SegmentLOD__XYSMap.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Ground_SegmentLOD__XYSMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\MediumAvenue4LTL\Textures\Ground_Node__AlphaMap.png">
@@ -286,73 +439,10 @@
     <Content Include="Roads\Highway1L\infotooltip.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway1L\Textures\Ground_Node__AlphaMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Highway1L\Textures\Ground_Node__MainTex.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Highway1L\Textures\Ground_Segment__AlphaMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Highway1L\Textures\Ground_Segment__MainTex.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Roads\Highway1L\thumbnails.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\Highway2L\infotooltip.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Highway2L\Textures\Elevated_NodeLOD__AlphaMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Highway2L\Textures\Elevated_NodeLOD__MainTex.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Highway2L\Textures\Elevated_NodeLOD__XYSMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Highway2L\Textures\Elevated_Node__AlphaMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Highway2L\Textures\Elevated_Node__MainTex.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Highway2L\Textures\Ground_NodeLOD__AlphaMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Highway2L\Textures\Ground_NodeLOD__MainTex.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Highway2L\Textures\Ground_NodeLOD__XYSMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Highway2L\Textures\Ground_Node__AlphaMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Highway2L\Textures\Ground_Node__MainTex.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Highway2L\Textures\Ground_Segment__AlphaMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Highway2L\Textures\Ground_Segment__MainTex.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Highway2L\Textures\Slope_NodeLOD__AlphaMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Highway2L\Textures\Slope_NodeLOD__MainTex.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Highway2L\Textures\Slope_NodeLOD__XYSMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Highway2L\Textures\Slope_Node__AlphaMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Highway2L\Textures\Slope_Node__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\Highway2L\thumbnails.png">
@@ -361,55 +451,55 @@
     <Content Include="Roads\Highway6L\infotooltip.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Elevated_NodeLOD__APRMap.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Elevated_NodeLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Elevated_NodeLOD__MainTex.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Elevated_NodeLOD__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Elevated_NodeLOD__XYSMap.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Elevated_NodeLOD__XYSMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Elevated_Node__APRMap.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Elevated_Node__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Elevated_Node__MainTex.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Elevated_Node__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Ground_NodeLOD__APRMap.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Ground_NodeLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Ground_NodeLOD__MainTex.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Ground_NodeLOD__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Ground_NodeLOD__XYSMap.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Ground_NodeLOD__XYSMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Ground_Node__APRMap.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Ground_Node__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Ground_Node__MainTex.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Ground_Node__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Ground_Segment__APRMap.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Ground_Segment__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Ground_Segment__MainTex.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Ground_Segment__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Slope_NodeLOD__APRMap.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Slope_NodeLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Slope_NodeLOD__MainTex.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Slope_NodeLOD__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Slope_NodeLOD__XYSMap.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Slope_NodeLOD__XYSMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Slope_Node__APRMap.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Slope_Node__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Highway6L\Textures\Slope_Node__MainTex.png">
+    <Content Include="Roads\aHighwayTemplates\Textures\Slope_Node__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\Highway6L\thumbnails.png">
@@ -453,82 +543,139 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <None Include="Roads\Highway2L\Meshes\Ground_Node_LOD.obj">
+    <None Include="Roads\aHighwayTemplates\Meshes\16m\Elevated.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Highway2L\Meshes\Ground_Trans.obj">
+    <None Include="Roads\aHighwayTemplates\Meshes\16m\Elevated_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Highway2L\Meshes\Ground.obj">
+    <None Include="Roads\aHighwayTemplates\Meshes\16m\Elevated_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Highway2L\Meshes\Ground_LOD.obj">
+    <None Include="Roads\aHighwayTemplates\Meshes\16m\Elevated_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Highway2L\Meshes\Ground_Trans_LOD.obj">
+    <None Include="Roads\aHighwayTemplates\Meshes\16m\Elevated_Trans.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Highway6L\Meshes\Elevated.obj">
+    <None Include="Roads\aHighwayTemplates\Meshes\16m\Elevated_Trans_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Highway6L\Meshes\Elevated_LOD.obj">
+    <None Include="Roads\aHighwayTemplates\Meshes\16m\Ground.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Highway6L\Meshes\Elevated_Node_LOD.obj">
+    <None Include="Roads\aHighwayTemplates\Meshes\16m\Ground_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Highway6L\Meshes\Elevated_Trans.obj">
+    <None Include="Roads\aHighwayTemplates\Meshes\16m\Ground_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Highway6L\Meshes\Elevated_Trans_LOD.obj">
+    <None Include="Roads\aHighwayTemplates\Meshes\16m\Ground_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Highway6L\Meshes\Ground.obj">
+    <None Include="Roads\aHighwayTemplates\Meshes\16m\Ground_Trans.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Highway6L\Meshes\Ground_Node_LOD.obj">
+    <None Include="Roads\aHighwayTemplates\Meshes\16m\Ground_Trans_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Highway6L\Meshes\Ground_Trans.obj">
+    <None Include="Roads\aHighwayTemplates\Meshes\16m\Slope.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Highway6L\Meshes\Ground_LOD.obj">
+    <None Include="Roads\aHighwayTemplates\Meshes\16m\Slope_Gray.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Highway6L\Meshes\Ground_Trans_LOD.obj">
+    <None Include="Roads\aHighwayTemplates\Meshes\16m\Slope_Gray_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Highway6L\Meshes\Slope.obj">
+    <None Include="Roads\aHighwayTemplates\Meshes\16m\Slope_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Highway6L\Meshes\Slope_Gray.obj">
+    <None Include="Roads\aHighwayTemplates\Meshes\16m\Slope_U_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Highway6L\Meshes\Slope_Gray_LOD.obj">
+    <None Include="Roads\aHighwayTemplates\Meshes\16m\Slope_U_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Highway6L\Meshes\Slope_LOD.obj">
+    <None Include="Roads\aHighwayTemplates\Meshes\16m\Slope_U_Trans.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Highway6L\Meshes\Slope_Node.obj">
+    <None Include="Roads\aHighwayTemplates\Meshes\16m\Tunnel.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Highway6L\Meshes\Slope_Trans.obj">
+    <None Include="Roads\aHighwayTemplates\Meshes\16m\Tunnel_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Highway6L\Meshes\Slope_U_Node.obj">
+    <None Include="Roads\aHighwayTemplates\Meshes\16m\Tunnel_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Highway6L\Meshes\Slope_U_Trans.obj">
+    <None Include="Roads\aHighwayTemplates\Meshes\16m\Tunnel_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Highway6L\Meshes\Tunnel.obj">
+    <None Include="Roads\aHighwayTemplates\Meshes\16m\Tunnel_Trans.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Highway6L\Meshes\Tunnel_LOD.obj">
+    <None Include="Roads\aHighwayTemplates\Meshes\32m\Elevated.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Highway6L\Meshes\Tunnel_Node.obj">
+    <None Include="Roads\aHighwayTemplates\Meshes\32m\Elevated_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\aHighwayTemplates\Meshes\32m\Elevated_Node_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\aHighwayTemplates\Meshes\32m\Elevated_Trans.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\aHighwayTemplates\Meshes\32m\Elevated_Trans_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\aHighwayTemplates\Meshes\32m\Ground.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\aHighwayTemplates\Meshes\32m\Ground_Node_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\aHighwayTemplates\Meshes\32m\Ground_Trans.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\aHighwayTemplates\Meshes\32m\Ground_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\aHighwayTemplates\Meshes\32m\Ground_Trans_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\aHighwayTemplates\Meshes\32m\Slope.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\aHighwayTemplates\Meshes\32m\Slope_Gray.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\aHighwayTemplates\Meshes\32m\Slope_Gray_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\aHighwayTemplates\Meshes\32m\Slope_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\aHighwayTemplates\Meshes\32m\Slope_Node.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\aHighwayTemplates\Meshes\32m\Slope_Trans.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\aHighwayTemplates\Meshes\32m\Slope_U_Node.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\aHighwayTemplates\Meshes\32m\Slope_U_Trans.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\aHighwayTemplates\Meshes\32m\Tunnel.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\aHighwayTemplates\Meshes\32m\Tunnel_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\aHighwayTemplates\Meshes\32m\Tunnel_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\SmallHeavyRoads\Meshes\Ground.obj">
