@@ -11,13 +11,13 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway6L
 
         public string TemplatePrefabName { get { return NetInfos.Vanilla.ROAD_6L; } }
         public string Name { get { return "Large Busway"; } }
-        public string DisplayName { get { return "Busway"; } }
+        public string DisplayName { get { return "Busway 6L"; } }
         public string CodeName { get { return "BUSWAY_6L"; } }
         public string Description { get { return "A two-lane, two-way road suitable for buses only. Busway does not allow zoning next to it!"; } }
         public string UICategory { get { return AdditionnalMenus.ROADS_BUSWAYS; } }
 
-        public string ThumbnailsPath { get { return null; } }
-        public string InfoTooltipPath { get { return null; } }
+        public string ThumbnailsPath { get { return @"Roads\Busway6L\thumbnails.png"; } }
+        public string InfoTooltipPath { get { return @"Roads\Busway6L\infotooltip.png"; } }
 
         public NetInfoVersion SupportedVersions
         {
