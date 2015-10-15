@@ -1,4 +1,5 @@
 ﻿using ICities;
+using Transit.Framework;
 using Transit.Framework.Interfaces;
 
 namespace Transit.Addon.RoadExtensions
@@ -7,7 +8,6 @@ namespace Transit.Addon.RoadExtensions
     {
         public override void OnSettingsUI(UIHelperBase helper)
         {
-            var uIHelperBase = helper.AddGroup("Road Extensions Options");
             var optionsChanged = false;
 
             foreach (var part in ActivableParts)
@@ -21,14 +21,16 @@ namespace Transit.Addon.RoadExtensions
                     optionsChanged = true;
                 }
 
-                uIHelperBase.AddCheckbox(
+                helper.AddCheckbox(
                     part.DisplayName, 
+                    null, // TODO: add description of road here -> part.DisplayDescription ?
                     Options.Instance.PartsEnabled[partName], 
                     isChecked =>
                     {
                         Options.Instance.PartsEnabled[partName] = partLocal.IsEnabled = isChecked;
                         Options.Instance.Save();
-                    });
+                    },
+                    true);
             }
 
             if (optionsChanged)
