@@ -11,6 +11,8 @@ namespace Transit.Framework
             public const string ROAD_2L_GRASS = "Basic Road Decoration Grass";
             public const string ROAD_2L_TREES = "Basic Road Decoration Trees";
             public const string ROAD_6L = "Large Road";
+            public const string ROAD_6L_GRASS = "Large Road Decoration Grass";
+            public const string ROAD_6L_TREES = "Large Road Decoration Trees";
 
             public const string AVENUE_4L = "Medium Road";
 
@@ -88,7 +90,22 @@ namespace Transit.Framework
                             case NetInfoVersion.Bridge:
                             case NetInfoVersion.Tunnel:
                             case NetInfoVersion.Slope:
-                                return ROAD_2L + " " + version;
+                                return ONEWAY_2L + " " + version;
+                            default:
+                                throw new NotImplementedException();
+                        }
+
+                    case ROAD_6L_GRASS:
+                    case ROAD_6L_TREES:
+                        switch (version)
+                        {
+                            case NetInfoVersion.Ground:
+                                return groundName;
+                            case NetInfoVersion.Elevated:
+                            case NetInfoVersion.Bridge:
+                            case NetInfoVersion.Tunnel:
+                            case NetInfoVersion.Slope:
+                                return ROAD_6L + " " + version;
                             default:
                                 throw new NotImplementedException();
                         }

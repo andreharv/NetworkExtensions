@@ -3,7 +3,7 @@ using Transit.Framework.Modularity;
 
 namespace Transit.Addon.RoadExtensions.Roads.Busway2L
 {
-    public class Busway2LBuilder : SmallBuswayBuilderBase, INetInfoBuilder
+    public class Busway2LBuilder : Busway2LBuilderBase, INetInfoBuilder
     {
         public int Order { get { return 110; } }
         public int Priority { get { return 20; } }

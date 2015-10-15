@@ -3,13 +3,13 @@ using Transit.Framework.Modularity;
 
 namespace Transit.Addon.RoadExtensions.Roads.Busway2L
 {
-    public class Busway2LGrassBuilder : SmallBuswayBuilderBase, INetInfoBuilder
+    public class Busway2LGrassBuilder : Busway2LBuilderBase, INetInfoBuilder
     {
         public int Order { get { return 120; } }
         public int Priority { get { return 21; } }
 
         public string TemplatePrefabName { get { return NetInfos.Vanilla.ROAD_2L_GRASS; } }
-        public string Name { get { return "Small Busway Grass"; } } // TODO: Make sur the name fit with the existing T++ name
+        public string Name { get { return "Small Busway Decoration Grass"; } } // TODO: Make sur the name fit with the existing T++ name
         public string DisplayName { get { return "Busway with Grass"; } }
         public string CodeName { get { return "BUSWAY_2L_GRASS"; } }
         public string Description { get { return "A two-lane, two-way road suitable for buses only. Busway does not allow zoning next to it!"; } }

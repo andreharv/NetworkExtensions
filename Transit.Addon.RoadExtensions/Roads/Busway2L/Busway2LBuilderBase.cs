@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Transit.Addon.RoadExtensions.Menus;
+﻿using Transit.Addon.RoadExtensions.Menus;
 using Transit.Framework;
 using Transit.Framework.Modularity;
 
-namespace Transit.Addon.RoadExtensions.Roads
+namespace Transit.Addon.RoadExtensions.Roads.Busway2L
 {
-    public abstract class SmallBuswayBuilderBase : NetInfoBuilderBase
+    public abstract class Busway2LBuilderBase : NetInfoBuilderBase
     {
         public string UICategory { get { return AdditionnalMenus.ROADS_BUSWAYS; } }
 

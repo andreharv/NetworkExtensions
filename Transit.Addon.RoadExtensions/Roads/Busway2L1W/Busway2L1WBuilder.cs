@@ -1,9 +1,10 @@
-﻿using Transit.Framework;
+﻿using Transit.Addon.RoadExtensions.Roads.Busway2L;
+using Transit.Framework;
 using Transit.Framework.Modularity;
 
 namespace Transit.Addon.RoadExtensions.Roads.Busway2L1W
 {
-    public class Busway2L1WBuilder : SmallBuswayBuilderBase, INetInfoBuilder
+    public class Busway2L1WBuilder : Busway2LBuilderBase, INetInfoBuilder
     {
         public int Order { get { return 140; } }
         public int Priority { get { return 23; } }
