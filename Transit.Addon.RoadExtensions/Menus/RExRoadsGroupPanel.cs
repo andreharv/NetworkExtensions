@@ -49,12 +49,14 @@ namespace Transit.Addon.RoadExtensions.Menus
                         return 3;
                     case "RoadsHighway":
                         return 4;
-                    case AdditionnalMenus.ROADS_BUSWAYS:
-                        return 5;
-                    case "PublicTransportTrain":
-                        return 6;
                     case "RoadsIntersection":
+                        return 5;
+                    case AdditionnalMenus.ROADS_BUSWAYS:
+                        return 6;
+                    case "PublicTransportTrain":
                         return 7;
+                    case AdditionnalMenus.ROADS_PEDESTRIANS:
+                        return 8;
                 }
                 return 2147483647;
             }
@@ -71,10 +73,12 @@ namespace Transit.Addon.RoadExtensions.Menus
                     return 3;
                 case "RoadsHighway":
                     return 4;
-                case AdditionnalMenus.ROADS_BUSWAYS:
-                    return 5;
                 case "RoadsIntersection":
+                    return 5;
+                case AdditionnalMenus.ROADS_BUSWAYS:
                     return 6;
+                case AdditionnalMenus.ROADS_PEDESTRIANS:
+                    return 7;
             }
             return 2147483647;
         }

@@ -7,6 +7,7 @@ namespace Transit.Framework
     {
         public static class Vanilla
         {
+            public const string ROAD_2L_GRAVEL = "Gravel Road";
             public const string ROAD_2L = "Basic Road";
             public const string ROAD_2L_GRASS = "Basic Road Decoration Grass";
             public const string ROAD_2L_TREES = "Basic Road Decoration Trees";
@@ -22,6 +23,9 @@ namespace Transit.Framework
             public const string ONEWAY_6L = "Large Oneway";
 
             public const string HIGHWAY_3L = "Highway";
+
+            public const string PED_GRAVEL = ROAD_2L_GRAVEL; // Quick fix for the Pedestian zonable roads
+            public const string PED_PAVEMENT = "Pedestrian Pavement";
 
             public static string GetPrefabName(string groundName, NetInfoVersion version)
             {
@@ -106,6 +110,18 @@ namespace Transit.Framework
                             case NetInfoVersion.Tunnel:
                             case NetInfoVersion.Slope:
                                 return ROAD_6L + " " + version;
+                            default:
+                                throw new NotImplementedException();
+                        }
+
+                    case PED_GRAVEL:
+                        switch (version)
+                        {
+                            case NetInfoVersion.Ground:
+                                return groundName;
+                            case NetInfoVersion.Elevated:
+                            case NetInfoVersion.Bridge:
+                                return "Pedestrian Elevated";
                             default:
                                 throw new NotImplementedException();
                         }
