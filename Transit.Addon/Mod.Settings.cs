@@ -42,6 +42,7 @@ namespace Transit.Addon
             foreach (IModule module in Modules)
             {
                 strip.AddTab(module.Name, tabTemplate, true);
+                strip.selectedIndex = tabIndex;
 
                 // Get the current container and use the UIHelper to have something in there
                 UIPanel stripRoot = strip.tabContainer.components[tabIndex++] as UIPanel;
@@ -50,10 +51,10 @@ namespace Transit.Addon
                 stripRoot.autoLayoutPadding.top = 5;
                 stripRoot.autoLayoutPadding.left = 10;
                 UIHelper stripHelper = new UIHelper(stripRoot);
-
+                
                 module.OnSettingsUI(stripHelper);
             }
-                
+
         }
 
         private void ModuleSettingsNeedSave()
