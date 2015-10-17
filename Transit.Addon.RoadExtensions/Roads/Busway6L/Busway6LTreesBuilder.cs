@@ -12,7 +12,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway6L
         public string Name { get { return "Large Road Decoration Trees With Bus Lanes"; } }
         public string DisplayName { get { return "Six-Lane Road with Trees and Bus Lanes"; } }
         public string CodeName { get { return "BUSWAY_6L_TREES"; } }
-        public string Description { get { return "A six-lane, two-way road with trees suitable for cars with dedicated bus lanes."; } }
+        public string Description { get { return "A six-lane, two-way road with decorative trees suitable for cars with dedicated bus lanes."; } }
 
         public string ThumbnailsPath { get { return @"Roads\Busway6L\thumbnails_trees.png"; } }
         public string InfoTooltipPath { get { return @"Roads\Busway6L\infotooltip_trees.png"; } }

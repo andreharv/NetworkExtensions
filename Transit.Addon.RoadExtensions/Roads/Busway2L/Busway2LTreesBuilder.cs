@@ -12,7 +12,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway2L
         public string Name { get { return "Small Busway Decoration Trees"; } } // TODO: Make sur the name fit with the existing T++ name
         public string DisplayName { get { return "Busway with Trees"; } }
         public string CodeName { get { return "BUSWAY_2L_TREES"; } }
-        public string Description { get { return "A two-lane, two-way road suitable for buses only. Busway does not allow zoning next to it!"; } }
+        public string Description { get { return "A two-lane, two-way road with decorative trees suitable for buses only. Busway does not allow zoning next to it!"; } }
 
         public string ThumbnailsPath { get { return @"Roads\Busway2L\thumbnails_trees.png"; } }
         public string InfoTooltipPath { get { return @"Roads\Busway2L\infotooltip_trees.png"; } }

@@ -1,23 +1,19 @@
-﻿using System;
-using Transit.Addon.RoadExtensions.Menus;
-using Transit.Framework;
+﻿using Transit.Framework;
 using Transit.Framework.Modularity;
 
 namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
 {
-    public class ZonablePedestrianPavementBuilder : NetInfoBuilderBase, INetInfoBuilder
+    public class ZonablePedestrianPavementBuilder : ZonablePedestrianBuilderBase, INetInfoBuilder
     {
-        public int Order { get { return 200; } }
-        public int Priority { get { return 10; } }
+        public int Order { get { return 310; } }
+        public int Priority { get { return 20; } }
 
-        public string TemplatePrefabName { get { return NetInfos.Vanilla.PED_GRAVEL; } }
         public string Name { get { return "Zonable Pedestrian Pavement"; } }
-        public string DisplayName { get { return "Zonable Pedestrian Road with Pavement"; } }
+        public string DisplayName { get { return "Zonable Pedestrian Pavement"; } }
         public string CodeName { get { return "Z_PED_PAVEMENT"; } }
-        public string Description { get { return "TODO."; } }
-        public string UICategory { get { return AdditionnalMenus.ROADS_PEDESTRIANS; } }
+        public string Description { get { return "Paved roads are nicer to walk on than gravel."; } }
 
-        public string ThumbnailsPath    { get { return @"Roads\PedestrianRoads\thumbnails.png"; } }
+        public string ThumbnailsPath    { get { return @"Roads\PedestrianRoads\thumbnails_pavement.png"; } }
         public string InfoTooltipPath   { get { return @"Roads\PedestrianRoads\infotooltip.png"; } }
 
         public NetInfoVersion SupportedVersions
@@ -25,33 +21,26 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
             get { return NetInfoVersion.Ground | NetInfoVersion.Elevated; }
         }
 
-        public void BuildUp(NetInfo info, NetInfoVersion version)
+        public override void BuildUp(NetInfo info, NetInfoVersion version)
         {
-            ///////////////////////////
-            // Templates             //
-            ///////////////////////////
-            var onewayInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ONEWAY_2L);
-            var pedestrianPavement = Prefabs.Find<NetInfo>(NetInfos.Vanilla.PED_PAVEMENT);
-
-
-            ///////////////////////////
-            // Texturing             //
-            ///////////////////////////
-
-
             ///////////////////////////
             // Set up                //
             ///////////////////////////
             info.m_createGravel = false;
-            info.m_createPavement = version == NetInfoVersion.Ground;
-            info.m_setVehicleFlags = Vehicle.Flags.None;
-            info.m_UnlockMilestone = onewayInfo.m_UnlockMilestone;
+            info.m_createPavement = true;
+
+            base.BuildUp(info, version);
+
+            ///////////////////////////
+            // AI                    //
+            ///////////////////////////
+            var pedestrianVanilla = Prefabs.Find<NetInfo>(NetInfos.Vanilla.PED_PAVEMENT);
 
             switch (version)
             {
                 case NetInfoVersion.Ground:
                     {
-                        var vanillaplayerNetAI = pedestrianPavement.GetComponent<PlayerNetAI>();
+                        var vanillaplayerNetAI = pedestrianVanilla.GetComponent<PlayerNetAI>();
                         var playerNetAI = info.GetComponent<PlayerNetAI>();
 
                         if (playerNetAI != null)
@@ -59,12 +48,6 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
                             playerNetAI.m_constructionCost = vanillaplayerNetAI.m_constructionCost * 2;
                             playerNetAI.m_maintenanceCost = vanillaplayerNetAI.m_maintenanceCost * 2;
                         }
-                    }
-                    break;
-                case NetInfoVersion.Elevated:
-                case NetInfoVersion.Bridge:
-                    {
-                    
                     }
                     break;
             }

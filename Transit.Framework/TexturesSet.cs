@@ -60,7 +60,7 @@ namespace Transit.Framework
         private readonly string _aprMapPath;
         private readonly string _xysMapPath;
 
-        public TexturesSet(string mainTexPath, string aprMapPath = null, string xysMapPath = null)
+        public TexturesSet(string mainTexPath = null, string aprMapPath = null, string xysMapPath = null)
         {
             _mainTexPath = mainTexPath;
             _aprMapPath = aprMapPath;

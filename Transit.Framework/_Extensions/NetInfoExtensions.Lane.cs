@@ -35,5 +35,23 @@ namespace Transit.Framework
 
             return newLane;
         }
+
+        public static NetInfo.Lane ClonePedLane(this NetInfo.Lane lane)
+        {
+            return new NetInfo.Lane()
+            {
+                m_position = lane.m_position,
+                m_width = lane.m_width,
+                m_verticalOffset = lane.m_verticalOffset,
+                m_stopOffset = lane.m_stopOffset,
+                m_speedLimit = lane.m_speedLimit,
+                m_direction = lane.m_direction,
+                m_laneType = lane.m_laneType,
+                m_vehicleType = lane.m_vehicleType,
+                m_laneProps = lane.m_laneProps,
+                m_allowStop = lane.m_allowStop,
+                m_useTerrainHeight = lane.m_useTerrainHeight
+            };
+        }
     }
 }
