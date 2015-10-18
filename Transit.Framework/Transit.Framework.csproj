@@ -58,12 +58,15 @@
     <Compile Include="Interfaces\IDisplayable.cs" />
     <Compile Include="Interfaces\IOrderable.cs" />
     <Compile Include="Interfaces\IActivable.cs" />
+    <Compile Include="Modularity\ModuleAttribute.cs" />
+    <Compile Include="Modularity\ModuleBase.Parts.cs" />
     <Compile Include="Modularity\IModule.cs" />
     <Compile Include="Modularity\ModuleBase.cs" />
     <Compile Include="Notification.cs" />
     <Compile Include="AssetAccess.cs" />
     <Compile Include="_Extensions\AssetManagerExtensions.cs" />
     <Compile Include="_Extensions\CloningExtensions.cs" />
+    <Compile Include="_Extensions\GameObjectExtensions.cs" />
     <Compile Include="_Extensions\NetInfoBuilderExtensions.cs" />
     <Compile Include="_Extensions\NetInfoExtensions.Lane.cs" />
     <Compile Include="_Extensions\NetInfoExtensions.Segment.cs" />

@@ -1,58 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Transit.Addon.RoadExtensions.Install;
 using Transit.Framework.Modularity;
 
 namespace Transit.Addon.RoadExtensions
 {
     public partial class RExModule
     {
-        private static IEnumerable<IModulePart> s_parts;
-        public static IEnumerable<IModulePart> Parts
-        {
-            get
-            {
-                if (s_parts == null)
-                {
-                    var partType = typeof(IModulePart);
-
-                    s_parts = typeof(RoadsInstaller)
-                        .Assembly
-                        .GetTypes()
-                        .Where(t => !t.IsAbstract && !t.IsInterface)
-                        .Where(partType.IsAssignableFrom)
-                        .Select(t =>
-                        {
-                            var part = (IModulePart)Activator.CreateInstance(t);
-
-                            if (part is IActivablePart)
-                            {
-                                var activable = (IActivablePart) part;
-
-                                activable.IsEnabled = Options.Instance.IsPartEnabled(activable);
-                            }
-                            return part;
-                        })
-                        .ToArray();
-                }
-
-                return s_parts;
-            }
-        }
-
-        public static IEnumerable<IActivablePart> ActivableParts
+        public IEnumerable<IActivablePart> ActivableParts
         {
             get
             {
                 return Parts
                     .OfType<IActivablePart>()
-                    .OrderBy(p => p.Order)
                     .ToArray();
             }
         }
 
-        public static IEnumerable<INetInfoBuilder> NetInfoBuilders
+        public IEnumerable<INetInfoBuilder> NetInfoBuilders
         {
             get
             {
@@ -63,7 +27,7 @@ namespace Transit.Addon.RoadExtensions
             }
         }
 
-        public static IEnumerable<INetInfoModifier> NetInfoModifiers
+        public IEnumerable<INetInfoModifier> NetInfoModifiers
         {
             get
             {
@@ -74,7 +38,7 @@ namespace Transit.Addon.RoadExtensions
             }
         }
 
-        public static IEnumerable<ICompatibilityPart> CompatibilityParts
+        public IEnumerable<ICompatibilityPart> CompatibilityParts
         {
             get
             {
