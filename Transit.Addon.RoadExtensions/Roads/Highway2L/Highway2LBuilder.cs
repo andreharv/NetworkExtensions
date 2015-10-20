@@ -5,15 +5,14 @@ using Transit.Framework.Modularity;
 
 namespace Transit.Addon.RoadExtensions.Roads.Highway2L
 {
-    public class Highway2LBuilder : NetInfoBuilderBase, INetInfoBuilder
+    public class Highway2LBuilder : Activable, INetInfoBuilder
     {
         public int Order { get { return 40; } }
-        public int Priority { get { return 10; } }
+        public int UIOrder { get { return 10; } }
 
-        public string TemplatePrefabName { get { return NetInfos.Vanilla.ONEWAY_2L; } }
+        public string TemplateName { get { return NetInfos.Vanilla.ONEWAY_2L; } }
         public string Name { get { return "Rural Highway"; } }
         public string DisplayName { get { return "Two-Lane Highway"; } }
-        public string CodeName { get { return "HIGHWAY_2L"; } }
         public string Description { get { return "A two-lane, one-way road suitable for low to medium traffic between areas. Lanes going the opposite direction need to be built separately. Highway does not allow zoning next to it!"; } }
         public string UICategory { get { return "RoadsHighway"; } }
 

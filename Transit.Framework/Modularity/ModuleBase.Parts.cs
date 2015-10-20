@@ -25,25 +25,15 @@ namespace Transit.Framework.Modularity
                             {
                                 var part = (IModulePart)Activator.CreateInstance(t);
 
-                                if (part is IActivable)
+                                if (part is IActivablePart)
                                 {
-                                    var activable = (IActivablePart)part;
+                                    var activablePart = (IActivablePart)part;
 
-                                    activable.IsEnabled = IsPartActivatedOnLoad(activable);
+                                    activablePart.IsEnabled = IsPartActivatedOnLoad(activablePart);
                                 }
                                 return part;
                             })
-                        .OrderBy(m =>
-                            {
-                                if (m is IOrderable)
-                                {
-                                    return ((IOrderable) m).Order;
-                                }
-                                else
-                                {
-                                    return int.MaxValue;
-                                }
-                            })
+                        .OrderOrderables()
                         .ToArray();
                 }
 
@@ -51,7 +41,7 @@ namespace Transit.Framework.Modularity
             }
         }
 
-        protected virtual bool IsPartActivatedOnLoad(IActivablePart activatable)
+        protected virtual bool IsPartActivatedOnLoad(IActivablePart part)
         {
             return true;
         }

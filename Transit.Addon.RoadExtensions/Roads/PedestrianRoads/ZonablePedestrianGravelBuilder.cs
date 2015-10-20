@@ -9,7 +9,6 @@
 
 //        public string Name { get { return "Zonable Pedestrian Gravel"; } }
 //        public string DisplayName { get { return "Zonable Pedestrian Gravel"; } }
-//        public string CodeName { get { return "Z_PED_GRAVEL"; } }
 //        public string Description { get { return "Gravel roads allow pedestrians to walk fast and easy."; } }
 
 //        public string ThumbnailsPath    { get { return @"Roads\PedestrianRoads\thumbnails_gravel.png"; } }

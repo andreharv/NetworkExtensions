@@ -1,39 +1,34 @@
-﻿using ICities;
+﻿using System.Linq;
+using ICities;
 using Transit.Framework.Interfaces;
+using Transit.Framework.Modularity;
 
 namespace Transit.Addon.RoadExtensions
 {
     public partial class RExModule
     {
+        protected override bool IsPartActivatedOnLoad(IActivablePart part)
+        {
+            return Options.Instance.IsPartEnabled(part.GetCodeName());
+        }
+
         public override void OnSettingsUI(UIHelperBase helper)
         {
             var uIHelperBase = helper.AddGroup("Road Extensions Options");
-            var optionsChanged = false;
 
-            foreach (var part in ActivableParts)
+            foreach (var part in Parts.OfType<IActivablePart>())
             {
                 var partLocal = part;
-                var partName = part.GetSerializableName();
-
-                if (!Options.Instance.PartsEnabled.ContainsKey(partName))
-                {
-                    Options.Instance.PartsEnabled[partName] = true;
-                    optionsChanged = true;
-                }
+                var partName = part.GetCodeName();
 
                 uIHelperBase.AddCheckbox(
-                    part.DisplayName, 
-                    Options.Instance.PartsEnabled[partName], 
+                    part.DisplayName,
+                    Options.Instance.IsPartEnabled(partName), 
                     isChecked =>
                     {
-                        Options.Instance.PartsEnabled[partName] = partLocal.IsEnabled = isChecked;
-                        Options.Instance.Save();
+                        partLocal.IsEnabled = isChecked;
+                        Options.Instance.SetPartEnabled(partName, isChecked);
                     });
-            }
-
-            if (optionsChanged)
-            {
-                Options.Instance.Save();
             }
         }
     }

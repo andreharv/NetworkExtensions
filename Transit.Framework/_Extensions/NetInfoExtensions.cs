@@ -47,12 +47,5 @@ namespace Transit.Framework
                 }
             }
         }
-
-        public static NetInfo SetUICategory(this NetInfo info, string category)
-        {
-            typeof(NetInfo).GetField("m_UICategory", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(info, category);
-
-            return info;
-        }
     }
 }

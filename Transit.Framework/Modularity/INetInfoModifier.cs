@@ -1,6 +1,8 @@
-﻿namespace Transit.Framework.Modularity
+﻿using Transit.Framework.Interfaces;
+
+namespace Transit.Framework.Modularity
 {
-    public interface INetInfoModifier : IActivablePart
+    public interface INetInfoModifier : IIdentifiable
     {
         void ModifyExistingNetInfo();
     }

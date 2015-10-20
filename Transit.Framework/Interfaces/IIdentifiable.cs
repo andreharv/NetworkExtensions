@@ -9,9 +9,9 @@ namespace Transit.Framework.Interfaces
 
     public static class IdentifiableExtensions
     {
-        public static string GetSerializableName(this IIdentifiable id)
+        public static string GetCodeName(this IIdentifiable id)
         {
-            return id.Name.Replace(" ", "_");
+            return id.Name.ToUpper().Replace(" ", "_");
         }
     }
 }

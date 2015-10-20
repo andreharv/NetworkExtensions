@@ -6,15 +6,14 @@ using Transit.Framework.Modularity;
 
 namespace Transit.Addon.RoadExtensions.Roads.MediumAvenue4LTL
 {
-    public class MediumAvenue4LTLBuilder : NetInfoBuilderBase, INetInfoBuilder
+    public class MediumAvenue4LTLBuilder : Activable, INetInfoBuilder
     {
         public int Order { get { return 21; } }
-        public int Priority { get { return 5; } }
+        public int UIOrder { get { return 5; } }
 
-        public string TemplatePrefabName { get { return NetInfos.Vanilla.ROAD_6L; } }
+        public string TemplateName { get { return NetInfos.Vanilla.ROAD_6L; } }
         public string Name { get { return "Medium Avenue TL"; } }
         public string DisplayName { get { return "Four-Lane Road with Turning Lane"; } }
-        public string CodeName { get { return "MEDIUMAVENUE_4LTL"; } }
         public string Description { get { return "A four-lane road with turning lanes and parking spaces. Supports medium traffic. Note: The turning lane goes in both direction, collisions might happen!"; } }
         public string UICategory { get { return "RoadsMedium"; } }
         

@@ -64,10 +64,10 @@
     <Compile Include="Menus\AdditionnalMenus.cs" />
     <Compile Include="Menus\RExRoadsGroupPanel.cs" />
     <Compile Include="RExModule.Path.cs" />
-    <Compile Include="RExModule.Parts.cs" />
     <Compile Include="Roads\Busway2L1W\Busway2L1WBuilder.cs" />
     <Compile Include="Roads\Busway2L1W\Busway2L1WGrassBuilder.cs" />
     <Compile Include="Roads\Busway2L1W\Busway2L1WTreesBuilder.cs" />
+    <Compile Include="Roads\Busway2L\Busway2LMultiBuilder.cs" />
     <Compile Include="Roads\Busway6L\Busway6LGrassBuilder.cs" />
     <Compile Include="Roads\Busway6L\Busway6LBuilder.cs" />
     <Compile Include="Roads\Busway2L\Busway2LBuilder.cs" />
@@ -84,7 +84,6 @@
     <Compile Include="RExModule.Settings.cs" />
     <Compile Include="RExModule.Install.cs" />
     <Compile Include="Roads\Highway1L\Highway1LBuilder.cs" />
-    <Compile Include="Roads\NetInfoBuilderBase.cs" />
     <Compile Include="Roads\PedestrianRoads\ZonablePedestrianBuilderBase.cs" />
     <Compile Include="Roads\PedestrianRoads\ZonablePedestrianGravelBuilder.cs" />
     <Compile Include="Roads\PedestrianRoads\ZonablePedestrianPavementBuilder.cs" />

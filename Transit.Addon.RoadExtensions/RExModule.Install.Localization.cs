@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using ColossalFramework;
 using ColossalFramework.Globalization;
 using JetBrains.Annotations;
 using Transit.Framework;
+using Transit.Framework.Interfaces;
 using UnityEngine;
 
 #if DEBUG
@@ -61,7 +63,7 @@ namespace Transit.Addon.RoadExtensions
                         locale.CreateMenuTitleLocalizedString(Menus.AdditionnalMenus.ROADS_BUSWAYS, "Buslane Roads");
                         locale.CreateMenuTitleLocalizedString(Menus.AdditionnalMenus.ROADS_PEDESTRIANS, "Pedestrian Roads");
 
-                        foreach (var builder in host.NetInfoBuilders)
+                        foreach (var builder in host.Parts.OfType<ILocalizable>())
                         {
                             locale.CreateNetTitleLocalizedString(builder.Name, builder.DisplayName);
                             locale.CreateNetDescriptionLocalizedString(builder.Name, builder.Description);

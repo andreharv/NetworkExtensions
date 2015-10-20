@@ -1,0 +1,21 @@
+﻿using Transit.Framework.Interfaces;
+
+namespace Transit.Framework
+{
+    public class MenuItemConfig : IMenuItemConfig
+    {
+        public string UICategory { get; set; }
+
+        public int UIOrder { get; set; }
+
+        public string Name { get; set; }
+
+        public string DisplayName { get; set; }
+
+        public string Description { get; set; }
+
+        public string ThumbnailsPath { get; set; }
+
+        public string InfoTooltipPath { get; set; }
+    }
+}

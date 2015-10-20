@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using Transit.Framework;
+using Transit.Framework.Interfaces;
+using Transit.Framework.Modularity;
 using UnityEngine;
 
 #if DEBUG
@@ -65,17 +67,43 @@ namespace Transit.Addon.RoadExtensions
                     // Builders -----------------------------------------------------------------------
                     var newInfos = new List<NetInfo>();
 
-                    foreach (var builder in host.NetInfoBuilders)
+                    var niBuilders = host.Parts
+                        .OfType<INetInfoBuilder>()
+                        .WhereActivated()
+                        .ToArray();
+
+                    foreach (var builder in niBuilders)
                     {
                         try
                         {
                             newInfos.AddRange(builder.Build());
 
-                            Debug.Log(string.Format("REx: {0} installed", builder.DisplayName));
+                            Debug.Log(string.Format("REx: {0} installed", builder.Name));
                         }
                         catch (Exception ex)
                         {
-                            Debug.Log(string.Format("REx: Crashed-Network builders {0}", builder));
+                            Debug.Log(string.Format("REx: Crashed-Network builders {0}", builder.Name));
+                            Debug.Log("REx: " + ex.Message);
+                            Debug.Log("REx: " + ex.ToString());
+                        }
+                    }
+
+                    var mniBuilders = host.Parts
+                        .OfType<IMultiNetInfoBuilder>()
+                        .WhereActivated()
+                        .ToArray();
+
+                    foreach (var builder in mniBuilders)
+                    {
+                        try
+                        {
+                            newInfos.AddRange(builder.Build());
+
+                            Debug.Log(string.Format("REx: {0} installed", builder.Name));
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.Log(string.Format("REx: Crashed-Network builders {0}", builder.Name));
                             Debug.Log("REx: " + ex.Message);
                             Debug.Log("REx: " + ex.ToString());
                         }
@@ -92,17 +120,22 @@ namespace Transit.Addon.RoadExtensions
 
 
                     // Modifiers ----------------------------------------------------------------------
-                    foreach (var modifier in host.NetInfoModifiers)
+                    var modifiers = host.Parts
+                        .OfType<INetInfoModifier>()
+                        .WhereActivated()
+                        .ToArray();
+
+                    foreach (var modifier in modifiers)
                     {
                         try
                         {
                             modifier.ModifyExistingNetInfo();
 
-                            Debug.Log(string.Format("REx: {0} modifications applied", modifier.DisplayName));
+                            Debug.Log(string.Format("REx: {0} modifications applied", modifier.Name));
                         }
                         catch (Exception ex)
                         {
-                            Debug.Log(string.Format("REx: Crashed-Network modifiers {0}", modifier));
+                            Debug.Log(string.Format("REx: Crashed-Network modifiers {0}", modifier.Name));
                             Debug.Log("REx: " + ex.Message);
                             Debug.Log("REx: " + ex.ToString());
                         }
@@ -110,7 +143,11 @@ namespace Transit.Addon.RoadExtensions
 
 
                     // Cross mods support -------------------------------------------------------------
-                    foreach (var compatibilityPart in host.CompatibilityParts)
+                    var compParts = host.Parts
+                        .OfType<ICompatibilityPart>()
+                        .ToArray();
+
+                    foreach (var compatibilityPart in compParts)
                     {
                         try
                         {

@@ -6,12 +6,11 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway6L
     public class Busway6LTreesBuilder : Busway6LBuilderBase, INetInfoBuilder
     {
         public int Order { get { return 190; } }
-        public int Priority { get { return 28; } }
+        public int UIOrder { get { return 28; } }
 
-        public string TemplatePrefabName { get { return NetInfos.Vanilla.ROAD_6L_TREES; } }
+        public string TemplateName { get { return NetInfos.Vanilla.ROAD_6L_TREES; } }
         public string Name { get { return "Large Road Decoration Trees With Bus Lanes"; } }
         public string DisplayName { get { return "Six-Lane Road with Trees and Bus Lanes"; } }
-        public string CodeName { get { return "BUSWAY_6L_TREES"; } }
         public string Description { get { return "A six-lane, two-way road with decorative trees suitable for cars with dedicated bus lanes."; } }
 
         public string ThumbnailsPath { get { return @"Roads\Busway6L\thumbnails_trees.png"; } }

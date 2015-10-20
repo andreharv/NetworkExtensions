@@ -130,6 +130,100 @@ namespace Transit.Framework
                         throw new NotImplementedException();
                 }
             }
+
+            public static string GetPrefabName(string groundName, NetInfoVersionExtended version)
+            {
+                switch (groundName)
+                {
+                    case ROAD_2L:
+                    case ROAD_6L:
+
+                    case AVENUE_4L:
+
+                    case ONEWAY_2L:
+
+                    case HIGHWAY_3L:
+                        switch (version)
+                        {
+                            case NetInfoVersionExtended.Ground:
+                                return groundName;
+                            case NetInfoVersionExtended.GroundGrass:
+                                return groundName + " Decoration Grass";
+                            case NetInfoVersionExtended.GroundTrees:
+                                return groundName + " Decoration Trees";
+                            case NetInfoVersionExtended.Elevated:
+                            case NetInfoVersionExtended.Bridge:
+                            case NetInfoVersionExtended.Tunnel:
+                            case NetInfoVersionExtended.Slope:
+                                return groundName + " " + version;
+                            default:
+                                throw new NotImplementedException();
+                        }
+
+                    case ONEWAY_6L:
+                        switch (version)
+                        {
+                            case NetInfoVersionExtended.Ground:
+                                return groundName;
+                            case NetInfoVersionExtended.Elevated:
+                                return groundName + " " + NetInfoVersion.Elevated;
+                            case NetInfoVersionExtended.Bridge:
+                                return groundName + " " + NetInfoVersion.Bridge;
+                            case NetInfoVersionExtended.Tunnel:
+                                return groundName + " Road Tunnel";
+                            case NetInfoVersionExtended.Slope:
+                                return groundName + " Road Slope";
+                            default:
+                                throw new NotImplementedException();
+                        }
+
+                    case PED_GRAVEL:
+                        switch (version)
+                        {
+                            case NetInfoVersionExtended.Ground:
+                                return groundName;
+                            case NetInfoVersionExtended.Elevated:
+                            case NetInfoVersionExtended.Bridge:
+                                return "Pedestrian Elevated";
+                            default:
+                                throw new NotImplementedException();
+                        }
+
+                    default:
+                        throw new NotImplementedException();
+                }
+            }
+        }
+
+        public static class New
+        {
+            public static string GetPrefabName(string groundName, NetInfoVersion version)
+            {
+                switch (version)
+                {
+                    case NetInfoVersion.Ground:
+                        return groundName;
+
+                    default:
+                        return groundName + " " + version;
+                }
+            }
+
+            public static string GetPrefabName(string groundName, NetInfoVersionExtended version)
+            {
+                switch (version)
+                {
+                    case NetInfoVersionExtended.Ground:
+                        return groundName;
+                    case NetInfoVersionExtended.GroundGrass:
+                        return groundName + " Decoration Grass";
+                    case NetInfoVersionExtended.GroundTrees:
+                        return groundName + " Decoration Trees";
+
+                    default:
+                        return groundName + " " + version;
+                }
+            }
         }
     }
 

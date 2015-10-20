@@ -6,12 +6,11 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway6L
     public class Busway6LGrassBuilder : Busway6LBuilderBase, INetInfoBuilder
     {
         public int Order { get { return 180; } }
-        public int Priority { get { return 27; } }
+        public int UIOrder { get { return 27; } }
 
-        public string TemplatePrefabName { get { return NetInfos.Vanilla.ROAD_6L_GRASS; } }
+        public string TemplateName { get { return NetInfos.Vanilla.ROAD_6L_GRASS; } }
         public string Name { get { return "Large Road Decoration Grass With Bus Lanes"; } }
         public string DisplayName { get { return "Six-Lane Road with Grass and Bus Lanes"; } }
-        public string CodeName { get { return "BUSWAY_6L_GRASS"; } }
         public string Description { get { return "A six-lane, two-way road with decorative grass suitable for cars with dedicated bus lanes."; } }
 
         public string ThumbnailsPath { get { return @"Roads\Busway6L\thumbnails_grass.png"; } }

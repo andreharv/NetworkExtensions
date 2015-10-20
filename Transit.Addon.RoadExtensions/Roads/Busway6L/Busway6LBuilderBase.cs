@@ -5,7 +5,7 @@ using Transit.Framework.Modularity;
 
 namespace Transit.Addon.RoadExtensions.Roads.Busway6L
 {
-    public abstract class Busway6LBuilderBase : NetInfoBuilderBase
+    public abstract class Busway6LBuilderBase : Activable
     {
         public string UICategory { get { return AdditionnalMenus.ROADS_BUSWAYS; } }
 

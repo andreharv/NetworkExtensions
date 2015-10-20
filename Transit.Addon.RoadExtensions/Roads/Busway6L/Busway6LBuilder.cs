@@ -8,12 +8,11 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway6L
     public class Busway6LBuilder : Busway6LBuilderBase, INetInfoBuilder
     {
         public int Order { get { return 170; } }
-        public int Priority { get { return 26; } }
+        public int UIOrder { get { return 26; } }
 
-        public string TemplatePrefabName { get { return NetInfos.Vanilla.ROAD_6L; } }
+        public string TemplateName { get { return NetInfos.Vanilla.ROAD_6L; } }
         public string Name { get { return "Large Road With Bus Lanes"; } }
         public string DisplayName { get { return "Six-Lane Road with Bus Lanes"; } }
-        public string CodeName { get { return "BUSWAY_6L"; } }
         public string Description { get { return "A six-lane, two-way road suitable for cars with dedicated bus lanes."; } }
 
         public string ThumbnailsPath { get { return @"Roads\Busway6L\thumbnails.png"; } }

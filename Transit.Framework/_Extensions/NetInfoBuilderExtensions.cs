@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using ColossalFramework;
+﻿using System;
+using System.Collections.Generic;
 using Transit.Framework.Modularity;
 
 namespace Transit.Framework
@@ -10,25 +10,9 @@ namespace Transit.Framework
         {
             var newNetInfos = new List<NetInfo>();
 
-
             // Ground version--------------------------------------------------
             var mainInfo = builder.BuildVersion(NetInfoVersion.Ground, newNetInfos);
-            mainInfo.m_UIPriority = builder.Priority;
-
-            if (!builder.CodeName.IsNullOrWhiteSpace() && !builder.ThumbnailsPath.IsNullOrWhiteSpace())
-            {
-                var thumbnails = AssetManager.instance.GetThumbnails(builder.CodeName, builder.ThumbnailsPath);
-                mainInfo.m_Atlas = thumbnails;
-                mainInfo.m_Thumbnail = thumbnails.name;
-            }
-
-            if (!builder.CodeName.IsNullOrWhiteSpace() && !builder.InfoTooltipPath.IsNullOrWhiteSpace())
-            {
-                var infoTips = AssetManager.instance.GetInfoTooltip(builder.CodeName, builder.InfoTooltipPath);
-                mainInfo.m_InfoTooltipAtlas = infoTips;
-                mainInfo.m_InfoTooltipThumbnail = infoTips.name;
-            }
-
+            mainInfo.SetMenuItemConfig(builder);
 
             // Other versions -------------------------------------------------
             var mainInfoAI = mainInfo.GetComponent<RoadAI>();
@@ -41,21 +25,30 @@ namespace Transit.Framework
             return newNetInfos;
         }
 
-        private static NetInfo BuildVersion(this INetInfoBuilder builder, NetInfoVersion version, ICollection<NetInfo> holdingCollection)
+        public static NetInfo BuildVersion(this INetInfoBuilder builder, NetInfoVersion version, ICollection<NetInfo> holdingCollection)
+        {
+            var result = BuildVersion(builder, version);
+
+            if (result != null)
+            {
+                holdingCollection.Add(result);
+            }
+
+            return result;
+        }
+
+        public static NetInfo BuildVersion(this INetInfoBuilder builder, NetInfoVersion version)
         {
             if (builder.SupportedVersions.HasFlag(version))
             {
-                var completePrefabName = NetInfos.Vanilla.GetPrefabName(builder.TemplatePrefabName, version);
-                var completeName = builder.GetNewName(version);
+                var vanillaPrefabName = NetInfos.Vanilla.GetPrefabName(builder.TemplateName, version);
+                var newPrefabName = NetInfos.New.GetPrefabName(builder.Name, version);
 
                 var info = Prefabs
-                    .Find<NetInfo>(completePrefabName)
-                    .Clone(completeName);
+                    .Find<NetInfo>(vanillaPrefabName)
+                    .Clone(newPrefabName);
 
-                info.SetUICategory(builder.UICategory);
                 builder.BuildUp(info, version);
-
-                holdingCollection.Add(info);
 
                 return info;
             }
@@ -65,15 +58,34 @@ namespace Transit.Framework
             }
         }
 
-        private static string GetNewName(this INetInfoBuilder builder, NetInfoVersion version)
+        public static NetInfo BuildVersion(this IMultiNetInfoBuilder builder, NetInfoVersionExtended version)
         {
-            switch (version)
+            if (builder.SupportedVersions.HasFlag(version))
             {
-                case NetInfoVersion.Ground:
-                    return builder.Name;
+                var vanillaPrefabName = NetInfos.Vanilla.GetPrefabName(builder.TemplateName, version);
+                var newPrefabName = NetInfos.New.GetPrefabName(builder.Name, version);
 
-                default:
-                    return builder.Name + " " + version;
+                var info = Prefabs
+                    .Find<NetInfo>(vanillaPrefabName)
+                    .Clone(newPrefabName);
+
+                builder.BuildUp(info, version);
+
+                switch (version)
+                {
+                    case NetInfoVersionExtended.Ground:
+                    case NetInfoVersionExtended.GroundGrass:
+                    case NetInfoVersionExtended.GroundTrees:
+                        var menuItemConfig = builder.GetMenuItemConfig(version);
+                        info.SetMenuItemConfig(menuItemConfig);
+                        break;
+                }
+
+                return info;
+            }
+            else
+            {
+                return null;
             }
         }
     }
