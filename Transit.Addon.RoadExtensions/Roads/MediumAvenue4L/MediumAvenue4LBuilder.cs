@@ -8,12 +8,12 @@ using Transit.Framework.Modularity;
 
 namespace Transit.Addon.RoadExtensions.Roads.MediumAvenue4L
 {
-    public class MediumAvenue4LBuilder : Activable, INetInfoBuilder, INetInfoModifier
+    public class MediumAvenue4LBuilder : Activable, INetInfoBuilderPart, INetInfoModifier
     {
         public int Order { get { return 20; } }
         public int UIOrder { get { return 4; } }
 
-        public string TemplateName { get { return NetInfos.Vanilla.ROAD_6L; } }
+        public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_6L; } }
         public string Name { get { return "Medium Avenue"; } }
         public string DisplayName { get { return "Four-Lane Road"; } }
         public string Description { get { return "A four-lane road with parking spaces. Supports medium traffic."; } }

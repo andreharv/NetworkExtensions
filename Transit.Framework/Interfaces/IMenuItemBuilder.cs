@@ -1,6 +1,6 @@
 ﻿namespace Transit.Framework.Interfaces
 {
-    public interface IMenuItemConfig : ILocalizable
+    public interface IMenuItemBuilder : ILocalizable
     {
         string UICategory { get; }
         int UIOrder { get; }

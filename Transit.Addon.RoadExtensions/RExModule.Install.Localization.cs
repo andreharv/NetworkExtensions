@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ColossalFramework;
 using ColossalFramework.Globalization;
@@ -63,7 +64,11 @@ namespace Transit.Addon.RoadExtensions
                         locale.CreateMenuTitleLocalizedString(Menus.AdditionnalMenus.ROADS_BUSWAYS, "Buslane Roads");
                         locale.CreateMenuTitleLocalizedString(Menus.AdditionnalMenus.ROADS_PEDESTRIANS, "Pedestrian Roads");
 
-                        foreach (var builder in host.Parts.OfType<ILocalizable>())
+                        var menuItemBuilders = new List<IMenuItemBuilder>();
+                        menuItemBuilders.AddRange(host.Parts.OfType<IMenuItemBuilder>());
+                        menuItemBuilders.AddRange(host.Parts.OfType<IMenuItemBuildersProvider>().SelectMany(mib => mib.MenuItemBuilders));
+
+                        foreach (var builder in menuItemBuilders)
                         {
                             locale.CreateNetTitleLocalizedString(builder.Name, builder.DisplayName);
                             locale.CreateNetDescriptionLocalizedString(builder.Name, builder.Description);

@@ -11,12 +11,12 @@ using Debug = Transit.Framework.Debug;
 
 namespace Transit.Addon.RoadExtensions.Roads.Highway1L
 {
-    public class Highway1LBuilder : Activable, INetInfoBuilder
+    public class Highway1LBuilder : Activable, INetInfoBuilderPart
     {
         public int Order { get { return 30; } }
         public int UIOrder { get { return 9; } }
 
-        public string TemplateName { get { return NetInfos.Vanilla.ROAD_2L; } }
+        public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_2L; } }
         public string Name { get { return "Small Rural Highway"; } }
         public string DisplayName { get { return "National Road"; } }
         public string Description { get { return "A two-lane, two-way road suitable for low traffic between areas. National Road does not allow zoning next to it!"; } }

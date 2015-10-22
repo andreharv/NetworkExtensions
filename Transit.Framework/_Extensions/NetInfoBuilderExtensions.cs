@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Transit.Framework.Interfaces;
 using Transit.Framework.Modularity;
 
 namespace Transit.Framework
@@ -8,40 +10,82 @@ namespace Transit.Framework
     {
         public static IEnumerable<NetInfo> Build(this INetInfoBuilder builder)
         {
-            var newNetInfos = new List<NetInfo>();
+            // Ground versions
+            var groundInfo = builder.BuildVersion(NetInfoVersion.Ground);
+            var groundGrassInfo = builder.BuildVersion(NetInfoVersion.GroundGrass);
+            var groundTreesInfo = builder.BuildVersion(NetInfoVersion.GroundTrees);
 
-            // Ground version--------------------------------------------------
-            var mainInfo = builder.BuildVersion(NetInfoVersion.Ground, newNetInfos);
-            mainInfo.SetMenuItemConfig(builder);
+            var groundInfos = new[] {groundInfo, groundGrassInfo, groundTreesInfo};
+            groundInfos = groundInfos.Where(gi => gi != null).ToArray();
 
-            // Other versions -------------------------------------------------
-            var mainInfoAI = mainInfo.GetComponent<RoadAI>();
-
-            mainInfoAI.m_elevatedInfo = builder.BuildVersion(NetInfoVersion.Elevated, newNetInfos);
-            mainInfoAI.m_bridgeInfo = builder.BuildVersion(NetInfoVersion.Bridge, newNetInfos);
-            mainInfoAI.m_tunnelInfo = builder.BuildVersion(NetInfoVersion.Tunnel, newNetInfos);
-            mainInfoAI.m_slopeInfo = builder.BuildVersion(NetInfoVersion.Slope, newNetInfos);
-
-            return newNetInfos;
-        }
-
-        public static NetInfo BuildVersion(this INetInfoBuilder builder, NetInfoVersion version, ICollection<NetInfo> holdingCollection)
-        {
-            var result = BuildVersion(builder, version);
-
-            if (result != null)
+            if (!groundInfos.Any())
             {
-                holdingCollection.Add(result);
+                yield break;
             }
 
-            return result;
+            // Other versions
+            var elevatedInfo = builder.BuildVersion(NetInfoVersion.Elevated);
+            var bridgeInfo = builder.BuildVersion(NetInfoVersion.Bridge);
+            var tunnelInfo = builder.BuildVersion(NetInfoVersion.Tunnel);
+            var slopeInfo = builder.BuildVersion(NetInfoVersion.Slope);
+
+            // Setup MenuItems
+            if (builder is IMenuItemBuilder)
+            {
+                if (groundInfos.Count() > 1)
+                {
+                    throw new Exception("Multiple netinfo menuitem cannot be build with the IMenuItemBuilder, use the IMenuItemBuildersProvider");
+                }
+
+                var mib = builder as IMenuItemBuilder;
+                groundInfos[0].SetMenuItemConfig(mib);
+            }
+            else if (builder is IMenuItemBuildersProvider)
+            {
+                var mibp = builder as IMenuItemBuildersProvider;
+                var mibs = mibp.MenuItemBuilders.ToDictionary(x => x.Name, StringComparer.InvariantCultureIgnoreCase);
+
+                foreach (var mainInfo in groundInfos)
+                {
+                    if (mibs.ContainsKey(mainInfo.name))
+                    {
+                        var mib = mibs[mainInfo.name];
+                        mainInfo.SetMenuItemConfig(mib);
+                    }
+                }
+            }
+            else
+            {
+                throw new Exception("Cannot set the menuitem on netinfo, either implement IMenuItemBuilder or IMenuItemBuildersProvider");
+            }
+
+            // Setup AI
+            foreach (var mainInfo in groundInfos)
+            {
+                var ai = mainInfo.GetComponent<RoadAI>();
+
+                ai.m_elevatedInfo = elevatedInfo;
+                ai.m_bridgeInfo = bridgeInfo;
+                ai.m_tunnelInfo = tunnelInfo;
+                ai.m_slopeInfo = slopeInfo;
+            }
+
+            // Returning
+            foreach (var mainInfo in groundInfos)
+            {
+                yield return mainInfo;
+            }
+            if (elevatedInfo != null) yield return elevatedInfo;
+            if (bridgeInfo != null) yield return bridgeInfo;
+            if (tunnelInfo != null) yield return tunnelInfo;
+            if (slopeInfo != null) yield return slopeInfo;
         }
 
         public static NetInfo BuildVersion(this INetInfoBuilder builder, NetInfoVersion version)
         {
             if (builder.SupportedVersions.HasFlag(version))
             {
-                var vanillaPrefabName = NetInfos.Vanilla.GetPrefabName(builder.TemplateName, version);
+                var vanillaPrefabName = NetInfos.Vanilla.GetPrefabName(builder.BasedPrefabName, version);
                 var newPrefabName = NetInfos.New.GetPrefabName(builder.Name, version);
 
                 var info = Prefabs
@@ -49,37 +93,6 @@ namespace Transit.Framework
                     .Clone(newPrefabName);
 
                 builder.BuildUp(info, version);
-
-                return info;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        public static NetInfo BuildVersion(this IMultiNetInfoBuilder builder, NetInfoVersionExtended version)
-        {
-            if (builder.SupportedVersions.HasFlag(version))
-            {
-                var vanillaPrefabName = NetInfos.Vanilla.GetPrefabName(builder.TemplateName, version);
-                var newPrefabName = NetInfos.New.GetPrefabName(builder.Name, version);
-
-                var info = Prefabs
-                    .Find<NetInfo>(vanillaPrefabName)
-                    .Clone(newPrefabName);
-
-                builder.BuildUp(info, version);
-
-                switch (version)
-                {
-                    case NetInfoVersionExtended.Ground:
-                    case NetInfoVersionExtended.GroundGrass:
-                    case NetInfoVersionExtended.GroundTrees:
-                        var menuItemConfig = builder.GetMenuItemConfig(version);
-                        info.SetMenuItemConfig(menuItemConfig);
-                        break;
-                }
 
                 return info;
             }

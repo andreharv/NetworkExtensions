@@ -11,7 +11,7 @@ namespace Transit.Framework
             typeof(PrefabInfo).GetField("m_UICategory", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(info, category);
         }
 
-        public static void SetMenuItemConfig(this PrefabInfo info, IMenuItemConfig config)
+        public static void SetMenuItemConfig(this PrefabInfo info, IMenuItemBuilder config)
         {
             info.m_UIPriority = config.UIOrder;
             info.SetUICategory(config.UICategory);

@@ -2,7 +2,7 @@
 
 namespace Transit.Framework
 {
-    public class MenuItemConfig : IMenuItemConfig
+    public class MenuItemBuilder : IMenuItemBuilder
     {
         public string UICategory { get; set; }
 

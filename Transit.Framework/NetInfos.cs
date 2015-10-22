@@ -26,7 +26,7 @@ namespace Transit.Framework
 
             public const string PED_GRAVEL = ROAD_2L_GRAVEL; // Quick fix for the Pedestian zonable roads
             public const string PED_PAVEMENT = "Pedestrian Pavement";
-
+            
             public static string GetPrefabName(string groundName, NetInfoVersion version)
             {
                 switch (groundName)
@@ -43,118 +43,14 @@ namespace Transit.Framework
                         {
                             case NetInfoVersion.Ground:
                                 return groundName;
-                            case NetInfoVersion.Elevated:
-                            case NetInfoVersion.Bridge:
-                            case NetInfoVersion.Tunnel:
-                            case NetInfoVersion.Slope:
-                                return groundName + " " + version;
-                            default:
-                                throw new NotImplementedException();
-                        }
-
-                    case ONEWAY_6L:
-                        switch (version)
-                        {
-                            case NetInfoVersion.Ground:
-                                return groundName;
-                            case NetInfoVersion.Elevated:
-                                return groundName + " " + NetInfoVersion.Elevated;
-                            case NetInfoVersion.Bridge:
-                                return groundName + " " + NetInfoVersion.Bridge;
-                            case NetInfoVersion.Tunnel:
-                                return groundName + " Road Tunnel";
-                            case NetInfoVersion.Slope:
-                                return groundName + " Road Slope";
-                            default:
-                                throw new NotImplementedException();
-                        }
-
-                    case ROAD_2L_GRASS:
-                    case ROAD_2L_TREES:
-                        switch (version)
-                        {
-                            case NetInfoVersion.Ground:
-                                return groundName;
-                            case NetInfoVersion.Elevated:
-                            case NetInfoVersion.Bridge:
-                            case NetInfoVersion.Tunnel:
-                            case NetInfoVersion.Slope:
-                                return ROAD_2L + " " + version;
-                            default:
-                                throw new NotImplementedException();
-                        }
-
-                    case ONEWAY_2L_GRASS:
-                    case ONEWAY_2L_TREES:
-                        switch (version)
-                        {
-                            case NetInfoVersion.Ground:
-                                return groundName;
-                            case NetInfoVersion.Elevated:
-                            case NetInfoVersion.Bridge:
-                            case NetInfoVersion.Tunnel:
-                            case NetInfoVersion.Slope:
-                                return ONEWAY_2L + " " + version;
-                            default:
-                                throw new NotImplementedException();
-                        }
-
-                    case ROAD_6L_GRASS:
-                    case ROAD_6L_TREES:
-                        switch (version)
-                        {
-                            case NetInfoVersion.Ground:
-                                return groundName;
-                            case NetInfoVersion.Elevated:
-                            case NetInfoVersion.Bridge:
-                            case NetInfoVersion.Tunnel:
-                            case NetInfoVersion.Slope:
-                                return ROAD_6L + " " + version;
-                            default:
-                                throw new NotImplementedException();
-                        }
-
-                    case PED_GRAVEL:
-                        switch (version)
-                        {
-                            case NetInfoVersion.Ground:
-                                return groundName;
-                            case NetInfoVersion.Elevated:
-                            case NetInfoVersion.Bridge:
-                                return "Pedestrian Elevated";
-                            default:
-                                throw new NotImplementedException();
-                        }
-
-                    default:
-                        throw new NotImplementedException();
-                }
-            }
-
-            public static string GetPrefabName(string groundName, NetInfoVersionExtended version)
-            {
-                switch (groundName)
-                {
-                    case ROAD_2L:
-                    case ROAD_6L:
-
-                    case AVENUE_4L:
-
-                    case ONEWAY_2L:
-
-                    case HIGHWAY_3L:
-                        switch (version)
-                        {
-                            case NetInfoVersionExtended.Ground:
-                                return groundName;
-                            case NetInfoVersionExtended.GroundGrass:
+                            case NetInfoVersion.GroundGrass:
                                 return groundName + " Decoration Grass";
-                            case NetInfoVersionExtended.GroundTrees:
+                            case NetInfoVersion.GroundTrees:
                                 return groundName + " Decoration Trees";
-                            case NetInfoVersionExtended.Elevated:
-                            case NetInfoVersionExtended.Bridge:
-                            case NetInfoVersionExtended.Tunnel:
-                            case NetInfoVersionExtended.Slope:
+                            case NetInfoVersion.Elevated:
+                            case NetInfoVersion.Bridge:
+                            case NetInfoVersion.Tunnel:
+                            case NetInfoVersion.Slope:
                                 return groundName + " " + version;
                             default:
                                 throw new NotImplementedException();
@@ -163,15 +59,15 @@ namespace Transit.Framework
                     case ONEWAY_6L:
                         switch (version)
                         {
-                            case NetInfoVersionExtended.Ground:
+                            case NetInfoVersion.Ground:
                                 return groundName;
-                            case NetInfoVersionExtended.Elevated:
+                            case NetInfoVersion.Elevated:
                                 return groundName + " " + NetInfoVersion.Elevated;
-                            case NetInfoVersionExtended.Bridge:
+                            case NetInfoVersion.Bridge:
                                 return groundName + " " + NetInfoVersion.Bridge;
-                            case NetInfoVersionExtended.Tunnel:
+                            case NetInfoVersion.Tunnel:
                                 return groundName + " Road Tunnel";
-                            case NetInfoVersionExtended.Slope:
+                            case NetInfoVersion.Slope:
                                 return groundName + " Road Slope";
                             default:
                                 throw new NotImplementedException();
@@ -180,10 +76,10 @@ namespace Transit.Framework
                     case PED_GRAVEL:
                         switch (version)
                         {
-                            case NetInfoVersionExtended.Ground:
+                            case NetInfoVersion.Ground:
                                 return groundName;
-                            case NetInfoVersionExtended.Elevated:
-                            case NetInfoVersionExtended.Bridge:
+                            case NetInfoVersion.Elevated:
+                            case NetInfoVersion.Bridge:
                                 return "Pedestrian Elevated";
                             default:
                                 throw new NotImplementedException();
@@ -203,21 +99,9 @@ namespace Transit.Framework
                 {
                     case NetInfoVersion.Ground:
                         return groundName;
-
-                    default:
-                        return groundName + " " + version;
-                }
-            }
-
-            public static string GetPrefabName(string groundName, NetInfoVersionExtended version)
-            {
-                switch (version)
-                {
-                    case NetInfoVersionExtended.Ground:
-                        return groundName;
-                    case NetInfoVersionExtended.GroundGrass:
+                    case NetInfoVersion.GroundGrass:
                         return groundName + " Decoration Grass";
-                    case NetInfoVersionExtended.GroundTrees:
+                    case NetInfoVersion.GroundTrees:
                         return groundName + " Decoration Trees";
 
                     default:

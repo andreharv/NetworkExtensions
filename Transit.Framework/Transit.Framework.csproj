@@ -58,9 +58,10 @@
     <Compile Include="Interfaces\IIdentifiable.cs" />
     <Compile Include="Interfaces\IDisplayable.cs" />
     <Compile Include="Interfaces\ILocalizable.cs" />
+    <Compile Include="Interfaces\IMenuItemBuildersProvider.cs" />
     <Compile Include="Interfaces\IOrderable.cs" />
     <Compile Include="Interfaces\IActivable.cs" />
-    <Compile Include="Interfaces\IMenuItemConfig.cs" />
+    <Compile Include="Interfaces\IMenuItemBuilder.cs" />
     <Compile Include="Modularity\IPrefabBuilder.cs" />
     <Compile Include="Modularity\ModuleAttribute.cs" />
     <Compile Include="Modularity\ModuleBase.Parts.cs" />
@@ -68,7 +69,7 @@
     <Compile Include="Modularity\ModuleBase.cs" />
     <Compile Include="Notification.cs" />
     <Compile Include="AssetAccess.cs" />
-    <Compile Include="MenuItemConfig.cs" />
+    <Compile Include="MenuItemBuilder.cs" />
     <Compile Include="_Extensions\AssetManagerExtensions.cs" />
     <Compile Include="_Extensions\CloningExtensions.cs" />
     <Compile Include="_Extensions\GameObjectExtensions.cs" />

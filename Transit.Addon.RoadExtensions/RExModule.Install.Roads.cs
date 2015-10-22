@@ -88,27 +88,6 @@ namespace Transit.Addon.RoadExtensions
                         }
                     }
 
-                    var mniBuilders = host.Parts
-                        .OfType<IMultiNetInfoBuilder>()
-                        .WhereActivated()
-                        .ToArray();
-
-                    foreach (var builder in mniBuilders)
-                    {
-                        try
-                        {
-                            newInfos.AddRange(builder.Build());
-
-                            Debug.Log(string.Format("REx: {0} installed", builder.Name));
-                        }
-                        catch (Exception ex)
-                        {
-                            Debug.Log(string.Format("REx: Crashed-Network builders {0}", builder.Name));
-                            Debug.Log("REx: " + ex.Message);
-                            Debug.Log("REx: " + ex.ToString());
-                        }
-                    }
-
                     var roads = host._roads = host._container.AddComponent<NetCollection>();
                     roads.name = REX_NETCOLLECTION;
                     if (newInfos.Count > 0)

@@ -2,6 +2,6 @@
 {
     public interface IPrefabBuilder
     {
-        string TemplateName { get; }
+        string BasedPrefabName { get; }
     }
 }

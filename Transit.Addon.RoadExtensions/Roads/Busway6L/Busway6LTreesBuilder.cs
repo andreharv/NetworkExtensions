@@ -3,12 +3,12 @@ using Transit.Framework.Modularity;
 
 namespace Transit.Addon.RoadExtensions.Roads.Busway6L
 {
-    public class Busway6LTreesBuilder : Busway6LBuilderBase, INetInfoBuilder
+    public class Busway6LTreesBuilder : Busway6LBuilderBase, INetInfoBuilderPart
     {
         public int Order { get { return 190; } }
         public int UIOrder { get { return 28; } }
 
-        public string TemplateName { get { return NetInfos.Vanilla.ROAD_6L_TREES; } }
+        public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_6L_TREES; } }
         public string Name { get { return "Large Road Decoration Trees With Bus Lanes"; } }
         public string DisplayName { get { return "Six-Lane Road with Trees and Bus Lanes"; } }
         public string Description { get { return "A six-lane, two-way road with decorative trees suitable for cars with dedicated bus lanes."; } }

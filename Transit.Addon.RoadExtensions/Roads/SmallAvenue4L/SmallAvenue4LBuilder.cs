@@ -7,12 +7,12 @@ using UnityEngine;
 
 namespace Transit.Addon.RoadExtensions.Roads.SmallAvenue4L
 {
-    public class SmallAvenue4LBuilder : Activable, INetInfoBuilder
+    public class SmallAvenue4LBuilder : Activable, INetInfoBuilderPart
     {
         public int Order { get { return 10; } }
         public int UIOrder { get { return 20; } }
 
-        public string TemplateName { get { return NetInfos.Vanilla.ROAD_2L; } }
+        public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_2L; } }
         public string Name { get { return "Small Avenue"; } }
         public string DisplayName { get { return "Small Four-Lane Road"; } }
         public string Description { get { return "A four-lane road without parkings spaces. Supports medium traffic."; } }
