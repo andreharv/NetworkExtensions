@@ -1,5 +1,5 @@
 ﻿using System;
-using Transit.Framework.Modularity;
+using Transit.Framework.Builders;
 
 namespace Transit.Framework
 {

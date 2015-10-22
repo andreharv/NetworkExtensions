@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Transit.Addon.RoadExtensions.Menus;
 using Transit.Framework;
-using Transit.Framework.Interfaces;
-using Transit.Framework.Modularity;
+using Transit.Framework.Builders;
 
 namespace Transit.Addon.RoadExtensions.Roads.Busway2L
 {
@@ -12,15 +9,9 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway2L
     {
         public string Name { get { return "Small Busway"; } }
         public string DisplayName { get { return Name; } }
-
         public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_2L; } }
-
         public int Order { get { return 110; } }
-
-        public NetInfoVersion SupportedVersions
-        {
-            get { return NetInfoVersion.AllWithDecoration; }
-        }
+        public NetInfoVersion SupportedVersions { get { return NetInfoVersion.AllWithDecoration; } }
 
         public IEnumerable<IMenuItemBuilder> MenuItemBuilders
         {

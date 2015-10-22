@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Transit.Framework.Interfaces
+namespace Transit.Framework.Builders
 {
     public interface IMenuItemBuildersProvider
     {

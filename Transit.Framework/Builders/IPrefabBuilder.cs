@@ -1,4 +1,4 @@
-﻿namespace Transit.Framework.Modularity
+﻿namespace Transit.Framework.Builders
 {
     public interface IPrefabBuilder
     {

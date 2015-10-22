@@ -5,6 +5,7 @@ using ColossalFramework;
 using ColossalFramework.Globalization;
 using JetBrains.Annotations;
 using Transit.Framework;
+using Transit.Framework.Builders;
 using Transit.Framework.Interfaces;
 using UnityEngine;
 

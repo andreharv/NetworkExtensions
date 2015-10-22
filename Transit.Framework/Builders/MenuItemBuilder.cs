@@ -1,6 +1,4 @@
-﻿using Transit.Framework.Interfaces;
-
-namespace Transit.Framework
+﻿namespace Transit.Framework.Builders
 {
     public class MenuItemBuilder : IMenuItemBuilder
     {

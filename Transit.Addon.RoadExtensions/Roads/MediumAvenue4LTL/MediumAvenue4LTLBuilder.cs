@@ -2,6 +2,8 @@
 using System.Linq;
 using ColossalFramework;
 using Transit.Framework;
+using Transit.Framework.Builders;
+using Transit.Framework.Interfaces;
 using Transit.Framework.Modularity;
 
 namespace Transit.Addon.RoadExtensions.Roads.MediumAvenue4LTL
