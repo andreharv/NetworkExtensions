@@ -93,8 +93,27 @@ namespace Transit.Framework
 
         public static class New
         {
+            // Legacy from T++
+            public const string BUSWAY_6L = "Large Road With Bus Lanes";
+
             public static string GetPrefabName(string groundName, NetInfoVersion version)
             {
+                // Legacy from T++
+                if (groundName == BUSWAY_6L)
+                {
+                    switch (version)
+                    {
+                        case NetInfoVersion.Ground:
+                            return groundName;
+                        case NetInfoVersion.GroundGrass:
+                            return "Large Road Decoration Grass With Bus Lanes";
+                        case NetInfoVersion.GroundTrees:
+                            return "Large Road Decoration Trees With Bus Lanes";
+                        default:
+                            return string.Format("Large Road {0} With Bus Lanes", version);
+                    }
+                }
+
                 switch (version)
                 {
                     case NetInfoVersion.Ground:

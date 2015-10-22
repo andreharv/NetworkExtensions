@@ -65,13 +65,8 @@
     <Compile Include="Menus\RExRoadsGroupPanel.cs" />
     <Compile Include="RExModule.Path.cs" />
     <Compile Include="Roads\Busway2L1W\Busway2L1WBuilder.cs" />
-    <Compile Include="Roads\Busway2L1W\Busway2L1WGrassBuilder.cs" />
-    <Compile Include="Roads\Busway2L1W\Busway2L1WTreesBuilder.cs" />
     <Compile Include="Roads\Busway2L\Busway2LBuilder.cs" />
-    <Compile Include="Roads\Busway6L\Busway6LGrassBuilder.cs" />
     <Compile Include="Roads\Busway6L\Busway6LBuilder.cs" />
-    <Compile Include="Roads\Busway6L\Busway6LBuilderBase.cs" />
-    <Compile Include="Roads\Busway6L\Busway6LTreesBuilder.cs" />
     <Compile Include="Roads\OneWay3L\OneWay3LBuilder.cs" />
     <Compile Include="Roads\OneWay4L\OneWay4LBuilder.cs" />
     <Compile Include="Roads\MediumAvenue4L\MediumAvenue4LBuilder.cs" />

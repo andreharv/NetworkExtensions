@@ -1,26 +1,57 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Transit.Addon.RoadExtensions.Menus;
 using Transit.Framework;
 using Transit.Framework.Builders;
-using Transit.Framework.Interfaces;
-using Transit.Framework.Modularity;
 
 namespace Transit.Addon.RoadExtensions.Roads.Busway6L
 {
-    public class Busway6LBuilder : Busway6LBuilderBase, INetInfoBuilderPart
+    public class Busway6LBuilder : Activable, IMultiNetInfoBuilderPart
     {
-        public int Order { get { return 170; } }
-        public int UIOrder { get { return 26; } }
-
+        public string Name { get { return NetInfos.New.BUSWAY_6L; } }
+        public string DisplayName { get { return "Bus Lanes for Six-Lane Road"; } }
         public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_6L; } }
-        public string Name { get { return "Large Road With Bus Lanes"; } }
-        public string DisplayName { get { return "Six-Lane Road with Bus Lanes"; } }
-        public string Description { get { return "A six-lane, two-way road suitable for cars with dedicated bus lanes."; } }
+        public int Order { get { return 130; } }
+        public NetInfoVersion SupportedVersions { get { return NetInfoVersion.AllWithDecoration; } }
 
-        public string ThumbnailsPath { get { return @"Roads\Busway6L\thumbnails.png"; } }
-        public string InfoTooltipPath { get { return @"Roads\Busway6L\infotooltip.png"; } }
+        public IEnumerable<IMenuItemBuilder> MenuItemBuilders
+        {
+            get
+            {
+                yield return new MenuItemBuilder
+                {
+                    UICategory = AdditionnalMenus.ROADS_BUSWAYS,
+                    UIOrder = 40,
+                    Name = "Large Road With Bus Lanes",
+                    DisplayName = "Large Road With Bus Lanes",
+                    Description = "A six-lane, two-way road suitable for cars with dedicated bus lanes.",
+                    ThumbnailsPath = @"Roads\Busway6L\thumbnails.png",
+                    InfoTooltipPath = @"Roads\Busway6L\infotooltip.png"
+                };
+                yield return new MenuItemBuilder
+                {
+                    UICategory = AdditionnalMenus.ROADS_BUSWAYS,
+                    UIOrder = 41,
+                    Name = "Large Road Decoration Grass With Bus Lanes",
+                    DisplayName = "Large Road Decoration Grass With Bus Lanes",
+                    Description = "A six-lane, two-way road suitable for cars with decorative grass and dedicated bus lanes.",
+                    ThumbnailsPath = @"Roads\Busway6L\thumbnails_grass.png",
+                    InfoTooltipPath = @"Roads\Busway6L\infotooltip_grass.png"
+                };
+                yield return new MenuItemBuilder
+                {
+                    UICategory = AdditionnalMenus.ROADS_BUSWAYS,
+                    UIOrder = 42,
+                    Name = "Large Road Decoration Trees With Bus Lanes",
+                    DisplayName = "Large Road Decoration Grass With Bus Lanes",
+                    Description = "A six-lane, two-way road suitable for cars with decorative trees and dedicated bus lanes.",
+                    ThumbnailsPath = @"Roads\Busway6L\thumbnails_trees.png",
+                    InfoTooltipPath = @"Roads\Busway6L\infotooltip_trees.png"
+                };
+            }
+        }
 
-        public override void BuildUp(NetInfo info, NetInfoVersion version)
+        public void BuildUp(NetInfo info, NetInfoVersion version)
         {
             ///////////////////////////
             // Texturing             //
@@ -71,6 +102,51 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway6L
                     }
                     break;
 
+                case NetInfoVersion.GroundGrass:
+                case NetInfoVersion.GroundTrees:
+                    {
+                        foreach (var segment in info.m_segments)
+                        {
+                            switch (segment.m_forwardRequired)
+                            {
+                                case NetSegment.Flags.StopLeft:
+                                case NetSegment.Flags.StopRight:
+                                    segment.SetTextures(
+                                        new TexturesSet
+                                           (@"Roads\Busway6L\Textures_Grass\Ground_Segment__MainTex.png",
+                                            @"Roads\Busway6L\Textures_Grass\Ground_Segment__AlphaMap.png"),
+                                        new TexturesSet
+                                           (@"Roads\Busway6L\Textures\Ground_SegmentLOD_Bus__MainTex.png",
+                                            @"Roads\Busway6L\Textures\Ground_SegmentLOD_Bus__AlphaMap.png",
+                                            @"Roads\Busway6L\Textures\Ground_SegmentLOD_Bus__XYSMap.png"));
+                                    break;
+
+                                case NetSegment.Flags.StopBoth:
+                                    segment.SetTextures(
+                                        new TexturesSet
+                                           (@"Roads\Busway6L\Textures_Grass\Ground_Segment_Bus__MainTex.png",
+                                            @"Roads\Busway6L\Textures_Grass\Ground_Segment_Bus__AlphaMap.png"),
+                                        new TexturesSet
+                                           (@"Roads\Busway6L\Textures\Ground_SegmentLOD_BusBoth__MainTex.png",
+                                            @"Roads\Busway6L\Textures\Ground_SegmentLOD_BusBoth__AlphaMap.png",
+                                            @"Roads\Busway6L\Textures\Ground_SegmentLOD_BusBoth__XYSMap.png"));
+                                    break;
+
+                                default:
+                                    segment.SetTextures(
+                                        new TexturesSet
+                                           (@"Roads\Busway6L\Textures_Grass\Ground_Segment_BusBoth__MainTex.png",
+                                            @"Roads\Busway6L\Textures_Grass\Ground_Segment_BusBoth__AlphaMap.png"),
+                                        new TexturesSet
+                                           (@"Roads\Busway6L\Textures\Ground_SegmentLOD__MainTex.png",
+                                            @"Roads\Busway6L\Textures\Ground_SegmentLOD__AlphaMap.png",
+                                            @"Roads\Busway6L\Textures\Ground_SegmentLOD__XYSMap.png"));
+                                    break;
+                            }
+                        }
+                    }
+                    break;
+
                 case NetInfoVersion.Bridge:
                 case NetInfoVersion.Elevated:
                     {
@@ -105,8 +181,44 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway6L
                 case NetInfoVersion.Tunnel:
                     break;
             }
+            ///////////////////////////
+            // Templates             //
+            ///////////////////////////
+            var highwayInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L);
 
-            base.BuildUp(info, version);
+            ///////////////////////////
+            // Set up                //
+            ///////////////////////////
+            info.m_UnlockMilestone = highwayInfo.m_UnlockMilestone;
+
+            var vehiculeLanes = info
+                .m_lanes
+                .Where(l => l.m_laneType == NetInfo.LaneType.Vehicle)
+                .OrderBy(l => l.m_position)
+                .ToArray();
+
+            for (int i = 0; i < vehiculeLanes.Length; i++)
+            {
+                var lane = vehiculeLanes[i];
+
+                switch (i)
+                {
+                    case 0:
+                        lane.m_laneType = NetInfo.LaneType.TransportVehicle;
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        lane.m_laneType = NetInfo.LaneType.TransportVehicle;
+                        break;
+                }
+            }
         }
     }
 }

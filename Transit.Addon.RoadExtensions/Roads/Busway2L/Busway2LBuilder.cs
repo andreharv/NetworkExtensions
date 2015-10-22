@@ -8,7 +8,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway2L
     public class Busway2LBuilder : Activable, IMultiNetInfoBuilderPart
     {
         public string Name { get { return "Small Busway"; } }
-        public string DisplayName { get { return Name; } }
+        public string DisplayName { get { return "Busway"; } }
         public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_2L; } }
         public int Order { get { return 110; } }
         public NetInfoVersion SupportedVersions { get { return NetInfoVersion.AllWithDecoration; } }
@@ -20,7 +20,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway2L
                 yield return new MenuItemBuilder
                 {
                     UICategory = AdditionnalMenus.ROADS_BUSWAYS,
-                    UIOrder = 20,
+                    UIOrder = 10,
                     Name = "Small Busway",
                     DisplayName = "Busway",
                     Description = "A two-lane, two-way road suitable for buses only. Busway does not allow zoning next to it!",
@@ -30,7 +30,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway2L
                 yield return new MenuItemBuilder
                 {
                     UICategory = AdditionnalMenus.ROADS_BUSWAYS,
-                    UIOrder = 21,
+                    UIOrder = 11,
                     Name = "Small Busway Decoration Grass",
                     DisplayName = "Busway with Grass",
                     Description = "A two-lane, two-way road with decorative grass suitable for buses only. Busway does not allow zoning next to it!",
@@ -40,7 +40,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway2L
                 yield return new MenuItemBuilder
                 {
                     UICategory = AdditionnalMenus.ROADS_BUSWAYS,
-                    UIOrder = 22,
+                    UIOrder = 12,
                     Name = "Small Busway Decoration Trees",
                     DisplayName = "Busway with Trees",
                     Description = "A two-lane, two-way road with decorative trees suitable for buses only. Busway does not allow zoning next to it!",
