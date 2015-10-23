@@ -10,6 +10,7 @@ namespace Transit.Addon.RoadExtensions
         private bool _isReleased = true;
         private GameObject _container = null;
         private NetCollection _roads = null;
+        private PropCollection _props = null;
 
         private Initializer _initializer = null;
         private LocalizationInstaller _localizationInstaller = null;
@@ -102,6 +103,12 @@ namespace Transit.Addon.RoadExtensions
             {
                 Object.Destroy(_roads);
                 _roads = null;
+            }
+
+            if (_props != null)
+            {
+                Object.Destroy(_props);
+                _props = null;
             }
 
             if (_container != null)

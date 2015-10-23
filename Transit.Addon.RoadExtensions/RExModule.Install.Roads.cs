@@ -4,7 +4,6 @@ using System.Linq;
 using JetBrains.Annotations;
 using Transit.Framework;
 using Transit.Framework.Builders;
-using Transit.Framework.Interfaces;
 using Transit.Framework.Modularity;
 using UnityEngine;
 
@@ -64,8 +63,43 @@ namespace Transit.Addon.RoadExtensions
             {
                 Loading.QueueAction(() =>
                 {
+                    // PropInfo Builders -----------------------------------------------------------
+                    var newInfos = new List<PropInfo>();
 
-                    // Builders -----------------------------------------------------------------------
+                    var piBuilders = host.Parts
+                        .OfType<IPrefabBuilder<PropInfo>>()
+                        .WhereActivated()
+                        .ToArray();
+
+                    foreach (var builder in piBuilders)
+                    {
+                        try
+                        {
+                            newInfos.Add(builder.Build());
+
+                            Debug.Log(string.Format("REx: Prop {0} installed", builder.Name));
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.Log(string.Format("REx: Crashed-Prop builders {0}", builder.Name));
+                            Debug.Log("REx: " + ex.Message);
+                            Debug.Log("REx: " + ex.ToString());
+                        }
+                    }
+
+                    var props = host._props = host._container.AddComponent<PropCollection>();
+                    props.name = REX_PROPCOLLECTION;
+                    if (newInfos.Count > 0)
+                    {
+                        props.m_prefabs = newInfos.ToArray();
+                        PrefabCollection<PropInfo>.InitializePrefabs(props.name, props.m_prefabs, new string[] { });
+                        PrefabCollection<PropInfo>.BindPrefabs();
+                    }
+                });
+
+                Loading.QueueAction(() =>
+                {
+                    // NetInfo Builders -----------------------------------------------------------
                     var newInfos = new List<NetInfo>();
 
                     var niBuilders = host.Parts
@@ -99,7 +133,7 @@ namespace Transit.Addon.RoadExtensions
                     }
 
 
-                    // Modifiers ----------------------------------------------------------------------
+                    // NetInfo Modifiers ----------------------------------------------------------
                     var modifiers = host.Parts
                         .OfType<INetInfoModifier>()
                         .WhereActivated()

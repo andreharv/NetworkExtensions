@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Compatibility\RoadColorChanger.cs" />
+    <Compile Include="Props\BusLaneTextPropBuilder.cs" />
     <Compile Include="RExModule.Install.Menus.cs" />
     <Compile Include="RExModule.Install.Localization.cs" />
     <Compile Include="RExModule.Install.Roads.cs" />
@@ -90,6 +91,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Menus\Textures\AdditionnalSubBar.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Props\Textures\BusLaneText-aci.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Props\Textures\BusLaneText-xys.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Props\Textures\BusLaneText.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\Busway2L1W\infotooltip.png">

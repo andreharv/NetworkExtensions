@@ -1,7 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Transit.Addon.RoadExtensions.Menus;
+using Transit.Addon.RoadExtensions.Props;
 using Transit.Framework;
 using Transit.Framework.Builders;
+using UnityEngine;
+using Debug = Transit.Framework.Debug;
 
 namespace Transit.Addon.RoadExtensions.Roads.Busway2L
 {
@@ -179,6 +184,38 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway2L
             // Set up                //
             ///////////////////////////
             info.m_UnlockMilestone = highwayInfo.m_UnlockMilestone;
+
+            var prop = Prefabs.Find<PropInfo>("BusLaneText", false);
+
+            if (prop != null)
+            {
+                foreach (var lane in info.m_lanes.Where(l => l.m_laneType == NetInfo.LaneType.Vehicle))
+                {
+                    if (lane.m_laneProps == null)
+                    {
+                        lane.m_laneProps = ScriptableObject.CreateInstance<NetLaneProps>();
+                        lane.m_laneProps.m_props = new NetLaneProps.Prop[] { };
+                    }
+                    else
+                    {
+                        lane.m_laneProps = lane.m_laneProps.Clone();
+                    }
+
+                    lane.m_laneProps.m_props = lane
+                        .m_laneProps
+                        .m_props
+                            .Union(new NetLaneProps.Prop
+                            {
+                                m_prop = prop,
+                                m_position = new Vector3(0f, 0f, 7.5f),
+                                m_angle = 180f,
+                                m_segmentOffset = -1f,
+                                m_minLength = 8f,
+                                m_startFlagsRequired = NetNode.Flags.Junction
+                            })
+                        .ToArray();
+                }
+            }
 
             foreach (var lane in info.m_lanes)
             {

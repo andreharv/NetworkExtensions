@@ -72,6 +72,8 @@
     <Compile Include="Builders\MenuItemBuilder.cs" />
     <Compile Include="_Extensions\AssetManagerExtensions.cs" />
     <Compile Include="_Extensions\CloningExtensions.cs" />
+    <Compile Include="_Extensions\NetLanePropsExtensions.cs" />
+    <Compile Include="_Extensions\PrefabBuilderExtensions.cs" />
     <Compile Include="_Extensions\GameObjectExtensions.cs" />
     <Compile Include="_Extensions\NetInfoBuilderExtensions.cs" />
     <Compile Include="_Extensions\NetInfoExtensions.Lane.cs" />

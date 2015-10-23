@@ -11,7 +11,8 @@ namespace Transit.Addon.RoadExtensions
         public const string REX_OBJECT_NAME = "Road Extensions";
 
         public const string ROAD_NETCOLLECTION = "Road";
-        public const string REX_NETCOLLECTION = "RExCollection";
+        public const string REX_NETCOLLECTION = "RExNetCollection";
+        public const string REX_PROPCOLLECTION = "RExPropCollection";
 
         public override string Name
         {
