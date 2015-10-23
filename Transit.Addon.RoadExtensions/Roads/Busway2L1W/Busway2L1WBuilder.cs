@@ -183,8 +183,23 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway2L1W
             {
                 if (lane.m_laneType == NetInfo.LaneType.Vehicle)
                 {
+                    if (version == NetInfoVersion.Ground)
+                    {
+                        if (lane.m_position < 0f)
+                        {
+                            lane.m_position -= 1f;
+                            lane.m_stopOffset += 1f;
+                        }
+                        else
+                        {
+                            lane.m_position += 1f;
+                            lane.m_stopOffset -= 1f;
+                        }
+                    }
+
                     lane.m_speedLimit = 1.6f;
-                    lane.m_laneType = NetInfo.LaneType.TransportVehicle;
+                    lane.m_laneType = NetInfo.LaneType.TransportVehicle; 
+                    lane.SetBusLaneProps();
                 }
             }
 

@@ -185,44 +185,27 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway2L
             ///////////////////////////
             info.m_UnlockMilestone = highwayInfo.m_UnlockMilestone;
 
-            var prop = Prefabs.Find<PropInfo>("BusLaneText", false);
-
-            if (prop != null)
-            {
-                foreach (var lane in info.m_lanes.Where(l => l.m_laneType == NetInfo.LaneType.Vehicle))
-                {
-                    if (lane.m_laneProps == null)
-                    {
-                        lane.m_laneProps = ScriptableObject.CreateInstance<NetLaneProps>();
-                        lane.m_laneProps.m_props = new NetLaneProps.Prop[] { };
-                    }
-                    else
-                    {
-                        lane.m_laneProps = lane.m_laneProps.Clone();
-                    }
-
-                    lane.m_laneProps.m_props = lane
-                        .m_laneProps
-                        .m_props
-                            .Union(new NetLaneProps.Prop
-                            {
-                                m_prop = prop,
-                                m_position = new Vector3(0f, 0f, 7.5f),
-                                m_angle = 180f,
-                                m_segmentOffset = -1f,
-                                m_minLength = 8f,
-                                m_startFlagsRequired = NetNode.Flags.Junction
-                            })
-                        .ToArray();
-                }
-            }
-
             foreach (var lane in info.m_lanes)
             {
                 if (lane.m_laneType == NetInfo.LaneType.Vehicle)
                 {
+                    if (version == NetInfoVersion.Ground)
+                    {
+                        if (lane.m_position < 0f)
+                        {
+                            lane.m_position -= 1f;
+                            lane.m_stopOffset += 1f;
+                        }
+                        else
+                        {
+                            lane.m_position += 1f;
+                            lane.m_stopOffset -= 1f;
+                        } 
+                    }
+
                     lane.m_speedLimit = 1.6f;
                     lane.m_laneType = NetInfo.LaneType.TransportVehicle;
+                    lane.SetBusLaneProps();
                 }
             }
 

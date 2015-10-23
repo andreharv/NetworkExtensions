@@ -205,6 +205,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway6L
                 {
                     case 0:
                         lane.m_laneType = NetInfo.LaneType.TransportVehicle;
+                        lane.SetBusLaneProps();
                         break;
                     case 1:
                         break;
@@ -216,6 +217,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway6L
                         break;
                     case 5:
                         lane.m_laneType = NetInfo.LaneType.TransportVehicle;
+                        lane.SetBusLaneProps();
                         break;
                 }
             }

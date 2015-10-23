@@ -65,6 +65,7 @@
     <Compile Include="Menus\AdditionnalMenus.cs" />
     <Compile Include="Menus\RExRoadsGroupPanel.cs" />
     <Compile Include="RExModule.Path.cs" />
+    <Compile Include="Roads\BusRoadsHelper.cs" />
     <Compile Include="Roads\Busway2L1W\Busway2L1WBuilder.cs" />
     <Compile Include="Roads\Busway2L\Busway2LBuilder.cs" />
     <Compile Include="Roads\Busway6L\Busway6LBuilder.cs" />
