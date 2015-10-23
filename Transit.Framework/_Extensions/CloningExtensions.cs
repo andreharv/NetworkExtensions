@@ -42,7 +42,7 @@ namespace Transit.Framework
             return destination;
         }
 
-        private static readonly IEnumerable<Type> s_simpleTypes = new HashSet<Type>
+        private static readonly IEnumerable<Type> s_primitivesTypes = new HashSet<Type>
         {
             typeof(bool),
             typeof(byte),
@@ -62,13 +62,13 @@ namespace Transit.Framework
             typeof(Enum),
         };
 
-        public static T CloneSimpleMembersFrom<T>(this T destination, T source)
+        public static T ClonePrimitiveMembersFrom<T>(this T destination, T source)
             where T : new()
         {
 
             foreach (FieldInfo f in destination.GetType().GetAllFields(true).OrderBy(x => x.Name))
             {
-                if (s_simpleTypes.Contains(f.FieldType))
+                if (s_primitivesTypes.Contains(f.FieldType))
                 {
                     continue;
                 }
