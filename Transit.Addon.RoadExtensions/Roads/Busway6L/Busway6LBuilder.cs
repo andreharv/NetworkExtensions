@@ -113,8 +113,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway6L
                                 case NetSegment.Flags.StopRight:
                                     segment.SetTextures(
                                         new TexturesSet
-                                           (@"Roads\Busway6L\Textures_Grass\Ground_Segment__MainTex.png",
-                                            @"Roads\Busway6L\Textures_Grass\Ground_Segment__AlphaMap.png"),
+                                           (@"Roads\Busway6L\Textures_Grass\Ground_Segment_Bus__MainTex.png",
+                                            @"Roads\Busway6L\Textures_Grass\Ground_Segment_Bus__AlphaMap.png"),
                                         new TexturesSet
                                            (@"Roads\Busway6L\Textures\Ground_SegmentLOD_Bus__MainTex.png",
                                             @"Roads\Busway6L\Textures\Ground_SegmentLOD_Bus__AlphaMap.png",
@@ -124,8 +124,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway6L
                                 case NetSegment.Flags.StopBoth:
                                     segment.SetTextures(
                                         new TexturesSet
-                                           (@"Roads\Busway6L\Textures_Grass\Ground_Segment_Bus__MainTex.png",
-                                            @"Roads\Busway6L\Textures_Grass\Ground_Segment_Bus__AlphaMap.png"),
+                                           (@"Roads\Busway6L\Textures_Grass\Ground_Segment_BusBoth__MainTex.png",
+                                            @"Roads\Busway6L\Textures_Grass\Ground_Segment_BusBoth__AlphaMap.png"),
                                         new TexturesSet
                                            (@"Roads\Busway6L\Textures\Ground_SegmentLOD_BusBoth__MainTex.png",
                                             @"Roads\Busway6L\Textures\Ground_SegmentLOD_BusBoth__AlphaMap.png",
@@ -135,8 +135,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway6L
                                 default:
                                     segment.SetTextures(
                                         new TexturesSet
-                                           (@"Roads\Busway6L\Textures_Grass\Ground_Segment_BusBoth__MainTex.png",
-                                            @"Roads\Busway6L\Textures_Grass\Ground_Segment_BusBoth__AlphaMap.png"),
+                                           (@"Roads\Busway6L\Textures_Grass\Ground_Segment__MainTex.png",
+                                            @"Roads\Busway6L\Textures_Grass\Ground_Segment__AlphaMap.png"),
                                         new TexturesSet
                                            (@"Roads\Busway6L\Textures\Ground_SegmentLOD__MainTex.png",
                                             @"Roads\Busway6L\Textures\Ground_SegmentLOD__AlphaMap.png",
