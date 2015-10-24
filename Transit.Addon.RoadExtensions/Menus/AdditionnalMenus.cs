@@ -7,6 +7,8 @@ namespace Transit.Addon.RoadExtensions.Menus
     public static class AdditionnalMenus
     {
         public const string ROADS_SMALL_HV = "RoadsSmallHV";
+        public const string ROADS_BUSWAYS = "RoadsBusways";
+        public const string ROADS_PEDESTRIANS = "RoadsPedestrians";
 
         private static UITextureAtlas s_thumbnailAtlas = null;
 
@@ -27,7 +29,7 @@ namespace Transit.Addon.RoadExtensions.Menus
             const string PATH = @"Menus\Textures\AdditionnalSubBar.png";
 
             const string BASE = "SubBarButtonBase";
-            const string ROADS_SMALL_HV_SUBBAR = "SubBar" + AdditionnalMenus.ROADS_SMALL_HV;
+            const string ROADS_SMALL_HV_SUBBAR = "SubBar" + ROADS_SMALL_HV;
 
             var versions = new[] { "", "Disabled", "Focused", "Hovered", "Pressed" };
 

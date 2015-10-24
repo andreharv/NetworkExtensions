@@ -17,14 +17,14 @@ namespace Transit.Framework
                 material.ModifyTexture("_MainTex", newTextures.MainTex);
             }
 
-            if (newTextures.XYSMap != null)
-            {
-                material.ModifyTexture("_XYSMap", newTextures.XYSMap);
-            }
-
             if (newTextures.APRMap != null)
             {
                 material.ModifyTexture("_APRMap", newTextures.APRMap);
+            }
+
+            if (newTextures.XYSMap != null)
+            {
+                material.ModifyTexture("_XYSMap", newTextures.XYSMap);
             }
 
             return material;

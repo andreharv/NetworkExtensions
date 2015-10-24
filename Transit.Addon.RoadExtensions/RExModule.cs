@@ -1,7 +1,5 @@
 ﻿using System;
-using ICities;
 using Transit.Framework.Modularity;
-using Transit.Addon;
 
 namespace Transit.Addon.RoadExtensions
 {
@@ -13,7 +11,8 @@ namespace Transit.Addon.RoadExtensions
         public const string REX_OBJECT_NAME = "Road Extensions";
 
         public const string ROAD_NETCOLLECTION = "Road";
-        public const string REX_NETCOLLECTION = "REXCollection";
+        public const string REX_NETCOLLECTION = "RExNetCollection";
+        public const string REX_PROPCOLLECTION = "RExPropCollection";
 
         public RExModule(Mod mod)
         {
@@ -23,11 +22,6 @@ namespace Transit.Addon.RoadExtensions
         public override string Name
         {
             get { return "Road Extensions"; }
-        }
-
-        public string Description
-        {
-            get { return "An addition of highways and roads"; }
         }
 
         public Mod Mod { get; private set; }

@@ -4,19 +4,20 @@ using System.Linq;
 using ColossalFramework;
 using ColossalFramework.Globalization;
 using Transit.Framework;
+using Transit.Framework.Builders;
+using Transit.Framework.Interfaces;
 using Transit.Framework.Modularity;
 
 namespace Transit.Addon.RoadExtensions.Roads.MediumAvenue4L
 {
-    public class MediumAvenue4LBuilder : NetInfoBuilderBase, INetInfoBuilder, INetInfoModifier
+    public class MediumAvenue4LBuilder : Activable, INetInfoBuilderPart, INetInfoModifier
     {
         public int Order { get { return 20; } }
-        public int Priority { get { return 4; } }
+        public int UIOrder { get { return 4; } }
 
-        public string TemplatePrefabName { get { return NetInfos.Vanilla.ROAD_6L; } }
+        public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_6L; } }
         public string Name { get { return "Medium Avenue"; } }
         public string DisplayName { get { return "Four-Lane Road"; } }
-        public string CodeName { get { return "MEDIUMAVENUE_4L"; } }
         public string Description { get { return "A four-lane road with parking spaces. Supports medium traffic."; } }
         public string UICategory { get { return "RoadsMedium"; } }
         

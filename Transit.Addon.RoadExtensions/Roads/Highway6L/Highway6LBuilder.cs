@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Linq;
 using Transit.Framework;
+using Transit.Framework.Builders;
+using Transit.Framework.Interfaces;
 using Transit.Framework.Modularity;
 
 namespace Transit.Addon.RoadExtensions.Roads.Highway6L
 {
-    public class Highway6LBuilder : NetInfoBuilderBase, INetInfoBuilder, INetInfoModifier
+    public class Highway6LBuilder : Activable, INetInfoBuilderPart, INetInfoModifier
     {
         public int Order { get { return 50; } }
-        public int Priority { get { return 14; } }
+        public int UIOrder { get { return 14; } }
 
-        public string TemplatePrefabName  { get { return NetInfos.Vanilla.ONEWAY_6L; } }
+        public string BasedPrefabName  { get { return NetInfos.Vanilla.ONEWAY_6L; } }
         public string Name        { get { return "Large Highway"; } }
         public string DisplayName { get { return "Six-Lane Highway"; } }
-        public string CodeName    { get { return "HIGHWAY_6L"; } }
         public string Description { get { return "A six-lane, one-way road suitable for very high and dense traffic between metropolitan areas. Lanes going the opposite direction need to be built separately. Highway does not allow zoning next to it!"; } }
         public string UICategory  { get { return "RoadsHighway"; } }
 

@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
-using Transit.Framework.Interfaces;
-using Transit.Framework.Modularity;
-using UnityEngine;
 
 #if DEBUG
 using Debug = Transit.Framework.Debug;
@@ -31,22 +28,27 @@ namespace Transit.Addon.RoadExtensions
             }
         }
 
-        public readonly IDictionary<string, bool> PartsEnabled = new Dictionary<string, bool>();
+        private readonly IDictionary<string, bool> _partsEnabled = new Dictionary<string, bool>();
 
-        public bool IsPartEnabled(IActivablePart part)
+        public bool IsPartEnabled(string partName)
         {
-            var partName = part.GetSerializableName();
-
             var isEnabled = true;
-            if (PartsEnabled.ContainsKey(partName))
+            if (_partsEnabled.ContainsKey(partName))
             {
-                isEnabled = PartsEnabled[partName];
+                isEnabled = _partsEnabled[partName];
             }
 
             return isEnabled;
         }
 
-        public void Save()
+        public void SetPartEnabled(string partName, bool isEnabled)
+        {
+            _partsEnabled[partName] = isEnabled;
+
+            Save();
+        }
+
+        private void Save()
         {
             if (RExModule.GetPath() == RExModule.PATH_NOT_FOUND)
             {
@@ -62,7 +64,7 @@ namespace Transit.Addon.RoadExtensions
 
                 xDoc.AppendChild(settings);
 
-                foreach (var part in PartsEnabled)
+                foreach (var part in _partsEnabled)
                 {
                     var xmlElem = xDoc.CreateElement(part.Key);
                     xmlElem.InnerText = part.Value.ToString();
@@ -112,7 +114,7 @@ namespace Transit.Addon.RoadExtensions
                         nodeValue = true;
                     }
 
-                    configuration.PartsEnabled[node.Name] = nodeValue;
+                    configuration._partsEnabled[node.Name] = nodeValue;
                 }
 
                 return configuration;

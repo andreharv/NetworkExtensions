@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using Transit.Framework.Interfaces;
 
 namespace Transit.Framework.Modularity
 {
-    public interface ICompatibilityPart : IModulePart
+    public interface ICompatibilityPart : IModulePart, IIdentifiable
     {
         bool IsPluginActive { get; }
 
