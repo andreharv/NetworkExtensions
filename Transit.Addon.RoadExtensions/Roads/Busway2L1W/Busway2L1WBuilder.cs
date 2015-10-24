@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Transit.Addon.RoadExtensions.Menus;
 using Transit.Framework;
 using Transit.Framework.Builders;
@@ -179,6 +180,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway2L1W
             ///////////////////////////
             info.m_UnlockMilestone = highwayInfo.m_UnlockMilestone;
 
+            info.m_lanes = info.m_lanes.Where(l => l.m_laneType != NetInfo.LaneType.Parking).ToArray();
             foreach (var lane in info.m_lanes)
             {
                 if (lane.m_laneType == NetInfo.LaneType.Vehicle)
