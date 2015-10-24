@@ -75,25 +75,26 @@ namespace Transit.Addon.RoadExtensions
                 {
                     try
                     {
-                        var menuInstalled = false;
-
                         var group = FindObjectsOfType<RoadsGroupPanel>().FirstOrDefault();
 
-                        if (InstallRoadSmallHV(group))
+                        if (group != null)
                         {
-                            menuInstalled = true;
-                        }
+                            var atlas = AssetManager.instance.LoadAdditionnalMenusThumbnails();
 
-                        if (menuInstalled)
-                        {
-                            Debug.Log("REx: Additionnal Menus have been installed successfully");
+                            var rshvButton = group.Find<UIButton>(AdditionnalMenus.ROADS_SMALL_HV);
+                            if (rshvButton != null)
+                            {
+                                rshvButton.atlas = atlas;
+                            }
+
+                            var rbwButton = group.Find<UIButton>(AdditionnalMenus.ROADS_BUSWAYS);
+                            if (rbwButton != null)
+                            {
+                                rbwButton.atlas = atlas;
+                            }
                         }
-#if DEBUG
-                        else
-                        {
-                            Debug.Log("REx: Something has happened, Additionnal Menus have not been installed");
-                        }
-#endif
+                        
+                        Debug.Log("REx: Additionnal Menus have been installed successfully");
                     }
                     catch (Exception ex)
                     {
@@ -102,18 +103,6 @@ namespace Transit.Addon.RoadExtensions
                         Debug.Log("REx: " + ex.ToString());
                     }
                 });
-            }
-
-            private static bool InstallRoadSmallHV(RoadsGroupPanel group)
-            {
-                var b = group.Find<UIButton>(AdditionnalMenus.ROADS_SMALL_HV);
-                if (b != null)
-                {
-                    b.atlas = AdditionnalMenus.LoadThumbnails();
-                    return true;
-                }
-
-                return false;
             }
         }
     }
