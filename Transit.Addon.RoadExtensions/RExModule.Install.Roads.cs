@@ -61,17 +61,26 @@ namespace Transit.Addon.RoadExtensions
 
             protected override void Install(RExModule host)
             {
-                Loading.QueueAction(() =>
+                InstallPropInfos(host);
+                InstallNetInfos(host);
+                InstallNetInfosModifiers(host);
+                InstallCompatibilities(host);
+            }
+
+            private static void InstallPropInfos(RExModule host)
+            {
+                var newInfos = new List<PropInfo>();
+
+                var piBuilders = host.Parts
+                    .OfType<IPrefabBuilder<PropInfo>>()
+                    .WhereActivated()
+                    .ToArray();
+
+                foreach (var piBuilder in piBuilders)
                 {
-                    // PropInfo Builders -----------------------------------------------------------
-                    var newInfos = new List<PropInfo>();
+                    var builder = piBuilder;
 
-                    var piBuilders = host.Parts
-                        .OfType<IPrefabBuilder<PropInfo>>()
-                        .WhereActivated()
-                        .ToArray();
-
-                    foreach (var builder in piBuilders)
+                    Loading.QueueAction(() =>
                     {
                         try
                         {
@@ -81,33 +90,52 @@ namespace Transit.Addon.RoadExtensions
                         }
                         catch (Exception ex)
                         {
-                            Debug.Log(string.Format("REx: Crashed-Prop builders {0}", builder.Name));
+                            Debug.Log(string.Format("REx: Crashed-Prop builder {0}", builder.Name));
                             Debug.Log("REx: " + ex.Message);
                             Debug.Log("REx: " + ex.ToString());
-                        }
-                    }
 
+                            Debug.Log(string.Format("REx: Fallbacking-Prop builder {0}", builder.Name));
+                            try
+                            {
+                                newInfos.Add(builder.BuildEmergencyFallback());
+                            }
+                            catch (Exception exFallback)
+                            {
+                                Debug.Log(string.Format("REx: Crashed-Fallback Prop builder {0}", builder.Name));
+                                Debug.Log("REx: " + exFallback.Message);
+                                Debug.Log("REx: " + exFallback.ToString());
+                            }
+                        }
+                    });
+                }
+
+                Loading.QueueAction(() =>
+                {
                     var props = host._props = host._container.AddComponent<PropCollection>();
                     props.name = REX_PROPCOLLECTION;
                     if (newInfos.Count > 0)
                     {
                         props.m_prefabs = newInfos.ToArray();
-                        PrefabCollection<PropInfo>.InitializePrefabs(props.name, props.m_prefabs, new string[] { });
+                        PrefabCollection<PropInfo>.InitializePrefabs(props.name, props.m_prefabs, new string[] {});
                         PrefabCollection<PropInfo>.BindPrefabs();
                     }
                 });
+            }
 
-                Loading.QueueAction(() =>
+            private static void InstallNetInfos(RExModule host)
+            {
+                var newInfos = new List<NetInfo>();
+
+                var niBuilders = host.Parts
+                    .OfType<INetInfoBuilder>()
+                    .WhereActivated()
+                    .ToArray();
+
+                foreach (var niBuilder in niBuilders)
                 {
-                    // NetInfo Builders -----------------------------------------------------------
-                    var newInfos = new List<NetInfo>();
+                    var builder = niBuilder;
 
-                    var niBuilders = host.Parts
-                        .OfType<INetInfoBuilder>()
-                        .WhereActivated()
-                        .ToArray();
-
-                    foreach (var builder in niBuilders)
+                    Loading.QueueAction(() =>
                     {
                         try
                         {
@@ -117,29 +145,51 @@ namespace Transit.Addon.RoadExtensions
                         }
                         catch (Exception ex)
                         {
-                            Debug.Log(string.Format("REx: Crashed-Network builders {0}", builder.Name));
+
+                            Debug.Log(string.Format("REx: Crashed-Network builder {0}", builder.Name));
                             Debug.Log("REx: " + ex.Message);
                             Debug.Log("REx: " + ex.ToString());
-                        }
-                    }
 
+                            Debug.Log(string.Format("REx: Fallbacking-Network builder {0}", builder.Name));
+                            try
+                            {
+                                newInfos.AddRange(builder.BuildEmergencyFallback());
+                            }
+                            catch (Exception exFallback)
+                            {
+                                Debug.Log(string.Format("REx: Crashed-Fallback Network builder {0}", builder.Name));
+                                Debug.Log("REx: " + exFallback.Message);
+                                Debug.Log("REx: " + exFallback.ToString());
+                            }
+                        }
+                    });
+                }
+
+                Loading.QueueAction(() =>
+                {
                     var roads = host._roads = host._container.AddComponent<NetCollection>();
                     roads.name = REX_NETCOLLECTION;
                     if (newInfos.Count > 0)
                     {
                         roads.m_prefabs = newInfos.ToArray();
-                        PrefabCollection<NetInfo>.InitializePrefabs(roads.name, roads.m_prefabs, new string[] { });
+                        PrefabCollection<NetInfo>.InitializePrefabs(roads.name, roads.m_prefabs, new string[] {});
                         PrefabCollection<NetInfo>.BindPrefabs();
                     }
+                });
+            }
 
+            private static void InstallNetInfosModifiers(RExModule host)
+            {
+                var niModifiers = host.Parts
+                    .OfType<INetInfoModifier>()
+                    .WhereActivated()
+                    .ToArray();
 
-                    // NetInfo Modifiers ----------------------------------------------------------
-                    var modifiers = host.Parts
-                        .OfType<INetInfoModifier>()
-                        .WhereActivated()
-                        .ToArray();
+                foreach (var nimodifier in niModifiers)
+                {
+                    var modifier = nimodifier;
 
-                    foreach (var modifier in modifiers)
+                    Loading.QueueAction(() =>
                     {
                         try
                         {
@@ -153,10 +203,14 @@ namespace Transit.Addon.RoadExtensions
                             Debug.Log("REx: " + ex.Message);
                             Debug.Log("REx: " + ex.ToString());
                         }
-                    }
+                    });
+                }
+            }
 
-
-                    // Cross mods support -------------------------------------------------------------
+            private static void InstallCompatibilities(RExModule host)
+            {
+                Loading.QueueAction(() =>
+                {
                     var compParts = host.Parts
                         .OfType<ICompatibilityPart>()
                         .ToArray();
@@ -167,7 +221,7 @@ namespace Transit.Addon.RoadExtensions
                         {
                             if (compatibilityPart.IsPluginActive)
                             {
-                                compatibilityPart.Setup(newInfos);
+                                compatibilityPart.Setup(host._roads.m_prefabs);
 
                                 Debug.Log(string.Format("REx: {0} compatibility activated", compatibilityPart.Name));
                             }

@@ -7,6 +7,24 @@ namespace Transit.Framework
 {
     public static class NetInfoBuilderExtensions
     {
+        public static IEnumerable<NetInfo> BuildEmergencyFallback(this INetInfoBuilder builder)
+        {
+            return builder
+                .SupportedVersions
+                .ToCollection()
+                .Select(niv => builder.BuildEmergencyFallbackVersion(niv));
+        }
+
+        private static NetInfo BuildEmergencyFallbackVersion(this INetInfoBuilder builder, NetInfoVersion version)
+        {
+            var vanillaPrefabName = NetInfos.Vanilla.GetPrefabName(builder.BasedPrefabName, version);
+            var newPrefabName = NetInfos.New.GetPrefabName(builder.Name, version);
+
+            return Prefabs
+                .Find<NetInfo>(vanillaPrefabName)
+                .Clone(newPrefabName);
+        }
+
         public static IEnumerable<NetInfo> Build(this INetInfoBuilder builder)
         {
             // Ground versions
