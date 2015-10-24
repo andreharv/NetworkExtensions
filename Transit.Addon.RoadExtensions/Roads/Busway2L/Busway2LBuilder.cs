@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Transit.Addon.RoadExtensions.Menus;
-using Transit.Addon.RoadExtensions.Props;
 using Transit.Framework;
 using Transit.Framework.Builders;
-using UnityEngine;
-using Debug = Transit.Framework.Debug;
 
 namespace Transit.Addon.RoadExtensions.Roads.Busway2L
 {
