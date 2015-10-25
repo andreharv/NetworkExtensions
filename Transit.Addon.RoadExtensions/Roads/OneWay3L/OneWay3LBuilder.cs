@@ -2,19 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using Transit.Framework;
+using Transit.Framework.Builders;
+using Transit.Framework.Interfaces;
 using Transit.Framework.Modularity;
 using Transit.Addon.RoadExtensions.Menus;
 
 namespace Transit.Addon.RoadExtensions.Roads.OneWay3L
 {
-    public class OneWay3LBuilder : NetInfoBuilderBase, INetInfoBuilder
+    public class OneWay3LBuilder : Activable, INetInfoBuilderPart
     {
         public int Order { get { return 8; } }
-        public int Priority { get { return 10; } }
+        public int UIOrder { get { return 10; } }
 
-        public string TemplatePrefabName { get { return NetInfos.Vanilla.ONEWAY_2L; } }
+        public string BasedPrefabName { get { return NetInfos.Vanilla.ONEWAY_2L; } }
         public string Name { get { return "Oneway3L"; } }
-        public string CodeName { get { return "ONEWAY_3L"; } }
         public string DisplayName { get { return "Three-Lane Oneway"; } }
         public string Description { get { return "A three-lane one-way road without parkings spaces. Supports medium traffic."; } }
         public string UICategory { get { return AdditionnalMenus.ROADS_SMALL_HV; } }

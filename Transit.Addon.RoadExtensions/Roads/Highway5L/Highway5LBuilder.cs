@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Linq;
 using Transit.Framework;
-using Transit.Framework.Modularity;
 using UnityEngine;
+using Transit.Framework.Builders;
 
 namespace Transit.Addon.RoadExtensions.Roads.Highway5L
 {
-    public class Highway5LBuilder : NetInfoBuilderBase, INetInfoBuilder
+    public class Highway5LBuilder : Activable, INetInfoBuilderPart
     {
         public int Order { get { return 50; } }
-        public int Priority { get { return 15; } }
+        public int UIOrder { get { return 15; } }
 
-        public string TemplatePrefabName { get { return NetInfos.Vanilla.ROAD_6L; } }
+        public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_6L; } }
         public string Name { get { return "Five-Lane Highway"; } }
         public string DisplayName { get { return "Five-Lane Highway"; } }
-        public string CodeName { get { return "HIGHWAY_5L"; } }
         public string Description { get { return "A five-lane, one-way road suitable for very high and dense traffic between metropolitan areas. Lanes going the opposite direction need to be built separately. Highway does not allow zoning next to it!"; } }
         public string UICategory { get { return "RoadsHighway"; } }
         public string ThumbnailsPath { get { return @"Roads\Highway5L\thumbnails.png"; } }

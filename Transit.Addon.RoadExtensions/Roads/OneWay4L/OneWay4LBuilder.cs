@@ -2,19 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using Transit.Framework;
+using Transit.Framework.Builders;
+using Transit.Framework.Interfaces;
 using Transit.Framework.Modularity;
 using Transit.Addon.RoadExtensions.Menus;
 
 namespace Transit.Addon.RoadExtensions.Roads.OneWay4L
 {
-    public class OneWay4LBuilder : NetInfoBuilderBase, INetInfoBuilder
+    public class OneWay4LBuilder : Activable, INetInfoBuilderPart
     {
         public int Order { get { return 9; } }
-        public int Priority { get { return 30; } }
+        public int UIOrder { get { return 30; } }
 
-        public string TemplatePrefabName { get { return NetInfos.Vanilla.ONEWAY_2L; } }
+        public string BasedPrefabName { get { return NetInfos.Vanilla.ONEWAY_2L; } }
         public string Name { get { return "Oneway4L"; } }
-        public string CodeName { get { return "SMALL_ONEWAY_4L"; } }
         public string DisplayName { get { return "Small Four-Lane Oneway"; } }
         public string Description { get { return "A four-lane one-way road without parkings spaces. Supports medium traffic."; } }
         public string UICategory { get { return AdditionnalMenus.ROADS_SMALL_HV; } }

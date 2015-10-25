@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Linq;
 using Transit.Framework;
-using Transit.Framework.Modularity;
 using UnityEngine;
+using Transit.Framework.Builders;
 
 namespace Transit.Addon.RoadExtensions.Roads.Highway4L
 {
-    public class Highway4LBuilder : NetInfoBuilderBase, INetInfoBuilder
+    public class Highway4LBuilder : Activable, INetInfoBuilderPart
     {
         public int Order { get { return 49; } }
-        public int Priority { get { return 14; } }
+        public int UIOrder { get { return 14; } }
 
-        public string TemplatePrefabName { get { return NetInfos.Vanilla.HIGHWAY_3L; } }
+        public string BasedPrefabName { get { return NetInfos.Vanilla.HIGHWAY_3L; } }
         public string Name { get { return "Four-Lane Highway"; } }
         public string DisplayName { get { return "Four-Lane Highway"; } }
-        public string CodeName { get { return "HIGHWAY_4L"; } }
         public string Description { get { return "A four-lane, one-way road suitable for very high and dense traffic between metropolitan areas. Lanes going the opposite direction need to be built separately. Highway does not allow zoning next to it!"; } }
         public string UICategory { get { return "RoadsHighway"; } }
 

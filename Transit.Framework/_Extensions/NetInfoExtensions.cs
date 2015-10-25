@@ -10,22 +10,6 @@ namespace Transit.Framework
 {
     public static partial class NetInfoExtensions
     {
-        public static NetInfo Clone(this NetInfo originalNetInfo, string newName)
-        {
-            //Debug.Log(String.Format("TFW: Cloning {0} -> {1}", originalNetInfo.name, newName));
-
-            var gameObject = Object.Instantiate(originalNetInfo.gameObject);
-            gameObject.transform.parent = originalNetInfo.gameObject.transform; // N.B. This line is evil and removing it is killoing the game's performances
-            gameObject.name = newName;
-
-            var info = gameObject.GetComponent<NetInfo>();
-            info.m_prefabInitialized = false;
-
-            //Debug.Log(String.Format("TFW: Cloning completed {0} -> {1}", originalNetInfo.name, newName));
-
-            return info;
-        }
-
         public static void DisplayLaneProps(this NetInfo info)
         {
             foreach (var lane in info.m_lanes)
@@ -46,13 +30,6 @@ namespace Transit.Framework
                     }
                 }
             }
-        }
-
-        public static NetInfo SetUICategory(this NetInfo info, string category)
-        {
-            typeof(NetInfo).GetField("m_UICategory", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(info, category);
-
-            return info;
         }
     }
 }
