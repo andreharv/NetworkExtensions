@@ -39,9 +39,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway2L
             ///////////////////////////
             if (version == NetInfoVersion.Ground)
             {
-                info.m_surfaceLevel = 0;
-                info.m_class = highwayInfo.m_class.Clone("NExtHighway");
-
                 var segments0 = info.m_segments[0];
                 var nodes0 = info.m_nodes[0];
 
@@ -69,16 +66,13 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway2L
 
                 nodes1.SetMeshes
                     (@"Roads\aHighwayTemplates\Meshes\16m\Ground_Trans.obj",
-                    @"Roads\aHighwayTemplates\Meshes\16m\Ground_Trans_LOD.obj"); 
+                    @"Roads\aHighwayTemplates\Meshes\16m\Ground_Trans_LOD.obj");
 
                 info.m_segments = new[] { segments0 };
                 info.m_nodes = new[] { nodes0, nodes1 };
             }
             else if (version == NetInfoVersion.Elevated)
             {
-                info.m_surfaceLevel = 0;
-                info.m_class = highwayInfo.m_class.Clone("NExtHighway");
-
                 var segments0 = info.m_segments[0];
                 var nodes0 = info.m_nodes[0];
 
@@ -113,9 +107,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway2L
             }
             else if (version == NetInfoVersion.Bridge)
             {
-                info.m_surfaceLevel = 0;
-                info.m_class = highwayInfo.m_class.Clone("NExtHighway");
-
                 var segments0 = info.m_segments[0];
                 var nodes0 = info.m_nodes[0];
 
@@ -150,9 +141,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway2L
             }
             else if (version == NetInfoVersion.Slope)
             {
-                info.m_surfaceLevel = 0;
-                info.m_class = highwayInfo.m_class.Clone("NExtHighway");
-
                 var segments0 = info.m_segments[0];
                 var segments1 = info.m_segments[1];
                 var segments2 = segments1.ShallowClone();
@@ -192,15 +180,15 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway2L
                 nodes3.m_flagsRequired = NetNode.Flags.Transition;
 
                 segments0.SetMeshes
-                    (@"Roads\aHighwayTemplates\Meshes\16m\Slope_Gray.obj",
-                    @"Roads\aHighwayTemplates\Meshes\16m\Slope_Gray_LOD.obj");
+                    (@"Roads\aHighwayTemplates\Meshes\16m\Tunnel_Gray.obj",
+                    @"Roads\aHighwayTemplates\Meshes\16m\Ground_LOD.obj");
                 segments2.SetMeshes
                     (@"Roads\aHighwayTemplates\Meshes\16m\Slope.obj",
                     @"Roads\aHighwayTemplates\Meshes\16m\Slope_LOD.obj");
 
                 nodes0.SetMeshes
-                    (@"Roads\aHighwayTemplates\Meshes\16m\Slope_U_Node.obj",
-                    @"Roads\aHighwayTemplates\Meshes\16m\Slope_U_Node_LOD.obj");
+                    (@"Roads\aHighwayTemplates\Meshes\16m\Tunnel_Node_Gray.obj",
+                    @"Roads\aHighwayTemplates\Meshes\16m\Ground_Node_LOD.obj");
                 nodes1.SetMeshes
                     (@"Roads\aHighwayTemplates\Meshes\16m\Ground_Node.obj",
                     @"Roads\aHighwayTemplates\Meshes\16m\Ground_Node_LOD.obj");
@@ -242,14 +230,14 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway2L
                 // nodes2.m_flagsRequired = NetNode.Flags.UndergroundTransition;
 
                 segments0.SetMeshes
-                    (@"Roads\aHighwayTemplates\Meshes\16m\Tunnel.obj",
-                    @"Roads\aHighwayTemplates\Meshes\16m\Tunnel_LOD.obj");
+                    (@"Roads\aHighwayTemplates\Meshes\16m\Tunnel_Gray.obj",
+                    @"Roads\aHighwayTemplates\Meshes\16m\Ground_LOD.obj");
                 segments1.SetMeshes
                     (@"Roads\aHighwayTemplates\Meshes\16m\Tunnel.obj",
                     @"Roads\aHighwayTemplates\Meshes\16m\Tunnel_LOD.obj");
                 nodes0.SetMeshes
-                     (@"Roads\aHighwayTemplates\Meshes\16m\Tunnel_Node.obj",
-                    @"Roads\aHighwayTemplates\Meshes\16m\Tunnel_Node_LOD.obj");
+                     (@"Roads\aHighwayTemplates\Meshes\16m\Tunnel_Node_Gray.obj",
+                    @"Roads\aHighwayTemplates\Meshes\16m\Ground_Node_LOD.obj");
                 nodes1.SetMeshes
                     (@"Roads\aHighwayTemplates\Meshes\16m\Tunnel_Node.obj",
                     @"Roads\aHighwayTemplates\Meshes\16m\Tunnel_Node_LOD.obj");
@@ -292,6 +280,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway2L
                             @"Roads\Highway2L\Textures\Ground_NodeLOD__APRMap.png",
                             @"Roads\Highway2L\Textures\Ground_LOD__XYSMap.png"));
                     break;
+
                 case NetInfoVersion.Elevated:
                 case NetInfoVersion.Bridge:
                     info.SetAllSegmentsTexture(
@@ -319,17 +308,18 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway2L
                             @"Roads\Highway2L\Textures\Slope_Segment_Open__APRMap.png"),
                     new TexturesSet
                         (@"Roads\Highway2L\Textures\Slope_SegmentLOD__MainTex.png",
-                        @"Roads\Highway2L\Textures\Slope_Segment_OpenLOD__APRMap.png",
-                        @"Roads\Highway2L\Textures\Slope_NodeLOD__XYSMap.png"));
+                        @"Roads\Highway2L\Textures\Slope_SegmentLOD__APRMap.png",
+                        @"Roads\Highway2L\Textures\Slope_SegmentLOD__XYSMap.png"));
                     info.SetAllNodesTexture(
                         new TexturesSet
                            (@"Roads\Highway2L\Textures\Slope_Node__MainTex.png",
                             @"Roads\Highway2L\Textures\Ground_Node__APRMap.png"),
                         new TexturesSet
-                           (@"Roads\Highway2L\Textures\Slope_NodeLOD__MainTex.png",
+                           (@"Roads\Highway2L\Textures\Ground_NodeLOD__MainTex.png",
                             @"Roads\Highway2L\Textures\Ground_NodeLOD__APRMap.png",
-                            @"Roads\Highway2L\Textures\Slope_NodeLOD__XYSMap.png"));
+                            @"Roads\Highway2L\Textures\Ground_LOD__XYSMap.png"));
                     break;
+
                 case NetInfoVersion.Tunnel:
                     info.SetAllSegmentsTexture(
                         new TexturesSet
@@ -353,17 +343,22 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway2L
             ///////////////////////////
             // Set up                //
             ///////////////////////////
-            info.m_setVehicleFlags = Vehicle.Flags.None;
             info.m_availableIn = ItemClass.Availability.All;
+            info.m_class = highwayInfo.m_class.Clone(NetInfoClasses.NEXT_HIGHWAY2L);
             info.m_surfaceLevel = 0;
-            info.m_createPavement = false; //(version == NetInfoVersion.Slope);
-            info.m_createGravel = !(version == NetInfoVersion.Tunnel);
+            info.m_createPavement = version != NetInfoVersion.Ground && version != NetInfoVersion.Tunnel;
+            info.m_createGravel = version == NetInfoVersion.Ground;
             info.m_averageVehicleLaneSpeed = 2f;
             info.m_hasParkingSpaces = false;
             info.m_hasPedestrianLanes = false;
-            info.m_halfWidth = version == NetInfoVersion.Elevated || version == NetInfoVersion.Bridge ? 6 : 8;
+            info.m_halfWidth = 8;
             info.m_UnlockMilestone = highwayInfo.m_UnlockMilestone;
             info.m_pavementWidth = 2;
+            if (version == NetInfoVersion.Tunnel)
+            {
+                info.m_setVehicleFlags = Vehicle.Flags.Transition;
+            }
+
             // Disabling Parkings and Peds
             foreach (var l in info.m_lanes)
             {
@@ -404,6 +399,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway2L
                 l.m_width = laneWidth;
                 l.m_position = positionStart + i * laneWidth;
             }
+
             var hwPlayerNetAI = highwayInfo.GetComponent<PlayerNetAI>();
             var playerNetAI = info.GetComponent<PlayerNetAI>();
 
@@ -506,6 +502,30 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway2L
                 var leftHwProps = leftHwLane.m_laneProps.m_props.ToList();
                 var rightHwProps = rightHwLane.m_laneProps.m_props.ToList();
 
+                for (int i = 0; i < leftHwProps.Count; i++)
+                {
+                    if (leftHwProps[i].m_prop.name.ToLower().Contains("traffic"))
+                    {
+                        leftHwProps[i].m_position.x = -1;
+                    }
+                    else if (version == NetInfoVersion.Elevated || version == NetInfoVersion.Bridge)
+                    {
+                        leftHwProps[i].m_position.x = -1.55f;
+                    }
+                }
+
+                for (int i = 0; i < rightHwProps.Count; i++)
+                {
+                    if (rightHwProps[i].m_prop.name.ToLower().Contains("traffic"))
+                    {
+                        rightHwProps[i].m_position.x = 1;
+                    }
+                    else if(version == NetInfoVersion.Elevated || version == NetInfoVersion.Bridge)
+                    {
+                        rightHwProps[i].m_position.x = 1.55f;
+                    }
+                }
+
                 var wallLightProp = new NetLaneProps.Prop();
                 var wallLightPropInfo = Prefabs.Find<PropInfo>("Wall Light Orange", false);
                 var streetLightPropInfo = Prefabs.Find<PropInfo>("New Street Light", false);
@@ -520,6 +540,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway2L
                         break;
                     }
                 }
+                var trafficPropsLeft = leftHwProps.Where(lp => lp.m_prop.name.ToLower().Contains("traffic")).ToArray();
+                var trafficPropsRight = rightHwProps.Where(rp => rp.m_prop.name.ToLower().Contains("traffic")).ToArray();
 
                 if (streetLightRight != null)
                 {
@@ -547,7 +569,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway2L
 
                         streetLightRight.m_repeatDistance = 80;
                         streetLightRight.m_segmentOffset = 0;
-                        streetLightRight.m_position = new UnityEngine.Vector3(1.75f, 0, 0);
+                        streetLightRight.m_position = new UnityEngine.Vector3(1.75f, -3, 0);
 
                         leftHwProps.Add(wallLightPropLeft);
 
@@ -560,11 +582,19 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway2L
 
                         if (version == NetInfoVersion.Bridge || version == NetInfoVersion.Elevated)
                         {
-                            streetLightRight.m_position = new UnityEngine.Vector3(0.75f, 0, 0);
+                            streetLightRight.m_position = new UnityEngine.Vector3(2.75f, 0, 0);
+                            for (int i = 0; i < trafficPropsRight.Length; i++)
+                            {
+                                trafficPropsRight[i].m_position = new Vector3(2.75f, 1, 0);
+                            }
+                            for (int i = 0; i < trafficPropsLeft.Length; i++)
+                            {
+                                trafficPropsLeft[i].m_position = new Vector3(-2.75f, 1, 0);
+                            }
                         }
                         else
                         {
-                            streetLightRight.m_position = new UnityEngine.Vector3(1, 0, 0);
+                            streetLightRight.m_position = new UnityEngine.Vector3(0, 0, 0);
                         }
                     }
                 }
@@ -582,21 +612,21 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway2L
                         }
                     }
                 }
-                foreach (var lane in propLanes)
-                {
-                    if (lane.m_laneProps != null && lane.m_laneProps.m_props.Length > 0)
-                    {
-                        foreach (var prop in lane.m_laneProps.m_props)
-                        {
-                            var propName = prop.m_prop.name;
-                            var positionMultiplier = lane.m_position / Math.Abs(lane.m_position);
-                            if (!propName.Contains(streetLightPropInfo.name) && propName != wallLightPropInfo.name)
-                            {
-                                prop.m_position.x = 0;//positionMultiplier * 1.2f;
-                            }
-                        }
-                    }
-                }
+                //foreach (var lane in propLanes)
+                //{
+                //    if (lane.m_laneProps != null && lane.m_laneProps.m_props.Length > 0)
+                //    {
+                //        foreach (var prop in lane.m_laneProps.m_props)
+                //        {
+                //            var propName = prop.m_prop.name;
+                //            var positionMultiplier = lane.m_position / Math.Abs(lane.m_position);
+                //            if (!propName.Contains(streetLightPropInfo.name) && propName != wallLightPropInfo.name && !((version == NetInfoVersion.Elevated || version == NetInfoVersion.Bridge) && propName.ToLower().Contains("traffic")))
+                //            {
+                //                prop.m_position.x = 0;
+                //            }
+                //        }
+                //    }
+                //}
             }
         }
     }
