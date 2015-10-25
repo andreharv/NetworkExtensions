@@ -34,7 +34,10 @@ namespace Transit.Addon.TrafficAI
 
         public override void OnLoadSettings(XmlElement moduleElement)
         {
-            s_options = (Options)s_options.FromXml(moduleElement);
+            if (moduleElement != null)
+            {
+                s_options = (Options)s_options.FromXml(moduleElement);
+            }
         }
 
         private void OnCheckboxChanged(UIComponent c, bool isChecked)
@@ -48,7 +51,7 @@ namespace Transit.Addon.TrafficAI
                 else
                     s_options &= ~checkboxOption;
 
-                Mod.OnSaveSettings();
+                FireSaveSettingsNeeded();
             }
         }
     }

@@ -14,16 +14,9 @@ namespace Transit.Addon.RoadExtensions
         public const string REX_NETCOLLECTION = "RExNetCollection";
         public const string REX_PROPCOLLECTION = "RExPropCollection";
 
-        public RExModule(Mod mod)
-        {
-            this.Mod = mod;
-        }
-
         public override string Name
         {
             get { return "Road Extensions"; }
         }
-
-        public Mod Mod { get; private set; }
     }
 }

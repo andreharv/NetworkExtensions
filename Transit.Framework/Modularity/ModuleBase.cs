@@ -22,11 +22,5 @@ namespace Transit.Framework.Modularity
         public virtual void OnEnabled() { }
 
         public virtual void OnDisabled() { }
-
-        public virtual void OnSettingsUI(UIHelperBase helper) { }
-
-        public virtual void OnLoadSettings(XmlElement moduleElement) { }
-
-        public virtual void OnSaveSettings(XmlElement moduleElement) { }
     }
 }

@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Transit.Framework.Interfaces;
 
 namespace Transit.Framework.Modularity
 {
     public abstract partial class ModuleBase : IModule
     {
         private IEnumerable<IModulePart> _parts;
-        public IEnumerable<IModulePart> Parts
+        public virtual IEnumerable<IModulePart> Parts
         {
             get
             {
@@ -21,29 +20,13 @@ namespace Transit.Framework.Modularity
                         .GetTypes()
                         .Where(t => !t.IsAbstract && !t.IsInterface)
                         .Where(partType.IsAssignableFrom)
-                        .Select(t =>
-                            {
-                                var part = (IModulePart)Activator.CreateInstance(t);
-
-                                if (part is IActivablePart)
-                                {
-                                    var activablePart = (IActivablePart)part;
-
-                                    activablePart.IsEnabled = IsPartActivatedOnLoad(activablePart);
-                                }
-                                return part;
-                            })
+                        .Select(t => (IModulePart)Activator.CreateInstance(t))
                         .OrderOrderables()
                         .ToArray();
                 }
 
                 return _parts;
             }
-        }
-
-        protected virtual bool IsPartActivatedOnLoad(IActivablePart part)
-        {
-            return true;
         }
     }
 }

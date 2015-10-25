@@ -12,16 +12,16 @@ namespace Transit.Addon
 {
     public partial class Mod
     {
-        private IEnumerable<IModule> s_modules;
+        private IEnumerable<IModule> _modules;
         public IEnumerable<IModule> Modules
         {
             get
             {
-                if (s_modules == null)
+                if (_modules == null)
                 {
                     var moduleType = typeof(IModule);
 
-                    s_modules = AppDomain.CurrentDomain.GetAssemblies()
+                    _modules = AppDomain.CurrentDomain.GetAssemblies()
                                 .SelectMany(a => a.GetTypes())
                                 .Where(t => !t.IsAbstract && !t.IsInterface)
                                 .Where(t => moduleType.IsAssignableFrom(t))
@@ -30,14 +30,16 @@ namespace Transit.Addon
                                              .Any(a => a.Mod == typeof(Mod)))
                                 .Select(t =>
                                     {
-                                        var module = (IModule)Activator.CreateInstance(t, this);
+                                        var module = (IModule)Activator.CreateInstance(t);
                                         Debug.Log(string.Format("TAM: Loading module {0}", module.Name));
+
+                                        module.SaveSettingsNeeded += ModuleSettingsNeedSave;
                                         return module;
                                     })
                                 .ToArray();
                 }
 
-                return s_modules;
+                return _modules;
             }
         }
     }

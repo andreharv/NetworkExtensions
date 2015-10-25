@@ -74,7 +74,6 @@
     <Compile Include="Roads\MediumAvenue4L\MediumAvenue4LBuilder.cs" />
     <Compile Include="Roads\MediumAvenue4LTL\MediumAvenue4LTLBuilder.cs" />
     <Compile Include="Roads\MediumAvenueHelper.cs" />
-    <Compile Include="Options.cs" />
     <Compile Include="RExModule.Settings.cs" />
     <Compile Include="RExModule.Install.cs" />
     <Compile Include="Roads\Highway1L\Highway1LBuilder.cs" />
