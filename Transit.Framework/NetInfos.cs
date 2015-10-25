@@ -132,7 +132,12 @@ namespace Transit.Framework
 
     public static class NetInfoClasses
     {
-        public const string NEXT_HIGHWAY = "NExtHighway";
+        public const string NEXT_HIGHWAY1L = "NExtHighway1L";
+        public const string NEXT_HIGHWAY2L = "NExtHighway2L";
+        public const string NEXT_HIGHWAY4L = "NExtHighway4L";
+        public const string NEXT_HIGHWAY5L = "NExtHighway5L";
+        public const string NEXT_HIGHWAY6L = "NExtHighway6L";
+
         public const string NEXT_SMALL3L_ROAD = "NExtSmall3LRoad";
         public const string NEXT_SMALL4L_ROAD = "NExtSmall4LRoad";
         public const string NEXT_MEDIUM_ROAD = "NExtMediumRoad";
