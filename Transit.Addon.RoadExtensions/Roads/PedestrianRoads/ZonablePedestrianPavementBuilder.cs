@@ -8,12 +8,12 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
         public int Order { get { return 310; } }
         public int UIOrder { get { return 20; } }
 
-        public string Name { get { return "Zonable Pedestrian Pavement"; } }
+        public string Name { get { return NetInfos.New.ZONEABLE_PED_PAVEMENT; } }
         public string DisplayName { get { return "Zonable Pedestrian Pavement"; } }
         public string Description { get { return "Paved roads are nicer to walk on than gravel."; } }
 
         public string ThumbnailsPath { get { return @"Roads\PedestrianRoads\thumbnails_pavement.png"; } }
-        public string InfoTooltipPath { get { return @"Roads\PedestrianRoads\infotooltip.png"; } }
+        public string InfoTooltipPath { get { return string.Empty; } }
 
         public NetInfoVersion SupportedVersions
         {

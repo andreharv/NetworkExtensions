@@ -117,7 +117,13 @@ namespace Transit.Framework
                 // Legacy from T++
                 if (groundName == ZONEABLE_PED_PAVEMENT)
                 {
-                    return string.Format("Zonable Pedestrian {0}", version);
+                    switch (version)
+                    {
+                        case NetInfoVersion.Ground:
+                            return groundName;
+                        default:
+                            return string.Format("Zonable Pedestrian {0}", version);
+                    }
                 }
 
                 switch (version)
