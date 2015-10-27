@@ -69,7 +69,7 @@ namespace Transit.Addon.RoadExtensions.Roads.OneWay4L
                         new TexturesSet
                            (@"Roads\OneWay4L\Textures\Ground_Segment__MainTex.png",
                             @"Roads\OneWay4L\Textures\Ground_Segment__AlphaMap.png"),
-                        new TexturesSet
+                        new LODTexturesSet
                            (@"Roads\OneWay4L\Textures\Ground_SegmentLOD__MainTex.png",
                             @"Roads\OneWay4L\Textures\Ground_SegmentLOD__AlphaMap.png",
                             @"Roads\OneWay4L\Textures\Ground_SegmentLOD__XYS.png"));

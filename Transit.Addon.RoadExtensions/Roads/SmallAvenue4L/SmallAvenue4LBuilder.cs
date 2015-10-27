@@ -70,7 +70,7 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallAvenue4L
                         new TexturesSet
                            (@"Roads\SmallAvenue4L\Textures\Ground_Segment__MainTex.png",
                             @"Roads\SmallAvenue4L\Textures\Ground_Segment__AlphaMap.png"),
-                        new TexturesSet
+                        new LODTexturesSet
                            (@"Roads\SmallAvenue4L\Textures\Ground_SegmentLOD__MainTex.png",
                             @"Roads\SmallAvenue4L\Textures\Ground_SegmentLOD__AlphaMap.png",
                             @"Roads\SmallAvenue4L\Textures\Ground_SegmentLOD__XYS.png"));

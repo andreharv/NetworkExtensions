@@ -2,7 +2,7 @@
 {
     public static partial class NetInfoExtensions
     {
-        public static NetInfo SetAllSegmentsTexture(this NetInfo info, TexturesSet newTextures, TexturesSet newLODTextures = null)
+        public static NetInfo SetAllSegmentsTexture(this NetInfo info, TexturesSet newTextures, LODTexturesSet newLODTextures = null)
         {
             foreach (var segment in info.m_segments)
             {
@@ -12,7 +12,7 @@
             return info;
         }
 
-        public static NetInfo.Segment SetTextures(this NetInfo.Segment segment, TexturesSet newTextures, TexturesSet newLODTextures = null)
+        public static NetInfo.Segment SetTextures(this NetInfo.Segment segment, TexturesSet newTextures, LODTexturesSet newLODTextures = null)
         {
             if (segment.m_material != null)
             {
