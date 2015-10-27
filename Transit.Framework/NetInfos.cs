@@ -1,5 +1,4 @@
 ﻿using System;
-using Transit.Framework.Builders;
 
 namespace Transit.Framework
 {
@@ -95,6 +94,7 @@ namespace Transit.Framework
         {
             // Legacy from T++
             public const string BUSWAY_6L = "Large Road With Bus Lanes";
+            public const string ZONEABLE_PED_PAVEMENT = "Zonable Pedestrian Pavement";
 
             public static string GetPrefabName(string groundName, NetInfoVersion version)
             {
@@ -112,6 +112,12 @@ namespace Transit.Framework
                         default:
                             return string.Format("Large Road {0} With Bus Lanes", version);
                     }
+                }
+
+                // Legacy from T++
+                if (groundName == ZONEABLE_PED_PAVEMENT)
+                {
+                    return string.Format("Zonable Pedestrian {0}", version);
                 }
 
                 switch (version)

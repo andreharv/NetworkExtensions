@@ -79,6 +79,7 @@
     <Compile Include="RExModule.Settings.cs" />
     <Compile Include="RExModule.Install.cs" />
     <Compile Include="Roads\Highway1L\Highway1LBuilder.cs" />
+    <Compile Include="Roads\PedestrianRoads\NetInfoLane.cs" />
     <Compile Include="Roads\PedestrianRoads\ZonablePedestrianBuilderBase.cs" />
     <Compile Include="Roads\PedestrianRoads\ZonablePedestrianGravelBuilder.cs" />
     <Compile Include="Roads\PedestrianRoads\ZonablePedestrianPavementBuilder.cs" />
@@ -923,10 +924,18 @@
     <Content Include="Roads\MediumAvenue4LTL\thumbnails.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\infotooltip.png" />
-    <Content Include="Roads\PedestrianRoads\Textures\Ground_Segment__AlphaMap.png" />
-    <Content Include="Roads\PedestrianRoads\thumbnails_gravel.png" />
-    <Content Include="Roads\PedestrianRoads\thumbnails_pavement.png" />
+    <Content Include="Roads\PedestrianRoads\infotooltip.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\PedestrianRoads\Textures\Ground_Segment__AlphaMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\PedestrianRoads\thumbnails_gravel.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\PedestrianRoads\thumbnails_pavement.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Roads\SmallAvenue4L\infotooltip.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
