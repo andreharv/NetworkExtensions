@@ -5,9 +5,14 @@ namespace Transit.Framework
 {
     public static class NetLanePropsExtensions
     {
-        public static NetLaneProps Clone(this NetLaneProps nLP)
+        public static NetLaneProps Clone(this NetLaneProps nLP, string newName = null)
         {
             var newNLP = ScriptableObject.CreateInstance<NetLaneProps>();
+
+            if (newName != null)
+            {
+                newNLP.name = newName;
+            }
 
             if (nLP.m_props == null)
             {

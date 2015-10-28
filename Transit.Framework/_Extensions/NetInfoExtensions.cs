@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -30,6 +32,41 @@ namespace Transit.Framework
                     }
                 }
             }
+        }
+
+        public static NetInfo.Lane FindLane(this NetInfo info, Func<string, bool> predicate, bool crashOnNotFound = true)
+        {
+            var lane = info
+                .m_lanes
+                .Where(l => l != null && l.m_laneProps != null && l.m_laneProps.name != null && l.m_laneProps.m_props != null)
+                .FirstOrDefault(l => predicate(l.m_laneProps.name.ToLower()));
+
+            if (lane == null)
+            {
+                if (crashOnNotFound)
+                {
+                    throw new Exception("TFW: Lane not found");
+                }
+            }
+
+            return lane;
+        }
+
+        public static NetInfo.Lane FindLane(this NetInfo info, NetInfo.LaneType predicate, bool crashOnNotFound = true)
+        {
+            var lane = info
+                .m_lanes
+                .FirstOrDefault(l => l.m_laneType == NetInfo.LaneType.Vehicle);
+
+            if (lane == null)
+            {
+                if (crashOnNotFound)
+                {
+                    throw new Exception("TFW: Lane not found");
+                }
+            }
+
+            return lane;
         }
     }
 }

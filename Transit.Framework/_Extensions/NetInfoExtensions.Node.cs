@@ -2,7 +2,7 @@
 {
     public static partial class NetInfoExtensions
 {
-        public static NetInfo SetAllNodesTexture(this NetInfo info, TexturesSet newTextures, TexturesSet newLODTextures = null)
+        public static NetInfo SetAllNodesTexture(this NetInfo info, TexturesSet newTextures, LODTexturesSet newLODTextures = null)
         {
             foreach (var node in info.m_nodes)
             {
@@ -12,7 +12,7 @@
             return info;
         }
 
-        public static NetInfo.Node SetTextures(this NetInfo.Node node, TexturesSet newTextures, TexturesSet newLODTextures = null)
+        public static NetInfo.Node SetTextures(this NetInfo.Node node, TexturesSet newTextures, LODTexturesSet newLODTextures = null)
         {
             if (node.m_material != null)
             {
@@ -43,6 +43,15 @@
             {
                 node.m_lodMesh = AssetManager.instance.GetMesh(newLODMeshPath);
             }
+
+            return node;
+        }
+
+
+        public static NetInfo.Node SetFlags(this NetInfo.Node node, NetNode.Flags required, NetNode.Flags forbidden)
+        {
+            node.m_flagsRequired = required;
+            node.m_flagsForbidden = forbidden;
 
             return node;
         }

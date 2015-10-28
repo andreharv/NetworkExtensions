@@ -45,7 +45,7 @@ namespace Transit.Addon.RoadExtensions.Roads.MediumAvenue4LTL
                         new TexturesSet
                            (@"Roads\MediumAvenue4LTL\Textures\Ground_Segment__MainTex.png",
                             @"Roads\MediumAvenue4LTL\Textures\Ground_Segment__AlphaMap.png"),
-                        new TexturesSet
+                        new LODTexturesSet
                            (@"Roads\MediumAvenue4LTL\Textures\Ground_SegmentLOD__MainTex.png",
                             @"Roads\MediumAvenue4LTL\Textures\Ground_SegmentLOD__AlphaMap.png",
                             @"Roads\MediumAvenue4LTL\Textures\Ground_SegmentLOD__XYSMap.png"));

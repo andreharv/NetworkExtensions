@@ -264,7 +264,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway6L
                         new TexturesSet(
                             @"Roads\Highway6L\Textures\Ground\Segment__MainTex.png",
                             @"Roads\Highway6L\Textures\Ground\Segment__APRMap.png"),
-                    new TexturesSet
+                    new LODTexturesSet
                        (@"Roads\Highway6L\Textures\Ground\SegmentLOD__MainTex.png",
                         @"Roads\Highway6L\Textures\Ground\SegmentLOD__APRMap.png",
                         @"Roads\Highway6L\Textures\Ground\SegmentLOD__XYSMap.png"));
@@ -272,7 +272,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway6L
                         new TexturesSet
                            (@"Roads\Highway6L\Textures\Ground\Node__MainTex.png",
                             @"Roads\Highway6L\Textures\Ground\Node__APRMap.png"),
-                        new TexturesSet
+                        new LODTexturesSet
                            (@"Roads\Highway6L\Textures\Ground\NodeLOD__MainTex.png",
                             @"Roads\Highway6L\Textures\Ground\NodeLOD__APRMap.png",
                             @"Roads\Highway6L\Textures\Ground\NodeLOD__XYSMap.png"));
@@ -284,7 +284,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway6L
                         new TexturesSet(
                             @"Roads\Highway6L\Textures\ElevatedBridge\Segment__MainTex.png",
                             @"Roads\Highway6L\Textures\ElevatedBridge\Segment__APRMap.png"),
-                        new TexturesSet
+                        new LODTexturesSet
                            (@"Roads\Highway6L\Textures\ElevatedBridge\SegmentLOD__MainTex.png",
                             @"Roads\Highway6L\Textures\ElevatedBridge\SegmentLOD__APRMap.png",
                             @"Roads\Highway6L\Textures\ElevatedBridge\LOD__XYSMap.png"));
@@ -292,7 +292,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway6L
                         new TexturesSet
                            (@"Roads\Highway6L\Textures\ElevatedBridge\Node__MainTex.png",
                             @"Roads\Highway6L\Textures\ElevatedBridge\Node__APRMap.png"),
-                        new TexturesSet
+                        new LODTexturesSet
                            (@"Roads\Highway6L\Textures\ElevatedBridge\NodeLOD__MainTex.png",
                             @"Roads\Highway6L\Textures\ElevatedBridge\NodeLOD__APRMap.png",
                             @"Roads\Highway6L\Textures\ElevatedBridge\LOD__XYSMap.png"));
@@ -303,7 +303,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway6L
                         new TexturesSet
                            (@"Roads\Highway6L\Textures\Slope\Segment__MainTex.png",
                             @"Roads\Highway6L\Textures\Slope\Segment__APRMap.png"),
-                        new TexturesSet
+                        new LODTexturesSet
                             (@"Roads\Highway6L\Textures\Slope\SegmentLOD__MainTex.png",
                             @"Roads\Highway6L\Textures\Slope\SegmentLOD__APRMap.png",
                             @"Roads\Highway6L\Textures\Slope\SegmentLOD__XYSMap.png"));
@@ -311,7 +311,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway6L
                         new TexturesSet
                            (@"Roads\Highway6L\Textures\Tunnel\Node__MainTex.png",
                             @"Roads\Highway6L\Textures\Ground\Node__APRMap.png"),
-                        new TexturesSet
+                        new LODTexturesSet
                            (@"Roads\Highway6L\Textures\Ground\NodeLOD__MainTex.png",
                             @"Roads\Highway6L\Textures\Ground\NodeLOD__APRMap.png",
                             @"Roads\Highway6L\Textures\Ground\NodeLOD__XYSMap.png"));
@@ -321,7 +321,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway6L
                         new TexturesSet
                            (@"Roads\Highway6L\Textures\Tunnel\Segment__MainTex.png",
                             @"Roads\Highway6L\Textures\Tunnel\Segment__APRMap.png"),
-                        new TexturesSet
+                        new LODTexturesSet
                            (@"Roads\Highway6L\Textures\Tunnel\SegmentLOD__MainTex.png",
                             @"Roads\Highway6L\Textures\Tunnel\SegmentLOD__APRMap.png",
                             @"Roads\Highway6L\Textures\Tunnel\NodeLOD__XYSMap.png"));
@@ -329,7 +329,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway6L
                         new TexturesSet
                            (@"Roads\Highway6L\Textures\Tunnel\Node__MainTex.png",
                             @"Roads\Highway6L\Textures\Tunnel\Segment__APRMap.png"),
-                        new TexturesSet
+                        new LODTexturesSet
                            (@"Roads\Highway6L\Textures\Tunnel\NodeLOD__MainTex.png",
                             @"Roads\Highway6L\Textures\Tunnel\SegmentLOD__APRMap.png",
                             @"Roads\Highway6L\Textures\Tunnel\NodeLOD__XYSMap.png"));
