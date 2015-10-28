@@ -46,5 +46,17 @@
 
             return segment;
         }
+
+
+        public static NetInfo.Segment SetFlagsDefault(this NetInfo.Segment segment)
+        {
+            segment.m_backwardForbidden = NetSegment.Flags.None;
+            segment.m_backwardRequired = NetSegment.Flags.None;
+
+            segment.m_forwardForbidden = NetSegment.Flags.None;
+            segment.m_forwardRequired = NetSegment.Flags.None;
+
+            return segment;
+        }
     }
 }

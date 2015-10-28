@@ -46,5 +46,14 @@
 
             return node;
         }
+
+
+        public static NetInfo.Node SetFlags(this NetInfo.Node node, NetNode.Flags required, NetNode.Flags forbidden)
+        {
+            node.m_flagsRequired = required;
+            node.m_flagsForbidden = forbidden;
+
+            return node;
+        }
     }
 }
