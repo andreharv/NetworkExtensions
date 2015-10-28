@@ -13,7 +13,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
         public string Description { get { return "Gravel roads allow pedestrians to walk fast and easy."; } }
 
         public string ThumbnailsPath { get { return @"Roads\PedestrianRoads\thumbnails_gravel.png"; } }
-        public string InfoTooltipPath { get { return string.Empty; } }
+        public string InfoTooltipPath { get { return @"Roads\PedestrianRoads\infotooltip_gravel.png"; } }
 
         public NetInfoVersion SupportedVersions
         {

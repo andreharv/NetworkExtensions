@@ -13,7 +13,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
         public string Description { get { return "Paved roads are nicer to walk on than gravel."; } }
 
         public string ThumbnailsPath { get { return @"Roads\PedestrianRoads\thumbnails_pavement.png"; } }
-        public string InfoTooltipPath { get { return string.Empty; } }
+        public string InfoTooltipPath { get { return @"Roads\PedestrianRoads\infotooltip_pavement.png"; } }
 
         public NetInfoVersion SupportedVersions
         {

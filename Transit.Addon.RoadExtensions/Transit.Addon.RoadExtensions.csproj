@@ -924,7 +924,10 @@
     <Content Include="Roads\MediumAvenue4LTL\thumbnails.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\infotooltip.png">
+    <Content Include="Roads\PedestrianRoads\infotooltip_gravel.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\PedestrianRoads\infotooltip_pavement.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\PedestrianRoads\Textures\Ground_Segment__AlphaMap.png">
