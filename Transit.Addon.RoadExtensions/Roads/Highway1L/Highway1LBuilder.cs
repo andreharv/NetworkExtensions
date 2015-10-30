@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Transit.Framework;
 using Transit.Framework.Builders;
 using UnityEngine;
@@ -68,21 +69,16 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway1L
             ///////////////////////////
             // Set up lanes          //
             ///////////////////////////
-            // Disabling Parkings and Peds Lanes
-            foreach (var lane in info.m_lanes)
-            {
-                switch (lane.m_laneType)
-                {
-                    case NetInfo.LaneType.Parking:
-                        lane.m_laneType = NetInfo.LaneType.None;
-                        break;
-                    case NetInfo.LaneType.Pedestrian:
-                        lane.m_laneType = NetInfo.LaneType.None;
-                        break;
-                }
-            }
+            info.DisableHighwayParkingsAndPeds();
+            var leftHwLane = info.SetHighwayLeftShoulder(highwayInfo);
+            var rightHwLane = info.SetHighwayRightShoulder(highwayInfo);
 
-            // Setting up Lanes
+            rightHwLane.m_width = info.m_pavementWidth;
+            rightHwLane.m_position = info.m_halfWidth - leftHwLane.m_width;
+
+            leftHwLane.m_width = rightHwLane.m_width;
+            leftHwLane.m_position = -rightHwLane.m_position;
+
             var vehicleLanes = info.m_lanes
                 .Where(l => l.m_laneType != NetInfo.LaneType.None)
                 .OrderBy(l => l.m_similarLaneIndex)
@@ -91,7 +87,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway1L
             var nbLanes = vehicleLanes.Count();
 
             const float laneWidth = 4f;
-            var positionStart = (laneWidth * ((1f - nbLanes) / 2f));
+            var positionStart = laneWidth * ((1f - nbLanes) / 2f);
 
             for (var i = 0; i < vehicleLanes.Length; i++)
             {
@@ -103,209 +99,153 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway1L
                 l.m_position = positionStart + i * laneWidth;
             }
 
-            info.SetHighwayProps(highwayInfo);
-            info.TrimHighwayProps();
-
 
             ///////////////////////////
             // Set up props          //
             ///////////////////////////
-            NetInfo.Lane leftHwLane = null;
-            NetInfo.Lane rightHwLane = null;
-            if (version == NetInfoVersion.Tunnel)
+
+            // Shoulder lanes ---------------------------------------------------------------------
+            var leftHwLaneProps = leftHwLane.m_laneProps.m_props.ToList();
+            var rightHwLaneProps = rightHwLane.m_laneProps.m_props.ToList();
+
+            foreach (var prop in leftHwLaneProps.Where(lp => lp.m_flagsForbidden == NetLane.Flags.Inverted))
             {
-                var counter = 0;
-                foreach (var lane in info.m_lanes)
-                {
-                    if (lane.m_laneType == NetInfo.LaneType.None && counter == 0)
-                    {
-                        counter++;
-                        leftHwLane = lane;
-                        leftHwLane.m_width = info.m_pavementWidth - 1;
-                        leftHwLane.m_position = (info.m_halfWidth * -1) + (leftHwLane.m_width * 0.5f + 1);
-                    }
-                    else if (lane.m_laneType == NetInfo.LaneType.None && counter == 1)
-                    {
-                        rightHwLane = lane;
-                        rightHwLane.m_width = info.m_pavementWidth - 1;
-                        rightHwLane.m_position = (info.m_halfWidth) - (rightHwLane.m_width * 0.5f + 1);
-                    }
-                    else
-                    {
-                        lane.m_laneProps = highwayInfo.FindLane(NetInfo.LaneType.Vehicle).m_laneProps.ShallowClone();
-                    }
-                }
-
-                if (leftHwLane != null)
-                {
-                    leftHwLane.m_laneProps = highwayInfo
-                        .FindLane(name => name.Contains("left"))
-                        .m_laneProps
-                        .Clone("Highway1L Left Props");
-                }
-
-                if (rightHwLane != null)
-                {
-                    rightHwLane.m_laneProps = highwayInfo
-                        .FindLane(name => name.Contains("right"))
-                        .m_laneProps
-                        .Clone("Highway1L Right Props");
-                }
-            }
-            else
-            {
-                leftHwLane = info
-                    .FindLane(name => name.Contains("left"))
-                    .ShallowClone();
-
-                rightHwLane = info
-                    .FindLane(name => name.Contains("right"))
-                    .ShallowClone();
+                prop.m_startFlagsForbidden = NetNode.Flags.None;
+                prop.m_startFlagsRequired = NetNode.Flags.None;
+                prop.m_endFlagsForbidden = NetNode.Flags.None;
+                prop.m_endFlagsRequired = NetNode.Flags.Transition;
+                prop.m_angle = 180;
+                prop.m_position.z *= -1;
+                prop.m_segmentOffset *= -1;
             }
 
-            if (leftHwLane != null && rightHwLane != null)
+            switch (version)
             {
-                var leftHwProps = leftHwLane.m_laneProps.m_props.ToList();
-                var rightHwProps = rightHwLane.m_laneProps.m_props.ToList();
+                case NetInfoVersion.Ground:
+                case NetInfoVersion.Slope:
+                case NetInfoVersion.Tunnel:
+                    foreach (var prop in leftHwLaneProps)
+                    {
+                        prop.m_position.x = -1f;
+                    }
 
-                var wallLightProp = new NetLaneProps.Prop();
-                var wallLightPropInfo = Prefabs.Find<PropInfo>("Wall Light Orange", false);
+                    foreach (var prop in rightHwLaneProps)
+                    {
+                        prop.m_position.x = 1f;
+                    }
+                    break;
 
-                foreach (var prop in leftHwProps.Where(lp => lp.m_flagsForbidden == NetLane.Flags.Inverted))
-                {
-                    prop.m_startFlagsForbidden = NetNode.Flags.None;
-                    prop.m_startFlagsRequired = NetNode.Flags.None;
-                    prop.m_endFlagsForbidden = NetNode.Flags.None;
-                    prop.m_endFlagsRequired = NetNode.Flags.Transition;
-                    prop.m_angle = 180;
-                    prop.m_position.z *= -1;
-                    prop.m_segmentOffset *= -1;
-                }
+                case NetInfoVersion.Elevated:
+                case NetInfoVersion.Bridge:
+                    foreach (var prop in leftHwLaneProps)
+                    {
+                        prop.m_position.x = -0.6f;
+                    }
 
+                    foreach (var prop in rightHwLaneProps)
+                    {
+                        prop.m_position.x = 0.6f;
+                    }
+                    break;
+            }
+
+
+            // Replacing 1 way traffic lights with 2 way traffic lights
+            leftHwLaneProps.Trim(lp => lp.m_prop.name.Contains("Traffic"));
+            rightHwLaneProps.Trim(lp => lp.m_prop.name.Contains("Traffic"));
+
+            foreach (var prop in basicRoadInfo.FindLane(name => name.Contains("left")).m_laneProps.m_props.Where(lp => lp.m_prop.name.Contains("Traffic")))
+            {
+                var leftProp = prop.ShallowClone();
                 if (version == NetInfoVersion.Elevated || version == NetInfoVersion.Bridge)
                 {
-                    foreach (var prop in leftHwProps)
-                    {
-                        prop.m_position.x = -1.55f;
-                    }
-
-                    foreach (var prop in rightHwProps)
-                    {
-                        prop.m_position.x = 1.55f;
-                    }
+                    leftProp.m_position = new Vector3(-1.75f, 1, 0);
                 }
-
-                //Replace 1 way traffic lights with 2 way traffic lights
-                foreach (var prop in leftHwLane.m_laneProps.m_props.Where(lp => lp.m_prop.name.Contains("Traffic")))
+                else
                 {
-                    leftHwProps.Remove(prop);
+                    leftProp.m_position.x = -1;
                 }
+                leftHwLaneProps.Add(leftProp);
+            }
 
-                foreach (var prop in rightHwLane.m_laneProps.m_props.Where(lp => lp.m_prop.name.Contains("Traffic")))
+            foreach (var prop in basicRoadInfo.FindLane(name => name.Contains("right")).m_laneProps.m_props.Where(lp => lp.m_prop.name.Contains("Traffic")))
+            {
+                var rightProp = prop.ShallowClone();
+                if (version == NetInfoVersion.Elevated || version == NetInfoVersion.Bridge)
                 {
-                    rightHwProps.Remove(prop);
+                    rightProp.m_position = new Vector3(1.75f, 1, 0);
                 }
-
-                foreach (var prop in basicRoadInfo.FindLane(name => name.Contains("left")).m_laneProps.m_props.Where(lp => lp.m_prop.name.Contains("Traffic")))
+                else
                 {
-                    var leftProp = prop.ShallowClone();
-                    if (version == NetInfoVersion.Elevated || version == NetInfoVersion.Bridge)
-                    {
-                        leftProp.m_position = new Vector3(-2.75f, 1, 0);
-                    }
-                    else
-                    {
-                        leftProp.m_position.x = -1;
-                    }
-                    leftHwProps.Add(leftProp);
+                    rightProp.m_position.x = 1;
                 }
+                rightHwLaneProps.Add(rightProp);
+            }
 
-                foreach (var prop in basicRoadInfo.FindLane(name => name.Contains("right")).m_laneProps.m_props.Where(lp => lp.m_prop.name.Contains("Traffic")))
+
+            // Lightning
+            var streetLightPropInfo = Prefabs.Find<PropInfo>("New Street Light Highway", false);
+            var streetLightProp = rightHwLaneProps.FirstOrDefault(prop => prop.m_prop == streetLightPropInfo);
+
+            if (streetLightProp != null)
+            {
+                switch (version)
                 {
-                    var rightProp = prop.ShallowClone();
-                    if (version == NetInfoVersion.Elevated || version == NetInfoVersion.Bridge)
-                    {
-                        rightProp.m_position = new Vector3(2.75f, 1, 0);
-                    }
-                    else
-                    {
-                        rightProp.m_position.x = 1;
-                    }
-                    rightHwProps.Add(rightProp);
+                    case NetInfoVersion.Elevated:
+                    case NetInfoVersion.Bridge:
+                        streetLightProp.m_repeatDistance = 80;
+                        streetLightProp.m_position = new Vector3(1.75f, -2, 0);
+                        break;
+
+                    case NetInfoVersion.Tunnel:
+                        streetLightProp.m_repeatDistance = 40;
+                        streetLightProp.m_segmentOffset = 0;
+                        streetLightProp.m_position = new Vector3(3.2f, -4.5f, 0);
+                        break;
+
+                    case NetInfoVersion.Slope:
+                        rightHwLaneProps.Trim(p => p.m_prop == streetLightPropInfo);
+                        break;
                 }
+            }
+
+            if (version == NetInfoVersion.Slope)
+            {
+                var wallLightPropInfo = Prefabs.Find<PropInfo>("Wall Light Orange", false);
+                var wallLightProp = new NetLaneProps.Prop();
+                wallLightProp.m_prop = wallLightPropInfo.ShallowClone();
+                wallLightProp.m_probability = 100;
+                wallLightProp.m_repeatDistance = 20;
+                wallLightProp.m_segmentOffset = 0;
+
+                var wallLightPropLeft = wallLightProp.ShallowClone();
+                wallLightPropLeft.m_angle = 270;
+                wallLightPropLeft.m_position = new Vector3(0, 1.5f, 0);
+                leftHwLaneProps.Add(wallLightPropLeft);
+
+                var wallLightPropRight = wallLightProp.ShallowClone();
+                wallLightPropRight.m_angle = 90;
+                wallLightPropRight.m_position = new Vector3(0, 1.5f, 0);
+                rightHwLaneProps.Add(wallLightPropRight);
+            }
+
+            leftHwLane.m_laneProps.m_props = leftHwLaneProps.ToArray();
+            rightHwLane.m_laneProps.m_props = rightHwLaneProps.ToArray();
 
 
-                var streetLightRight = rightHwLane
-                    .m_laneProps
-                    .m_props
-                    .FirstOrDefault(prop =>
-                        prop != null &&
-                        prop.m_prop != null &&
-                        prop.m_prop.name != null &&
-                        prop.m_prop.name.Contains("New Street Light"));
-
-                if (streetLightRight != null)
+            // Other lanes ------------------------------------------------------------------------
+            foreach (var lane in vehicleLanes)
+            {
+                if (lane.m_laneProps != null && lane.m_laneProps.m_props.Length > 0)
                 {
-                    if (version == NetInfoVersion.Tunnel)
+                    foreach (var prop in lane.m_laneProps.m_props)
                     {
-                        streetLightRight.m_repeatDistance = 40;
-                        streetLightRight.m_segmentOffset = 0;
-                        streetLightRight.m_position = new Vector3(3.2f, -4.5f, 0);
-
-                        rightHwProps.Add(streetLightRight);
-                    }
-                    else if (version == NetInfoVersion.Slope)
-                    {
-                        wallLightProp.m_prop = wallLightPropInfo.ShallowClone();
-                        wallLightProp.m_finalProp = wallLightPropInfo.ShallowClone();
-                        wallLightProp.m_probability = 100;
-                        wallLightProp.m_repeatDistance = 20;
-                        wallLightProp.m_segmentOffset = 0;
-                        var wallLightPropLeft = wallLightProp.ShallowClone();
-                        var wallLightPropRight = wallLightProp.ShallowClone();
-                        wallLightPropLeft.m_angle = 270;
-                        wallLightPropRight.m_angle = 90;
-                        wallLightPropLeft.m_position = new Vector3(-1, 1.5f, 0);
-                        wallLightPropRight.m_position = new Vector3(1, 1.5f, 0);
-
-                        streetLightRight.m_repeatDistance = 80;
-                        streetLightRight.m_segmentOffset = 0;
-                        streetLightRight.m_position = new Vector3(1.75f, -3, 0);
-
-                        leftHwProps.Add(wallLightPropLeft);
-
-                        rightHwProps.Add(streetLightRight);
-                        rightHwProps.Add(wallLightPropRight);
-                    }
-                    else
-                    {
-                        streetLightRight.m_repeatDistance = 80;
-
-                        if (version == NetInfoVersion.Bridge || version == NetInfoVersion.Elevated)
-                        {
-                            streetLightRight.m_position = new Vector3(1.75f, -3, 0);
-                        }
-                        else
-                        {
-                            streetLightRight.m_probability = 0;
-                        }
-                    }
-                }
-
-                leftHwLane.m_laneProps.m_props = leftHwProps.ToArray();
-                rightHwLane.m_laneProps.m_props = rightHwProps.ToArray();
-
-                foreach (var lane in vehicleLanes)
-                {
-                    if (lane.m_laneProps != null && lane.m_laneProps.m_props.Length > 0)
-                    {
-                        foreach (var prop in lane.m_laneProps.m_props)
-                        {
-                            prop.m_position = new Vector3(0, 0, 0);
-                        }
+                        prop.m_position = new Vector3(0, 0, 0);
                     }
                 }
             }
+
+            info.TrimHighwayProps(version == NetInfoVersion.Ground);
 
 
             ///////////////////////////

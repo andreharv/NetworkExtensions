@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Transit.Framework
@@ -20,9 +21,7 @@ namespace Transit.Framework
             }
             else
             {
-                var newList = new List<NetLaneProps.Prop>();
-                newList.AddRange(nLP.m_props);
-                newNLP.m_props = newList.ToArray();
+                newNLP.m_props = nLP.m_props.Where(p => p != null).Select(p => p.ShallowClone()).ToArray();
             }
 
             return newNLP;

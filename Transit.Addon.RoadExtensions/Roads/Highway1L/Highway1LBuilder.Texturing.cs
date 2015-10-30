@@ -11,7 +11,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway1L
                 case NetInfoVersion.Ground:
                     info.SetAllSegmentsTexture(
                         new TexturesSet(
-                            @"Roads\Highway1L\Textures\Ground_Elevated_Segment__MainTex.png",
+                            @"Roads\Highway1L\Textures\Ground_Segment__MainTex.png",
                             @"Roads\Highway1L\Textures\Ground_Segment__APRMap.png"),
                         new LODTexturesSet
                            (@"Roads\Highway1L\Textures\Ground_SegmentLOD__MainTex.png",
@@ -19,7 +19,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway1L
                             @"Roads\Highway1L\Textures\Ground_LOD__XYSMap.png"));
                     info.SetAllNodesTexture(
                         new TexturesSet
-                           (@"Roads\Highway1L\Textures\Ground_Elevated_Node__MainTex.png",
+                           (@"Roads\Highway1L\Textures\Ground_Segment__MainTex.png",
                             @"Roads\Highway1L\Textures\Ground_Node__APRMap.png"),
                         new LODTexturesSet
                            (@"Roads\Highway1L\Textures\Ground_NodeLOD__MainTex.png",
@@ -31,16 +31,16 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway1L
                 case NetInfoVersion.Bridge:
                     info.SetAllSegmentsTexture(
                         new TexturesSet(
-                            @"Roads\Highway1L\Textures\Ground_Elevated_Segment__MainTex.png",
-                            @"Roads\Highway1L\Textures\Elevated_Segment__APRMap.png"),
+                            @"Roads\Highway1L\Textures\Ground_Segment__MainTex.png",
+                            @"Roads\Highway1L\Textures\Ground_Segment__APRMap.png"),
                         new LODTexturesSet
                            (@"Roads\Highway1L\Textures\Elevated_SegmentLOD__MainTex.png",
                             @"Roads\Highway1L\Textures\Elevated_SegmentLOD__APRMap.png",
                             @"Roads\Highway1L\Textures\Elevated_NodeLOD__XYSMap.png"));
                     info.SetAllNodesTexture(
                         new TexturesSet
-                           (@"Roads\Highway1L\Textures\Ground_Elevated_Node__MainTex.png",
-                            @"Roads\Highway1L\Textures\Elevated_Node__APRMap.png"),
+                           (@"Roads\Highway1L\Textures\Ground_Segment__MainTex.png",
+                            @"Roads\Highway1L\Textures\Ground_Node__APRMap.png"),
                         new LODTexturesSet
                            (@"Roads\Highway1L\Textures\Elevated_NodeLOD__MainTex.png",
                             @"Roads\Highway1L\Textures\Elevated_NodeLOD__APRMap.png",
