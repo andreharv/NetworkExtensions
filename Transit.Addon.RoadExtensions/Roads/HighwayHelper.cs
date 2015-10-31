@@ -160,16 +160,29 @@ namespace Transit.Addon.RoadExtensions.Roads
             return rightHwLane;
         }
 
-        public static IEnumerable<NetInfo.Lane> SetHighwayVehicleLanes(this NetInfo hwInfo)
+        public static IEnumerable<NetInfo.Lane> SetHighwayVehicleLanes(this NetInfo hwInfo, int lanesToAdd = 0)
         {
+            if (lanesToAdd > 0)
+            {
+                var sourceLane = hwInfo.m_lanes.First(l => l.m_laneType != NetInfo.LaneType.None);
+                var tempLanes = hwInfo.m_lanes.ToList();
+
+                for (var i = 0; i < lanesToAdd; i++)
+                {
+                    var newLane = sourceLane.Clone();
+                    tempLanes.Add(newLane);
+                }
+
+                hwInfo.m_lanes = tempLanes.ToArray();
+            }
+
             var vehicleLanes = hwInfo.m_lanes
                 .Where(l => l.m_laneType != NetInfo.LaneType.None)
                 .OrderBy(l => l.m_similarLaneIndex)
                 .ToArray();
 
-            var nbLanes = vehicleLanes.Count();
-
             const float laneWidth = 4f;
+            var nbLanes = vehicleLanes.Count();
             var positionStart = laneWidth * ((1f - nbLanes) / 2f);
 
             for (var i = 0; i < vehicleLanes.Length; i++)
@@ -180,13 +193,9 @@ namespace Transit.Addon.RoadExtensions.Roads
                 l.m_verticalOffset = 0f;
                 l.m_width = laneWidth;
                 l.m_position = positionStart + i * laneWidth;
-            }
+                l.m_laneProps = l.m_laneProps.Clone();
 
-            foreach (var lane in vehicleLanes)
-            {
-                lane.m_laneProps = lane.m_laneProps.Clone();
-
-                foreach (var prop in lane.m_laneProps.m_props)
+                foreach (var prop in l.m_laneProps.m_props)
                 {
                     prop.m_position = new Vector3(0, 0, 0);
                 }
@@ -287,7 +296,7 @@ namespace Transit.Addon.RoadExtensions.Roads
             }
         }
 
-        public static void AddLeftWallLights(this ICollection<NetLaneProps.Prop> props)
+        public static void AddLeftWallLights(this ICollection<NetLaneProps.Prop> props, int xPos = 0)
         {
             var wallLightPropInfo = Prefabs.Find<PropInfo>("Wall Light Orange");
             var wallLightProp = new NetLaneProps.Prop();
@@ -296,11 +305,11 @@ namespace Transit.Addon.RoadExtensions.Roads
             wallLightProp.m_repeatDistance = 20;
             wallLightProp.m_segmentOffset = 0;
             wallLightProp.m_angle = 270;
-            wallLightProp.m_position = new Vector3(0, 1.5f, 0);
+            wallLightProp.m_position = new Vector3(xPos, 1.5f, 0);
             props.Add(wallLightProp);
         }
 
-        public static void AddRightWallLights(this ICollection<NetLaneProps.Prop> props)
+        public static void AddRightWallLights(this ICollection<NetLaneProps.Prop> props, int xPos = 0)
         {
             var wallLightPropInfo = Prefabs.Find<PropInfo>("Wall Light Orange");
             var wallLightProp = new NetLaneProps.Prop();
@@ -309,8 +318,27 @@ namespace Transit.Addon.RoadExtensions.Roads
             wallLightProp.m_repeatDistance = 20;
             wallLightProp.m_segmentOffset = 0;
             wallLightProp.m_angle = 90;
-            wallLightProp.m_position = new Vector3(0, 1.5f, 0);
+            wallLightProp.m_position = new Vector3(xPos, 1.5f, 0);
             props.Add(wallLightProp);
+        }
+
+        public static void SetHighwaySignsSlope(this ICollection<NetLaneProps.Prop> props)
+        {
+            var speedLimit = Prefabs.Find<PropInfo>("100 Speed Limit");
+            var motorwaySign = Prefabs.Find<PropInfo>("Motorway Sign");
+
+            foreach (var p in props)
+            {
+                if (p.m_prop == speedLimit)
+                {
+                    p.m_position = new Vector3(0f, 1f, 10f);
+                }
+
+                if (p.m_prop == motorwaySign)
+                {
+                    p.m_position = new Vector3(0f, 1f, 1f);
+                }
+            }
         }
 
         public static void TrimNonHighwayProps(this NetInfo info, bool removeRightStreetLights = false)
