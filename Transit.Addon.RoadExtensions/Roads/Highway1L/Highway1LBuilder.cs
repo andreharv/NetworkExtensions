@@ -67,7 +67,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway1L
             ///////////////////////////
             // Set up lanes          //
             ///////////////////////////
-            info.DisableHighwayParkingsAndPeds();
+            info.SetupHighwayLanes();
             var leftHwLane = info.SetHighwayLeftShoulder(highwayInfo, version);
             var rightHwLane = info.SetHighwayRightShoulder(highwayInfo, version);
             var vehicleLanes = info.SetHighwayVehicleLanes();
@@ -102,7 +102,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway1L
 
 
             // Lightning
-            rightHwLaneProps.SetLights(version);
+            rightHwLaneProps.SetHighwayRightLights(version);
             if (version == NetInfoVersion.Slope)
             {
                 leftHwLaneProps.AddLeftWallLights();

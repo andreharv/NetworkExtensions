@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Transit.Framework;
 using UnityEngine;
+using Debug = Transit.Framework.Debug;
 
 namespace Transit.Addon.RoadExtensions.Roads
 {
@@ -62,7 +63,7 @@ namespace Transit.Addon.RoadExtensions.Roads
             }
         }
 
-        public static NetInfo DisableHighwayParkingsAndPeds(this NetInfo hwInfo)
+        public static NetInfo SetupHighwayLanes(this NetInfo hwInfo)
         {
             // Removing Parking lanes
             hwInfo.m_lanes = hwInfo
@@ -162,7 +163,20 @@ namespace Transit.Addon.RoadExtensions.Roads
 
         public static IEnumerable<NetInfo.Lane> SetHighwayVehicleLanes(this NetInfo hwInfo, int lanesToAdd = 0)
         {
-            if (lanesToAdd > 0)
+            if (lanesToAdd < 0)
+            {
+                var remainingLanes = new List<NetInfo.Lane>();
+                remainingLanes.AddRange(hwInfo
+                    .m_lanes
+                    .Where(l => l.m_laneType == NetInfo.LaneType.None));
+                remainingLanes.AddRange(hwInfo
+                    .m_lanes
+                    .Where(l => l.m_laneType != NetInfo.LaneType.None)
+                    .Skip(-lanesToAdd));
+
+                hwInfo.m_lanes = remainingLanes.ToArray();
+            }
+            else if (lanesToAdd > 0)
             {
                 var sourceLane = hwInfo.m_lanes.First(l => l.m_laneType != NetInfo.LaneType.None);
                 var tempLanes = hwInfo.m_lanes.ToList();
@@ -178,7 +192,6 @@ namespace Transit.Addon.RoadExtensions.Roads
 
             var vehicleLanes = hwInfo.m_lanes
                 .Where(l => l.m_laneType != NetInfo.LaneType.None)
-                .OrderBy(l => l.m_similarLaneIndex)
                 .ToArray();
 
             const float laneWidth = 4f;
@@ -262,15 +275,79 @@ namespace Transit.Addon.RoadExtensions.Roads
             }
         }
 
-        public static void SetLights(this ICollection<NetLaneProps.Prop> props, NetInfoVersion version)
+        private static NetLaneProps.Prop GetHighwayLight(this IEnumerable<NetLaneProps.Prop> props)
         {
             var streetLightPropInfo = Prefabs.Find<PropInfo>("New Street Light Highway", false);
             if (streetLightPropInfo == null)
             {
+                return null;
+            }
+
+            return props.FirstOrDefault(prop => prop.m_prop == streetLightPropInfo);
+        }
+
+        public static void SetHighwayLights(ICollection<NetLaneProps.Prop> leftprops, ICollection<NetLaneProps.Prop> rightprops, NetInfoVersion version)
+        {
+            var rightStreetLightProp = rightprops.GetHighwayLight();
+            if (rightStreetLightProp == null)
+            {
                 return;
             }
 
-            var streetLightProp = props.FirstOrDefault(prop => prop.m_prop == streetLightPropInfo);
+            NetLaneProps.Prop leftStreetLightProp = null;
+
+            switch (version)
+            {
+                case NetInfoVersion.Ground:
+                    leftStreetLightProp = rightStreetLightProp.ShallowClone();
+                    leftStreetLightProp.m_segmentOffset = 39;
+                    leftStreetLightProp.m_angle = 180;
+                    leftStreetLightProp.m_repeatDistance = 80;
+                    leftStreetLightProp.m_position = new Vector3(-1.75f, 0, 0);
+                    leftStreetLightProp.m_endFlagsForbidden = NetNode.Flags.TrafficLights;
+                    rightStreetLightProp.m_repeatDistance = 80;
+                    break;
+
+                case NetInfoVersion.Elevated:
+                case NetInfoVersion.Bridge:
+                    leftStreetLightProp = rightStreetLightProp.ShallowClone();
+                    leftStreetLightProp.m_segmentOffset = 39;
+                    leftStreetLightProp.m_angle = 180;
+                    leftStreetLightProp.m_repeatDistance = 80;
+                    leftStreetLightProp.m_position = new Vector3(-1.75f, -2, 0);
+                    leftStreetLightProp.m_endFlagsForbidden = NetNode.Flags.TrafficLights;
+                    rightStreetLightProp.m_repeatDistance = 80;
+                    rightStreetLightProp.m_position = new Vector3(1.75f, -2, 0);
+                    rightStreetLightProp.m_endFlagsForbidden = NetNode.Flags.TrafficLights;
+                    break;
+
+                case NetInfoVersion.Tunnel:
+                    leftStreetLightProp = rightStreetLightProp.ShallowClone();
+                    leftStreetLightProp.m_angle = 180;
+                    leftStreetLightProp.m_repeatDistance = 40;
+                    leftStreetLightProp.m_segmentOffset = 0;
+                    leftStreetLightProp.m_position = new Vector3(-3.2f, -4.5f, 0);
+                    leftStreetLightProp.m_endFlagsForbidden = NetNode.Flags.TrafficLights;
+                    rightStreetLightProp.m_repeatDistance = 40;
+                    rightStreetLightProp.m_segmentOffset = 0;
+                    rightStreetLightProp.m_position = new Vector3(3.2f, -4.5f, 0);
+                    rightStreetLightProp.m_endFlagsForbidden = NetNode.Flags.TrafficLights;
+                    break;
+
+                case NetInfoVersion.Slope:
+                    rightprops.Trim(p => p == rightStreetLightProp);
+                    break;
+            }
+
+            if (leftStreetLightProp != null)
+            {
+                leftprops.Add(leftStreetLightProp);
+            }
+        }
+
+        public static void SetHighwayRightLights(this ICollection<NetLaneProps.Prop> props, NetInfoVersion version)
+        {
+            var streetLightProp = props.GetHighwayLight();
             if (streetLightProp == null)
             {
                 return;
@@ -282,16 +359,18 @@ namespace Transit.Addon.RoadExtensions.Roads
                 case NetInfoVersion.Bridge:
                     streetLightProp.m_repeatDistance = 80;
                     streetLightProp.m_position = new Vector3(1.75f, -2, 0);
+                    streetLightProp.m_endFlagsForbidden = NetNode.Flags.TrafficLights;
                     break;
 
                 case NetInfoVersion.Tunnel:
                     streetLightProp.m_repeatDistance = 40;
                     streetLightProp.m_segmentOffset = 0;
                     streetLightProp.m_position = new Vector3(3.2f, -4.5f, 0);
+                    streetLightProp.m_endFlagsForbidden = NetNode.Flags.TrafficLights;
                     break;
 
                 case NetInfoVersion.Slope:
-                    props.Trim(p => p.m_prop == streetLightPropInfo);
+                    props.Trim(p => p == streetLightProp);
                     break;
             }
         }
@@ -341,7 +420,7 @@ namespace Transit.Addon.RoadExtensions.Roads
             }
         }
 
-        public static void TrimNonHighwayProps(this NetInfo info, bool removeRightStreetLights = false)
+        public static void TrimNonHighwayProps(this NetInfo info, bool removeRightStreetLights = false, bool removeLeftStreetLights = true)
         {
             var randomProp = Prefabs.Find<PropInfo>("Random Street Prop", false);
             var streetLight = Prefabs.Find<PropInfo>("New Street Light", false);
@@ -364,16 +443,19 @@ namespace Transit.Addon.RoadExtensions.Roads
                         continue;
                     }
 
-                    if (prop.m_prop == streetLight &&
-                        laneProps.name.Contains("Left"))
+                    if (removeLeftStreetLights)
                     {
-                        continue;
-                    }
+                        if (prop.m_prop == streetLight &&
+                            laneProps.name.Contains("Left"))
+                        {
+                            continue;
+                        }
 
-                    if (prop.m_prop == streetLightHw &&
-                        laneProps.name.Contains("Left"))
-                    {
-                        continue;
+                        if (prop.m_prop == streetLightHw &&
+                            laneProps.name.Contains("Left"))
+                        {
+                            continue;
+                        }
                     }
 
                     if (removeRightStreetLights)
