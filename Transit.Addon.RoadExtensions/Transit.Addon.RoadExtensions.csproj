@@ -65,6 +65,8 @@
     <Compile Include="Menus\AdditionnalMenus.cs" />
     <Compile Include="Menus\RExRoadsGroupPanel.cs" />
     <Compile Include="RExModule.Path.cs" />
+    <Compile Include="Roads\Highway5L\Highway5LBuilder.Texturing.cs" />
+    <Compile Include="Roads\HighwayModels.28m.cs" />
     <Compile Include="Roads\Highway4L\Highway4LBuilder.Texturing.cs" />
     <Compile Include="Roads\HighwayModels.24m.cs" />
     <Compile Include="Roads\Highway1L\Highway1LBuilder.Texturing.cs" />

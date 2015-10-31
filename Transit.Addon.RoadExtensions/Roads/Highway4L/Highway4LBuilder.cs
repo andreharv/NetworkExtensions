@@ -1,7 +1,5 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Transit.Framework;
-using UnityEngine;
 using Transit.Framework.Builders;
 
 namespace Transit.Addon.RoadExtensions.Roads.Highway4L
@@ -98,6 +96,34 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway4L
             rightHwLane.m_laneProps.m_props = rightHwLaneProps.ToArray();
 
             info.TrimNonHighwayProps();
+
+
+            ///////////////////////////
+            // AI                    //
+            ///////////////////////////
+            var hwPlayerNetAI = highwayInfo.GetComponent<PlayerNetAI>();
+            var playerNetAI = info.GetComponent<PlayerNetAI>();
+
+            if (hwPlayerNetAI != null && playerNetAI != null)
+            {
+                playerNetAI.m_constructionCost = hwPlayerNetAI.m_constructionCost * 4 / 3;
+                playerNetAI.m_maintenanceCost = hwPlayerNetAI.m_maintenanceCost * 4 / 3;
+            }
+
+            var roadBaseAI = info.GetComponent<RoadBaseAI>();
+
+            if (roadBaseAI != null)
+            {
+                roadBaseAI.m_highwayRules = true;
+                roadBaseAI.m_trafficLights = false;
+            }
+
+            var roadAI = info.GetComponent<RoadAI>();
+
+            if (roadAI != null)
+            {
+                roadAI.m_enableZoning = false;
+            }
         }
     }
 }
