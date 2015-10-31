@@ -35,7 +35,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway2L
             ///////////////////////////
             // 3DModeling            //
             ///////////////////////////
-            HighwayModels.Setup16mMesh(info, version);
+            info.Setup16mMesh(version);
 
 
             ///////////////////////////

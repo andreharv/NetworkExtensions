@@ -2,7 +2,7 @@
 
 namespace Transit.Addon.RoadExtensions.Roads
 {
-    public static class HighwayModels
+    public static partial class HighwayModels
     {
         public static void Setup16mMesh(this NetInfo info, NetInfoVersion version)
         {
