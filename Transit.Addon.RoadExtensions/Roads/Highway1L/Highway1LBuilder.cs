@@ -1,8 +1,6 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Transit.Framework;
 using Transit.Framework.Builders;
-using UnityEngine;
 
 namespace Transit.Addon.RoadExtensions.Roads.Highway1L
 {
@@ -37,7 +35,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway1L
             ///////////////////////////
             // 3DModeling            //
             ///////////////////////////
-            SetupModels(info, version);
+            info.Setup16mMesh(version);
             
 
             ///////////////////////////
@@ -70,34 +68,9 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway1L
             // Set up lanes          //
             ///////////////////////////
             info.DisableHighwayParkingsAndPeds();
-            var leftHwLane = info.SetHighwayLeftShoulder(highwayInfo);
-            var rightHwLane = info.SetHighwayRightShoulder(highwayInfo);
-
-            rightHwLane.m_width = info.m_pavementWidth;
-            rightHwLane.m_position = info.m_halfWidth - leftHwLane.m_width;
-
-            leftHwLane.m_width = rightHwLane.m_width;
-            leftHwLane.m_position = -rightHwLane.m_position;
-
-            var vehicleLanes = info.m_lanes
-                .Where(l => l.m_laneType != NetInfo.LaneType.None)
-                .OrderBy(l => l.m_similarLaneIndex)
-                .ToArray();
-
-            var nbLanes = vehicleLanes.Count();
-
-            const float laneWidth = 4f;
-            var positionStart = laneWidth * ((1f - nbLanes) / 2f);
-
-            for (var i = 0; i < vehicleLanes.Length; i++)
-            {
-                var l = vehicleLanes[i];
-                l.m_allowStop = false;
-                l.m_speedLimit = 2f;
-                l.m_verticalOffset = 0f;
-                l.m_width = laneWidth;
-                l.m_position = positionStart + i * laneWidth;
-            }
+            var leftHwLane = info.SetHighwayLeftShoulder(highwayInfo, version);
+            var rightHwLane = info.SetHighwayRightShoulder(highwayInfo, version);
+            var vehicleLanes = info.SetHighwayVehicleLanes();
 
 
             ///////////////////////////
@@ -119,133 +92,28 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway1L
                 prop.m_segmentOffset *= -1;
             }
 
-            switch (version)
-            {
-                case NetInfoVersion.Ground:
-                case NetInfoVersion.Slope:
-                case NetInfoVersion.Tunnel:
-                    foreach (var prop in leftHwLaneProps)
-                    {
-                        prop.m_position.x = -1f;
-                    }
 
-                    foreach (var prop in rightHwLaneProps)
-                    {
-                        prop.m_position.x = 1f;
-                    }
-                    break;
-
-                case NetInfoVersion.Elevated:
-                case NetInfoVersion.Bridge:
-                    foreach (var prop in leftHwLaneProps)
-                    {
-                        prop.m_position.x = -0.6f;
-                    }
-
-                    foreach (var prop in rightHwLaneProps)
-                    {
-                        prop.m_position.x = 0.6f;
-                    }
-                    break;
-            }
-
-
-            // Replacing 1 way traffic lights with 2 way traffic lights
+            // Set traffic lights
             leftHwLaneProps.Trim(lp => lp.m_prop.name.Contains("Traffic"));
             rightHwLaneProps.Trim(lp => lp.m_prop.name.Contains("Traffic"));
 
-            foreach (var prop in basicRoadInfo.FindLane(name => name.Contains("left")).m_laneProps.m_props.Where(lp => lp.m_prop.name.Contains("Traffic")))
-            {
-                var leftProp = prop.ShallowClone();
-                if (version == NetInfoVersion.Elevated || version == NetInfoVersion.Bridge)
-                {
-                    leftProp.m_position = new Vector3(-1.75f, 1, 0);
-                }
-                else
-                {
-                    leftProp.m_position.x = -1;
-                }
-                leftHwLaneProps.Add(leftProp);
-            }
-
-            foreach (var prop in basicRoadInfo.FindLane(name => name.Contains("right")).m_laneProps.m_props.Where(lp => lp.m_prop.name.Contains("Traffic")))
-            {
-                var rightProp = prop.ShallowClone();
-                if (version == NetInfoVersion.Elevated || version == NetInfoVersion.Bridge)
-                {
-                    rightProp.m_position = new Vector3(1.75f, 1, 0);
-                }
-                else
-                {
-                    rightProp.m_position.x = 1;
-                }
-                rightHwLaneProps.Add(rightProp);
-            }
+            leftHwLaneProps.AddRange(basicRoadInfo.GetLeftTrafficLights(version));
+            rightHwLaneProps.AddRange(basicRoadInfo.GetRightTrafficLights(version));
 
 
             // Lightning
-            var streetLightPropInfo = Prefabs.Find<PropInfo>("New Street Light Highway", false);
-            var streetLightProp = rightHwLaneProps.FirstOrDefault(prop => prop.m_prop == streetLightPropInfo);
-
-            if (streetLightProp != null)
-            {
-                switch (version)
-                {
-                    case NetInfoVersion.Elevated:
-                    case NetInfoVersion.Bridge:
-                        streetLightProp.m_repeatDistance = 80;
-                        streetLightProp.m_position = new Vector3(1.75f, -2, 0);
-                        break;
-
-                    case NetInfoVersion.Tunnel:
-                        streetLightProp.m_repeatDistance = 40;
-                        streetLightProp.m_segmentOffset = 0;
-                        streetLightProp.m_position = new Vector3(3.2f, -4.5f, 0);
-                        break;
-
-                    case NetInfoVersion.Slope:
-                        rightHwLaneProps.Trim(p => p.m_prop == streetLightPropInfo);
-                        break;
-                }
-            }
-
+            rightHwLaneProps.SetLights(version);
             if (version == NetInfoVersion.Slope)
             {
-                var wallLightPropInfo = Prefabs.Find<PropInfo>("Wall Light Orange", false);
-                var wallLightProp = new NetLaneProps.Prop();
-                wallLightProp.m_prop = wallLightPropInfo.ShallowClone();
-                wallLightProp.m_probability = 100;
-                wallLightProp.m_repeatDistance = 20;
-                wallLightProp.m_segmentOffset = 0;
-
-                var wallLightPropLeft = wallLightProp.ShallowClone();
-                wallLightPropLeft.m_angle = 270;
-                wallLightPropLeft.m_position = new Vector3(0, 1.5f, 0);
-                leftHwLaneProps.Add(wallLightPropLeft);
-
-                var wallLightPropRight = wallLightProp.ShallowClone();
-                wallLightPropRight.m_angle = 90;
-                wallLightPropRight.m_position = new Vector3(0, 1.5f, 0);
-                rightHwLaneProps.Add(wallLightPropRight);
+                leftHwLaneProps.AddLeftWallLights();
+                rightHwLaneProps.AddRightWallLights();
             }
 
             leftHwLane.m_laneProps.m_props = leftHwLaneProps.ToArray();
             rightHwLane.m_laneProps.m_props = rightHwLaneProps.ToArray();
 
 
-            // Other lanes ------------------------------------------------------------------------
-            foreach (var lane in vehicleLanes)
-            {
-                if (lane.m_laneProps != null && lane.m_laneProps.m_props.Length > 0)
-                {
-                    foreach (var prop in lane.m_laneProps.m_props)
-                    {
-                        prop.m_position = new Vector3(0, 0, 0);
-                    }
-                }
-            }
-
-            info.TrimHighwayProps(version == NetInfoVersion.Ground);
+            info.TrimNonHighwayProps(version == NetInfoVersion.Ground);
 
 
             ///////////////////////////

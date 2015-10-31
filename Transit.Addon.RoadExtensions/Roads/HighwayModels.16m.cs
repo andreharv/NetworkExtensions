@@ -1,10 +1,10 @@
 ﻿using Transit.Framework;
 
-namespace Transit.Addon.RoadExtensions.Roads.Highway1L
+namespace Transit.Addon.RoadExtensions.Roads
 {
-    public partial class Highway1LBuilder
+    public static class HighwayModels
     {
-        private static void SetupModels(NetInfo info, NetInfoVersion version)
+        public static void Setup16mMesh(this NetInfo info, NetInfoVersion version)
         {
             ///////////////////////////
             // Template              //

@@ -419,7 +419,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway6L
             }
 
             info.SetHighwayProps(highwayInfo);
-            info.TrimHighwayProps();
+            info.TrimNonHighwayProps();
 
             //Setting up props
             NetInfo.Lane leftHwLane = null;
