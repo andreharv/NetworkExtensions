@@ -21,7 +21,9 @@ namespace Transit.Framework
             public const string ONEWAY_2L_TREES = "Oneway Road Decoration Trees";
             public const string ONEWAY_6L = "Large Oneway";
 
+            public const string HIGHWAY_RAMP = "HighwayRamp";
             public const string HIGHWAY_3L = "Highway";
+            public const string HIGHWAY_3L_BARRIER = "Highway Barrier";
 
             public const string PED_GRAVEL = ROAD_2L_GRAVEL; // Quick fix for the Pedestian zonable roads
             public const string PED_PAVEMENT = "Pedestrian Pavement";

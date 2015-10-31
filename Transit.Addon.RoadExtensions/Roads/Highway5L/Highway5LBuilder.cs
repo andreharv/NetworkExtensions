@@ -7,7 +7,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway5L
     public partial class Highway5LBuilder : Activable, INetInfoBuilderPart
     {
         public int Order { get { return 50; } }
-        public int UIOrder { get { return 15; } }
+        public int UIOrder { get { return 50; } }
 
         public string BasedPrefabName { get { return NetInfos.Vanilla.ONEWAY_6L; } }
         public string Name { get { return "Five-Lane Highway"; } }

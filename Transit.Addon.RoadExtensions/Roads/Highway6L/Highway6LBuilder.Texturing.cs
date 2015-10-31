@@ -6,9 +6,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway6L
     {
         private static void SetupTextures(NetInfo info, NetInfoVersion version)
         {
-            ///////////////////////////
-            // Texturing             //
-            ///////////////////////////
             switch (version)
             {
                 case NetInfoVersion.Ground:
@@ -16,7 +13,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway6L
                         new TexturesSet(
                             @"Roads\Highway6L\Textures\Ground\Segment__MainTex.png",
                             @"Roads\Highway6L\Textures\Ground\Segment__APRMap.png"),
-                    new LODTexturesSet
+                        new LODTexturesSet
                            (@"Roads\Highway6L\Textures\Ground\SegmentLOD__MainTex.png",
                             @"Roads\Highway6L\Textures\Ground\SegmentLOD__APRMap.png",
                             @"Roads\Highway6L\Textures\Ground\SegmentLOD__XYSMap.png"));

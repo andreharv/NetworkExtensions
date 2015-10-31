@@ -7,7 +7,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway2L
     public partial class Highway2LBuilder : Activable, INetInfoBuilderPart
     {
         public int Order { get { return 40; } }
-        public int UIOrder { get { return 10; } }
+        public int UIOrder { get { return 20; } }
 
         public string BasedPrefabName { get { return NetInfos.Vanilla.ONEWAY_2L; } }
         public string Name { get { return "Rural Highway"; } }

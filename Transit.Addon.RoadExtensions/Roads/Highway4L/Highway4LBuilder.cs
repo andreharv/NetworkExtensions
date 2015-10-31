@@ -7,7 +7,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway4L
     public partial class Highway4LBuilder : Activable, INetInfoBuilderPart
     {
         public int Order { get { return 49; } }
-        public int UIOrder { get { return 14; } }
+        public int UIOrder { get { return 40; } }
 
         public string BasedPrefabName { get { return NetInfos.Vanilla.HIGHWAY_3L; } }
         public string Name { get { return "Four-Lane Highway"; } }
