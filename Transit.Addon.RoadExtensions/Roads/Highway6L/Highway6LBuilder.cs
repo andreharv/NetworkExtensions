@@ -29,7 +29,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway6L
             // Template              //
             ///////////////////////////
             var highwayInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L);
-            var defaultMaterial = highwayInfo.m_nodes[0].m_material;
 
 
             ///////////////////////////

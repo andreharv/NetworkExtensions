@@ -58,7 +58,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway1L
                             @"Roads\Highway1L\Textures\Slope_SegmentLOD__XYSMap.png"));
                     info.SetAllNodesTexture(
                         new TexturesSet
-                           (@"Roads\Highway1L\Textures\Slope_Node__MainTex.png",
+                           (@"Roads\Highway1L\Textures\Slope_Segment__MainTex.png",
                             @"Roads\Highway1L\Textures\Ground_Node__APRMap.png"),
                         new LODTexturesSet
                            (@"Roads\Highway1L\Textures\Ground_NodeLOD__MainTex.png",
@@ -69,15 +69,15 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway1L
                     info.SetAllSegmentsTexture(
                         new TexturesSet
                            (@"Roads\Highway1L\Textures\Tunnel_Segment__MainTex.png",
-                            @"Roads\Highway1L\Textures\Tunnel__APRMap.png"),
+                            @"Roads\Highway1L\Textures\Tunnel_Segment__APRMap.png"),
                         new LODTexturesSet
                            (@"Roads\Highway1L\Textures\Tunnel_SegmentLOD__MainTex.png",
                             @"Roads\Highway1L\Textures\TunnelLOD__APRMap.png",
                             @"Roads\Highway1L\Textures\Slope_NodeLOD__XYSMap.png"));
                     info.SetAllNodesTexture(
                         new TexturesSet
-                           (@"Roads\Highway1L\Textures\Tunnel_Node__MainTex.png",
-                            @"Roads\Highway1L\Textures\Tunnel__APRMap.png"),
+                           (@"Roads\Highway1L\Textures\Tunnel_Segment__MainTex.png",
+                            @"Roads\Highway1L\Textures\Tunnel_Node__APRMap.png"),
                         new LODTexturesSet
                            (@"Roads\Highway1L\Textures\Tunnel_NodeLOD__MainTex.png",
                             @"Roads\Highway1L\Textures\TunnelLOD__APRMap.png",
