@@ -65,14 +65,14 @@
     <Compile Include="Menus\AdditionnalMenus.cs" />
     <Compile Include="Menus\RExRoadsGroupPanel.cs" />
     <Compile Include="RExModule.Path.cs" />
-    <Compile Include="Roads\HighwayModels.32m.cs" />
+    <Compile Include="Roads\Highways\HighwayModels.32m.cs" />
     <Compile Include="Roads\Highway5L\Highway5LBuilder.Texturing.cs" />
     <Compile Include="Roads\Highway6L\Highway6LBuilder.Texturing.cs" />
-    <Compile Include="Roads\HighwayModels.28m.cs" />
+    <Compile Include="Roads\Highways\HighwayModels.28m.cs" />
     <Compile Include="Roads\Highway4L\Highway4LBuilder.Texturing.cs" />
-    <Compile Include="Roads\HighwayModels.24m.cs" />
+    <Compile Include="Roads\Highways\HighwayModels.24m.cs" />
     <Compile Include="Roads\Highway1L\Highway1LBuilder.Texturing.cs" />
-    <Compile Include="Roads\HighwayModels.16m.cs" />
+    <Compile Include="Roads\Highways\HighwayModels.16m.cs" />
     <Compile Include="Roads\Highway2L\Highway2LBuilder.Texturing.cs" />
     <Compile Include="Roads\Highway4L\Highway4LBuilder.cs" />
     <Compile Include="Roads\Highway5L\Highway5LBuilder.cs" />
@@ -94,7 +94,7 @@
     <Compile Include="Roads\PedestrianRoads\ZonablePedestrianGravelBuilder.cs" />
     <Compile Include="Roads\PedestrianRoads\ZonablePedestrianPavementBuilder.cs" />
     <Compile Include="Roads\SmallAvenue4L\SmallAvenue4LBuilder.cs" />
-    <Compile Include="Roads\HighwayHelper.cs" />
+    <Compile Include="Roads\Highways\HighwayHelper.cs" />
     <Compile Include="Roads\Highway2L\Highway2LBuilder.cs" />
     <Compile Include="RExModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -963,286 +963,286 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <None Include="Roads\aHighwayTemplates\Meshes\16m\Elevated.obj">
+    <None Include="Roads\Highways\Meshes\16m\Elevated.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\16m\Elevated_LOD.obj">
+    <None Include="Roads\Highways\Meshes\16m\Elevated_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\16m\Elevated_Node.obj">
+    <None Include="Roads\Highways\Meshes\16m\Elevated_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\16m\Elevated_Node_LOD.obj">
+    <None Include="Roads\Highways\Meshes\16m\Elevated_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\16m\Elevated_Trans.obj">
+    <None Include="Roads\Highways\Meshes\16m\Elevated_Trans.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\16m\Elevated_Trans_LOD.obj">
+    <None Include="Roads\Highways\Meshes\16m\Elevated_Trans_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\16m\Ground.obj">
+    <None Include="Roads\Highways\Meshes\16m\Ground.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\16m\Ground_LOD.obj">
+    <None Include="Roads\Highways\Meshes\16m\Ground_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\16m\Ground_Node.obj">
+    <None Include="Roads\Highways\Meshes\16m\Ground_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\16m\Ground_Node_LOD.obj">
+    <None Include="Roads\Highways\Meshes\16m\Ground_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\16m\Ground_Trans.obj">
+    <None Include="Roads\Highways\Meshes\16m\Ground_Trans.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\16m\Ground_Trans_LOD.obj">
+    <None Include="Roads\Highways\Meshes\16m\Ground_Trans_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\16m\Slope.obj">
+    <None Include="Roads\Highways\Meshes\16m\Slope.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\16m\Slope_Gray.obj">
+    <None Include="Roads\Highways\Meshes\16m\Slope_Gray.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\16m\Slope_Gray_LOD.obj">
+    <None Include="Roads\Highways\Meshes\16m\Slope_Gray_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\16m\Slope_LOD.obj">
+    <None Include="Roads\Highways\Meshes\16m\Slope_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\16m\Slope_U_Node.obj">
+    <None Include="Roads\Highways\Meshes\16m\Slope_U_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\16m\Slope_U_Node_LOD.obj">
+    <None Include="Roads\Highways\Meshes\16m\Slope_U_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\16m\Slope_U_Trans.obj">
+    <None Include="Roads\Highways\Meshes\16m\Slope_U_Trans.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\16m\Tunnel.obj">
+    <None Include="Roads\Highways\Meshes\16m\Tunnel.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\16m\Tunnel_Gray.obj">
+    <None Include="Roads\Highways\Meshes\16m\Tunnel_Gray.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\16m\Tunnel_LOD.obj">
+    <None Include="Roads\Highways\Meshes\16m\Tunnel_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\16m\Tunnel_Node.obj">
+    <None Include="Roads\Highways\Meshes\16m\Tunnel_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\16m\Tunnel_Node_Gray.obj">
+    <None Include="Roads\Highways\Meshes\16m\Tunnel_Node_Gray.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\16m\Tunnel_Node_LOD.obj">
+    <None Include="Roads\Highways\Meshes\16m\Tunnel_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\16m\Tunnel_Trans.obj">
+    <None Include="Roads\Highways\Meshes\16m\Tunnel_Trans.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\16m\Tunnel_Trans_Gray.obj">
+    <None Include="Roads\Highways\Meshes\16m\Tunnel_Trans_Gray.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\24m\Ground.obj">
+    <None Include="Roads\Highways\Meshes\24m\Ground.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\24m\Ground_LOD.obj">
+    <None Include="Roads\Highways\Meshes\24m\Ground_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\24m\Ground_Node.obj">
+    <None Include="Roads\Highways\Meshes\24m\Ground_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\24m\Ground_Node_LOD.obj">
+    <None Include="Roads\Highways\Meshes\24m\Ground_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\24m\Ground_Trans.obj">
+    <None Include="Roads\Highways\Meshes\24m\Ground_Trans.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\24m\Ground_Trans_LOD.obj">
+    <None Include="Roads\Highways\Meshes\24m\Ground_Trans_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\24m\Slope_Gray.obj">
+    <None Include="Roads\Highways\Meshes\24m\Slope_Gray.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\24m\Slope_Gray_LOD.obj">
+    <None Include="Roads\Highways\Meshes\24m\Slope_Gray_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\24m\Slope_U_Node.obj">
+    <None Include="Roads\Highways\Meshes\24m\Slope_U_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\24m\Slope_U_Node_LOD.obj">
+    <None Include="Roads\Highways\Meshes\24m\Slope_U_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\24m\Slope_U_Trans.obj">
+    <None Include="Roads\Highways\Meshes\24m\Slope_U_Trans.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\24m\Slope_U_Trans_LOD.obj">
+    <None Include="Roads\Highways\Meshes\24m\Slope_U_Trans_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\24m\Tunnel.obj">
+    <None Include="Roads\Highways\Meshes\24m\Tunnel.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\24m\Tunnel_Gray.obj">
+    <None Include="Roads\Highways\Meshes\24m\Tunnel_Gray.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\24m\Tunnel_LOD.obj">
+    <None Include="Roads\Highways\Meshes\24m\Tunnel_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\24m\Tunnel_Node.obj">
+    <None Include="Roads\Highways\Meshes\24m\Tunnel_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\24m\Tunnel_Node_Gray.obj">
+    <None Include="Roads\Highways\Meshes\24m\Tunnel_Node_Gray.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\24m\Tunnel_Node_LOD.obj">
+    <None Include="Roads\Highways\Meshes\24m\Tunnel_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\24m\Tunnel_Trans.obj">
+    <None Include="Roads\Highways\Meshes\24m\Tunnel_Trans.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\24m\Tunnel_Trans_Gray.obj">
+    <None Include="Roads\Highways\Meshes\24m\Tunnel_Trans_Gray.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\24m\Tunnel_Trans_LOD.obj">
+    <None Include="Roads\Highways\Meshes\24m\Tunnel_Trans_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\28m\Elevated.obj">
+    <None Include="Roads\Highways\Meshes\28m\Elevated.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\28m\Elevated_LOD.obj">
+    <None Include="Roads\Highways\Meshes\28m\Elevated_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\28m\Elevated_Node.obj">
+    <None Include="Roads\Highways\Meshes\28m\Elevated_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\28m\Elevated_Node_LOD.obj">
+    <None Include="Roads\Highways\Meshes\28m\Elevated_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\28m\Elevated_Trans.obj">
+    <None Include="Roads\Highways\Meshes\28m\Elevated_Trans.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\28m\Elevated_Trans_LOD.obj">
+    <None Include="Roads\Highways\Meshes\28m\Elevated_Trans_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\28m\Ground.obj">
+    <None Include="Roads\Highways\Meshes\28m\Ground.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\28m\Ground_LOD.obj">
+    <None Include="Roads\Highways\Meshes\28m\Ground_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\28m\Ground_Node.obj">
+    <None Include="Roads\Highways\Meshes\28m\Ground_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\28m\Ground_Node_LOD.obj">
+    <None Include="Roads\Highways\Meshes\28m\Ground_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\28m\Ground_Trans.obj">
+    <None Include="Roads\Highways\Meshes\28m\Ground_Trans.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\28m\Ground_Trans_LOD.obj">
+    <None Include="Roads\Highways\Meshes\28m\Ground_Trans_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\28m\Tunnel.obj">
+    <None Include="Roads\Highways\Meshes\28m\Tunnel.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\28m\Tunnel_Gray.obj">
+    <None Include="Roads\Highways\Meshes\28m\Tunnel_Gray.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\28m\Tunnel_Node_Gray.obj">
+    <None Include="Roads\Highways\Meshes\28m\Tunnel_Node_Gray.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\28m\Tunnel_Trans_Gray.obj">
+    <None Include="Roads\Highways\Meshes\28m\Tunnel_Trans_Gray.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\28m\Tunnel_LOD.obj">
+    <None Include="Roads\Highways\Meshes\28m\Tunnel_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\28m\Tunnel_Node.obj">
+    <None Include="Roads\Highways\Meshes\28m\Tunnel_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\28m\Tunnel_Node_LOD.obj">
+    <None Include="Roads\Highways\Meshes\28m\Tunnel_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\28m\Tunnel_Trans.obj">
+    <None Include="Roads\Highways\Meshes\28m\Tunnel_Trans.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\28m\Tunnel_Trans_LOD.obj">
+    <None Include="Roads\Highways\Meshes\28m\Tunnel_Trans_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\32m\Elevated.obj">
+    <None Include="Roads\Highways\Meshes\32m\Elevated.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\32m\Elevated_LOD.obj">
+    <None Include="Roads\Highways\Meshes\32m\Elevated_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\32m\Elevated_Node_LOD.obj">
+    <None Include="Roads\Highways\Meshes\32m\Elevated_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\32m\Elevated_Trans.obj">
+    <None Include="Roads\Highways\Meshes\32m\Elevated_Trans.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\32m\Elevated_Trans_LOD.obj">
+    <None Include="Roads\Highways\Meshes\32m\Elevated_Trans_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\32m\Ground.obj">
+    <None Include="Roads\Highways\Meshes\32m\Ground.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\32m\Ground_LOD.obj">
+    <None Include="Roads\Highways\Meshes\32m\Ground_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\32m\Ground_Node.obj">
+    <None Include="Roads\Highways\Meshes\32m\Ground_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\32m\Ground_Node_LOD.obj">
+    <None Include="Roads\Highways\Meshes\32m\Ground_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\32m\Ground_Trans.obj">
+    <None Include="Roads\Highways\Meshes\32m\Ground_Trans.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\32m\Ground_Trans_LOD.obj">
+    <None Include="Roads\Highways\Meshes\32m\Ground_Trans_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\32m\Slope_Gray.obj">
+    <None Include="Roads\Highways\Meshes\32m\Slope_Gray.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\32m\Slope_Gray_LOD.obj">
+    <None Include="Roads\Highways\Meshes\32m\Slope_Gray_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\32m\Slope_Gray_Node.obj">
+    <None Include="Roads\Highways\Meshes\32m\Slope_Gray_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\32m\Slope_LOD.obj">
+    <None Include="Roads\Highways\Meshes\32m\Slope_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\32m\Slope_Node.obj">
+    <None Include="Roads\Highways\Meshes\32m\Slope_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\32m\Slope_Trans.obj">
+    <None Include="Roads\Highways\Meshes\32m\Slope_Trans.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\32m\Slope_U_Node.obj">
+    <None Include="Roads\Highways\Meshes\32m\Slope_U_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\32m\Slope_U_Trans.obj">
+    <None Include="Roads\Highways\Meshes\32m\Slope_U_Trans.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\32m\Tunnel.obj">
+    <None Include="Roads\Highways\Meshes\32m\Tunnel.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\32m\Tunnel_Gray.obj">
+    <None Include="Roads\Highways\Meshes\32m\Tunnel_Gray.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\32m\Tunnel_LOD.obj">
+    <None Include="Roads\Highways\Meshes\32m\Tunnel_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\32m\Tunnel_Node.obj">
+    <None Include="Roads\Highways\Meshes\32m\Tunnel_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\32m\Tunnel_Node_Gray.obj">
+    <None Include="Roads\Highways\Meshes\32m\Tunnel_Node_Gray.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aHighwayTemplates\Meshes\32m\Tunnel_Trans_Gray.obj">
+    <None Include="Roads\Highways\Meshes\32m\Tunnel_Trans_Gray.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\SmallHeavyRoads\Meshes\Ground.obj">

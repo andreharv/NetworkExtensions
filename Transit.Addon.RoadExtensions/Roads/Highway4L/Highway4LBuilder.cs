@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Transit.Addon.RoadExtensions.Roads.Highways;
 using Transit.Framework;
 using Transit.Framework.Builders;
 

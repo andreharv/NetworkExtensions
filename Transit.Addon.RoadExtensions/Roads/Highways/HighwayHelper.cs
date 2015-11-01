@@ -3,66 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Transit.Framework;
 using UnityEngine;
-using Debug = Transit.Framework.Debug;
 
-namespace Transit.Addon.RoadExtensions.Roads
+namespace Transit.Addon.RoadExtensions.Roads.Highways
 {
     public static class HighwayHelper
     {
-        [Obsolete("Use SetHighwayLeftShoulder and SetHighwayRightShoulder")]
-        public static void SetHighwayProps(this NetInfo info, NetInfo highwayInfoTemplate)
-        {
-            var leftHwLane = highwayInfoTemplate
-                .m_lanes
-                .Where(l => l != null && l.m_laneProps != null && l.m_laneProps.name != null && l.m_laneProps.m_props != null)
-                .FirstOrDefault(l => l.m_laneProps.name.ToLower().Contains("left"));
-
-            var rightHwLane = highwayInfoTemplate
-                .m_lanes
-                .Where(l => l != null && l.m_laneProps != null && l.m_laneProps.name != null && l.m_laneProps.m_props != null)
-                .FirstOrDefault(l => l.m_laneProps.name.ToLower().Contains("right"));
-
-            foreach (var lane in info.m_lanes)
-            {
-                if (lane.m_laneProps != null && lane.m_laneProps.name != null)
-                {
-                    if (leftHwLane != null)
-                    {
-                        if (lane.m_laneProps.name.ToLower().Contains("left"))
-                        {
-                            var newProps = ScriptableObject.CreateInstance<NetLaneProps>();
-                            newProps.name = "Highway6L Left Props";
-
-                            newProps.m_props = leftHwLane
-                                .m_laneProps
-                                .m_props
-                                .Select(p => p.ShallowClone())
-                                .ToArray();
-
-                            lane.m_laneProps = newProps;
-                        }
-                    }
-
-                    if (rightHwLane != null)
-                    {
-                        if (lane.m_laneProps.name.ToLower().Contains("right"))
-                        {
-                            var newProps = ScriptableObject.CreateInstance<NetLaneProps>();
-                            newProps.name = "Highway6L Right Props";
-
-                            newProps.m_props = rightHwLane
-                                .m_laneProps
-                                .m_props
-                                .Select(p => p.ShallowClone())
-                                .ToArray();
-
-                            lane.m_laneProps = newProps;
-                        }
-                    }
-                }
-            }
-        }
-
         public static NetInfo SetupHighwayLanes(this NetInfo hwInfo)
         {
             // Removing Parking lanes
