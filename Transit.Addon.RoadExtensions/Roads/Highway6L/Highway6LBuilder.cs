@@ -1,17 +1,14 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
+using Transit.Addon.RoadExtensions.Roads.Highways;
 using Transit.Framework;
 using Transit.Framework.Builders;
-using Transit.Framework.Interfaces;
-using Transit.Framework.Modularity;
-using UnityEngine;
 
 namespace Transit.Addon.RoadExtensions.Roads.Highway6L
 {
-    public class Highway6LBuilder : Activable, INetInfoBuilderPart, INetInfoModifier
+    public partial class Highway6LBuilder : Activable, INetInfoBuilderPart
     {
         public int Order { get { return 61; } }
-        public int UIOrder { get { return 26; } }
+        public int UIOrder { get { return 60; } }
 
         public string BasedPrefabName { get { return NetInfos.Vanilla.ONEWAY_6L; } }
         public string Name { get { return "Large Highway"; } }
@@ -33,308 +30,19 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway6L
             // Template              //
             ///////////////////////////
             var highwayInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L);
-            var defaultMaterial = highwayInfo.m_nodes[0].m_material;
+
 
             ///////////////////////////
             // 3DModeling            //
             ///////////////////////////
-            if (version == NetInfoVersion.Ground)
-            {
-                var segments0 = info.m_segments[0];
-                var nodes0 = info.m_nodes[0];
+            info.Setup32mMesh(version);
 
-                segments0.m_backwardForbidden = NetSegment.Flags.None;
-                segments0.m_backwardRequired = NetSegment.Flags.None;
-
-                segments0.m_forwardForbidden = NetSegment.Flags.None;
-                segments0.m_forwardRequired = NetSegment.Flags.None;
-
-                var nodes1 = nodes0.ShallowClone();
-
-                nodes0.m_flagsForbidden = NetNode.Flags.Transition;
-                nodes0.m_flagsRequired = NetNode.Flags.None;
-
-                nodes1.m_flagsForbidden = NetNode.Flags.None;
-                nodes1.m_flagsRequired = NetNode.Flags.Transition;
-
-                segments0.SetMeshes
-                    (@"Roads\aHighwayTemplates\Meshes\32m\Ground.obj",
-                     @"Roads\aHighwayTemplates\Meshes\32m\Ground_LOD.obj");
-
-                nodes0.SetMeshes
-                    (@"Roads\aHighwayTemplates\Meshes\32m\Ground_Node.obj",
-                     @"Roads\aHighwayTemplates\Meshes\32m\Ground_Node_LOD.obj");
-
-                nodes1.SetMeshes
-                    (@"Roads\aHighwayTemplates\Meshes\32m\Ground_Trans.obj",
-                     @"Roads\aHighwayTemplates\Meshes\32m\Ground_Trans_LOD.obj");
-
-                info.m_segments = new[] { segments0 };
-                info.m_nodes = new[] { nodes0, nodes1 };
-            }
-            else if (version == NetInfoVersion.Elevated)
-            {
-                var segments0 = info.m_segments[0];
-                var nodes0 = info.m_nodes[0];
-
-                segments0.m_backwardForbidden = NetSegment.Flags.None;
-                segments0.m_backwardRequired = NetSegment.Flags.None;
-
-                segments0.m_forwardForbidden = NetSegment.Flags.None;
-                segments0.m_forwardRequired = NetSegment.Flags.None;
-
-                var nodes1 = nodes0.ShallowClone();
-
-                nodes0.m_flagsForbidden = NetNode.Flags.Transition;
-                nodes0.m_flagsRequired = NetNode.Flags.None;
-
-                nodes1.m_flagsForbidden = NetNode.Flags.None;
-                nodes1.m_flagsRequired = NetNode.Flags.Transition;
-
-                segments0.SetMeshes
-                    (@"Roads\aHighwayTemplates\Meshes\28m\Elevated.obj",
-                    @"Roads\aHighwayTemplates\Meshes\28m\Elevated_LOD.obj");
-
-                nodes0.SetMeshes
-                    (@"Roads\aHighwayTemplates\Meshes\28m\Elevated_Node.obj",
-                    @"Roads\aHighwayTemplates\Meshes\28m\Elevated_Node_LOD.obj");
-
-                nodes1.SetMeshes
-                    (@"Roads\aHighwayTemplates\Meshes\28m\Elevated_Trans.obj",
-                    @"Roads\aHighwayTemplates\Meshes\28m\Elevated_Trans_LOD.obj");
-
-                info.m_segments = new[] { segments0 };
-                info.m_nodes = new[] { nodes0, nodes1 };
-            }
-            else if (version == NetInfoVersion.Bridge)
-            {
-                var segments0 = info.m_segments[0];
-                var segments1 = info.m_segments[1];
-                var nodes0 = info.m_nodes[0];
-
-                segments0.m_backwardForbidden = NetSegment.Flags.None;
-                segments0.m_backwardRequired = NetSegment.Flags.None;
-
-                segments0.m_forwardForbidden = NetSegment.Flags.None;
-                segments0.m_forwardRequired = NetSegment.Flags.None;
-
-                var nodes1 = nodes0.ShallowClone();
-
-                nodes0.m_flagsForbidden = NetNode.Flags.Transition;
-                nodes0.m_flagsRequired = NetNode.Flags.None;
-
-                nodes1.m_flagsForbidden = NetNode.Flags.None;
-                nodes1.m_flagsRequired = NetNode.Flags.Transition;
-
-                segments0.SetMeshes
-                    (@"Roads\aHighwayTemplates\Meshes\28m\Elevated.obj",
-                    @"Roads\aHighwayTemplates\Meshes\28m\Elevated_LOD.obj");
-
-                nodes0.SetMeshes
-                    (@"Roads\aHighwayTemplates\Meshes\28m\Elevated_Node.obj",
-                    @"Roads\aHighwayTemplates\Meshes\28m\Elevated_Node_LOD.obj");
-
-                nodes1.SetMeshes
-                    (@"Roads\aHighwayTemplates\Meshes\28m\Elevated_Trans.obj",
-                    @"Roads\aHighwayTemplates\Meshes\28m\Elevated_Trans_LOD.obj");
-
-                info.m_segments = new[] { segments0, segments1 };
-                info.m_nodes = new[] { nodes0, nodes1 };
-            }
-            else if (version == NetInfoVersion.Slope)
-            {
-                var segments0 = info.m_segments[0];
-                var segments1 = info.m_segments[1];
-                var segments2 = segments1.ShallowClone();
-                var nodes0 = info.m_nodes[0];
-                var nodes1 = info.m_nodes[1];
-                var nodes2 = nodes0.ShallowClone();
-                var nodes3 = nodes1.ShallowClone();
-
-                segments0.m_backwardForbidden = NetSegment.Flags.None;
-                segments0.m_backwardRequired = NetSegment.Flags.None;
-
-                segments0.m_forwardForbidden = NetSegment.Flags.None;
-                segments0.m_forwardRequired = NetSegment.Flags.None;
-
-                segments1.m_backwardForbidden = NetSegment.Flags.None;
-                segments1.m_backwardRequired = NetSegment.Flags.None;
-
-                segments1.m_forwardForbidden = NetSegment.Flags.None;
-                segments1.m_forwardRequired = NetSegment.Flags.None;
-
-                segments2.m_backwardForbidden = NetSegment.Flags.None;
-                segments2.m_backwardRequired = NetSegment.Flags.None;
-
-                segments2.m_forwardForbidden = NetSegment.Flags.None;
-                segments2.m_forwardRequired = NetSegment.Flags.None;
-
-                //nodes0.m_flagsForbidden = NetNode.Flags.Transition;
-                //nodes0.m_flagsRequired = NetNode.Flags.Underground;
-
-                nodes1.m_flagsForbidden = NetNode.Flags.UndergroundTransition;
-                nodes1.m_flagsRequired = NetNode.Flags.None;
-
-                //nodes2.m_flagsForbidden = NetNode.Flags.None;
-                //nodes2.m_flagsRequired = NetNode.Flags.UndergroundTransition;
-
-                //nodes3.m_flagsForbidden = NetNode.Flags.Underground;
-                //nodes3.m_flagsRequired = NetNode.Flags.Transition;
-
-                segments0.SetMeshes
-                    (@"Roads\aHighwayTemplates\Meshes\32m\Tunnel_Node_Gray.obj");
-                segments2.SetMeshes
-                    (@"Roads\aHighwayTemplates\Meshes\32m\Tunnel_Node_Gray.obj",
-                     @"Roads\aHighwayTemplates\Meshes\32m\Slope_LOD.obj");
-
-                nodes0.SetMeshes
-                    (@"Roads\aHighwayTemplates\Meshes\32m\Tunnel_Node_Gray.obj",
-                     @"Roads\aHighwayTemplates\Meshes\32m\Ground_LOD.obj");
-                nodes1.SetMeshes
-                    (@"Roads\aHighwayTemplates\Meshes\32m\Ground_Node.obj",
-                    @"Roads\aHighwayTemplates\Meshes\32m\Ground_Node_LOD.obj");
-                nodes2.SetMeshes
-                    (@"Roads\aHighwayTemplates\Meshes\32m\Slope_U_Node.obj");
-                nodes3.SetMeshes
-                    (@"Roads\aHighwayTemplates\Meshes\32m\Ground_Trans.obj",
-                     @"Roads\aHighwayTemplates\Meshes\32m\Ground_Trans_LOD.obj");
-
-                nodes2.m_material = defaultMaterial;
-
-                info.m_segments = new[] { segments0, segments1, segments2 };
-                info.m_nodes = new[] { nodes0, nodes1, nodes2, nodes3 };
-            }
-            else if (version == NetInfoVersion.Tunnel)
-            {
-                var segments0 = info.m_segments[0];
-                var segments1 = segments0.ShallowClone();
-                var nodes0 = info.m_nodes[0];
-                var nodes1 = nodes0.ShallowClone();
-                //var nodes2 = nodes1.ShallowClone();
-
-                //segments1.m_backwardForbidden = NetSegment.Flags.None;
-                //segments1.m_backwardRequired = NetSegment.Flags.None;
-
-                //segments1.m_forwardForbidden = NetSegment.Flags.None;
-                //segments1.m_forwardRequired = NetSegment.Flags.None;
-
-                nodes0.m_flagsForbidden = NetNode.Flags.None;
-                nodes0.m_flagsRequired = NetNode.Flags.None;
-
-                nodes1.m_flagsForbidden = NetNode.Flags.None;
-                nodes1.m_flagsRequired = NetNode.Flags.None;
-
-                //nodes2.m_flagsForbidden = NetNode.Flags.None;
-                // nodes2.m_flagsRequired = NetNode.Flags.UndergroundTransition;
-
-                segments0.SetMeshes
-                    (@"Roads\aHighwayTemplates\Meshes\32m\Tunnel_Gray.obj",
-                    @"Roads\aHighwayTemplates\Meshes\32m\Ground_LOD.obj");
-                segments1.SetMeshes
-                    (@"Roads\aHighwayTemplates\Meshes\32m\Tunnel.obj",
-                    @"Roads\aHighwayTemplates\Meshes\32m\Tunnel_LOD.obj");
-                nodes0.SetMeshes
-                     (@"Roads\aHighwayTemplates\Meshes\32m\Tunnel_Node_Gray.obj",
-                     @"Roads\aHighwayTemplates\Meshes\32m\Ground_LOD.obj");
-                nodes1.SetMeshes
-                    (@"Roads\aHighwayTemplates\Meshes\32m\Tunnel_Node.obj");
-                // nodes2.SetMeshes
-                //    (@"Roads\aHighwayTemplates\Meshes\32m\Tunnel.obj",
-                //    @"Roads\aHighwayTemplates\Meshes\32m\Ground_LOD.obj");
-
-                segments1.m_material = defaultMaterial;
-                nodes1.m_material = defaultMaterial;
-                //nodes2.m_material = defaultMaterial;
-
-                segments1.m_surfaceMapping = new UnityEngine.Vector4(0, 0, 0, 0);
-                nodes1.m_surfaceMapping = new UnityEngine.Vector4(0, 0, 0, 0);
-                //nodes2.m_surfaceMapping = new UnityEngine.Vector4(0, 0, 0, 0);
-
-                info.m_segments = new[] { segments0, segments1 };
-                info.m_nodes = new[] { nodes0, nodes1 };
-            }
 
             ///////////////////////////
             // Texturing             //
             ///////////////////////////
-            switch (version)
-            {
-                case NetInfoVersion.Ground:
-                    info.SetAllSegmentsTexture(
-                        new TexturesSet(
-                            @"Roads\Highway6L\Textures\Ground\Segment__MainTex.png",
-                            @"Roads\Highway6L\Textures\Ground\Segment__APRMap.png"),
-                    new LODTexturesSet
-                       (@"Roads\Highway6L\Textures\Ground\SegmentLOD__MainTex.png",
-                        @"Roads\Highway6L\Textures\Ground\SegmentLOD__APRMap.png",
-                        @"Roads\Highway6L\Textures\Ground\SegmentLOD__XYSMap.png"));
-                    info.SetAllNodesTexture(
-                        new TexturesSet
-                           (@"Roads\Highway6L\Textures\Ground\Node__MainTex.png",
-                            @"Roads\Highway6L\Textures\Ground\Node__APRMap.png"),
-                        new LODTexturesSet
-                           (@"Roads\Highway6L\Textures\Ground\NodeLOD__MainTex.png",
-                            @"Roads\Highway6L\Textures\Ground\NodeLOD__APRMap.png",
-                            @"Roads\Highway6L\Textures\Ground\NodeLOD__XYSMap.png"));
-                    break;
+            SetupTextures(info, version);
 
-                case NetInfoVersion.Elevated:
-                case NetInfoVersion.Bridge:
-                    info.SetAllSegmentsTexture(
-                        new TexturesSet(
-                            @"Roads\Highway6L\Textures\ElevatedBridge\Segment__MainTex.png",
-                            @"Roads\Highway6L\Textures\ElevatedBridge\Segment__APRMap.png"),
-                        new LODTexturesSet
-                           (@"Roads\Highway6L\Textures\ElevatedBridge\SegmentLOD__MainTex.png",
-                            @"Roads\Highway6L\Textures\ElevatedBridge\SegmentLOD__APRMap.png",
-                            @"Roads\Highway6L\Textures\ElevatedBridge\LOD__XYSMap.png"));
-                    info.SetAllNodesTexture(
-                        new TexturesSet
-                           (@"Roads\Highway6L\Textures\ElevatedBridge\Node__MainTex.png",
-                            @"Roads\Highway6L\Textures\ElevatedBridge\Node__APRMap.png"),
-                        new LODTexturesSet
-                           (@"Roads\Highway6L\Textures\ElevatedBridge\NodeLOD__MainTex.png",
-                            @"Roads\Highway6L\Textures\ElevatedBridge\NodeLOD__APRMap.png",
-                            @"Roads\Highway6L\Textures\ElevatedBridge\LOD__XYSMap.png"));
-                    break;
-
-                case NetInfoVersion.Slope:
-                    info.SetAllSegmentsTexture(
-                        new TexturesSet
-                           (@"Roads\Highway6L\Textures\Slope\Segment__MainTex.png",
-                            @"Roads\Highway6L\Textures\Slope\Segment__APRMap.png"),
-                        new LODTexturesSet
-                            (@"Roads\Highway6L\Textures\Slope\SegmentLOD__MainTex.png",
-                            @"Roads\Highway6L\Textures\Slope\SegmentLOD__APRMap.png",
-                            @"Roads\Highway6L\Textures\Slope\SegmentLOD__XYSMap.png"));
-                    info.SetAllNodesTexture(
-                        new TexturesSet
-                           (@"Roads\Highway6L\Textures\Tunnel\Node__MainTex.png",
-                            @"Roads\Highway6L\Textures\Ground\Node__APRMap.png"),
-                        new LODTexturesSet
-                           (@"Roads\Highway6L\Textures\Ground\NodeLOD__MainTex.png",
-                            @"Roads\Highway6L\Textures\Ground\NodeLOD__APRMap.png",
-                            @"Roads\Highway6L\Textures\Ground\NodeLOD__XYSMap.png"));
-                    break;
-                case NetInfoVersion.Tunnel:
-                    info.SetAllSegmentsTexture(
-                        new TexturesSet
-                           (@"Roads\Highway6L\Textures\Tunnel\Segment__MainTex.png",
-                            @"Roads\Highway6L\Textures\Tunnel\Segment__APRMap.png"),
-                        new LODTexturesSet
-                           (@"Roads\Highway6L\Textures\Tunnel\SegmentLOD__MainTex.png",
-                            @"Roads\Highway6L\Textures\Tunnel\SegmentLOD__APRMap.png",
-                            @"Roads\Highway6L\Textures\Tunnel\NodeLOD__XYSMap.png"));
-                    info.SetAllNodesTexture(
-                        new TexturesSet
-                           (@"Roads\Highway6L\Textures\Tunnel\Node__MainTex.png",
-                            @"Roads\Highway6L\Textures\Tunnel\Segment__APRMap.png"),
-                        new LODTexturesSet
-                           (@"Roads\Highway6L\Textures\Tunnel\NodeLOD__MainTex.png",
-                            @"Roads\Highway6L\Textures\Tunnel\SegmentLOD__APRMap.png",
-                            @"Roads\Highway6L\Textures\Tunnel\NodeLOD__XYSMap.png"));
-                    break;
-            }
 
             ///////////////////////////
             // Set up                //
@@ -354,53 +62,47 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway6L
             {
                 info.m_setVehicleFlags = Vehicle.Flags.Transition;
             }
-            // Disabling Parkings and Peds
-            foreach (var l in info.m_lanes)
+
+
+            ///////////////////////////
+            // Set up lanes          //
+            ///////////////////////////
+            info.SetupHighwayLanes();
+            var leftHwLane = info.SetHighwayLeftShoulder(highwayInfo, version);
+            var rightHwLane = info.SetHighwayRightShoulder(highwayInfo, version);
+            var vehicleLanes = info.SetHighwayVehicleLanes();
+
+
+            ///////////////////////////
+            // Set up props          //
+            ///////////////////////////
+            var leftHwLaneProps = leftHwLane.m_laneProps.m_props.ToList();
+            var rightHwLaneProps = rightHwLane.m_laneProps.m_props.ToList();
+
+            // Lightning
+            HighwayHelper.SetHighwayLights(leftHwLaneProps, rightHwLaneProps, version);
+            if (version == NetInfoVersion.Slope)
             {
-                switch (l.m_laneType)
-                {
-                    case NetInfo.LaneType.Parking:
-                        l.m_laneType = NetInfo.LaneType.None;
-                        break;
-                    case NetInfo.LaneType.Pedestrian:
-                        l.m_laneType = NetInfo.LaneType.None;
-                        break;
-                }
+                leftHwLaneProps.AddLeftWallLights();
+                rightHwLaneProps.AddRightWallLights();
             }
-            // Setting up lanes
-            var vehicleLanes = info.m_lanes
-                .Where(l => l.m_laneType != NetInfo.LaneType.None)
-                .OrderBy(l => l.m_similarLaneIndex)
-                .ToArray();
 
-            var propLanes = info.m_lanes
-                .Where(l => l.m_laneType == NetInfo.LaneType.None)
-                .OrderBy(l => l.m_similarLaneIndex)
-                .ToArray();
+            leftHwLane.m_laneProps.m_props = leftHwLaneProps.ToArray();
+            rightHwLane.m_laneProps.m_props = rightHwLaneProps.ToArray();
 
-            var nbLanes = vehicleLanes.Count();
+            info.TrimNonHighwayProps(false, false);
 
-            const float laneWidth = 4f;
-            var positionStart = (laneWidth * ((1f - nbLanes) / 2f));
 
-            for (int i = 0; i < vehicleLanes.Length; i++)
-            {
-                var l = vehicleLanes[i];
-                l.m_allowStop = false;
-                l.m_speedLimit = 2f;
-                l.m_direction = NetInfo.Direction.Forward;
-                l.m_finalDirection = NetInfo.Direction.Forward;
-                l.m_verticalOffset = 0f;
-                l.m_width = laneWidth;
-                l.m_position = positionStart + i * laneWidth;
-            }
+            ///////////////////////////
+            // AI                    //
+            ///////////////////////////
             var hwPlayerNetAI = highwayInfo.GetComponent<PlayerNetAI>();
             var playerNetAI = info.GetComponent<PlayerNetAI>();
 
             if (hwPlayerNetAI != null && playerNetAI != null)
             {
-                playerNetAI.m_constructionCost = hwPlayerNetAI.m_constructionCost * 2;
-                playerNetAI.m_maintenanceCost = hwPlayerNetAI.m_maintenanceCost * 2;
+                playerNetAI.m_constructionCost = hwPlayerNetAI.m_constructionCost * 6 / 3;
+                playerNetAI.m_maintenanceCost = hwPlayerNetAI.m_maintenanceCost * 6 / 3;
             }
 
             var roadBaseAI = info.GetComponent<RoadBaseAI>();
@@ -416,213 +118,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway6L
             if (roadAI != null)
             {
                 roadAI.m_enableZoning = false;
-            }
-
-            info.SetHighwayProps(highwayInfo);
-            info.TrimHighwayProps();
-
-            //Setting up props
-            NetInfo.Lane leftHwLane = null;
-            NetInfo.Lane rightHwLane = null;
-            if (version == NetInfoVersion.Tunnel)
-            {
-                var counter = 0;
-                for (var i = 0; i < info.m_lanes.Length; i++)
-                {
-                    if (info.m_lanes[i].m_laneType == NetInfo.LaneType.None && counter == 0)
-                    {
-                        counter++;
-                        leftHwLane = info.m_lanes[i];
-                    }
-                    else if (info.m_lanes[i].m_laneType == NetInfo.LaneType.None && counter == 1)
-                    {
-                        rightHwLane = info.m_lanes[i];
-                    }
-                    else
-                    {
-                        info.m_lanes[i].m_laneProps = highwayInfo.m_lanes.Where(l => l.m_laneType == NetInfo.LaneType.Vehicle).First().m_laneProps.ShallowClone();
-                    }
-                }
-                if (leftHwLane != null)
-                {
-                    leftHwLane.m_laneProps = new NetLaneProps();
-                    var newProps = ScriptableObject.CreateInstance<NetLaneProps>();
-                    newProps.name = "Highway6L Left Props";
-
-                    newProps.m_props = highwayInfo
-                        .m_lanes
-                        .Where(l => l != null && l.m_laneProps != null && l.m_laneProps.name != null && l.m_laneProps.m_props != null)
-                        .FirstOrDefault(l => l.m_laneProps.name.ToLower().Contains("left"))
-                        .m_laneProps
-                        .m_props
-                        .Select(p => p.ShallowClone())
-                        .ToArray();
-
-                    leftHwLane.m_laneProps = newProps;
-                }
-                if (rightHwLane != null)
-                {
-                    rightHwLane.m_laneProps = new NetLaneProps();
-                    var newProps = ScriptableObject.CreateInstance<NetLaneProps>();
-                    newProps.name = "Highway6L Right Props";
-
-                    newProps.m_props = highwayInfo
-                        .m_lanes
-                        .Where(l => l != null && l.m_laneProps != null && l.m_laneProps.name != null && l.m_laneProps.m_props != null)
-                        .FirstOrDefault(l => l.m_laneProps.name.ToLower().Contains("right"))
-                        .m_laneProps
-                        .m_props
-                        .Select(p => p.ShallowClone())
-                        .ToArray();
-
-                    rightHwLane.m_laneProps = newProps;
-                }
-            }
-            else
-            {
-                leftHwLane = info
-                   .m_lanes
-                   .Where(l => l != null && l.m_laneProps != null && l.m_laneProps.name != null && l.m_laneProps.m_props != null)
-                   .FirstOrDefault(l => l.m_laneProps.name.ToLower().Contains("left")).ShallowClone();
-
-                rightHwLane = info
-                  .m_lanes
-                  .Where(l => l != null && l.m_laneProps != null && l.m_laneProps.name != null && l.m_laneProps.m_props != null)
-                  .FirstOrDefault(l => l.m_laneProps.name.ToLower().Contains("right")).ShallowClone();
-            }
-
-            if (leftHwLane != null && rightHwLane != null)
-            {
-                var leftHwProps = leftHwLane.m_laneProps.m_props.ToList();
-                var rightHwProps = rightHwLane.m_laneProps.m_props.ToList();
-
-                var wallLightProp = new NetLaneProps.Prop();
-                var wallLightPropInfo = Prefabs.Find<PropInfo>("Wall Light Orange", false);
-                var streetLightPropInfo = Prefabs.Find<PropInfo>("New Street Light", false);
-
-                NetLaneProps.Prop streetLightLeft = null;
-                NetLaneProps.Prop streetLightRight = null;
-
-                foreach (var prop in rightHwLane.m_laneProps.m_props)
-                {
-                    if (prop != null && prop.m_prop != null && prop.m_prop.name != null && prop.m_prop.name.Contains("New Street Light"))
-                    {
-                        streetLightRight = prop;
-                        streetLightLeft = prop.ShallowClone();
-                        break;
-                    }
-                }
-
-                if (streetLightLeft != null && streetLightRight != null)
-                {
-                    streetLightLeft.m_angle = 180;
-                    if (version == NetInfoVersion.Tunnel)
-                    {
-                        streetLightLeft.m_repeatDistance = 40;
-                        streetLightRight.m_repeatDistance = 40;
-
-                        streetLightLeft.m_segmentOffset = 0;
-                        streetLightRight.m_segmentOffset = 0;
-
-                        streetLightLeft.m_position = new UnityEngine.Vector3(-3.2f, -4.5f, 20);
-                        streetLightRight.m_position = new UnityEngine.Vector3(3.2f, -4.5f, 0);
-
-                        //extra strength lighting (x2)
-                        leftHwProps.Add(streetLightLeft);
-                        leftHwProps.Add(streetLightLeft);
-
-                        rightHwProps.Add(streetLightRight);
-                    }
-                    else if (version == NetInfoVersion.Slope)
-                    {
-                        wallLightProp.m_prop = wallLightPropInfo.ShallowClone();
-                        wallLightProp.m_finalProp = wallLightPropInfo.ShallowClone();
-                        wallLightProp.m_probability = 100;
-                        wallLightProp.m_repeatDistance = 10;
-                        wallLightProp.m_segmentOffset = 0;
-                        wallLightProp.m_prop.m_effects[0].m_direction = new UnityEngine.Vector3(0, -90, 25);
-                        wallLightProp.m_finalProp.m_effects[0].m_direction = new UnityEngine.Vector3(0, -90, 25);
-                        var wallLightPropLeft = wallLightProp.ShallowClone();
-                        var wallLightPropRight = wallLightProp.ShallowClone();
-                        wallLightPropLeft.m_angle = 270;
-                        wallLightPropRight.m_angle = 90;
-                        wallLightPropLeft.m_position = new UnityEngine.Vector3(-2.5f, 1.5f, 0);
-                        wallLightPropRight.m_position = new UnityEngine.Vector3(2.5f, 1.5f, 0);
-
-                        streetLightLeft.m_repeatDistance = 80;
-                        streetLightRight.m_repeatDistance = 80;
-                        streetLightLeft.m_segmentOffset = 0;
-                        streetLightRight.m_segmentOffset = 0;
-                        streetLightLeft.m_position = new UnityEngine.Vector3(-1, 0, 0);
-                        streetLightRight.m_position = new UnityEngine.Vector3(1, 0, 0);
-
-
-                        leftHwProps.Add(streetLightLeft);
-                        leftHwProps.Add(streetLightLeft);
-                        leftHwProps.Add(wallLightPropLeft);
-
-                        rightHwProps.Add(streetLightRight);
-                        rightHwProps.Add(wallLightPropRight);
-                    }
-                    else
-                    {
-                        streetLightRight.m_repeatDistance = 80;
-                        streetLightLeft.m_repeatDistance = 80;
-
-                        streetLightLeft.m_segmentOffset = 39;
-
-                        if (version == NetInfoVersion.Bridge || version == NetInfoVersion.Elevated)
-                        {
-                            streetLightLeft.m_position = new UnityEngine.Vector3(-1.75f, 0, 0);
-                            streetLightRight.m_position = new UnityEngine.Vector3(1.75f, 0, 0);
-                        }
-                        else
-                        {
-                            streetLightLeft.m_position = new UnityEngine.Vector3(-1, 0, 0);
-                            streetLightRight.m_position = new UnityEngine.Vector3(1, 0, 0);
-                        }
-
-                        leftHwProps.Add(streetLightLeft);
-                    }
-                }
-
-                leftHwLane.m_laneProps.m_props = leftHwProps.ToArray();
-                rightHwLane.m_laneProps.m_props = rightHwProps.ToArray();
-
-                foreach (var lane in vehicleLanes)
-                {
-                    if (lane.m_laneProps != null && lane.m_laneProps.m_props.Length > 0)
-                    {
-                        foreach (var prop in lane.m_laneProps.m_props)
-                        {
-                            prop.m_position = new UnityEngine.Vector3(0, 0, 0);
-                        }
-                    }
-                }
-                foreach (var lane in propLanes)
-                {
-                    if (lane.m_laneProps != null && lane.m_laneProps.m_props.Length > 0)
-                    {
-                        foreach (var prop in lane.m_laneProps.m_props)
-                        {
-                            var propName = prop.m_prop.name;
-                            var positionMultiplier = lane.m_position / Math.Abs(lane.m_position);
-                            if (!propName.Contains(streetLightPropInfo.name) && propName != wallLightPropInfo.name)
-                            {
-                                prop.m_position.x = positionMultiplier * 1.2f;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        public void ModifyExistingNetInfo()
-        {
-            var highwayRampInfo = Prefabs.Find<PropInfo>("HighwayRamp", false);
-            if (highwayRampInfo != null)
-            {
-                highwayRampInfo.m_UIPriority += 20;
             }
         }
     }

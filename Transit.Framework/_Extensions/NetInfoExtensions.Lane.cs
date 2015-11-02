@@ -5,7 +5,7 @@ namespace Transit.Framework
 {
     public static partial class NetInfoExtensions
     {
-        public static NetInfo.Lane Clone(this NetInfo.Lane templateLane, string newName)
+        public static NetInfo.Lane Clone(this NetInfo.Lane templateLane, string newName = null)
         {
             var newLane = new NetInfo.Lane();
 
@@ -19,19 +19,7 @@ namespace Transit.Framework
             newLane.m_vehicleType = templateLane.m_vehicleType;
             newLane.m_verticalOffset = templateLane.m_verticalOffset;
             newLane.m_width = templateLane.m_width;
-
-            var templateLaneProps = templateLane.m_laneProps ?? ScriptableObject.CreateInstance<NetLaneProps>();
-            if (templateLaneProps.m_props == null)
-            {
-                templateLaneProps.m_props = new NetLaneProps.Prop[0];
-            }
-
-            newLane.m_laneProps = ScriptableObject.CreateInstance<NetLaneProps>();
-            newLane.m_laneProps.name = newName;
-            newLane.m_laneProps.m_props = templateLaneProps
-                .m_props
-                .Select(p => p.ShallowClone())
-                .ToArray();
+            newLane.m_laneProps = templateLane.m_laneProps.Clone(newName);
 
             return newLane;
         }
