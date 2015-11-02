@@ -73,6 +73,7 @@
     <Compile Include="Roads\Busway2L1W\Busway2L1WBuilder.cs" />
     <Compile Include="Roads\Busway2L\Busway2LBuilder.cs" />
     <Compile Include="Roads\Busway6L\Busway6LBuilder.cs" />
+    <Compile Include="Roads\OneWay3L\OneWay3LBuilder.Modeling.cs" />
     <Compile Include="Roads\OneWay3L\OneWay3LBuilder.cs" />
     <Compile Include="Roads\OneWay4L\OneWay4LBuilder.cs" />
     <Compile Include="Roads\MediumAvenue4L\MediumAvenue4LBuilder.cs" />
@@ -821,19 +822,40 @@
     <Content Include="Roads\OneWay3L\infotooltip.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\OneWay3L\Textures\Ground_SegmentLOD__AlphaMap.png">
+    <Content Include="Roads\OneWay3L\Textures\ElevatedBridge\LOD__XYSMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\OneWay3L\Textures\Ground_SegmentLOD__MainTex.png">
+    <Content Include="Roads\OneWay3L\Textures\ElevatedBridge\NodeLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\OneWay3L\Textures\Ground_SegmentLOD__XYS.png">
+    <Content Include="Roads\OneWay3L\Textures\ElevatedBridge\SegmentLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\OneWay3L\Textures\Ground_Segment__AlphaMap.png">
+    <Content Include="Roads\OneWay3L\Textures\ElevatedBridge\LOD__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\OneWay3L\Textures\Ground_Segment__MainTex.png">
+    <Content Include="Roads\OneWay3L\Textures\ElevatedBridge\Node__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\OneWay3L\Textures\ElevatedBridge\Segment__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\OneWay3L\Textures\ElevatedBridge\MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\OneWay3L\Textures\Ground\SegmentLOD__AlphaMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\OneWay3L\Textures\Ground\SegmentLOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\OneWay3L\Textures\Ground\SegmentLOD__XYS.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\OneWay3L\Textures\Ground\Segment__AlphaMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\OneWay3L\Textures\Ground\Segment__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\OneWay3L\thumbnails.png">
@@ -1247,6 +1269,19 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\aHighwayTemplates\Meshes\32m\Tunnel_Trans_Gray.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Compile Include="Roads\OneWay3L\OneWay3LBuilder.Texturing.cs" />
+    <None Include="Roads\aRoadTemplates\Meshes\16m\3mSW\Elevated_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\aRoadTemplates\Meshes\16m\3mSW\Elevated_Node.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\aRoadTemplates\Meshes\16m\3mSW\Elevated.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\aRoadTemplates\Meshes\16m\3mSW\Elevated_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\SmallHeavyRoads\Meshes\Ground.obj">
