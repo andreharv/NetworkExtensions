@@ -81,7 +81,8 @@
     <Compile Include="Roads\Busway2L\Busway2LBuilder.cs" />
     <Compile Include="Roads\Busway6L\Busway6LBuilder.cs" />
     <Compile Include="Roads\Highways\VanillaHighwayMenuReorderer.cs" />
-    <Compile Include="Roads\OneWay3L\OneWay3LBuilder.Modeling.cs" />
+    <Compile Include="Roads\Roads\RoadHelper.cs" />
+    <Compile Include="Roads\Roads\RoadModels.16m.3mSW.cs" />
     <Compile Include="Roads\OneWay3L\OneWay3LBuilder.cs" />
     <Compile Include="Roads\OneWay4L\OneWay4LBuilder.cs" />
     <Compile Include="Roads\MediumAvenue4L\MediumAvenue4LBuilder.cs" />
@@ -1268,16 +1269,16 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <Compile Include="Roads\OneWay3L\OneWay3LBuilder.Texturing.cs" />
-    <None Include="Roads\aRoadTemplates\Meshes\16m\3mSW\Elevated_LOD.obj">
+    <None Include="Roads\Roads\Meshes\16m\3mSW\Elevated_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aRoadTemplates\Meshes\16m\3mSW\Elevated_Node.obj">
+    <None Include="Roads\Roads\Meshes\16m\3mSW\Elevated_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aRoadTemplates\Meshes\16m\3mSW\Elevated.obj">
+    <None Include="Roads\Roads\Meshes\16m\3mSW\Elevated.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\aRoadTemplates\Meshes\16m\3mSW\Elevated_Node_LOD.obj">
+    <None Include="Roads\Roads\Meshes\16m\3mSW\Elevated_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\SmallHeavyRoads\Meshes\Ground.obj">
