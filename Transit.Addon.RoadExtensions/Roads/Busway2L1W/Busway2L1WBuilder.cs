@@ -71,7 +71,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway2L1W
                                            (@"Roads\Busway2L1W\Textures\Ground_Segment__MainTex.png",
                                             @"Roads\Busway2L\Textures\Ground_Segment__AlphaMap.png"),
                                         new LODTexturesSet
-                                           (@"Roads\Busway2L\Textures\Ground_SegmentLOD_Bus__MainTex.png",
+                                           (@"Roads\Busway2L1W\Textures\Ground_SegmentLOD_Bus__MainTex.png",
                                             @"Roads\Busway2L\Textures\Ground_SegmentLOD_Bus__AlphaMap.png",
                                             @"Roads\Busway2L\Textures\Ground_SegmentLOD__XYSMap.png"));
                                     break;
@@ -82,7 +82,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway2L1W
                                            (@"Roads\Busway2L1W\Textures\Ground_Segment__MainTex.png",
                                             @"Roads\Busway2L\Textures\Ground_Segment__AlphaMap.png"),
                                         new LODTexturesSet
-                                           (@"Roads\Busway2L\Textures\Ground_SegmentLOD_BusBoth__MainTex.png",
+                                           (@"Roads\Busway2L1W\Textures\Ground_SegmentLOD_BusBoth__MainTex.png",
                                             @"Roads\Busway2L\Textures\Ground_SegmentLOD_BusBoth__AlphaMap.png",
                                             @"Roads\Busway2L\Textures\Ground_SegmentLOD__XYSMap.png"));
                                     break;
@@ -93,7 +93,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway2L1W
                                            (@"Roads\Busway2L1W\Textures\Ground_Segment__MainTex.png",
                                             @"Roads\Busway2L\Textures\Ground_Segment__AlphaMap.png"),
                                         new LODTexturesSet
-                                           (@"Roads\Busway2L\Textures\Ground_SegmentLOD__MainTex.png",
+                                           (@"Roads\Busway2L1W\Textures\Ground_SegmentLOD__MainTex.png",
                                             @"Roads\Busway2L\Textures\Ground_SegmentLOD__AlphaMap.png",
                                             @"Roads\Busway2L\Textures\Ground_SegmentLOD__XYSMap.png"));
                                     break;
@@ -114,21 +114,33 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway2L1W
                                     segment.SetTextures(
                                         new TexturesSet
                                            (@"Roads\Busway2L1W\Textures_Grass\Ground_Segment__MainTex.png",
-                                            @"Roads\Busway2L\Textures_Grass\Ground_Segment_Bus__AlphaMap.png"));
+                                            @"Roads\Busway2L\Textures_Grass\Ground_Segment_Bus__AlphaMap.png"),
+                                        new LODTexturesSet
+                                            (@"Roads\Busway2L1W\Textures_Grass\Ground_SegmentLOD_Bus__MainTex.png",
+                                             @"Roads\Busway2L\Textures_Grass\Ground_SegmentLOD_Bus__AlphaMap.png",
+                                             @"Roads\Busway2L\Textures_Grass\Ground_SegmentLOD__XYSMap.png"));
                                     break;
 
                                 case NetSegment.Flags.StopBoth:
                                     segment.SetTextures(
                                         new TexturesSet
                                            (@"Roads\Busway2L1W\Textures_Grass\Ground_Segment__MainTex.png",
-                                            @"Roads\Busway2L\Textures_Grass\Ground_Segment_BusBoth__AlphaMap.png"));
+                                            @"Roads\Busway2L\Textures_Grass\Ground_Segment_BusBoth__AlphaMap.png"),
+                                        new LODTexturesSet
+                                            (@"Roads\Busway2L1W\Textures_Grass\Ground_SegmentLOD_BusBoth__MainTex.png",
+                                             @"Roads\Busway2L\Textures_Grass\Ground_SegmentLOD_BusBoth__AlphaMap.png",
+                                             @"Roads\Busway2L\Textures_Grass\Ground_SegmentLOD__XYSMap.png"));
                                     break;
 
                                 default:
                                     segment.SetTextures(
                                         new TexturesSet
                                            (@"Roads\Busway2L1W\Textures_Grass\Ground_Segment__MainTex.png",
-                                            @"Roads\Busway2L\Textures_Grass\Ground_Segment__AlphaMap.png"));
+                                            @"Roads\Busway2L\Textures_Grass\Ground_Segment__AlphaMap.png"),
+                                        new LODTexturesSet
+                                            (@"Roads\Busway2L1W\Textures_Grass\Ground_SegmentLOD__MainTex.png",
+                                             @"Roads\Busway2L\Textures_Grass\Ground_SegmentLOD__AlphaMap.png",
+                                             @"Roads\Busway2L\Textures_Grass\Ground_SegmentLOD__XYSMap.png"));
                                     break;
                             }
                         }
@@ -145,7 +157,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway2L1W
                                     (@"Roads\Busway2L1W\Textures\Elevated_Segment__MainTex.png",
                                      @"Roads\Busway2L\Textures\Elevated_Segment__AlphaMap.png"),
                                 new LODTexturesSet
-                                    (@"Roads\Busway2L\Textures\Elevated_SegmentLOD__MainTex.png",
+                                    (@"Roads\Busway2L1W\Textures\Elevated_SegmentLOD__MainTex.png",
                                      @"Roads\Busway2L\Textures\Elevated_SegmentLOD__AlphaMap.png",
                                      @"Roads\Busway2L\Textures\Elevated_SegmentLOD__XYSMap.png"));
                         }
@@ -160,7 +172,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway2L1W
                                     (@"Roads\Busway2L1W\Textures\Slope_Segment__MainTex.png",
                                      @"Roads\Busway2L\Textures\Slope_Segment__AlphaMap.png"),
                                 new LODTexturesSet
-                                    (@"Roads\Busway2L\Textures\Slope_SegmentLOD__MainTex.png",
+                                    (@"Roads\Busway2L1W\Textures\Slope_SegmentLOD__MainTex.png",
                                      @"Roads\Busway2L\Textures\Slope_SegmentLOD__AlphaMap.png",
                                      @"Roads\Busway2L\Textures\Slope_SegmentLOD__XYS.png"));
                         }

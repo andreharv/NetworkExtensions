@@ -106,6 +106,30 @@
     <Content Include="Menus\Textures\AdditionnalSubBar.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Roads\Busway2L1W\Textures\Elevated_SegmentLOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Busway2L1W\Textures\Ground_SegmentLOD_BusBoth__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Busway2L1W\Textures\Ground_SegmentLOD_Bus__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Busway2L1W\Textures\Ground_SegmentLOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Busway2L1W\Textures\Slope_SegmentLOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Busway2L1W\Textures_Grass\Ground_SegmentLOD_BusBoth__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Busway2L1W\Textures_Grass\Ground_SegmentLOD_Bus__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Busway2L1W\Textures_Grass\Ground_SegmentLOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Roads\Busway2L\Textures_Grass\Ground_SegmentLOD_BusBoth__AlphaMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
