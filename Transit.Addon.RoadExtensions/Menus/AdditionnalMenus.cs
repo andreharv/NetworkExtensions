@@ -31,7 +31,7 @@ namespace Transit.Addon.RoadExtensions.Menus
             var versions = new[] { "", "Disabled", "Focused", "Hovered", "Pressed" };
 
 
-            var texture = assetManager.GetTexture(PATH);
+            var texture = assetManager.GetTexture(PATH, TextureType.UI);
             texture.FixTransparency();
 
             thumbnailAtlas.material.mainTexture = texture;
