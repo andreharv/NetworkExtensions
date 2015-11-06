@@ -9,7 +9,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Roads
 {
     public static class RoadHelper
     {
-        public static NetInfo SetRoadLanes(this NetInfo rdInfo, int lanesToAdd = 0)
+        public static NetInfo SetRoadLanes(this NetInfo rdInfo, NetInfoVersion version, int lanesToAdd = 0)
         {
             if (lanesToAdd < 0)
             {
@@ -63,7 +63,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Roads
             var laneCollection = new List<NetInfo.Lane>();
 
             laneCollection.AddRange(vehicleLanes);
-            laneCollection.AddRange(rdInfo.SetPedestrianLanes());
+            laneCollection.AddRange(rdInfo.SetPedestrianLanes(version));
 
             if (rdInfo.m_hasParkingSpaces)
             {
@@ -74,7 +74,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Roads
 
             return rdInfo;
         }
-        private static IEnumerable<NetInfo.Lane> SetPedestrianLanes(this NetInfo rdInfo)
+        private static IEnumerable<NetInfo.Lane> SetPedestrianLanes(this NetInfo rdInfo, NetInfoVersion version)
         {
             var pedestrianLanes = rdInfo.m_lanes
                 .Where(l => l.m_laneType == NetInfo.LaneType.Pedestrian)
@@ -86,8 +86,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Roads
                 foreach (var pedLane in pedestrianLanes)
                 {
                     var multiplier = pedLane.m_position / Math.Abs(pedLane.m_position);
-                    pedLane.m_width = rdInfo.m_pavementWidth - 1;
-                    pedLane.m_position = multiplier * (rdInfo.m_halfWidth - (0.5f * pedLane.m_width));
+                    pedLane.m_width = rdInfo.m_pavementWidth - (version == NetInfoVersion.Slope || version == NetInfoVersion.Tunnel ? 3 : 1);
+                    pedLane.m_position = multiplier * (rdInfo.m_halfWidth - ((version == NetInfoVersion.Slope || version == NetInfoVersion.Tunnel ? 2 : 0) + 0.5f * pedLane.m_width));
                 }
             }
             return pedestrianLanes;

@@ -23,6 +23,7 @@ namespace Transit.Framework
 
             public const string HIGHWAY_RAMP = "HighwayRamp";
             public const string HIGHWAY_3L = "Highway";
+            public const string HIGHWAY_3L_SLOPE = "Highway Slope";
             public const string HIGHWAY_3L_BARRIER = "Highway Barrier";
 
             public const string PED_GRAVEL = ROAD_2L_GRAVEL; // Quick fix for the Pedestian zonable roads

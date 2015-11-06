@@ -32,29 +32,35 @@ namespace Transit.Addon.RoadExtensions.Roads.OneWay3L
             ///////////////////////////
             // Template              //
             ///////////////////////////
+            var highwayInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L_SLOPE);
             var owRoadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ONEWAY_2L);
 
             ///////////////////////////
             // 3DModeling            //
             ///////////////////////////
-            info.Setup16m3mSWMesh(version);
+            info.Setup16m3mSWMesh(version, highwayInfo);
 
             ///////////////////////////
             // Texturing             //
             ///////////////////////////
             SetupTextures(info, version);
-
+            
             ///////////////////////////
             // Set up                //
             ///////////////////////////
             info.m_hasParkingSpaces = false;
             info.m_class = owRoadInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL3L_ROAD);
-            info.m_pavementWidth = 3;
-            info.m_halfWidth = 8;
+            info.m_pavementWidth = (version != NetInfoVersion.Slope && version != NetInfoVersion.Tunnel ? 3 : 6);
+            info.m_halfWidth = (version != NetInfoVersion.Slope && version != NetInfoVersion.Tunnel ? 8 : 11);
             info.m_class.m_level = ItemClass.Level.Level3; // To make sure they dont fit with the 4L Small Roads
+            if (version == NetInfoVersion.Tunnel)
+            {
+                info.m_setVehicleFlags = Vehicle.Flags.Transition;
+                info.m_setCitizenFlags = CitizenInstance.Flags.Transition;
+            }
 
             // Setting up lanes
-            info.SetRoadLanes(1);
+            info.SetRoadLanes(version, 1);
 
             //Setting Up Props
 
