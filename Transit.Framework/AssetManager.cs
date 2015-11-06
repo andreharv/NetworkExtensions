@@ -79,7 +79,7 @@ namespace Transit.Framework
                         var texture = new Texture2D(1, 1);
                         texture.name = textureName;
                         texture.LoadImage(textureBytes);
-                        texture.anisoLevel = 8;
+                        texture.anisoLevel = 9;
                         texture.filterMode = FilterMode.Trilinear;
                         texture.Apply();
                         return texture;
@@ -87,7 +87,7 @@ namespace Transit.Framework
 
                 case TextureType.LOD:
                     {
-                        var texture = new Texture2D(1, 1, TextureFormat.DXT5, true);
+                        var texture = new Texture2D(1, 1, TextureFormat.ARGB32, false);
                         texture.name = textureName;
                         texture.LoadImage(textureBytes);
                         texture.anisoLevel = 9;

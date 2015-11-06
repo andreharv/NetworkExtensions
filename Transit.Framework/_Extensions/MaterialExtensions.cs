@@ -37,21 +37,7 @@ namespace Transit.Framework
             if (currentTexture == null)
             {
                 return;
-            }
-
-            var needCompression = currentTexture.format == TextureFormat.DXT1 ||
-                                  currentTexture.format == TextureFormat.DXT5;
-
-            if (!needCompression)
-            {
-                needCompression = newTexture.format != TextureFormat.DXT1 &&
-                                  newTexture.format != TextureFormat.DXT5;
-            }
-
-            if (needCompression)
-            {
-                newTexture.Compress(false);
-            }
+            } 
 
             material.SetTexture(propertyName, newTexture);
         }
