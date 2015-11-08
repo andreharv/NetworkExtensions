@@ -1,4 +1,6 @@
-﻿namespace Transit.Framework
+﻿using UnityEngine;
+
+namespace Transit.Framework
 {
     public static partial class NetInfoExtensions
     {
@@ -14,21 +16,19 @@
 
         public static NetInfo.Segment SetTextures(this NetInfo.Segment segment, TexturesSet newTextures, LODTexturesSet newLODTextures = null)
         {
-            if (segment.m_material != null)
+            if (newTextures != null)
             {
-                segment.m_material = segment.m_material.Clone(newTextures);
-            }
-
-            if (segment.m_segmentMaterial != null)
-            {
-                segment.m_segmentMaterial = segment.m_segmentMaterial.Clone(newTextures);
-            }
-
-            if (segment.m_lodMaterial != null)
-            {
-                if (newLODTextures != null)
+                if (segment.m_material != null)
                 {
-                    segment.m_lodMaterial = segment.m_lodMaterial.Clone(newLODTextures);
+                    segment.m_material = newTextures.CreateRoadMaterial(segment.m_material);
+                }
+            }
+
+            if (newLODTextures != null)
+            {
+                if (segment.m_lodMaterial != null)
+                {
+                    segment.m_lodMaterial = newLODTextures.CreateRoadMaterial(segment.m_lodMaterial);
                 }
             }
 
