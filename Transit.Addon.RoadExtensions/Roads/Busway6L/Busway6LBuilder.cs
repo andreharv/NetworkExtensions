@@ -114,21 +114,33 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway6L
                                     segment.SetTextures(
                                         new TexturesSet
                                            (@"Roads\Busway6L\Textures_Grass\Ground_Segment_Bus__MainTex.png",
-                                            @"Roads\Busway6L\Textures_Grass\Ground_Segment_Bus__AlphaMap.png"));
+                                            @"Roads\Busway6L\Textures_Grass\Ground_Segment_Bus__AlphaMap.png"),
+                                        new LODTexturesSet
+                                           (@"Roads\Busway6L\Textures_Grass\Ground_SegmentLOD_Bus__MainTex.png",
+                                            @"Roads\Busway6L\Textures_Grass\Ground_SegmentLOD_Bus__AlphaMap.png",
+                                            @"Roads\Busway6L\Textures_Grass\Ground_SegmentLOD_Bus__XYSMap.png"));
                                     break;
 
                                 case NetSegment.Flags.StopBoth:
                                     segment.SetTextures(
                                         new TexturesSet
                                            (@"Roads\Busway6L\Textures_Grass\Ground_Segment_BusBoth__MainTex.png",
-                                            @"Roads\Busway6L\Textures_Grass\Ground_Segment_BusBoth__AlphaMap.png"));
+                                            @"Roads\Busway6L\Textures_Grass\Ground_Segment_BusBoth__AlphaMap.png"),
+                                        new LODTexturesSet
+                                           (@"Roads\Busway6L\Textures_Grass\Ground_SegmentLOD_BusBoth__MainTex.png",
+                                            @"Roads\Busway6L\Textures_Grass\Ground_SegmentLOD_BusBoth__AlphaMap.png",
+                                            @"Roads\Busway6L\Textures_Grass\Ground_SegmentLOD_BusBoth__XYSMap.png"));
                                     break;
 
                                 default:
                                     segment.SetTextures(
                                         new TexturesSet
                                            (@"Roads\Busway6L\Textures_Grass\Ground_Segment__MainTex.png",
-                                            @"Roads\Busway6L\Textures_Grass\Ground_Segment__AlphaMap.png"));
+                                            @"Roads\Busway6L\Textures_Grass\Ground_Segment__AlphaMap.png"),
+                                        new LODTexturesSet
+                                           (@"Roads\Busway6L\Textures_Grass\Ground_SegmentLOD__MainTex.png",
+                                            @"Roads\Busway6L\Textures_Grass\Ground_SegmentLOD__AlphaMap.png",
+                                            @"Roads\Busway6L\Textures_Grass\Ground_SegmentLOD__XYSMap.png"));
                                     break;
                             }
                         }

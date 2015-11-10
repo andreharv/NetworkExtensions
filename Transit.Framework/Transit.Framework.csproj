@@ -95,6 +95,7 @@
     <Compile Include="_Extensions\MaterialExtensions.cs" />
     <Compile Include="_Extensions\NetInfoExtensions.cs" />
     <Compile Include="_Extensions\PluginManagerExtensions.cs" />
+    <Compile Include="_Extensions\TextureSetExtensions.cs" />
     <Compile Include="_Extensions\TypeExtensions.cs" />
     <Compile Include="Modularity\IActivablePart.cs" />
     <Compile Include="Modularity\ICompatibilityPart.cs" />

@@ -1,7 +1,9 @@
-﻿namespace Transit.Framework
+﻿using UnityEngine;
+
+namespace Transit.Framework
 {
     public static partial class NetInfoExtensions
-{
+    {
         public static NetInfo SetAllNodesTexture(this NetInfo info, TexturesSet newTextures, LODTexturesSet newLODTextures = null)
         {
             foreach (var node in info.m_nodes)
@@ -14,21 +16,19 @@
 
         public static NetInfo.Node SetTextures(this NetInfo.Node node, TexturesSet newTextures, LODTexturesSet newLODTextures = null)
         {
-            if (node.m_material != null)
+            if (newTextures != null)
             {
-                node.m_material = node.m_material.Clone(newTextures);
-            }
-
-            if (node.m_nodeMaterial != null)
-            {
-                node.m_nodeMaterial = node.m_nodeMaterial.Clone(newTextures);
-            }
-
-            if (node.m_lodMaterial != null)
-            {
-                if (newLODTextures != null)
+                if (node.m_material != null)
                 {
-                    node.m_lodMaterial = node.m_lodMaterial.Clone(newLODTextures);
+                    node.m_material = newTextures.CreateRoadMaterial(node.m_material);
+                }
+            }
+
+            if (newLODTextures != null)
+            {
+                if (node.m_lodMaterial != null)
+                {
+                    node.m_lodMaterial = newLODTextures.CreateRoadMaterial(node.m_lodMaterial);
                 }
             }
 
