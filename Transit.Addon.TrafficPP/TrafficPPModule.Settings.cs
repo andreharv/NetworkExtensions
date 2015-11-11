@@ -14,7 +14,7 @@ namespace Transit.Addon.TrafficPP
         {
             None = 0,
             NoDespawn = 16,
-            ImprovedAI = 32,
+            CongestionAvoidance = 32,
             RoadCustomizerTool = 1L << 55,
 
             GhostMode = 1L << 62
@@ -64,16 +64,16 @@ namespace Transit.Addon.TrafficPP
             helper.AddCheckbox(
                 "Improved AI",
                 "Improved AI",
-                s_activeOptions.IsFlagSet(ModOptions.ImprovedAI),
+                s_activeOptions.IsFlagSet(ModOptions.CongestionAvoidance),
                 isChecked =>
                 {
                     if (isChecked)
                     {
-                        s_activeOptions = s_activeOptions | ModOptions.ImprovedAI;
+                        s_activeOptions = s_activeOptions | ModOptions.CongestionAvoidance;
                     }
                     else
                     {
-                        s_activeOptions = s_activeOptions & ~ModOptions.ImprovedAI;
+                        s_activeOptions = s_activeOptions & ~ModOptions.CongestionAvoidance;
                     }
                     FireSaveSettingsNeeded();
                 },

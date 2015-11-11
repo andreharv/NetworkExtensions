@@ -237,7 +237,7 @@ namespace Transit.Addon.TrafficPP
 				//else
 				//	m_vehicleType = RoadManager.VehicleType.None;
 			}
-			if ((TrafficPPModule.ActiveOptions & TrafficPPModule.ModOptions.ImprovedAI) == TrafficPPModule.ModOptions.ImprovedAI)
+			if ((TrafficPPModule.ActiveOptions & TrafficPPModule.ModOptions.CongestionAvoidance) == TrafficPPModule.ModOptions.CongestionAvoidance)
 				this.m_prioritizeBusLanes = (this.m_vehicleType & (RoadManager.VehicleType.Bus | RoadManager.VehicleType.Emergency)) != RoadManager.VehicleType.None;
 			else
 				this.m_prioritizeBusLanes = false;
@@ -1017,7 +1017,7 @@ namespace Transit.Addon.TrafficPP
 						{
 							num13 *= 2f;
 						}
-                        if ((TrafficPPModule.ActiveOptions & TrafficPPModule.ModOptions.ImprovedAI) == TrafficPPModule.ModOptions.ImprovedAI)
+                        if ((TrafficPPModule.ActiveOptions & TrafficPPModule.ModOptions.CongestionAvoidance) == TrafficPPModule.ModOptions.CongestionAvoidance)
                         {
                             /* ----- Congestion Changes ----- */
                             // Checks if the lane has space for a vehicle of length 5. If not, increase its cost to avoid it. 
