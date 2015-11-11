@@ -52,12 +52,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TrafficPPModule.Settings.cs" />
     <Compile Include="TrafficPPModule.Install.cs" />
     <Compile Include="DataExtensions\NetInfoLane.cs" />
     <Compile Include="FileManager.cs" />
     <Compile Include="Initializer.cs" />
     <Compile Include="Logger.cs" />
-    <Compile Include="OptionsManager.cs" />
     <Compile Include="PathFinding\CustomPathFind.cs" />
     <Compile Include="PathFinding\CustomPathManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

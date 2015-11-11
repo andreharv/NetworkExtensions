@@ -43,7 +43,7 @@ namespace Transit.Addon.TrafficPP
 
         void Start()
         {
-            if ((TrafficPPModule.Options & OptionsManager.ModOptions.GhostMode) != OptionsManager.ModOptions.GhostMode)
+            if ((TrafficPPModule.ActiveOptions & TrafficPPModule.ModOptions.GhostMode) != TrafficPPModule.ModOptions.GhostMode)
             {
                 ReplacePathManager();
                 ReplaceTransportManager();
@@ -59,7 +59,7 @@ namespace Transit.Addon.TrafficPP
 
             if (level == 6)
             {
-                Logger.LogInfo("Game level was loaded. Options enabled: \n\t" + TrafficPPModule.Options);
+                Logger.LogInfo("Game level was loaded. Options enabled: \n\t" + TrafficPPModule.ActiveOptions);
 
                 m_initialized = false;
 
@@ -87,7 +87,7 @@ namespace Transit.Addon.TrafficPP
                 return;
             }
 
-            if ((TrafficPPModule.Options & OptionsManager.ModOptions.GhostMode) == OptionsManager.ModOptions.GhostMode)
+            if ((TrafficPPModule.ActiveOptions & TrafficPPModule.ModOptions.GhostMode) == TrafficPPModule.ModOptions.GhostMode)
                 return;
 
             if (!Singleton<LoadingManager>.instance.m_loadingComplete)
@@ -111,7 +111,7 @@ namespace Transit.Addon.TrafficPP
 
             // Checks if CustomPathManager have been replaced by another mod and prints a warning in the log
             // This check is only run in the first two minutes since game is loaded
-            if (!m_incompatibilityWarning && (TrafficPPModule.Options & OptionsManager.ModOptions.GhostMode) == OptionsManager.ModOptions.None)
+            if (!m_incompatibilityWarning && (TrafficPPModule.ActiveOptions & TrafficPPModule.ModOptions.GhostMode) == TrafficPPModule.ModOptions.None)
             {
                 if ((Time.realtimeSinceStartup - m_gameStartedTime) < 120f)
                 {
@@ -344,13 +344,13 @@ namespace Transit.Addon.TrafficPP
             {
                 try
                 {
-                    if ((TrafficPPModule.Options & OptionsManager.ModOptions.GhostMode) != OptionsManager.ModOptions.GhostMode && this.m_level == 6)
+                    if ((TrafficPPModule.ActiveOptions & TrafficPPModule.ModOptions.GhostMode) != TrafficPPModule.ModOptions.GhostMode && this.m_level == 6)
                     {
                         ReplaceTransportLineAI<BusTransportLineAI>("Bus Line", publicTansportNetCollection, "Bus", publicTransportTransportCollection);
 
                         AddTool<CustomTransportTool>(toolController);
 
-                        if ((TrafficPPModule.Options & OptionsManager.ModOptions.BetaTestRoadCustomizerTool) == OptionsManager.ModOptions.BetaTestRoadCustomizerTool)
+                        if ((TrafficPPModule.ActiveOptions & TrafficPPModule.ModOptions.BetaTestRoadCustomizerTool) == TrafficPPModule.ModOptions.BetaTestRoadCustomizerTool)
                             AddTool<RoadCustomizerTool>(toolController);
                     }
 

@@ -17,7 +17,7 @@ namespace Transit.Addon.TrafficPP
             
             public override void OnLoadData()
             {
-                if ((TrafficPPModule.Options & OptionsManager.ModOptions.BetaTestRoadCustomizerTool) == OptionsManager.ModOptions.None || (TrafficPPModule.Options & OptionsManager.ModOptions.GhostMode) == OptionsManager.ModOptions.GhostMode)
+                if ((TrafficPPModule.ActiveOptions & TrafficPPModule.ModOptions.BetaTestRoadCustomizerTool) == TrafficPPModule.ModOptions.None || (TrafficPPModule.ActiveOptions & TrafficPPModule.ModOptions.GhostMode) == TrafficPPModule.ModOptions.GhostMode)
                     return;
                 
 
@@ -43,9 +43,6 @@ namespace Transit.Addon.TrafficPP
                     {
                         if (lane == null)
                             continue;
-
-                        if ((TrafficPPModule.Options & OptionsManager.ModOptions.FixCargoTrucksNotSpawning) == OptionsManager.ModOptions.FixCargoTrucksNotSpawning && lane.m_vehicleTypes == (VehicleType.ServiceVehicles | VehicleType.PassengerCar))
-                            lane.m_vehicleTypes = VehicleType.All;
 
                         lane.UpdateArrows();
                         if (lane.ConnectionCount() > 0)
@@ -87,7 +84,7 @@ namespace Transit.Addon.TrafficPP
 
             public override void OnSaveData()
             {
-                if ((TrafficPPModule.Options & OptionsManager.ModOptions.BetaTestRoadCustomizerTool) == OptionsManager.ModOptions.None || (TrafficPPModule.Options & OptionsManager.ModOptions.GhostMode) == OptionsManager.ModOptions.GhostMode)
+                if ((TrafficPPModule.ActiveOptions & TrafficPPModule.ModOptions.BetaTestRoadCustomizerTool) == TrafficPPModule.ModOptions.None || (TrafficPPModule.ActiveOptions & TrafficPPModule.ModOptions.GhostMode) == TrafficPPModule.ModOptions.GhostMode)
                     return;
 
                 Logger.LogInfo("Saving road data!");
