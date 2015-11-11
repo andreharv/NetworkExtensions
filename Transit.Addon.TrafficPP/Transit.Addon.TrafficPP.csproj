@@ -54,7 +54,6 @@
   <ItemGroup>
     <Compile Include="TrafficPPModule.Install.cs" />
     <Compile Include="DataExtensions\NetInfoLane.cs" />
-    <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="FileManager.cs" />
     <Compile Include="Initializer.cs" />
     <Compile Include="Logger.cs" />

@@ -1,9 +1,9 @@
-﻿using ColossalFramework;
+﻿using System;
+using System.Reflection;
+using ColossalFramework;
 using ColossalFramework.Globalization;
 using ColossalFramework.Math;
-using Transit.Addon.TrafficPP.Extensions;
-using System;
-using System.Reflection;
+using Transit.Framework;
 using UnityEngine;
 
 namespace Transit.Addon.TrafficPP

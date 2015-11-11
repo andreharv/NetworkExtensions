@@ -9,7 +9,7 @@ using System.Threading;
 using ColossalFramework;
 using ColossalFramework.Globalization;
 using ColossalFramework.UI;
-using Transit.Addon.TrafficPP.Extensions;
+using Transit.Framework;
 using UnityEngine;
 
 namespace Transit.Addon.TrafficPP
