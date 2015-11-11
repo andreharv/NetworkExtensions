@@ -52,17 +52,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AI\Vehicles\CustomAmbulanceAI.cs" />
-    <Compile Include="AI\Vehicles\CustomBusAI.cs" />
-    <Compile Include="AI\Vehicles\CustomCarAI.cs" />
-    <Compile Include="AI\Vehicles\CustomCargoTruckAI.cs" />
-    <Compile Include="AI\Vehicles\CustomFireTruckAI.cs" />
-    <Compile Include="AI\Vehicles\CustomGarbageTruckAI.cs" />
-    <Compile Include="AI\Vehicles\CustomHearseAI.cs" />
-    <Compile Include="AI\Vehicles\CustomPassengerCarAI.cs" />
-    <Compile Include="AI\Vehicles\CustomPoliceCarAI.cs" />
-    <Compile Include="AI\Vehicles\CustomVehicleAI.cs" />
-    <Compile Include="AI\Vehicles\IVehicle.cs" />
     <Compile Include="TrafficPPModule.Install.cs" />
     <Compile Include="DataExtensions\NetInfoLane.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
@@ -100,6 +89,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

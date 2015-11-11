@@ -40,14 +40,6 @@ namespace Transit.Addon.TrafficPP
             }
         }
 
-        public override void OnLevelUnloading()
-        {
-            base.OnLevelUnloading();
-
-            if (_initializer != null)
-                _initializer.GetComponent<Initializer>().OnLevelUnloading();
-        }
-
         public override void OnReleased()
         {
             base.OnReleased();
