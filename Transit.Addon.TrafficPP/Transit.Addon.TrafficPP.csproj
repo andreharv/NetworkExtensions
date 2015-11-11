@@ -33,9 +33,11 @@
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
       <HintPath>..\References\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="ColossalManaged">
       <HintPath>..\References\ColossalManaged.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="ICities">
       <HintPath>..\References\ICities.dll</HintPath>
@@ -46,6 +48,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
       <HintPath>..\References\UnityEngine.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -60,7 +63,7 @@
     <Compile Include="AI\Vehicles\CustomPoliceCarAI.cs" />
     <Compile Include="AI\Vehicles\CustomVehicleAI.cs" />
     <Compile Include="AI\Vehicles\IVehicle.cs" />
-    <Compile Include="CSLTraffic.cs" />
+    <Compile Include="TrafficPPModule.Install.cs" />
     <Compile Include="DataExtensions\NetInfoLane.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="FileManager.cs" />
@@ -73,7 +76,7 @@
     <Compile Include="RoadManager.cs" />
     <Compile Include="Tools\CustomTransportTool.cs" />
     <Compile Include="Tools\RoadCustomizerTool.cs" />
-    <Compile Include="TrafficPlusPlus.cs" />
+    <Compile Include="TrafficPPModule.cs" />
     <Compile Include="Transports\BusTransportLineAI.cs" />
     <Compile Include="Transports\CustomTransportManager.cs" />
     <Compile Include="UI\RoadCustomizerGroupPanel.cs" />
@@ -84,68 +87,18 @@
     <ProjectReference Include="..\Transit.Addon\Transit.Addon.csproj">
       <Project>{80C47696-4D41-4BB6-9CAE-C477FE528ADF}</Project>
       <Name>Transit.Addon</Name>
+      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\Transit.Framework\Transit.Framework.csproj">
       <Project>{8891467E-C88E-46B0-96F9-4413DF6DC205}</Project>
       <Name>Transit.Framework</Name>
+      <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Textures\Props\BusLaneText-aci.png" />
-    <Content Include="Textures\Props\BusLaneText-xys.png" />
-    <Content Include="Textures\Props\BusLaneText.png" />
-    <Content Include="Textures\Roads\LargeRoad\RoadLargeBusLanes-apr.png" />
-    <Content Include="Textures\Roads\LargeRoad\RoadLargeBusLanes-bus-apr.png" />
-    <Content Include="Textures\Roads\LargeRoad\RoadLargeBusLanes-bus-LOD-apr.png" />
-    <Content Include="Textures\Roads\LargeRoad\RoadLargeBusLanes-bus-LOD.png" />
-    <Content Include="Textures\Roads\LargeRoad\RoadLargeBusLanes-bus.png" />
-    <Content Include="Textures\Roads\LargeRoad\RoadLargeBusLanes-busBoth-apr.png" />
-    <Content Include="Textures\Roads\LargeRoad\RoadLargeBusLanes-busBoth-LOD-apr.png" />
-    <Content Include="Textures\Roads\LargeRoad\RoadLargeBusLanes-busBoth-LOD.png" />
-    <Content Include="Textures\Roads\LargeRoad\RoadLargeBusLanes-busBoth.png" />
-    <Content Include="Textures\Roads\LargeRoad\RoadLargeBusLanes-LOD-apr.png" />
-    <Content Include="Textures\Roads\LargeRoad\RoadLargeBusLanes-LOD.png" />
-    <Content Include="Textures\Roads\LargeRoad\RoadLargeBusLanes.png" />
-    <Content Include="Textures\Roads\LargeRoad\RoadLargeBusLanesBridge-apr.png" />
-    <Content Include="Textures\Roads\LargeRoad\RoadLargeBusLanesBridge-LOD-apr.png" />
-    <Content Include="Textures\Roads\LargeRoad\RoadLargeBusLanesBridge-LOD.png" />
-    <Content Include="Textures\Roads\LargeRoad\RoadLargeBusLanesBridge.png" />
-    <Content Include="Textures\Roads\LargeRoad\RoadLargeBusLanesGrass-apr.png" />
-    <Content Include="Textures\Roads\LargeRoad\RoadLargeBusLanesGrass-bus-apr.png" />
-    <Content Include="Textures\Roads\LargeRoad\RoadLargeBusLanesGrass-bus.png" />
-    <Content Include="Textures\Roads\LargeRoad\RoadLargeBusLanesGrass-busBoth-apr.png" />
-    <Content Include="Textures\Roads\LargeRoad\RoadLargeBusLanesGrass-busBoth.png" />
-    <Content Include="Textures\Roads\LargeRoad\RoadLargeBusLanesGrass.png" />
-    <Content Include="Textures\Roads\LargeRoad\RoadLargeBusLanesSlope-apr.png" />
-    <Content Include="Textures\Roads\LargeRoad\RoadLargeBusLanesSlope-LOD-apr.png" />
-    <Content Include="Textures\Roads\LargeRoad\RoadLargeBusLanesSlope-LOD.png" />
-    <Content Include="Textures\Roads\LargeRoad\RoadLargeBusLanesSlope.png" />
-    <Content Include="Textures\Roads\PedestrianRoad\PedestrianRoad-apr.png" />
-    <Content Include="Textures\Roads\SmallRoad\RoadSmallBusway-apr.png" />
-    <Content Include="Textures\Roads\SmallRoad\RoadSmallBusway-bus-LOD-apr.png" />
-    <Content Include="Textures\Roads\SmallRoad\RoadSmallBusway-bus-LOD.png" />
-    <Content Include="Textures\Roads\SmallRoad\RoadSmallBusway-busBoth-LOD-apr.png" />
-    <Content Include="Textures\Roads\SmallRoad\RoadSmallBusway-busBoth-LOD.png" />
-    <Content Include="Textures\Roads\SmallRoad\RoadSmallBusway-LOD-apr.png" />
-    <Content Include="Textures\Roads\SmallRoad\RoadSmallBusway-LOD.png" />
-    <Content Include="Textures\Roads\SmallRoad\RoadSmallBusway.png" />
-    <Content Include="Textures\Roads\SmallRoad\RoadSmallBuswayBridge-apr.png" />
-    <Content Include="Textures\Roads\SmallRoad\RoadSmallBuswayBridge-LOD-apr.png" />
-    <Content Include="Textures\Roads\SmallRoad\RoadSmallBuswayBridge-LOD.png" />
-    <Content Include="Textures\Roads\SmallRoad\RoadSmallBuswayBridge.png" />
-    <Content Include="Textures\Roads\SmallRoad\RoadSmallBuswayGrass-apr.png" />
-    <Content Include="Textures\Roads\SmallRoad\RoadSmallBuswayGrass-bus-apr.png" />
-    <Content Include="Textures\Roads\SmallRoad\RoadSmallBuswayGrass-busBoth-apr.png" />
-    <Content Include="Textures\Roads\SmallRoad\RoadSmallBuswayGrass.png" />
-    <Content Include="Textures\Roads\SmallRoad\RoadSmallBuswayOneWay.png" />
-    <Content Include="Textures\Roads\SmallRoad\RoadSmallBuswayOneWayBridge.png" />
-    <Content Include="Textures\Roads\SmallRoad\RoadSmallBuswayOneWayGrass.png" />
-    <Content Include="Textures\Roads\SmallRoad\RoadSmallBuswayOneWaySlope.png" />
-    <Content Include="Textures\Roads\SmallRoad\RoadSmallBuswaySlope-apr.png" />
-    <Content Include="Textures\Roads\SmallRoad\RoadSmallBuswaySlope.png" />
-    <Content Include="Textures\TextureIndex.xml" />
-    <Content Include="Textures\UI\RoadThumbnails.png" />
-    <Content Include="Textures\UI\UIThumbnails.png" />
+    <Content Include="Textures\UI\UIThumbnails.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

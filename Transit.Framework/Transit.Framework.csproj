@@ -70,7 +70,7 @@
     <Compile Include="Modularity\ModuleBase.cs" />
     <Compile Include="NetInfoVersion.cs" />
     <Compile Include="Notification.cs" />
-    <Compile Include="AssetAccess.cs" />
+    <Compile Include="Assets.cs" />
     <Compile Include="Builders\MenuItemBuilder.cs" />
     <Compile Include="_Extensions\AssetManagerExtensions.cs" />
     <Compile Include="_Extensions\CloningExtensions.cs" />

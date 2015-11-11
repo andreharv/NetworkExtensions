@@ -377,7 +377,7 @@ namespace Transit.Addon.TrafficPP
 
         public static float RestrictSpeed(float calculatedSpeed, uint laneId, VehicleInfo info)
         {
-            if (calculatedSpeed == 0f || (CSLTraffic.Options & OptionsManager.ModOptions.BetaTestRoadCustomizerTool) == OptionsManager.ModOptions.None)
+            if (calculatedSpeed == 0f || (TrafficPPModule.Options & OptionsManager.ModOptions.BetaTestRoadCustomizerTool) == OptionsManager.ModOptions.None)
                 return calculatedSpeed;
 
             float speedLimit = RoadManager.GetLaneSpeed(laneId);

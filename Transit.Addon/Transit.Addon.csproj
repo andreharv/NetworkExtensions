@@ -57,6 +57,7 @@
     <Compile Include="Mod.Modules.cs" />
     <Compile Include="Mod.Settings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Mod.Path.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Transit.Framework\Transit.Framework.csproj">

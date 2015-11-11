@@ -17,7 +17,7 @@ namespace Transit.Addon.TrafficPP
             
             public override void OnLoadData()
             {
-                if ((CSLTraffic.Options & OptionsManager.ModOptions.BetaTestRoadCustomizerTool) == OptionsManager.ModOptions.None || (CSLTraffic.Options & OptionsManager.ModOptions.GhostMode) == OptionsManager.ModOptions.GhostMode)
+                if ((TrafficPPModule.Options & OptionsManager.ModOptions.BetaTestRoadCustomizerTool) == OptionsManager.ModOptions.None || (TrafficPPModule.Options & OptionsManager.ModOptions.GhostMode) == OptionsManager.ModOptions.GhostMode)
                     return;
                 
 
@@ -44,7 +44,7 @@ namespace Transit.Addon.TrafficPP
                         if (lane == null)
                             continue;
 
-                        if ((CSLTraffic.Options & OptionsManager.ModOptions.FixCargoTrucksNotSpawning) == OptionsManager.ModOptions.FixCargoTrucksNotSpawning && lane.m_vehicleTypes == (VehicleType.ServiceVehicles | VehicleType.PassengerCar))
+                        if ((TrafficPPModule.Options & OptionsManager.ModOptions.FixCargoTrucksNotSpawning) == OptionsManager.ModOptions.FixCargoTrucksNotSpawning && lane.m_vehicleTypes == (VehicleType.ServiceVehicles | VehicleType.PassengerCar))
                             lane.m_vehicleTypes = VehicleType.All;
 
                         lane.UpdateArrows();
@@ -87,7 +87,7 @@ namespace Transit.Addon.TrafficPP
 
             public override void OnSaveData()
             {
-                if ((CSLTraffic.Options & OptionsManager.ModOptions.BetaTestRoadCustomizerTool) == OptionsManager.ModOptions.None || (CSLTraffic.Options & OptionsManager.ModOptions.GhostMode) == OptionsManager.ModOptions.GhostMode)
+                if ((TrafficPPModule.Options & OptionsManager.ModOptions.BetaTestRoadCustomizerTool) == OptionsManager.ModOptions.None || (TrafficPPModule.Options & OptionsManager.ModOptions.GhostMode) == OptionsManager.ModOptions.GhostMode)
                     return;
 
                 Logger.LogInfo("Saving road data!");

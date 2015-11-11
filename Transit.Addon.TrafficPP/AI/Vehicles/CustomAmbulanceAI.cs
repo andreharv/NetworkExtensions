@@ -7,20 +7,6 @@ namespace Transit.Addon.TrafficPP
     {
         public override void SimulationStep(ushort vehicleID, ref Vehicle vehicleData, ref Vehicle.Frame frameData, ushort leaderID, ref Vehicle leaderData, int lodPhysics)
         {
-            if ((CSLTraffic.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
-            {
-                if (CustomCarAI.sm_speedData[vehicleID].speedMultiplier == 0 || CustomCarAI.sm_speedData[vehicleID].currentPath != vehicleData.m_path)
-                {
-                    CustomCarAI.sm_speedData[vehicleID].currentPath = vehicleData.m_path;
-                    if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) == Vehicle.Flags.Emergency2)
-                        CustomCarAI.sm_speedData[vehicleID].SetRandomSpeedMultiplier(1f, 1.5f);
-                    else
-                        CustomCarAI.sm_speedData[vehicleID].SetRandomSpeedMultiplier(0.7f, 1.05f);
-                }
-                CustomCarAI.sm_speedData[vehicleID].ApplySpeedMultiplier(this.m_info);
-            }
-            
-
             frameData.m_blinkState = (((vehicleData.m_flags & Vehicle.Flags.Emergency2) == Vehicle.Flags.None) ? 0f : 10f);
             CustomCarAI.SimulationStep(this, vehicleID, ref vehicleData, ref frameData, leaderID, ref leaderData, lodPhysics);
             if ((vehicleData.m_flags & Vehicle.Flags.Stopped) != Vehicle.Flags.None && this.CanLeave(vehicleID, ref vehicleData))
@@ -31,11 +17,6 @@ namespace Transit.Addon.TrafficPP
             if ((vehicleData.m_flags & Vehicle.Flags.GoingBack) == Vehicle.Flags.None && this.ShouldReturnToSource(vehicleID, ref vehicleData))
             {
                 this.SetTarget(vehicleID, ref vehicleData, 0);
-            }
-
-            if ((CSLTraffic.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
-            {
-                CustomCarAI.sm_speedData[vehicleID].RestoreVehicleSpeed(this.m_info);
             }
         }
 
@@ -92,7 +73,7 @@ namespace Transit.Addon.TrafficPP
         //{
         //    float targetSpeed = base.CalculateTargetSpeed(vehicleID, ref data, speedLimit, curve);
 
-        //    if ((CSLTraffic.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.None)
+        //    if ((TrafficPPModule.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.None)
         //        return targetSpeed;
 
         //    if (m_currentPath != data.m_path)

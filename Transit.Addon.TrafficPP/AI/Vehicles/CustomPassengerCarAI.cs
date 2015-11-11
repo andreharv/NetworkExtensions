@@ -8,7 +8,7 @@ namespace Transit.Addon.TrafficPP
 	{
 		public override void SimulationStep(ushort vehicleID, ref Vehicle data, Vector3 physicsLodRefPos)
 		{
-			if ((CSLTraffic.Options & OptionsManager.ModOptions.NoDespawn) == OptionsManager.ModOptions.NoDespawn)
+			if ((TrafficPPModule.Options & OptionsManager.ModOptions.NoDespawn) == OptionsManager.ModOptions.NoDespawn)
 				data.m_flags &= ~Vehicle.Flags.Congestion;
 
 			base.SimulationStep(vehicleID, ref data, physicsLodRefPos);
@@ -16,16 +16,6 @@ namespace Transit.Addon.TrafficPP
 
 		public override void SimulationStep(ushort vehicleID, ref Vehicle vehicleData, ref Vehicle.Frame frameData, ushort leaderID, ref Vehicle leaderData, int lodPhysics)
 		{
-			if ((CSLTraffic.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
-			{
-				if (CustomCarAI.sm_speedData[vehicleID].speedMultiplier == 0 || CustomCarAI.sm_speedData[vehicleID].currentPath != vehicleData.m_path)
-				{
-					CustomCarAI.sm_speedData[vehicleID].currentPath = vehicleData.m_path;
-					CustomCarAI.sm_speedData[vehicleID].SetRandomSpeedMultiplier(0.6f, 1.4f);
-				}
-				CustomCarAI.sm_speedData[vehicleID].ApplySpeedMultiplier(this.m_info);
-			}
-			
 			if ((vehicleData.m_flags & Vehicle.Flags.Stopped) != Vehicle.Flags.None)
 			{
 				vehicleData.m_waitCounter += 1;
@@ -36,11 +26,6 @@ namespace Transit.Addon.TrafficPP
 				}
 			}
 			CustomCarAI.SimulationStep(this, vehicleID, ref vehicleData, ref frameData, leaderID, ref leaderData, lodPhysics);
-
-			if ((CSLTraffic.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
-			{
-				CustomCarAI.sm_speedData[vehicleID].RestoreVehicleSpeed(this.m_info);
-			}
 		}
 
 		protected override bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays)

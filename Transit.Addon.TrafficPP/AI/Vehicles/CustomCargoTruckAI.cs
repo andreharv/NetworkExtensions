@@ -1,12 +1,13 @@
 using ColossalFramework;
 using UnityEngine;
+
 namespace Transit.Addon.TrafficPP
 {
 	class CustomCargoTruckAI : CargoTruckAI, IVehicle
 	{
 		public override void SimulationStep(ushort vehicleID, ref Vehicle data, Vector3 physicsLodRefPos)
 		{
-			if ((CSLTraffic.Options & OptionsManager.ModOptions.NoDespawn) == OptionsManager.ModOptions.NoDespawn)
+			if ((TrafficPPModule.Options & OptionsManager.ModOptions.NoDespawn) == OptionsManager.ModOptions.NoDespawn)
 				data.m_flags &= ~Vehicle.Flags.Congestion;
 
 			base.SimulationStep(vehicleID, ref data, physicsLodRefPos);
@@ -14,17 +15,6 @@ namespace Transit.Addon.TrafficPP
 
 		public override void SimulationStep(ushort vehicleID, ref Vehicle vehicleData, ushort leaderID, ref Vehicle leaderData, int lodPhysics)
 		{
-			if ((CSLTraffic.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
-			{
-				if (CustomCarAI.sm_speedData[vehicleID].speedMultiplier == 0 || CustomCarAI.sm_speedData[vehicleID].currentPath != vehicleData.m_path)
-				{
-					CustomCarAI.sm_speedData[vehicleID].currentPath = vehicleData.m_path;
-					CustomCarAI.sm_speedData[vehicleID].SetRandomSpeedMultiplier(0.7f, 1.1f);
-				}
-				CustomCarAI.sm_speedData[vehicleID].ApplySpeedMultiplier(this.m_info);
-			}
-
-
 			if ((vehicleData.m_flags & Vehicle.Flags.Spawned) != Vehicle.Flags.None)
 			{
 				Vehicle.Frame lastFrameData = vehicleData.GetLastFrameData();
@@ -59,11 +49,6 @@ namespace Transit.Addon.TrafficPP
 					this.FrameDataUpdated(vehicleID, ref vehicleData, ref lastFrameData);
 					vehicleData.SetFrameData(Singleton<SimulationManager>.instance.m_currentFrameIndex, lastFrameData);
 				}
-			}
-
-			if ((CSLTraffic.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
-			{
-				CustomCarAI.sm_speedData[vehicleID].RestoreVehicleSpeed(this.m_info);
 			}
 		}
 

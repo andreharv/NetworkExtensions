@@ -8,20 +8,6 @@ namespace Transit.Addon.TrafficPP
     {
         public override void SimulationStep(ushort vehicleID, ref Vehicle vehicleData, ref Vehicle.Frame frameData, ushort leaderID, ref Vehicle leaderData, int lodPhysics)
         {
-            if ((CSLTraffic.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
-            {
-                if (CustomCarAI.sm_speedData[vehicleID].speedMultiplier == 0 || CustomCarAI.sm_speedData[vehicleID].currentPath != vehicleData.m_path)
-                {
-                    CustomCarAI.sm_speedData[vehicleID].currentPath = vehicleData.m_path;
-                    if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) == Vehicle.Flags.Emergency2)
-                        CustomCarAI.sm_speedData[vehicleID].SetRandomSpeedMultiplier(1f, 1.75f);
-                    else
-                        CustomCarAI.sm_speedData[vehicleID].SetRandomSpeedMultiplier(0.65f, 1f);
-                }
-                CustomCarAI.sm_speedData[vehicleID].ApplySpeedMultiplier(this.m_info);
-            }
-            
-
             frameData.m_blinkState = (((vehicleData.m_flags & (Vehicle.Flags.Emergency1 | Vehicle.Flags.Emergency2)) == Vehicle.Flags.None) ? 0f : 10f);
             CustomCarAI.SimulationStep(this, vehicleID, ref vehicleData, ref frameData, leaderID, ref leaderData, lodPhysics);
             bool flag = false;
@@ -82,11 +68,6 @@ namespace Transit.Addon.TrafficPP
                     offer.Active = true;
                     Singleton<TransferManager>.instance.AddIncomingOffer((TransferManager.TransferReason)vehicleData.m_transferType, offer);
                 }
-            }
-
-            if ((CSLTraffic.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
-            {
-                CustomCarAI.sm_speedData[vehicleID].RestoreVehicleSpeed(this.m_info);
             }
         }
 

@@ -3,7 +3,7 @@
 namespace Transit.Addon.TrafficPP
 {
     [Module(Mod = typeof(Mod))]
-    public partial class TrafficPlusPlusModule : ModuleBase
+    public partial class TrafficPPModule : ModuleBase
     {
         public override string Name
         {
