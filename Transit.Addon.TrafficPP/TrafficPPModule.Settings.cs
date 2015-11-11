@@ -15,7 +15,7 @@ namespace Transit.Addon.TrafficPP
             None = 0,
             NoDespawn = 16,
             ImprovedAI = 32,
-            BetaTestRoadCustomizerTool = 1L << 55,
+            RoadCustomizerTool = 1L << 55,
 
             GhostMode = 1L << 62
         }
@@ -46,16 +46,16 @@ namespace Transit.Addon.TrafficPP
             helper.AddCheckbox(
                 "Road Customizer Tool",
                 "Road Customizer Tool",
-                s_activeOptions.IsFlagSet(ModOptions.BetaTestRoadCustomizerTool),
+                s_activeOptions.IsFlagSet(ModOptions.RoadCustomizerTool),
                 isChecked =>
                 {
                     if (isChecked)
                     {
-                        s_activeOptions = s_activeOptions | ModOptions.BetaTestRoadCustomizerTool;
+                        s_activeOptions = s_activeOptions | ModOptions.RoadCustomizerTool;
                     }
                     else
                     {
-                        s_activeOptions = s_activeOptions & ~ModOptions.BetaTestRoadCustomizerTool;
+                        s_activeOptions = s_activeOptions & ~ModOptions.RoadCustomizerTool;
                     }
                     FireSaveSettingsNeeded();
                 },

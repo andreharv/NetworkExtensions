@@ -17,7 +17,7 @@ namespace Transit.Addon.TrafficPP
             
             public override void OnLoadData()
             {
-                if ((TrafficPPModule.ActiveOptions & TrafficPPModule.ModOptions.BetaTestRoadCustomizerTool) == TrafficPPModule.ModOptions.None || (TrafficPPModule.ActiveOptions & TrafficPPModule.ModOptions.GhostMode) == TrafficPPModule.ModOptions.GhostMode)
+                if ((TrafficPPModule.ActiveOptions & TrafficPPModule.ModOptions.RoadCustomizerTool) == TrafficPPModule.ModOptions.None || (TrafficPPModule.ActiveOptions & TrafficPPModule.ModOptions.GhostMode) == TrafficPPModule.ModOptions.GhostMode)
                     return;
                 
 
@@ -84,7 +84,7 @@ namespace Transit.Addon.TrafficPP
 
             public override void OnSaveData()
             {
-                if ((TrafficPPModule.ActiveOptions & TrafficPPModule.ModOptions.BetaTestRoadCustomizerTool) == TrafficPPModule.ModOptions.None || (TrafficPPModule.ActiveOptions & TrafficPPModule.ModOptions.GhostMode) == TrafficPPModule.ModOptions.GhostMode)
+                if ((TrafficPPModule.ActiveOptions & TrafficPPModule.ModOptions.RoadCustomizerTool) == TrafficPPModule.ModOptions.None || (TrafficPPModule.ActiveOptions & TrafficPPModule.ModOptions.GhostMode) == TrafficPPModule.ModOptions.GhostMode)
                     return;
 
                 Logger.LogInfo("Saving road data!");

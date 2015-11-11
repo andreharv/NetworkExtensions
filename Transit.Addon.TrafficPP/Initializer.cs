@@ -350,7 +350,7 @@ namespace Transit.Addon.TrafficPP
 
                         AddTool<CustomTransportTool>(toolController);
 
-                        if ((TrafficPPModule.ActiveOptions & TrafficPPModule.ModOptions.BetaTestRoadCustomizerTool) == TrafficPPModule.ModOptions.BetaTestRoadCustomizerTool)
+                        if ((TrafficPPModule.ActiveOptions & TrafficPPModule.ModOptions.RoadCustomizerTool) == TrafficPPModule.ModOptions.RoadCustomizerTool)
                             AddTool<RoadCustomizerTool>(toolController);
                     }
 
