@@ -18,9 +18,9 @@ namespace Transit.Addon.RoadExtensions
                 var partLocal = part;
 
                 helper.AddCheckbox(
-                    part.DisplayName, 
-                    null, // TODO: add description of road here -> part.DisplayDescription ?
-                    part.IsEnabled, 
+                    part.DisplayName,
+                    part is IDescriptor ? ((IDescriptor) part).Description : null,
+                    part.IsEnabled,
                     isChecked =>
                     {
                         partLocal.IsEnabled = isChecked;
@@ -44,12 +44,10 @@ namespace Transit.Addon.RoadExtensions
                         var node = (XmlElement) nodeList[0];
                         var nodeValue = true;
 
-                        if (!bool.TryParse(node.InnerText, out nodeValue))
+                        if (bool.TryParse(node.InnerText, out nodeValue))
                         {
-                            nodeValue = true;
+                            isEnabled = nodeValue;
                         }
-
-                        isEnabled = nodeValue;
                     }
                 }
 

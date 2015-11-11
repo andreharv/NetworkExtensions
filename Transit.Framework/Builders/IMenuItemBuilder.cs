@@ -2,7 +2,7 @@
 
 namespace Transit.Framework.Builders
 {
-    public interface IMenuItemBuilder : ILocalizable
+    public interface IMenuItemBuilder : IIdentifiable, IDisplayable, IDescriptor
     {
         string UICategory { get; }
         int UIOrder { get; }

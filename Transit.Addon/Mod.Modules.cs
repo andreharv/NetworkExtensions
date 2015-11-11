@@ -36,7 +36,7 @@ namespace Transit.Addon
                                         module.SaveSettingsNeeded += ModuleSettingsNeedSave;
                                         return module;
                                     })
-                                .OrderBy(m => m.Name)
+                                .OrderBy(m => m.Order)
                                 .ToArray();
                 }
 

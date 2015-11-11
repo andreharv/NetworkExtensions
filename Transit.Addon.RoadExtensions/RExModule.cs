@@ -16,5 +16,10 @@ namespace Transit.Addon.RoadExtensions
         {
             get { return "Road Extensions"; }
         }
+
+        public override int Order
+        {
+            get { return 1; }
+        }
     }
 }
