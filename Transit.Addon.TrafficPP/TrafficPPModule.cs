@@ -1,13 +1,13 @@
 ﻿using Transit.Framework.Modularity;
 
-namespace Transit.Addon.TrafficAI
+namespace Transit.Addon.TrafficPP
 {
     [Module(Mod = typeof(Mod))]
-    public partial class TrafficAIModule : ModuleBase
+    public partial class TrafficPPModule : ModuleBase
     {
         public override string Name
         {
-            get { return "Traffic AI"; }
+            get { return "Traffic++"; }
         }
     }
 }
