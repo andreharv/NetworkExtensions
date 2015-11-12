@@ -1,16 +1,17 @@
 ﻿using System;
 using ICities;
 using Transit.Framework;
-using Debug = Transit.Framework.Debug;
-#if DEBUG
+using UnityEngine;
 
+#if DEBUG
+using Debug = Transit.Framework.Debug;
 #endif
 
 namespace Transit.Addon
 {
     public partial class Mod : IUserMod
     {
-        private const UInt64 WORKSHOP_ID = 478820060;
+        private const UInt64 WORKSHOP_ID = 543703997;
 
         private static string s_path = null;
         public static string GetPath()
