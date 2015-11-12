@@ -11,7 +11,12 @@ namespace Transit.Framework.Interfaces
     {
         public static string GetCodeName(this IIdentifiable id)
         {
-            return id.Name.ToUpper().Replace(" ", "_");
+            return id
+                .Name
+                .ToUpper()
+                .Replace(" ", "_")
+                .Replace("+", "PLUS")
+                .Replace("-", "_");
         }
     }
 }

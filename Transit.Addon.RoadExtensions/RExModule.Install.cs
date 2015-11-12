@@ -24,7 +24,7 @@ namespace Transit.Addon.RoadExtensions
 
             if (_isReleased)
             {
-                if (GetPath() != PATH_NOT_FOUND)
+                if (Mod.GetPath() != Assets.PATH_NOT_FOUND)
                 {
                     _container = new GameObject(REX_OBJECT_NAME);
 
