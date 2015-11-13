@@ -17,7 +17,7 @@ namespace Transit.Addon
             get
             {
                 OnGameLoaded();
-                return "An addition of mysterious goodies! :D";
+                return "An addition of transit related features";
             }
         }
     }

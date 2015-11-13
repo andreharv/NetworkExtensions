@@ -125,7 +125,7 @@ namespace Transit.Addon
             if (settingsDoc == null)
             {
                 SaveSettings();
-                NotificationPanel.Panel.Show("Welcome!!!", "Some amazing welcome!", false, "Oh yeah!", null, "On noes! :O", null, true);
+                //NotificationPanel.Panel.Show("Welcome!!!", "Some amazing welcome!", false, "Oh yeah!", null, "On noes! :O", null, true);
                 return;
             }
 
@@ -134,7 +134,7 @@ namespace Transit.Addon
             if (fileVersion != VERSION)
             {
                 SaveSettings(); // Updates the version on file so this only shows once
-                NotificationPanel.Panel.Show("Update!!!", "Some amazing description!", false, "Oh yeah!", null, "On noes! :O", null, true);
+                //NotificationPanel.Panel.Show("Update!!!", "Some amazing description!", false, "Oh yeah!", null, "On noes! :O", null, true);
             }
         }
     }

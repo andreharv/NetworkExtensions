@@ -92,6 +92,12 @@ namespace Transit.Addon.RoadExtensions
                             {
                                 rbwButton.atlas = atlas;
                             }
+
+                            var rpButton = group.Find<UIButton>(AdditionnalMenus.ROADS_PEDESTRIANS);
+                            if (rpButton != null)
+                            {
+                                rpButton.atlas = atlas;
+                            }
                         }
                         
                         Debug.Log("REx: Additionnal Menus have been installed successfully");
