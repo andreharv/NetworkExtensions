@@ -65,6 +65,11 @@
       <Name>Transit.Framework</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="NotificationSettings.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

@@ -8,7 +8,8 @@ namespace Transit.Addon
         {
             get
             {
-                return "Transit Addon Mod";
+                OnGameLoaded();
+                return _name;
             }
         }
 
@@ -17,7 +18,7 @@ namespace Transit.Addon
             get
             {
                 OnGameLoaded();
-                return "An addition of transit related features";
+                return _description;
             }
         }
     }
