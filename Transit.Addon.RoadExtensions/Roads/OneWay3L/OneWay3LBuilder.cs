@@ -63,7 +63,16 @@ namespace Transit.Addon.RoadExtensions.Roads.OneWay3L
             info.SetRoadLanes(version, 1);
 
             //Setting Up Props
+            //var leftHWProps = info.GetLeftHWProps();
+            //var rightHWProps = info.GetRightHWProps();
 
+            //if (version == NetInfoVersion.Slope)
+            //{
+            //    leftHWProps.AddLeftWallLights();
+            //    rightHWProps.AddRightWallLights();
+            //}
+
+            
             //var propLanes = info.m_lanes.Where(l => l.m_laneProps != null && (l.m_laneProps.name.ToLower().Contains("left") || l.m_laneProps.name.ToLower().Contains("right"))).ToList();
 
             var owPlayerNetAI = owRoadInfo.GetComponent<PlayerNetAI>();

@@ -9,6 +9,44 @@ namespace Transit.Addon.RoadExtensions.Roads.Roads
 {
     public static class RoadHelper
     {
+        public static ICollection<NetLaneProps.Prop> GetLeftHWProps(this NetInfo rdInfo)
+        {
+            var leftProps = rdInfo.m_lanes.Where(l => l.m_laneProps != null && l.m_laneProps.name.ToLower().Contains("left")).Select(lp => (NetLaneProps.Prop)lp.m_laneProps.m_props.Clone()).ToList();
+            return leftProps;
+        }
+
+        public static ICollection<NetLaneProps.Prop> GetRightHWProps(this NetInfo rdInfo)
+        {
+            var leftProps = rdInfo.m_lanes.Where(l => l.m_laneProps != null && l.m_laneProps.name.ToLower().Contains("left")).Select(lp => (NetLaneProps.Prop)lp.m_laneProps.m_props.Clone()).ToList();
+            return leftProps;
+        }
+
+        public static void AddLeftWallLights(this ICollection<NetLaneProps.Prop> props, int xPos = 0)
+        {
+            var wallLightPropInfo = Prefabs.Find<PropInfo>("Wall Light Orange");
+            var wallLightProp = new NetLaneProps.Prop();
+            wallLightProp.m_prop = wallLightPropInfo.ShallowClone();
+            wallLightProp.m_probability = 100;
+            wallLightProp.m_repeatDistance = 20;
+            wallLightProp.m_segmentOffset = 0;
+            wallLightProp.m_angle = 270;
+            wallLightProp.m_position = new Vector3(xPos, 1.5f, 0);
+            props.Add(wallLightProp);
+        }
+
+        public static void AddRightWallLights(this ICollection<NetLaneProps.Prop> props, int xPos = 0)
+        {
+            var wallLightPropInfo = Prefabs.Find<PropInfo>("Wall Light Orange");
+            var wallLightProp = new NetLaneProps.Prop();
+            wallLightProp.m_prop = wallLightPropInfo.ShallowClone();
+            wallLightProp.m_probability = 100;
+            wallLightProp.m_repeatDistance = 20;
+            wallLightProp.m_segmentOffset = 0;
+            wallLightProp.m_angle = 90;
+            wallLightProp.m_position = new Vector3(xPos, 1.5f, 0);
+            props.Add(wallLightProp);
+        }
+
         public static NetInfo SetRoadLanes(this NetInfo rdInfo, NetInfoVersion version, int lanesToAdd = 0)
         {
             if (lanesToAdd < 0)
@@ -74,6 +112,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Roads
 
             return rdInfo;
         }
+
         private static IEnumerable<NetInfo.Lane> SetPedestrianLanes(this NetInfo rdInfo, NetInfoVersion version)
         {
             var pedestrianLanes = rdInfo.m_lanes
@@ -92,6 +131,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Roads
             }
             return pedestrianLanes;
         }
+
         private static IEnumerable<NetInfo.Lane> SetParkingLanes(this NetInfo rdInfo)
         {
             var parkingLanes = rdInfo
