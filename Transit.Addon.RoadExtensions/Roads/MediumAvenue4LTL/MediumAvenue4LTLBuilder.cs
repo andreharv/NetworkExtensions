@@ -5,6 +5,7 @@ using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.Interfaces;
 using Transit.Framework.Modularity;
+using UnityEngine;
 
 namespace Transit.Addon.RoadExtensions.Roads.MediumAvenue4LTL
 {
@@ -215,11 +216,9 @@ namespace Transit.Addon.RoadExtensions.Roads.MediumAvenue4LTL
             lr.m_flagsForbidden = NetLane.Flags.Forward;
             newProps.Add(lr);
 
-            lane.m_laneProps = new NetLaneProps
-            {
-                name = "TurningLane", 
-                m_props = newProps.ToArray()
-            };
+            lane.m_laneProps = ScriptableObject.CreateInstance<NetLaneProps>();
+            lane.m_laneProps.name = "TurningLane";
+            lane.m_laneProps.m_props = newProps.ToArray();
         }
     }
 }

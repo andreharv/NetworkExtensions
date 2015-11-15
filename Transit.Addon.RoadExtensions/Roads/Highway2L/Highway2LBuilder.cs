@@ -83,8 +83,16 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway2L
             var rightHwLaneProps = rightHwLane.m_laneProps.m_props.ToList();
 
             // Set traffic lights
-            leftHwLaneProps.Trim(lp => lp.m_prop.name.Contains("Traffic"));
-            rightHwLaneProps.Trim(lp => lp.m_prop.name.Contains("Traffic"));
+            leftHwLaneProps.Trim(lp =>
+                lp != null &&
+                lp.m_prop != null &&
+                lp.m_prop.name != null &&
+                lp.m_prop.name.Contains("Traffic"));
+            rightHwLaneProps.Trim(lp => 
+                lp != null &&
+                lp.m_prop != null &&
+                lp.m_prop.name != null &&
+                lp.m_prop.name.Contains("Traffic"));
 
             leftHwLaneProps.AddRange(basicRoadInfo.GetLeftTrafficLights(version));
             rightHwLaneProps.AddRange(basicRoadInfo.GetRightTrafficLights(version));
