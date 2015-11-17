@@ -34,6 +34,7 @@ namespace Transit.Addon.RoadExtensions.Roads.OneWay3L
             ///////////////////////////
             var highwayInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L_SLOPE);
             var owRoadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ONEWAY_2L);
+            var owRoadTunnelInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ONEWAY_2L_TUNNEL);
 
             ///////////////////////////
             // 3DModeling            //
@@ -52,25 +53,36 @@ namespace Transit.Addon.RoadExtensions.Roads.OneWay3L
             info.m_class = owRoadInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL3L_ROAD);
             info.m_pavementWidth = (version != NetInfoVersion.Slope && version != NetInfoVersion.Tunnel ? 3 : 6);
             info.m_halfWidth = (version != NetInfoVersion.Slope && version != NetInfoVersion.Tunnel ? 8 : 11);
-            info.m_class.m_level = ItemClass.Level.Level3; // To make sure they dont fit with the 4L Small Roads
+
             if (version == NetInfoVersion.Tunnel)
             {
                 info.m_setVehicleFlags = Vehicle.Flags.Transition;
                 info.m_setCitizenFlags = CitizenInstance.Flags.Transition;
+                info.m_class = owRoadTunnelInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL3L_ROAD_TUNNEL);
+            }
+            else
+            {
+                info.m_class = owRoadInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL3L_ROAD);
             }
 
             // Setting up lanes
             info.SetRoadLanes(version, 1);
-
+            var leftPedLane = info.GetLeftRoadShoulder(owRoadInfo, version);
+            var rightPedLane = info.GetRightRoadShoulder(owRoadInfo, version);
             //Setting Up Props
-            //var leftHWProps = info.GetLeftHWProps();
-            //var rightHWProps = info.GetRightHWProps();
+            var leftRoadProps = leftPedLane.m_laneProps.m_props.ToList();
+            var rightRoadProps = rightPedLane.m_laneProps.m_props.ToList();
 
-            //if (version == NetInfoVersion.Slope)
-            //{
-            //    leftHWProps.AddLeftWallLights();
-            //    rightHWProps.AddRightWallLights();
-            //}
+            if (version == NetInfoVersion.Slope)
+            {
+                leftRoadProps.AddLeftWallLights(-1.5f);
+                rightRoadProps.AddRightWallLights(1.5f);
+            }
+            
+            leftPedLane.m_laneProps.m_props = leftRoadProps.ToArray();
+            rightPedLane.m_laneProps.m_props = rightRoadProps.ToArray();
+
+            info.TrimAboveGroundProps(version);
 
             
             //var propLanes = info.m_lanes.Where(l => l.m_laneProps != null && (l.m_laneProps.name.ToLower().Contains("left") || l.m_laneProps.name.ToLower().Contains("right"))).ToList();

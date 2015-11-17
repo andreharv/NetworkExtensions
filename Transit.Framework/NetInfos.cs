@@ -19,11 +19,13 @@ namespace Transit.Framework
             public const string ONEWAY_2L = "Oneway Road";
             public const string ONEWAY_2L_GRASS = "Oneway Road Decoration Grass";
             public const string ONEWAY_2L_TREES = "Oneway Road Decoration Trees";
+            public const string ONEWAY_2L_TUNNEL = "Oneway Road Tunnel";
             public const string ONEWAY_6L = "Large Oneway";
 
             public const string HIGHWAY_RAMP = "HighwayRamp";
             public const string HIGHWAY_3L = "Highway";
             public const string HIGHWAY_3L_SLOPE = "Highway Slope";
+            public const string HIGHWAY_3L_TUNNEL = "Highway Tunnel";
             public const string HIGHWAY_3L_BARRIER = "Highway Barrier";
 
             public const string PED_GRAVEL = ROAD_2L_GRAVEL; // Quick fix for the Pedestian zonable roads
@@ -148,12 +150,18 @@ namespace Transit.Framework
     public static class NetInfoClasses
     {
         public const string NEXT_HIGHWAY1L = "NExtHighway1L";
+        public const string NEXT_HIGHWAY1L_TUNNEL = "NExtHighwayTunnel1LTunnel";
         public const string NEXT_HIGHWAY2L = "NExtHighway2L";
+        public const string NEXT_HIGHWAY2L_TUNNEL = "NExtHighwayTunnel2LTunnel";
         public const string NEXT_HIGHWAY4L = "NExtHighway4L";
+        public const string NEXT_HIGHWAY4L_TUNNEL = "NExtHighwayTunnel4LTunnel";
         public const string NEXT_HIGHWAY5L = "NExtHighway5L";
+        public const string NEXT_HIGHWAY5L_TUNNEL = "NExtHighwayTunnel5LTunnel";
         public const string NEXT_HIGHWAY6L = "NExtHighway6L";
+        public const string NEXT_HIGHWAY6L_TUNNEL = "NExtHighwayTunnel6LTunnel";
 
         public const string NEXT_SMALL3L_ROAD = "NExtSmall3LRoad";
+        public const string NEXT_SMALL3L_ROAD_TUNNEL = "NExtSmall3LRoadTunnel";
         public const string NEXT_SMALL4L_ROAD = "NExtSmall4LRoad";
         public const string NEXT_MEDIUM_ROAD = "NExtMediumRoad";
         public const string NEXT_PED_ROAD = "NExtPedRoad";

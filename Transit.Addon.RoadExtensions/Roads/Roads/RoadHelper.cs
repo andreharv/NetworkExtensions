@@ -9,19 +9,91 @@ namespace Transit.Addon.RoadExtensions.Roads.Roads
 {
     public static class RoadHelper
     {
-        public static ICollection<NetLaneProps.Prop> GetLeftHWProps(this NetInfo rdInfo)
+        public static NetInfo.Lane GetLeftRoadShoulder(this NetInfo info, NetInfo templateInfo, NetInfoVersion version)
         {
-            var leftProps = rdInfo.m_lanes.Where(l => l.m_laneProps != null && l.m_laneProps.name.ToLower().Contains("left")).Select(lp => (NetLaneProps.Prop)lp.m_laneProps.m_props.Clone()).ToList();
-            return leftProps;
+            var leftPedLane = info.m_lanes.First(l => l.m_laneType == NetInfo.LaneType.Pedestrian);
+            var templateLane = templateInfo.m_lanes.First(l => l.m_laneType == NetInfo.LaneType.Pedestrian);
+
+            leftPedLane.m_laneProps = templateLane.m_laneProps.Clone("Left Road Shoulder Props");
+
+            foreach (var prop in leftPedLane.m_laneProps.m_props)
+            {
+                if (version == NetInfoVersion.Tunnel)
+                {
+                    if (prop.m_prop.name.ToLower().Contains("street light"))
+                    {
+                        prop.m_position = new Vector3(-2.2f, -4.5f, 0);
+                    }
+                    if (prop.m_prop.name.ToLower().Contains("traffic light"))
+                    {
+                        prop.m_position = new Vector3(-1, -1.6f, 0);
+                    }
+                }
+                else if (version == NetInfoVersion.Slope)
+                {
+                    if (prop.m_prop.name.ToLower().Contains("traffic light"))
+                    {
+                        prop.m_position = new Vector3(-1, -1.6f, 0);
+                    }
+                }
+            }
+            return leftPedLane;
         }
 
-        public static ICollection<NetLaneProps.Prop> GetRightHWProps(this NetInfo rdInfo)
+        public static NetInfo.Lane GetRightRoadShoulder(this NetInfo info, NetInfo templateInfo, NetInfoVersion version)
         {
-            var leftProps = rdInfo.m_lanes.Where(l => l.m_laneProps != null && l.m_laneProps.name.ToLower().Contains("left")).Select(lp => (NetLaneProps.Prop)lp.m_laneProps.m_props.Clone()).ToList();
-            return leftProps;
+            var rightPedLane = info.m_lanes.Last(l => l.m_laneType == NetInfo.LaneType.Pedestrian);
+            var templateLane = templateInfo.m_lanes.Last(l => l.m_laneType == NetInfo.LaneType.Pedestrian);
+
+            rightPedLane.m_laneProps = templateLane.m_laneProps.Clone("Right Road Shoulder Props");
+
+            foreach (var prop in rightPedLane.m_laneProps.m_props)
+            {
+                if (version == NetInfoVersion.Tunnel)
+                {
+                    if (prop.m_prop.name.ToLower().Contains("light"))
+                    {
+                        prop.m_position = new Vector3(2.2f, -4.5f, 0);
+                    }
+
+                    if (prop.m_prop.name.ToLower().Contains("traffic light"))
+                    {
+                        prop.m_position = new Vector3(1, -1.6f, 0);
+                    }
+                }
+                else if (version == NetInfoVersion.Slope)
+                {
+                    if (prop.m_prop.name.ToLower().Contains("traffic light"))
+                    {
+                        prop.m_position = new Vector3(1, -1.6f, 0);
+                    }
+                }
+            }
+
+            return rightPedLane;
         }
 
-        public static void AddLeftWallLights(this ICollection<NetLaneProps.Prop> props, int xPos = 0)
+        public static NetLaneProps GetLeftRoadProps(this NetInfo info, NetInfo templateInfo)
+        {
+            var laneProps = info.m_lanes.First(l => l.m_laneType == NetInfo.LaneType.Pedestrian).m_laneProps.Clone("left road props");
+            if (laneProps == null)
+            {
+                laneProps = templateInfo.m_lanes.First(l => l.m_laneType == NetInfo.LaneType.Pedestrian).m_laneProps.Clone("left road props");
+            }
+            return laneProps;
+        }
+
+        public static NetLaneProps GetRightRoadProps(this NetInfo info, NetInfo templateInfo)
+        {
+            var laneProps = info.m_lanes.Last(l => l.m_laneType == NetInfo.LaneType.Pedestrian).m_laneProps.Clone("right road props");
+            if (laneProps == null)
+            {
+                laneProps = templateInfo.m_lanes.Last(l => l.m_laneType == NetInfo.LaneType.Pedestrian).m_laneProps.Clone("right road props");
+            }
+            return laneProps;
+        }
+
+        public static void AddLeftWallLights(this ICollection<NetLaneProps.Prop> props, float xPos = 0)
         {
             var wallLightPropInfo = Prefabs.Find<PropInfo>("Wall Light Orange");
             var wallLightProp = new NetLaneProps.Prop();
@@ -34,7 +106,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Roads
             props.Add(wallLightProp);
         }
 
-        public static void AddRightWallLights(this ICollection<NetLaneProps.Prop> props, int xPos = 0)
+        public static void AddRightWallLights(this ICollection<NetLaneProps.Prop> props, float xPos = 0)
         {
             var wallLightPropInfo = Prefabs.Find<PropInfo>("Wall Light Orange");
             var wallLightProp = new NetLaneProps.Prop();
@@ -45,6 +117,72 @@ namespace Transit.Addon.RoadExtensions.Roads.Roads
             wallLightProp.m_angle = 90;
             wallLightProp.m_position = new Vector3(xPos, 1.5f, 0);
             props.Add(wallLightProp);
+        }
+
+        public static void TrimAboveGroundProps(this NetInfo info, NetInfoVersion version, bool removeRightStreetLights = false, bool removeLeftStreetLights = false)
+        {
+            var randomProp = Prefabs.Find<PropInfo>("Random Street Prop", false);
+            var streetLight = Prefabs.Find<PropInfo>("New Street Light", false);
+            var streetLightHw = Prefabs.Find<PropInfo>("New Street Light Highway", false);
+            var manhole = Prefabs.Find<PropInfo>("Manhole", false);
+
+            foreach (var laneProps in info.m_lanes.Select(l => l.m_laneProps).Where(lpi => lpi != null))
+            {
+                var remainingProp = new List<NetLaneProps.Prop>();
+
+                foreach (var prop in laneProps.m_props.Where(p => p.m_prop != null))
+                {
+                    if ((version == NetInfoVersion.Tunnel || version == NetInfoVersion.Slope) 
+                     && (prop.m_prop.name.ToLower().Contains("random")
+                        || prop.m_prop.name.ToLower().Contains("manhole") 
+                        || prop.m_prop.name.ToLower().Contains("street name sign")))
+                    {
+                        continue;
+                    }
+                    if (version == NetInfoVersion.Slope && prop.m_prop.name.ToLower().Contains("street light"))
+                    {
+                        continue;
+                    }
+                    //if (prop.m_prop == manhole)
+                    //{
+                    //    continue;
+                    //}
+
+                    //if (removeLeftStreetLights)
+                    //{
+                    //    if (prop.m_prop == streetLight &&
+                    //        laneProps.name.Contains("Left"))
+                    //    {
+                    //        continue;
+                    //    }
+
+                    //    if (prop.m_prop == streetLightHw &&
+                    //        laneProps.name.Contains("Left"))
+                    //    {
+                    //        continue;
+                    //    }
+                    //}
+
+                    //if (removeRightStreetLights)
+                    //{
+                    //    if (prop.m_prop == streetLight &&
+                    //        laneProps.name.Contains("Right"))
+                    //    {
+                    //        continue;
+                    //    }
+
+                    //    if (prop.m_prop == streetLightHw &&
+                    //        laneProps.name.Contains("Right"))
+                    //    {
+                    //        continue;
+                    //    }
+                    //}
+
+                    remainingProp.Add(prop);
+                }
+
+                laneProps.m_props = remainingProp.ToArray();
+            }
         }
 
         public static NetInfo SetRoadLanes(this NetInfo rdInfo, NetInfoVersion version, int lanesToAdd = 0)

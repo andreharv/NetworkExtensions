@@ -34,7 +34,7 @@ namespace Transit.Addon.RoadExtensions.Roads.OneWay4L
             // Template              //
             ///////////////////////////
             var owRoadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ONEWAY_2L);
-
+            var owRoadTunnelInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ONEWAY_2L);
             ///////////////////////////
             // 3DModeling            //
             ///////////////////////////
