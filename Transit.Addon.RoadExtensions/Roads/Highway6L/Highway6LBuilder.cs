@@ -30,7 +30,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway6L
             // Template              //
             ///////////////////////////
             var highwayInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L);
-
+            var highwayTunnelInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L_TUNNEL);
 
             ///////////////////////////
             // 3DModeling            //
@@ -48,7 +48,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway6L
             // Set up                //
             ///////////////////////////
             info.m_availableIn = ItemClass.Availability.All;
-            info.m_class = highwayInfo.m_class.Clone(NetInfoClasses.NEXT_HIGHWAY6L);
+            info.m_class = highwayInfo.m_class;//.Clone(NetInfoClasses.NEXT_HIGHWAY6L);
             info.m_surfaceLevel = 0;
             info.m_createPavement = !(version == NetInfoVersion.Ground || version == NetInfoVersion.Tunnel);
             info.m_createGravel = version == NetInfoVersion.Ground;
@@ -61,6 +61,11 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway6L
             if (version == NetInfoVersion.Tunnel)
             {
                 info.m_setVehicleFlags = Vehicle.Flags.Transition;
+                info.m_class = highwayTunnelInfo.m_class.Clone(NetInfoClasses.NEXT_HIGHWAY6L_TUNNEL);
+            }
+            else
+            {
+                info.m_class = highwayInfo.m_class.Clone(NetInfoClasses.NEXT_HIGHWAY6L);
             }
 
 

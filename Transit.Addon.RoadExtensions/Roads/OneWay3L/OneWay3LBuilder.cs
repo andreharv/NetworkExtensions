@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Transit.Framework;
 using Transit.Framework.Builders;
-using Transit.Framework.Interfaces;
-using Transit.Framework.Modularity;
 using Transit.Addon.RoadExtensions.Menus;
+using Transit.Addon.RoadExtensions.Roads.Roads;
 
 namespace Transit.Addon.RoadExtensions.Roads.OneWay3L
 {
-    public class OneWay3LBuilder : Activable, INetInfoBuilderPart
+    public partial class OneWay3LBuilder : Activable, INetInfoBuilderPart
     {
         public int Order { get { return 8; } }
         public int UIOrder { get { return 10; } }
@@ -20,12 +19,12 @@ namespace Transit.Addon.RoadExtensions.Roads.OneWay3L
         public string Description { get { return "A three-lane one-way road without parkings spaces. Supports medium traffic."; } }
         public string UICategory { get { return AdditionnalMenus.ROADS_SMALL_HV; } }
 
-        public string ThumbnailsPath    { get { return @"Roads\OneWay3L\thumbnails.png"; } }
-        public string InfoTooltipPath   { get { return @"Roads\OneWay3L\infotooltip.png"; } }
+        public string ThumbnailsPath { get { return @"Roads\OneWay3L\thumbnails.png"; } }
+        public string InfoTooltipPath { get { return @"Roads\OneWay3L\infotooltip.png"; } }
 
         public NetInfoVersion SupportedVersions
         {
-            get { return NetInfoVersion.Ground; }
+            get { return NetInfoVersion.All; }
         }
 
         public void BuildUp(NetInfo info, NetInfoVersion version)
@@ -33,142 +32,68 @@ namespace Transit.Addon.RoadExtensions.Roads.OneWay3L
             ///////////////////////////
             // Template              //
             ///////////////////////////
+            var highwayInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L_SLOPE);
             var owRoadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ONEWAY_2L);
+            var owRoadTunnelInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ONEWAY_2L_TUNNEL);
 
             ///////////////////////////
             // 3DModeling            //
             ///////////////////////////
-            if (version == NetInfoVersion.Ground)
-            {
-                var segments0 = info.m_segments[0];
-                var nodes0 = info.m_nodes[0];
-
-                segments0.m_forwardRequired = NetSegment.Flags.None;
-                segments0.m_forwardForbidden = NetSegment.Flags.None;
-                segments0.m_backwardRequired = NetSegment.Flags.None;
-                segments0.m_backwardForbidden = NetSegment.Flags.None;
-                segments0.SetMeshes
-                    (@"Roads\SmallHeavyRoads\Meshes\Ground.obj",
-                     @"Roads\SmallHeavyRoads\Meshes\Ground_LOD.obj");
-
-                nodes0.SetMeshes
-                    (@"Roads\SmallHeavyRoads\Meshes\Ground.obj",
-                     @"Roads\SmallHeavyRoads\Meshes\Ground_Node_LOD.obj");
-
-                info.m_segments = new[] { segments0 };
-                info.m_nodes = new[] { nodes0 };
-            }
+            info.Setup16m3mSWMesh(version, highwayInfo);
 
             ///////////////////////////
             // Texturing             //
             ///////////////////////////
-            switch (version)
-            {
-                case NetInfoVersion.Ground:
-                    info.SetAllSegmentsTexture(
-                        new TexturesSet
-                           (@"Roads\OneWay3L\Textures\Ground_Segment__MainTex.png",
-                            @"Roads\OneWay3L\Textures\Ground_Segment__AlphaMap.png"),
-                        new LODTexturesSet
-                           (@"Roads\OneWay3L\Textures\Ground_SegmentLOD__MainTex.png",
-                            @"Roads\OneWay3L\Textures\Ground_SegmentLOD__AlphaMap.png",
-                            @"Roads\OneWay3L\Textures\Ground_SegmentLOD__XYS.png"));
-                    break;
-            }
-
-
+            SetupTextures(info, version);
+            
             ///////////////////////////
             // Set up                //
             ///////////////////////////
             info.m_hasParkingSpaces = false;
             info.m_class = owRoadInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL3L_ROAD);
-            info.m_pavementWidth = 2;
-            info.m_class.m_level = ItemClass.Level.Level3; // To make sure they dont fit with the 4L Small Roads
+            info.m_pavementWidth = (version != NetInfoVersion.Slope && version != NetInfoVersion.Tunnel ? 3 : 6);
+            info.m_halfWidth = (version != NetInfoVersion.Slope && version != NetInfoVersion.Tunnel ? 8 : 11);
+
+            if (version == NetInfoVersion.Tunnel)
+            {
+                info.m_setVehicleFlags = Vehicle.Flags.Transition;
+                info.m_setCitizenFlags = CitizenInstance.Flags.Transition;
+                info.m_class = owRoadTunnelInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL3L_ROAD_TUNNEL);
+            }
+            else
+            {
+                info.m_class = owRoadInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL3L_ROAD);
+            }
 
             // Setting up lanes
-            var vehicleLaneTypes = new[]
+            info.SetRoadLanes(version, 1);
+            var leftPedLane = info.GetLeftRoadShoulder(owRoadInfo, version);
+            var rightPedLane = info.GetRightRoadShoulder(owRoadInfo, version);
+            //Setting Up Props
+            var leftRoadProps = leftPedLane.m_laneProps.m_props.ToList();
+            var rightRoadProps = rightPedLane.m_laneProps.m_props.ToList();
+
+            if (version == NetInfoVersion.Slope)
             {
-                NetInfo.LaneType.Vehicle,
-                NetInfo.LaneType.PublicTransport,
-                NetInfo.LaneType.CargoVehicle,
-                NetInfo.LaneType.TransportVehicle
-            };
-
-            var templateLane = info.m_lanes
-                .Where(l =>
-                    vehicleLaneTypes.Contains(l.m_laneType))
-                .OrderBy(l => l.m_position)
-                .First();
-
-            var vehicleLanes = new List<NetInfo.Lane>();
-            const float outerCarLanePosition = 4.0f;
-            const float pedLanePosition = 8f;
-            const float pedLaneWidth = 1.5f;
-
-            for (int i = 0; i < 3; i++)
-            {
-                var lane = templateLane.Clone(string.Format("Carlane {0}", i + 1));
-                lane.m_similarLaneIndex = i;
-                lane.m_similarLaneCount = 3;
-
-                switch (i)
-                {
-                    case 0: lane.m_position = -outerCarLanePosition; break;
-                    case 1: lane.m_position = 0f; break;
-                    case 2: lane.m_position = outerCarLanePosition; break;
-                }
-
-                if (i == 2)
-                {
-                    lane.m_allowStop = true;
-                    lane.m_stopOffset = 0.7f;
-                }
-
-                vehicleLanes.Add(lane);
+                leftRoadProps.AddLeftWallLights(-1.5f);
+                rightRoadProps.AddRightWallLights(1.5f);
             }
+            
+            leftPedLane.m_laneProps.m_props = leftRoadProps.ToArray();
+            rightPedLane.m_laneProps.m_props = rightRoadProps.ToArray();
 
-            var pedestrianLanes = info.m_lanes
-                .Where(l => l.m_laneType == NetInfo.LaneType.Pedestrian)
-                .OrderBy(l => l.m_position)
-                .ToArray();
+            info.TrimAboveGroundProps(version);
 
-            foreach (var lane in pedestrianLanes)
+            
+            //var propLanes = info.m_lanes.Where(l => l.m_laneProps != null && (l.m_laneProps.name.ToLower().Contains("left") || l.m_laneProps.name.ToLower().Contains("right"))).ToList();
+
+            var owPlayerNetAI = owRoadInfo.GetComponent<PlayerNetAI>();
+            var playerNetAI = info.GetComponent<PlayerNetAI>();
+
+            if (owPlayerNetAI != null && playerNetAI != null)
             {
-                if (lane.m_position < 0)
-                {
-                    lane.m_position = -pedLanePosition;
-                }
-                else
-                {
-                    lane.m_position = pedLanePosition;
-                }
-
-                lane.m_width = pedLaneWidth;
-            }
-
-            var allLanes = new List<NetInfo.Lane>();
-            allLanes.AddRange(vehicleLanes);
-            allLanes.AddRange(pedestrianLanes);
-
-            info.m_lanes = allLanes
-                .OrderBy(l => l.m_position)
-                .ToArray();
-
-
-            if (version == NetInfoVersion.Ground)
-            {
-                var owPlayerNetAI = owRoadInfo.GetComponent<PlayerNetAI>();
-                var playerNetAI = info.GetComponent<PlayerNetAI>();
-
-                if (owPlayerNetAI != null && playerNetAI != null)
-                {
-                    playerNetAI.m_constructionCost = owPlayerNetAI.m_constructionCost * 11 / 10; // 10% increase
-                    playerNetAI.m_maintenanceCost = owPlayerNetAI.m_maintenanceCost * 11 / 10; // 10% increase
-                }
-            }
-            else // Same as the original basic road specs
-            {
-
+                playerNetAI.m_constructionCost = owPlayerNetAI.m_constructionCost * 3 / 2; // Charge by the lane?
+                playerNetAI.m_maintenanceCost = owPlayerNetAI.m_maintenanceCost * 3 / 2; // Charge by the lane?
             }
 
             var roadBaseAI = info.GetComponent<RoadBaseAI>();
