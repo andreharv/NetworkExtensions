@@ -64,7 +64,6 @@
     <Compile Include="RExModule.Install.Init.cs" />
     <Compile Include="Menus\AdditionnalMenus.cs" />
     <Compile Include="Menus\RExRoadsGroupPanel.cs" />
-    <Compile Include="RExModule.Path.cs" />
     <Compile Include="Roads\Highways\HighwayModels.32m.cs" />
     <Compile Include="Roads\Highway5L\Highway5LBuilder.Texturing.cs" />
     <Compile Include="Roads\Highway6L\Highway6LBuilder.Texturing.cs" />
@@ -106,6 +105,78 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Menus\Textures\AdditionnalSubBar.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Busway2L1W\Textures\Elevated_SegmentLOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Busway2L1W\Textures\Ground_SegmentLOD_BusBoth__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Busway2L1W\Textures\Ground_SegmentLOD_Bus__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Busway2L1W\Textures\Ground_SegmentLOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Busway2L1W\Textures\Slope_SegmentLOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Busway2L1W\Textures_Grass\Ground_SegmentLOD_BusBoth__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Busway2L1W\Textures_Grass\Ground_SegmentLOD_Bus__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Busway2L1W\Textures_Grass\Ground_SegmentLOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Busway2L\Textures_Grass\Ground_SegmentLOD_BusBoth__AlphaMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Busway2L\Textures_Grass\Ground_SegmentLOD_BusBoth__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Busway2L\Textures_Grass\Ground_SegmentLOD_Bus__AlphaMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Busway2L\Textures_Grass\Ground_SegmentLOD_Bus__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Busway2L\Textures_Grass\Ground_SegmentLOD__AlphaMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Busway2L\Textures_Grass\Ground_SegmentLOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Busway2L\Textures_Grass\Ground_SegmentLOD__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Busway6L\Textures_Grass\Ground_SegmentLOD_BusBoth__AlphaMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Busway6L\Textures_Grass\Ground_SegmentLOD_BusBoth__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Busway6L\Textures_Grass\Ground_SegmentLOD_BusBoth__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Busway6L\Textures_Grass\Ground_SegmentLOD_Bus__AlphaMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Busway6L\Textures_Grass\Ground_SegmentLOD_Bus__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Busway6L\Textures_Grass\Ground_SegmentLOD_Bus__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Busway6L\Textures_Grass\Ground_SegmentLOD__AlphaMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Busway6L\Textures_Grass\Ground_SegmentLOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Busway6L\Textures_Grass\Ground_SegmentLOD__XYSMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\Highway1L\Textures\Elevated_NodeLOD__APRMap.png">

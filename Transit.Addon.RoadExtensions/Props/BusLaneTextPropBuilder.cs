@@ -17,9 +17,9 @@ namespace Transit.Addon.RoadExtensions.Props
             newProp.m_useColorVariations = false;
 
             Material newMat = new Material(renderer.sharedMaterial);
-            newMat.SetTexture("_MainTex", AssetManager.instance.GetTexture(@"Props\Textures\BusLaneText.png"));
-            newMat.SetTexture("_ACIMap", AssetManager.instance.GetTexture(@"Props\Textures\BusLaneText-aci.png"));
-            newMat.SetTexture("_XYSMap", AssetManager.instance.GetTexture(@"Props\Textures\BusLaneText-xys.png"));
+            newMat.SetTexture("_MainTex", AssetManager.instance.GetTexture(@"Props\Textures\BusLaneText.png", TextureType.Default));
+            newMat.SetTexture("_ACIMap", AssetManager.instance.GetTexture(@"Props\Textures\BusLaneText-aci.png", TextureType.Default));
+            newMat.SetTexture("_XYSMap", AssetManager.instance.GetTexture(@"Props\Textures\BusLaneText-xys.png", TextureType.Default));
             newMat.color = new Color32(255, 255, 255, 100);
             renderer.sharedMaterial = newMat;
         }

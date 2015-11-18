@@ -20,7 +20,7 @@ namespace Transit.Framework
 
 
 
-            var texture = assetManager.GetTexture(thumbnailsPath);
+            var texture = assetManager.GetTexture(thumbnailsPath, TextureType.UI);
             texture.FixTransparency();
 
             thumbnailAtlas.material.mainTexture = texture;
@@ -59,7 +59,7 @@ namespace Transit.Framework
             var shader = Shader.Find("UI/Default UI Shader");
             if (shader != null) infoTooltipAtlas.material = new Material(shader);
 
-            var texture = assetManager.GetTexture(infoTooltipPath);
+            var texture = assetManager.GetTexture(infoTooltipPath, TextureType.UI);
 
             infoTooltipAtlas.material.mainTexture = texture;
 

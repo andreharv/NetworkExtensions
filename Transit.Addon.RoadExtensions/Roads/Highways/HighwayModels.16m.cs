@@ -16,9 +16,9 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways
             {
                 case NetInfoVersion.Ground:
                     {
-                        var segments0 = info.m_segments[0];
-                        var nodes0 = info.m_nodes[0];
-                        var nodes1 = nodes0.ShallowClone();
+                        var segments0 = info.m_segments[0].ShallowClone();
+                        var nodes0 = info.m_nodes[0].ShallowClone();
+                        var nodes1 = info.m_nodes[0].ShallowClone();
 
                         segments0
                             .SetFlagsDefault()
@@ -46,9 +46,9 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways
                 case NetInfoVersion.Elevated:
                 case NetInfoVersion.Bridge:
                     {
-                        var segments0 = info.m_segments[0];
-                        var nodes0 = info.m_nodes[0];
-                        var nodes1 = nodes0.ShallowClone();
+                        var segments0 = info.m_segments[0].ShallowClone();
+                        var nodes0 = info.m_nodes[0].ShallowClone();
+                        var nodes1 = info.m_nodes[0].ShallowClone();
 
                         segments0
                             .SetFlagsDefault()
@@ -75,13 +75,13 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways
 
                 case NetInfoVersion.Slope:
                     {
-                        var segments0 = info.m_segments[0];
-                        var segments1 = info.m_segments[1];
-                        var segments2 = segments1.ShallowClone();
-                        var nodes0 = info.m_nodes[0];
-                        var nodes1 = info.m_nodes[1];
-                        var nodes2 = nodes0.ShallowClone();
-                        var nodes3 = nodes1.ShallowClone();
+                        var segments0 = info.m_segments[0].ShallowClone();
+                        var segments1 = info.m_segments[1].ShallowClone();
+                        var segments2 = info.m_segments[1].ShallowClone();
+                        var nodes0 = info.m_nodes[0].ShallowClone();
+                        var nodes1 = info.m_nodes[0].ShallowClone();
+                        var nodes2 = info.m_nodes[1].ShallowClone();
+                        var nodes3 = info.m_nodes[1].ShallowClone();
 
                         segments0
                             .SetFlagsDefault()
@@ -102,22 +102,22 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways
                             (@"Roads\Highways\Meshes\16m\Tunnel_Node_Gray.obj",
                              @"Roads\Highways\Meshes\16m\Ground_Node_LOD.obj");
                         nodes1
-                            .SetFlags(NetNode.Flags.None, NetNode.Flags.UndergroundTransition)
-                            .SetMeshes
-                            (@"Roads\Highways\Meshes\16m\Ground_Node.obj",
-                             @"Roads\Highways\Meshes\16m\Ground_Node_LOD.obj");
-                        nodes2
                             .SetFlags(NetNode.Flags.Underground, NetNode.Flags.None)
                             .SetMeshes
                             (@"Roads\Highways\Meshes\16m\Slope_U_Node.obj",
                              @"Roads\Highways\Meshes\16m\Slope_U_Node_LOD.obj");
+                        nodes2
+                            .SetFlags(NetNode.Flags.None, NetNode.Flags.UndergroundTransition)
+                            .SetMeshes
+                            (@"Roads\Highways\Meshes\16m\Ground_Node.obj",
+                             @"Roads\Highways\Meshes\16m\Ground_Node_LOD.obj");
                         nodes3
                             .SetFlags(NetNode.Flags.Transition, NetNode.Flags.None)
                             .SetMeshes
                             (@"Roads\Highways\Meshes\16m\Ground_Trans.obj",
                              @"Roads\Highways\Meshes\16m\Ground_Trans_LOD.obj");
 
-                        nodes2.m_material = defaultMaterial;
+                        nodes1.m_material = defaultMaterial;
 
                         info.m_segments = new[] { segments0, segments1, segments2 };
                         info.m_nodes = new[] { nodes0, nodes1, nodes2, nodes3 };
@@ -126,11 +126,10 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways
 
                 case NetInfoVersion.Tunnel:
                     {
-                        var segments0 = info.m_segments[0];
-                        var segments1 = segments0.ShallowClone();
-                        var nodes0 = info.m_nodes[0];
-                        var nodes1 = nodes0.ShallowClone();
-                        //var nodes2 = nodes1.ShallowClone();
+                        var segments0 = info.m_segments[0].ShallowClone();
+                        var segments1 = info.m_segments[0].ShallowClone();
+                        var nodes0 = info.m_nodes[0].ShallowClone();
+                        var nodes1 = info.m_nodes[0].ShallowClone();
 
                         segments0
                             //.SetFlagsDefault()
@@ -149,24 +148,15 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways
                              @"Roads\Highways\Meshes\16m\Ground_Node_LOD.obj");
                         nodes1
                             .SetFlags(NetNode.Flags.None, NetNode.Flags.None)
-                            //.SetFlags(NetNode.Flags.Transition, NetNode.Flags.Underground)
                             .SetMeshes
                             (@"Roads\Highways\Meshes\16m\Tunnel_Node.obj",
                              @"Roads\Highways\Meshes\16m\Tunnel_Node_LOD.obj");
 
-                        // nodes2
-                        //    .SetFlags(NetNode.Flags.None, NetNode.Flags.UndergroundTransition)
-                        //    .SetMeshes
-                        //    (@"Roads\Highways\Meshes\16m\Tunnel.obj",
-                        //    @"Roads\Highways\Meshes\16m\Ground_LOD.obj");
-
                         segments1.m_material = defaultMaterial;
                         nodes1.m_material = defaultMaterial;
-                        //nodes2.m_material = defaultMaterial;
 
                         segments1.m_surfaceMapping = new UnityEngine.Vector4(0, 0, 0, 0);
                         nodes1.m_surfaceMapping = new UnityEngine.Vector4(0, 0, 0, 0);
-                        //nodes2.m_surfaceMapping = new UnityEngine.Vector4(0, 0, 0, 0);
 
                         info.m_segments = new[] { segments0, segments1 };
                         info.m_nodes = new[] { nodes0, nodes1 };

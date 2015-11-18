@@ -12,7 +12,8 @@ namespace Transit.Addon
             if (_isGameLoaded)  // This method will be called everytime the mod is refreshed
                 return;         // so we must use this bool to ensure we only call it the first time
 
-            CheckForUpdates();
+            //CheckForUpdates();
+            ShowNotification();
 
             foreach (IModule module in Modules)
                 module.OnGameLoaded();

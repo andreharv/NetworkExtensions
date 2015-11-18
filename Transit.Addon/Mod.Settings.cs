@@ -6,6 +6,8 @@ using Transit.Framework.Interfaces;
 using Transit.Framework.Modularity;
 using ColossalFramework.UI;
 using UnityEngine;
+using System.Xml.Serialization;
+using System;
 
 namespace Transit.Addon
 {
@@ -17,6 +19,9 @@ namespace Transit.Addon
         private const string SETTINGS_FILE = "TransitAddonModSettings.xml";
 
         private UIScrollablePanel _optionsPanel;
+        private string _name = "Transit Addons Mod";
+        private string _description = "Closed Beta";
+        private string _lastNotificationID = "NONE";
 
         public void OnSettingsUI(UIHelperBase helper)
         {
@@ -42,6 +47,7 @@ namespace Transit.Addon
             foreach (IModule module in Modules)
             {
                 strip.AddTab(module.Name, tabTemplate, true);
+                strip.selectedIndex = tabIndex;
 
                 // Get the current container and use the UIHelper to have something in there
                 UIPanel stripRoot = strip.tabContainer.components[tabIndex++] as UIPanel;
@@ -50,10 +56,10 @@ namespace Transit.Addon
                 stripRoot.autoLayoutPadding.top = 5;
                 stripRoot.autoLayoutPadding.left = 10;
                 UIHelper stripHelper = new UIHelper(stripRoot);
-
+                
                 module.OnSettingsUI(stripHelper);
             }
-                
+
         }
 
         private void ModuleSettingsNeedSave()
@@ -67,6 +73,7 @@ namespace Transit.Addon
             var root = settingsDoc.AppendElement("TransitAddonMod");
 
             root.AppendAttribute("Version", VERSION);
+            root.AppendAttribute("LastNotificationID", _lastNotificationID);
 
             foreach (IModule module in Modules)
             {
@@ -124,7 +131,7 @@ namespace Transit.Addon
             if (settingsDoc == null)
             {
                 SaveSettings();
-                NotificationPanel.Panel.Show("Welcome!!!", "Some amazing welcome!", false, "Oh yeah!", null, "On noes! :O", null, true);
+                //NotificationPanel.Panel.Show("Welcome!!!", "Some amazing welcome!", false, "Oh yeah!", null, "On noes! :O", null, true);
                 return;
             }
 
@@ -133,8 +140,75 @@ namespace Transit.Addon
             if (fileVersion != VERSION)
             {
                 SaveSettings(); // Updates the version on file so this only shows once
-                NotificationPanel.Panel.Show("Update!!!", "Some amazing description!", false, "Oh yeah!", null, "On noes! :O", null, true);
+                //NotificationPanel.Panel.Show("Update!!!", "Some amazing description!", false, "Oh yeah!", null, "On noes! :O", null, true);
             }
+        }
+
+        private void ShowNotification()
+        {
+            var settingsDoc = LoadSettings();
+            if (settingsDoc == null)
+            {
+                SaveSettings();
+                settingsDoc = LoadSettings();
+            }
+
+            var settingsDocElement = settingsDoc.DocumentElement;
+            _lastNotificationID = settingsDocElement == null ? "None" : settingsDocElement.GetAttribute("LastNotificationID");
+
+            NotificationInfo notification;
+            try
+            {
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(NotificationInfo));
+                using (StreamReader streamReader = new StreamReader(Path.Combine(GetPath(), "NotificationSettings.xml")))
+                {
+                    notification = (NotificationInfo)xmlSerializer.Deserialize(streamReader);
+                }
+            }
+            catch
+            {
+                return;
+            }
+
+            _name = notification.modName;
+            _description = notification.modDescription;
+
+            if (notification.notificationID == _lastNotificationID)
+                return;
+
+            _lastNotificationID = notification.notificationID;
+
+            if (String.IsNullOrEmpty(notification.url))
+            {
+                NotificationPanel.Panel.Show(notification.title,
+                    notification.description.Replace(@"\n", Environment.NewLine),
+                    notification.showScrollbar,
+                    notification.playFireworks);
+            }
+            else
+            {
+                NotificationPanel.Panel.Show(notification.title,
+                    notification.description.Replace(@"\n", Environment.NewLine),
+                    notification.showScrollbar,
+                    notification.url,
+                    notification.urlButtonText,
+                    notification.playFireworks);
+            }
+
+            SaveSettings();
+        }
+
+        public struct NotificationInfo
+        {
+            public string modName;
+            public string modDescription;
+            public string notificationID;
+            public string title;
+            public string description;
+            public string url;
+            public string urlButtonText;
+            public bool showScrollbar;
+            public bool playFireworks;
         }
     }
 }

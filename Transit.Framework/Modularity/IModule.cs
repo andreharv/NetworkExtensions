@@ -7,7 +7,7 @@ namespace Transit.Framework.Modularity
 {
     public delegate void SaveSettingsNeededEventHandler();
 
-    public interface IModule : IActivable, IIdentifiable
+    public interface IModule : IActivable, IIdentifiable, IOrderable
     {
         IEnumerable<IModulePart> Parts { get; }
 

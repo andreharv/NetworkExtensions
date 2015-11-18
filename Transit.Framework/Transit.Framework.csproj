@@ -55,9 +55,9 @@
   <ItemGroup>
     <Compile Include="Activable.cs" />
     <Compile Include="Installer.cs" />
+    <Compile Include="Interfaces\IDescriptor.cs" />
     <Compile Include="Interfaces\IIdentifiable.cs" />
     <Compile Include="Interfaces\IDisplayable.cs" />
-    <Compile Include="Interfaces\ILocalizable.cs" />
     <Compile Include="Builders\IMenuItemBuildersProvider.cs" />
     <Compile Include="Interfaces\IOrderable.cs" />
     <Compile Include="Interfaces\IActivable.cs" />
@@ -70,7 +70,7 @@
     <Compile Include="Modularity\ModuleBase.cs" />
     <Compile Include="NetInfoVersion.cs" />
     <Compile Include="Notification.cs" />
-    <Compile Include="AssetAccess.cs" />
+    <Compile Include="Assets.cs" />
     <Compile Include="Builders\MenuItemBuilder.cs" />
     <Compile Include="_Extensions\AssetManagerExtensions.cs" />
     <Compile Include="_Extensions\CloningExtensions.cs" />
@@ -95,6 +95,7 @@
     <Compile Include="_Extensions\MaterialExtensions.cs" />
     <Compile Include="_Extensions\NetInfoExtensions.cs" />
     <Compile Include="_Extensions\PluginManagerExtensions.cs" />
+    <Compile Include="_Extensions\TextureSetExtensions.cs" />
     <Compile Include="_Extensions\TypeExtensions.cs" />
     <Compile Include="Modularity\IActivablePart.cs" />
     <Compile Include="Modularity\ICompatibilityPart.cs" />

@@ -29,7 +29,7 @@ namespace Transit.Addon.RoadExtensions
                     return;
                 }
 
-                foreach (var action in AssetManager.instance.CreateLoadingSequence(GetPath()))
+                foreach (var action in AssetManager.instance.CreateLoadingSequence(Mod.GetPath()))
                 {
                     var localAction = action;
 
