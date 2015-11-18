@@ -7,8 +7,17 @@ using UnityEngine;
 
 namespace Transit.Framework
 {
+    public enum TextureType
+    {
+        Default,
+        LOD,
+        UI
+    }
+
     public class AssetManager : Singleton<AssetManager>
     {
+        // TODO: Resources.Load("Textures/myTexture") might be usefull here
+
 #if DEBUG
         private readonly ICollection<Texture2D> _specialTextures = new List<Texture2D>();
         public ICollection<Texture2D> SpecialTextures { get { return _specialTextures; } }
@@ -61,15 +70,45 @@ namespace Transit.Framework
             return File.ReadAllBytes(fullPath);
         }
 
-        private static Texture2D CreateTexture(byte[] textureBytes, string textureName)
+        private static Texture2D CreateTexture(byte[] textureBytes, string textureName, TextureType type)
         {
-            var texture = new Texture2D(1, 1);
-            texture.name = Path.GetFileNameWithoutExtension(textureName);
-            texture.LoadImage(textureBytes);
-            texture.anisoLevel = 8;
-            texture.filterMode = FilterMode.Trilinear;
-            texture.Apply();
-            return texture;
+            switch (type)
+            {
+                case TextureType.Default:
+                    {
+                        var texture = new Texture2D(1, 1);
+                        texture.name = textureName;
+                        texture.LoadImage(textureBytes);
+                        texture.anisoLevel = 8;
+                        texture.filterMode = FilterMode.Trilinear;
+                        texture.Apply();
+                        return texture;
+                    }
+
+                case TextureType.LOD:
+                    {
+                        var texture = new Texture2D(1, 1, TextureFormat.ARGB32, false);
+                        texture.name = textureName;
+                        texture.LoadImage(textureBytes);
+                        texture.anisoLevel = 8;
+                        texture.filterMode = FilterMode.Trilinear;
+                        texture.Apply();
+                        texture.Compress(false);
+                        return texture;
+                    }
+
+                case TextureType.UI:
+                    {
+                        var texture = new Texture2D(1, 1, TextureFormat.ARGB32, false);
+                        texture.name = textureName;
+                        texture.LoadImage(textureBytes);
+                        texture.Apply();
+                        return texture;
+                    }
+
+                default:
+                    throw new ArgumentOutOfRangeException("type");
+            }
         }
 
         private static Mesh LoadMesh(string fullPath, string meshName)
@@ -85,7 +124,7 @@ namespace Transit.Framework
             return mesh;
         }
 
-        public Texture2D GetTexture(string path, bool useCache = false)
+        public Texture2D GetTexture(string path, TextureType type)
         {
             if (path.IsNullOrWhiteSpace())
             {
@@ -101,17 +140,17 @@ namespace Transit.Framework
                 throw new Exception(String.Format("TFW: Texture {0} not found", trimmedPath));
             }
 
-            if (useCache)
+            if (type == TextureType.Default)
             {
                 if (!_allTextures.ContainsKey(trimmedPath))
                 {
-                    _allTextures[trimmedPath] = CreateTexture(_allTexturesRaw[trimmedPath], Path.GetFileNameWithoutExtension(trimmedPath));
+                    _allTextures[trimmedPath] = CreateTexture(_allTexturesRaw[trimmedPath], Path.GetFileNameWithoutExtension(trimmedPath), type);
                 }
 
                 return _allTextures[trimmedPath];
             }
 
-            return CreateTexture(_allTexturesRaw[trimmedPath], Path.GetFileNameWithoutExtension(trimmedPath));
+            return CreateTexture(_allTexturesRaw[trimmedPath], Path.GetFileNameWithoutExtension(trimmedPath), type);
         }
 
         public Mesh GetMesh(string path)

@@ -14,7 +14,7 @@ namespace Transit.Framework
                 {
                     if (!_mainTexPath.IsNullOrWhiteSpace())
                     {
-                        _mainTex = AssetManager.instance.GetTexture(_mainTexPath, !_isLODSet);
+                        _mainTex = AssetManager.instance.GetTexture(_mainTexPath, _isLODSet? TextureType.LOD : TextureType.Default);
                     }
                 }
 
@@ -31,7 +31,7 @@ namespace Transit.Framework
                 {
                     if (!_aprMapPath.IsNullOrWhiteSpace())
                     {
-                        _aprMap = AssetManager.instance.GetTexture(_aprMapPath, !_isLODSet);
+                        _aprMap = AssetManager.instance.GetTexture(_aprMapPath, _isLODSet ? TextureType.LOD : TextureType.Default);
                     }
                 }
 
@@ -48,7 +48,7 @@ namespace Transit.Framework
                 {
                     if (!_xysMapPath.IsNullOrWhiteSpace())
                     {
-                        _xysMap = AssetManager.instance.GetTexture(_xysMapPath, !_isLODSet);
+                        _xysMap = AssetManager.instance.GetTexture(_xysMapPath, _isLODSet ? TextureType.LOD : TextureType.Default);
                     }
                 }
 

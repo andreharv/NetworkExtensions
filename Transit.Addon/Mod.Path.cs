@@ -1,8 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Reflection;
-using ColossalFramework.IO;
-using ColossalFramework.Steamworks;
 using ICities;
 using Transit.Framework;
 using UnityEngine;
@@ -11,20 +7,20 @@ using UnityEngine;
 using Debug = Transit.Framework.Debug;
 #endif
 
-namespace Transit.Addon.RoadExtensions
+namespace Transit.Addon
 {
-    public partial class RExModule
+    public partial class Mod : IUserMod
     {
-        public const string PATH_NOT_FOUND = "NOT_FOUND";
+        private const UInt64 WORKSHOP_ID = 543703997;
 
         private static string s_path = null;
         public static string GetPath()
         {
             if (s_path == null)
             {
-                s_path = AssetAccess.GetPath("Transit Addon Mod", WORKSHOP_ID);
+                s_path = Assets.GetPath("Transit Addon Mod", WORKSHOP_ID);
 
-                if (s_path != PATH_NOT_FOUND)
+                if (s_path != Assets.PATH_NOT_FOUND)
                 {
                     Debug.Log("REx: Mod path " + s_path);
                 }

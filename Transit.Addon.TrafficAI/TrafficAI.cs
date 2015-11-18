@@ -1,6 +1,4 @@
-﻿using System;
-using Transit.Framework.Modularity;
-using Transit.Addon;
+﻿using Transit.Framework.Modularity;
 
 namespace Transit.Addon.TrafficAI
 {

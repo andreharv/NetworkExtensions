@@ -1,6 +1,6 @@
 ﻿namespace Transit.Framework.Interfaces
 {
-    public interface ILocalizable : IIdentifiable, IDisplayable
+    public interface IDescriptor
     {
         string Description { get; }
     }
