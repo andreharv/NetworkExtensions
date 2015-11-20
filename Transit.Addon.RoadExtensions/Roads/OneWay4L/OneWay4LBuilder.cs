@@ -64,7 +64,7 @@ namespace Transit.Addon.RoadExtensions.Roads.OneWay4L
             }
 
             // Setting up lanes
-            info.SetRoadLanes(version, 2);
+            info.SetRoadLanes(version, 2, 0.5f);
             var leftPedLane = info.GetLeftRoadShoulder(owRoadInfo, version);
             var rightPedLane = info.GetRightRoadShoulder(owRoadInfo, version);
             //Setting Up Props
@@ -73,8 +73,8 @@ namespace Transit.Addon.RoadExtensions.Roads.OneWay4L
 
             if (version == NetInfoVersion.Slope)
             {
-                leftRoadProps.AddLeftWallLights(-1.5f);
-                rightRoadProps.AddRightWallLights(1.5f);
+                leftRoadProps.AddLeftWallLights(info.m_pavementWidth);
+                rightRoadProps.AddRightWallLights(info.m_pavementWidth);
             }
 
             leftPedLane.m_laneProps.m_props = leftRoadProps.ToArray();

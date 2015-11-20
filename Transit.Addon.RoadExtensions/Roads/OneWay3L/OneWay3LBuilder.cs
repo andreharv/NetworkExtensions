@@ -75,8 +75,8 @@ namespace Transit.Addon.RoadExtensions.Roads.OneWay3L
 
             if (version == NetInfoVersion.Slope)
             {
-                leftRoadProps.AddLeftWallLights(-1.5f);
-                rightRoadProps.AddRightWallLights(1.5f);
+                leftRoadProps.AddLeftWallLights(info.m_pavementWidth);
+                rightRoadProps.AddRightWallLights(info.m_pavementWidth);
             }
             
             leftPedLane.m_laneProps.m_props = leftRoadProps.ToArray();

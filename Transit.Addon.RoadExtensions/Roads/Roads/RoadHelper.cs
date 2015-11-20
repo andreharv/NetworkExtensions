@@ -13,7 +13,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Roads
         {
             var leftPedLane = info.m_lanes.First(l => l.m_laneType == NetInfo.LaneType.Pedestrian);
             var templateLane = templateInfo.m_lanes.First(l => l.m_laneType == NetInfo.LaneType.Pedestrian);
-
+            var propOffset = -0.5f * (info.m_pavementWidth - 4);
             leftPedLane.m_laneProps = templateLane.m_laneProps.Clone("Left Road Shoulder Props");
 
             foreach (var prop in leftPedLane.m_laneProps.m_props)
@@ -26,14 +26,14 @@ namespace Transit.Addon.RoadExtensions.Roads.Roads
                     }
                     if (prop.m_prop.name.ToLower().Contains("traffic light"))
                     {
-                        prop.m_position = new Vector3(-1, -1.6f, 0);
+                        prop.m_position = new Vector3(propOffset, -1.6f, 0);
                     }
                 }
                 else if (version == NetInfoVersion.Slope)
                 {
                     if (prop.m_prop.name.ToLower().Contains("traffic light"))
                     {
-                        prop.m_position = new Vector3(-1, -1.6f, 0);
+                        prop.m_position = new Vector3(propOffset, -1.6f, 0);
                     }
                 }
             }
@@ -44,6 +44,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Roads
         {
             var rightPedLane = info.m_lanes.Last(l => l.m_laneType == NetInfo.LaneType.Pedestrian);
             var templateLane = templateInfo.m_lanes.Last(l => l.m_laneType == NetInfo.LaneType.Pedestrian);
+            var propOffset = 0.5f * (info.m_pavementWidth - 4);
 
             rightPedLane.m_laneProps = templateLane.m_laneProps.Clone("Right Road Shoulder Props");
 
@@ -51,21 +52,21 @@ namespace Transit.Addon.RoadExtensions.Roads.Roads
             {
                 if (version == NetInfoVersion.Tunnel)
                 {
-                    if (prop.m_prop.name.ToLower().Contains("light"))
+                    if (prop.m_prop.name.ToLower().Contains("street light"))
                     {
                         prop.m_position = new Vector3(2.2f, -4.5f, 0);
                     }
 
                     if (prop.m_prop.name.ToLower().Contains("traffic light"))
                     {
-                        prop.m_position = new Vector3(1, -1.6f, 0);
+                        prop.m_position = new Vector3(propOffset, -1.6f, 0);
                     }
                 }
                 else if (version == NetInfoVersion.Slope)
                 {
                     if (prop.m_prop.name.ToLower().Contains("traffic light"))
                     {
-                        prop.m_position = new Vector3(1, -1.6f, 0);
+                        prop.m_position = new Vector3(propOffset, -1.6f, 0);
                     }
                 }
             }
@@ -93,29 +94,31 @@ namespace Transit.Addon.RoadExtensions.Roads.Roads
             return laneProps;
         }
 
-        public static void AddLeftWallLights(this ICollection<NetLaneProps.Prop> props, float xPos = 0)
+        public static void AddLeftWallLights(this ICollection<NetLaneProps.Prop> props, float pavementWidth)
         {
             var wallLightPropInfo = Prefabs.Find<PropInfo>("Wall Light Orange");
             var wallLightProp = new NetLaneProps.Prop();
+            var wallPropXPos = (pavementWidth - 3) * -0.5f;
             wallLightProp.m_prop = wallLightPropInfo.ShallowClone();
             wallLightProp.m_probability = 100;
             wallLightProp.m_repeatDistance = 20;
             wallLightProp.m_segmentOffset = 0;
             wallLightProp.m_angle = 270;
-            wallLightProp.m_position = new Vector3(xPos, 1.5f, 0);
+            wallLightProp.m_position = new Vector3(wallPropXPos, 1.5f, 0);
             props.Add(wallLightProp);
         }
 
-        public static void AddRightWallLights(this ICollection<NetLaneProps.Prop> props, float xPos = 0)
+        public static void AddRightWallLights(this ICollection<NetLaneProps.Prop> props, float pavementWidth)
         {
             var wallLightPropInfo = Prefabs.Find<PropInfo>("Wall Light Orange");
             var wallLightProp = new NetLaneProps.Prop();
+            var wallPropXPos = (pavementWidth - 3) * 0.5f;
             wallLightProp.m_prop = wallLightPropInfo.ShallowClone();
             wallLightProp.m_probability = 100;
             wallLightProp.m_repeatDistance = 20;
             wallLightProp.m_segmentOffset = 0;
             wallLightProp.m_angle = 90;
-            wallLightProp.m_position = new Vector3(xPos, 1.5f, 0);
+            wallLightProp.m_position = new Vector3(wallPropXPos, 1.5f, 0);
             props.Add(wallLightProp);
         }
 
@@ -132,10 +135,16 @@ namespace Transit.Addon.RoadExtensions.Roads.Roads
 
                 foreach (var prop in laneProps.m_props.Where(p => p.m_prop != null))
                 {
-                    if ((version == NetInfoVersion.Tunnel || version == NetInfoVersion.Slope) 
+                    if ((version == NetInfoVersion.Tunnel || version == NetInfoVersion.Slope)
                      && (prop.m_prop.name.ToLower().Contains("random")
-                        || prop.m_prop.name.ToLower().Contains("manhole") 
+                        || prop.m_prop.name.ToLower().Contains("manhole")
                         || prop.m_prop.name.ToLower().Contains("street name sign")))
+                    {
+                        continue;
+                    }
+                    if ((version == NetInfoVersion.Elevated || version == NetInfoVersion.Bridge)
+                        && (prop.m_prop.name.ToLower().Contains("random")
+                            || prop.m_prop.name.ToLower().Contains("manhole")))
                     {
                         continue;
                     }
@@ -185,7 +194,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Roads
             }
         }
 
-        public static NetInfo SetRoadLanes(this NetInfo rdInfo, NetInfoVersion version, int lanesToAdd = 0)
+        public static NetInfo SetRoadLanes(this NetInfo rdInfo, NetInfoVersion version, int lanesToAdd = 0, float pedPropOffsetX = 0.0f)
         {
             if (lanesToAdd < 0)
             {
@@ -239,7 +248,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Roads
             var laneCollection = new List<NetInfo.Lane>();
 
             laneCollection.AddRange(vehicleLanes);
-            laneCollection.AddRange(rdInfo.SetPedestrianLanes(version));
+            laneCollection.AddRange(rdInfo.SetPedestrianLanes(version, pedPropOffsetX));
 
             if (rdInfo.m_hasParkingSpaces)
             {
@@ -251,7 +260,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Roads
             return rdInfo;
         }
 
-        private static IEnumerable<NetInfo.Lane> SetPedestrianLanes(this NetInfo rdInfo, NetInfoVersion version)
+        private static IEnumerable<NetInfo.Lane> SetPedestrianLanes(this NetInfo rdInfo, NetInfoVersion version, float propOffsetX = 0.0f)
         {
             var pedestrianLanes = rdInfo.m_lanes
                 .Where(l => l.m_laneType == NetInfo.LaneType.Pedestrian)
@@ -265,6 +274,13 @@ namespace Transit.Addon.RoadExtensions.Roads.Roads
                     var multiplier = pedLane.m_position / Math.Abs(pedLane.m_position);
                     pedLane.m_width = rdInfo.m_pavementWidth - (version == NetInfoVersion.Slope || version == NetInfoVersion.Tunnel ? 3 : 1);
                     pedLane.m_position = multiplier * (rdInfo.m_halfWidth - ((version == NetInfoVersion.Slope || version == NetInfoVersion.Tunnel ? 2 : 0) + 0.5f * pedLane.m_width));
+                    if (propOffsetX != 0.0f && pedLane.m_laneProps != null)
+                    {
+                        foreach (var pedLaneProp in pedLane.m_laneProps.m_props)
+                        {
+                            pedLaneProp.m_position.x += propOffsetX * multiplier;
+                        }
+                    }
                 }
             }
             return pedestrianLanes;
