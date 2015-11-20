@@ -194,7 +194,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Roads
             }
         }
 
-        public static NetInfo SetRoadLanes(this NetInfo rdInfo, NetInfoVersion version, int lanesToAdd = 0, float pedPropOffsetX = 0.0f)
+        public static NetInfo SetRoadLanes(this NetInfo rdInfo, NetInfoVersion version, int lanesToAdd = 0, float pedPropOffsetX = 0.0f, bool isTwoWay = false)
         {
             if (lanesToAdd < 0)
             {
@@ -238,6 +238,19 @@ namespace Transit.Addon.RoadExtensions.Roads.Roads
                 l.m_width = laneWidth;
                 l.m_position = positionStart + i * laneWidth;
                 l.m_laneProps = l.m_laneProps.Clone();
+                if (isTwoWay)
+                {
+                    if (l.m_position < 0.0f)
+                    {
+                        l.m_direction = NetInfo.Direction.Backward;
+                        l.m_finalDirection = NetInfo.Direction.Backward;
+                    }
+                    else
+                    {
+                        l.m_direction = NetInfo.Direction.Forward;
+                        l.m_finalDirection = NetInfo.Direction.Forward;
+                    }
+                }
 
                 foreach (var prop in l.m_laneProps.m_props)
                 {
