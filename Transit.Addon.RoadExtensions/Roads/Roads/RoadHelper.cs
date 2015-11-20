@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ColossalFramework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -194,7 +195,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Roads
             }
         }
 
-        public static NetInfo SetRoadLanes(this NetInfo rdInfo, NetInfoVersion version, int lanesToAdd = 0, float pedPropOffsetX = 0.0f, bool isTwoWay = false)
+        public static NetInfo SetRoadLanes(this NetInfo rdInfo, NetInfoVersion version, int lanesToAdd = 0, float pedPropOffsetX = 0.0f, float speedLimit = -1, bool isTwoWay = false, bool hasCenterTurningLane = false)
         {
             if (lanesToAdd < 0)
             {
@@ -229,18 +230,31 @@ namespace Transit.Addon.RoadExtensions.Roads.Roads
 
             const float laneWidth = 3f;
             var nbLanes = vehicleLanes.Count();
-            var positionStart = laneWidth * ((1f - nbLanes) / 2f);
+            var positionStart = laneWidth * ((1f - nbLanes - (hasCenterTurningLane ? 1 : 0)) / 2f);
 
             for (var i = 0; i < vehicleLanes.Length; i++)
             {
                 var l = vehicleLanes[i];
+                var isTurningLane = (hasCenterTurningLane && (i == 0 || l.m_position == 0));
                 l.m_allowStop = false;
                 l.m_width = laneWidth;
-                l.m_position = positionStart + i * laneWidth;
+                l.m_position = (isTurningLane ? 0 : positionStart + i * laneWidth);
                 l.m_laneProps = l.m_laneProps.Clone();
+                if (speedLimit > -1 && !isTurningLane)
+                {
+                    l.m_speedLimit = speedLimit;
+                }
+                else if (isTurningLane)
+                {
+                    l.m_speedLimit = 0.5f;
+                    l.m_allowConnect = false;
+                    SetupTurningLaneProps(l);
+                    Framework.Debug.Log("TAM turninglane hit!");
+                }
+
                 if (isTwoWay)
                 {
-                    if (l.m_position < 0.0f)
+                    if (l.m_position < 0.0f || (isTurningLane && i != 0))
                     {
                         l.m_direction = NetInfo.Direction.Backward;
                         l.m_finalDirection = NetInfo.Direction.Backward;
@@ -307,6 +321,88 @@ namespace Transit.Addon.RoadExtensions.Roads.Roads
                 .ToArray();
 
             return parkingLanes;
+        }
+        private static void SetupTurningLaneProps(NetInfo.Lane lane)
+        {
+            var isLeftDriving = Singleton<SimulationManager>.instance.m_metaData.m_invertTraffic == SimulationMetaData.MetaBool.True;
+
+            if (lane.m_laneProps == null)
+            {
+                return;
+            }
+
+            if (lane.m_laneProps.m_props == null)
+            {
+                return;
+            }
+
+            var fwd = lane.m_laneProps.m_props.FirstOrDefault(p => p.m_flagsRequired == NetLane.Flags.Forward);
+            var left = lane.m_laneProps.m_props.FirstOrDefault(p => p.m_flagsRequired == NetLane.Flags.Left);
+            var right = lane.m_laneProps.m_props.FirstOrDefault(p => p.m_flagsRequired == NetLane.Flags.Right);
+
+            if (fwd == null)
+            {
+                return;
+            }
+
+            if (left == null)
+            {
+                return;
+            }
+
+            if (right == null)
+            {
+                return;
+            }
+
+
+            // Existing props
+            //var r0 = NetLane.Flags.Forward; 
+            //var r1 = NetLane.Flags.ForwardRight;
+            //var r2 = NetLane.Flags.Left;
+            //var r3 = NetLane.Flags.LeftForward;
+            //var r4 = NetLane.Flags.LeftForwardRight;
+            //var r5 = NetLane.Flags.LeftRight;
+            //var r6 = NetLane.Flags.Right;
+
+            //var f0 = NetLane.Flags.LeftRight;
+            //var f1 = NetLane.Flags.Left;
+            //var f2 = NetLane.Flags.ForwardRight;
+            //var f3 = NetLane.Flags.Right;
+            //var f4 = NetLane.Flags.None;
+            //var f5 = NetLane.Flags.Forward;
+            //var f6 = NetLane.Flags.LeftForward;
+
+
+            var newProps = new FastList<NetLaneProps.Prop>();
+
+            //newProps.Add(fwd); // Do we want "Forward" on a turning lane?
+            newProps.Add(left);
+            newProps.Add(right);
+
+            var fl = left.ShallowClone();
+            fl.m_flagsRequired = NetLane.Flags.LeftForward;
+            fl.m_flagsForbidden = NetLane.Flags.Right;
+            newProps.Add(fl);
+
+            var fr = right.ShallowClone();
+            fr.m_flagsRequired = NetLane.Flags.ForwardRight;
+            fr.m_flagsForbidden = NetLane.Flags.Left;
+            newProps.Add(fr);
+
+            var flr = isLeftDriving ? right.ShallowClone() : left.ShallowClone();
+            flr.m_flagsRequired = NetLane.Flags.LeftForwardRight;
+            flr.m_flagsForbidden = NetLane.Flags.None;
+            newProps.Add(flr);
+
+            var lr = isLeftDriving ? right.ShallowClone() : left.ShallowClone();
+            lr.m_flagsRequired = NetLane.Flags.LeftRight;
+            lr.m_flagsForbidden = NetLane.Flags.Forward;
+            newProps.Add(lr);
+
+            lane.m_laneProps = ScriptableObject.CreateInstance<NetLaneProps>();
+            lane.m_laneProps.name = "TurningLane";
+            lane.m_laneProps.m_props = newProps.ToArray();
         }
     }
 }

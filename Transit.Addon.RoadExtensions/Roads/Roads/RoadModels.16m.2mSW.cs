@@ -15,14 +15,9 @@ namespace Transit.Addon.RoadExtensions.Roads.Roads
                     {
                         var segment0 = info.m_segments[0];
                         var node0 = info.m_nodes[0];
-                        segment0.m_forwardForbidden = NetSegment.Flags.None;
-                        segment0.m_forwardRequired = NetSegment.Flags.None;
-
-                        segment0.m_backwardForbidden = NetSegment.Flags.BikeBan;
-                        segment0.m_backwardRequired = NetSegment.Flags.HeavyBan;
 
                         segment0
-                            
+                            .SetFlagsDefault()
                             .SetMeshes
                                 (@"Roads\Roads\Meshes\16m\2mSW\Ground.obj",
                                 @"Roads\Roads\Meshes\16m\2mSW\Ground_LOD.obj");
