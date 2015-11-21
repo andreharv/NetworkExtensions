@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Transit.Addon.RoadExtensions.Menus;
 using Transit.Framework;
 using Transit.Framework.Builders;
-using Transit.Framework.Interfaces;
-using Transit.Framework.Modularity;
-using Transit.Addon.RoadExtensions.Menus;
 
 namespace Transit.Addon.RoadExtensions.Roads.OneWay4L
 {
@@ -18,6 +15,7 @@ namespace Transit.Addon.RoadExtensions.Roads.OneWay4L
         public string Name { get { return "Oneway4L"; } }
         public string DisplayName { get { return "Small Four-Lane Oneway"; } }
         public string Description { get { return "A four-lane one-way road without parkings spaces. Supports medium traffic."; } }
+        public string ShortDescription { get { return "No parking, zoneable, medium traffic"; } }
         public string UICategory { get { return AdditionnalMenus.ROADS_SMALL_HV; } }
 
         public string ThumbnailsPath    { get { return @"Roads\OneWay4L\thumbnails.png"; } }

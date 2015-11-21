@@ -12,6 +12,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway2L1W
         public string DisplayName { get { return "Busway OneWay"; } }
         public string BasedPrefabName { get { return NetInfos.Vanilla.ONEWAY_2L; } }
         public int Order { get { return 120; } }
+        public string ShortDescription { get { return "No parking, not zoneable, buses only"; } }
         public NetInfoVersion SupportedVersions { get { return NetInfoVersion.AllWithDecoration; } }
 
         public IEnumerable<IMenuItemBuilder> MenuItemBuilders

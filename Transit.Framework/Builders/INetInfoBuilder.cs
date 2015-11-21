@@ -4,11 +4,11 @@ using Transit.Framework.Modularity;
 
 namespace Transit.Framework.Builders
 {
-    public interface INetInfoBuilderPart : INetInfoBuilder, IActivablePart, IIdentifiable, IDisplayable, IMenuItemBuilder, IOrderable
+    public interface INetInfoBuilderPart : INetInfoBuilder, IActivablePart, IIdentifiable, IDisplayable, IMenuItemBuilder, IOrderable, IShortDescriptor
     {
     }
 
-    public interface IMultiNetInfoBuilderPart : INetInfoBuilder, IActivablePart, IIdentifiable, IDisplayable, IMenuItemBuildersProvider, IOrderable
+    public interface IMultiNetInfoBuilderPart : INetInfoBuilder, IActivablePart, IIdentifiable, IDisplayable, IMenuItemBuildersProvider, IOrderable, IShortDescriptor
     {
     }
 

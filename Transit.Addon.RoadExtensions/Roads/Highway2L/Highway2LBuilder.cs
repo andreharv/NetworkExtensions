@@ -14,6 +14,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway2L
         public string Name { get { return "Rural Highway"; } }
         public string DisplayName { get { return "Two-Lane Highway"; } }
         public string Description { get { return "A two-lane, one-way road suitable for low to medium traffic between areas. Lanes going the opposite direction need to be built separately. Highway does not allow zoning next to it!"; } }
+        public string ShortDescription { get { return "No parking, not zoneable, low to medium traffic"; } }
         public string UICategory { get { return "RoadsHighway"; } }
 
         public string ThumbnailsPath { get { return @"Roads\Highway2L\thumbnails.png"; } }

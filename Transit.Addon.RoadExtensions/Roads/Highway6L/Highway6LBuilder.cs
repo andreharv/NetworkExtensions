@@ -15,6 +15,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway6L
         public string DisplayName { get { return "Six-Lane Highway"; } }
         public string Description { get { return "A six-lane, one-way road suitable for very high and dense traffic between metropolitan areas. Lanes going the opposite direction need to be built separately. Highway does not allow zoning next to it!"; } }
         public string UICategory { get { return "RoadsHighway"; } }
+        public string ShortDescription { get { return "No parking, not zoneable, very high traffic"; } }
 
         public string ThumbnailsPath { get { return @"Roads\Highway6L\thumbnails.png"; } }
         public string InfoTooltipPath { get { return @"Roads\Highway6L\infotooltip.png"; } }
