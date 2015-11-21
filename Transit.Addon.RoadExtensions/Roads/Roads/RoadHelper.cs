@@ -230,15 +230,20 @@ namespace Transit.Addon.RoadExtensions.Roads.Roads
 
             const float laneWidth = 3f;
             var nbLanes = vehicleLanes.Count();
-            var positionStart = laneWidth * ((1f - nbLanes - (hasCenterTurningLane ? 1 : 0)) / 2f);
+            var positionStart = laneWidth * (((hasCenterTurningLane ? 2 : 1) - nbLanes  ) / 2f);
 
-            for (var i = 0; i < vehicleLanes.Length; i++)
+            for (var i = 0; i < nbLanes; i++)
             {
                 var l = vehicleLanes[i];
-                var isTurningLane = (hasCenterTurningLane && (i == 0 || l.m_position == 0));
+                l.m_position = positionStart + i * laneWidth;
+                var isTurningLane = (hasCenterTurningLane && (i == nbLanes - 1 || l.m_position == 0));
+                if (isTurningLane)
+                {
+                    l.m_position = 0;
+                }
                 l.m_allowStop = false;
                 l.m_width = laneWidth;
-                l.m_position = (isTurningLane ? 0 : positionStart + i * laneWidth);
+
                 l.m_laneProps = l.m_laneProps.Clone();
                 if (speedLimit > -1 && !isTurningLane)
                 {
@@ -246,15 +251,14 @@ namespace Transit.Addon.RoadExtensions.Roads.Roads
                 }
                 else if (isTurningLane)
                 {
-                    l.m_speedLimit = 0.5f;
+                    l.m_speedLimit = 0.6f;
                     l.m_allowConnect = false;
                     SetupTurningLaneProps(l);
-                    Framework.Debug.Log("TAM turninglane hit!");
                 }
 
                 if (isTwoWay)
                 {
-                    if (l.m_position < 0.0f || (isTurningLane && i != 0))
+                    if ((!isTurningLane && l.m_position < 0.0f) || (isTurningLane && i == nbLanes - 1))
                     {
                         l.m_direction = NetInfo.Direction.Backward;
                         l.m_finalDirection = NetInfo.Direction.Backward;
