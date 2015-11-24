@@ -4,7 +4,7 @@ using System.Linq;
 using Transit.Framework;
 using UnityEngine;
 
-namespace Transit.Addon.RoadExtensions.Roads.Highways
+namespace Transit.Addon.RoadExtensions.Highways
 {
     public static class HighwayHelper
     {
