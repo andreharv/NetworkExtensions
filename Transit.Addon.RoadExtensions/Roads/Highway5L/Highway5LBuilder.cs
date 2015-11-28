@@ -15,6 +15,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Highway5L
         public string DisplayName { get { return "Five-Lane Highway"; } }
         public string Description { get { return "A five-lane, one-way road suitable for very high and dense traffic between metropolitan areas. Lanes going the opposite direction need to be built separately. Highway does not allow zoning next to it!"; } }
         public string UICategory { get { return "RoadsHighway"; } }
+        public string ShortDescription { get { return "No parking, not zoneable, high traffic"; } }
+
         public string ThumbnailsPath { get { return @"Roads\Highway5L\thumbnails.png"; } }
         public string InfoTooltipPath { get { return @"Roads\Highway5L\infotooltip.png"; } }
         public NetInfoVersion SupportedVersions

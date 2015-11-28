@@ -19,7 +19,9 @@ namespace Transit.Addon.RoadExtensions
 
                 helper.AddCheckbox(
                     part.DisplayName,
-                    part is IDescriptor ? ((IDescriptor) part).Description : null,
+                    part is IShortDescriptor? ((IShortDescriptor)part).ShortDescription :
+                    part is IDescriptor ? ((IDescriptor)part).Description : 
+                    null,
                     part.IsEnabled,
                     isChecked =>
                     {

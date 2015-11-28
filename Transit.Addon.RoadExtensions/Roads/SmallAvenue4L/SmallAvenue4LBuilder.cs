@@ -4,6 +4,10 @@ using Transit.Framework.Builders;
 using Transit.Addon.RoadExtensions.Menus;
 using Transit.Addon.RoadExtensions.Roads.Roads;
 using System.Collections.Generic;
+using Transit.Addon.RoadExtensions.Menus;
+using Transit.Framework;
+using Transit.Framework.Builders;
+using UnityEngine;
 
 namespace Transit.Addon.RoadExtensions.Roads.SmallAvenue4L
 {
@@ -16,6 +20,7 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallAvenue4L
         public string Name { get { return "Small Avenue"; } }
         public string DisplayName { get { return "Small Four-Lane Road"; } }
         public string Description { get { return "A four-lane road without parkings spaces. Supports medium traffic."; } }
+        public string ShortDescription { get { return "No parking, zoneable, medium traffic"; } }
         public string UICategory { get { return AdditionnalMenus.ROADS_SMALL_HV; } }
 
         public string ThumbnailsPath    { get { return @"Roads\SmallAvenue4L\thumbnails.png"; } }

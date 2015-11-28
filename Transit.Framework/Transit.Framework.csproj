@@ -72,6 +72,7 @@
     <Compile Include="Notification.cs" />
     <Compile Include="Assets.cs" />
     <Compile Include="Builders\MenuItemBuilder.cs" />
+    <Compile Include="Interfaces\IShortDescriptor.cs" />
     <Compile Include="_Extensions\AssetManagerExtensions.cs" />
     <Compile Include="_Extensions\CloningExtensions.cs" />
     <Compile Include="_Extensions\CollectionExtensions.cs" />

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using ColossalFramework;
 using Transit.Framework;
 using Transit.Framework.Builders;
-using Transit.Framework.Interfaces;
-using Transit.Framework.Modularity;
 using UnityEngine;
 
 namespace Transit.Addon.RoadExtensions.Roads.MediumAvenue4LTL
@@ -18,6 +15,7 @@ namespace Transit.Addon.RoadExtensions.Roads.MediumAvenue4LTL
         public string Name { get { return "Medium Avenue TL"; } }
         public string DisplayName { get { return "Four-Lane Road with Turning Lane"; } }
         public string Description { get { return "A four-lane road with turning lanes and parking spaces. Supports medium traffic. Note: The turning lane goes in both direction, collisions might happen!"; } }
+        public string ShortDescription { get { return "Parkings, zoneable, medium traffic; turning lane works both ways and could cause collisions"; } }
         public string UICategory { get { return "RoadsMedium"; } }
         
         public string ThumbnailsPath    { get { return @"Roads\MediumAvenue4LTL\thumbnails.png"; } }

@@ -12,6 +12,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Busway6L
         public string DisplayName { get { return "Bus Lanes for Six-Lane Road"; } }
         public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_6L; } }
         public int Order { get { return 130; } }
+        public string ShortDescription { get { return "Parking, zoneable, medium traffic, bus lanes"; } }
         public NetInfoVersion SupportedVersions { get { return NetInfoVersion.AllWithDecoration; } }
 
         public IEnumerable<IMenuItemBuilder> MenuItemBuilders

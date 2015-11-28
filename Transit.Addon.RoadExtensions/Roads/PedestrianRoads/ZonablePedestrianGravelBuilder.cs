@@ -11,6 +11,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
         public string Name { get { return "Zonable Pedestrian Gravel"; } }
         public string DisplayName { get { return "Zonable Pedestrian Gravel"; } }
         public string Description { get { return "Gravel roads allow pedestrians to walk fast and easy."; } }
+        public string ShortDescription { get { return "Parking, zoneable, restricted traffic"; } }
 
         public string ThumbnailsPath { get { return @"Roads\PedestrianRoads\thumbnails_gravel.png"; } }
         public string InfoTooltipPath { get { return @"Roads\PedestrianRoads\infotooltip_gravel.png"; } }

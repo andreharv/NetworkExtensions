@@ -3,7 +3,7 @@ using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.Modularity;
 
-namespace Transit.Addon.RoadExtensions.Roads.Highways
+namespace Transit.Addon.RoadExtensions.Highways
 {
     public class VanillaHighwayMenuReorderer : IModulePart, INetInfoModifier
     {
