@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using Transit.Addon.RoadExtensions.Menus;
-using Transit.Addon.RoadExtensions.Roads.Roads;
+using Transit.Addon.RoadExtensions.SmallHeavyRoads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
 ﻿
@@ -18,8 +18,8 @@ namespace Transit.Addon.RoadExtensions.Roads.OneWay4L
         public string ShortDescription { get { return "No parking, zoneable, medium traffic"; } }
         public string UICategory { get { return AdditionnalMenus.ROADS_SMALL_HV; } }
 
-        public string ThumbnailsPath    { get { return @"Roads\OneWay4L\thumbnails.png"; } }
-        public string InfoTooltipPath   { get { return @"Roads\OneWay4L\infotooltip.png"; } }
+        public string ThumbnailsPath    { get { return @"SmallHeavyRoads\OneWay4L\thumbnails.png"; } }
+        public string InfoTooltipPath   { get { return @"SmallHeavyRoads\OneWay4L\infotooltip.png"; } }
 
         public NetInfoVersion SupportedVersions
         {

@@ -1,54 +1,34 @@
 ﻿using Transit.Framework;
 
-namespace Transit.Addon.RoadExtensions.Roads.Roads
+namespace Transit.Addon.RoadExtensions.SmallHeavyRoads.Common
 {
     public static partial class RoadModels
     {
-        public static NetInfo Setup16m2mSWMesh(this NetInfo info, NetInfoVersion version, NetInfo slopeInfo = null)
+        public static NetInfo Setup16m3mSWMesh(this NetInfo info, NetInfoVersion version, NetInfo slopeInfo = null)
         {
             var highwayInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L);
             var defaultMaterial = highwayInfo.m_nodes[0].m_material;
 
             switch (version)
             {
-                case NetInfoVersion.Ground:
-                    {
-                        var segment0 = info.m_segments[0];
-                        var node0 = info.m_nodes[0];
-
-                        segment0
-                            .SetFlagsDefault()
-                            .SetMeshes
-                                (@"Roads\Roads\Meshes\16m\2mSW\Ground.obj",
-                                @"Roads\Roads\Meshes\16m\2mSW\Ground_LOD.obj");
-                        node0
-                            .SetMeshes
-                                (@"Roads\Roads\Meshes\16m\2mSW\Ground_Node.obj",
-                                @"Roads\Roads\Meshes\16m\2mSW\Ground_Node_LOD.obj");
-                        info.m_segments = new[] { segment0 };
-                        info.m_nodes = new[] { node0 };
-
-                        break;
-                    }
                 case NetInfoVersion.Elevated:
                 case NetInfoVersion.Bridge:
                     {
-                        var segment0 = info.m_segments[0];
-                        var node0 = info.m_nodes[0];
+                        var segments0 = info.m_segments[0];
+                        var nodes0 = info.m_nodes[0];
 
-                        segment0
+                        segments0
                             .SetFlagsDefault()
                             .SetMeshes
-                                (@"Roads\Roads\Meshes\16m\2mSW\Elevated.obj",
-                                @"Roads\Roads\Meshes\16m\2mSW\Elevated_LOD.obj");
+                                (@"SmallHeavyRoads\Common\Meshes\16m\3mSW\Elevated.obj",
+                                @"SmallHeavyRoads\Common\Meshes\16m\3mSW\Elevated_LOD.obj");
 
-                        node0.
-                            SetMeshes
-                                (@"Roads\Roads\Meshes\16m\2mSW\Elevated_Node.obj",
-                                @"Roads\Roads\Meshes\16m\2mSW\Elevated_Node_LOD.obj");
+                        nodes0.SetMeshes
+                            (@"SmallHeavyRoads\Common\Meshes\16m\3mSW\Elevated_Node.obj",
+                            @"SmallHeavyRoads\Common\Meshes\16m\3mSW\Elevated_Node_LOD.obj");
 
-                        info.m_segments = new[] { segment0 };
-                        info.m_nodes = new[] { node0 };
+                        info.m_segments = new[] { segments0 };
+                        info.m_nodes = new[] { nodes0 };
                         break;
                     }
                 case NetInfoVersion.Slope:
@@ -67,19 +47,19 @@ namespace Transit.Addon.RoadExtensions.Roads.Roads
                         segment2
                             .SetFlagsDefault()
                             .SetMeshes
-                            (@"Roads\Roads\Meshes\16m\2mSW\Slope.obj",
-                            @"Roads\Roads\Meshes\16m\2mSW\Slope_LOD.obj");
+                            (@"SmallHeavyRoads\Common\Meshes\16m\3mSW\Slope.obj",
+                            @"SmallHeavyRoads\Common\Meshes\16m\3mSW\Slope_LOD.obj");
 
                         node1
                             .SetMeshes
-                            (@"Roads\Roads\Meshes\16m\2mSW\Slope_Node.obj",
-                            @"Roads\Roads\Meshes\16m\2mSW\Slope_Node_LOD.obj");
+                            (@"SmallHeavyRoads\Common\Meshes\16m\3mSW\Slope_Node.obj",
+                            @"SmallHeavyRoads\Common\Meshes\16m\3mSW\Slope_Node_LOD.obj");
 
                         node2
                             .SetFlags(NetNode.Flags.Underground, NetNode.Flags.None)
                             .SetMeshes
-                            (@"Roads\Roads\Meshes\16m\2mSW\Slope_U_Node.obj",
-                            @"Roads\Roads\Meshes\16m\2mSW\Slope_U_Node_LOD.obj");
+                            (@"SmallHeavyRoads\Common\Meshes\16m\3mSW\Slope_U_Node.obj",
+                            @"SmallHeavyRoads\Common\Meshes\16m\3mSW\Slope_U_Node_LOD.obj");
 
                         node2.m_material = defaultMaterial;
 
@@ -99,14 +79,14 @@ namespace Transit.Addon.RoadExtensions.Roads.Roads
                         segment1
                             .SetFlagsDefault()
                             .SetMeshes
-                            (@"Roads\Roads\Meshes\16m\2mSW\Tunnel.obj",
-                            @"Roads\Roads\Meshes\16m\2mSW\Tunnel_LOD.obj");
+                            (@"SmallHeavyRoads\Common\Meshes\16m\3mSW\Tunnel.obj",
+                            @"SmallHeavyRoads\Common\Meshes\16m\3mSW\Tunnel_LOD.obj");
 
                         node1
-                            .SetFlags(NetNode.Flags.None, NetNode.Flags.None)
+                            .SetFlags(NetNode.Flags.None,NetNode.Flags.None)
                             .SetMeshes
-                            (@"Roads\Roads\Meshes\16m\2mSW\Tunnel_Node.obj",
-                            @"Roads\Roads\Meshes\16m\2mSW\Tunnel_Node_LOD.obj");
+                            (@"SmallHeavyRoads\Common\Meshes\16m\3mSW\Tunnel_Node.obj",
+                            @"SmallHeavyRoads\Common\Meshes\16m\3mSW\Tunnel_Node_LOD.obj");
 
                         segment1.m_material = defaultMaterial;
                         node1.m_material = defaultMaterial;

@@ -1,25 +1,25 @@
 ﻿using System.Linq;
 using Transit.Addon.RoadExtensions.Menus;
-using Transit.Addon.RoadExtensions.Roads.Roads;
+using Transit.Addon.RoadExtensions.SmallHeavyRoads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
-
-namespace Transit.Addon.RoadExtensions.Roads.SmallAvenue4L
+﻿
+namespace Transit.Addon.RoadExtensions.Roads.OneWay3L
 {
-    public partial class SmallAvenue4LBuilder : Activable, INetInfoBuilderPart
+    public partial class OneWay3LBuilder : Activable, INetInfoBuilderPart
     {
-        public int Order { get { return 10; } }
-        public int UIOrder { get { return 20; } }
+        public int Order { get { return 8; } }
+        public int UIOrder { get { return 10; } }
 
-        public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_2L; } }
-        public string Name { get { return "Small Avenue"; } }
-        public string DisplayName { get { return "Small Four-Lane Road"; } }
-        public string Description { get { return "A four-lane road without parkings spaces. Supports medium traffic."; } }
+        public string BasedPrefabName { get { return NetInfos.Vanilla.ONEWAY_2L; } }
+        public string Name { get { return "Oneway3L"; } }
+        public string DisplayName { get { return "Three-Lane Oneway"; } }
+        public string Description { get { return "A three-lane one-way road without parkings spaces. Supports medium traffic."; } }
         public string ShortDescription { get { return "No parking, zoneable, medium traffic"; } }
         public string UICategory { get { return AdditionnalMenus.ROADS_SMALL_HV; } }
 
-        public string ThumbnailsPath    { get { return @"Roads\SmallAvenue4L\thumbnails.png"; } }
-        public string InfoTooltipPath   { get { return @"Roads\SmallAvenue4L\infotooltip.png"; } }
+        public string ThumbnailsPath { get { return @"SmallHeavyRoads\OneWay3L\thumbnails.png"; } }
+        public string InfoTooltipPath { get { return @"SmallHeavyRoads\OneWay3L\infotooltip.png"; } }
 
         public NetInfoVersion SupportedVersions
         {
@@ -32,25 +32,25 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallAvenue4L
             // Template              //
             ///////////////////////////
             var highwayInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L_SLOPE);
-            var owRoadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_2L);
+            var owRoadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ONEWAY_2L);
             var owRoadTunnelInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ONEWAY_2L_TUNNEL);
 
             ///////////////////////////
             // 3DModeling            //
             ///////////////////////////
-            info.Setup16m2mSWMesh(version, highwayInfo);
+            info.Setup16m3mSWMesh(version, highwayInfo);
 
             ///////////////////////////
             // Texturing             //
             ///////////////////////////
             SetupTextures(info, version);
-
+            
             ///////////////////////////
             // Set up                //
             ///////////////////////////
             info.m_hasParkingSpaces = false;
             info.m_class = owRoadInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL3L_ROAD);
-            info.m_pavementWidth = (version != NetInfoVersion.Slope && version != NetInfoVersion.Tunnel ? 2 : 5);
+            info.m_pavementWidth = (version != NetInfoVersion.Slope && version != NetInfoVersion.Tunnel ? 3 : 6);
             info.m_halfWidth = (version != NetInfoVersion.Slope && version != NetInfoVersion.Tunnel ? 8 : 11);
 
             if (version == NetInfoVersion.Tunnel)
@@ -65,7 +65,7 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallAvenue4L
             }
 
             // Setting up lanes
-            info.SetRoadLanes(version, 2, 0.5f, -1, true);
+            info.SetRoadLanes(version, 1, 0, 1);
             var leftPedLane = info.GetLeftRoadShoulder(owRoadInfo, version);
             var rightPedLane = info.GetRightRoadShoulder(owRoadInfo, version);
             //Setting Up Props
@@ -77,13 +77,13 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallAvenue4L
                 leftRoadProps.AddLeftWallLights(info.m_pavementWidth);
                 rightRoadProps.AddRightWallLights(info.m_pavementWidth);
             }
-
+            
             leftPedLane.m_laneProps.m_props = leftRoadProps.ToArray();
             rightPedLane.m_laneProps.m_props = rightRoadProps.ToArray();
 
             info.TrimAboveGroundProps(version);
 
-
+            
             //var propLanes = info.m_lanes.Where(l => l.m_laneProps != null && (l.m_laneProps.name.ToLower().Contains("left") || l.m_laneProps.name.ToLower().Contains("right"))).ToList();
 
             var owPlayerNetAI = owRoadInfo.GetComponent<PlayerNetAI>();
@@ -91,8 +91,8 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallAvenue4L
 
             if (owPlayerNetAI != null && playerNetAI != null)
             {
-                playerNetAI.m_constructionCost = owPlayerNetAI.m_constructionCost * 2; // Charge by the lane?
-                playerNetAI.m_maintenanceCost = owPlayerNetAI.m_maintenanceCost * 2; // Charge by the lane?
+                playerNetAI.m_constructionCost = owPlayerNetAI.m_constructionCost * 3 / 2; // Charge by the lane?
+                playerNetAI.m_maintenanceCost = owPlayerNetAI.m_maintenanceCost * 3 / 2; // Charge by the lane?
             }
 
             var roadBaseAI = info.GetComponent<RoadBaseAI>();

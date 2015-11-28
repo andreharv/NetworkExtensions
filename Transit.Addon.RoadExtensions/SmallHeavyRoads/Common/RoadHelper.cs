@@ -1,12 +1,11 @@
-﻿using ColossalFramework;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using ColossalFramework;
 using Transit.Framework;
 using UnityEngine;
 
-namespace Transit.Addon.RoadExtensions.Roads.Roads
+namespace Transit.Addon.RoadExtensions.SmallHeavyRoads.Common
 {
     public static class RoadHelper
     {

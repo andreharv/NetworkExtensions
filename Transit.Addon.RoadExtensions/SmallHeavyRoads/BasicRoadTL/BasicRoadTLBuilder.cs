@@ -1,25 +1,25 @@
 ﻿using System.Linq;
-using Transit.Addon.RoadExtensions.Menus;
-using Transit.Addon.RoadExtensions.Roads.Roads;
+using Transit.Addon.RoadExtensions.SmallHeavyRoads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
-﻿
-namespace Transit.Addon.RoadExtensions.Roads.OneWay3L
-{
-    public partial class OneWay3LBuilder : Activable, INetInfoBuilderPart
-    {
-        public int Order { get { return 8; } }
-        public int UIOrder { get { return 10; } }
+using Transit.Addon.RoadExtensions.Menus;
 
-        public string BasedPrefabName { get { return NetInfos.Vanilla.ONEWAY_2L; } }
-        public string Name { get { return "Oneway3L"; } }
-        public string DisplayName { get { return "Three-Lane Oneway"; } }
-        public string Description { get { return "A three-lane one-way road without parkings spaces. Supports medium traffic."; } }
-        public string ShortDescription { get { return "No parking, zoneable, medium traffic"; } }
+namespace Transit.Addon.RoadExtensions.Roads.BasicRoadTL
+{
+    public partial class BasicRoadTLBuilder : Activable, INetInfoBuilderPart
+    {
+        public int Order { get { return 7; } }
+        public int UIOrder { get { return 9; } }
+
+        public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_2L; } }
+        public string Name { get { return "BasicRoadTL"; } }
+        public string DisplayName { get { return "Basic Road with Turning Lane"; } }
+        public string Description { get { return "A basic two lane road with an additional center turning lane and no parkings spaces. Supports medium and local traffic."; } }
+        public string ShortDescription { get { return Description; } }
         public string UICategory { get { return AdditionnalMenus.ROADS_SMALL_HV; } }
 
-        public string ThumbnailsPath { get { return @"Roads\OneWay3L\thumbnails.png"; } }
-        public string InfoTooltipPath { get { return @"Roads\OneWay3L\infotooltip.png"; } }
+        public string ThumbnailsPath { get { return @"SmallHeavyRoads\BasicRoadTL\thumbnails.png"; } }
+        public string InfoTooltipPath { get { return @"SmallHeavyRoads\BasicRoadTL\infotooltip.png"; } }
 
         public NetInfoVersion SupportedVersions
         {
@@ -32,7 +32,7 @@ namespace Transit.Addon.RoadExtensions.Roads.OneWay3L
             // Template              //
             ///////////////////////////
             var highwayInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L_SLOPE);
-            var owRoadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ONEWAY_2L);
+            var roadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_2L);
             var owRoadTunnelInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ONEWAY_2L_TUNNEL);
 
             ///////////////////////////
@@ -49,7 +49,7 @@ namespace Transit.Addon.RoadExtensions.Roads.OneWay3L
             // Set up                //
             ///////////////////////////
             info.m_hasParkingSpaces = false;
-            info.m_class = owRoadInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL3L_ROAD);
+            info.m_class = roadInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL3L_ROAD);
             info.m_pavementWidth = (version != NetInfoVersion.Slope && version != NetInfoVersion.Tunnel ? 3 : 6);
             info.m_halfWidth = (version != NetInfoVersion.Slope && version != NetInfoVersion.Tunnel ? 8 : 11);
 
@@ -61,13 +61,13 @@ namespace Transit.Addon.RoadExtensions.Roads.OneWay3L
             }
             else
             {
-                info.m_class = owRoadInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL3L_ROAD);
+                info.m_class = roadInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL3L_ROAD);
             }
 
             // Setting up lanes
-            info.SetRoadLanes(version, 1, 0, 1);
-            var leftPedLane = info.GetLeftRoadShoulder(owRoadInfo, version);
-            var rightPedLane = info.GetRightRoadShoulder(owRoadInfo, version);
+            info.SetRoadLanes(version, 2, 0, -1, true, true);
+            var leftPedLane = info.GetLeftRoadShoulder(roadInfo, version);
+            var rightPedLane = info.GetRightRoadShoulder(roadInfo, version);
             //Setting Up Props
             var leftRoadProps = leftPedLane.m_laneProps.m_props.ToList();
             var rightRoadProps = rightPedLane.m_laneProps.m_props.ToList();
@@ -86,7 +86,7 @@ namespace Transit.Addon.RoadExtensions.Roads.OneWay3L
             
             //var propLanes = info.m_lanes.Where(l => l.m_laneProps != null && (l.m_laneProps.name.ToLower().Contains("left") || l.m_laneProps.name.ToLower().Contains("right"))).ToList();
 
-            var owPlayerNetAI = owRoadInfo.GetComponent<PlayerNetAI>();
+            var owPlayerNetAI = roadInfo.GetComponent<PlayerNetAI>();
             var playerNetAI = info.GetComponent<PlayerNetAI>();
 
             if (owPlayerNetAI != null && playerNetAI != null)
