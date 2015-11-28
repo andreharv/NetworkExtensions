@@ -55,7 +55,7 @@ namespace Transit.Addon.RoadExtensions.Roads.OneWay4L
                         {
                             info.m_segments[i].SetTextures(
                                 new TexturesSet
-                                   (@"Roads\Highway4L\Textures\Slope_Segment__MainTex.png",
+                                   (@"Highways\Highway4L\Textures\Slope_Segment__MainTex.png",
                                     @"Roads\OneWay4L\Textures\Slope_Segment__APRMap.png"),
                                 new LODTexturesSet
                                     (@"Roads\OneWay4L\Textures\Slope_SegmentLOD__MainTex.png",
@@ -90,12 +90,12 @@ namespace Transit.Addon.RoadExtensions.Roads.OneWay4L
                     }
                         //info.SetAllNodesTexture(
                         //new TexturesSet
-                        //    (@"Roads\Highway4L\Textures\Slope_Node__MainTex.png",
-                        //    @"Roads\Highway4L\Textures\Ground_Node__APRMap.png"),
+                        //    (@"Highways\Highway4L\Textures\Slope_Node__MainTex.png",
+                        //    @"Highways\Highway4L\Textures\Ground_Node__APRMap.png"),
                         //new LODTexturesSet
-                        //    (@"Roads\Highway4L\Textures\Ground_NodeLOD__MainTex.png",
-                        //    @"Roads\Highway4L\Textures\Ground_NodeLOD__APRMap.png",
-                        //    @"Roads\Highway4L\Textures\Ground_LOD__XYSMap.png"));
+                        //    (@"Highways\Highway4L\Textures\Ground_NodeLOD__MainTex.png",
+                        //    @"Highways\Highway4L\Textures\Ground_NodeLOD__APRMap.png",
+                        //    @"Highways\Highway4L\Textures\Ground_LOD__XYSMap.png"));
                     break;
                 case NetInfoVersion.Tunnel:
                     {
