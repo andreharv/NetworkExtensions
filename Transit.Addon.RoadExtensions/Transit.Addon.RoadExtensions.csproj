@@ -81,7 +81,6 @@
     <Compile Include="Roads\Busway2L1W\Busway2L1WBuilder.cs" />
     <Compile Include="Roads\Busway2L\Busway2LBuilder.cs" />
     <Compile Include="Roads\Busway6L\Busway6LBuilder.cs" />
-    <Compile Include="Roads\Highways\VanillaHighwayMenuReorderer.cs" />
     <Compile Include="Roads\OneWay4L\OneWay4LBuilder.Texturing.cs" />
     <Compile Include="Roads\Roads\RoadHelper.cs" />
     <Compile Include="Roads\Roads\RoadModels.16m.2mSW.cs" />
