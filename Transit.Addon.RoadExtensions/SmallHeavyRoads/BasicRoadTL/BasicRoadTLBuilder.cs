@@ -1,10 +1,10 @@
 ﻿using System.Linq;
+using Transit.Addon.RoadExtensions.Menus;
 using Transit.Addon.RoadExtensions.SmallHeavyRoads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
-using Transit.Addon.RoadExtensions.Menus;
 
-namespace Transit.Addon.RoadExtensions.Roads.BasicRoadTL
+namespace Transit.Addon.RoadExtensions.SmallHeavyRoads.BasicRoadTL
 {
     public partial class BasicRoadTLBuilder : Activable, INetInfoBuilderPart
     {

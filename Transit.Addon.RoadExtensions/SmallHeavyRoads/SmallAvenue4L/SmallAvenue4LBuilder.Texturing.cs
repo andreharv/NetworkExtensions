@@ -1,6 +1,6 @@
 ﻿using Transit.Framework;
 
-namespace Transit.Addon.RoadExtensions.Roads.SmallAvenue4L
+namespace Transit.Addon.RoadExtensions.SmallHeavyRoads.SmallAvenue4L
 {
     public partial class SmallAvenue4LBuilder
     {

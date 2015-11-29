@@ -1,6 +1,6 @@
 ﻿using Transit.Framework;
 
-namespace Transit.Addon.RoadExtensions.Roads.OneWay3L
+namespace Transit.Addon.RoadExtensions.SmallHeavyRoads.OneWay3L
 {
     public partial class OneWay3LBuilder
     {

@@ -4,7 +4,7 @@ using Transit.Addon.RoadExtensions.SmallHeavyRoads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
 
-namespace Transit.Addon.RoadExtensions.Roads.SmallAvenue4L
+namespace Transit.Addon.RoadExtensions.SmallHeavyRoads.SmallAvenue4L
 {
     public partial class SmallAvenue4LBuilder : Activable, INetInfoBuilderPart
     {

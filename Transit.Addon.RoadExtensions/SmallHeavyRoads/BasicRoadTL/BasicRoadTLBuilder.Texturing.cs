@@ -1,6 +1,6 @@
 ﻿using Transit.Framework;
 
-namespace Transit.Addon.RoadExtensions.Roads.BasicRoadTL
+namespace Transit.Addon.RoadExtensions.SmallHeavyRoads.BasicRoadTL
 {
     public partial class BasicRoadTLBuilder
     {

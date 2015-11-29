@@ -3,8 +3,8 @@ using Transit.Addon.RoadExtensions.Menus;
 using Transit.Addon.RoadExtensions.SmallHeavyRoads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
-﻿
-namespace Transit.Addon.RoadExtensions.Roads.OneWay3L
+
+namespace Transit.Addon.RoadExtensions.SmallHeavyRoads.OneWay3L
 {
     public partial class OneWay3LBuilder : Activable, INetInfoBuilderPart
     {
