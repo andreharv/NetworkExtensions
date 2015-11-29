@@ -30,15 +30,7 @@ namespace Transit.Addon.RoadExtensions
                     return false;
                 }
 
-
-                var localeField = typeof (LocaleManager).GetFieldByName("m_Locale");
-                if (localeField == null)
-                {
-                    return false;
-                }
-
-
-                var locale = (Locale) localeField.GetValue(localeManager);
+                var locale = localeManager.GetLocale();
                 if (locale == null)
                 {
                     return false;

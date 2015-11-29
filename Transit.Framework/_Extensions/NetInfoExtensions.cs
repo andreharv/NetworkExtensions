@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using UnityEngine;
-using Object = UnityEngine.Object;
+using ColossalFramework;
+using ColossalFramework.Globalization;
 
 #if DEBUG
 using Debug = Transit.Framework.Debug;
@@ -67,6 +67,24 @@ namespace Transit.Framework
             }
 
             return lane;
+        }
+
+        public static void ModifyTitle(this NetInfo info, string newTitle)
+        {
+            var localizedStringsField = typeof(Locale).GetFieldByName("m_LocalizedStrings");
+            var locale = SingletonLite<LocaleManager>.instance.GetLocale();
+            var localizedStrings = (Dictionary<Locale.Key, string>)localizedStringsField.GetValue(locale);
+
+            var kvp =
+                localizedStrings
+                .FirstOrDefault(kvpInternal =>
+                    kvpInternal.Key.m_Identifier == "NET_TITLE" &&
+                    kvpInternal.Key.m_Key == info.name);
+
+            if (!Equals(kvp, default(KeyValuePair<Locale.Key, string>)))
+            {
+                localizedStrings[kvp.Key] = newTitle;
+            }
         }
     }
 }

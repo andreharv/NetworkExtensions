@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ColossalFramework.UI;
+﻿using ColossalFramework.UI;
 using UnityEngine;
 
 namespace Transit.Framework
@@ -37,7 +33,7 @@ namespace Transit.Framework
             {
                 var sprite = new UITextureAtlas.SpriteInfo
                 {
-                    name = string.Format(thumbnailsName.ToUpper() + "{0}", ts[x]),
+                    name = string.Format(thumbnailsName + "{0}", ts[x]),
                     region = new Rect(
                         (float)(x * iconW) / textureW, 0f,
                         (float)(iconW) / textureW, (float)(iconH) / textureH),
