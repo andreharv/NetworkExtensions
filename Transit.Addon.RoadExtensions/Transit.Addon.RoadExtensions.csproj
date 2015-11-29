@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Transit.Addon.RoadExtensions</RootNamespace>
-    <AssemblyName>Transit.Addon.RoadExtensions</AssemblyName>
+    <AssemblyName>Transit.Addon.Roads</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -1347,10 +1347,6 @@
     <ProjectReference Include="..\ObjUnity3D\ObjUnity3D.csproj">
       <Project>{97d70503-6567-41a1-92fc-66d813a53370}</Project>
       <Name>ObjUnity3D</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Transit.Addon\Transit.Addon.csproj">
-      <Project>{80c47696-4d41-4bb6-9cae-c477fe528adf}</Project>
-      <Name>Transit.Addon</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

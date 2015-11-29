@@ -9,6 +9,8 @@ namespace Transit.Framework.Modularity
 
     public interface IModule : IActivable, IIdentifiable, IOrderable
     {
+        string AssetPath { get; set; }
+
         IEnumerable<IModulePart> Parts { get; }
 
         void OnGameLoaded();

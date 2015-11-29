@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ColossalFramework;
 using ColossalFramework.Globalization;
+using UnityEngine;
 
 #if DEBUG
 using Debug = Transit.Framework.Debug;

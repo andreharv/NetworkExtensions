@@ -11,7 +11,7 @@ using System;
 
 namespace Transit.Addon
 {
-    public partial class Mod : IUserMod
+    public partial class Mod
     {
         // Change the version only when there are new options
         // and update the notification message!
@@ -159,8 +159,14 @@ namespace Transit.Addon
             NotificationInfo notification;
             try
             {
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof(NotificationInfo));
-                using (StreamReader streamReader = new StreamReader(Path.Combine(GetPath(), "NotificationSettings.xml")))
+                var assetPath = this.GetAssetPath();
+                if (assetPath == Assets.PATH_NOT_FOUND)
+                {
+                    return;
+                }
+
+                var xmlSerializer = new XmlSerializer(typeof(NotificationInfo));
+                using (StreamReader streamReader = new StreamReader(Path.Combine(assetPath, "NotificationSettings.xml")))
                 {
                     notification = (NotificationInfo)xmlSerializer.Deserialize(streamReader);
                 }

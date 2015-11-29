@@ -13,7 +13,7 @@ namespace Transit.Addon.RoadExtensions
     public partial class RExModule
     {
         [UsedImplicitly]
-        private class AssetsInstaller : Installer
+        private class AssetsInstaller : Installer<RExModule>
         {
             public static bool Done { get; private set; } // Only one Assets installation throughout the application
 
@@ -22,14 +22,14 @@ namespace Transit.Addon.RoadExtensions
                 return true;
             }
 
-            protected override void Install()
+            protected override void Install(RExModule host)
             {
                 if (Done) // Only one Assets installation throughout the application
                 {
                     return;
                 }
 
-                foreach (var action in AssetManager.instance.CreateLoadingSequence(Mod.GetPath()))
+                foreach (var action in AssetManager.instance.CreateLoadingSequence(host.AssetPath))
                 {
                     var localAction = action;
 

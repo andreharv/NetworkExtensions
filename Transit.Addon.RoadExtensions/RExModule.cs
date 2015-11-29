@@ -1,9 +1,8 @@
-﻿using System;
-using Transit.Framework.Modularity;
+﻿using Transit.Framework.Modularity;
 
 namespace Transit.Addon.RoadExtensions
 {
-    [Module(Mod = typeof(Mod))]
+    [Module("Transit.Addon.Mod", "NetworkExtensions.Mod")]
     public partial class RExModule : ModuleBase
     {
         public const string REX_OBJECT_NAME = "Road Extensions";

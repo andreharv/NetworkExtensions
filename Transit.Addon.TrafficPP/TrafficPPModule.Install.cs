@@ -15,7 +15,7 @@ namespace Transit.Addon.TrafficPP
 
             if (_isReleased)
             {
-                if (Mod.GetPath() != Assets.PATH_NOT_FOUND)
+                if (AssetPath != null && AssetPath != Assets.PATH_NOT_FOUND)
                 {
                     if (_initializer == null)
                     {

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Xml.Serialization;
 using Transit.Framework;
 
 namespace Transit.Addon.TrafficPP
@@ -62,15 +61,15 @@ namespace Transit.Addon.TrafficPP
 
         public static string GetFilePath(string fileName, Folder folder)
         {
-            var basePath = Mod.GetPath();
-            if (basePath == null || basePath == Assets.PATH_NOT_FOUND)
+            var assetPath = TrafficPPModule.InternalAssetPath;
+            if (assetPath == null || assetPath == Assets.PATH_NOT_FOUND)
                 return null;
             
             string relativeFolderPath;
             if (!sm_relativeTextureFolderPaths.TryGetValue(folder, out relativeFolderPath))
                 return null;
 
-            string path = basePath;
+            string path = assetPath;
             path = Path.Combine(path, relativeFolderPath);
             return Path.Combine(path, fileName);
         }

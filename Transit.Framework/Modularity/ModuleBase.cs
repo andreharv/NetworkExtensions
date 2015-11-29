@@ -1,5 +1,4 @@
-﻿using System.Xml;
-using ICities;
+﻿using ICities;
 
 namespace Transit.Framework.Modularity
 {
@@ -8,6 +7,8 @@ namespace Transit.Framework.Modularity
         private static int s_loadingId = 100;
 
         public abstract string Name { get; }
+
+        public virtual string AssetPath { get; set; }
 
         private readonly int defaultOrder = s_loadingId++;
         public virtual int Order

@@ -2,7 +2,7 @@
 
 namespace Transit.Addon.TrafficAI
 {
-    [Module(Mod = typeof(Mod))]
+    [Module(typeof(Mod))]
     public partial class TrafficAIModule : ModuleBase
     {
         public override string Name

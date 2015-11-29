@@ -1,8 +1,9 @@
 ﻿using ICities;
+using Transit.Framework.Modularity;
 
 namespace Transit.Addon
 {
-    public sealed partial class Mod : IUserMod
+    public sealed partial class Mod : ITransitMod
     {
         public string Name
         {
@@ -20,6 +21,11 @@ namespace Transit.Addon
                 OnGameLoaded();
                 return _description;
             }
+        }
+
+        public ulong WorkshopId
+        {
+            get { return 543703997; }
         }
     }
 }

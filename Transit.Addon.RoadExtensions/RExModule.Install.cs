@@ -24,7 +24,7 @@ namespace Transit.Addon.RoadExtensions
 
             if (_isReleased)
             {
-                if (Mod.GetPath() != Assets.PATH_NOT_FOUND)
+                if (AssetPath != null && AssetPath != Assets.PATH_NOT_FOUND)
                 {
                     _container = new GameObject(REX_OBJECT_NAME);
 
@@ -44,6 +44,7 @@ namespace Transit.Addon.RoadExtensions
                 _localizationInstaller.Host = this;
 
                 _assetsInstaller = _container.AddInstallerComponent<AssetsInstaller>();
+                _assetsInstaller.Host = this;
 
                 _roadsInstaller = _container.AddInstallerComponent<RoadsInstaller>();
                 _roadsInstaller.Host = this;
