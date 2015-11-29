@@ -1,10 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using ColossalFramework;
-using ColossalFramework.Globalization;
+﻿using System.Linq;
 using Transit.Framework;
 using Transit.Framework.Builders;
-using Transit.Framework.Interfaces;
 
 namespace Transit.Addon.RoadExtensions.Roads.MediumAvenue4L
 {
@@ -136,19 +132,10 @@ namespace Transit.Addon.RoadExtensions.Roads.MediumAvenue4L
 
         public void ModifyExistingNetInfo()
         {
-            var localizedStringsField = typeof(Locale).GetFieldByName("m_LocalizedStrings");
-            var locale = SingletonLite<LocaleManager>.instance.GetLocale();
-            var localizedStrings = (Dictionary<Locale.Key, string>)localizedStringsField.GetValue(locale);
-
-            var kvp =
-                localizedStrings
-                .FirstOrDefault(kvpInternal =>
-                    kvpInternal.Key.m_Identifier == "NET_TITLE" &&
-                    kvpInternal.Key.m_Key == NetInfos.Vanilla.AVENUE_4L);
-
-            if (!Equals(kvp, default(KeyValuePair<Locale.Key, string>)))
+            var avenue4L = Prefabs.Find<NetInfo>(NetInfos.Vanilla.AVENUE_4L, false);
+            if (avenue4L != null)
             {
-                localizedStrings[kvp.Key] = "Four-Lane Road with Median";
+                avenue4L.ModifyTitle("Four-Lane Road with Median");
             }
         }
     }
