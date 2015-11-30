@@ -285,7 +285,7 @@ namespace Transit.Addon.RoadExtensions.SmallHeavyRoads.Common
                 laneCollection.AddRange(rdInfo.SetParkingLanes());
             }
 
-            rdInfo.m_lanes = laneCollection.ToArray();
+            rdInfo.m_lanes = laneCollection.OrderBy(lc=>lc.m_position).ToArray();
 
             return rdInfo;
         }
