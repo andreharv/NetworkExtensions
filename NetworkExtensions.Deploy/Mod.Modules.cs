@@ -37,7 +37,7 @@ namespace NetworkExtensions
                                     try
                                     {
                                         var module = (IModule)Activator.CreateInstance(t);
-                                        Debug.Log(string.Format("TAM: Loading module {0}", module.Name));
+                                        Debug.Log(string.Format("NExt: Loading module {0}", module.Name));
 
                                         module.AssetPath = assetPath;
                                         module.SaveSettingsNeeded += ModuleSettingsNeedSave;
@@ -45,9 +45,9 @@ namespace NetworkExtensions
                                     }
                                     catch (Exception ex)
                                     {
-                                        Debug.Log("TAM: Crashed-Module " + t.Name);
-                                        Debug.Log("TAM: " + ex.Message);
-                                        Debug.Log("TAM: " + ex.ToString());
+                                        Debug.Log("NExt: Crashed-Module " + t.Name);
+                                        Debug.Log("NExt: " + ex.Message);
+                                        Debug.Log("NExt: " + ex.ToString());
                                         return null;
                                     }
                                 })
@@ -57,9 +57,9 @@ namespace NetworkExtensions
                     }
                     catch (Exception ex)
                     {
-                        Debug.Log("TAM: Crashed-Modules");
-                        Debug.Log("TAM: " + ex.Message);
-                        Debug.Log("TAM: " + ex.ToString());
+                        Debug.Log("NExt: Crashed-Modules");
+                        Debug.Log("NExt: " + ex.Message);
+                        Debug.Log("NExt: " + ex.ToString());
 
                         _modules = new IModule[] {};
                     }

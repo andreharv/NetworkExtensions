@@ -13,7 +13,7 @@ namespace NetworkExtensions
     {
         // Change the version only when there are new options
         private const string VERSION = "1.0.0";
-        private const string SETTINGS_FILE = "NetworkExtensions.xml";
+        private const string SETTINGS_FILE = "NetworkExtensionsConfig.xml";
 
         private UIScrollablePanel _optionsPanel;
         private const string NAME = "Network Extensions";

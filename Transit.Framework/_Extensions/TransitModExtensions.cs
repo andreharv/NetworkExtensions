@@ -35,7 +35,16 @@ namespace Transit.Framework
                 return localPath;
             }
 
-            // 2. Check Steam
+            // 2. Check Local path (CurrentUser\Appdata\Local\Colossal Order\Cities_Skylines\Addons\Mods) without spaces
+            localPath = Path.Combine(DataLocation.modsPath, folderName.Replace(" ", ""));
+            Debug.Log(string.Format("TFW: Exist={0} DataLocation.modsPath={1}", Directory.Exists(localPath), localPath));
+
+            if (Directory.Exists(localPath))
+            {
+                return localPath;
+            }
+
+            // 3. Check Steam
             foreach (var mod in Steam.workshop.GetSubscribedItems())
             {
                 if (mod.AsUInt64 == workshopId)
@@ -49,8 +58,16 @@ namespace Transit.Framework
                 }
             }
 
-            // 3. Check Cities Skylines files folder
+            // 4. Check Cities Skylines files folder
             var csFolderPath = Path.Combine(Path.Combine(DataLocation.gameContentPath, "Mods"), folderName);
+            Debug.Log(string.Format("TFW: Exist={0} DataLocation.gameContentPath={1}", Directory.Exists(csFolderPath), csFolderPath));
+            if (Directory.Exists(csFolderPath))
+            {
+                return csFolderPath;
+            }
+
+            // 5. Check Cities Skylines files folder without spaces
+            csFolderPath = Path.Combine(Path.Combine(DataLocation.gameContentPath, "Mods"), folderName.Replace(" ", ""));
             Debug.Log(string.Format("TFW: Exist={0} DataLocation.gameContentPath={1}", Directory.Exists(csFolderPath), csFolderPath));
             if (Directory.Exists(csFolderPath))
             {
