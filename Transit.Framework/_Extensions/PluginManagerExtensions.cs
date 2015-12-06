@@ -13,7 +13,6 @@ namespace Transit.Framework
         {
             foreach (var plugin in pluginManager.GetPluginsInfo())
             {
-                Debug.Log(string.Format("RARARA: plugin name {0}", plugin.name));
                 if (plugin.name.Equals(pluginId))
                 {
                     return true;
