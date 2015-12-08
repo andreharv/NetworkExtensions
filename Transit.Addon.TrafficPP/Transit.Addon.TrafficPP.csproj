@@ -52,8 +52,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="RoadManager.Serialization.cs" />
-    <Compile Include="RoadManager.Lane.cs" />
+    <Compile Include="Core\Lane.cs" />
+    <Compile Include="Core\LaneSerializationBinder.cs" />
+    <Compile Include="Core\LaneSerializationExtension.cs" />
+    <Compile Include="Core\VehicleTypePP.cs" />
     <Compile Include="Tools\Markers\NodeLaneMarker.cs" />
     <Compile Include="Tools\Markers\SegmentLaneMarker.cs" />
     <Compile Include="TrafficPPModule.Settings.cs" />

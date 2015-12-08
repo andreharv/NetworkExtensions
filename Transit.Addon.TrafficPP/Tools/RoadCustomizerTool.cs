@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ColossalFramework.Math;
 using ColossalFramework.UI;
+using Transit.Addon.TrafficPP.Core;
 using Transit.Addon.TrafficPP.Tools.Markers;
 using Transit.Addon.TrafficPP.UI;
 using UnityEngine;
@@ -171,11 +172,11 @@ namespace Transit.Addon.TrafficPP.Tools
 					{
 						m_selectedMarker = hoveredMarker;
 					}
-					else if (RoadManager.RemoveLaneConnection(m_selectedMarker.m_lane, hoveredMarker.m_lane))
+					else if (LanesManager.RemoveLaneConnection(m_selectedMarker.m_lane, hoveredMarker.m_lane))
 					{
 						m_selectedMarker.m_connections.Remove(hoveredMarker);
 					}
-					else if (RoadManager.AddLaneConnection(m_selectedMarker.m_lane, hoveredMarker.m_lane))
+					else if (LanesManager.AddLaneConnection(m_selectedMarker.m_lane, hoveredMarker.m_lane))
 					{
 						m_selectedMarker.m_connections.Add(hoveredMarker);
 					}
@@ -358,7 +359,7 @@ namespace Transit.Addon.TrafficPP.Tools
 				if (!nodeMarkers.m_buffer[i].m_isSource)
 					continue;
 
-				uint[] connections = RoadManager.GetLaneConnections(nodeMarkers.m_buffer[i].m_lane);
+				uint[] connections = LanesManager.GetLaneConnections(nodeMarkers.m_buffer[i].m_lane);
 				if (connections == null || connections.Length == 0)
 					continue;
 
@@ -616,24 +617,24 @@ namespace Transit.Addon.TrafficPP.Tools
 
 		bool AnyLaneSelected { get { return m_selectedLaneMarkers.Count > 0; } }
 
-		public RoadManager.VehicleType GetCurrentVehicleRestrictions()
+		public VehicleTypePP GetCurrentVehicleRestrictions()
 		{
 			if (!AnyLaneSelected)
-				return RoadManager.VehicleType.None;
+				return VehicleTypePP.None;
 
-			return RoadManager.GetVehicleRestrictions(m_selectedLaneMarkers[0].m_lane);
+			return LanesManager.GetVehicleRestrictions(m_selectedLaneMarkers[0].m_lane);
 		}
 
-		public RoadManager.VehicleType ToggleRestriction(RoadManager.VehicleType vehicleType)
+		public VehicleTypePP ToggleRestriction(VehicleTypePP vehicleType)
 		{
 			if (!AnyLaneSelected)
-				return RoadManager.VehicleType.None;
+				return VehicleTypePP.None;
 
-			RoadManager.VehicleType vehicleRestrictions = RoadManager.GetVehicleRestrictions(m_selectedLaneMarkers[0].m_lane);
+			VehicleTypePP vehicleRestrictions = LanesManager.GetVehicleRestrictions(m_selectedLaneMarkers[0].m_lane);
 			vehicleRestrictions ^= vehicleType;
 
 			foreach (SegmentLaneMarker lane in m_selectedLaneMarkers)
-				RoadManager.SetVehicleRestrictions(lane.m_lane, vehicleRestrictions);
+				LanesManager.SetVehicleRestrictions(lane.m_lane, vehicleRestrictions);
 
 			return vehicleRestrictions;
 		}
@@ -643,7 +644,7 @@ namespace Transit.Addon.TrafficPP.Tools
 			if (!AnyLaneSelected)
 				return -1f;
 
-			return RoadManager.GetLaneSpeed(m_selectedLaneMarkers[0].m_lane);
+			return LanesManager.GetLaneSpeed(m_selectedLaneMarkers[0].m_lane);
 		}
 
 		public void SetSpeedRestrictions(int speed)
@@ -652,7 +653,7 @@ namespace Transit.Addon.TrafficPP.Tools
 				return;
 
 			foreach (SegmentLaneMarker lane in m_selectedLaneMarkers)
-				RoadManager.SetLaneSpeed(lane.m_lane, speed);
+				LanesManager.SetLaneSpeed(lane.m_lane, speed);
 		}
 
 		#endregion
