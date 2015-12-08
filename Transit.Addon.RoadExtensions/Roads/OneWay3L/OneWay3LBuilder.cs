@@ -3,6 +3,7 @@ using System.Linq;
 using Transit.Addon.RoadExtensions.Menus;
 using Transit.Framework;
 using Transit.Framework.Builders;
+using UnityEngine;
 
 namespace Transit.Addon.RoadExtensions.Roads.OneWay3L
 {
@@ -32,6 +33,7 @@ namespace Transit.Addon.RoadExtensions.Roads.OneWay3L
             // Template              //
             ///////////////////////////
             var owRoadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ONEWAY_2L);
+            var largeRoadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_6L);
 
             ///////////////////////////
             // 3DModeling            //
@@ -92,11 +94,16 @@ namespace Transit.Addon.RoadExtensions.Roads.OneWay3L
                 NetInfo.LaneType.TransportVehicle
             };
 
-            var templateLane = info.m_lanes
-                .Where(l =>
-                    vehicleLaneTypes.Contains(l.m_laneType))
+            var templateLane = info
+                .m_lanes
+                .Where(l => vehicleLaneTypes.Contains(l.m_laneType))
                 .OrderBy(l => l.m_position)
                 .First();
+
+            var templateLaneSpeed = largeRoadInfo
+                .m_lanes
+                .First(l => vehicleLaneTypes.Contains(l.m_laneType))
+                .m_speedLimit;
 
             var vehicleLanes = new List<NetInfo.Lane>();
             const float outerCarLanePosition = 4.0f;
@@ -121,6 +128,8 @@ namespace Transit.Addon.RoadExtensions.Roads.OneWay3L
                     lane.m_allowStop = true;
                     lane.m_stopOffset = 0.7f;
                 }
+
+                lane.m_speedLimit = templateLaneSpeed;
 
                 vehicleLanes.Add(lane);
             }
