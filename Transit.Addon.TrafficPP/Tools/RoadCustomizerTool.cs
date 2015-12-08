@@ -1,86 +1,17 @@
-﻿using ColossalFramework.Math;
-using ColossalFramework.UI;
-using Transit.Addon.TrafficPP.UI;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using ColossalFramework.Math;
+using ColossalFramework.UI;
+using Transit.Addon.TrafficPP.Tools.Markers;
+using Transit.Addon.TrafficPP.UI;
 using UnityEngine;
 
-namespace Transit.Addon.TrafficPP
+namespace Transit.Addon.TrafficPP.Tools
 {
 	class RoadCustomizerTool : ToolBase
 	{
-		const NetNode.Flags CUSTOMIZED_NODE_FLAG = (NetNode.Flags)(1 << 28);
-
-		class NodeLaneMarker
-		{
-			public ushort m_node;
-			public Vector3 m_position;
-			public bool m_isSource;
-			public uint m_lane;
-			public float m_size = 1f;
-			public Color m_color;
-			public FastList<NodeLaneMarker> m_connections = new FastList<NodeLaneMarker>();
-		}
-
-		class SegmentLaneMarker
-		{
-			public uint m_lane;
-			public int m_laneIndex;
-			public float m_size = 1f;
-			public Bezier3 m_bezier;
-			public Bounds[] m_bounds;
-
-			public bool IntersectRay(Ray ray)
-			{
-				if (m_bounds == null)
-					CalculateBounds();
-
-				foreach (Bounds bounds in m_bounds)
-				{
-					if (bounds.IntersectRay(ray))
-						return true;
-				}
-
-				return false;
-			}
-
-			void CalculateBounds()
-			{
-				float angle = Vector3.Angle(m_bezier.a, m_bezier.b);
-				if (Mathf.Approximately(angle, 0f) || Mathf.Approximately(angle, 180f))
-				{
-					angle = Vector3.Angle(m_bezier.b, m_bezier.c);
-					if (Mathf.Approximately(angle, 0f) || Mathf.Approximately(angle, 180f))
-					{
-						angle = Vector3.Angle(m_bezier.c, m_bezier.d);
-						if (Mathf.Approximately(angle, 0f) || Mathf.Approximately(angle, 180f))
-						{
-							// linear bezier
-							Bounds bounds = m_bezier.GetBounds();
-							bounds.Expand(1f);
-							m_bounds = new Bounds[] { bounds };
-							return;
-						}
-					}
-				}                
-				
-				// split bezier in 10 parts to correctly raycast curves
-				Bezier3 bezier;
-				int amount = 10;
-				m_bounds = new Bounds[amount];
-				float size = 1f / amount;
-				for (int i = 0; i < amount; i++)
-				{
-					bezier = m_bezier.Cut(i * size, (i+1) * size);
-					
-					Bounds bounds = bezier.GetBounds();
-					bounds.Expand(1f);
-					m_bounds[i] = bounds;
-				}
-				
-			}
-		}
+		private const NetNode.Flags CUSTOMIZED_NODE_FLAG = (NetNode.Flags)(1 << 28);
 
 		struct Segment
 		{
@@ -88,16 +19,16 @@ namespace Transit.Addon.TrafficPP
 			public ushort m_targetNode;
 		}
 
-		ushort m_hoveredSegment;
-		ushort m_hoveredNode;
-		ushort m_selectedNode;        
-		NodeLaneMarker m_selectedMarker;
-		Dictionary<ushort, FastList<NodeLaneMarker>> m_nodeMarkers = new Dictionary<ushort, FastList<NodeLaneMarker>>();
-		Dictionary<ushort, Segment> m_segments = new Dictionary<ushort, Segment>();
-		Dictionary<int, FastList<SegmentLaneMarker>> m_hoveredLaneMarkers = new Dictionary<int, FastList<SegmentLaneMarker>>();
-		List<SegmentLaneMarker> m_selectedLaneMarkers = new List<SegmentLaneMarker>();
-		int m_hoveredLanes;
-		UIButton m_toolButton;
+		private ushort m_hoveredSegment;
+        private ushort m_hoveredNode;
+        private ushort m_selectedNode;
+        private NodeLaneMarker m_selectedMarker;
+        private readonly Dictionary<ushort, FastList<NodeLaneMarker>> m_nodeMarkers = new Dictionary<ushort, FastList<NodeLaneMarker>>();
+        private readonly Dictionary<ushort, Segment> m_segments = new Dictionary<ushort, Segment>();
+        private readonly Dictionary<int, FastList<SegmentLaneMarker>> m_hoveredLaneMarkers = new Dictionary<int, FastList<SegmentLaneMarker>>();
+        private readonly List<SegmentLaneMarker> m_selectedLaneMarkers = new List<SegmentLaneMarker>();
+        private int m_hoveredLanes;
+        private UIButton m_toolButton;
 
 		protected override void OnToolUpdate()
 		{
