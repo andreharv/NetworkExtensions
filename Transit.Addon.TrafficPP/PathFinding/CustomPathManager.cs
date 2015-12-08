@@ -6,7 +6,7 @@ using Transit.Addon.TrafficPP.Core;
 using Transit.Framework;
 using UnityEngine;
 
-namespace Transit.Addon.TrafficPP
+namespace Transit.Addon.TrafficPP.PathFinding
 {
 	/*
 	 * The PathManager is needed to use the CustomPathFind class that is where the real magic happens.

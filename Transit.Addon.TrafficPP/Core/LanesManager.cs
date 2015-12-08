@@ -1,7 +1,6 @@
 ﻿using System;
-using Transit.Addon.TrafficPP.Core;
 
-namespace Transit.Addon.TrafficPP
+namespace Transit.Addon.TrafficPP.Core
 {
     public static class LanesManager
     {
@@ -16,10 +15,10 @@ namespace Transit.Addon.TrafficPP
                 m_laneId = laneId
             };
 
-            NetSegment segment = NetManager.instance.m_segments.m_buffer[NetManager.instance.m_lanes.m_buffer[laneId].m_segment];
-            NetInfo netInfo = segment.Info;
-            int laneCount = netInfo.m_lanes.Length;
-            int laneIndex = 0;
+            var segment = NetManager.instance.m_segments.m_buffer[NetManager.instance.m_lanes.m_buffer[laneId].m_segment];
+            var netInfo = segment.Info;
+            var laneCount = netInfo.m_lanes.Length;
+            var laneIndex = 0;
             for (uint l = segment.m_lanes; laneIndex < laneCount && l != 0; laneIndex++)
             {
                 if (l == laneId)

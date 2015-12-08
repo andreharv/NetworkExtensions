@@ -3,6 +3,7 @@ using ColossalFramework.Math;
 using System;
 using System.Threading;
 using Transit.Addon.TrafficPP.Core;
+using Transit.Addon.TrafficPP.PathFinding;
 using UnityEngine;
 
 namespace Transit.Addon.TrafficPP
