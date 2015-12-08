@@ -32,6 +32,7 @@ namespace Transit.Addon.RoadExtensions.Roads.OneWay4L
             // Template              //
             ///////////////////////////
             var owRoadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ONEWAY_2L);
+            var largeRoadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_6L);
 
             ///////////////////////////
             // 3DModeling            //
@@ -92,10 +93,14 @@ namespace Transit.Addon.RoadExtensions.Roads.OneWay4L
             };
 
             var templateLane = info.m_lanes
-                .Where(l =>
-                    vehicleLaneTypes.Contains(l.m_laneType))
+                .Where(l => vehicleLaneTypes.Contains(l.m_laneType))
                 .OrderBy(l => l.m_position)
                 .First();
+
+            var templateLaneSpeed = largeRoadInfo
+                .m_lanes
+                .First(l => vehicleLaneTypes.Contains(l.m_laneType))
+                .m_speedLimit;
 
             var vehicleLanes = new List<NetInfo.Lane>();
             const float outerCarLanePosition = 4.4f;
@@ -122,6 +127,8 @@ namespace Transit.Addon.RoadExtensions.Roads.OneWay4L
                     lane.m_allowStop = true;
                     lane.m_stopOffset = 0.3f;
                 }
+
+                lane.m_speedLimit = templateLaneSpeed;
 
                 vehicleLanes.Add(lane);
             }
