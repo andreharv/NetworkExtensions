@@ -15,16 +15,6 @@ namespace Transit.Addon.TrafficPP.PathFinding
 	 */
 	partial class CustomPathFind : PathFind
 	{
-		private struct BufferItem
-		{
-			public PathUnit.Position m_position;
-			public float m_comparisonValue;
-			public float m_methodDistance;
-			public uint m_laneID;
-			public NetInfo.Direction m_direction;
-			public NetInfo.LaneType m_lanesUsed;
-		}
-
 		FieldInfo fi_pathUnits;
 		private Array32<PathUnit> m_pathUnits
 		{
@@ -73,7 +63,6 @@ namespace Transit.Addon.TrafficPP.PathFinding
 		private int m_bufferMaxPos;
 		private uint[] m_laneLocation;
 		private PathUnit.Position[] m_laneTarget;
-		private CustomPathFind.BufferItem[] m_buffer;
 		private int[] m_bufferMin;
 		private int[] m_bufferMax;
 		private float m_maxLength;
@@ -111,14 +100,14 @@ namespace Transit.Addon.TrafficPP.PathFinding
 			this.m_pathfindProfiler = new ThreadProfiler();
 			this.m_laneLocation = new uint[262144];
 			this.m_laneTarget = new PathUnit.Position[262144];
-			this.m_buffer = new CustomPathFind.BufferItem[65536];
+			this.m_buffer = new BufferItem[65536];
 			this.m_bufferMin = new int[1024];
 			this.m_bufferMax = new int[1024];
 			this.m_queueLock = new object();
 			this.m_pathVehicleType = new Dictionary<uint, VehicleTypePP>();
 			this.m_bufferLock = Singleton<PathManager>.instance.m_bufferLock;
 			this.m_pathUnits = Singleton<PathManager>.instance.m_pathUnits;
-			this.m_pathFindThread = new Thread(new ThreadStart(this.PathFindThread));
+			this.m_pathFindThread = new Thread(this.PathFindThread);
 			this.m_pathFindThread.Name = "Pathfind";
 			this.m_pathFindThread.Priority = SimulationManager.SIMULATION_PRIORITY;
 			this.m_pathFindThread.Start();

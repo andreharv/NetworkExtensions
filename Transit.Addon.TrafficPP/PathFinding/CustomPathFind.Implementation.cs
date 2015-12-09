@@ -1,8 +1,7 @@
-﻿using ColossalFramework;
-using ColossalFramework.Math;
-using ColossalFramework.UI;
-using System;
+﻿using System;
 using System.Threading;
+using ColossalFramework;
+using ColossalFramework.Math;
 using Transit.Addon.TrafficPP.Core;
 using UnityEngine;
 
@@ -10,75 +9,6 @@ namespace Transit.Addon.TrafficPP.PathFinding
 {
 	partial class CustomPathFind : PathFind
 	{
-		public bool CalculatePath(uint unit, bool skipQueue, VehicleTypePP vehicleType)
-		{
-			if (Singleton<PathManager>.instance.AddPathReference(unit))
-			{
-				while (!Monitor.TryEnter(this.m_queueLock, SimulationManager.SYNCHRONIZE_TIMEOUT))
-				{
-				}
-				try
-				{
-					if (skipQueue)
-					{
-						if (this.m_queueLast == 0u)
-						{
-							this.m_queueLast = unit;
-						}
-						else
-						{
-							this.m_pathUnits.m_buffer[(int)((UIntPtr)unit)].m_nextPathUnit = this.m_queueFirst;
-						}
-						this.m_queueFirst = unit;
-					}
-					else
-					{
-						if (this.m_queueLast == 0u)
-						{
-							this.m_queueFirst = unit;
-						}
-						else
-						{
-							this.m_pathUnits.m_buffer[(int)((UIntPtr)this.m_queueLast)].m_nextPathUnit = unit;
-						}
-						this.m_queueLast = unit;
-					}
-
-					m_pathVehicleType[unit] = vehicleType;
-
-					var pathBuffer = this.m_pathUnits.m_buffer;
-					var unitPtr = (UIntPtr)unit;
-					pathBuffer[(int)unitPtr].m_pathFindFlags = (byte)(pathBuffer[(int)unitPtr].m_pathFindFlags | 1);
-					this.m_queuedPathFindCount++;
-					Monitor.Pulse(this.m_queueLock);
-				}
-				finally
-				{
-					Monitor.Exit(this.m_queueLock);
-				}
-				return true;
-			}
-			return false;
-		}
-
-		//public void WaitForAllPaths()
-		//{
-		//    while (!Monitor.TryEnter(this.m_queueLock, SimulationManager.SYNCHRONIZE_TIMEOUT))
-		//    {
-		//    }
-		//    try
-		//    {
-		//        while ((this.m_queueFirst != 0u || this.m_calculating != 0u) && !this.m_terminated)
-		//        {
-		//            Monitor.Wait(this.m_queueLock);
-		//        }
-		//    }
-		//    finally
-		//    {
-		//        Monitor.Exit(this.m_queueLock);
-		//    }
-		//}
-
 		private void PathFindImplementation(uint unit, ref PathUnit data)
 		{
 			NetManager instance = Singleton<NetManager>.instance;
@@ -110,7 +40,7 @@ namespace Transit.Addon.TrafficPP.PathFinding
 
 			int num = (int)(this.m_pathUnits.m_buffer[(int)((UIntPtr)unit)].m_positionCount & 15);
 			int num2 = this.m_pathUnits.m_buffer[(int)((UIntPtr)unit)].m_positionCount >> 4;
-			CustomPathFind.BufferItem bufferItem;
+			BufferItem bufferItem;
 			if (data.m_position00.m_segment != 0 && num >= 1)
 			{
 				//if (NetManager.instance.m_segments.m_buffer[data.m_position00.m_segment].Info == null)
@@ -123,7 +53,7 @@ namespace Transit.Addon.TrafficPP.PathFinding
 				this.m_startOffsetA = data.m_position00.m_offset;
 				bufferItem.m_laneID = this.m_startLaneA;
 				bufferItem.m_position = data.m_position00;
-				this.GetLaneDirection(data.m_position00, out bufferItem.m_direction, out bufferItem.m_lanesUsed);
+				CalculateLaneDirection(data.m_position00, out bufferItem.m_direction, out bufferItem.m_lanesUsed);
 				bufferItem.m_comparisonValue = 0f;
 
 			}
@@ -131,9 +61,9 @@ namespace Transit.Addon.TrafficPP.PathFinding
 			{
 				this.m_startLaneA = 0u;
 				this.m_startOffsetA = 0;
-				bufferItem = default(CustomPathFind.BufferItem);
+				bufferItem = default(BufferItem);
 			}
-			CustomPathFind.BufferItem bufferItem2;
+			BufferItem bufferItem2;
 			if (data.m_position02.m_segment != 0 && num >= 3)
 			{
 				//if (NetManager.instance.m_segments.m_buffer[data.m_position02.m_segment].Info == null)
@@ -146,16 +76,16 @@ namespace Transit.Addon.TrafficPP.PathFinding
 				this.m_startOffsetB = data.m_position02.m_offset;
 				bufferItem2.m_laneID = this.m_startLaneB;
 				bufferItem2.m_position = data.m_position02;
-				this.GetLaneDirection(data.m_position02, out bufferItem2.m_direction, out bufferItem2.m_lanesUsed);
+				CalculateLaneDirection(data.m_position02, out bufferItem2.m_direction, out bufferItem2.m_lanesUsed);
 				bufferItem2.m_comparisonValue = 0f;
 			}
 			else
 			{
 				this.m_startLaneB = 0u;
 				this.m_startOffsetB = 0;
-				bufferItem2 = default(CustomPathFind.BufferItem);
+				bufferItem2 = default(BufferItem);
 			}
-			CustomPathFind.BufferItem bufferItem3;
+			BufferItem bufferItem3;
 			if (data.m_position01.m_segment != 0 && num >= 2)
 			{
 				//if (NetManager.instance.m_segments.m_buffer[data.m_position01.m_segment].Info == null)
@@ -167,16 +97,16 @@ namespace Transit.Addon.TrafficPP.PathFinding
 				this.m_endLaneA = PathManager.GetLaneID(data.m_position01);
 				bufferItem3.m_laneID = this.m_endLaneA;
 				bufferItem3.m_position = data.m_position01;
-				this.GetLaneDirection(data.m_position01, out bufferItem3.m_direction, out bufferItem3.m_lanesUsed);
+				CalculateLaneDirection(data.m_position01, out bufferItem3.m_direction, out bufferItem3.m_lanesUsed);
 				bufferItem3.m_methodDistance = 0f;
 				bufferItem3.m_comparisonValue = 0f;
 			}
 			else
 			{
 				this.m_endLaneA = 0u;
-				bufferItem3 = default(CustomPathFind.BufferItem);
+				bufferItem3 = default(BufferItem);
 			}
-			CustomPathFind.BufferItem bufferItem4;
+			BufferItem bufferItem4;
 			if (data.m_position03.m_segment != 0 && num >= 4)
 			{
 				//if (NetManager.instance.m_segments.m_buffer[data.m_position03.m_segment].Info == null)
@@ -188,14 +118,14 @@ namespace Transit.Addon.TrafficPP.PathFinding
 				this.m_endLaneB = PathManager.GetLaneID(data.m_position03);
 				bufferItem4.m_laneID = this.m_endLaneB;
 				bufferItem4.m_position = data.m_position03;
-				this.GetLaneDirection(data.m_position03, out bufferItem4.m_direction, out bufferItem4.m_lanesUsed);
+				CalculateLaneDirection(data.m_position03, out bufferItem4.m_direction, out bufferItem4.m_lanesUsed);
 				bufferItem4.m_methodDistance = 0f;
 				bufferItem4.m_comparisonValue = 0f;
 			}
 			else
 			{
 				this.m_endLaneB = 0u;
-				bufferItem4 = default(CustomPathFind.BufferItem);
+				bufferItem4 = default(BufferItem);
 			}
 			if (data.m_position11.m_segment != 0 && num2 >= 1)
 			{
@@ -207,7 +137,7 @@ namespace Transit.Addon.TrafficPP.PathFinding
 				this.m_vehicleLane = 0u;
 				this.m_vehicleOffset = 0;
 			}
-			CustomPathFind.BufferItem bufferItem5 = default(CustomPathFind.BufferItem);
+			BufferItem bufferItem5 = default(BufferItem);
 			byte b = 0;
 			this.m_bufferMinPos = 0;
 			this.m_bufferMaxPos = -1;
@@ -246,7 +176,7 @@ namespace Transit.Addon.TrafficPP.PathFinding
 				else
 				{
 					this.m_bufferMin[this.m_bufferMinPos] = num4 + 1;
-					CustomPathFind.BufferItem bufferItem6 = this.m_buffer[(this.m_bufferMinPos << 6) + num4];
+					BufferItem bufferItem6 = this.m_buffer[(this.m_bufferMinPos << 6) + num4];
 					if (bufferItem6.m_position.m_segment == bufferItem.m_position.m_segment && bufferItem6.m_position.m_lane == bufferItem.m_position.m_lane)
 					{
 						if ((byte)(bufferItem6.m_direction & NetInfo.Direction.Forward) != 0 && bufferItem6.m_position.m_offset >= this.m_startOffsetA)
@@ -413,7 +343,8 @@ namespace Transit.Addon.TrafficPP.PathFinding
 			UIntPtr expr_D65_cp_1 = (UIntPtr)unit;
 			expr_D65_cp_0[(int)expr_D65_cp_1].m_pathFindFlags = (byte)(expr_D65_cp_0[(int)expr_D65_cp_1].m_pathFindFlags | 8);
 		}
-		private void ProcessItem(CustomPathFind.BufferItem item, ushort nodeID, ref NetNode node, byte connectOffset, bool isMiddle)
+
+		private void ProcessItem(BufferItem item, ushort nodeID, ref NetNode node, byte connectOffset, bool isMiddle)
 		{
 			NetManager instance = Singleton<NetManager>.instance;
 			bool flag = false;
@@ -633,7 +564,7 @@ namespace Transit.Addon.TrafficPP.PathFinding
 			}
 		}
 
-		private void ProcessItem(CustomPathFind.BufferItem item, ushort targetNode, bool targetDisabled, ushort segmentID, ref NetSegment segment, uint lane, byte offset, byte connectOffset)
+		private void ProcessItem(BufferItem item, ushort targetNode, bool targetDisabled, ushort segmentID, ref NetSegment segment, uint lane, byte offset, byte connectOffset)
 		{
 			if ((segment.m_flags & (NetSegment.Flags.PathFailed | NetSegment.Flags.Flooded)) != NetSegment.Flags.None)
 			{
@@ -665,7 +596,7 @@ namespace Transit.Addon.TrafficPP.PathFinding
                 {
                     laneType = (NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle);
                 }
-				num4 = this.CalculateLaneSpeed(connectOffset, item.m_position.m_offset, instance.m_segments.m_buffer[(int)item.m_position.m_segment], lane2, l);
+				num4 = CalculateLaneSpeed(connectOffset, item.m_position.m_offset, instance.m_segments.m_buffer[(int)item.m_position.m_segment], lane2, l);
 			}
 			float averageLength = instance.m_segments.m_buffer[(int)item.m_position.m_segment].m_averageLength;
 			float num5 = (float)Mathf.Abs((int)(connectOffset - item.m_position.m_offset)) * 0.003921569f * averageLength;
@@ -682,7 +613,7 @@ namespace Transit.Addon.TrafficPP.PathFinding
 					{
 						Vector3 a = instance.m_lanes.m_buffer[(int)((UIntPtr)lane)].CalculatePosition((float)offset * 0.003921569f);
 						float num9 = Vector3.Distance(a, b);
-						CustomPathFind.BufferItem item2;
+						BufferItem item2;
 						item2.m_position.m_segment = segmentID;
 						item2.m_position.m_lane = (byte)num8;
 						item2.m_position.m_offset = offset;
@@ -711,7 +642,7 @@ namespace Transit.Addon.TrafficPP.PathFinding
                                 {
                                     return;
                                 }
-                                float num10 = this.CalculateLaneSpeed(this.m_startOffsetA, item2.m_position.m_offset, segment, lane3, lane);
+                                float num10 = CalculateLaneSpeed(this.m_startOffsetA, item2.m_position.m_offset, segment, lane3, lane);
 								float num11 = (float)Mathf.Abs((int)(item2.m_position.m_offset - this.m_startOffsetA)) * 0.003921569f;
 								item2.m_comparisonValue += num11 * segment.m_averageLength / (num10 * this.m_maxLength);
 							}
@@ -721,7 +652,7 @@ namespace Transit.Addon.TrafficPP.PathFinding
                                 {
                                     return;
                                 }
-                                float num12 = this.CalculateLaneSpeed(this.m_startOffsetB, item2.m_position.m_offset, segment, lane3, lane);
+                                float num12 = CalculateLaneSpeed(this.m_startOffsetB, item2.m_position.m_offset, segment, lane3, lane);
 								float num13 = (float)Mathf.Abs((int)(item2.m_position.m_offset - this.m_startOffsetB)) * 0.003921569f;
 								item2.m_comparisonValue += num13 * segment.m_averageLength / (num12 * this.m_maxLength);
 							}
@@ -736,7 +667,8 @@ namespace Transit.Addon.TrafficPP.PathFinding
 				num8++;
 			}
 		}
-		private bool ProcessItem(CustomPathFind.BufferItem item, ushort targetNode, ushort segmentID, ref NetSegment segment, ref int currentTargetIndex, byte connectOffset, bool enableVehicle, bool enablePedestrian)
+		
+        private bool ProcessItem(BufferItem item, ushort targetNode, ushort segmentID, ref NetSegment segment, ref int currentTargetIndex, byte connectOffset, bool enableVehicle, bool enablePedestrian)
 		{
 			bool result = false;
 			if ((segment.m_flags & (NetSegment.Flags.PathFailed | NetSegment.Flags.Flooded)) != NetSegment.Flags.None)
@@ -793,7 +725,7 @@ namespace Transit.Addon.TrafficPP.PathFinding
 				//num5 = lane.m_speedLimit;
 				//num6 = this.CalculateLaneSpeed(connectOffset, item.m_position.m_offset, ref instance.m_segments.m_buffer[(int)item.m_position.m_segment], lane, 0);
 				num5 = LanesManager.GetLaneSpeed(l);
-				num6 = this.CalculateLaneSpeed(connectOffset, item.m_position.m_offset, instance.m_segments.m_buffer[(int)item.m_position.m_segment], lane, l);
+				num6 = CalculateLaneSpeed(connectOffset, item.m_position.m_offset, instance.m_segments.m_buffer[(int)item.m_position.m_segment], lane, l);
 			}
 			float num7 = instance.m_segments.m_buffer[(int)item.m_position.m_segment].m_averageLength;
 			if (!this.m_stablePath)
@@ -883,7 +815,7 @@ namespace Transit.Addon.TrafficPP.PathFinding
 							}
 						}
 						float num14 = num13 / ((num5 + LanesManager.GetLaneSpeed(num2) /*lane2.m_speedLimit*/) * 0.5f * this.m_maxLength);
-						CustomPathFind.BufferItem item2;
+						BufferItem item2;
 						item2.m_position.m_segment = segmentID;
 						item2.m_position.m_lane = (byte)num12;
 						item2.m_position.m_offset = (byte)(((direction & NetInfo.Direction.Forward) == 0) ? 0 : 255);
@@ -907,7 +839,7 @@ namespace Transit.Addon.TrafficPP.PathFinding
                                     num12++;
                                     continue;
                                 }
-                                float num15 = this.CalculateLaneSpeed(this.m_startOffsetA, item2.m_position.m_offset, segment, lane2, num2);
+                                float num15 = CalculateLaneSpeed(this.m_startOffsetA, item2.m_position.m_offset, segment, lane2, num2);
 								float num16 = (float)Mathf.Abs((int)(item2.m_position.m_offset - this.m_startOffsetA)) * 0.003921569f;
 								item2.m_comparisonValue += num16 * segment.m_averageLength / (num15 * this.m_maxLength);
 							}
@@ -919,7 +851,7 @@ namespace Transit.Addon.TrafficPP.PathFinding
                                     num12++;
                                     continue;
                                 }
-                                float num17 = this.CalculateLaneSpeed(this.m_startOffsetB, item2.m_position.m_offset, segment, lane2, num2);
+                                float num17 = CalculateLaneSpeed(this.m_startOffsetB, item2.m_position.m_offset, segment, lane2, num2);
 								float num18 = (float)Mathf.Abs((int)(item2.m_position.m_offset - this.m_startOffsetB)) * 0.003921569f;
 								item2.m_comparisonValue += num18 * segment.m_averageLength / (num17 * this.m_maxLength);
 							}
@@ -960,7 +892,8 @@ namespace Transit.Addon.TrafficPP.PathFinding
 			currentTargetIndex = num11;
 			return result;
 		}
-		private void ProcessItem(CustomPathFind.BufferItem item, ushort targetNode, ushort segmentID, ref NetSegment segment, byte connectOffset, int laneIndex, uint lane)
+		
+        private void ProcessItem(BufferItem item, ushort targetNode, ushort segmentID, ref NetSegment segment, byte connectOffset, int laneIndex, uint lane)
 		{
 			if ((segment.m_flags & (NetSegment.Flags.PathFailed | NetSegment.Flags.Flooded)) != NetSegment.Flags.None)
 			{
@@ -1012,7 +945,7 @@ namespace Transit.Addon.TrafficPP.PathFinding
                 {
                     laneType = (NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle);
                 }
-				num4 = this.CalculateLaneSpeed(connectOffset, item.m_position.m_offset, instance.m_segments.m_buffer[(int)item.m_position.m_segment], lane2, l);
+				num4 = CalculateLaneSpeed(connectOffset, item.m_position.m_offset, instance.m_segments.m_buffer[(int)item.m_position.m_segment], lane2, l);
 			}
 			float averageLength = instance.m_segments.m_buffer[(int)item.m_position.m_segment].m_averageLength;
 			float num5 = (float)Mathf.Abs((int)(connectOffset - item.m_position.m_offset)) * 0.003921569f * averageLength;
@@ -1021,7 +954,7 @@ namespace Transit.Addon.TrafficPP.PathFinding
 			if (laneIndex < num)
 			{
 				NetInfo.Lane lane3 = info.m_lanes[laneIndex];
-				CustomPathFind.BufferItem item2;
+				BufferItem item2;
 				item2.m_position.m_segment = segmentID;
 				item2.m_position.m_lane = (byte)laneIndex;
 				item2.m_position.m_offset = offset;
@@ -1054,7 +987,7 @@ namespace Transit.Addon.TrafficPP.PathFinding
                         {
                             return;
                         }
-                        float num8 = this.CalculateLaneSpeed(this.m_startOffsetA, item2.m_position.m_offset, segment, lane3, lane);
+                        float num8 = CalculateLaneSpeed(this.m_startOffsetA, item2.m_position.m_offset, segment, lane3, lane);
 						float num9 = (float)Mathf.Abs((int)(item2.m_position.m_offset - this.m_startOffsetA)) * 0.003921569f;
 						item2.m_comparisonValue += num9 * segment.m_averageLength / (num8 * this.m_maxLength);
 					}
@@ -1064,7 +997,7 @@ namespace Transit.Addon.TrafficPP.PathFinding
                         {
                             return;
                         }
-                        float num10 = this.CalculateLaneSpeed(this.m_startOffsetB, item2.m_position.m_offset, segment, lane3, lane);
+                        float num10 = CalculateLaneSpeed(this.m_startOffsetB, item2.m_position.m_offset, segment, lane3, lane);
 						float num11 = (float)Mathf.Abs((int)(item2.m_position.m_offset - this.m_startOffsetB)) * 0.003921569f;
 						item2.m_comparisonValue += num11 * segment.m_averageLength / (num10 * this.m_maxLength);
 					}
@@ -1074,7 +1007,8 @@ namespace Transit.Addon.TrafficPP.PathFinding
 				}
 			}
 		}
-		private void AddBufferItem(CustomPathFind.BufferItem item, PathUnit.Position target)
+		
+        private void AddBufferItem(BufferItem item, PathUnit.Position target)
 		{
 			uint num = this.m_laneLocation[(int)((UIntPtr)item.m_laneID)];
 			uint num2 = num >> 16;
@@ -1100,7 +1034,7 @@ namespace Transit.Addon.TrafficPP.PathFinding
 					return;
 				}
 				int num7 = num4 << 6 | this.m_bufferMax[num4]--;
-				CustomPathFind.BufferItem bufferItem = this.m_buffer[num7];
+				BufferItem bufferItem = this.m_buffer[num7];
 				this.m_laneLocation[(int)((UIntPtr)bufferItem.m_laneID)] = num;
 				this.m_buffer[num3] = bufferItem;
 			}
@@ -1128,102 +1062,6 @@ namespace Transit.Addon.TrafficPP.PathFinding
 			this.m_buffer[num3] = item;
 			this.m_laneLocation[(int)((UIntPtr)item.m_laneID)] = (this.m_pathFindIndex << 16 | (uint)num3);
 			this.m_laneTarget[(int)((UIntPtr)item.m_laneID)] = target;
-		}
-		private void GetLaneDirection(PathUnit.Position pathPos, out NetInfo.Direction direction, out NetInfo.LaneType type)
-		{
-			NetManager instance = Singleton<NetManager>.instance;
-			//if (instance == null)
-			//	Logger.LogInfo("GetLaneDirection -> instance is null!\n");
-			NetInfo info = instance.m_segments.m_buffer[(int)pathPos.m_segment].Info;
-			//if (info == null)
-			//	Logger.LogInfo("GetLaneDirection -> info is null!\n");
-			//else if (info.m_lanes == null)
-			//	Logger.LogInfo("GetLaneDirection -> info.m_lanes is null!\n");
-			if (info.m_lanes.Length > (int)pathPos.m_lane)
-			{
-				direction = info.m_lanes[(int)pathPos.m_lane].m_finalDirection;
-				type = info.m_lanes[(int)pathPos.m_lane].m_laneType;
-				if ((instance.m_segments.m_buffer[(int)pathPos.m_segment].m_flags & NetSegment.Flags.Invert) != NetSegment.Flags.None)
-				{
-					direction = NetInfo.InvertDirection(direction);
-				}
-			}
-			else
-			{
-				direction = NetInfo.Direction.None;
-				type = NetInfo.LaneType.None;
-			}
-		}
-		private void PathFindThread()
-		{
-			while (true)
-			{
-				while (!Monitor.TryEnter(this.m_queueLock, SimulationManager.SYNCHRONIZE_TIMEOUT))
-				{
-				}
-				try
-				{
-					while (this.m_queueFirst == 0u && !this.m_terminated)
-					{
-						Monitor.Wait(this.m_queueLock);
-					}
-					if (this.m_terminated)
-					{
-						break;
-					}
-					this.m_calculating = this.m_queueFirst;
-					this.m_queueFirst = this.m_pathUnits.m_buffer[(int)((UIntPtr)this.m_calculating)].m_nextPathUnit;
-					if (this.m_queueFirst == 0u)
-					{
-						this.m_queueLast = 0u;
-						this.m_queuedPathFindCount = 0;
-					}
-					else
-					{
-						this.m_queuedPathFindCount--;
-					}
-					this.m_pathUnits.m_buffer[(int)((UIntPtr)this.m_calculating)].m_nextPathUnit = 0u;
-					this.m_pathUnits.m_buffer[(int)((UIntPtr)this.m_calculating)].m_pathFindFlags = (byte)(((int)this.m_pathUnits.m_buffer[(int)((UIntPtr)this.m_calculating)].m_pathFindFlags & -2) | 2);
-				}
-				finally
-				{
-					Monitor.Exit(this.m_queueLock);
-				}
-				try
-				{
-					this.m_pathfindProfiler.BeginStep();
-					try
-					{
-						this.PathFindImplementation(this.m_calculating, ref this.m_pathUnits.m_buffer[(int)((UIntPtr)this.m_calculating)]);
-					}
-					finally
-					{
-						this.m_pathfindProfiler.EndStep();
-					}
-				}
-				catch (Exception ex)
-				{
-					UIView.ForwardException(ex);
-					CODebugBase<LogChannel>.Error(LogChannel.Core, "Path find error: " + ex.Message/* + " - " + m_vehicleType + " - " + m_vehicleTypes*/ + "\n" + ex.StackTrace);
-					PathUnit[] expr_1A0_cp_0 = this.m_pathUnits.m_buffer;
-					UIntPtr expr_1A0_cp_1 = (UIntPtr)this.m_calculating;
-					expr_1A0_cp_0[(int)expr_1A0_cp_1].m_pathFindFlags = (byte)(expr_1A0_cp_0[(int)expr_1A0_cp_1].m_pathFindFlags | 8);
-				}
-				while (!Monitor.TryEnter(this.m_queueLock, SimulationManager.SYNCHRONIZE_TIMEOUT))
-				{
-				}
-				try
-				{
-					this.m_pathUnits.m_buffer[(int)((UIntPtr)this.m_calculating)].m_pathFindFlags = (byte)((int)this.m_pathUnits.m_buffer[(int)((UIntPtr)this.m_calculating)].m_pathFindFlags & -3);
-					Singleton<PathManager>.instance.ReleasePath(this.m_calculating);
-					this.m_calculating = 0u;
-					Monitor.Pulse(this.m_queueLock);
-				}
-				finally
-				{
-					Monitor.Exit(this.m_queueLock);
-				}
-			}
 		}
 	}
 }

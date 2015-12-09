@@ -148,7 +148,7 @@
 //                {
 //                    PathUnit[] expr_71_cp_0 = buffer;
 //                    UIntPtr expr_71_cp_1 = (UIntPtr)buffer[i].m_nextPathUnit;
-//                    expr_71_cp_0[(int)expr_71_cp_1].m_referenceCount = expr_71_cp_0[(int)expr_71_cp_1].m_referenceCount + 1;
+//                    expr_71_cp_0[(int)expr_71_cp_1].m_referenceCount = (byte) (expr_71_cp_0[(int)expr_71_cp_1].m_referenceCount + 1);
 //                }
 //            }
 //            instance.m_pathUnitCount = (int)(instance.m_pathUnits.ItemCount() - 1u);
@@ -388,19 +388,19 @@
 //        {
 //            PathUnit[] expr_92_cp_0 = this.m_pathUnits.m_buffer;
 //            UIntPtr expr_92_cp_1 = (UIntPtr)unit;
-//            expr_92_cp_0[(int)expr_92_cp_1].m_simulationFlags = (expr_92_cp_0[(int)expr_92_cp_1].m_simulationFlags | 16);
+//            expr_92_cp_0[(int)expr_92_cp_1].m_simulationFlags = (byte) (expr_92_cp_0[(int)expr_92_cp_1].m_simulationFlags | 16);
 //        }
 //        if (ignoreBlocked)
 //        {
 //            PathUnit[] expr_BB_cp_0 = this.m_pathUnits.m_buffer;
 //            UIntPtr expr_BB_cp_1 = (UIntPtr)unit;
-//            expr_BB_cp_0[(int)expr_BB_cp_1].m_simulationFlags = (expr_BB_cp_0[(int)expr_BB_cp_1].m_simulationFlags | 32);
+//            expr_BB_cp_0[(int)expr_BB_cp_1].m_simulationFlags = (byte) (expr_BB_cp_0[(int)expr_BB_cp_1].m_simulationFlags | 32);
 //        }
 //        if (stablePath)
 //        {
 //            PathUnit[] expr_E4_cp_0 = this.m_pathUnits.m_buffer;
 //            UIntPtr expr_E4_cp_1 = (UIntPtr)unit;
-//            expr_E4_cp_0[(int)expr_E4_cp_1].m_simulationFlags = (expr_E4_cp_0[(int)expr_E4_cp_1].m_simulationFlags | 64);
+//            expr_E4_cp_0[(int)expr_E4_cp_1].m_simulationFlags = (byte) (expr_E4_cp_0[(int)expr_E4_cp_1].m_simulationFlags | 64);
 //        }
 //        this.m_pathUnits.m_buffer[(int)((UIntPtr)unit)].m_pathFindFlags = 0;
 //        this.m_pathUnits.m_buffer[(int)((UIntPtr)unit)].m_buildIndex = buildIndex;
@@ -462,7 +462,7 @@
 //            {
 //                PathUnit[] expr_73_cp_0 = this.m_pathUnits.m_buffer;
 //                UIntPtr expr_73_cp_1 = (UIntPtr)unit;
-//                expr_73_cp_0[(int)expr_73_cp_1].m_referenceCount = expr_73_cp_0[(int)expr_73_cp_1].m_referenceCount + 1;
+//                expr_73_cp_0[(int)expr_73_cp_1].m_referenceCount = (byte) (expr_73_cp_0[(int)expr_73_cp_1].m_referenceCount + 1);
 //                result = true;
 //            }
 //            else
@@ -507,12 +507,12 @@
 //            {
 //                PathUnit[] expr_106_cp_0 = this.m_pathUnits.m_buffer;
 //                UIntPtr expr_106_cp_1 = (UIntPtr)unit;
-//                expr_106_cp_0[(int)expr_106_cp_1].m_referenceCount = expr_106_cp_0[(int)expr_106_cp_1].m_referenceCount - 1;
+//                expr_106_cp_0[(int)expr_106_cp_1].m_referenceCount = (byte) (expr_106_cp_0[(int)expr_106_cp_1].m_referenceCount - 1);
 //                if (this.m_pathUnits.m_buffer[(int)((UIntPtr)nextPathUnit)].m_referenceCount < 255)
 //                {
 //                    PathUnit[] expr_147_cp_0 = this.m_pathUnits.m_buffer;
 //                    UIntPtr expr_147_cp_1 = (UIntPtr)nextPathUnit;
-//                    expr_147_cp_0[(int)expr_147_cp_1].m_referenceCount = expr_147_cp_0[(int)expr_147_cp_1].m_referenceCount + 1;
+//                    expr_147_cp_0[(int)expr_147_cp_1].m_referenceCount = (byte) (expr_147_cp_0[(int)expr_147_cp_1].m_referenceCount + 1);
 //                    unit = nextPathUnit;
 //                }
 //                else
@@ -546,7 +546,7 @@
 //                {
 //                    PathUnit[] expr_F9_cp_0 = this.m_pathUnits.m_buffer;
 //                    UIntPtr expr_F9_cp_1 = (UIntPtr)unit;
-//                    expr_F9_cp_0[(int)expr_F9_cp_1].m_referenceCount = expr_F9_cp_0[(int)expr_F9_cp_1].m_referenceCount - 1;
+//                    expr_F9_cp_0[(int)expr_F9_cp_1].m_referenceCount = (byte) (expr_F9_cp_0[(int)expr_F9_cp_1].m_referenceCount - 1);
 //                    break;
 //                }
 //                uint nextPathUnit = this.m_pathUnits.m_buffer[(int)((UIntPtr)unit)].m_nextPathUnit;
@@ -589,17 +589,17 @@
 //        data.Add(new PathManager.Data());
 //    }
 
-//    virtual string GetName()
+//    new string GetName()
 //    {
 //        return base.GetName();
 //    }
 
-//    virtual ThreadProfiler GetSimulationProfiler()
+//    new ThreadProfiler GetSimulationProfiler()
 //    {
 //        return base.GetSimulationProfiler();
 //    }
 
-//    virtual void SimulationStep(int subStep)
+//    new void SimulationStep(int subStep)
 //    {
 //        base.SimulationStep(subStep);
 //    }

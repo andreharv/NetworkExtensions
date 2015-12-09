@@ -57,8 +57,11 @@
     <Compile Include="Core\LaneSerializationExtension.cs" />
     <Compile Include="Core\LanesManager.cs" />
     <Compile Include="Core\VehicleTypePP.cs" />
+    <Compile Include="PathFinding\CustomPathFind.Buffer.cs" />
+    <Compile Include="PathFinding\CustomPathFind.Implementation.CalculateLane.cs" />
+    <Compile Include="PathFinding\CustomPathFind.Implementation.Threading.cs" />
+    <Compile Include="PathFinding\CustomPathFind.Implementation.CalculatePath.cs" />
     <Compile Include="PathFinding\CustomPathFind.Implementation.cs" />
-    <Compile Include="PathFinding\CustomPathFind.Implementation.CalculateLaneSpeed.cs" />
     <Compile Include="PathFinding\Vanilla\PathManager.cs" />
     <Compile Include="PathFinding\Vanilla\PathFind.cs" />
     <Compile Include="Tools\Markers\NodeLaneMarker.cs" />
