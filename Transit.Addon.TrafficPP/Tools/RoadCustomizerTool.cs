@@ -156,14 +156,14 @@ namespace Transit.Addon.TrafficPP.Tools
 					if (!IsActive(marker))
 						continue;
 
-					bounds.center = marker.m_position;
+					bounds.center = marker.Position;
 					if (bounds.IntersectRay(mouseRay))
 					{
 						hoveredMarker = marker;
-						marker.m_size = 2f;
+                        marker.Select();
 					}
 					else
-						marker.m_size = 1f;
+                        marker.Unselect();
 				}
 
 				if (hoveredMarker != null && Input.GetMouseButtonUp(0))
@@ -172,13 +172,13 @@ namespace Transit.Addon.TrafficPP.Tools
 					{
 						m_selectedMarker = hoveredMarker;
 					}
-					else if (LanesManager.RemoveLaneConnection(m_selectedMarker.m_lane, hoveredMarker.m_lane))
+					else if (LanesManager.RemoveLaneConnection(m_selectedMarker.LaneId, hoveredMarker.LaneId))
 					{
-						m_selectedMarker.m_connections.Remove(hoveredMarker);
+						m_selectedMarker.Connections.Remove(hoveredMarker);
 					}
-					else if (LanesManager.AddLaneConnection(m_selectedMarker.m_lane, hoveredMarker.m_lane))
+					else if (LanesManager.AddLaneConnection(m_selectedMarker.LaneId, hoveredMarker.LaneId))
 					{
-						m_selectedMarker.m_connections.Add(hoveredMarker);
+						m_selectedMarker.Connections.Add(hoveredMarker);
 					}
 				}
 			}
@@ -279,9 +279,9 @@ namespace Transit.Addon.TrafficPP.Tools
 
 		bool IsActive(NodeLaneMarker marker)
 		{
-			if (m_selectedMarker != null && (marker.m_isSource || NetManager.instance.m_lanes.m_buffer[m_selectedMarker.m_lane].m_segment == NetManager.instance.m_lanes.m_buffer[marker.m_lane].m_segment))
+			if (m_selectedMarker != null && (marker.IsSource || NetManager.instance.m_lanes.m_buffer[m_selectedMarker.LaneId].m_segment == NetManager.instance.m_lanes.m_buffer[marker.LaneId].m_segment))
 				return false;
-			else if (m_selectedMarker == null && !marker.m_isSource)
+			else if (m_selectedMarker == null && !marker.IsSource)
 				return false;
 
 			return true;
@@ -294,59 +294,62 @@ namespace Transit.Addon.TrafficPP.Tools
 
 			if (!m_nodeMarkers.ContainsKey(nodeId) || (NetManager.instance.m_nodes.m_buffer[nodeId].m_flags & CUSTOMIZED_NODE_FLAG) != CUSTOMIZED_NODE_FLAG || overwrite)
 			{
-				FastList<NodeLaneMarker> nodeMarkers = new FastList<NodeLaneMarker>();
-				SetNodeMarkers(nodeId, nodeMarkers);
-				m_nodeMarkers[nodeId] = nodeMarkers;
+                m_nodeMarkers[nodeId] = CreateNodeMarkers(nodeId);
 
 				NetManager.instance.m_nodes.m_buffer[nodeId].m_flags |= CUSTOMIZED_NODE_FLAG;
 			}
 		}
 
-		void SetNodeMarkers(ushort nodeId, FastList<NodeLaneMarker> nodeMarkers)
+        private static FastList<NodeLaneMarker> CreateNodeMarkers(ushort nodeId)
 		{
-			NetNode node = NetManager.instance.m_nodes.m_buffer[nodeId];
-			int offsetMultiplier = node.CountSegments() <= 2 ? 3 : 1;
-			ushort segmentId = node.m_segment0;
-			for (int i = 0; i < 8 && segmentId != 0; i++)
+            var markers = new FastList<NodeLaneMarker>();
+
+            var allNodes = NetManager.instance.m_nodes;
+            var allSegments = NetManager.instance.m_segments;
+            var allLanes = NetManager.instance.m_lanes;
+
+            var node = allNodes.m_buffer[nodeId];
+			var nodeOffsetMultiplier = node.CountSegments() <= 2 ? 3 : 1;
+			var segmentId = node.m_segment0;
+
+			for (var i = 0; i < 8 && segmentId != 0; i++)
 			{
-				NetSegment segment = NetManager.instance.m_segments.m_buffer[segmentId];
-				bool isEndNode = segment.m_endNode == nodeId;
-				Vector3 offset = segment.FindDirection(segmentId, nodeId) * offsetMultiplier;
-				NetInfo.Lane[] lanes = segment.Info.m_lanes;
-				uint laneId = segment.m_lanes;
-				for (int j = 0; j < lanes.Length && laneId != 0; j++)
+                var segment = allSegments.m_buffer[segmentId];
+                var segmentOffset = segment.FindDirection(segmentId, nodeId) * nodeOffsetMultiplier;
+				var isEndNode = segment.m_endNode == nodeId;
+				var lanes = segment.Info.m_lanes;
+				var laneId = segment.m_lanes;
+
+				for (var j = 0; j < lanes.Length && laneId != 0; j++)
 				{
-                    //if ((lanes[j].m_laneType & (NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle)) != NetInfo.LaneType.None)
                     if ((lanes[j].m_laneType & NetInfo.LaneType.Vehicle) == NetInfo.LaneType.Vehicle)
                     {
-						Vector3 pos = Vector3.zero;
-						NetInfo.Direction laneDir = ((segment.m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None) ? lanes[j].m_finalDirection : NetInfo.InvertDirection(lanes[j].m_finalDirection);
+                        var lanePos = Vector3.zero;
+						var laneDir = ((segment.m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None) ? lanes[j].m_finalDirection : NetInfo.InvertDirection(lanes[j].m_finalDirection);
 
-						bool isSource = false;
+						var isSource = false;
 						if (isEndNode)
 						{
 							if ((laneDir & (NetInfo.Direction.Forward | NetInfo.Direction.Avoid)) == NetInfo.Direction.Forward)
 								isSource = true;
-							pos = NetManager.instance.m_lanes.m_buffer[laneId].m_bezier.d;
+                            lanePos = allLanes.m_buffer[laneId].m_bezier.d;
 						}
 						else
 						{
 							if ((laneDir & (NetInfo.Direction.Backward | NetInfo.Direction.Avoid)) == NetInfo.Direction.Backward)
 								isSource = true;
-							pos = NetManager.instance.m_lanes.m_buffer[laneId].m_bezier.a;
+                            lanePos = allLanes.m_buffer[laneId].m_bezier.a;
 						}
 
-						nodeMarkers.Add(new NodeLaneMarker()
-						{
-							m_lane = laneId,
-							m_node = nodeId,
-							m_position = pos + offset,
-							m_color = colors[nodeMarkers.m_size],
-							m_isSource = isSource,
-						});
+                        markers.Add(new NodeLaneMarker(
+                            nodeId, 
+                            laneId,
+                            lanePos + segmentOffset, 
+                            isSource, 
+                            colors[markers.m_size]));
 					}
 
-					laneId = NetManager.instance.m_lanes.m_buffer[laneId].m_nextLane;   
+                    laneId = allLanes.m_buffer[laneId].m_nextLane;   
 				}
 
 				segmentId = segment.GetRightSegment(nodeId);
@@ -354,24 +357,26 @@ namespace Transit.Addon.TrafficPP.Tools
 					segmentId = 0;
 			}
 
-			for (int i = 0; i < nodeMarkers.m_size; i++)
+			for (int i = 0; i < markers.m_size; i++)
 			{
-				if (!nodeMarkers.m_buffer[i].m_isSource)
+				if (!markers.m_buffer[i].IsSource)
 					continue;
 
-				uint[] connections = LanesManager.GetLaneConnections(nodeMarkers.m_buffer[i].m_lane);
+				uint[] connections = LanesManager.GetLaneConnections(markers.m_buffer[i].LaneId);
 				if (connections == null || connections.Length == 0)
 					continue;
 
-				for (int j = 0; j < nodeMarkers.m_size; j++)
+				for (int j = 0; j < markers.m_size; j++)
 				{
-					if (nodeMarkers.m_buffer[j].m_isSource)
+					if (markers.m_buffer[j].IsSource)
 						continue;
 
-					if (connections.Contains(nodeMarkers.m_buffer[j].m_lane))
-						nodeMarkers.m_buffer[i].m_connections.Add(nodeMarkers.m_buffer[j]);
+					if (connections.Contains(markers.m_buffer[j].LaneId))
+						markers.m_buffer[i].Connections.Add(markers.m_buffer[j]);
 				}
 			}
+
+            return markers;
 		}
 
 		void SetLaneMarkers()
@@ -493,8 +498,8 @@ namespace Transit.Addon.TrafficPP.Tools
 					{
 						NodeLaneMarker laneMarker = nodeMarkers.m_buffer[i];
 
-						for (int j = 0; j < laneMarker.m_connections.m_size; j++)
-							RenderLane(cameraInfo, laneMarker.m_position, laneMarker.m_connections.m_buffer[j].m_position, nodePos, laneMarker.m_color);
+						for (int j = 0; j < laneMarker.Connections.m_size; j++)
+							RenderLane(cameraInfo, laneMarker.Position, laneMarker.Connections.m_buffer[j].Position, nodePos, laneMarker.Color);
 
 						if (m_selectedMarker != laneMarker && !IsActive(laneMarker))
 							continue;
@@ -504,12 +509,12 @@ namespace Transit.Addon.TrafficPP.Tools
 							RaycastOutput output;
 							if (RayCastSegmentAndNode(out output))
 							{
-								RenderLane(cameraInfo, m_selectedMarker.m_position, output.m_hitPos, nodePos, m_selectedMarker.m_color);
-								m_selectedMarker.m_size = 2f;
+								RenderLane(cameraInfo, m_selectedMarker.Position, output.m_hitPos, nodePos, m_selectedMarker.Color);
+								m_selectedMarker.Select();
 							}
 						}
 
-						RenderManager.instance.OverlayEffect.DrawCircle(cameraInfo, laneMarker.m_color, laneMarker.m_position, laneMarker.m_size, laneMarker.m_position.y - 1f, laneMarker.m_position.y + 1f, true, true);
+						RenderManager.instance.OverlayEffect.DrawCircle(cameraInfo, laneMarker.Color, laneMarker.Position, laneMarker.Size, laneMarker.Position.y - 1f, laneMarker.Position.y + 1f, true, true);
 					}
 				}
 			}
@@ -544,13 +549,13 @@ namespace Transit.Addon.TrafficPP.Tools
 				for (int i = 0; i < list.m_size; i++)
 				{
 					NodeLaneMarker laneMarker = list.m_buffer[i];
-					Color color = laneMarker.m_color;
+					Color color = laneMarker.Color;
 					color.a = 0.75f;
 
-					for (int j = 0; j < laneMarker.m_connections.m_size; j++)
+					for (int j = 0; j < laneMarker.Connections.m_size; j++)
 					{
-						if (((NetLane.Flags)NetManager.instance.m_lanes.m_buffer[laneMarker.m_connections.m_buffer[j].m_lane].m_flags & NetLane.Flags.Created) == NetLane.Flags.Created)
-							RenderLane(cameraInfo, laneMarker.m_position, laneMarker.m_connections.m_buffer[j].m_position, nodePos, color);                            
+						if (((NetLane.Flags)NetManager.instance.m_lanes.m_buffer[laneMarker.Connections.m_buffer[j].LaneId].m_flags & NetLane.Flags.Created) == NetLane.Flags.Created)
+							RenderLane(cameraInfo, laneMarker.Position, laneMarker.Connections.m_buffer[j].Position, nodePos, color);                            
 					}
 						
 				}
@@ -569,15 +574,15 @@ namespace Transit.Addon.TrafficPP.Tools
 			RenderLane(cameraInfo, start, end, middlePoint, color, size);
 		}
 
-		void RenderLane(RenderManager.CameraInfo cameraInfo, Vector3 start, Vector3 end, Vector3 middlePoint, Color color, float size = 0.1f)
-		{
-			Bezier3 bezier;
-			bezier.a = start;
-			bezier.d = end;
-			NetSegment.CalculateMiddlePoints(bezier.a, (middlePoint - bezier.a).normalized, bezier.d, (middlePoint - bezier.d).normalized, false, false, out bezier.b, out bezier.c);
+        void RenderLane(RenderManager.CameraInfo cameraInfo, Vector3 start, Vector3 end, Vector3 middlePoint, Color color, float size = 0.1f)
+        {
+            Bezier3 bezier;
+            bezier.a = start;
+            bezier.d = end;
+            NetSegment.CalculateMiddlePoints(bezier.a, (middlePoint - bezier.a).normalized, bezier.d, (middlePoint - bezier.d).normalized, false, false, out bezier.b, out bezier.c);
 
-			RenderManager.instance.OverlayEffect.DrawBezier(cameraInfo, color, bezier, size, 0, 0, Mathf.Min(bezier.a.y, bezier.d.y) - 1f, Mathf.Max(bezier.a.y, bezier.d.y) + 1f, true, true);
-		}
+            RenderManager.instance.OverlayEffect.DrawBezier(cameraInfo, color, bezier, size, 0, 0, Mathf.Min(bezier.a.y, bezier.d.y) - 1f, Mathf.Max(bezier.a.y, bezier.d.y) + 1f, true, true);
+        }
 
 		bool RayCastSegmentAndNode(out RaycastOutput output)
 		{
