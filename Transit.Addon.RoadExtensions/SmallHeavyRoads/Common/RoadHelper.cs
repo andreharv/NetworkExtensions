@@ -124,11 +124,6 @@ namespace Transit.Addon.RoadExtensions.SmallHeavyRoads.Common
 
         public static void TrimAboveGroundProps(this NetInfo info, NetInfoVersion version, bool removeRightStreetLights = false, bool removeLeftStreetLights = false)
         {
-            var randomProp = Prefabs.Find<PropInfo>("Random Street Prop", false);
-            var streetLight = Prefabs.Find<PropInfo>("New Street Light", false);
-            var streetLightHw = Prefabs.Find<PropInfo>("New Street Light Highway", false);
-            var manhole = Prefabs.Find<PropInfo>("Manhole", false);
-
             foreach (var laneProps in info.m_lanes.Select(l => l.m_laneProps).Where(lpi => lpi != null))
             {
                 var remainingProp = new List<NetLaneProps.Prop>();
@@ -152,40 +147,6 @@ namespace Transit.Addon.RoadExtensions.SmallHeavyRoads.Common
                     {
                         continue;
                     }
-                    //if (prop.m_prop == manhole)
-                    //{
-                    //    continue;
-                    //}
-
-                    //if (removeLeftStreetLights)
-                    //{
-                    //    if (prop.m_prop == streetLight &&
-                    //        laneProps.name.Contains("Left"))
-                    //    {
-                    //        continue;
-                    //    }
-
-                    //    if (prop.m_prop == streetLightHw &&
-                    //        laneProps.name.Contains("Left"))
-                    //    {
-                    //        continue;
-                    //    }
-                    //}
-
-                    //if (removeRightStreetLights)
-                    //{
-                    //    if (prop.m_prop == streetLight &&
-                    //        laneProps.name.Contains("Right"))
-                    //    {
-                    //        continue;
-                    //    }
-
-                    //    if (prop.m_prop == streetLightHw &&
-                    //        laneProps.name.Contains("Right"))
-                    //    {
-                    //        continue;
-                    //    }
-                    //}
 
                     remainingProp.Add(prop);
                 }
