@@ -65,7 +65,7 @@ namespace Transit.Addon.RoadExtensions.SmallHeavyRoads.OneWay4L
             }
 
             // Setting up lanes
-            info.SetRoadLanes(version, 2, 0.5f, 1);
+            info.SetRoadLanes(version, 2, 0.5f, 1.2f);
             var leftPedLane = info.GetLeftRoadShoulder(owRoadInfo, version);
             var rightPedLane = info.GetRightRoadShoulder(owRoadInfo, version);
             //Setting Up Props

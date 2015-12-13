@@ -99,7 +99,7 @@ namespace Transit.Addon.RoadExtensions.SmallHeavyRoads.BasicRoadTL
 
             if (roadBaseAI != null)
             {
-                roadBaseAI.m_trafficLights = true;
+                roadBaseAI.m_trafficLights = false;
             }
         }
     }
