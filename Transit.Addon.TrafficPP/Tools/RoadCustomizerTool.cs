@@ -23,8 +23,8 @@ namespace Transit.Addon.TrafficPP.Tools
 		private ushort m_hoveredSegment;
         private ushort m_hoveredNode;
         private ushort m_selectedNode;
-        private NodeLaneMarker m_selectedMarker;
-        private readonly Dictionary<ushort, FastList<NodeLaneMarker>> m_nodeMarkers = new Dictionary<ushort, FastList<NodeLaneMarker>>();
+        private LaneRoutingMarker m_selectedMarker;
+        private readonly Dictionary<ushort, FastList<LaneRoutingMarker>> m_nodeMarkers = new Dictionary<ushort, FastList<LaneRoutingMarker>>();
         private readonly Dictionary<ushort, Segment> m_segments = new Dictionary<ushort, Segment>();
         private readonly Dictionary<int, FastList<SegmentLaneMarker>> m_hoveredLaneMarkers = new Dictionary<int, FastList<SegmentLaneMarker>>();
         private readonly List<SegmentLaneMarker> m_selectedLaneMarkers = new List<SegmentLaneMarker>();
@@ -143,15 +143,15 @@ namespace Transit.Addon.TrafficPP.Tools
 
 		void HandleIntersectionRouting()
 		{
-			FastList<NodeLaneMarker> nodeMarkers;
+			FastList<LaneRoutingMarker> nodeMarkers;
 			if (m_nodeMarkers.TryGetValue(m_selectedNode, out nodeMarkers))
 			{
 				Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-				NodeLaneMarker hoveredMarker = null;
+				LaneRoutingMarker hoveredMarker = null;
 				Bounds bounds = new Bounds(Vector3.zero, Vector3.one);
 				for (int i = 0; i < nodeMarkers.m_size; i++)
 				{
-					NodeLaneMarker marker = nodeMarkers.m_buffer[i];
+					LaneRoutingMarker marker = nodeMarkers.m_buffer[i];
 
 					if (!IsActive(marker))
 						continue;
@@ -277,7 +277,7 @@ namespace Transit.Addon.TrafficPP.Tools
 			//	OnEndLaneCustomization();
 		}
 
-		bool IsActive(NodeLaneMarker marker)
+		bool IsActive(LaneRoutingMarker marker)
 		{
 			if (m_selectedMarker != null && (marker.IsSource || NetManager.instance.m_lanes.m_buffer[m_selectedMarker.LaneId].m_segment == NetManager.instance.m_lanes.m_buffer[marker.LaneId].m_segment))
 				return false;
@@ -300,9 +300,9 @@ namespace Transit.Addon.TrafficPP.Tools
 			}
 		}
 
-        private static FastList<NodeLaneMarker> CreateNodeMarkers(ushort nodeId)
+        private static FastList<LaneRoutingMarker> CreateNodeMarkers(ushort nodeId)
 		{
-            var markers = new FastList<NodeLaneMarker>();
+            var markers = new FastList<LaneRoutingMarker>();
 
             var allNodes = NetManager.instance.m_nodes;
             var allSegments = NetManager.instance.m_segments;
@@ -317,15 +317,21 @@ namespace Transit.Addon.TrafficPP.Tools
                 var segment = allSegments.m_buffer[segmentId];
                 var segmentOffset = segment.FindDirection(segmentId, nodeId) * nodeOffsetMultiplier;
 				var isEndNode = segment.m_endNode == nodeId;
-				var lanes = segment.Info.m_lanes;
+			    var netInfo = segment.Info;
+                var netInfoLanes = netInfo.m_lanes;
 				var laneId = segment.m_lanes;
 
-				for (var j = 0; j < lanes.Length && laneId != 0; j++)
+				for (var j = 0; j < netInfoLanes.Length && laneId != 0; j++)
 				{
-                    if ((lanes[j].m_laneType & NetInfo.LaneType.Vehicle) == NetInfo.LaneType.Vehicle)
+				    var lane = netInfoLanes[j];
+
+                    if ((lane.m_laneType & NetInfo.LaneType.Vehicle) == NetInfo.LaneType.Vehicle)
                     {
                         var lanePos = Vector3.zero;
-						var laneDir = ((segment.m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None) ? lanes[j].m_finalDirection : NetInfo.InvertDirection(lanes[j].m_finalDirection);
+                        var laneDir = 
+                            ((segment.m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None) ? 
+                            lane.m_finalDirection : 
+                            NetInfo.InvertDirection(lane.m_finalDirection);
 
 						var isSource = false;
 						if (isEndNode)
@@ -341,8 +347,7 @@ namespace Transit.Addon.TrafficPP.Tools
                             lanePos = allLanes.m_buffer[laneId].m_bezier.a;
 						}
 
-                        markers.Add(new NodeLaneMarker(
-                            nodeId, 
+                        markers.Add(new LaneRoutingMarker(
                             laneId,
                             lanePos + segmentOffset, 
                             isSource, 
@@ -490,13 +495,13 @@ namespace Transit.Addon.TrafficPP.Tools
 
 			if (m_selectedNode != 0)
 			{
-				FastList<NodeLaneMarker> nodeMarkers;
+				FastList<LaneRoutingMarker> nodeMarkers;
 				if (m_nodeMarkers.TryGetValue(m_selectedNode, out nodeMarkers))
 				{
 					Vector3 nodePos = NetManager.instance.m_nodes.m_buffer[m_selectedNode].m_position;
 					for (int i = 0; i < nodeMarkers.m_size; i++)
 					{
-						NodeLaneMarker laneMarker = nodeMarkers.m_buffer[i];
+						LaneRoutingMarker laneMarker = nodeMarkers.m_buffer[i];
 
 						for (int j = 0; j < laneMarker.Connections.m_size; j++)
 							RenderLane(cameraInfo, laneMarker.Position, laneMarker.Connections.m_buffer[j].Position, nodePos, laneMarker.Color);
@@ -544,11 +549,11 @@ namespace Transit.Addon.TrafficPP.Tools
 				if (node == m_selectedNode || (NetManager.instance.m_nodes.m_buffer[node].m_flags & CUSTOMIZED_NODE_FLAG) != CUSTOMIZED_NODE_FLAG)
 					continue;
 
-				FastList<NodeLaneMarker> list = m_nodeMarkers[node];
+				FastList<LaneRoutingMarker> list = m_nodeMarkers[node];
 				Vector3 nodePos = NetManager.instance.m_nodes.m_buffer[node].m_position;
 				for (int i = 0; i < list.m_size; i++)
 				{
-					NodeLaneMarker laneMarker = list.m_buffer[i];
+					LaneRoutingMarker laneMarker = list.m_buffer[i];
 					Color color = laneMarker.Color;
 					color.a = 0.75f;
 

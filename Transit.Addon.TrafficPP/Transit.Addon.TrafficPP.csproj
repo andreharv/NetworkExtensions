@@ -64,7 +64,7 @@
     <Compile Include="PathFinding\CustomPathFind.Implementation.cs" />
     <Compile Include="PathFinding\Vanilla\PathManager.cs" />
     <Compile Include="PathFinding\Vanilla\PathFind.cs" />
-    <Compile Include="Tools\Markers\NodeLaneMarker.cs" />
+    <Compile Include="Tools\Markers\LaneRoutingMarker.cs" />
     <Compile Include="Tools\Markers\SegmentLaneMarker.cs" />
     <Compile Include="TrafficPPModule.Settings.cs" />
     <Compile Include="TrafficPPModule.Install.cs" />
