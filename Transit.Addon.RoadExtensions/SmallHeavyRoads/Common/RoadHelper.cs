@@ -232,7 +232,7 @@ namespace Transit.Addon.RoadExtensions.SmallHeavyRoads.Common
 
                 foreach (var prop in l.m_laneProps.m_props)
                 {
-                    prop.m_position = new Vector3(0, 0, 0);
+                    prop.m_position = new Vector3(0, 0, -4);
                 }
             }
 

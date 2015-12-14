@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Transit.Addon.RoadExtensions.Menus;
 using Transit.Addon.RoadExtensions.SmallHeavyRoads.Common;
 using Transit.Framework;
@@ -68,6 +69,21 @@ namespace Transit.Addon.RoadExtensions.SmallHeavyRoads.SmallAvenue4L
             info.SetRoadLanes(version, 2, 0.5f, 1.0f, true);
             var leftPedLane = info.GetLeftRoadShoulder(owRoadInfo, version);
             var rightPedLane = info.GetRightRoadShoulder(owRoadInfo, version);
+
+            // Fix for T++ legacy support
+            var lanes = info.m_lanes.OrderBy(l => l.m_position).ToArray();
+            var lanesLegacyOrder = new[]
+            {
+                lanes[0],
+                lanes[5],
+                lanes[1],
+                lanes[4],
+                lanes[2],
+                lanes[3]
+            };
+
+            info.m_lanes = lanesLegacyOrder;
+
             //Setting Up Props
             var leftRoadProps = leftPedLane.m_laneProps.m_props.ToList();
             var rightRoadProps = rightPedLane.m_laneProps.m_props.ToList();
