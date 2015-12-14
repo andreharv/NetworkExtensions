@@ -46,6 +46,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
       <HintPath>..\References\UnityEngine.dll</HintPath>
@@ -54,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activable.cs" />
+    <Compile Include="Imaging\ImageBlender.cs" />
     <Compile Include="Installer.cs" />
     <Compile Include="Interfaces\IDescriptor.cs" />
     <Compile Include="Interfaces\IIdentifiable.cs" />
