@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace Transit.Framework.Imaging.Tests
 {
@@ -6,33 +8,25 @@ namespace Transit.Framework.Imaging.Tests
     {
         static void Main(string[] args)
         {
-            var laneStart = 340;
-            var laneWidth = 140;
-            var lineAlpha = (byte)50;
-            var b = new ImageBlender(@"HW2L\Canvas__MainTex.png");
-
-            b.AddComponent(new BlendableComponent
+            try
             {
-                Path = @"HW2L\Line_Solid__MainTex.png",
-                Position = new Point(laneStart, 0),
-                AlphaLevel = lineAlpha
-            });
+                var laneStart = 340;
+                var laneWidth = 140;
+                var lineAlpha = (byte)100;
 
-            b.AddComponent(new BlendableComponent
+                ImageBlending
+                    .FromBaseFile(@"HW2L\MainTex\Segment__MainTex.png")
+                    .WithComponent(@"HW2L\MainTex\Line_Solid__MainTex.png",  new Point(laneStart, 0), lineAlpha)
+                    .WithComponent(@"HW2L\MainTex\Line_Dashed__MainTex.png", new Point(laneWidth, 0), lineAlpha)
+                    .WithComponent(@"HW2L\MainTex\Line_Solid__MainTex.png",  new Point(laneWidth, 0), lineAlpha)
+                    .Apply()
+                    .Save("Blended_Segment.png", ImageFormat.Png);
+            }
+            catch (Exception ex)
             {
-                Path = @"HW2L\Line_Dashed__MainTex.png",
-                Position = new Point(laneWidth, 0),
-                AlphaLevel = lineAlpha
-            });
-
-            b.AddComponent(new BlendableComponent
-            {
-                Path = @"HW2L\Line_Solid__MainTex.png",
-                Position = new Point(laneWidth, 0),
-                AlphaLevel = lineAlpha
-            });
-
-            b.Apply();
+                Console.WriteLine(ex.ToString());
+                Console.ReadLine();
+            }
         }
     }
 }

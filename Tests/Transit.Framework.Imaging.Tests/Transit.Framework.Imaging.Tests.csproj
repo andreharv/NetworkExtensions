@@ -47,19 +47,26 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="HW2L\Canvas__MainTex.png">
+    <Content Include="HW2L\APRMap\Segment__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="HW2L\Line_Dashed__MainTex.png">
+    <Content Include="HW2L\APRMap\_Original__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="HW2L\Line_Solid__MainTex.png">
+    <Content Include="HW2L\MainTex\Segment__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="HW2L\_Original.png">
+    <Content Include="HW2L\MainTex\Line_Dashed__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="HW2L\MainTex\Line_Solid__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="HW2L\MainTex\_Original__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
