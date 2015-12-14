@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Transit.Addon.RoadExtensions.SmallHeavyRoads.Common
 {
-    public static class RoadHelper
+    public static class SmallHeavyRoadHelper
     {
         public static NetInfo.Lane GetLeftRoadShoulder(this NetInfo info, NetInfo templateInfo, NetInfoVersion version)
         {

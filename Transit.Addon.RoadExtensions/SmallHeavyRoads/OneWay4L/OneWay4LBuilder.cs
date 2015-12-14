@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Transit.Addon.RoadExtensions.Menus;
+using Transit.Addon.RoadExtensions.Roads.Common;
 using Transit.Addon.RoadExtensions.SmallHeavyRoads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
@@ -82,6 +83,7 @@ namespace Transit.Addon.RoadExtensions.SmallHeavyRoads.OneWay4L
             rightPedLane.m_laneProps.m_props = rightRoadProps.ToArray();
 
             info.TrimAboveGroundProps(version);
+            info.SetupNewSpeedLimitProps(60, 40);
 
 
             //var propLanes = info.m_lanes.Where(l => l.m_laneProps != null && (l.m_laneProps.name.ToLower().Contains("left") || l.m_laneProps.name.ToLower().Contains("right"))).ToList();
