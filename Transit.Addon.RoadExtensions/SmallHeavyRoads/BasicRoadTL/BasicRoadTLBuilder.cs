@@ -32,14 +32,13 @@ namespace Transit.Addon.RoadExtensions.SmallHeavyRoads.BasicRoadTL
             ///////////////////////////
             // Template              //
             ///////////////////////////
-            var highwayInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L_SLOPE);
             var roadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_2L);
             var owRoadTunnelInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ONEWAY_2L_TUNNEL);
 
             ///////////////////////////
             // 3DModeling            //
             ///////////////////////////
-            info.Setup16m3mSWMesh(version, highwayInfo);
+            info.Setup16m3mSWMesh(version);
 
             ///////////////////////////
             // Texturing             //

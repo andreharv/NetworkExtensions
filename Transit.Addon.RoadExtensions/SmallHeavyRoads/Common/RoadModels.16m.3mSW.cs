@@ -4,9 +4,10 @@ namespace Transit.Addon.RoadExtensions.SmallHeavyRoads.Common
 {
     public static partial class RoadModels
     {
-        public static NetInfo Setup16m3mSWMesh(this NetInfo info, NetInfoVersion version, NetInfo slopeInfo = null)
+        public static NetInfo Setup16m3mSWMesh(this NetInfo info, NetInfoVersion version)
         {
             var highwayInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L);
+            var highwaySlopeInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L_SLOPE);
             var defaultMaterial = highwayInfo.m_nodes[0].m_material;
 
             switch (version)
@@ -34,7 +35,7 @@ namespace Transit.Addon.RoadExtensions.SmallHeavyRoads.Common
                 case NetInfoVersion.Slope:
                     {
                         var segment0 = info.m_segments[0];
-                        var segment1 = slopeInfo.m_segments[1];
+                        var segment1 = highwaySlopeInfo.m_segments[1].ShallowClone();
                         var segment2 = info.m_segments[1];
 
                         var node0 = info.m_nodes[0];
