@@ -33,14 +33,13 @@ namespace Transit.Addon.RoadExtensions.SmallHeavyRoads.SmallAvenue4L
             ///////////////////////////
             // Template              //
             ///////////////////////////
-            var highwayInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L_SLOPE);
             var owRoadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_2L);
             var owRoadTunnelInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ONEWAY_2L_TUNNEL);
 
             ///////////////////////////
             // 3DModeling            //
             ///////////////////////////
-            info.Setup16m2mSWMesh(version, highwayInfo);
+            info.Setup16m2mSWMesh(version);
 
             ///////////////////////////
             // Texturing             //
