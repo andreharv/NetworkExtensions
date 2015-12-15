@@ -21,8 +21,8 @@ namespace NetworkExtensions
 
         public void OnSettingsUI(UIHelperBase helper)
         {
-            LoadSettings();
             LoadModulesIfNeeded();
+            LoadSettings();
 
             UIButton tabTemplate = Resources.FindObjectsOfTypeAll<OptionsKeymappingPanel>()[0]
                                             .GetComponentInChildren<UITabstrip>()
