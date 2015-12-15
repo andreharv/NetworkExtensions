@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Transit.Addon.RoadExtensions.Roads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
 
@@ -105,7 +106,7 @@ namespace Transit.Addon.RoadExtensions.Roads.MediumAvenue4L
                 }
             }
 
-            info.Setup50LimitProps();
+            info.SetupNewSpeedLimitProps(50, 60);
 
 
             if (version == NetInfoVersion.Ground)

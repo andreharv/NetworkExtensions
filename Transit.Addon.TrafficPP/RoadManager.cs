@@ -1,10 +1,11 @@
-﻿using ICities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
+using ICities;
 using UnityEngine;
 
 namespace Transit.Addon.TrafficPP
@@ -34,6 +35,7 @@ namespace Transit.Addon.TrafficPP
                 memStream.Position = 0;
 
                 BinaryFormatter binaryFormatter = new BinaryFormatter();
+                binaryFormatter.Binder = new LaneSerializationBinder();
                 try
                 {
                     RoadManager.sm_lanes = (Lane[]) binaryFormatter.Deserialize(memStream);
@@ -344,6 +346,19 @@ namespace Transit.Addon.TrafficPP
 
                     laneId = NetManager.instance.m_lanes.m_buffer[laneId].m_nextLane;
                 }
+            }
+        }
+
+        public class LaneSerializationBinder : SerializationBinder
+        {
+            public override Type BindToType(string assemblyName, string typeName)
+            {
+                if (typeName.Contains("Lane"))
+                    return typeof(RoadManager.Lane);
+                if (typeName.Contains("VehicleType"))
+                    return typeof(RoadManager.VehicleType);
+
+                throw new SerializationException("Error on BindToType with type '" + typeName + "' and assembly '" + assemblyName + "'.");
             }
         }
 
