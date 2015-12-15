@@ -55,8 +55,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activable.cs" />
-    <Compile Include="Imaging\ImageBlending.cs" />
-    <Compile Include="Imaging\ImageBlendingComponent.cs" />
+    <Compile Include="Imaging\IImageBlender.cs" />
+    <Compile Include="Imaging\IImageBlenderComponent.cs" />
+    <Compile Include="Imaging\ImageBlender.cs" />
+    <Compile Include="Imaging\ImageBlenderComponent.cs" />
+    <Compile Include="Imaging\_Extensions\ImageBlenderExtensions.cs" />
     <Compile Include="Installer.cs" />
     <Compile Include="Interfaces\IDescriptor.cs" />
     <Compile Include="Interfaces\IIdentifiable.cs" />
