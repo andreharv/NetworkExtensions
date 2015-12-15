@@ -982,9 +982,6 @@
     <Content Include="Highways\Highway6L\Textures\Tunnel\Segment__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="SmallHeavyRoads\OneWay3L\infotooltip.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="SmallHeavyRoads\OneWay3L\Textures\Elevated_LOD__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
