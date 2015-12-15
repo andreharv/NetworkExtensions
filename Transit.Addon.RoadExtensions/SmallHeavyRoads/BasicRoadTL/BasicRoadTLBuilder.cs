@@ -15,7 +15,7 @@ namespace Transit.Addon.RoadExtensions.SmallHeavyRoads.BasicRoadTL
         public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_2L; } }
         public string Name { get { return "BasicRoadTL"; } }
         public string DisplayName { get { return "Basic Road with Turning Lane"; } }
-        public string Description { get { return "A basic two lane road with an additional center turning lane and no parkings spaces. Supports medium and local traffic."; } }
+        public string Description { get { return "A basic two lane road with an additional center turning lane and no parkings spaces. Supports medium and local traffic. Note: The turning lane goes in both direction, collisions might happen!"; } }
         public string ShortDescription { get { return Description; } }
         public string UICategory { get { return AdditionnalMenus.ROADS_SMALL_HV; } }
 
