@@ -155,7 +155,7 @@ namespace Transit.Addon.RoadExtensions.SmallHeavyRoads.Common
             }
         }
 
-        public static NetInfo SetRoadLanes(this NetInfo rdInfo, NetInfoVersion version, int lanesToAdd = 0, float pedPropOffsetX = 0.0f, float speedLimit = -1, bool isTwoWay = false, bool hasCenterTurningLane = false)
+        public static NetInfo SetRoadLanes(this NetInfo rdInfo, NetInfoVersion version, int lanesToAdd = 0, float pedPropOffsetX = 0.0f, float speedLimit = -1, bool isTwoWay = false, bool hasCenterTurningLane = false, float stopOffset = 0f)
         {
             if (lanesToAdd < 0)
             {
@@ -201,7 +201,6 @@ namespace Transit.Addon.RoadExtensions.SmallHeavyRoads.Common
                 {
                     l.m_position = 0;
                 }
-                l.m_allowStop = false;
                 l.m_width = laneWidth;
 
                 l.m_laneProps = l.m_laneProps.Clone();
@@ -236,6 +235,46 @@ namespace Transit.Addon.RoadExtensions.SmallHeavyRoads.Common
                 }
             }
 
+            vehicleLanes = vehicleLanes.OrderBy(l => l.m_position).ToArray();
+
+            // Bus configs
+            for (int i = 0; i < vehicleLanes.Length; i++)
+            {
+                var l = vehicleLanes[i];
+
+                if (version == NetInfoVersion.Ground)
+                {
+                    if (i == 0)
+                    {
+                        l.m_allowStop = isTwoWay;
+                    }
+                    else if (i == vehicleLanes.Length - 1)
+                    {
+                        l.m_allowStop = true;
+                    }
+                    else
+                    {
+                        l.m_allowStop = false;
+                    }
+
+                    if (l.m_allowStop)
+                    {
+                        if (l.m_position < 0)
+                        {
+                            l.m_stopOffset = -stopOffset;
+                        }
+                        else
+                        {
+                            l.m_stopOffset = stopOffset;
+                        }
+                    }
+                }
+                else
+                {
+                    l.m_allowStop = false;
+                }
+            }
+
             var laneCollection = new List<NetInfo.Lane>();
 
             laneCollection.AddRange(vehicleLanes);
@@ -246,7 +285,7 @@ namespace Transit.Addon.RoadExtensions.SmallHeavyRoads.Common
                 laneCollection.AddRange(rdInfo.SetParkingLanes());
             }
 
-            rdInfo.m_lanes = laneCollection.OrderBy(lc=>lc.m_position).ToArray();
+            rdInfo.m_lanes = laneCollection.OrderBy(l => l.m_position).ToArray();
 
             return rdInfo;
         }

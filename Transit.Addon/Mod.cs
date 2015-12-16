@@ -23,6 +23,11 @@ namespace Transit.Addon
             }
         }
 
+        public string DefaultFolderPath
+        {
+            get { return _name; }
+        }
+
         public ulong WorkshopId
         {
             get { return 543703997; }
