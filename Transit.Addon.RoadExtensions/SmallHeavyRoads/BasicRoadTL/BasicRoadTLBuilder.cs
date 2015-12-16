@@ -65,7 +65,7 @@ namespace Transit.Addon.RoadExtensions.SmallHeavyRoads.BasicRoadTL
             }
 
             // Setting up lanes
-            info.SetRoadLanes(version, 2, 0, 1.2f, true, true);
+            info.SetRoadLanes(version, 2, 0, 1.2f, true, true, 1.5f);
             var leftPedLane = info.GetLeftRoadShoulder(roadInfo, version);
             var rightPedLane = info.GetRightRoadShoulder(roadInfo, version);
             //Setting Up Props

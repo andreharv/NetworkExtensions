@@ -155,7 +155,7 @@ namespace Transit.Addon.RoadExtensions.SmallHeavyRoads.Common
             }
         }
 
-        public static NetInfo SetRoadLanes(this NetInfo rdInfo, NetInfoVersion version, int lanesToAdd = 0, float pedPropOffsetX = 0.0f, float speedLimit = -1, bool isTwoWay = false, bool hasCenterTurningLane = false)
+        public static NetInfo SetRoadLanes(this NetInfo rdInfo, NetInfoVersion version, int lanesToAdd = 0, float pedPropOffsetX = 0.0f, float speedLimit = -1, bool isTwoWay = false, bool hasCenterTurningLane = false, float stopOffset = 0f)
         {
             if (lanesToAdd < 0)
             {
@@ -235,8 +235,9 @@ namespace Transit.Addon.RoadExtensions.SmallHeavyRoads.Common
                 }
             }
 
-            vehicleLanes = vehicleLanes.OrderBy(lc => lc.m_position).ToArray();
+            vehicleLanes = vehicleLanes.OrderBy(l => l.m_position).ToArray();
 
+            // Bus configs
             for (int i = 0; i < vehicleLanes.Length; i++)
             {
                 var l = vehicleLanes[i];
@@ -255,6 +256,18 @@ namespace Transit.Addon.RoadExtensions.SmallHeavyRoads.Common
                     {
                         l.m_allowStop = false;
                     }
+
+                    if (l.m_allowStop)
+                    {
+                        if (l.m_position < 0)
+                        {
+                            l.m_stopOffset = -stopOffset;
+                        }
+                        else
+                        {
+                            l.m_stopOffset = stopOffset;
+                        }
+                    }
                 }
                 else
                 {
@@ -272,7 +285,7 @@ namespace Transit.Addon.RoadExtensions.SmallHeavyRoads.Common
                 laneCollection.AddRange(rdInfo.SetParkingLanes());
             }
 
-            rdInfo.m_lanes = laneCollection.OrderBy(lc => lc.m_position).ToArray();
+            rdInfo.m_lanes = laneCollection.OrderBy(l => l.m_position).ToArray();
 
             return rdInfo;
         }
