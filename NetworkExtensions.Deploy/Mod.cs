@@ -25,6 +25,11 @@ namespace NetworkExtensions
             }
         }
 
+        public string DefaultFolderPath
+        {
+            get { return NAME; }
+        }
+
         public ulong WorkshopId
         {
             get { return 478820060; }
