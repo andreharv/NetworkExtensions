@@ -91,7 +91,7 @@ namespace Transit.Framework.Imaging
             IsRelativeFromPrevious = true;
             IncreaseHOffset = true;
             IncreaseVOffset = false;
-            DefaultColor = Color.FromArgb(128, 128, 128);
+            DefaultColor = Color.FromArgb(127, 127, 127);
         }
 
         public void Apply(ref Point offset, Bitmap canvas)
