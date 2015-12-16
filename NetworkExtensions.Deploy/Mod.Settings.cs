@@ -21,6 +21,7 @@ namespace NetworkExtensions
 
         public void OnSettingsUI(UIHelperBase helper)
         {
+            LoadModulesIfNeeded();
             LoadSettings();
 
             UIButton tabTemplate = Resources.FindObjectsOfTypeAll<OptionsKeymappingPanel>()[0]
@@ -29,6 +30,13 @@ namespace NetworkExtensions
 
             _optionsPanel = ((UIHelper)helper).self as UIScrollablePanel;
             _optionsPanel.autoLayout = false;
+
+            if (IsTAMInstalled)
+            {
+                UILabel label = _optionsPanel.AddUIComponent<UILabel>();
+                label.text = "Transit Addons Mod (TAM) has been detected - Network Extensions have been disabled";
+                return;
+            }
 
             UITabstrip strip = _optionsPanel.AddUIComponent<UITabstrip>();
             strip.relativePosition = new Vector3(0, 0);
@@ -52,10 +60,9 @@ namespace NetworkExtensions
                 stripRoot.autoLayoutPadding.top = 5;
                 stripRoot.autoLayoutPadding.left = 10;
                 UIHelper stripHelper = new UIHelper(stripRoot);
-                
+
                 module.OnSettingsUI(stripHelper);
             }
-
         }
 
         private void ModuleSettingsNeedSave()

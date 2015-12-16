@@ -1,5 +1,6 @@
 ﻿using ICities;
 using Transit.Framework.Modularity;
+using UnityEngine;
 
 namespace NetworkExtensions
 {
@@ -13,19 +14,18 @@ namespace NetworkExtensions
                 return;          // so we must use this bool to ensure we only call it the first time
 
             _loadTriggered = true;
-
-            foreach (IModule module in Modules)
-                module.OnGameLoaded();
         }
 
         public override void OnCreated(ILoading loading)
         {
+            LoadModulesIfNeeded();
             foreach (IModule module in Modules)
                 module.OnCreated(loading);
         }
 
         public override void OnLevelLoaded(LoadMode mode)
         {
+            LoadModulesIfNeeded();
             foreach (IModule module in Modules)
                 module.OnLevelLoaded(mode);
         }
