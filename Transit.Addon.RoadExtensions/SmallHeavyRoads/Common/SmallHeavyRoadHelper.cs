@@ -201,7 +201,6 @@ namespace Transit.Addon.RoadExtensions.SmallHeavyRoads.Common
                 {
                     l.m_position = 0;
                 }
-                l.m_allowStop = false;
                 l.m_width = laneWidth;
 
                 l.m_laneProps = l.m_laneProps.Clone();
@@ -236,6 +235,33 @@ namespace Transit.Addon.RoadExtensions.SmallHeavyRoads.Common
                 }
             }
 
+            vehicleLanes = vehicleLanes.OrderBy(lc => lc.m_position).ToArray();
+
+            for (int i = 0; i < vehicleLanes.Length; i++)
+            {
+                var l = vehicleLanes[i];
+
+                if (version == NetInfoVersion.Ground)
+                {
+                    if (i == 0)
+                    {
+                        l.m_allowStop = isTwoWay;
+                    }
+                    else if (i == vehicleLanes.Length - 1)
+                    {
+                        l.m_allowStop = true;
+                    }
+                    else
+                    {
+                        l.m_allowStop = false;
+                    }
+                }
+                else
+                {
+                    l.m_allowStop = false;
+                }
+            }
+
             var laneCollection = new List<NetInfo.Lane>();
 
             laneCollection.AddRange(vehicleLanes);
@@ -246,7 +272,7 @@ namespace Transit.Addon.RoadExtensions.SmallHeavyRoads.Common
                 laneCollection.AddRange(rdInfo.SetParkingLanes());
             }
 
-            rdInfo.m_lanes = laneCollection.OrderBy(lc=>lc.m_position).ToArray();
+            rdInfo.m_lanes = laneCollection.OrderBy(lc => lc.m_position).ToArray();
 
             return rdInfo;
         }
