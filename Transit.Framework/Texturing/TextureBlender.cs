@@ -16,11 +16,6 @@ namespace Transit.Framework.Texturing
             return new TextureBlender(baseImage);
         }
 
-        public static ITextureBlender FromByteImage(byte[] baseImageBytes)
-        {
-            return new TextureBlender(baseImageBytes);
-        }
-
         private readonly Image _baseImage;
         private readonly ICollection<ITextureBlenderComponent> _components = new List<ITextureBlenderComponent>();
         private Texture2D _texture;
@@ -33,12 +28,6 @@ namespace Transit.Framework.Texturing
         public TextureBlender(Image baseImage)
         {
             _baseImage = baseImage;
-            _components = new List<ITextureBlenderComponent>();
-        }
-
-        public TextureBlender(byte[] baseImageBytes)
-        {
-            _baseImage = baseImageBytes.AsImage();
             _components = new List<ITextureBlenderComponent>();
         }
 

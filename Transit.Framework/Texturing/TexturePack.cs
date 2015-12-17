@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using UnityEngine;
 
 namespace Transit.Framework.Texturing
 {
     public abstract class TexturePack
     {
-        private readonly Dictionary<string, Texture2D> _lazyValues = new Dictionary<string, Texture2D>();
+        private readonly Dictionary<string, object> _lazyValues = new Dictionary<string, object>();
 
-        protected Texture2D GetValue(Expression<Func<Texture2D>> selector, Func<Texture2D> factory)
+        protected T GetValue<T>(Expression<Func<T>> selector, Func<T> factory)
         {
-            Texture2D value;
+            object value;
 
             var memberName = selector.GetSelectedMemberName();
             if (!_lazyValues.TryGetValue(memberName, out value))
@@ -21,7 +20,7 @@ namespace Transit.Framework.Texturing
                 _lazyValues.Add(memberName, value);
             }
 
-            return value;
+            return (T)value;
         }
     }
 }

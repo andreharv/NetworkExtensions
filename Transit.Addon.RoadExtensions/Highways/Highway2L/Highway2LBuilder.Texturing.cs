@@ -7,21 +7,23 @@ namespace Transit.Addon.RoadExtensions.Highways.Highway2L
     {
         private static void SetupTextures(NetInfo info, NetInfoVersion version)
         {
+            var texturePack = new Highway2LTexturePack();
+
             switch (version)
             {
                 case NetInfoVersion.Ground:
                     info.SetAllSegmentsTexture(
                         new TexturesSet(
-                            @"Highways\Highway2L\Textures\Ground_Segment__MainTex.png",
-                            @"Highways\Highway2L\Textures\Ground_Segment__APRMap.png"),
+                            texturePack.SegmentMainTex,
+                            texturePack.SegmentAPRMap),
                         new LODTexturesSet
                            (@"Highways\Highway2L\Textures\Ground_SegmentLOD__MainTex.png",
                             @"Highways\Highway2L\Textures\Ground_SegmentLOD__APRMap.png",
                             @"Highways\Highway2L\Textures\Ground_LOD__XYSMap.png"));
                     info.SetAllNodesTexture(
-                        new TexturesSet
-                           (@"Highways\Highway2L\Textures\Ground_Node__MainTex.png",
-                            @"Highways\Highway2L\Textures\Ground_Node__APRMap.png"),
+                        new TexturesSet(
+                            texturePack.NodeMainTex,
+                            texturePack.NodeAPRMap),
                         new LODTexturesSet
                            (@"Highways\Highway2L\Textures\Ground_NodeLOD__MainTex.png",
                             @"Highways\Highway2L\Textures\Ground_NodeLOD__APRMap.png",
