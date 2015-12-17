@@ -56,13 +56,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activable.cs" />
-    <Compile Include="Imaging\IImageBlender.cs" />
-    <Compile Include="Imaging\IImageBlenderComponent.cs" />
-    <Compile Include="Imaging\ImageBlender.cs" />
-    <Compile Include="Imaging\ImageBlenderComponent.cs" />
-    <Compile Include="Imaging\ITextureProvider.cs" />
-    <Compile Include="Imaging\_Extensions\ImageBlenderExtensions.cs" />
-    <Compile Include="Imaging\_Extensions\ImageExtensions.cs" />
+    <Compile Include="Texturing\ITextureBlender.cs" />
+    <Compile Include="Texturing\ITextureBlenderComponent.cs" />
+    <Compile Include="Texturing\PathTextureProvider.cs" />
+    <Compile Include="Texturing\TextureBlender.cs" />
+    <Compile Include="Texturing\TextureBlenderComponent.cs" />
+    <Compile Include="Texturing\ITextureProvider.cs" />
+    <Compile Include="Texturing\TextureCreator.cs" />
+    <Compile Include="Texturing\_Extensions\TextureBlenderExtensions.cs" />
+    <Compile Include="Texturing\_Extensions\ImageExtensions.cs" />
     <Compile Include="Installer.cs" />
     <Compile Include="Interfaces\IDescriptor.cs" />
     <Compile Include="Interfaces\IIdentifiable.cs" />

@@ -1,5 +1,5 @@
 ﻿using ColossalFramework;
-using Transit.Framework.Imaging;
+using Transit.Framework.Texturing;
 using UnityEngine;
 
 namespace Transit.Framework
@@ -7,12 +7,22 @@ namespace Transit.Framework
     public class TexturesSet
     {
         public Texture2D MainTex { get { return _mainTexProvider != null ? _mainTexProvider.GetTexture() : null; } }
-        public Texture2D APRMap  { get { return _aprMapProvider != null ? _aprMapProvider.GetTexture() : null; } }
-        public Texture2D XYSMap  { get { return _xysMapProvider != null ? _xysMapProvider.GetTexture() : null; } }
+        public Texture2D APRMap  { get { return _aprMapProvider  != null ? _aprMapProvider.GetTexture()  : null; } }
+        public Texture2D XYSMap  { get { return _xysMapProvider  != null ? _xysMapProvider.GetTexture()  : null; } }
 
         private readonly ITextureProvider _mainTexProvider;
         private readonly ITextureProvider _aprMapProvider;
         private readonly ITextureProvider _xysMapProvider;
+
+        public TexturesSet(
+            ITextureProvider mainTexProvider = null,
+            ITextureProvider aprMapProvider = null,
+            ITextureProvider xysMapProvider = null)
+        {
+            _mainTexProvider = mainTexProvider;
+            _aprMapProvider = aprMapProvider;
+            _xysMapProvider = xysMapProvider;
+        }
 
         public TexturesSet(string mainTexPath = null, string aprMapPath = null, string xysMapPath = null) :
             this(mainTexPath, aprMapPath, xysMapPath, false)

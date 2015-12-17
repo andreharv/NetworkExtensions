@@ -1,12 +1,7 @@
 ﻿using UnityEngine;
 
-namespace Transit.Framework.Imaging
+namespace Transit.Framework.Texturing
 {
-    public interface ITextureProvider
-    {
-        Texture2D GetTexture();
-    }
-
     public class PathTextureProvider : ITextureProvider
     {
         private readonly string _texturePath;

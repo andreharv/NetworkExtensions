@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using ColossalFramework;
 using ObjUnity3D;
+using Transit.Framework.Texturing;
 using UnityEngine;
 
 namespace Transit.Framework
@@ -51,7 +52,7 @@ namespace Transit.Framework
                     case ".png":
                         yield return () =>
                         {
-                            _allTexturesRaw[assetRelativePath] = LoadTexturePNG(assetFullPath);
+                            _allTexturesRaw[assetRelativePath] = LoadTextureData(assetFullPath);
                         };
                         break;
 
@@ -65,50 +66,9 @@ namespace Transit.Framework
             }
         }
 
-        private static byte[] LoadTexturePNG(string fullPath)
+        private static byte[] LoadTextureData(string fullPath)
         {
             return File.ReadAllBytes(fullPath);
-        }
-
-        private static Texture2D CreateTexture(byte[] textureBytes, string textureName, TextureType type)
-        {
-            switch (type)
-            {
-                case TextureType.Default:
-                    {
-                        var texture = new Texture2D(1, 1);
-                        texture.name = textureName;
-                        texture.LoadImage(textureBytes);
-                        texture.anisoLevel = 8;
-                        texture.filterMode = FilterMode.Trilinear;
-                        texture.Apply();
-                        return texture;
-                    }
-
-                case TextureType.LOD:
-                    {
-                        var texture = new Texture2D(1, 1, TextureFormat.ARGB32, false);
-                        texture.name = textureName;
-                        texture.LoadImage(textureBytes);
-                        texture.anisoLevel = 8;
-                        texture.filterMode = FilterMode.Trilinear;
-                        texture.Apply();
-                        texture.Compress(false);
-                        return texture;
-                    }
-
-                case TextureType.UI:
-                    {
-                        var texture = new Texture2D(1, 1, TextureFormat.ARGB32, false);
-                        texture.name = textureName;
-                        texture.LoadImage(textureBytes);
-                        texture.Apply();
-                        return texture;
-                    }
-
-                default:
-                    throw new ArgumentOutOfRangeException("type");
-            }
         }
 
         private static Mesh LoadMesh(string fullPath, string meshName)
@@ -144,13 +104,27 @@ namespace Transit.Framework
             {
                 if (!_allTextures.ContainsKey(trimmedPath))
                 {
-                    _allTextures[trimmedPath] = CreateTexture(_allTexturesRaw[trimmedPath], Path.GetFileNameWithoutExtension(trimmedPath), type);
+                    _allTextures[trimmedPath] = TextureCreator.FromData(_allTexturesRaw[trimmedPath], Path.GetFileNameWithoutExtension(trimmedPath), type);
                 }
 
                 return _allTextures[trimmedPath];
             }
 
-            return CreateTexture(_allTexturesRaw[trimmedPath], Path.GetFileNameWithoutExtension(trimmedPath), type);
+            return TextureCreator.FromData(_allTexturesRaw[trimmedPath], Path.GetFileNameWithoutExtension(trimmedPath), type);
+        }
+
+        public byte[] GetTextureData(string path, TextureType type)
+        {
+            var trimmedPath = path
+                .Replace('\\', Path.DirectorySeparatorChar)
+                .Replace('/', Path.DirectorySeparatorChar);
+
+            if (!_allTexturesRaw.ContainsKey(trimmedPath))
+            {
+                throw new Exception(String.Format("TFW: Texture {0} not found", trimmedPath));
+            }
+
+            return _allTexturesRaw[trimmedPath];
         }
 
         public Mesh GetMesh(string path)

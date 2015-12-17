@@ -45,7 +45,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkExtensions.Deploy", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{62A6B577-96A9-4602-9285-4239AF692297}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Framework.Imaging.Tests", "Tests\Transit.Framework.Imaging.Tests\Transit.Framework.Imaging.Tests.csproj", "{A28A5525-C643-4549-BA3F-5A96E49F0720}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Framework.Texturing.Tests", "Tests\Transit.Framework.Texturing.Tests\Transit.Framework.Texturing.Tests.csproj", "{A28A5525-C643-4549-BA3F-5A96E49F0720}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

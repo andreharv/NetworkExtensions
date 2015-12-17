@@ -1,9 +1,9 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
 
-namespace Transit.Framework.Imaging
+namespace Transit.Framework.Texturing
 {
-    public class ImageBlenderComponent : IImageBlenderComponent
+    public class TextureBlenderComponent : ITextureBlenderComponent
     {
         public Image Image { get; private set; }
         public Point Position { get; set; }
@@ -12,12 +12,12 @@ namespace Transit.Framework.Imaging
         public bool IncreaseVOffset { get; set; }
         public byte AlphaLevel { get; set; }
 
-        public ImageBlenderComponent(string imagePath)
+        public TextureBlenderComponent(string imagePath)
             : this(Image.FromFile(imagePath))
         {
         }
 
-        public ImageBlenderComponent(Image image)
+        public TextureBlenderComponent(Image image)
         {
             Image = image;
             IsRelativeFromPrevious = true;
@@ -63,7 +63,7 @@ namespace Transit.Framework.Imaging
         }
     }
 
-    public class ImageBlenderAlphaComponent : IImageBlenderComponent
+    public class ImageBlenderAlphaComponent : ITextureBlenderComponent
     {
         public Bitmap Image { get; private set; }
         public Point Position { get; set; }

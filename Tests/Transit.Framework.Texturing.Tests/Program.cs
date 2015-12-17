@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using Transit.Addon.RoadExtensions.Highways.Highway2L;
 
-namespace Transit.Framework.Imaging.Tests
+namespace Transit.Framework.Texturing.Tests
 {
     class Program
     {
