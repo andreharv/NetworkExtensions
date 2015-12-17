@@ -1,80 +1,38 @@
 ﻿using ColossalFramework;
+using Transit.Framework.Imaging;
 using UnityEngine;
 
 namespace Transit.Framework
 {
     public class TexturesSet
     {
-        private Texture2D _mainTex;
-        public Texture2D MainTex
+        public Texture2D MainTex { get { return _mainTexProvider != null ? _mainTexProvider.GetTexture() : null; } }
+        public Texture2D APRMap  { get { return _aprMapProvider != null ? _aprMapProvider.GetTexture() : null; } }
+        public Texture2D XYSMap  { get { return _xysMapProvider != null ? _xysMapProvider.GetTexture() : null; } }
+
+        private readonly ITextureProvider _mainTexProvider;
+        private readonly ITextureProvider _aprMapProvider;
+        private readonly ITextureProvider _xysMapProvider;
+
+        public TexturesSet(string mainTexPath = null, string aprMapPath = null, string xysMapPath = null) :
+            this(mainTexPath, aprMapPath, xysMapPath, false)
         {
-            get
-            {
-                if (_mainTex == null)
-                {
-                    if (!_mainTexPath.IsNullOrWhiteSpace())
-                    {
-                        _mainTex = AssetManager.instance.GetTexture(_mainTexPath, _isLODSet? TextureType.LOD : TextureType.Default);
-                    }
-                }
-
-                return _mainTex;
-            }
-        }
-
-        private Texture2D _aprMap;
-        public Texture2D APRMap
-        {
-            get
-            {
-                if (_aprMap == null)
-                {
-                    if (!_aprMapPath.IsNullOrWhiteSpace())
-                    {
-                        _aprMap = AssetManager.instance.GetTexture(_aprMapPath, _isLODSet ? TextureType.LOD : TextureType.Default);
-                    }
-                }
-
-                return _aprMap;
-            }
-        }
-
-        private Texture2D _xysMap;
-        public Texture2D XYSMap
-        {
-            get
-            {
-                if (_xysMap == null)
-                {
-                    if (!_xysMapPath.IsNullOrWhiteSpace())
-                    {
-                        _xysMap = AssetManager.instance.GetTexture(_xysMapPath, _isLODSet ? TextureType.LOD : TextureType.Default);
-                    }
-                }
-
-                return _xysMap;
-            }
-        }
-
-        private readonly string _mainTexPath;
-        private readonly string _aprMapPath;
-        private readonly string _xysMapPath;
-        private readonly bool _isLODSet;
-
-        public TexturesSet(string mainTexPath = null, string aprMapPath = null, string xysMapPath = null)
-        {
-            _mainTexPath = mainTexPath;
-            _aprMapPath = aprMapPath;
-            _xysMapPath = xysMapPath;
         }
 
         protected TexturesSet(string mainTexPath = null, string aprMapPath = null, string xysMapPath = null, bool isLODSet = false)
         {
-            _mainTexPath = mainTexPath;
-            _aprMapPath = aprMapPath;
-            _xysMapPath = xysMapPath;
-
-            _isLODSet = isLODSet;
+            if (!mainTexPath.IsNullOrWhiteSpace())
+            {
+                _mainTexProvider = new PathTextureProvider(mainTexPath, isLODSet ? TextureType.LOD : TextureType.Default);
+            }
+            if (!aprMapPath.IsNullOrWhiteSpace())
+            {
+                _aprMapProvider = new PathTextureProvider(aprMapPath, isLODSet ? TextureType.LOD : TextureType.Default);
+            }
+            if (!xysMapPath.IsNullOrWhiteSpace())
+            {
+                _xysMapProvider = new PathTextureProvider(xysMapPath, isLODSet ? TextureType.LOD : TextureType.Default);
+            }
         }
     }
 

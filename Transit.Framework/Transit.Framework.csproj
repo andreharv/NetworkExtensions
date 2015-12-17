@@ -60,6 +60,7 @@
     <Compile Include="Imaging\IImageBlenderComponent.cs" />
     <Compile Include="Imaging\ImageBlender.cs" />
     <Compile Include="Imaging\ImageBlenderComponent.cs" />
+    <Compile Include="Imaging\ITextureProvider.cs" />
     <Compile Include="Imaging\_Extensions\ImageBlenderExtensions.cs" />
     <Compile Include="Imaging\_Extensions\ImageExtensions.cs" />
     <Compile Include="Installer.cs" />
