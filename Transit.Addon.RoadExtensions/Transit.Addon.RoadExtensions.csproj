@@ -109,6 +109,12 @@
     <Compile Include="SomeRoads\PlanningRoadSmallBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Highways\Highway2L\Textures\Ground_Node__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Highways\Highway2L\Textures\Ground_Segment__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Highways\Highway3LBarrier\thumbnails.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -598,22 +604,10 @@
     <Content Include="Highways\Highway2L\Textures\Elevated_NodeLOD__XYSMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Highways\Highway2L\Textures\Elevated_Node__APRMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Highways\Highway2L\Textures\Elevated_SegmentLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Highways\Highway2L\Textures\Elevated_SegmentLOD__MainTex.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Highways\Highway2L\Textures\Elevated_Segment__APRMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Highways\Highway2L\Textures\Ground_Elevated_Node__MainTex.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Highways\Highway2L\Textures\Ground_Elevated_Segment__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Highways\Highway2L\Textures\Ground_LOD__XYSMap.png">

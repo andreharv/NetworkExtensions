@@ -48,6 +48,11 @@
       <Name>Transit.Addon.RoadExtensions</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Drawing">
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>del "$(TargetDir)*.pdb"

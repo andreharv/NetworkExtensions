@@ -55,37 +55,49 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="HW2L\APRMap\Line_Dashed__APRMap.png">
+    <Content Include="Roads\Common\Textures\APRMap\Line_Dashed__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="HW2L\APRMap\Line_Solid__APRMap.png">
+    <Content Include="Roads\Common\Textures\APRMap\Line_Solid_Fadeout__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="HW2L\APRMap\Segment__APRMap.png">
+    <Content Include="Roads\Common\Textures\APRMap\Line_Solid__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="HW2L\APRMap\Tearing__APRMap.png">
+    <Content Include="Roads\Common\Textures\APRMap\Segment__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="HW2L\APRMap\_Original__APRMap.png">
+    <Content Include="Roads\Common\Textures\APRMap\Tearing_Fadeout__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="HW2L\MainTex\Line_White_Dashed__MainTex.png">
+    <Content Include="Roads\Common\Textures\APRMap\Tearing__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="HW2L\MainTex\Line_White_Solid__MainTex.png">
+    <Content Include="Roads\Common\Textures\APRMap\_Original__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="HW2L\MainTex\Line_Yellow_Dashed__MainTex.png">
+    <Content Include="Roads\Common\Textures\MainTex\Line_White_Dashed__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="HW2L\MainTex\Line_Yellow_Solid__MainTex.png">
+    <Content Include="Roads\Common\Textures\MainTex\Line_White_Solid_Fadeout__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="HW2L\MainTex\Segment__MainTex.png">
+    <Content Include="Roads\Common\Textures\MainTex\Line_White_Solid__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="HW2L\MainTex\_Original__MainTex.png">
+    <Content Include="Roads\Common\Textures\MainTex\Line_Yellow_Dashed__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Common\Textures\MainTex\Line_Yellow_Solid_Fadeout__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Common\Textures\MainTex\Line_Yellow_Solid__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Common\Textures\MainTex\Segment__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Common\Textures\MainTex\_Original__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -10,41 +10,78 @@ namespace Transit.Framework.Imaging.Tests
         {
             try
             {
-                var laneStart = 340;
-                var laneWidth = 140;
-                var lineAlpha = (byte) 200;
-                var tearsAlpha = (byte) 40;
-
-                var mainTex = ImageBlender
-                    .FromBaseFile(@"HW2L\MainTex\Segment__MainTex.png")
-                    .WithComponent(@"HW2L\MainTex\Line_Yellow_Solid__MainTex.png", new Point(laneStart, 0))
-                    .WithComponent(@"HW2L\MainTex\Line_White_Dashed__MainTex.png", new Point(laneWidth, 0))
-                    .WithComponent(@"HW2L\MainTex\Line_White_Solid__MainTex.png", new Point(laneWidth, 0))
-                    .Apply();
-
-                var aprTex = ImageBlender
-                    .FromBaseFile(@"HW2L\APRMap\Segment__APRMap.png")
-                    .WithComponent(@"HW2L\APRMap\Line_Solid__APRMap.png",  new Point(laneStart, 0), lineAlpha)
-                    .WithComponent(@"HW2L\APRMap\Tearing__APRMap.png",     new Point(0, 0), tearsAlpha)
-                    .WithComponent(@"HW2L\APRMap\Line_Dashed__APRMap.png", new Point(0, 0), lineAlpha)
-                    .WithComponent(@"HW2L\APRMap\Tearing__APRMap.png",     new Point(0, 0), tearsAlpha)
-                    .WithComponent(@"HW2L\APRMap\Line_Solid__APRMap.png",  new Point(0, 0), lineAlpha)
-                    .Apply();
-
-                var lookAndFeel = ImageBlender
-                    .FromImage(mainTex)
-                    .WithAlphaComponent(aprTex)
-                    .Apply();
-
-                mainTex.Save("Segment__MainTex.png", ImageFormat.Png);
-                aprTex.Save("Segment__APRMap.png", ImageFormat.Png);
-                lookAndFeel.Save("Segment__LAF.png", ImageFormat.Png);
+                GenerationHW2L_Segment();
+                GenerationHW2L_Node();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
                 Console.ReadLine();
             }
+        }
+
+        static void GenerationHW2L_Segment()
+        {
+            var laneStart = 340;
+            var laneWidth = 141;
+            var lineAlpha = (byte)35;
+            var tearsAlpha = (byte)15;
+
+            var mainTex = ImageBlender
+                .FromBaseFile(@"Roads\Common\Textures\MainTex\Segment__MainTex.png")
+                .WithComponent(@"Roads\Common\Textures\MainTex\Line_White_Solid__MainTex.png", new Point(laneStart, 0))
+                .WithComponent(@"Roads\Common\Textures\MainTex\Line_White_Dashed__MainTex.png", new Point(laneWidth, 0))
+                .WithComponent(@"Roads\Common\Textures\MainTex\Line_White_Solid__MainTex.png", new Point(laneWidth, 0))
+                .Apply();
+
+            var aprTex = ImageBlender
+                .FromBaseFile(@"Roads\Common\Textures\APRMap\Segment__APRMap.png")
+                .WithComponent(@"Roads\Common\Textures\APRMap\Line_Solid__APRMap.png", new Point(laneStart, 0), lineAlpha)
+                .WithComponent(@"Roads\Common\Textures\APRMap\Tearing__APRMap.png", new Point(1, 0), tearsAlpha)
+                .WithComponent(@"Roads\Common\Textures\APRMap\Line_Dashed__APRMap.png", new Point(0, 0), lineAlpha)
+                .WithComponent(@"Roads\Common\Textures\APRMap\Tearing__APRMap.png", new Point(0, 0), tearsAlpha)
+                .WithComponent(@"Roads\Common\Textures\APRMap\Line_Solid__APRMap.png", new Point(2, 0), lineAlpha)
+                .Apply();
+
+            //var lookAndFeel = ImageBlender
+            //    .FromImage(mainTex)
+            //    .WithAlphaComponent(aprTex)
+            //    .Apply();
+
+            mainTex.Save(@"D:\Developpement\Git\CSL.TransitAddonMod\Transit.Addon.RoadExtensions\Highways\Highway2L\Textures\Ground_Segment__MainTex.png", ImageFormat.Png);
+            aprTex.Save(@"D:\Developpement\Git\CSL.TransitAddonMod\Transit.Addon.RoadExtensions\Highways\Highway2L\Textures\Ground_Segment__APRMap.png", ImageFormat.Png);
+            //lookAndFeel.Save("Segment__LAF.png", ImageFormat.Png);
+        }
+
+        static void GenerationHW2L_Node()
+        {
+            var laneStart = 340;
+            var laneWidth = 141;
+            var lineAlpha = (byte)35;
+            var tearsAlpha = (byte)15;
+
+            var mainTex = ImageBlender
+                .FromBaseFile(@"Roads\Common\Textures\MainTex\Segment__MainTex.png")
+                .WithComponent(@"Roads\Common\Textures\MainTex\Line_White_Solid_Fadeout__MainTex.png", new Point(laneStart, 0))
+                .WithComponent(@"Roads\Common\Textures\MainTex\Line_White_Solid_Fadeout__MainTex.png", new Point(laneWidth + 4 + laneWidth, 0))
+                .Apply();
+
+            var aprTex = ImageBlender
+                .FromBaseFile(@"Roads\Common\Textures\APRMap\Segment__APRMap.png")
+                .WithComponent(@"Roads\Common\Textures\APRMap\Line_Solid_Fadeout__APRMap.png", new Point(laneStart, 0), lineAlpha)
+                .WithComponent(@"Roads\Common\Textures\APRMap\Tearing_Fadeout__APRMap.png", new Point(1, 0), tearsAlpha)
+                .WithComponent(@"Roads\Common\Textures\APRMap\Tearing_Fadeout__APRMap.png", new Point(4, 0), tearsAlpha)
+                .WithComponent(@"Roads\Common\Textures\APRMap\Line_Solid_Fadeout__APRMap.png", new Point(2, 0), lineAlpha)
+                .Apply();
+
+            //var lookAndFeel = ImageBlender
+            //    .FromImage(mainTex)
+            //    .WithAlphaComponent(aprTex)
+            //    .Apply();
+
+            mainTex.Save(@"D:\Developpement\Git\CSL.TransitAddonMod\Transit.Addon.RoadExtensions\Highways\Highway2L\Textures\Ground_Node__MainTex.png", ImageFormat.Png);
+            aprTex.Save(@"D:\Developpement\Git\CSL.TransitAddonMod\Transit.Addon.RoadExtensions\Highways\Highway2L\Textures\Ground_Node__APRMap.png", ImageFormat.Png);
+            //lookAndFeel.Save("Node__LAF.png", ImageFormat.Png);
         }
     }
 }
