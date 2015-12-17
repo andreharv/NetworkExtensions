@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 
 namespace Transit.Framework.Imaging
 {
@@ -31,7 +30,7 @@ namespace Transit.Framework.Imaging
             Components = new List<IImageBlenderComponent>();
         }
 
-        public Image Apply()
+        public Image Build()
         {
             var componentOffset = new Point(0, 0);
 
@@ -41,17 +40,6 @@ namespace Transit.Framework.Imaging
             {
                 c.Apply(ref componentOffset, canvas);
             }
-
-            //using (var g = Graphics.FromImage(canvas))
-            //{
-            //    //g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            //    //g.DrawImage(BaseImage, new Rectangle(0, 0, width, height), new Rectangle(0, 0, BaseImage.Width, BaseImage.Height), GraphicsUnit.Pixel);
-
-            //    foreach (var c in Components)
-            //    {
-            //        c.Apply(ref componentOffset, g);
-            //    }
-            //}
 
             return canvas;
         }

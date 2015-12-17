@@ -57,7 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Compatibility\RoadColorChanger.cs" />
-    <Compile Include="Highways\Highway2L\Highway2LBlenders.cs" />
+    <Compile Include="Highways\Highway2L\Highway2LTextures.cs" />
     <Compile Include="Props\BusLaneTextPropBuilder.cs" />
     <Compile Include="RExModule.Install.Menus.cs" />
     <Compile Include="RExModule.Install.Localization.cs" />

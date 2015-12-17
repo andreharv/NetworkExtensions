@@ -23,13 +23,13 @@ namespace Transit.Framework.Imaging.Tests
 
         static void GenerationHW2L_Segment()
         {
-            var mainTex = Highway2LBlenders
-                .GetSegmentMainTex()
-                .Apply();
+            var mainTex = Highway2LTextures
+                .SegmentMainTex
+                .Build();
 
-            var aprTex = Highway2LBlenders
-                .GetSegmentAPRMap()
-                .Apply();
+            var aprTex = Highway2LTextures
+                .SegmentAPRMap
+                .Build();
 
             mainTex.Save(@"D:\Developpement\Git\CSL.TransitAddonMod\Transit.Addon.RoadExtensions\Highways\Highway2L\Textures\Ground_Segment__MainTex.png", ImageFormat.Png);
             aprTex.Save(@"D:\Developpement\Git\CSL.TransitAddonMod\Transit.Addon.RoadExtensions\Highways\Highway2L\Textures\Ground_Segment__APRMap.png", ImageFormat.Png);
@@ -43,13 +43,13 @@ namespace Transit.Framework.Imaging.Tests
 
         static void GenerationHW2L_Node()
         {
-            var mainTex = Highway2LBlenders
-                .GetNodeMainTex()
-                .Apply();
+            var mainTex = Highway2LTextures
+                .NodeMainTex
+                .Build();
 
-            var aprTex = Highway2LBlenders
-                .GetNodeAPRMap()
-                .Apply();
+            var aprTex = Highway2LTextures
+                .NodeAPRMap
+                .Build();
 
             mainTex.Save(@"D:\Developpement\Git\CSL.TransitAddonMod\Transit.Addon.RoadExtensions\Highways\Highway2L\Textures\Ground_Node__MainTex.png", ImageFormat.Png);
             aprTex.Save(@"D:\Developpement\Git\CSL.TransitAddonMod\Transit.Addon.RoadExtensions\Highways\Highway2L\Textures\Ground_Node__APRMap.png", ImageFormat.Png);
