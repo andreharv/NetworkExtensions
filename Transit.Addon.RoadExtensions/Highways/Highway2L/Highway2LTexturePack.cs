@@ -3,14 +3,14 @@ using Transit.Framework.Texturing;
 
 namespace Transit.Addon.RoadExtensions.Highways.Highway2L
 {
-    public static class Highway2LTextures
+    public class Highway2LTexturePack : TexturePack
     {
         private const int laneStart = 340;
         private const int laneWidth = 141;
         private const byte lineAlpha = 35;
         private const byte tearsAlpha = 15;
 
-        public static ITextureBlender SegmentMainTex
+        public ITextureBlender SegmentMainTex
         {
             get
             {
@@ -22,7 +22,7 @@ namespace Transit.Addon.RoadExtensions.Highways.Highway2L
             }
         }
 
-        public static ITextureBlender SegmentAPRMap
+        public ITextureBlender SegmentAPRMap
         {
             get
             {
@@ -36,7 +36,7 @@ namespace Transit.Addon.RoadExtensions.Highways.Highway2L
             }
         }
 
-        public static ITextureBlender NodeMainTex
+        public ITextureBlender NodeMainTex
         {
             get
             {
@@ -47,7 +47,7 @@ namespace Transit.Addon.RoadExtensions.Highways.Highway2L
             }
         }
 
-        public static ITextureBlender NodeAPRMap
+        public ITextureBlender NodeAPRMap
         {
             get
             {

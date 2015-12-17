@@ -63,6 +63,7 @@
     <Compile Include="Texturing\TextureBlenderComponent.cs" />
     <Compile Include="Texturing\ITextureProvider.cs" />
     <Compile Include="Texturing\TextureCreator.cs" />
+    <Compile Include="Texturing\TexturePack.cs" />
     <Compile Include="Texturing\_Extensions\TextureBlenderExtensions.cs" />
     <Compile Include="Texturing\_Extensions\ImageExtensions.cs" />
     <Compile Include="Installer.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="_Extensions\CloningExtensions.cs" />
     <Compile Include="_Extensions\CollectionExtensions.cs" />
     <Compile Include="_Extensions\NetLanePropsExtensions.cs" />
+    <Compile Include="_Extensions\ObjectExtensions.cs" />
     <Compile Include="_Extensions\PrefabBuilderExtensions.cs" />
     <Compile Include="_Extensions\GameObjectExtensions.cs" />
     <Compile Include="_Extensions\NetInfoBuilderExtensions.cs" />
@@ -118,7 +120,7 @@
     <Compile Include="Builders\INetInfoModifier.cs" />
     <Compile Include="Loading.cs" />
     <Compile Include="Selector.cs" />
-    <Compile Include="TexturesSet.cs" />
+    <Compile Include="Texturing\TexturesSet.cs" />
     <Compile Include="Prefabs.cs" />
     <Compile Include="Tools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

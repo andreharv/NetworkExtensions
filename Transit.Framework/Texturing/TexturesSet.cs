@@ -1,8 +1,7 @@
 ﻿using ColossalFramework;
-using Transit.Framework.Texturing;
 using UnityEngine;
 
-namespace Transit.Framework
+namespace Transit.Framework.Texturing
 {
     public class TexturesSet
     {

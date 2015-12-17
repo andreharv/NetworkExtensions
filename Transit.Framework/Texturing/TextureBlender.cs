@@ -48,7 +48,7 @@ namespace Transit.Framework.Texturing
             _texture = null;
         }
 
-        public Image Build()
+        public Image GetImage()
         {
             var componentOffset = new Point(0, 0);
 
@@ -66,7 +66,7 @@ namespace Transit.Framework.Texturing
         {
             if (_texture == null)
             {
-                _texture = TextureCreator.FromData(Build().ToByteArray(), string.Empty, TextureType.Default);
+                _texture = TextureCreator.FromData(GetImage().ToByteArray(), string.Empty, TextureType.Default);
             }
 
             return _texture;

@@ -3,6 +3,7 @@ using ColossalFramework;
 using Transit.Addon.RoadExtensions.Roads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
+using Transit.Framework.Texturing;
 using UnityEngine;
 
 namespace Transit.Addon.RoadExtensions.Roads.MediumAvenue4LTL

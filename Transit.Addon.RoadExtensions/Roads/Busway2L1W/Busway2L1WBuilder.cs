@@ -3,6 +3,7 @@ using System.Linq;
 using Transit.Addon.RoadExtensions.Menus;
 using Transit.Framework;
 using Transit.Framework.Builders;
+using Transit.Framework.Texturing;
 
 namespace Transit.Addon.RoadExtensions.Roads.Busway2L1W
 {
