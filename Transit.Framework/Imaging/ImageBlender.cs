@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 
 namespace Transit.Framework.Imaging
 {
@@ -15,6 +16,11 @@ namespace Transit.Framework.Imaging
             return new ImageBlender(baseImage);
         }
 
+        public static IImageBlender FromByteImage(byte[] baseImageBytes)
+        {
+            return new ImageBlender(baseImageBytes);
+        }
+
         public Image BaseImage { get; private set; }
 
         public ICollection<IImageBlenderComponent> Components { get; private set; }
@@ -27,6 +33,12 @@ namespace Transit.Framework.Imaging
         public ImageBlender(Image baseImage)
         {
             BaseImage = baseImage;
+            Components = new List<IImageBlenderComponent>();
+        }
+
+        public ImageBlender(byte[] baseImageBytes)
+        {
+            BaseImage = baseImageBytes.AsImage();
             Components = new List<IImageBlenderComponent>();
         }
 
