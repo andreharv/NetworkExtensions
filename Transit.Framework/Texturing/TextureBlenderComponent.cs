@@ -1,30 +1,30 @@
 ﻿using System;
-using System.Drawing;
-using System.Drawing.Imaging;
+using UnityEngine;
 
 namespace Transit.Framework.Texturing
 {
     public class TextureBlenderComponent : ITextureBlenderComponent
     {
-        private readonly Func<Image> _imageProvider;
+        private readonly Func<Texture2D> _textureProvider;
         public Point Position { get; set; }
         public bool IsRelativeFromPrevious { get; set; }
         public bool IncreaseHOffset { get; set; }
         public bool IncreaseVOffset { get; set; }
         public byte AlphaLevel { get; set; }
 
-        public TextureBlenderComponent(Func<Image> imageProvider)
+        public TextureBlenderComponent(Func<Texture2D> textureProvider)
         {
-            _imageProvider = imageProvider;
+            _textureProvider = textureProvider;
             IsRelativeFromPrevious = true;
             IncreaseHOffset = true;
             IncreaseVOffset = false;
             AlphaLevel = 255;
         }
 
-        public void Apply(ref Point offset, Bitmap canvas)
+        public void Apply(ref Point offset, Texture2D canvas)
         {
-            var image = _imageProvider();
+            var texture = _textureProvider();
+            var texturePixels = _textureProvider().GetPixels();
 
             if (!IsRelativeFromPrevious)
             {
@@ -35,122 +35,136 @@ namespace Transit.Framework.Texturing
                 offset = new Point(offset.X + Position.X, offset.Y + Position.Y);
             }
 
-            var matrix = new ColorMatrix { Matrix33 = AlphaLevel / 255f };
-            var attrib = new ImageAttributes();
-            attrib.SetColorMatrix(matrix);
+            var canvasPixels = canvas.GetPixels(offset.X, offset.Y, texture.width, texture.height);
 
-            using (var g = Graphics.FromImage(canvas))
+            for (int i = 0; i < canvasPixels.Length; i++)
             {
-                g.DrawImage(
-                    image,
-                    new Rectangle(offset.X, offset.Y, image.Width, image.Height),
-                    0, 0, image.Width, image.Height,
-                    GraphicsUnit.Pixel,
-                    attrib);
+                if (i >= texturePixels.Length)
+                {
+                    throw new Exception("Texture is larger than the canvas");
+                }
+
+                var cPixel = canvasPixels[i];
+                var tPixel = texturePixels[i];
+
+                var tPixelAlphaLevel = tPixel.a * AlphaLevel / 255f;
+
+                cPixel.r = ApplyLevel(cPixel.r, tPixel.r, tPixelAlphaLevel);
+                cPixel.g = ApplyLevel(cPixel.g, tPixel.g, tPixelAlphaLevel);
+                cPixel.b = ApplyLevel(cPixel.b, tPixel.b, tPixelAlphaLevel);
+
+                canvasPixels[i] = cPixel;
             }
+
+            canvas.SetPixels(offset.X, offset.Y, texture.width, texture.height, canvasPixels);
 
             if (IncreaseHOffset)
             {
-                offset = new Point(offset.X + image.Width, offset.Y);
+                offset = new Point(offset.X + texture.width, offset.Y);
             }
 
             if (IncreaseVOffset)
             {
-                offset = new Point(offset.X, offset.Y + image.Height);
+                offset = new Point(offset.X, offset.Y + texture.height);
             }
+        }
+
+        private static float ApplyLevel(float baseColorPart, float defaultColorPart, float level)
+        {
+            return baseColorPart + (defaultColorPart - baseColorPart) * level;
         }
     }
 
-    public class ImageBlenderAlphaComponent : ITextureBlenderComponent
-    {
-        private readonly Func<Image> _imageProvider;
-        public Point Position { get; set; }
-        public bool IsRelativeFromPrevious { get; set; }
-        public bool IncreaseHOffset { get; set; }
-        public bool IncreaseVOffset { get; set; }
-        public Color DefaultColor { get; set; }
+    //public class TextureBlenderAlphaComponent : ITextureBlenderComponent
+    //{
+    //    private readonly Func<Texture2D> _textureProvider;
+    //    public Point Position { get; set; }
+    //    public bool IsRelativeFromPrevious { get; set; }
+    //    public bool IncreaseHOffset { get; set; }
+    //    public bool IncreaseVOffset { get; set; }
+    //    public Color DefaultColor { get; set; }
 
-        public ImageBlenderAlphaComponent(Func<Image> imageProvider)
-        {
-            _imageProvider = imageProvider;
-            IsRelativeFromPrevious = true;
-            IncreaseHOffset = true;
-            IncreaseVOffset = false;
-            DefaultColor = Color.FromArgb(127, 127, 127);
-        }
+    //    public TextureBlenderAlphaComponent(Func<Texture2D> textureProvider)
+    //    {
+    //        _textureProvider = textureProvider;
+    //        IsRelativeFromPrevious = true;
+    //        IncreaseHOffset = true;
+    //        IncreaseVOffset = false;
+    //        DefaultColor = Color.FromArgb(127, 127, 127);
+    //    }
 
-        public void Apply(ref Point offset, Bitmap canvas)
-        {
-            var image = _imageProvider();
-            Bitmap bitmap;
+    //    public void Apply(ref Point offset, Texture2D canvas)
+    //    {
+    //        var texture = _textureProvider();
+    //        Bitmap bitmap;
 
-            if (image is Bitmap)
-            {
-                bitmap = image as Bitmap;
-            }
-            else
-            {
-                bitmap = new Bitmap(image);
-            }
+    //        if (texture is Bitmap)
+    //        {
+    //            bitmap = texture as Bitmap;
+    //        }
+    //        else
+    //        {
+    //            bitmap = new Bitmap(texture);
+    //        }
 
-            if (!IsRelativeFromPrevious)
-            {
-                offset = Position;
-            }
-            else
-            {
-                offset = new Point(offset.X + Position.X, offset.Y + Position.Y);
-            }
+    //        if (!IsRelativeFromPrevious)
+    //        {
+    //            offset = Position;
+    //        }
+    //        else
+    //        {
+    //            offset = new Point(offset.X + Position.X, offset.Y + Position.Y);
+    //        }
 
-            for (int y = 0; y < canvas.Height; y++)
-            {
-                if (y >= bitmap.Height)
-                {
-                    continue;
-                }
+    //        for (int y = 0; y < canvas.Height; y++)
+    //        {
+    //            if (y >= bitmap.Height)
+    //            {
+    //                continue;
+    //            }
 
-                for (int x = 0; x < canvas.Width; x++)
-                {
-                    if (x >= bitmap.Width)
-                    {
-                        continue;
-                    }
+    //            for (int x = 0; x < canvas.Width; x++)
+    //            {
+    //                if (x >= bitmap.Width)
+    //                {
+    //                    continue;
+    //                }
 
-                    var cvsPixel = canvas.GetPixel(x, y);
-                    var imgPixel = bitmap.GetPixel(x, y);
+    //                var cvsPixel = canvas.GetPixel(x, y);
+    //                var imgPixel = bitmap.GetPixel(x, y);
 
-                    var alphaLvl = imgPixel.G;
-                    var aprLvl = imgPixel.B;
+    //                var alphaLvl = imgPixel.G;
+    //                var aprLvl = imgPixel.B;
 
-                    var finalPixel = Color.FromArgb(alphaLvl, ApplyAPR(cvsPixel, DefaultColor, aprLvl));
+    //                var finalPixel = Color.FromArgb(alphaLvl, ApplyAPR(cvsPixel, DefaultColor, aprLvl));
 
-                    canvas.SetPixel(x, y, finalPixel);
-                }
-            }
+    //                canvas.SetPixel(x, y, finalPixel);
+    //            }
+    //        }
 
-            if (IncreaseHOffset)
-            {
-                offset = new Point(offset.X + bitmap.Width, offset.Y);
-            }
+    //        if (IncreaseHOffset)
+    //        {
+    //            offset = new Point(offset.X + bitmap.Width, offset.Y);
+    //        }
 
-            if (IncreaseVOffset)
-            {
-                offset = new Point(offset.X, offset.Y + bitmap.Height);
-            }
-        }
+    //        if (IncreaseVOffset)
+    //        {
+    //            offset = new Point(offset.X, offset.Y + bitmap.Height);
+    //        }
+    //    }
 
-        private static Color ApplyAPR(Color baseColor, Color defaultColor, byte aprLevel)
-        {
-            return Color.FromArgb(
-                ApplyAPRPart(baseColor.A, defaultColor.A, aprLevel),
-                ApplyAPRPart(baseColor.R, defaultColor.R, aprLevel),
-                ApplyAPRPart(baseColor.G, defaultColor.G, aprLevel),
-                ApplyAPRPart(baseColor.B, defaultColor.B, aprLevel));
-        }
+    //    private static Color ApplyAPR(Color baseColor, Color defaultColor, byte aprLevel)
+    //    {
+    //        return Color.FromArgb(
+    //            ApplyAPRPart(baseColor.A, defaultColor.A, aprLevel),
+    //            ApplyAPRPart(baseColor.R, defaultColor.R, aprLevel),
+    //            ApplyAPRPart(baseColor.G, defaultColor.G, aprLevel),
+    //            ApplyAPRPart(baseColor.B, defaultColor.B, aprLevel));
+    //    }
 
-        private static byte ApplyAPRPart(byte baseColorPart, byte defaultColorPart, byte aprLevel)
-        {
-            return (byte)(baseColorPart + (defaultColorPart - baseColorPart) * aprLevel / 255);
-        }
-    }
+    //    private static byte ApplyAPRPart(byte baseColorPart, byte defaultColorPart, byte aprLevel)
+    //    {
+    //        return (byte)(baseColorPart + (defaultColorPart - baseColorPart) * aprLevel / 255);
+    //    }
+    //}
 }

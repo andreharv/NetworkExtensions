@@ -84,7 +84,7 @@ namespace Transit.Framework
             return mesh;
         }
 
-        public Texture2D GetTexture(string path, TextureType type)
+        public Texture2D GetTexture(string path, TextureType type, bool useCache = true)
         {
             if (path.IsNullOrWhiteSpace())
             {
@@ -100,7 +100,7 @@ namespace Transit.Framework
                 throw new Exception(String.Format("TFW: Texture {0} not found", trimmedPath));
             }
 
-            if (type == TextureType.Default)
+            if (useCache && type == TextureType.Default)
             {
                 if (!_allTextures.ContainsKey(trimmedPath))
                 {

@@ -1,9 +1,9 @@
-﻿using System.Drawing;
+﻿using UnityEngine;
 
 namespace Transit.Framework.Texturing
 {
     public interface ITextureBlenderComponent
     {
-        void Apply(ref Point offset, Bitmap canvas);
+        void Apply(ref Point offset, Texture2D canvas);
     }
 }

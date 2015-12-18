@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using UnityEngine;
 
 namespace Transit.Framework.Texturing
@@ -11,22 +10,21 @@ namespace Transit.Framework.Texturing
         {
             return new TextureBlender(() => AssetManager
                 .instance
-                .GetTextureData(baseTexturePath)
-                .AsImage());
+                .GetTexture(baseTexturePath, TextureType.Default, false));
         }
 
-        public static ITextureBlender FromImage(Image baseImage)
+        public static ITextureBlender FromTexture(Texture2D baseTexture)
         {
-            return new TextureBlender(() => baseImage);
+            return new TextureBlender(() => baseTexture);
         }
 
-        private readonly Func<Image> _baseImageProvider;
+        private readonly Func<Texture2D> _baseTextureProvider;
         private readonly ICollection<ITextureBlenderComponent> _components = new List<ITextureBlenderComponent>();
         private Texture2D _texture;
 
-        public TextureBlender(Func<Image> baseImageProvider)
+        public TextureBlender(Func<Texture2D> baseTextureProvider)
         {
-            _baseImageProvider = baseImageProvider;
+            _baseTextureProvider = baseTextureProvider;
             _components = new List<ITextureBlenderComponent>();
         }
 
@@ -36,26 +34,19 @@ namespace Transit.Framework.Texturing
             _texture = null;
         }
 
-        public Image GetImage()
-        {
-            var image = _baseImageProvider();
-            var canvas = new Bitmap(image);
-
-            var componentOffset = new Point(0, 0);
-
-            foreach (var c in _components)
-            {
-                c.Apply(ref componentOffset, canvas);
-            }
-
-            return canvas;
-        }
-
         public Texture2D GetTexture()
         {
             if (_texture == null)
             {
-                _texture = TextureCreator.FromData(GetImage().ToByteArray(), string.Empty, TextureType.Default);
+                var canvas = _baseTextureProvider();
+                var componentOffset = new Point(0, 0);
+                foreach (var c in _components)
+                {
+                    c.Apply(ref componentOffset, canvas);
+                }
+
+                canvas.Apply();
+                _texture = canvas;
             }
 
             return _texture;

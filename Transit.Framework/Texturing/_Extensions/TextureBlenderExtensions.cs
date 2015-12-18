@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-
+﻿
 namespace Transit.Framework.Texturing
 {
     public static class ImageBlenderExtensions
@@ -10,26 +9,25 @@ namespace Transit.Framework.Texturing
             return blender;
         }
 
-        public static ITextureBlender WithComponent(this ITextureBlender blender, string path, Point? position = null, byte alphaLevel = 255)
+        public static ITextureBlender WithComponent(this ITextureBlender blender, string path, Point position = null, byte alphaLevel = 255)
         {
             blender.AddComponent(new TextureBlenderComponent(() => AssetManager
                 .instance
-                .GetTextureData(path)
-                .AsImage())
+                .GetTexture(path, TextureType.Default))
             {
-                Position = position == null ? new Point(0, 0) : position.Value,
+                Position = position ?? new Point(0, 0),
                 AlphaLevel = alphaLevel
             });
             return blender;
         }
 
-        public static ITextureBlender WithAlphaComponent(this ITextureBlender blender, Image alphaImage, Point? position = null)
-        {
-            blender.AddComponent(new ImageBlenderAlphaComponent(() => alphaImage)
-            {
-                Position = position == null ? new Point(0, 0) : position.Value
-            });
-            return blender;
-        }
+        //public static ITextureBlender WithAlphaComponent(this ITextureBlender blender, Image alphaImage, Point position = null)
+        //{
+        //    blender.AddComponent(new TextureBlenderAlphaComponent(() => alphaImage)
+        //    {
+        //        Position = position ?? new Point(0, 0)
+        //    });
+        //    return blender;
+        //}
     }
 }

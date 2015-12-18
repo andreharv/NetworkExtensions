@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using Transit.Framework.Texturing;
+﻿using Transit.Framework.Texturing;
 
 namespace Transit.Addon.RoadExtensions.Highways.Highway2L
 {
