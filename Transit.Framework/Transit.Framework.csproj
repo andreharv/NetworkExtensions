@@ -60,10 +60,8 @@
     <Compile Include="Texturing\TextureBlender.cs" />
     <Compile Include="Texturing\TextureBlenderComponent.cs" />
     <Compile Include="Texturing\ITextureProvider.cs" />
-    <Compile Include="Texturing\TextureCreator.cs" />
-    <Compile Include="Texturing\TexturePack.cs" />
     <Compile Include="Texturing\_Extensions\TextureBlenderExtensions.cs" />
-    <Compile Include="Texturing\_Extensions\ImageExtensions.cs" />
+    <Compile Include="Texturing\TextureHelper.cs" />
     <Compile Include="Installer.cs" />
     <Compile Include="Interfaces\IDescriptor.cs" />
     <Compile Include="Interfaces\IIdentifiable.cs" />

@@ -1,4 +1,6 @@
 ﻿
+using UnityEngine;
+
 namespace Transit.Framework.Texturing
 {
     public static class ImageBlenderExtensions
@@ -13,7 +15,8 @@ namespace Transit.Framework.Texturing
         {
             blender.AddComponent(new TextureBlenderComponent(() => AssetManager
                 .instance
-                .GetTexture(path, TextureType.Default))
+                .GetTextureData(path)
+                .AsEditableTexture())
             {
                 Position = position ?? new Point(0, 0),
                 AlphaLevel = alphaLevel
@@ -21,13 +24,13 @@ namespace Transit.Framework.Texturing
             return blender;
         }
 
-        //public static ITextureBlender WithAlphaComponent(this ITextureBlender blender, Image alphaImage, Point position = null)
-        //{
-        //    blender.AddComponent(new TextureBlenderAlphaComponent(() => alphaImage)
-        //    {
-        //        Position = position ?? new Point(0, 0)
-        //    });
-        //    return blender;
-        //}
+        public static ITextureBlender WithAlphaComponent(this ITextureBlender blender, Texture2D alphaTexture, Point position = null)
+        {
+            blender.AddComponent(new TextureBlenderAlphaComponent(() => alphaTexture)
+            {
+                Position = position ?? new Point(0, 0)
+            });
+            return blender;
+        }
     }
 }

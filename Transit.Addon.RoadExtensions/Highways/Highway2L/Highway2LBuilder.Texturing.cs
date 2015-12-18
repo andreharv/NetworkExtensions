@@ -34,8 +34,8 @@ namespace Transit.Addon.RoadExtensions.Highways.Highway2L
                 case NetInfoVersion.Bridge:
                     info.SetAllSegmentsTexture(
                         new TexturesSet(
-                            @"Highways\Highway2L\Textures\Ground_Segment__MainTex.png",
-                            @"Highways\Highway2L\Textures\Ground_Segment__APRMap.png"),
+                            texturePack.SegmentMainTex,
+                            texturePack.SegmentAPRMap),
                         new LODTexturesSet
                            (@"Highways\Highway2L\Textures\Elevated_SegmentLOD__MainTex.png",
                             @"Highways\Highway2L\Textures\Elevated_SegmentLOD__APRMap.png",

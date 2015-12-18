@@ -10,7 +10,8 @@ namespace Transit.Framework.Texturing
         {
             return new TextureBlender(() => AssetManager
                 .instance
-                .GetTexture(baseTexturePath, TextureType.Default, false));
+                .GetTextureData(baseTexturePath)
+                .AsEditableTexture());
         }
 
         public static ITextureBlender FromTexture(Texture2D baseTexture)

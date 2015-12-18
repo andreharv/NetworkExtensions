@@ -84,7 +84,7 @@ namespace Transit.Framework
             return mesh;
         }
 
-        public Texture2D GetTexture(string path, TextureType type, bool useCache = true)
+        public Texture2D GetTexture(string path, TextureType type)
         {
             if (path.IsNullOrWhiteSpace())
             {
@@ -100,17 +100,17 @@ namespace Transit.Framework
                 throw new Exception(String.Format("TFW: Texture {0} not found", trimmedPath));
             }
 
-            if (useCache && type == TextureType.Default)
+            if (type == TextureType.Default)
             {
                 if (!_allTextures.ContainsKey(trimmedPath))
                 {
-                    _allTextures[trimmedPath] = TextureCreator.FromData(_allTexturesRaw[trimmedPath], Path.GetFileNameWithoutExtension(trimmedPath), type);
+                    _allTextures[trimmedPath] = _allTexturesRaw[trimmedPath].AsTexture(Path.GetFileNameWithoutExtension(trimmedPath), type);
                 }
 
                 return _allTextures[trimmedPath];
             }
 
-            return TextureCreator.FromData(_allTexturesRaw[trimmedPath], Path.GetFileNameWithoutExtension(trimmedPath), type);
+            return _allTexturesRaw[trimmedPath].AsTexture(Path.GetFileNameWithoutExtension(trimmedPath), type);
         }
 
         public byte[] GetTextureData(string path)
