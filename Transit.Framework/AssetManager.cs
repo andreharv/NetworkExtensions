@@ -113,7 +113,7 @@ namespace Transit.Framework
             return TextureCreator.FromData(_allTexturesRaw[trimmedPath], Path.GetFileNameWithoutExtension(trimmedPath), type);
         }
 
-        public byte[] GetTextureData(string path, TextureType type)
+        public byte[] GetTextureData(string path)
         {
             var trimmedPath = path
                 .Replace('\\', Path.DirectorySeparatorChar)

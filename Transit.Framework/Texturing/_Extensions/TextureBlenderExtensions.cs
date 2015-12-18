@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using Transit.Framework.Texturing;
 
 namespace Transit.Framework.Texturing
 {
@@ -13,7 +12,10 @@ namespace Transit.Framework.Texturing
 
         public static ITextureBlender WithComponent(this ITextureBlender blender, string path, Point? position = null, byte alphaLevel = 255)
         {
-            blender.AddComponent(new TextureBlenderComponent(path)
+            blender.AddComponent(new TextureBlenderComponent(() => AssetManager
+                .instance
+                .GetTextureData(path)
+                .AsImage())
             {
                 Position = position == null ? new Point(0, 0) : position.Value,
                 AlphaLevel = alphaLevel
@@ -23,7 +25,7 @@ namespace Transit.Framework.Texturing
 
         public static ITextureBlender WithAlphaComponent(this ITextureBlender blender, Image alphaImage, Point? position = null)
         {
-            blender.AddComponent(new ImageBlenderAlphaComponent(alphaImage)
+            blender.AddComponent(new ImageBlenderAlphaComponent(() => alphaImage)
             {
                 Position = position == null ? new Point(0, 0) : position.Value
             });

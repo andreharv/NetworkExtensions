@@ -1,25 +1,21 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Drawing.Imaging;
 
 namespace Transit.Framework.Texturing
 {
     public class TextureBlenderComponent : ITextureBlenderComponent
     {
-        public Image Image { get; private set; }
+        private readonly Func<Image> _imageProvider;
         public Point Position { get; set; }
         public bool IsRelativeFromPrevious { get; set; }
         public bool IncreaseHOffset { get; set; }
         public bool IncreaseVOffset { get; set; }
         public byte AlphaLevel { get; set; }
 
-        public TextureBlenderComponent(string imagePath)
-            : this(Image.FromFile(imagePath))
+        public TextureBlenderComponent(Func<Image> imageProvider)
         {
-        }
-
-        public TextureBlenderComponent(Image image)
-        {
-            Image = image;
+            _imageProvider = imageProvider;
             IsRelativeFromPrevious = true;
             IncreaseHOffset = true;
             IncreaseVOffset = false;
@@ -28,6 +24,8 @@ namespace Transit.Framework.Texturing
 
         public void Apply(ref Point offset, Bitmap canvas)
         {
+            var image = _imageProvider();
+
             if (!IsRelativeFromPrevious)
             {
                 offset = Position;
@@ -44,50 +42,37 @@ namespace Transit.Framework.Texturing
             using (var g = Graphics.FromImage(canvas))
             {
                 g.DrawImage(
-                    Image,
-                    new Rectangle(offset.X, offset.Y, Image.Width, Image.Height),
-                    0, 0, Image.Width, Image.Height,
+                    image,
+                    new Rectangle(offset.X, offset.Y, image.Width, image.Height),
+                    0, 0, image.Width, image.Height,
                     GraphicsUnit.Pixel,
                     attrib);
             }
 
             if (IncreaseHOffset)
             {
-                offset = new Point(offset.X + Image.Width, offset.Y);
+                offset = new Point(offset.X + image.Width, offset.Y);
             }
 
             if (IncreaseVOffset)
             {
-                offset = new Point(offset.X, offset.Y + Image.Height);
+                offset = new Point(offset.X, offset.Y + image.Height);
             }
         }
     }
 
     public class ImageBlenderAlphaComponent : ITextureBlenderComponent
     {
-        public Bitmap Image { get; private set; }
+        private readonly Func<Image> _imageProvider;
         public Point Position { get; set; }
         public bool IsRelativeFromPrevious { get; set; }
         public bool IncreaseHOffset { get; set; }
         public bool IncreaseVOffset { get; set; }
         public Color DefaultColor { get; set; }
 
-        public ImageBlenderAlphaComponent(string imagePath)
-            : this(System.Drawing.Image.FromFile(imagePath))
+        public ImageBlenderAlphaComponent(Func<Image> imageProvider)
         {
-        }
-
-        public ImageBlenderAlphaComponent(Image image)
-        {
-            if (image is Bitmap)
-            {
-                Image = image as Bitmap;
-            }
-            else
-            {
-                Image = new Bitmap(image);
-            }
-            
+            _imageProvider = imageProvider;
             IsRelativeFromPrevious = true;
             IncreaseHOffset = true;
             IncreaseVOffset = false;
@@ -96,6 +81,18 @@ namespace Transit.Framework.Texturing
 
         public void Apply(ref Point offset, Bitmap canvas)
         {
+            var image = _imageProvider();
+            Bitmap bitmap;
+
+            if (image is Bitmap)
+            {
+                bitmap = image as Bitmap;
+            }
+            else
+            {
+                bitmap = new Bitmap(image);
+            }
+
             if (!IsRelativeFromPrevious)
             {
                 offset = Position;
@@ -107,20 +104,20 @@ namespace Transit.Framework.Texturing
 
             for (int y = 0; y < canvas.Height; y++)
             {
-                if (y >= Image.Height)
+                if (y >= bitmap.Height)
                 {
                     continue;
                 }
 
                 for (int x = 0; x < canvas.Width; x++)
                 {
-                    if (x >= Image.Width)
+                    if (x >= bitmap.Width)
                     {
                         continue;
                     }
 
                     var cvsPixel = canvas.GetPixel(x, y);
-                    var imgPixel = Image.GetPixel(x, y);
+                    var imgPixel = bitmap.GetPixel(x, y);
 
                     var alphaLvl = imgPixel.G;
                     var aprLvl = imgPixel.B;
@@ -133,12 +130,12 @@ namespace Transit.Framework.Texturing
 
             if (IncreaseHOffset)
             {
-                offset = new Point(offset.X + Image.Width, offset.Y);
+                offset = new Point(offset.X + bitmap.Width, offset.Y);
             }
 
             if (IncreaseVOffset)
             {
-                offset = new Point(offset.X, offset.Y + Image.Height);
+                offset = new Point(offset.X, offset.Y + bitmap.Height);
             }
         }
 
