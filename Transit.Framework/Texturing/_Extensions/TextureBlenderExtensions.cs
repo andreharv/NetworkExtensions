@@ -11,14 +11,15 @@ namespace Transit.Framework.Texturing
             return blender;
         }
 
-        public static ITextureBlender WithComponent(this ITextureBlender blender, string path, Point position = null, byte alphaLevel = 255)
+        public static ITextureBlender WithComponent(this ITextureBlender blender, string path, Point position = null, byte alphaLevel = 255, bool increaseXOffset = true)
         {
             blender.AddComponent(new TextureBlenderComponent(() => AssetManager
                 .instance
                 .GetTexture(path, TextureType.Default))
             {
                 Position = position ?? new Point(0, 0),
-                AlphaLevel = alphaLevel
+                AlphaLevel = alphaLevel,
+                IncreaseXOffset = increaseXOffset
             });
             return blender;
         }

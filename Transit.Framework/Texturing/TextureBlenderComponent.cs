@@ -8,16 +8,16 @@ namespace Transit.Framework.Texturing
         private readonly Func<Texture2D> _textureProvider;
         public Point Position { get; set; }
         public bool IsRelativeFromPrevious { get; set; }
-        public bool IncreaseHOffset { get; set; }
-        public bool IncreaseVOffset { get; set; }
+        public bool IncreaseXOffset { get; set; }
+        public bool IncreaseYOffset { get; set; }
         public byte AlphaLevel { get; set; }
 
         public TextureBlenderComponent(Func<Texture2D> textureProvider)
         {
             _textureProvider = textureProvider;
             IsRelativeFromPrevious = true;
-            IncreaseHOffset = true;
-            IncreaseVOffset = false;
+            IncreaseXOffset = true;
+            IncreaseYOffset = false;
             AlphaLevel = 255;
         }
 
@@ -26,16 +26,17 @@ namespace Transit.Framework.Texturing
             var texture = _textureProvider();
             var texturePixels = _textureProvider().GetPixels();
 
+            Point drawPosition;
             if (!IsRelativeFromPrevious)
             {
-                offset = Position;
+                drawPosition = Position;
             }
             else
             {
-                offset = new Point(offset.X + Position.X, offset.Y + Position.Y);
+                drawPosition = new Point(offset.X + Position.X, offset.Y + Position.Y);
             }
 
-            var canvasPixels = canvas.GetPixels(offset.X, offset.Y, texture.width, texture.height);
+            var canvasPixels = canvas.GetPixels(drawPosition.X, drawPosition.Y, texture.width, texture.height);
 
             for (int i = 0; i < canvasPixels.Length; i++)
             {
@@ -56,16 +57,16 @@ namespace Transit.Framework.Texturing
                 canvasPixels[i] = cPixel;
             }
 
-            canvas.SetPixels(offset.X, offset.Y, texture.width, texture.height, canvasPixels);
+            canvas.SetPixels(drawPosition.X, drawPosition.Y, texture.width, texture.height, canvasPixels);
 
-            if (IncreaseHOffset)
+            if (IncreaseXOffset)
             {
-                offset = new Point(offset.X + texture.width, offset.Y);
+                offset = new Point(drawPosition.X + texture.width, offset.Y);
             }
 
-            if (IncreaseVOffset)
+            if (IncreaseYOffset)
             {
-                offset = new Point(offset.X, offset.Y + texture.height);
+                offset = new Point(offset.X, drawPosition.Y + texture.height);
             }
         }
 
