@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using ColossalFramework;
 using UnityEngine;
 
 namespace Transit.Framework.Texturing
 {
     public class TextureBlender : ITextureBlender
     {
-        public static ITextureBlender FromBaseFile(string baseTexturePath)
+        public static ITextureBlender FromBaseFile(string baseTexturePath, string textureName = null)
         {
             return new TextureBlender(() => AssetManager
                 .instance
-                .GetTextureData(baseTexturePath)
-                .AsEditableTexture());
+                .GetEditableTexture(baseTexturePath, textureName));
         }
 
         public static ITextureBlender FromTexture(Texture2D baseTexture)
@@ -47,6 +47,16 @@ namespace Transit.Framework.Texturing
                 }
 
                 canvas.Apply();
+
+#if DEBUG_TEXGEN
+                if (!canvas.name.IsNullOrWhiteSpace())
+                {
+                    canvas
+                        .EncodeToPNG()
+                        .Save(canvas.name + ".png");
+                }
+#endif
+
                 _texture = canvas;
             }
 

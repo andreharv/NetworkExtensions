@@ -113,8 +113,13 @@ namespace Transit.Framework
             return _allTexturesRaw[trimmedPath].AsTexture(Path.GetFileNameWithoutExtension(trimmedPath), type);
         }
 
-        public byte[] GetTextureData(string path)
+        public Texture2D GetEditableTexture(string path, string textureName = null)
         {
+            if (path.IsNullOrWhiteSpace())
+            {
+                return null;
+            }
+
             var trimmedPath = path
                 .Replace('\\', Path.DirectorySeparatorChar)
                 .Replace('/', Path.DirectorySeparatorChar);
@@ -124,7 +129,7 @@ namespace Transit.Framework
                 throw new Exception(String.Format("TFW: Texture {0} not found", trimmedPath));
             }
 
-            return _allTexturesRaw[trimmedPath];
+            return _allTexturesRaw[trimmedPath].AsEditableTexture(textureName);
         }
 
         public Mesh GetMesh(string path)

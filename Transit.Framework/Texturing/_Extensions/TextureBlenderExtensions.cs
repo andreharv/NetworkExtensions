@@ -15,8 +15,7 @@ namespace Transit.Framework.Texturing
         {
             blender.AddComponent(new TextureBlenderComponent(() => AssetManager
                 .instance
-                .GetTextureData(path)
-                .AsEditableTexture())
+                .GetTexture(path, TextureType.Default))
             {
                 Position = position ?? new Point(0, 0),
                 AlphaLevel = alphaLevel

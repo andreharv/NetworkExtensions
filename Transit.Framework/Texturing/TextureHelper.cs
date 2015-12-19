@@ -11,9 +11,13 @@ namespace Transit.Framework.Texturing
             File.WriteAllBytes(path, imageBytes);
         }
 
-        public static Texture2D AsEditableTexture(this byte[] textureBytes)
+        public static Texture2D AsEditableTexture(this byte[] textureBytes, string textureName = null)
         {
             var texture = new Texture2D(1, 1);
+            if (textureName != null)
+            {
+                texture.name = textureName; 
+            }
             texture.LoadImage(textureBytes);
             texture.anisoLevel = 8;
             texture.filterMode = FilterMode.Trilinear;
