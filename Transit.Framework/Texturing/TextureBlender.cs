@@ -5,16 +5,16 @@ using UnityEngine;
 
 namespace Transit.Framework.Texturing
 {
-    public class TextureBlender : ITextureBlender
+    public partial class TextureBlender : ITextureProvider
     {
-        public static ITextureBlender FromBaseFile(string baseTexturePath, string textureName = null)
+        public static TextureBlender FromBaseFile(string baseTexturePath, string textureName = null)
         {
             return new TextureBlender(() => AssetManager
                 .instance
                 .GetEditableTexture(baseTexturePath, textureName));
         }
 
-        public static ITextureBlender FromTexture(Texture2D baseTexture)
+        public static TextureBlender FromTexture(Texture2D baseTexture)
         {
             return new TextureBlender(() => baseTexture);
         }
@@ -29,7 +29,7 @@ namespace Transit.Framework.Texturing
             _components = new List<ITextureBlenderComponent>();
         }
 
-        public void AddComponent(ITextureBlenderComponent component)
+        private void AddComponent(ITextureBlenderComponent component)
         {
             _components.Add(component);
             _texture = null;
@@ -48,7 +48,7 @@ namespace Transit.Framework.Texturing
 
                 canvas.Apply();
 
-#if DEBUG_TEXGEN
+#if DEBUG_TEXBLEND
                 if (!canvas.name.IsNullOrWhiteSpace())
                 {
                     canvas
@@ -61,6 +61,40 @@ namespace Transit.Framework.Texturing
             }
 
             return _texture;
+        }
+
+        public TextureBlender WithXOffset(int xOffset)
+        {
+            AddComponent(new XOffsetComponent(xOffset));
+            return this;
+        }
+
+        public TextureBlender WithComponent(string path, int positionX, byte alphaLevel = 255, bool increaseXOffset = true)
+        {
+            AddComponent(new TextureComponent
+                (() => AssetManager.instance.GetTexture(path, TextureType.Default),
+                 alphaLevel: alphaLevel,
+                 position: new Point(positionX, 0),
+                 increaseXOffset: increaseXOffset));
+            return this;
+        }
+
+        public TextureBlender WithComponent(string path, Point position = null, byte alphaLevel = 255, bool increaseXOffset = true)
+        {
+            AddComponent(new TextureComponent
+                (() => AssetManager.instance.GetTexture(path, TextureType.Default),
+                 alphaLevel: alphaLevel,
+                 position: position,
+                 increaseXOffset: increaseXOffset));
+            return this;
+        }
+
+        public TextureBlender WithAlphaComponent(Texture2D alphaTexture, Point position = null)
+        {
+            AddComponent(new AlphaComponent(
+                () => alphaTexture,
+                position: position));
+            return this;
         }
     }
 }

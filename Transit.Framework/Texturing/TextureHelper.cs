@@ -6,6 +6,11 @@ namespace Transit.Framework.Texturing
 {
     public static class TextureHelper
     {
+        public static float Lerp(float baseColorPart, float defaultColorPart, float level)
+        {
+            return baseColorPart + (defaultColorPart - baseColorPart) * level;
+        }
+
         public static void Save(this byte[] imageBytes, string path)
         {
             File.WriteAllBytes(path, imageBytes);
