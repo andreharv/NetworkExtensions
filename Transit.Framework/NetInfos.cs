@@ -11,10 +11,12 @@ namespace Transit.Framework
             public const string ROAD_2L_GRASS = "Basic Road Decoration Grass";
             public const string ROAD_2L_TREES = "Basic Road Decoration Trees";
             public const string ROAD_6L = "Large Road";
+            public const string ROAD_6L_TUNNEL = "Large Road Tunnel";
             public const string ROAD_6L_GRASS = "Large Road Decoration Grass";
             public const string ROAD_6L_TREES = "Large Road Decoration Trees";
 
             public const string AVENUE_4L = "Medium Road";
+            public const string AVENUE_4L_BRIDGE = "Medium Road Bridge";
 
             public const string ONEWAY_2L = "Oneway Road";
             public const string ONEWAY_2L_GRASS = "Oneway Road Decoration Grass";
@@ -165,6 +167,9 @@ namespace Transit.Framework
         public const string NEXT_SMALL4L_ROAD = "NExtSmall4LRoad";
         public const string NEXT_SMALL4L_ROAD_TUNNEL = "NExtSmall4LRoadTunnel";
         public const string NEXT_MEDIUM_ROAD = "NExtMediumRoad";
+        public const string NEXT_MEDIUM_ROAD_TUNNEL = "NExtMediumRoadTunnel";
+        public const string NEXT_MEDIUM_ROAD_TL = "NExtMediumRoadTL";
+        public const string NEXT_MEDIUM_ROAD_TL_TUNNEL = "NExtMediumRoadTLTunnel";
         public const string NEXT_PED_ROAD = "NExtPedRoad";
     }
 }
