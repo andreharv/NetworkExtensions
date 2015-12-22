@@ -19,13 +19,6 @@ namespace Transit.Framework
         AllWithDecoration = 63,
     }
 
-    public enum CenterLaneVersion
-    {
-        Default = 0,
-        TurningLane = 1,
-        Median = 2
-    }
-
     public static class NetInfoVersionExtensions
     {
         public static IEnumerable<NetInfoVersion> ToCollection(this NetInfoVersion version)

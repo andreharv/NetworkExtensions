@@ -235,9 +235,9 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             }
         }
 
-        public static NetInfo SetRoadLanes(this NetInfo rdInfo, NetInfoVersion version, RoadPropertyHelper rpHelper)
+        public static NetInfo SetRoadLanes(this NetInfo rdInfo, NetInfoVersion version, LanesConfiguration config)
         {
-            if (rpHelper.LanesToAdd < 0)
+            if (config.LanesToAdd < 0)
             {
                 var remainingLanes = new List<NetInfo.Lane>();
                 remainingLanes.AddRange(rdInfo
@@ -246,16 +246,16 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                 remainingLanes.AddRange(rdInfo
                     .m_lanes
                     .Where(l => l.m_laneType != NetInfo.LaneType.Pedestrian && l.m_laneType != NetInfo.LaneType.None && l.m_laneType != NetInfo.LaneType.Parking)
-                    .Skip(-1 * rpHelper.LanesToAdd));
+                    .Skip(-1 * config.LanesToAdd));
 
                 rdInfo.m_lanes = remainingLanes.ToArray();
             }
-            else if (rpHelper.LanesToAdd > 0)
+            else if (config.LanesToAdd > 0)
             {
                 var sourceLane = rdInfo.m_lanes.First(l => l.m_laneType != NetInfo.LaneType.None && l.m_laneType != NetInfo.LaneType.Parking && l.m_laneType != NetInfo.LaneType.Pedestrian);
                 var tempLanes = rdInfo.m_lanes.ToList();
 
-                for (var i = 0; i < rpHelper.LanesToAdd; i++)
+                for (var i = 0; i < config.LanesToAdd; i++)
                 {
                     var newLane = sourceLane.Clone();
                     tempLanes.Add(newLane);
@@ -270,39 +270,39 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
 
             var nbLanes = vehicleLanes.Count();
             int positionStartOffset;
-            switch (rpHelper.CLVersion)
+            switch (config.CenterLane)
             {
-                case CenterLaneVersion.TurningLane:
+                case CenterLaneType.TurningLane:
                     positionStartOffset = 2;
                     break;
-                case CenterLaneVersion.Default:
+                case CenterLaneType.None:
                     positionStartOffset = 1;
                     break;
-                case CenterLaneVersion.Median:
+                case CenterLaneType.Median:
                     positionStartOffset = 0;
                     break;
                 default:
                     positionStartOffset = 1;
                     break;
             }
-            var positionStart = rpHelper.LaneWidth * ((positionStartOffset - nbLanes) / 2f);
+            var positionStart = config.LaneWidth * ((positionStartOffset - nbLanes) / 2f);
 
             for (var i = 0; i < nbLanes; i++)
             {
                 var l = vehicleLanes[i];
-                l.m_position = positionStart + (i + (rpHelper.CLVersion == CenterLaneVersion.Median && i + 1 > nbLanes / 2 ? 1 : 0)) * rpHelper.LaneWidth;
-                var isTurningLane = (rpHelper.CLVersion == CenterLaneVersion.TurningLane && (i == nbLanes - 1 || l.m_position == 0));
+                l.m_position = positionStart + (i + (config.CenterLane == CenterLaneType.Median && i + 1 > nbLanes / 2 ? 1 : 0)) * config.LaneWidth;
+                var isTurningLane = (config.CenterLane == CenterLaneType.TurningLane && (i == nbLanes - 1 || l.m_position == 0));
                 if (isTurningLane)
                 {
                     l.m_position = 0;
                 }
                 l.m_allowStop = false;
-                l.m_width = rpHelper.LaneWidth;
+                l.m_width = config.LaneWidth;
 
                 l.m_laneProps = l.m_laneProps.Clone();
-                if (rpHelper.SpeedLimit > -1 && !isTurningLane)
+                if (config.SpeedLimit != null && !isTurningLane)
                 {
-                    l.m_speedLimit = rpHelper.SpeedLimit;
+                    l.m_speedLimit = config.SpeedLimit.Value;
                 }
                 else if (isTurningLane)
                 {
@@ -311,7 +311,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                     SetupTurningLaneProps(l);
                 }
 
-                if (rpHelper.IsTwoWay)
+                if (config.IsTwoWay)
                 {
                     if ((!isTurningLane && l.m_position < 0.0f) || (isTurningLane && i == nbLanes - 1))
                     {
@@ -334,7 +334,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             var laneCollection = new List<NetInfo.Lane>();
 
             laneCollection.AddRange(vehicleLanes);
-            laneCollection.AddRange(rdInfo.SetPedestrianLanes(version, rpHelper.PedPropOffsetX));
+            laneCollection.AddRange(rdInfo.SetPedestrianLanes(version, config.PedPropOffsetX));
 
             if (rdInfo.m_hasParkingSpaces)
             {
