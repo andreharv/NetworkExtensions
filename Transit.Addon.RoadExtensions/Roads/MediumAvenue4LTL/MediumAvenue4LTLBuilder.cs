@@ -108,10 +108,9 @@ namespace Transit.Addon.RoadExtensions.Roads.MediumAvenue4LTL
             }
 
             var roadBaseAI = info.GetComponent<RoadBaseAI>();
-
             if (roadBaseAI != null)
             {
-                roadBaseAI.m_trafficLights = true;
+                roadBaseAI.m_trafficLights = false;
             }
         }
     }

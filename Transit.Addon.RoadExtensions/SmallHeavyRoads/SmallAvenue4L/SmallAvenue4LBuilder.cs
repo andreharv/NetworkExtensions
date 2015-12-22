@@ -112,11 +112,11 @@ namespace Transit.Addon.RoadExtensions.SmallHeavyRoads.SmallAvenue4L
                 playerNetAI.m_maintenanceCost = owPlayerNetAI.m_maintenanceCost * 2; // Charge by the lane?
             }
 
+            // TODO: make it configurable
             var roadBaseAI = info.GetComponent<RoadBaseAI>();
-
             if (roadBaseAI != null)
             {
-                roadBaseAI.m_trafficLights = true;
+                roadBaseAI.m_trafficLights = false;
             }
         }
     }

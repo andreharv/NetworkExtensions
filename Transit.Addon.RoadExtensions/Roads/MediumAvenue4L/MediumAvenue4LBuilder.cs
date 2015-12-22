@@ -6,15 +6,15 @@ using UnityEngine;
 
 namespace Transit.Addon.RoadExtensions.Roads.MediumAvenue4L
 {
-    public partial class MediumAvenue4LBuilder : Activable, INetInfoBuilderPart
+    public partial class MediumAvenue4LBuilder : Activable, INetInfoBuilderPart, INetInfoModifier
     {
         public int Order { get { return 21; } }
         public int UIOrder { get { return 5; } }
 
         public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_6L; } }
         public string Name { get { return "Medium Avenue"; } }
-        public string DisplayName { get { return "Four-Lane Road with painted median"; } }
-        public string Description { get { return "A four-lane road with painted median and parking spaces. Supports medium traffic."; } }
+        public string DisplayName { get { return "Four-Lane Road"; } }
+        public string Description { get { return "A four-lane road with parking spaces. Supports medium traffic."; } }
         public string ShortDescription { get { return "Parkings, zoneable, medium traffic"; } }
         public string UICategory { get { return "RoadsMedium"; } }
 
@@ -112,6 +112,15 @@ namespace Transit.Addon.RoadExtensions.Roads.MediumAvenue4L
             if (roadBaseAI != null)
             {
                 roadBaseAI.m_trafficLights = true;
+            }
+        }
+
+        public void ModifyExistingNetInfo()
+        {
+            var avenue4L = Prefabs.Find<NetInfo>(NetInfos.Vanilla.AVENUE_4L, false);
+            if (avenue4L != null)
+            {
+                avenue4L.ModifyTitle("Four-Lane Road with Median");
             }
         }
     }
