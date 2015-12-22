@@ -93,7 +93,6 @@
     <Compile Include="SmallHeavyRoads\Common\RoadModels.16m.2mSW.cs" />
     <Compile Include="SmallHeavyRoads\Common\RoadModels.16m.3mSW.cs" />
     <Compile Include="SmallHeavyRoads\OneWay3L\OneWay3LBuilder.cs" />
-    <Compile Include="SmallHeavyRoads\Common\SmallHeavyRoadHelper.cs" />
     <Compile Include="RExModule.Settings.cs" />
     <Compile Include="RExModule.Install.cs" />
     <Compile Include="Highways\Highway1L\Highway1LBuilder.cs" />

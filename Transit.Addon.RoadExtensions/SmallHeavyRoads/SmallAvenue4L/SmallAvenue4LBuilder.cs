@@ -66,7 +66,14 @@ namespace Transit.Addon.RoadExtensions.SmallHeavyRoads.SmallAvenue4L
             }
 
             // Setting up lanes
-            info.SetRoadLanes(version, 2, 0.5f, 1.0f, true);
+            info.SetRoadLanes(version, new LanesConfiguration
+            {
+                IsTwoWay = true,
+                LanesToAdd = 2,
+                PedPropOffsetX = 0.5f,
+                BusStopOffset = 0f,
+                SpeedLimit = 1.0f
+            });
             var leftPedLane = info.GetLeftRoadShoulder(owRoadInfo, version);
             var rightPedLane = info.GetRightRoadShoulder(owRoadInfo, version);
 

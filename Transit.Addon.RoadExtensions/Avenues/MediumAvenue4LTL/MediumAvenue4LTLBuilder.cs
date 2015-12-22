@@ -68,7 +68,7 @@ namespace Transit.Addon.RoadExtensions.Avenues.MediumAvenue4LTL
             }
 			
             // Setting up lanes
-            info.SetRoadLanes(version, new LanesConfiguration()
+            info.SetRoadLanes(version, new LanesConfiguration
             {
                 IsTwoWay = true,
                 LaneWidth = 3.8f,

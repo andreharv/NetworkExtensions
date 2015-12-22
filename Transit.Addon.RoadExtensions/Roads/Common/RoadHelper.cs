@@ -165,11 +165,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
 
         public static void TrimAboveGroundProps(this NetInfo info, NetInfoVersion version, bool removeRightStreetLights = false, bool removeLeftStreetLights = false)
         {
-            var randomProp = Prefabs.Find<PropInfo>("Random Street Prop", false);
-            var streetLight = Prefabs.Find<PropInfo>("New Street Light", false);
-            var streetLightHw = Prefabs.Find<PropInfo>("New Street Light Highway", false);
-            var manhole = Prefabs.Find<PropInfo>("Manhole", false);
-
             foreach (var laneProps in info.m_lanes.Select(l => l.m_laneProps).Where(lpi => lpi != null))
             {
                 var remainingProp = new List<NetLaneProps.Prop>();
@@ -193,40 +188,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                     {
                         continue;
                     }
-                    //if (prop.m_prop == manhole)
-                    //{
-                    //    continue;
-                    //}
-
-                    //if (removeLeftStreetLights)
-                    //{
-                    //    if (prop.m_prop == streetLight &&
-                    //        laneProps.name.Contains("Left"))
-                    //    {
-                    //        continue;
-                    //    }
-
-                    //    if (prop.m_prop == streetLightHw &&
-                    //        laneProps.name.Contains("Left"))
-                    //    {
-                    //        continue;
-                    //    }
-                    //}
-
-                    //if (removeRightStreetLights)
-                    //{
-                    //    if (prop.m_prop == streetLight &&
-                    //        laneProps.name.Contains("Right"))
-                    //    {
-                    //        continue;
-                    //    }
-
-                    //    if (prop.m_prop == streetLightHw &&
-                    //        laneProps.name.Contains("Right"))
-                    //    {
-                    //        continue;
-                    //    }
-                    //}
 
                     remainingProp.Add(prop);
                 }
@@ -246,7 +207,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                 remainingLanes.AddRange(rdInfo
                     .m_lanes
                     .Where(l => l.m_laneType != NetInfo.LaneType.Pedestrian && l.m_laneType != NetInfo.LaneType.None && l.m_laneType != NetInfo.LaneType.Parking)
-                    .Skip(-1 * config.LanesToAdd));
+                    .Skip(-config.LanesToAdd));
 
                 rdInfo.m_lanes = remainingLanes.ToArray();
             }
@@ -264,6 +225,23 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                 rdInfo.m_lanes = tempLanes.ToArray();
             }
 
+            var laneCollection = new List<NetInfo.Lane>();
+
+            laneCollection.AddRange(rdInfo.SetupVehicleLanes(version, config));
+            laneCollection.AddRange(rdInfo.SetupPedestrianLanes(version, config.PedPropOffsetX));
+
+            if (rdInfo.m_hasParkingSpaces)
+            {
+                laneCollection.AddRange(rdInfo.SetupParkingLanes());
+            }
+
+            rdInfo.m_lanes = laneCollection.OrderBy(l => l.m_position).ToArray();
+
+            return rdInfo;
+        }
+
+        private static IEnumerable<NetInfo.Lane> SetupVehicleLanes(this NetInfo rdInfo, NetInfoVersion version, LanesConfiguration config)
+        {
             var vehicleLanes = rdInfo.m_lanes
                 .Where(l => l.m_laneType != NetInfo.LaneType.None && l.m_laneType != NetInfo.LaneType.Parking && l.m_laneType != NetInfo.LaneType.Pedestrian)
                 .ToArray();
@@ -291,7 +269,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             {
                 var l = vehicleLanes[i];
                 l.m_position = positionStart + (i + (config.CenterLane == CenterLaneType.Median && i + 1 > nbLanes / 2 ? 1 : 0)) * config.LaneWidth;
-                var isTurningLane = (config.CenterLane == CenterLaneType.TurningLane && (i == nbLanes - 1 || l.m_position == 0));
+                var isTurningLane = (config.CenterLane == CenterLaneType.TurningLane && (i == nbLanes - 1 || l.m_position == 0f));
                 if (isTurningLane)
                 {
                     l.m_position = 0;
@@ -327,26 +305,54 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
 
                 foreach (var prop in l.m_laneProps.m_props)
                 {
-                    prop.m_position = new Vector3(0, 0, 0);
+                    prop.m_position = new Vector3(0, 0, -4);
                 }
             }
 
-            var laneCollection = new List<NetInfo.Lane>();
+            vehicleLanes = vehicleLanes.OrderBy(l => l.m_position).ToArray();
 
-            laneCollection.AddRange(vehicleLanes);
-            laneCollection.AddRange(rdInfo.SetPedestrianLanes(version, config.PedPropOffsetX));
-
-            if (rdInfo.m_hasParkingSpaces)
+            // Bus stops configs
+            for (int i = 0; i < vehicleLanes.Length; i++)
             {
-                laneCollection.AddRange(rdInfo.SetParkingLanes());
+                var l = vehicleLanes[i];
+
+                if (version == NetInfoVersion.Ground)
+                {
+                    if (i == 0)
+                    {
+                        l.m_allowStop = config.IsTwoWay;
+                    }
+                    else if (i == vehicleLanes.Length - 1)
+                    {
+                        l.m_allowStop = true;
+                    }
+                    else
+                    {
+                        l.m_allowStop = false;
+                    }
+
+                    if (l.m_allowStop)
+                    {
+                        if (l.m_position < 0)
+                        {
+                            l.m_stopOffset = -config.BusStopOffset;
+                        }
+                        else
+                        {
+                            l.m_stopOffset = config.BusStopOffset;
+                        }
+                    }
+                }
+                else
+                {
+                    l.m_allowStop = false;
+                }
             }
 
-            rdInfo.m_lanes = laneCollection.OrderBy(lc => lc.m_position).ToArray();
-
-            return rdInfo;
+            return vehicleLanes;
         }
 
-        private static IEnumerable<NetInfo.Lane> SetPedestrianLanes(this NetInfo rdInfo, NetInfoVersion version, float propOffsetX = 0.0f)
+        private static IEnumerable<NetInfo.Lane> SetupPedestrianLanes(this NetInfo rdInfo, NetInfoVersion version, float propOffsetX = 0.0f)
         {
             var pedestrianLanes = rdInfo.m_lanes
                 .Where(l => l.m_laneType == NetInfo.LaneType.Pedestrian)
@@ -372,7 +378,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             return pedestrianLanes;
         }
 
-        private static IEnumerable<NetInfo.Lane> SetParkingLanes(this NetInfo rdInfo)
+        private static IEnumerable<NetInfo.Lane> SetupParkingLanes(this NetInfo rdInfo)
         {
             var parkingLanes = rdInfo
                 .m_lanes
