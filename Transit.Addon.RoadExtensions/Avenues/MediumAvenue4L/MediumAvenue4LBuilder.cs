@@ -82,6 +82,25 @@ namespace Transit.Addon.RoadExtensions.Avenues.MediumAvenue4L
             var leftRoadProps = leftPedLane.m_laneProps.m_props.ToList();
             var rightRoadProps = rightPedLane.m_laneProps.m_props.ToList();
 
+            // Fix for T++ legacy support
+            if (version == NetInfoVersion.Ground)
+            {
+                var lanes = info.m_lanes.OrderBy(l => l.m_position).ToArray();
+                var lanesLegacyOrder = new[]
+                {
+                    lanes[2],
+                    lanes[3],
+                    lanes[4],
+                    lanes[5],
+                    lanes[0],
+                    lanes[7],
+                    lanes[1],
+                    lanes[6]
+                };
+
+                info.m_lanes = lanesLegacyOrder;
+            }
+
             if (version == NetInfoVersion.Slope)
             {
                 leftRoadProps.AddLeftWallLights(info.m_pavementWidth);
