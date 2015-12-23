@@ -69,22 +69,12 @@ namespace Transit.Framework.Texturing
             return this;
         }
 
-        public TextureBlender WithComponent(string path, int positionX, byte alphaLevel = 255, bool increaseXOffset = true)
+        public TextureBlender WithComponent(string path, byte alphaLevel = 255, int positionX = 0, bool increaseXOffset = true)
         {
             AddComponent(new TextureComponent
                 (() => AssetManager.instance.GetTexture(path, TextureType.Default),
                  alphaLevel: alphaLevel,
                  position: new Point(positionX, 0),
-                 increaseXOffset: increaseXOffset));
-            return this;
-        }
-
-        public TextureBlender WithComponent(string path, Point position = null, byte alphaLevel = 255, bool increaseXOffset = true)
-        {
-            AddComponent(new TextureComponent
-                (() => AssetManager.instance.GetTexture(path, TextureType.Default),
-                 alphaLevel: alphaLevel,
-                 position: position,
                  increaseXOffset: increaseXOffset));
             return this;
         }
