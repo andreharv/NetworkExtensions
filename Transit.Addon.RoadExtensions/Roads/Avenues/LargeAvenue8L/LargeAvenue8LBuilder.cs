@@ -7,19 +7,19 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8L
 {
     public class LargeAvenue8LBuilder : Activable, INetInfoBuilderPart
     {
-        public int Order { get { return 50; } }
-        public int UIOrder { get { return 30; } }
+        public int Order { get { return 23; } }
+        public int UIOrder { get { return 0; } }
 
         public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_6L; } }
         public string Name { get { return "Eight-Lane Road"; } }
         public string DisplayName { get { return "Eight-Lane Road"; } }
-        public string CodeName { get { return "LARGEAVENUE_8L"; } }
+        public string CodeName { get { return "LARGEROAD_8L"; } }
         public string Description { get { return "An eight-lane road without parking spaces. Supports very heavy traffic."; } }
         public string ShortDescription { get { return "No parking, zoneable, heavy traffic."; } }
         public string UICategory { get { return "RoadsLarge"; } }
-        
-        public string ThumbnailsPath    { get { return @"Roads\LargeAvenue8L\thumbnails.png"; } }
-        public string InfoTooltipPath   { get { return @"Roads\LargeAvenue8L\infotooltip.png"; } }
+
+        public string ThumbnailsPath { get { return @"Roads\Avenues\LargeAvenue8L\thumbnails.png"; } }
+        public string InfoTooltipPath { get { return @"Roads\Avenues\LargeAvenue8L\infotooltip.png"; } }
 
         public NetInfoVersion SupportedVersions
         {
@@ -41,8 +41,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8L
 			case NetInfoVersion.Ground:
 				info.SetAllSegmentsTexture (
 					new TexturesSet (
-						@"Roads\LargeAvenue8L\Textures\Ground_Segment__MainTex.png",
-						@"Roads\LargeAvenue8L\Textures\Ground_Segment__AlphaMap.png"));
+                        @"Roads\Avenues\LargeAvenue8L\Textures\Ground_Segment__MainTex.png",
+                        @"Roads\Avenues\LargeAvenue8L\Textures\Ground_Segment__AlphaMap.png"));
 				break;
 			}
 
@@ -52,7 +52,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8L
 			///////////////////////////
 			info.m_class = largeRoadInfo.m_class.Clone(NetInfoClasses.NEXT_LARGE_ROAD);
 			info.m_hasParkingSpaces = false;
-			info.m_pavementWidth = 6.4f;
 
 
 			//Setting up Lanes
