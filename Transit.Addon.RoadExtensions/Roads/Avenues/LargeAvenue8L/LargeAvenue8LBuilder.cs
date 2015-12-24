@@ -11,7 +11,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8L
         public int UIOrder { get { return 0; } }
 
         public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_6L; } }
-        public string Name { get { return "Eight-Lane Road"; } }
+        public string Name { get { return "Eight-Lane Avenue"; } }
         public string DisplayName { get { return "Eight-Lane Road"; } }
         public string CodeName { get { return "LARGEROAD_8L"; } }
         public string Description { get { return "An eight-lane road without parking spaces. Supports very heavy traffic."; } }

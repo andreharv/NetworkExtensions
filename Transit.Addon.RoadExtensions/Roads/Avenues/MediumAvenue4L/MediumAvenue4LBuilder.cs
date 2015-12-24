@@ -33,7 +33,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.MediumAvenue4L
             ///////////////////////////
             var roadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_6L);
             var roadTunnelInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_6L_TUNNEL);
-            var bridgeInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.AVENUE_4L_BRIDGE).Clone("temp");
+            var bridgeInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_4L_BRIDGE).Clone("temp");
 
             ///////////////////////////
             // 3DModeling            //
@@ -134,7 +134,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.MediumAvenue4L
 
         public void ModifyExistingNetInfo()
         {
-            var avenue4L = Prefabs.Find<NetInfo>(NetInfos.Vanilla.AVENUE_4L, false);
+            var avenue4L = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_4L, false);
             if (avenue4L != null)
             {
                 avenue4L.ModifyTitle("Four-Lane Road with Median");

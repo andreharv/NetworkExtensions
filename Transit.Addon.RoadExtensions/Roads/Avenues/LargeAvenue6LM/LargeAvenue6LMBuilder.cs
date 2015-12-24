@@ -11,8 +11,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue6LM
         public int Order { get { return 22; } }
         public int UIOrder { get { return 0; } }
 
-        public string BasedPrefabName { get { return NetInfos.Vanilla.AVENUE_4L; } }
-        public string Name { get { return "Six-Lane Road M"; } }
+        public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_4L; } }
+        public string Name { get { return "Six-Lane Avenue M"; } }
         public string DisplayName { get { return "Six-Lane Road with Median"; } }
         public string CodeName { get { return "LARGEROAD_6LM"; } }
         public string Description { get { return "A six-lane road. Supports heavy traffic."; } }
@@ -32,7 +32,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue6LM
             ///////////////////////////
             // Template              //
             ///////////////////////////
-            var mediumRoadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.AVENUE_4L);
+            var mediumRoadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_4L);
 
             ///////////////////////////
             // 3DModeling            //
