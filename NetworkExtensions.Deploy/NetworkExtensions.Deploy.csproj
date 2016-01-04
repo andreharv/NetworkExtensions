@@ -75,9 +75,9 @@ rd /s /q  "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\Network
 mkdir "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\NetworkExtensions"
 xcopy /q /y /e "$(ProjectDir)bin\$(ConfigurationName)" "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\NetworkExtensions"
 ) else (
-rd /s /q  "D:\Jeux\Steam\SteamApps\workshop\content\255710\478820060"
-mkdir "D:\Jeux\Steam\SteamApps\workshop\content\255710\478820060"
-xcopy /q /y /e "$(ProjectDir)bin\$(ConfigurationName)" "D:\Jeux\Steam\SteamApps\workshop\content\255710\478820060"
+rd /s /q  "D:\Games\Steam\SteamApps\workshop\content\255710\478820060"
+mkdir "D:\Games\Steam\SteamApps\workshop\content\255710\478820060"
+xcopy /q /y /e "$(ProjectDir)bin\$(ConfigurationName)" "D:\Games\Steam\SteamApps\workshop\content\255710\478820060"
 )</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

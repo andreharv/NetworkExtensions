@@ -2,7 +2,6 @@
 using System.Linq;
 using Transit.Addon.RoadExtensions.Menus;
 using Transit.Addon.RoadExtensions.Roads.Common;
-using Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
 
