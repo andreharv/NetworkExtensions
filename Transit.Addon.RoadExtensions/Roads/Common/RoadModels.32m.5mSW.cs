@@ -1,6 +1,6 @@
 ﻿using Transit.Framework;
 
-namespace Transit.Addon.RoadExtensions.Roads.Avenues.Common
+namespace Transit.Addon.RoadExtensions.Roads.Common
 {
     public static partial class RoadModels
     {
@@ -35,8 +35,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.Common
                         node2
                             .SetFlags(NetNode.Flags.Underground, NetNode.Flags.None)
                             .SetMeshes
-                            (@"Roads\Avenues\Common\Meshes\32m\5mSW\Slope_U_Node.obj",
-                             @"Roads\Avenues\Common\Meshes\32m\5mSW\Slope_U_Node.obj");
+                            (@"Roads\Common\Meshes\32m\5mSW\Slope_U_Node.obj",
+                             @"Roads\Common\Meshes\32m\5mSW\Slope_U_Node.obj");
 
                         node2.m_material = defaultMaterial;
 
@@ -56,13 +56,13 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.Common
                         segment1
                             .SetFlagsDefault()
                             .SetMeshes
-                            (@"Roads\Avenues\Common\Meshes\32m\5mSW\Tunnel.obj",
+                            (@"Roads\Common\Meshes\32m\5mSW\Tunnel.obj",
                              @"Roads\Highways\Common\Meshes\32m\Tunnel_LOD.obj");
 
                         node1
                             .SetFlags(NetNode.Flags.None,NetNode.Flags.None)
                             .SetMeshes
-                            (@"Roads\Avenues\Common\Meshes\32m\5mSW\Tunnel_Node.obj",
+                            (@"Roads\Common\Meshes\32m\5mSW\Tunnel_Node.obj",
                              @"Roads\Highways\Common\Meshes\32m\Tunnel_LOD.obj");
 
                         segment1.m_material = defaultMaterial;

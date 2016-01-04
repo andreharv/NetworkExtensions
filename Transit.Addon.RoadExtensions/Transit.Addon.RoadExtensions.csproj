@@ -67,7 +67,7 @@
     <Compile Include="Menus\RExRoadsGroupPanel.cs" />
     <Compile Include="Roads\Common\CenterLaneType.cs" />
     <Compile Include="Roads\Common\RoadHelper.cs" />
-    <Compile Include="Roads\Avenues\Common\RoadModels.32m.5mSW.cs" />
+    <Compile Include="Roads\Common\RoadModels.32m.5mSW.cs" />
     <Compile Include="Roads\Common\LanesConfiguration.cs" />
     <Compile Include="Roads\Avenues\MediumAvenue4LTL\MediumAvenue4LTLBuilder.cs" />
     <Compile Include="Roads\Avenues\MediumAvenue4LTL\MediumAvenue4LTLBuilder.Texturing.cs" />
@@ -90,8 +90,8 @@
     <Compile Include="Roads\BusRoads\Busway2L1W\Busway2L1WBuilder.cs" />
     <Compile Include="Roads\BusRoads\Busway2L\Busway2LBuilder.cs" />
     <Compile Include="Roads\BusRoads\Busway6L\Busway6LBuilder.cs" />
-    <Compile Include="Roads\SmallHeavyRoads\Common\RoadModels.16m.2mSW.cs" />
-    <Compile Include="Roads\SmallHeavyRoads\Common\RoadModels.16m.3mSW.cs" />
+    <Compile Include="Roads\Common\RoadModels.16m.2mSW.cs" />
+    <Compile Include="Roads\Common\RoadModels.16m.3mSW.cs" />
     <Compile Include="Roads\SmallHeavyRoads\OneWay3L\OneWay3LBuilder.cs" />
     <Compile Include="RExModule.Settings.cs" />
     <Compile Include="RExModule.Install.cs" />
@@ -1694,112 +1694,112 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <Compile Include="Roads\SmallHeavyRoads\OneWay3L\OneWay3LBuilder.Texturing.cs" />
-    <None Include="Roads\Avenues\Common\Meshes\32m\5mSW\Slope_U_Node.obj">
+    <None Include="Roads\Common\Meshes\32m\5mSW\Slope_U_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Avenues\Common\Meshes\32m\5mSW\Tunnel.obj">
+    <None Include="Roads\Common\Meshes\32m\5mSW\Tunnel.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Avenues\Common\Meshes\32m\5mSW\Tunnel_Node.obj">
+    <None Include="Roads\Common\Meshes\32m\5mSW\Tunnel_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\SmallHeavyRoads\Common\Meshes\16m\2mSW\Elevated.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\Elevated.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\SmallHeavyRoads\Common\Meshes\16m\2mSW\Elevated_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\Elevated_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\SmallHeavyRoads\Common\Meshes\16m\2mSW\Elevated_Node.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\Elevated_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\SmallHeavyRoads\Common\Meshes\16m\2mSW\Elevated_Node_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\Elevated_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\SmallHeavyRoads\Common\Meshes\16m\2mSW\Ground.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\Ground.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\SmallHeavyRoads\Common\Meshes\16m\2mSW\Ground_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\Ground_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\SmallHeavyRoads\Common\Meshes\16m\2mSW\Ground_Node.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\Ground_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\SmallHeavyRoads\Common\Meshes\16m\2mSW\Ground_Node_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\Ground_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\SmallHeavyRoads\Common\Meshes\16m\2mSW\Slope.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\Slope.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\SmallHeavyRoads\Common\Meshes\16m\2mSW\Slope_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\Slope_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\SmallHeavyRoads\Common\Meshes\16m\2mSW\Slope_Node.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\Slope_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\SmallHeavyRoads\Common\Meshes\16m\2mSW\Slope_Node_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\Slope_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\SmallHeavyRoads\Common\Meshes\16m\2mSW\Slope_U_Node.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\Slope_U_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\SmallHeavyRoads\Common\Meshes\16m\2mSW\Slope_U_Node_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\Slope_U_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\SmallHeavyRoads\Common\Meshes\16m\2mSW\Tunnel.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\Tunnel.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\SmallHeavyRoads\Common\Meshes\16m\2mSW\Tunnel_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\Tunnel_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\SmallHeavyRoads\Common\Meshes\16m\2mSW\Tunnel_Node.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\Tunnel_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\SmallHeavyRoads\Common\Meshes\16m\2mSW\Tunnel_Node_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\Tunnel_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\SmallHeavyRoads\Common\Meshes\16m\3mSW\Elevated.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\Elevated.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\SmallHeavyRoads\Common\Meshes\16m\3mSW\Elevated_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\Elevated_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\SmallHeavyRoads\Common\Meshes\16m\3mSW\Elevated_Node.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\Elevated_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\SmallHeavyRoads\Common\Meshes\16m\3mSW\Elevated_Node_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\Elevated_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\SmallHeavyRoads\Common\Meshes\16m\3mSW\Slope.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\Slope.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\SmallHeavyRoads\Common\Meshes\16m\3mSW\Slope_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\Slope_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\SmallHeavyRoads\Common\Meshes\16m\3mSW\Slope_Node.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\Slope_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\SmallHeavyRoads\Common\Meshes\16m\3mSW\Slope_Node_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\Slope_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\SmallHeavyRoads\Common\Meshes\16m\3mSW\Slope_U_Node.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\Slope_U_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\SmallHeavyRoads\Common\Meshes\16m\3mSW\Slope_U_Node_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\Slope_U_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\SmallHeavyRoads\Common\Meshes\16m\3mSW\Tunnel.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\Tunnel.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\SmallHeavyRoads\Common\Meshes\16m\3mSW\Tunnel_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\Tunnel_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\SmallHeavyRoads\Common\Meshes\16m\3mSW\Tunnel_Node.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\Tunnel_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\SmallHeavyRoads\Common\Meshes\16m\3mSW\Tunnel_Node_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\Tunnel_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\SmallHeavyRoads\Common\Meshes\Ground_LOD.obj" />
+    <None Include="Roads\Common\Meshes\Ground_LOD.obj" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Transit.Framework.Unsafe\Transit.Framework.Unsafe.csproj">
