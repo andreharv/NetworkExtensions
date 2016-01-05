@@ -1732,9 +1732,6 @@
     <Content Include="Roads\Avenues\LargeAvenue6LM\Meshes\Ground.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="Roads\SmallHeavyRoads\Common\Meshes\16m\2mSW\Elevated.obj">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="Roads\Common\Meshes\16m\2mSW\Elevated.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
