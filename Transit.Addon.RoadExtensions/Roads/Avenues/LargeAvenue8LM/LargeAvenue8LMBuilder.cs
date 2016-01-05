@@ -8,7 +8,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
     public partial class LargeAvenue8LMBuilder : Activable, INetInfoBuilderPart
     {
         public int Order { get { return 25; } }
-        public int UIOrder { get { return 7; } }
+        public int UIOrder { get { return 0; } }
 
         public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_6L; } }
         public string Name { get { return "Eight-Lane Avenue"; } }
