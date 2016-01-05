@@ -1923,7 +1923,6 @@
     <None Include="Roads\Common\Meshes\16m\3mSW\Tunnel_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\Ground_LOD.obj" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Transit.Framework.Unsafe\Transit.Framework.Unsafe.csproj">
