@@ -17,6 +17,7 @@ namespace Transit.Framework
 
             public const string AVENUE_4L = "Medium Road";
             public const string AVENUE_4L_BRIDGE = "Medium Road Bridge";
+            public const string AVENUE_4L_SLOPE = "Medium Road Slope";
 
             public const string ONEWAY_2L = "Oneway Road";
             public const string ONEWAY_2L_GRASS = "Oneway Road Decoration Grass";
@@ -29,6 +30,8 @@ namespace Transit.Framework
             public const string HIGHWAY_3L_SLOPE = "Highway Slope";
             public const string HIGHWAY_3L_TUNNEL = "Highway Tunnel";
             public const string HIGHWAY_3L_BARRIER = "Highway Barrier";
+
+            public const string LARGE_ROAD_BRIDGE_SUSPENSION_PILLAR = "LargeRoadBridgeSuspensionPillar";
 
             public const string PED_GRAVEL = ROAD_2L_GRAVEL; // Quick fix for the Pedestian zonable roads
             public const string PED_PAVEMENT = "Pedestrian Pavement";
@@ -75,6 +78,21 @@ namespace Transit.Framework
                                 return groundName + " Road Tunnel";
                             case NetInfoVersion.Slope:
                                 return groundName + " Road Slope";
+                            default:
+                                throw new NotImplementedException();
+                        }
+
+                    case HIGHWAY_RAMP:
+                        switch (version)
+                        {
+                            case NetInfoVersion.Ground:
+                                return groundName;
+                            case NetInfoVersion.Elevated:
+                                return groundName + NetInfoVersion.Elevated;
+                            case NetInfoVersion.Tunnel:
+                                return groundName + " " + NetInfoVersion.Tunnel;
+                            case NetInfoVersion.Slope:
+                                return groundName + " " + NetInfoVersion.Slope;
                             default:
                                 throw new NotImplementedException();
                         }
