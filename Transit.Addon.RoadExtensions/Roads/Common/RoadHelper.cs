@@ -263,13 +263,15 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                     positionStartOffset = 1;
                     break;
             }
-            var positionStart = config.LaneWidth * ((positionStartOffset - nbLanes) / 2f);
+
+            var positionStart = (config.LaneWidth * ((positionStartOffset - nbLanes) / 2f)) + (config.CenterLane == CenterLaneType.Median ? config.CenterLaneWidth / 4 : 0);
 
             for (var i = 0; i < nbLanes; i++)
             {
                 var l = vehicleLanes[i];
-                l.m_position = positionStart + (i + (config.CenterLane == CenterLaneType.Median && i + 1 > nbLanes / 2 ? 1 : 0)) * config.LaneWidth;
-                var isTurningLane = (config.CenterLane == CenterLaneType.TurningLane && (i == nbLanes - 1 || l.m_position == 0f));
+                l.m_position = positionStart + (i * config.LaneWidth) + ((config.CenterLane == CenterLaneType.Median && i + 1 > nbLanes / 2 ? 1 : 0) * config.CenterLaneWidth);
+                var isTurningLane = (config.CenterLane == CenterLaneType.TurningLane && (i == nbLanes - 1 || l.m_position == 0));
+
                 if (isTurningLane)
                 {
                     l.m_position = 0;
