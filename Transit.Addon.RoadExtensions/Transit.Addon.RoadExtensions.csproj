@@ -74,7 +74,6 @@
     <Compile Include="Roads\Avenues\MediumAvenue4LTL\MediumAvenue4LTLBuilder.Texturing.cs" />
     <Compile Include="Roads\Avenues\MediumAvenue4L\MediumAvenue4LBuilder.cs" />
     <Compile Include="Roads\Avenues\MediumAvenue4L\MediumAvenue4LBuilder.Texturing.cs" />
-    <Compile Include="Roads\Avenues\LargeAvenue6LM\LargeAvenue6LMBuilder.cs" />
     <Compile Include="Roads\Avenues\LargeAvenue8LM\LargeAvenue8LMBuilder.cs" />
     <Compile Include="Roads\Avenues\LargeAvenue8LM\LargeAvenue8LMBuilder.Texturing.cs" />
     <Compile Include="Roads\SmallHeavyRoads\BasicRoadTL\BasicRoadTLBuilder.cs" />
@@ -283,18 +282,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\Avenues\MediumAvenue4L\thumbnails.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Avenues\LargeAvenue6LM\infotooltip.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Avenues\LargeAvenue6LM\Textures\Ground_Segment__AlphaMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Avenues\LargeAvenue6LM\Textures\Ground_Segment__MainTex.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Avenues\LargeAvenue6LM\thumbnails.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\Avenues\LargeAvenue8LM\infotooltip.png">
@@ -1824,9 +1811,6 @@
     <None Include="Roads\Common\Meshes\32m\5mSW\Tunnel_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Content Include="Roads\Avenues\LargeAvenue6LM\Meshes\Ground.obj">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="Roads\Common\Meshes\16m\2mSW\Elevated.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
