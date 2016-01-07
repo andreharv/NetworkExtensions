@@ -72,7 +72,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.MediumAvenue4LTL
                 IsTwoWay = true,
                 LaneWidth = 3.8f,
                 BusStopOffset = 2.9f,
-                CenterLane = CenterLaneType.TurningLane
+                CenterLane = CenterLaneType.TurningLane,
+                CenterLaneWidth = 3.8f
             });
             var leftPedLane = info.GetLeftRoadShoulder(roadInfo, version);
             var rightPedLane = info.GetRightRoadShoulder(roadInfo, version);

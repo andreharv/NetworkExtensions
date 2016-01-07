@@ -73,7 +73,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.MediumAvenue4L
                 LanesToAdd = -2,
                 LaneWidth = 3.8f,
                 BusStopOffset = 2.9f,
-                CenterLane = CenterLaneType.Median
+                CenterLane = CenterLaneType.Median,
+                CenterLaneWidth = 3.8f
             });
             var leftPedLane = info.GetLeftRoadShoulder(roadInfo, version);
             var rightPedLane = info.GetRightRoadShoulder(roadInfo, version);
