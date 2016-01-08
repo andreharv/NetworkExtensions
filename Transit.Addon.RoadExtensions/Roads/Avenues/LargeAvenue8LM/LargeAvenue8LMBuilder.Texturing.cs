@@ -12,17 +12,21 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
                     info.SetAllSegmentsTexture(
                         new TexturesSet
                             (@"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Segment__MainTex.png",
-                            @"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Segment__APRMap.png"));//,
-                                                                                     //new LODTexturesSet
-                                                                                            //    (@"Roads\Avenues\LargeAvenue8LM\Textures\Ground_SegmentLOD__MainTex.png",
-                                                                                            //    @"Roads\Avenues\LargeAvenue8LM\Textures\Ground_SegmentLOD__APRMap.png",
-                                                                                            //    @"Roads\Avenues\LargeAvenue8LM\Textures\Ground_SegmentLOD__XYSMap.png"));
+                             @"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Segment__APRMap.png"),
+                        new LODTexturesSet
+                            (@"Roads\Avenues\LargeAvenue8LM\Textures\Ground_SegmentLOD__MainTex.png",
+                             @"Roads\Avenues\LargeAvenue8LM\Textures\Ground_SegmentLOD__APRMap.png",
+                             @"Roads\Avenues\LargeAvenue8LM\Textures\Ground_SegmentLOD__XYSMap.png"));
                     info.SetAllNodesTexture(
                         new TexturesSet
                             (@"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Node__MainTex.png",
-                            @"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Node__APRMap.png"));
-
+                             @"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Node__APRMap.png"),
+                        new LODTexturesSet
+                            (@"Roads\Avenues\LargeAvenue8LM\Textures\Ground_SegmentLOD__MainTex.png",
+                             @"Roads\Avenues\LargeAvenue8LM\Textures\Ground_NodeLOD__APRMap.png",
+                             @"Roads\Avenues\LargeAvenue8LM\Textures\Ground_SegmentLOD__XYSMap.png"));
                     break;
+
                 case NetInfoVersion.Elevated:
                 case NetInfoVersion.Bridge:
                     info.SetAllSegmentsTexture(

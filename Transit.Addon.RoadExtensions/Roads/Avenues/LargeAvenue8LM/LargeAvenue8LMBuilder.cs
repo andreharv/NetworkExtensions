@@ -51,6 +51,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
             info.m_hasParkingSpaces = false;
             info.m_pavementWidth = (version != NetInfoVersion.Slope && version != NetInfoVersion.Tunnel ? 3 : 4);
             info.m_halfWidth = 16;
+            info.m_canCrossLanes = false;
 
             if (version == NetInfoVersion.Tunnel)
             {
@@ -68,14 +69,15 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
             }
 
             // Setting up lanes
-            info.SetRoadLanes(version, new LanesConfiguration()
+            info.SetRoadLanes(version, new LanesConfiguration
             {
                 IsTwoWay = true,
                 LanesToAdd = 2,
                 LaneWidth = version == NetInfoVersion.Slope ? 2.75f : 3,
                 PedPropOffsetX = 1,
                 CenterLane = CenterLaneType.Median,
-                CenterLaneWidth = 2
+                CenterLaneWidth = 2,
+                BusStopOffset = 0f
             });
             var leftPedLane = info.GetLeftRoadShoulder(roadInfo, version);
             var rightPedLane = info.GetRightRoadShoulder(roadInfo, version);
