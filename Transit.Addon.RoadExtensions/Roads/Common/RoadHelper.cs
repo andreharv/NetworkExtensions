@@ -247,33 +247,81 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                 .ToArray();
 
             var nbLanes = vehicleLanes.Count();
-            int positionStartOffset;
-            switch (config.CenterLane)
+            var nbUsableLanes = nbLanes - (config.CenterLane == CenterLaneType.TurningLane ? 2 : 0);
+            var nbUsableLanesPerSide = nbUsableLanes / 2;
+            var hasCenterLane = nbUsableLanes % 2 == 1;
+
+            var positionStart = 0f;
+
+            if (config.CenterLane == CenterLaneType.Median ||
+                config.CenterLane == CenterLaneType.TurningLane)
             {
-                case CenterLaneType.TurningLane:
-                    positionStartOffset = 2;
-                    break;
-                case CenterLaneType.None:
-                    positionStartOffset = 1;
-                    break;
-                case CenterLaneType.Median:
-                    positionStartOffset = 0;
-                    break;
-                default:
-                    positionStartOffset = 1;
-                    break;
+                positionStart -= config.CenterLaneWidth / 2;
             }
-            var positionStart = config.LaneWidth * ((positionStartOffset - nbLanes) / 2f);
+            else if (hasCenterLane)
+            {
+                positionStart -= config.LaneWidth / 2;
+            }
+
+            positionStart -= config.LaneWidth * (nbUsableLanesPerSide - 1) + config.LaneWidth /2 ;
+
+            //Debug.Log(">>>> NbLanes : " + nbLanes);
+            //Debug.Log(">>>> NbUsableLanes : " + nbUsableLanes);
+            //Debug.Log(">>>> NbUsableLanesPerSide : " + nbUsableLanesPerSide);
+            //Debug.Log(">>>> HasCenterLane : " + hasCenterLane);
+            //Debug.Log(">>>> LaneWidth : " + config.LaneWidth);
+            //Debug.Log(">>>> PositionStart : " + positionStart);
 
             for (var i = 0; i < nbLanes; i++)
             {
                 var l = vehicleLanes[i];
-                l.m_position = positionStart + (i + (config.CenterLane == CenterLaneType.Median && i + 1 > nbLanes / 2 ? 1 : 0)) * config.LaneWidth;
-                var isTurningLane = (config.CenterLane == CenterLaneType.TurningLane && (i == nbLanes - 1 || l.m_position == 0f));
+
+                var isTurningLane =
+                   config.CenterLane == CenterLaneType.TurningLane &&
+                   i >= nbUsableLanesPerSide && i <= nbLanes - nbUsableLanesPerSide - 1;
+                var is2ndTurningLane =
+                   config.CenterLane == CenterLaneType.TurningLane &&
+                   i >= nbUsableLanesPerSide + 1 && i <= nbLanes - nbUsableLanesPerSide - 1;
+
                 if (isTurningLane)
                 {
                     l.m_position = 0;
                 }
+                else
+                {
+                    if (i < nbUsableLanesPerSide)
+                    {
+                        l.m_position =
+                            positionStart +
+                            (i * config.LaneWidth);
+                    }
+                    else
+                    {
+                        if (config.CenterLane == CenterLaneType.Median)
+                        {
+                            l.m_position =
+                                positionStart +
+                                (i * config.LaneWidth) +
+                                config.CenterLaneWidth;
+                        }
+                        else if(config.CenterLane == CenterLaneType.TurningLane)
+                        {
+                            l.m_position =
+                                positionStart +
+                                ((i - 2) * config.LaneWidth) +
+                                config.CenterLaneWidth;
+                        }
+                        else
+                        {
+                            l.m_position =
+                                positionStart +
+                                (i * config.LaneWidth);
+                        }
+                    }
+                }
+                
+                //Debug.Log(">>>> Lane Id : " + i + " Position : " + l.m_position);
+
                 l.m_allowStop = false;
                 l.m_width = config.LaneWidth;
 
@@ -291,15 +339,28 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
 
                 if (config.IsTwoWay)
                 {
-                    if ((!isTurningLane && l.m_position < 0.0f) || (isTurningLane && i == nbLanes - 1))
+                    if (isTurningLane)
                     {
-                        l.m_direction = NetInfo.Direction.Backward;
-                        l.m_finalDirection = NetInfo.Direction.Backward;
+                        if (!is2ndTurningLane)
+                        {
+                            l.m_direction = NetInfo.Direction.Backward;
+                        }
+                        else
+                        {
+                            l.m_direction = NetInfo.Direction.Forward;
+                        }
                     }
                     else
                     {
-                        l.m_direction = NetInfo.Direction.Forward;
-                        l.m_finalDirection = NetInfo.Direction.Forward;
+                        if (l.m_position < 0.0f)
+                        {
+                            l.m_direction = NetInfo.Direction.Backward;
+                        }
+                        else
+                        {
+                            l.m_direction = NetInfo.Direction.Forward;
+                        }
+
                     }
                 }
 

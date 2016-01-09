@@ -10,6 +10,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
         public bool IsTwoWay { get; set; }
         public float BusStopOffset { get; set; }
         public CenterLaneType CenterLane { get; set; }
+        public float CenterLaneWidth { get; set; }
 
         public LanesConfiguration()
         {
@@ -20,6 +21,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             IsTwoWay = true;
             BusStopOffset = 1.5f;
             CenterLane = CenterLaneType.None;
+            CenterLaneWidth = 3.0f;
         }
     }
 }
