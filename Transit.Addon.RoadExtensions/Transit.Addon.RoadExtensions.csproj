@@ -119,6 +119,9 @@
     <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Ground_NodeLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Ground_NodeLOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Ground_SegmentLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

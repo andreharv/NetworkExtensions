@@ -22,7 +22,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
                             (@"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Node__MainTex.png",
                              @"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Node__APRMap.png"),
                         new LODTexturesSet
-                            (@"Roads\Avenues\LargeAvenue8LM\Textures\Ground_SegmentLOD__MainTex.png",
+                            (@"Roads\Avenues\LargeAvenue8LM\Textures\Ground_NodeLOD__MainTex.png",
                              @"Roads\Avenues\LargeAvenue8LM\Textures\Ground_NodeLOD__APRMap.png",
                              @"Roads\Avenues\LargeAvenue8LM\Textures\Ground_SegmentLOD__XYSMap.png"));
                     break;
