@@ -21,16 +21,15 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                         .SetFlagsDefault()
                         .SetMeshes
                             (@"Roads\Common\Meshes\32m\3mSW2mMdn\Ground.obj");
-                        //@"Roads\Common\Meshes\32m\3mSW2mMdn\Elevated_LOD.obj");
 
                         nodes0.SetMeshes
                             (@"Roads\Common\Meshes\32m\3mSW2mMdn\Ground_Node.obj");
-                        //@"Roads\Common\Meshes\32m\3mSW2mMdn\Elevated_Node_LOD.obj");
 
                         info.m_segments = new[] { segments0 };
                         info.m_nodes = new[] { nodes0 };
                         break;
                     }
+
                 case NetInfoVersion.Elevated:
                     {
                         var segments0 = info.m_segments[0];

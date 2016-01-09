@@ -8,13 +8,13 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
     public partial class LargeAvenue8LMBuilder : Activable, INetInfoBuilderPart
     {
         public int Order { get { return 25; } }
-        public int UIOrder { get { return 0; } }
+        public int UIOrder { get { return 150; } }
 
         public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_6L; } }
         public string Name { get { return "Eight-Lane Avenue"; } }
         public string DisplayName { get { return "Eight-Lane Road"; } }
         public string Description { get { return "An eight-lane road with paved median. Supports heavy urban traffic."; } }
-        public string ShortDescription { get { return "Zoneable, heavy urban traffic"; } }
+        public string ShortDescription { get { return "No parking, zoneable, heavy urban traffic"; } }
         public string UICategory { get { return "RoadsLarge"; } }
 
         public string ThumbnailsPath { get { return @"Roads\Avenues\LargeAvenue8LM\thumbnails.png"; } }
