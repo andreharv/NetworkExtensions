@@ -35,13 +35,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Transit.Addon.TrafficAI\Transit.Addon.TrafficAI.csproj">
-      <Project>{20F6A0DC-131C-49CD-9D9B-95B6E41CDDFF}</Project>
-      <Name>Transit.Addon.TrafficAI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Transit.Addon.TrafficTools\Transit.Addon.TrafficTools.csproj">
-      <Project>{4499042E-DCD1-4F9F-A3C8-4830108169CD}</Project>
-      <Name>Transit.Addon.TrafficTools</Name>
+    <ProjectReference Include="..\Transit.Addon.TrafficPP\Transit.Addon.TrafficPP.csproj">
+      <Project>{D78DECCE-B9B3-4E14-933F-6C0BE10526C5}</Project>
+      <Name>Transit.Addon.TrafficPP</Name>
     </ProjectReference>
     <ProjectReference Include="..\Transit.Addon\Transit.Addon.csproj">
       <Project>{80C47696-4D41-4BB6-9CAE-C477FE528ADF}</Project>
@@ -56,9 +52,15 @@
   <PropertyGroup>
     <PostBuildEvent>del "$(TargetDir)*.pdb"
 del "$(TargetDir)Transit.Addon.Deploy.dll"
-rd /s /q  "c:\Program Files (x86)\Steam\SteamApps\workshop\content\255710\478820060"
-mkdir "c:\Program Files (x86)\Steam\SteamApps\workshop\content\255710\478820060"
-xcopy /q /y /e "$(ProjectDir)bin\$(ConfigurationName)" "c:\Program Files (x86)\Steam\SteamApps\workshop\content\255710\478820060"</PostBuildEvent>
+if $(ConfigurationName) == Debug (
+rd /s /q  "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\Transit Addons Mod"
+mkdir "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\Transit Addons Mod"
+xcopy /q /y /e "$(ProjectDir)bin\$(ConfigurationName)" "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\Transit Addons Mod"
+) else (
+rd /s /q  "D:\Games\Steam\SteamApps\workshop\content\255710\543703997"
+mkdir "D:\Games\Steam\SteamApps\workshop\content\255710\543703997"
+xcopy /q /y /e "$(ProjectDir)bin\$(ConfigurationName)" "D:\Games\Steam\SteamApps\workshop\content\255710\543703997"
+)</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

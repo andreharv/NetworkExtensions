@@ -5,19 +5,20 @@ namespace Transit.Addon
 {
     public partial class Mod : LoadingExtensionBase
     {
-        private bool _isGameLoaded = false;
+        private bool _loadTriggered = false;
 
         public void OnGameLoaded()
         {
-            if (_isGameLoaded)  // This method will be called everytime the mod is refreshed
-                return;         // so we must use this bool to ensure we only call it the first time
+            if (_loadTriggered)  // This method will be called everytime the mod is refreshed
+                return;          // so we must use this bool to ensure we only call it the first time
 
-            CheckForUpdates();
+            _loadTriggered = true;
+
+            //CheckForUpdates();
+            ShowNotification();
 
             foreach (IModule module in Modules)
                 module.OnGameLoaded();
-
-            _isGameLoaded = true;
         }
 
         public override void OnCreated(ILoading loading)
@@ -55,6 +56,5 @@ namespace Transit.Addon
             foreach (IModule module in Modules)
                 module.OnDisabled();
         }
-
     }
 }

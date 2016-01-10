@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ColossalFramework.UI;
+﻿using ColossalFramework.UI;
 using UnityEngine;
 
 namespace Transit.Framework
@@ -20,7 +16,7 @@ namespace Transit.Framework
 
 
 
-            var texture = assetManager.GetTexture(thumbnailsPath);
+            var texture = assetManager.GetTexture(thumbnailsPath, TextureType.UI);
             texture.FixTransparency();
 
             thumbnailAtlas.material.mainTexture = texture;
@@ -37,7 +33,7 @@ namespace Transit.Framework
             {
                 var sprite = new UITextureAtlas.SpriteInfo
                 {
-                    name = string.Format(thumbnailsName.ToUpper() + "{0}", ts[x]),
+                    name = string.Format(thumbnailsName + "{0}", ts[x]),
                     region = new Rect(
                         (float)(x * iconW) / textureW, 0f,
                         (float)(iconW) / textureW, (float)(iconH) / textureH),
@@ -59,7 +55,7 @@ namespace Transit.Framework
             var shader = Shader.Find("UI/Default UI Shader");
             if (shader != null) infoTooltipAtlas.material = new Material(shader);
 
-            var texture = assetManager.GetTexture(infoTooltipPath);
+            var texture = assetManager.GetTexture(infoTooltipPath, TextureType.UI);
 
             infoTooltipAtlas.material.mainTexture = texture;
 

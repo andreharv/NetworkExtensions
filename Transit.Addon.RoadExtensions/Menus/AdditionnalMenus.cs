@@ -7,16 +7,14 @@ namespace Transit.Addon.RoadExtensions.Menus
     public static class AdditionnalMenus
     {
         public const string ROADS_SMALL_HV = "RoadsSmallHV";
+        public const string ROADS_BUSWAYS = "RoadsBusways";
+        public const string ROADS_PEDESTRIANS = "RoadsPedestrians";
+    }
 
-        private static UITextureAtlas s_thumbnailAtlas = null;
-
-        public static UITextureAtlas LoadThumbnails()
+    public static class AssetManagerExtensions
+    {
+        public static UITextureAtlas LoadAdditionnalMenusThumbnails(this AssetManager assetManager)
         {
-            if (s_thumbnailAtlas != null)
-            {
-                return s_thumbnailAtlas;
-            }
-
             var thumbnailAtlas = ScriptableObject.CreateInstance<UITextureAtlas>();
             thumbnailAtlas.padding = 0;
             thumbnailAtlas.name = "AdditionnalSubBar";
@@ -28,11 +26,13 @@ namespace Transit.Addon.RoadExtensions.Menus
 
             const string BASE = "SubBarButtonBase";
             const string ROADS_SMALL_HV_SUBBAR = "SubBar" + AdditionnalMenus.ROADS_SMALL_HV;
+            const string ROADS_BUSWAYS_SUBBAR = "SubBar" + AdditionnalMenus.ROADS_BUSWAYS;
+            const string ROADS_PED_SUBBAR = "SubBar" + AdditionnalMenus.ROADS_PEDESTRIANS;
 
             var versions = new[] { "", "Disabled", "Focused", "Hovered", "Pressed" };
 
 
-            var texture = AssetManager.instance.GetTexture(PATH);
+            var texture = assetManager.GetTexture(PATH, TextureType.UI);
             texture.FixTransparency();
 
             thumbnailAtlas.material.mainTexture = texture;
@@ -41,7 +41,7 @@ namespace Transit.Addon.RoadExtensions.Menus
             var y = 1;
 
             const int TEXTURE_W = 292;
-            const int TEXTURE_H = 50;
+            const int TEXTURE_H = 96;
 
 
 
@@ -66,37 +66,42 @@ namespace Transit.Addon.RoadExtensions.Menus
 
                 x += BASE_ICON_W;
             }
-
-            x = 1;
-            y += BASE_ICON_H + 1;
+            y += BASE_ICON_H;
 
 
 
-            // RoadsSmallHV -----------------------------------------------------------------------
+            // Button Icons -----------------------------------------------------------------------
+            var buttonIcons = new[] { ROADS_SMALL_HV_SUBBAR, ROADS_BUSWAYS_SUBBAR, ROADS_PED_SUBBAR };
             const int ICON_W = 32;
             const int ICON_H = 22;
 
-            foreach (var t in versions)
+            foreach (var bi in buttonIcons)
             {
-                var sprite = new UITextureAtlas.SpriteInfo
+                x = 1;
+                y += 1;
+
+                foreach (var t in versions)
                 {
-                    name = string.Format(ROADS_SMALL_HV_SUBBAR + "{0}", t),
-                    region = new Rect(
-                        (float)(x) / TEXTURE_W,
-                        (float)(y) / TEXTURE_H,
-                        (float)(ICON_W) / TEXTURE_W,
-                        (float)(ICON_H) / TEXTURE_H),
-                    texture = new Texture2D(ICON_W, ICON_H, TextureFormat.ARGB32, false)
-                };
+                    var sprite = new UITextureAtlas.SpriteInfo
+                    {
+                        name = string.Format(bi + "{0}", t),
+                        region = new Rect(
+                            (float)(x) / TEXTURE_W,
+                            (float)(y) / TEXTURE_H,
+                            (float)(ICON_W) / TEXTURE_W,
+                            (float)(ICON_H) / TEXTURE_H),
+                        texture = new Texture2D(ICON_W, ICON_H, TextureFormat.ARGB32, false)
+                    };
 
-                thumbnailAtlas.AddSprite(sprite);
+                    thumbnailAtlas.AddSprite(sprite);
 
-                x += ICON_W;
+                    x += ICON_W;
+                }
+
+                y += ICON_H;
             }
 
-            s_thumbnailAtlas = thumbnailAtlas;
-
-            return s_thumbnailAtlas;
+            return thumbnailAtlas;
         }
     }
 }

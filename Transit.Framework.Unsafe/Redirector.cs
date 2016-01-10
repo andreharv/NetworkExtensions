@@ -7,14 +7,20 @@ namespace Transit.Framework.Unsafe
 {
     public abstract class RedirectAttribute : Attribute
     {
-        public RedirectAttribute(Type classType, string methodName = null)
+        public RedirectAttribute(Type classType, string methodName, ulong bitSetOption = 0)
         {
             ClassType = classType;
             MethodName = methodName;
+            BitSetRequiredOption = bitSetOption;
         }
+
+        public RedirectAttribute(Type classType, ulong bitSetOption = 0)
+            : this(classType, null, bitSetOption)
+        { }
 
         public Type ClassType { get; set; }
         public string MethodName { get; set; }
+        public ulong BitSetRequiredOption { get; set; }
     }
 
     /// <summary>
@@ -28,8 +34,12 @@ namespace Transit.Framework.Unsafe
         /// <param name="classType">The class of the method that will be redirected</param>
         /// <param name="methodName">The name of the method that will be redirected. If null,
         /// the name of the attribute's target method will be used.</param>
-        public RedirectFromAttribute(Type classType, string methodName = null)
-            : base(classType, methodName)
+        public RedirectFromAttribute(Type classType, string methodName, ulong bitSetOption = 0)
+            : base(classType, methodName, bitSetOption)
+        { }
+
+        public RedirectFromAttribute(Type classType, ulong bitSetOption = 0)
+            : base(classType, bitSetOption)
         { }
     }
 
@@ -44,8 +54,12 @@ namespace Transit.Framework.Unsafe
         /// <param name="classType">The class of the target method</param>
         /// <param name="methodName">The name of the target method. If null,
         /// the name of the attribute's target method will be used.</param>
-        public RedirectToAttribute(Type classType, string methodName = null)
-            : base(classType, methodName)
+        public RedirectToAttribute(Type classType, string methodName, ulong bitSetOption = 0)
+            : base(classType, methodName, bitSetOption)
+        { }
+
+        public RedirectToAttribute(Type classType, ulong bitSetOption = 0)
+            : base(classType, bitSetOption)
         { }
     }
 
@@ -85,7 +99,7 @@ namespace Transit.Framework.Unsafe
 
         private static List<MethodRedirection> s_redirections = new List<MethodRedirection>();
 
-        public static void PerformRedirections()
+        public static void PerformRedirections(ulong bitMask = 0)
         {
             Assembly callingAssembly = Assembly.GetCallingAssembly();
 
@@ -98,7 +112,8 @@ namespace Transit.Framework.Unsafe
             {
                 foreach (RedirectAttribute redirectAttr in method.GetCustomAttributes(typeof(RedirectAttribute), false))
                 {
-                    // TODO: check for options
+                    if (redirectAttr.BitSetRequiredOption != 0 && (bitMask & redirectAttr.BitSetRequiredOption) == 0)
+                        continue;
 
                     string originalName = String.IsNullOrEmpty(redirectAttr.MethodName) ? method.Name : redirectAttr.MethodName;
 
@@ -108,7 +123,7 @@ namespace Transit.Framework.Unsafe
                         if (m.Name != originalName)
                             continue;
 
-                        if (method.IsCompatibleWith(originalMethod))
+                        if (method.IsCompatibleWith(m))
                         {
                             originalMethod = m;
                             break;

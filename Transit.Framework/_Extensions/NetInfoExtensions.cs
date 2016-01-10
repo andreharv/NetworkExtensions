@@ -1,6 +1,9 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using ColossalFramework;
+using ColossalFramework.Globalization;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 #if DEBUG
 using Debug = Transit.Framework.Debug;
@@ -10,22 +13,6 @@ namespace Transit.Framework
 {
     public static partial class NetInfoExtensions
     {
-        public static NetInfo Clone(this NetInfo originalNetInfo, string newName)
-        {
-            //Debug.Log(String.Format("TFW: Cloning {0} -> {1}", originalNetInfo.name, newName));
-
-            var gameObject = Object.Instantiate(originalNetInfo.gameObject);
-            gameObject.transform.parent = originalNetInfo.gameObject.transform; // N.B. This line is evil and removing it is killoing the game's performances
-            gameObject.name = newName;
-
-            var info = gameObject.GetComponent<NetInfo>();
-            info.m_prefabInitialized = false;
-
-            //Debug.Log(String.Format("TFW: Cloning completed {0} -> {1}", originalNetInfo.name, newName));
-
-            return info;
-        }
-
         public static void DisplayLaneProps(this NetInfo info)
         {
             foreach (var lane in info.m_lanes)
@@ -48,11 +35,57 @@ namespace Transit.Framework
             }
         }
 
-        public static NetInfo SetUICategory(this NetInfo info, string category)
+        public static NetInfo.Lane FindLane(this NetInfo info, Func<string, bool> predicate, bool crashOnNotFound = true)
         {
-            typeof(NetInfo).GetField("m_UICategory", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(info, category);
+            var lane = info
+                .m_lanes
+                .Where(l => l != null && l.m_laneProps != null && l.m_laneProps.name != null && l.m_laneProps.m_props != null)
+                .FirstOrDefault(l => predicate(l.m_laneProps.name.ToLower()));
 
-            return info;
+            if (lane == null)
+            {
+                if (crashOnNotFound)
+                {
+                    throw new Exception("TFW: Lane not found");
+                }
+            }
+
+            return lane;
+        }
+
+        public static NetInfo.Lane FindLane(this NetInfo info, NetInfo.LaneType predicate, bool crashOnNotFound = true)
+        {
+            var lane = info
+                .m_lanes
+                .FirstOrDefault(l => l.m_laneType == NetInfo.LaneType.Vehicle);
+
+            if (lane == null)
+            {
+                if (crashOnNotFound)
+                {
+                    throw new Exception("TFW: Lane not found");
+                }
+            }
+
+            return lane;
+        }
+
+        public static void ModifyTitle(this NetInfo info, string newTitle)
+        {
+            var localizedStringsField = typeof(Locale).GetFieldByName("m_LocalizedStrings");
+            var locale = SingletonLite<LocaleManager>.instance.GetLocale();
+            var localizedStrings = (Dictionary<Locale.Key, string>)localizedStringsField.GetValue(locale);
+
+            var kvp =
+                localizedStrings
+                .FirstOrDefault(kvpInternal =>
+                    kvpInternal.Key.m_Identifier == "NET_TITLE" &&
+                    kvpInternal.Key.m_Key == info.name);
+
+            if (!Equals(kvp, default(KeyValuePair<Locale.Key, string>)))
+            {
+                localizedStrings[kvp.Key] = newTitle;
+            }
         }
     }
 }

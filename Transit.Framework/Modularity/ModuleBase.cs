@@ -1,20 +1,22 @@
 ﻿using ICities;
-using System;
-using System.Xml;
 
 namespace Transit.Framework.Modularity
 {
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public class ModuleAttribute : Attribute
+    public abstract partial class ModuleBase : IModule
     {
-        public Type Mod { get; set; }
-    }
+        private static int s_loadingId = 100;
 
-    public abstract class ModuleBase : IModule
-    {
         public abstract string Name { get; }
 
-        public bool IsEnabled { get; set; }
+        public virtual string AssetPath { get; set; }
+
+        private readonly int defaultOrder = s_loadingId++;
+        public virtual int Order
+        {
+            get { return defaultOrder; }
+        }
+
+        public virtual bool IsEnabled { get; set; }
 
         public virtual void OnGameLoaded() { }
 
@@ -29,11 +31,5 @@ namespace Transit.Framework.Modularity
         public virtual void OnEnabled() { }
 
         public virtual void OnDisabled() { }
-
-        public virtual void OnSettingsUI(UIHelperBase helper) { }
-
-        public virtual void OnLoadSettings(XmlElement moduleElement) { }
-
-        public virtual void OnSaveSettings(XmlElement moduleElement) { }
     }
 }

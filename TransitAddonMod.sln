@@ -37,6 +37,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Addon", "Transit.Ad
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deploy", "Deploy", "{309D6357-1B62-4C4B-9239-4E2FD95FE267}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Addon.TrafficPP", "Transit.Addon.TrafficPP\Transit.Addon.TrafficPP.csproj", "{D78DECCE-B9B3-4E14-933F-6C0BE10526C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkExtensions.Deploy", "NetworkExtensions.Deploy\NetworkExtensions.Deploy.csproj", "{D2DA5492-3DE6-4E7D-AFF1-BB62C950632D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -78,11 +82,20 @@ Global
 		{80C47696-4D41-4BB6-9CAE-C477FE528ADF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80C47696-4D41-4BB6-9CAE-C477FE528ADF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80C47696-4D41-4BB6-9CAE-C477FE528ADF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D78DECCE-B9B3-4E14-933F-6C0BE10526C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D78DECCE-B9B3-4E14-933F-6C0BE10526C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D78DECCE-B9B3-4E14-933F-6C0BE10526C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D78DECCE-B9B3-4E14-933F-6C0BE10526C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2DA5492-3DE6-4E7D-AFF1-BB62C950632D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2DA5492-3DE6-4E7D-AFF1-BB62C950632D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2DA5492-3DE6-4E7D-AFF1-BB62C950632D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2DA5492-3DE6-4E7D-AFF1-BB62C950632D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7DFBABEB-DED8-4E16-8AA5-B38C3EF64305} = {309D6357-1B62-4C4B-9239-4E2FD95FE267}
+		{D2DA5492-3DE6-4E7D-AFF1-BB62C950632D} = {309D6357-1B62-4C4B-9239-4E2FD95FE267}
 	EndGlobalSection
 EndGlobal

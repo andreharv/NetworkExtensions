@@ -1,14 +1,16 @@
 ﻿using ICities;
+using Transit.Framework.Modularity;
 
 namespace Transit.Addon
 {
-    public sealed partial class Mod : IUserMod
+    public sealed partial class Mod : ITransitMod
     {
         public string Name
         {
             get
             {
-                return "Transit Addon Mod";
+                OnGameLoaded();
+                return _name;
             }
         }
 
@@ -17,8 +19,18 @@ namespace Transit.Addon
             get
             {
                 OnGameLoaded();
-                return "An addition of mysterious goodies! :D";
+                return _description;
             }
+        }
+
+        public string DefaultFolderPath
+        {
+            get { return _name; }
+        }
+
+        public ulong WorkshopId
+        {
+            get { return 543703997; }
         }
     }
 }

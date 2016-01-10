@@ -1,4 +1,5 @@
 ﻿using ColossalFramework.DataBinding;
+using ColossalFramework.Steamworks;
 using ColossalFramework.UI;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace Transit.Framework
         protected UIScrollbar _scrollbar;
         protected UIButton _okButton;
         protected UIButton _cancelButton;
+        protected UICheckBox _dontShowAgainCheckbox;
         Material[] m_fireworkMaterials;
         ParticleSystem m_fireworks;
 
@@ -68,6 +70,7 @@ namespace Transit.Framework
                 _scrollbar.opacity = 0;
 
                 // Change Dont show text
+                _dontShowAgainCheckbox = transform.Find("DontShow").GetComponent<UICheckBox>();
                 transform.Find("DontShow/OnOff").GetComponent<UILabel>().text = "Don't show on future updates";
 
                 // Change ok to Options
@@ -149,6 +152,52 @@ namespace Transit.Framework
                 _cancelButton.text = cancelButtonText;
                 _cancelButton.eventClick += cancelEventHandler;
             }
+
+            UIView.library.ShowModal(this.name);
+
+            if (m_fireworks != null && playFireworks)
+                m_fireworks.Play();
+        }
+
+        public virtual void Show(string title, string description, bool showScrollbar, bool playFireworks)
+        {
+            _title.text = title;
+            _description.text = description;
+            _scrollbar.opacity = showScrollbar ? 1 : 0;
+            _okButton.text = "OK";
+            _cancelButton.enabled = _cancelButton.isVisible = false;
+            _dontShowAgainCheckbox.enabled = _dontShowAgainCheckbox.isVisible = false;
+
+            _okButton.eventClicked += (UIComponent component, UIMouseEventParameter eventParam) =>
+            {
+                OnClosed();
+            };
+
+            UIView.library.ShowModal(this.name);
+
+            if (m_fireworks != null && playFireworks)
+                m_fireworks.Play();
+        }
+
+        public virtual void Show(string title, string description, bool showScrollbar, string url, string urlButtonText, bool playFireworks)
+        {
+            _title.text = title;
+            _description.text = description;
+            _scrollbar.opacity = showScrollbar ? 1 : 0;
+            _okButton.text = "OK";
+            _cancelButton.text = urlButtonText;
+            _dontShowAgainCheckbox.enabled = _dontShowAgainCheckbox.isVisible = false;
+
+            _okButton.eventClicked += (UIComponent component, UIMouseEventParameter eventParam) =>
+            {
+                OnClosed();
+            };
+
+            _cancelButton.eventClicked += (UIComponent component, UIMouseEventParameter eventParam) =>
+            {
+                OnClosed();
+                Steam.ActivateGameOverlayToWebPage(url);
+            };
 
             UIView.library.ShowModal(this.name);
 

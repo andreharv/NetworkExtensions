@@ -1,12 +1,18 @@
-﻿using ICities;
-using System;
+﻿using System.Collections.Generic;
 using System.Xml;
+using ICities;
 using Transit.Framework.Interfaces;
 
 namespace Transit.Framework.Modularity
 {
-    public interface IModule : IActivable, IIdentifiable
+    public delegate void SaveSettingsNeededEventHandler();
+
+    public interface IModule : IActivable, IIdentifiable, IOrderable
     {
+        string AssetPath { get; set; }
+
+        IEnumerable<IModulePart> Parts { get; }
+
         void OnGameLoaded();
 
         void OnCreated(ILoading loading);
@@ -26,5 +32,7 @@ namespace Transit.Framework.Modularity
         void OnLoadSettings(XmlElement moduleElement);
 
         void OnSaveSettings(XmlElement moduleElement);
+
+        event SaveSettingsNeededEventHandler SaveSettingsNeeded;
     }
 }

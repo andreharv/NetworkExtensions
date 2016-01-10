@@ -1,28 +1,24 @@
-﻿using System;
-using ICities;
-using Transit.Framework.Modularity;
-using Transit.Addon;
+﻿using Transit.Framework.Modularity;
 
 namespace Transit.Addon.RoadExtensions
 {
-    [Module(Mod = typeof(Mod))]
+    [Module("Transit.Addon.Mod", "NetworkExtensions.Mod")]
     public partial class RExModule : ModuleBase
     {
-        private const UInt64 WORKSHOP_ID = 478820060;
-
         public const string REX_OBJECT_NAME = "Road Extensions";
 
         public const string ROAD_NETCOLLECTION = "Road";
-        public const string REX_NETCOLLECTION = "REXCollection";
+        public const string REX_NETCOLLECTION = "TAM Road";
+        public const string REX_PROPCOLLECTION = "TAM Prop";
 
         public override string Name
         {
-            get { return "Road Extensions"; }
+            get { return "Roads"; }
         }
 
-        public string Description
+        public override int Order
         {
-            get { return "An addition of highways and roads"; }
+            get { return 1; }
         }
     }
 }
