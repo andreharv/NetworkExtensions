@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using Transit.Addon.RoadExtensions.Menus;
+using Transit.Addon.RoadExtensions.Roads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
 
@@ -11,12 +13,12 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.Alley2L
         public int UIOrder { get { return 5; } }
 
         public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_2L; } }
-        public string Name { get { return "Alley2L"; } }
-        public string DisplayName { get { return "Two-Lane Alley"; } }
+        public string Name { get { return "Two-Lane Alley No Zoning"; } }
+        public string DisplayName { get { return "Two-Lane Alley No Zoning"; } }
         public string CodeName { get { return "Alley_2L"; } }
-        public string Description { get { return "A two-lane, tight Alley suitable for neighborhood traffic. This road is zonable."; } }
-        public string ShortDescription { get { return "Zoneable, neighborhood traffic"; } }
-        public string UICategory { get { return "RoadsSmall"; } }
+        public string Description { get { return "A two-lane, tight Alley suitable for neighborhood traffic. This road is not zonable."; } }
+        public string ShortDescription { get { return "No parking, not zoneable, neighborhood traffic"; } }
+        public string UICategory { get { return AdditionnalMenus.ROADS_TINY; } }
 
         public string ThumbnailsPath { get { return string.Empty; } }
         public string InfoTooltipPath { get { return string.Empty; } }
@@ -29,9 +31,13 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.Alley2L
         public void BuildUp(NetInfo info, NetInfoVersion version)
         {
             ///////////////////////////
+            // Template              //
+            ///////////////////////////
+            var roadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_2L);
+
+            ///////////////////////////
             // 3DModeling            //
             ///////////////////////////
-
             if (version == NetInfoVersion.Ground)
             {
                 info.m_surfaceLevel = 0;
@@ -75,71 +81,40 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.Alley2L
             info.m_halfWidth = 4f;
             info.m_pavementWidth = 2f;
 
-            var vehicleLanes = info.m_lanes
-                .Where(l => l.m_laneType != NetInfo.LaneType.None)
-                .Where(l => l.m_laneType != NetInfo.LaneType.Pedestrian)
+            info.m_lanes = info.m_lanes
                 .Where(l => l.m_laneType != NetInfo.LaneType.Parking)
-                .ToList();
+                .ToArray();
 
-            var pedestrianLanes = info.m_lanes
-                .Where(l => l.m_laneType == NetInfo.LaneType.Pedestrian)
-                .OrderBy(l => l.m_similarLaneIndex)
-                .ToList();
-
-            var parkingLanes = info.m_lanes
-                .Where(l => l.m_laneType == NetInfo.LaneType.Parking)
-                .ToList();
-
-            foreach (var parkingLane in parkingLanes)
+            info.SetRoadLanes(version, new LanesConfiguration
             {
-                parkingLane.m_laneType = NetInfo.LaneType.None;
+                IsTwoWay = true,
+                LaneWidth = 2f,
+                SpeedLimit = 0.6f,
+                BusStopOffset = 0f,
+                PedPropOffsetX = 1.5f
+            });
+            info.SetupNewSpeedLimitProps(40, 30);
+
+            var originPlayerNetAI = roadInfo.GetComponent<PlayerNetAI>();
+            var playerNetAI = info.GetComponent<PlayerNetAI>();
+
+            if (playerNetAI != null && originPlayerNetAI != null)
+            {
+                playerNetAI.m_constructionCost = originPlayerNetAI.m_constructionCost * 1 / 2;
+                playerNetAI.m_maintenanceCost = originPlayerNetAI.m_maintenanceCost * 1 / 2;
             }
 
-            var roadHalfWidth = 2f;
-            var pedWidth = 2f;
-
-            for (var i = 0; i < vehicleLanes.Count; i++)
+            var roadBaseAI = info.GetComponent<RoadBaseAI>();
+            if (roadBaseAI != null)
             {
-                var multiplier = vehicleLanes[i].m_position / Math.Abs(vehicleLanes[i].m_position);
-                vehicleLanes[i].m_width = roadHalfWidth;
-                vehicleLanes[i].m_position = multiplier * 0.5f * roadHalfWidth;
-                vehicleLanes[i].m_speedLimit = 0.5f;
-                foreach (var prop in vehicleLanes[i].m_laneProps.m_props)
-                {
-                    prop.m_position.x =  multiplier * 0.4f;
-                }
+                roadBaseAI.m_trafficLights = false;
             }
 
-            for (var i = 0; i < pedestrianLanes.Count; i++)
+            var roadAI = info.GetComponent<RoadAI>();
+            if (roadAI != null)
             {
-                var multiplier = pedestrianLanes[i].m_position / Math.Abs(pedestrianLanes[i].m_position);
-                pedestrianLanes[i].m_width = pedWidth;
-                pedestrianLanes[i].m_position = multiplier * (roadHalfWidth + (.5f * pedWidth));
-
-                foreach (var prop in pedestrianLanes[i].m_laneProps.m_props)
-                {
-                    prop.m_position.x += multiplier * roadHalfWidth;
-                }
+                roadAI.m_enableZoning = false;
             }
-
-            var onewayRoadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_2L);
-
-            if (version == NetInfoVersion.Ground)
-            {
-                var playerNetAI = info.GetComponent<PlayerNetAI>();
-                var orPlayerNetAI = onewayRoadInfo.GetComponent<PlayerNetAI>();
-                if (playerNetAI != null)
-                {
-                    playerNetAI.m_constructionCost = orPlayerNetAI.m_constructionCost * 1 / 2;
-                    playerNetAI.m_maintenanceCost = orPlayerNetAI.m_maintenanceCost * 1 / 2;
-                }
-            }
-            else // Same as the original oneway
-            {
-
-            }
-
-
         }
     }
 }
