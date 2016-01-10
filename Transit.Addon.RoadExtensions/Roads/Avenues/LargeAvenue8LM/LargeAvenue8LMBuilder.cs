@@ -33,7 +33,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
             //var highwayInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L_SLOPE);
             var roadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_6L);
             var roadTunnelInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_6L_TUNNEL);
-            var bridgeInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_4L_BRIDGE).Clone("temp");
 
             ///////////////////////////
             // 3DModeling            //
@@ -49,18 +48,14 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
             // Set up                //
             ///////////////////////////
             info.m_hasParkingSpaces = false;
-            info.m_pavementWidth = (version != NetInfoVersion.Slope && version != NetInfoVersion.Tunnel ? 3 : 4);
-            info.m_halfWidth = 16;
+            info.m_pavementWidth = (version == NetInfoVersion.Slope || version == NetInfoVersion.Tunnel ? 4 : 3);
+            info.m_halfWidth = (version == NetInfoVersion.Tunnel ? 17 : 16);
 
             if (version == NetInfoVersion.Tunnel)
             {
                 info.m_setVehicleFlags = Vehicle.Flags.Transition;
                 info.m_setCitizenFlags = CitizenInstance.Flags.Transition;
                 info.m_class = roadTunnelInfo.m_class.Clone(NetInfoClasses.NEXT_MEDIUM_ROAD_TUNNEL);
-            }
-            else if (version == NetInfoVersion.Bridge)
-            {
-                info.m_class = bridgeInfo.m_class.Clone(NetInfoClasses.NEXT_MEDIUM_ROAD);
             }
             else
             {
@@ -94,21 +89,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
 
             info.TrimAboveGroundProps(version);
 
-            if (version == NetInfoVersion.Bridge)
-            {
-                var bridgePillarInfo = Prefabs.Find<BuildingInfo>(NetInfos.Vanilla.LARGE_ROAD_BRIDGE_SUSPENSION_PILLAR).Clone("LargeRoadBridgeSuspensionPillarPlus");
-                var infoRoadBridgeAI = (RoadBridgeAI)info.GetComponent<NetAI>();
-                if (infoRoadBridgeAI != null && bridgePillarInfo != null)
-                {
-                    var tempBridgePillarInfo = bridgePillarInfo;
-                    tempBridgePillarInfo.m_mesh = AssetManager.instance.GetMesh(@"Buildings/Pillars/16m/Meshes/Pillar.obj");
-                    infoRoadBridgeAI.m_bridgePillarInfo = tempBridgePillarInfo;
-                    //ai.m_bridgePillarInfo.m_mesh = 
-                    //ai.m_bridgePillarInfo.m_lodMesh = AssetManager.instance.GetMesh(@"Buildings/Pillars/16m/Meshes/Pillar_LOD.obj");
-                }
-            }
-
-            //var propLanes = info.m_lanes.Where(l => l.m_laneProps != null && (l.m_laneProps.name.ToLower().Contains("left") || l.m_laneProps.name.ToLower().Contains("right"))).ToList();
             var owPlayerNetAI = roadInfo.GetComponent<PlayerNetAI>();
             var playerNetAI = info.GetComponent<PlayerNetAI>();
 
