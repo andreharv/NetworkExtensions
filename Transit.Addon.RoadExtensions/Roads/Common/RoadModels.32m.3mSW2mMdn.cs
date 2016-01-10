@@ -29,6 +29,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                         info.m_nodes = new[] { nodes0 };
                         break;
                     }
+
                 case NetInfoVersion.Elevated:
                     {
                         var segments0 = info.m_segments[0];
