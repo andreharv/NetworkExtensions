@@ -1,13 +1,11 @@
 ﻿using ColossalFramework;
 using ColossalFramework.Math;
-using Transit.Framework.Unsafe;
 using UnityEngine;
 
 namespace Transit.Addon.RoadExtensions.AI
 {
     public partial class RExRoadBaseAI : RoadBaseAI
     {
-        [RedirectFrom(typeof(RoadBaseAI))]
         private static void CreateZoneBlocksNew(NetInfo info, ushort segment, ref NetSegment data)
         {
             var netManager = Singleton<NetManager>.instance;
@@ -168,65 +166,86 @@ namespace Transit.Addon.RoadExtensions.AI
             }
             else
             {
-                #region Straight
+                CreateZoneBlocksNew_Straight(info, segment, ref data);
+            }
+        }
 
-                halfWidth += num3;
-                var lengthVector = new Vector2(endPosition.x - startPosition.x, endPosition.z - startPosition.z);
-                var length = lengthVector.magnitude;
 
-                var nbUnit = Mathf.FloorToInt(length / roadUnitSize + 0.1f);
-                var startRows = (nbUnit <= roadUnitSize) ? nbUnit : (nbUnit + 1 >> 1);
-                var endRows = (nbUnit <= roadUnitSize) ? 0 : (nbUnit >> 1);
+        private static void CreateZoneBlocksNew_Straight(
+            NetInfo info, ushort segment, ref NetSegment data)
+        {
+            var netManager = Singleton<NetManager>.instance;
+            var zoneManager = Singleton<ZoneManager>.instance;
+            var randomizer = new Randomizer((int)segment);
+            
+            const int BLOCK_SIZE = 4;
+            const int ROAD_UNIT_SIZE = BLOCK_SIZE;
 
-                if (startRows > 0)
-                {
-                    var angle = Mathf.Atan2(startDirection.x, -startDirection.z);
+            var halfWidth = Mathf.Max(ROAD_UNIT_SIZE, info.m_halfWidth);
 
-                    // BlockStartLeft -------------------------------------------------------------
-                    var position = startPosition + new Vector3(
-                        blockSize * 2f * 4.5f,
-                        0f,
-                        halfWidth);
+            var startPosition = netManager.m_nodes.m_buffer[(int)data.m_startNode].m_position;
+            var endPosition = netManager.m_nodes.m_buffer[(int)data.m_endNode].m_position;
 
-                    //+ new Vector3(
-                    //startDirection.x * blockSize * 8f - startDirection.z * halfWidth, 
-                    //0f,
-                    //startDirection.z * blockSize * 8f + startDirection.x * halfWidth);
+            var startDirection = data.m_startDirection;
+            var endDirection = data.m_endDirection;
 
-                    zoneManager.CreateBlock(
-                        out data.m_blockStartLeft,
-                        ref randomizer,
-                        position,
-                        angle,
-                        startRows,
-                        data.m_buildIndex);
+            var num = startDirection.x * endDirection.x + startDirection.z * endDirection.z;
+            var num3 = 32f;
 
-                    // BlockStartRight --------------------------------------------------------
-                    //position = startPosition + new Vector3(
-                    //    startDirection.x * (float)(rows1 - 4) * 8f + startDirection.z * halfWidth,
-                    //    0f,
-                    //    startDirection.z * (float)(rows1 - 4) * 8f - startDirection.x * halfWidth);
-                    //zoneManager.CreateBlock(
-                    //    out data.m_blockStartRight,
-                    //    ref randomizer,
-                    //    position,
-                    //    angle + halfRotation,
-                    //    rows1,
-                    //    data.m_buildIndex);
-                }
+            halfWidth += num3;
+            var lengthVector = new Vector2(endPosition.x - startPosition.x, endPosition.z - startPosition.z);
+            var length = lengthVector.magnitude;
 
-                if (endRows > 0)
-                {
-                    //var num18 = length - (float)nbUnit * 8f;
-                    //var num19 = Mathf.Atan2(endDirection.x, -endDirection.z);
-                    //var position8 = endPosition + new Vector3(endDirection.x * (32f + num18) - endDirection.z * halfWidth, 0f, endDirection.z * (32f + num18) + endDirection.x * halfWidth);
+            var nbUnit = Mathf.FloorToInt(length / ROAD_UNIT_SIZE + 0.1f);
+            var startRows = (nbUnit <= ROAD_UNIT_SIZE) ? nbUnit : (nbUnit + 1 >> 1);
+            var endRows = (nbUnit <= ROAD_UNIT_SIZE) ? 0 : (nbUnit >> 1);
 
-                    //zoneManager.CreateBlock(out data.m_blockEndLeft, ref randomizer, position8, num19, rows2, data.m_buildIndex + 1u);
-                    //position8 = endPosition + new Vector3(endDirection.x * ((float)(rows2 - 4) * 8f + num18) + endDirection.z * halfWidth, 0f, endDirection.z * ((float)(rows2 - 4) * 8f + num18) - endDirection.x * halfWidth);
-                    //zoneManager.CreateBlock(out data.m_blockEndRight, ref randomizer, position8, num19 + halfRotation, rows2, data.m_buildIndex + 1u);
-                }
+            if (startRows > 0)
+            {
+                var angle = Mathf.Atan2(startDirection.x, -startDirection.z);
 
-                #endregion
+                // BlockStartLeft -------------------------------------------------------------
+                var position = startPosition + new Vector3(
+                    BLOCK_SIZE * 2f * 4.5f,
+                    0f,
+                    halfWidth);
+
+                //+ new Vector3(
+                //startDirection.x * blockSize * 8f - startDirection.z * halfWidth, 
+                //0f,
+                //startDirection.z * blockSize * 8f + startDirection.x * halfWidth);
+
+                zoneManager.CreateBlock(
+                    out data.m_blockStartLeft,
+                    ref randomizer,
+                    position,
+                    angle,
+                    startRows,
+                    data.m_buildIndex);
+
+                // BlockStartRight --------------------------------------------------------
+                //position = startPosition + new Vector3(
+                //    startDirection.x * (float)(rows1 - 4) * 8f + startDirection.z * halfWidth,
+                //    0f,
+                //    startDirection.z * (float)(rows1 - 4) * 8f - startDirection.x * halfWidth);
+                //zoneManager.CreateBlock(
+                //    out data.m_blockStartRight,
+                //    ref randomizer,
+                //    position,
+                //    angle + halfRotation,
+                //    rows1,
+                //    data.m_buildIndex);
+            }
+
+            if (endRows > 0)
+            {
+                //var num18 = length - (float)nbUnit * 8f;
+                //var num19 = Mathf.Atan2(endDirection.x, -endDirection.z);
+                //var position8 = endPosition + new Vector3(endDirection.x * (32f + num18) - endDirection.z * halfWidth, 0f, endDirection.z * (32f + num18) + endDirection.x * halfWidth);
+
+                //zoneManager.CreateBlock(out data.m_blockEndLeft, ref randomizer, position8, num19, rows2, data.m_buildIndex + 1u);
+                //position8 = endPosition + new Vector3(endDirection.x * ((float)(rows2 - 4) * 8f + num18) + endDirection.z * halfWidth, 0f, endDirection.z * ((float)(rows2 - 4) * 8f + num18) - endDirection.x * halfWidth);
+                //zoneManager.CreateBlock(out data.m_blockEndRight, ref randomizer, position8, num19 + halfRotation, rows2, data.m_buildIndex + 1u);
             }
         }
     }

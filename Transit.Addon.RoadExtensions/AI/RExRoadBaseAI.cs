@@ -1,10 +1,12 @@
 ﻿using System;
+using Transit.Framework.Unsafe;
 using UnityEngine;
 
 namespace Transit.Addon.RoadExtensions.AI
 {
     public partial class RExRoadBaseAI : RoadBaseAI
     {
+        [RedirectFrom(typeof(RoadBaseAI))]
         private void CreateZoneBlocks(ushort segment, ref NetSegment data)
         {
             try
