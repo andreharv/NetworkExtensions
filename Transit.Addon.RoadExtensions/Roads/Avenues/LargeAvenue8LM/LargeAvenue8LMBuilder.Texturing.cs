@@ -25,7 +25,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
                            (@"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Node_LOD__MainTex.png",
                             @"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Node_LOD__APRMap.png",
                             @"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Segment_LOD__XYSMap.png"));
-
+                    break;
                 case NetInfoVersion.Elevated:
                 case NetInfoVersion.Bridge:
                     info.SetAllSegmentsTexture(
