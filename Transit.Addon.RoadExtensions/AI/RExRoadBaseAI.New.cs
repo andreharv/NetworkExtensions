@@ -172,33 +172,30 @@ namespace Transit.Addon.RoadExtensions.AI
 
 
         private static void CreateZoneBlocksNew_Straight(
-            NetInfo info, ushort segment, ref NetSegment data)
+            NetInfo info, ushort segmentId, ref NetSegment segment)
         {
             var netManager = Singleton<NetManager>.instance;
             var zoneManager = Singleton<ZoneManager>.instance;
-            var randomizer = new Randomizer((int)segment);
-            
-            const int BLOCK_SIZE = 4;
-            const int ROAD_UNIT_SIZE = BLOCK_SIZE;
+            var randomizer = new Randomizer((int)segmentId);
 
-            var halfWidth = Mathf.Max(ROAD_UNIT_SIZE, info.m_halfWidth);
+            const float BLOCK_SIZE = 4f;
+            const float ROAD_UNIT_SIZE = 4f;
+            const float X_OFFSET_BASE = 32f + 4f;
+            const float Z_OFFSET_BASE = 32f;
 
-            var startPosition = netManager.m_nodes.m_buffer[(int)data.m_startNode].m_position;
-            var endPosition = netManager.m_nodes.m_buffer[(int)data.m_endNode].m_position;
+            var xOffset = X_OFFSET_BASE;
+            var zOffset = Z_OFFSET_BASE + Mathf.Max(ROAD_UNIT_SIZE, info.m_halfWidth);
 
-            var startDirection = data.m_startDirection;
-            var endDirection = data.m_endDirection;
+            var startPosition = netManager.m_nodes.m_buffer[(int)segment.m_startNode].m_position;
+            var endPosition = netManager.m_nodes.m_buffer[(int)segment.m_endNode].m_position;
 
-            var num = startDirection.x * endDirection.x + startDirection.z * endDirection.z;
-            var num3 = 32f;
+            var startDirection = segment.m_startDirection;
 
-            halfWidth += num3;
             var lengthVector = new Vector2(endPosition.x - startPosition.x, endPosition.z - startPosition.z);
             var length = lengthVector.magnitude;
 
-            var nbUnit = Mathf.FloorToInt(length / ROAD_UNIT_SIZE + 0.1f);
-            var startRows = (nbUnit <= ROAD_UNIT_SIZE) ? nbUnit : (nbUnit + 1 >> 1);
-            var endRows = (nbUnit <= ROAD_UNIT_SIZE) ? 0 : (nbUnit >> 1);
+            var nbBlock = Mathf.FloorToInt(length / BLOCK_SIZE + 0.1f);
+            var startRows = (nbBlock <= ROAD_UNIT_SIZE) ? nbBlock : (nbBlock + 1 / 2);
 
             if (startRows > 0)
             {
@@ -206,28 +203,28 @@ namespace Transit.Addon.RoadExtensions.AI
 
                 // BlockStartLeft -------------------------------------------------------------
                 var position = startPosition + new Vector3(
-                    BLOCK_SIZE * 2f * 4.5f,
+                    xOffset,
                     0f,
-                    halfWidth);
+                    zOffset);
 
                 //+ new Vector3(
-                //startDirection.x * blockSize * 8f - startDirection.z * halfWidth, 
+                //startDirection.x * blockSize * 8f - startDirection.z * zOffset, 
                 //0f,
-                //startDirection.z * blockSize * 8f + startDirection.x * halfWidth);
+                //startDirection.z * blockSize * 8f + startDirection.x * zOffset);
 
                 zoneManager.CreateBlock(
-                    out data.m_blockStartLeft,
+                    out segment.m_blockStartLeft,
                     ref randomizer,
                     position,
                     angle,
                     startRows,
-                    data.m_buildIndex);
+                    segment.m_buildIndex);
 
                 // BlockStartRight --------------------------------------------------------
                 //position = startPosition + new Vector3(
-                //    startDirection.x * (float)(rows1 - 4) * 8f + startDirection.z * halfWidth,
+                //    startDirection.x * (float)(rows1 - 4) * 8f + startDirection.z * zOffset,
                 //    0f,
-                //    startDirection.z * (float)(rows1 - 4) * 8f - startDirection.x * halfWidth);
+                //    startDirection.z * (float)(rows1 - 4) * 8f - startDirection.x * zOffset);
                 //zoneManager.CreateBlock(
                 //    out data.m_blockStartRight,
                 //    ref randomizer,
@@ -237,14 +234,15 @@ namespace Transit.Addon.RoadExtensions.AI
                 //    data.m_buildIndex);
             }
 
+            var endRows = (nbBlock <= ROAD_UNIT_SIZE) ? 0 : (nbBlock / 2);
             if (endRows > 0)
             {
                 //var num18 = length - (float)nbUnit * 8f;
                 //var num19 = Mathf.Atan2(endDirection.x, -endDirection.z);
-                //var position8 = endPosition + new Vector3(endDirection.x * (32f + num18) - endDirection.z * halfWidth, 0f, endDirection.z * (32f + num18) + endDirection.x * halfWidth);
+                //var position8 = endPosition + new Vector3(endDirection.x * (32f + num18) - endDirection.z * zOffset, 0f, endDirection.z * (32f + num18) + endDirection.x * zOffset);
 
                 //zoneManager.CreateBlock(out data.m_blockEndLeft, ref randomizer, position8, num19, rows2, data.m_buildIndex + 1u);
-                //position8 = endPosition + new Vector3(endDirection.x * ((float)(rows2 - 4) * 8f + num18) + endDirection.z * halfWidth, 0f, endDirection.z * ((float)(rows2 - 4) * 8f + num18) - endDirection.x * halfWidth);
+                //position8 = endPosition + new Vector3(endDirection.x * ((float)(rows2 - 4) * 8f + num18) + endDirection.z * zOffset, 0f, endDirection.z * ((float)(rows2 - 4) * 8f + num18) - endDirection.x * zOffset);
                 //zoneManager.CreateBlock(out data.m_blockEndRight, ref randomizer, position8, num19 + halfRotation, rows2, data.m_buildIndex + 1u);
             }
         }
