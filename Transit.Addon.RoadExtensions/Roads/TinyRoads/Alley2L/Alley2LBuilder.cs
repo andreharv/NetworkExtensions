@@ -13,8 +13,8 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.Alley2L
         public int UIOrder { get { return 5; } }
 
         public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_2L; } }
-        public string Name { get { return "Two-Lane Alley No Zoning"; } }
-        public string DisplayName { get { return "Two-Lane Alley No Zoning"; } }
+        public string Name { get { return "Two-Lane Alley"; } }
+        public string DisplayName { get { return "Two-Lane Alley"; } }
         public string CodeName { get { return "Alley_2L"; } }
         public string Description { get { return "A two-lane, tight Alley suitable for neighborhood traffic. This road is not zonable."; } }
         public string ShortDescription { get { return "No parking, not zoneable, neighborhood traffic"; } }
@@ -108,12 +108,6 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.Alley2L
             if (roadBaseAI != null)
             {
                 roadBaseAI.m_trafficLights = false;
-            }
-
-            var roadAI = info.GetComponent<RoadAI>();
-            if (roadAI != null)
-            {
-                roadAI.m_enableZoning = false;
             }
         }
     }

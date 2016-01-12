@@ -4,23 +4,16 @@ using UnityEngine;
 
 namespace Transit.Addon.RoadExtensions.AI
 {
-    public partial class RExRoadBaseAI : RoadBaseAI
+    public partial class RExRoadAI : RoadAI
     {
-        [RedirectFrom(typeof(RoadBaseAI))]
+        [RedirectFrom(typeof(RoadAI))]
         private void CreateZoneBlocks(ushort segment, ref NetSegment data)
         {
+            Debug.Log(">>>> REx: Redirection is on");
+
             try
             {
-                switch (this.m_info.name)
-                {
-                    case "Two-Lane Alley No Zoning":
-                        CreateZoneBlocksNew(this.m_info, segment, ref data);
-                        break;
-
-                    default:
-                        CreateZoneBlocksOriginal(this.m_info, segment, ref data);
-                        break;
-                }
+                CreateZoneBlocksNew(this.m_info, segment, ref data);
             }
             catch (Exception ex)
             {

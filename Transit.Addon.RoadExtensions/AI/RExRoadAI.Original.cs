@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Transit.Addon.RoadExtensions.AI
 {
-    public partial class RExRoadBaseAI : RoadBaseAI
+    public partial class RExRoadAI : RoadAI
     {
         private static void CreateZoneBlocksOriginal(NetInfo info, ushort segment, ref NetSegment data)
         {
