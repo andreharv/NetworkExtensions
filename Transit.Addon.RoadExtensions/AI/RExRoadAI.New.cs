@@ -10,38 +10,42 @@ namespace Transit.Addon.RoadExtensions.AI
 {
     public partial class RExRoadAI
     {
-        private static void CreateZoneBlocksNew(NetInfo info, ushort segment, ref NetSegment data)
+        private static void CreateZoneBlocksNew(NetInfo info, ushort segmentId, ref NetSegment segment)
         {
-            NetManager instance = Singleton<NetManager>.instance;
-            Vector3 startPostion = instance.m_nodes.m_buffer[(int)data.m_startNode].m_position;
-            Vector3 position2 = instance.m_nodes.m_buffer[(int)data.m_endNode].m_position;
-            Vector3 startDirection = data.m_startDirection;
-            Vector3 endDirection = data.m_endDirection;
-            bool isCurve = !NetSegment.IsStraight(startPostion, startDirection, position2, endDirection);
+            var netManager = Singleton<NetManager>.instance;
+            var randomizer = new Randomizer((int)segmentId);
+
+            var startNode = netManager.m_nodes.m_buffer[(int)segment.m_startNode];
+            var endNode = netManager.m_nodes.m_buffer[(int)segment.m_endNode];
+
+            var startPosition = startNode.m_position;
+            var endPosition = endNode.m_position;
+            var startDirection = segment.m_startDirection;
+            var endDirection = segment.m_endDirection;
+            var isCurve = !NetSegment.IsStraight(startPosition, startDirection, endPosition, endDirection);
 
             if (isCurve)
             {
-                CreateZoneBlocksNew_Curve(info, segment, ref data);
+                CreateZoneBlocksNew_Curve(info, randomizer, ref segment);
             }
             else
             {
-                CreateZoneBlocksNew_Straight(info, segment, ref data);
+                CreateZoneBlocksNew_Straight(info, randomizer, ref segment, startNode, endNode);
             }
         }
 
-        private static void CreateZoneBlocksNew_Curve(NetInfo info, ushort segment, ref NetSegment data)
+        private static void CreateZoneBlocksNew_Curve(NetInfo info, Randomizer randomizer, ref NetSegment segment)
         {
             NetManager instance = Singleton<NetManager>.instance;
-            Randomizer randomizer = new Randomizer((int)segment);
-            Vector3 startPostion = instance.m_nodes.m_buffer[(int)data.m_startNode].m_position;
-            Vector3 position2 = instance.m_nodes.m_buffer[(int)data.m_endNode].m_position;
-            Vector3 startDirection = data.m_startDirection;
-            Vector3 endDirection = data.m_endDirection;
+            Vector3 startPosition = instance.m_nodes.m_buffer[(int)segment.m_startNode].m_position;
+            Vector3 endPosition = instance.m_nodes.m_buffer[(int)segment.m_endNode].m_position;
+            Vector3 startDirection = segment.m_startDirection;
+            Vector3 endDirection = segment.m_endDirection;
             float num = startDirection.x * endDirection.x + startDirection.z * endDirection.z;
             float num2 = Mathf.Max(4f, info.m_halfWidth);
             float num3 = 32f;
 
-            float num4 = VectorUtils.LengthXZ(position2 - startPostion);
+            float num4 = VectorUtils.LengthXZ(endPosition - startPosition);
             bool flag2 = startDirection.x * endDirection.z - startDirection.z * endDirection.x > 0f;
             bool flag3 = num < -0.8f || num4 > 50f;
             if (flag2)
@@ -49,8 +53,8 @@ namespace Transit.Addon.RoadExtensions.AI
                 num2 = -num2;
                 num3 = -num3;
             }
-            Vector3 vector = startPostion - new Vector3(startDirection.z, 0f, -startDirection.x) * num2;
-            Vector3 vector2 = position2 + new Vector3(endDirection.z, 0f, -endDirection.x) * num2;
+            Vector3 vector = startPosition - new Vector3(startDirection.z, 0f, -startDirection.x) * num2;
+            Vector3 vector2 = endPosition + new Vector3(endDirection.z, 0f, -endDirection.x) * num2;
             Vector3 vector3;
             Vector3 vector4;
             NetSegment.CalculateMiddlePoints(vector, startDirection, vector2, endDirection, true, true, out vector3, out vector4);
@@ -84,11 +88,23 @@ namespace Transit.Addon.RoadExtensions.AI
                 Vector3 position3 = vector + new Vector3(vector5.x * num9 - vector5.z * num3, 0f, vector5.z * num9 + vector5.x * num3);
                 if (flag2)
                 {
-                    Singleton<ZoneManager>.instance.CreateBlock(out data.m_blockStartRight, ref randomizer, position3, angle, num8, data.m_buildIndex);
+                    Singleton<ZoneManager>.instance.CreateBlock(
+                        out segment.m_blockStartRight, 
+                        ref randomizer, 
+                        position3, 
+                        angle, 
+                        num8, 
+                        segment.m_buildIndex);
                 }
                 else
                 {
-                    Singleton<ZoneManager>.instance.CreateBlock(out data.m_blockStartLeft, ref randomizer, position3, angle, num8, data.m_buildIndex);
+                    Singleton<ZoneManager>.instance.CreateBlock(
+                        out segment.m_blockStartLeft, 
+                        ref randomizer, 
+                        position3, 
+                        angle, 
+                        num8, 
+                        segment.m_buildIndex);
                 }
             }
             if (flag3)
@@ -102,16 +118,28 @@ namespace Transit.Addon.RoadExtensions.AI
                     Vector3 position4 = vector4 + new Vector3(vector5.x * num9 - vector5.z * num3, 0f, vector5.z * num9 + vector5.x * num3);
                     if (flag2)
                     {
-                        Singleton<ZoneManager>.instance.CreateBlock(out data.m_blockEndRight, ref randomizer, position4, angle2, num8, data.m_buildIndex + 1u);
+                        Singleton<ZoneManager>.instance.CreateBlock(
+                            out segment.m_blockEndRight, 
+                            ref randomizer, 
+                            position4, 
+                            angle2, 
+                            num8, 
+                            segment.m_buildIndex + 1u);
                     }
                     else
                     {
-                        Singleton<ZoneManager>.instance.CreateBlock(out data.m_blockEndLeft, ref randomizer, position4, angle2, num8, data.m_buildIndex + 1u);
+                        Singleton<ZoneManager>.instance.CreateBlock(
+                            out segment.m_blockEndLeft, 
+                            ref randomizer, 
+                            position4, 
+                            angle2, 
+                            num8, 
+                            segment.m_buildIndex + 1u);
                     }
                 }
             }
-            Vector3 vector6 = startPostion + new Vector3(startDirection.z, 0f, -startDirection.x) * num2;
-            Vector3 vector7 = position2 - new Vector3(endDirection.z, 0f, -endDirection.x) * num2;
+            Vector3 vector6 = startPosition + new Vector3(startDirection.z, 0f, -startDirection.x) * num2;
+            Vector3 vector7 = endPosition - new Vector3(endDirection.z, 0f, -endDirection.x) * num2;
             Vector3 b;
             Vector3 c;
             NetSegment.CalculateMiddlePoints(vector6, startDirection, vector7, endDirection, true, true, out b, out c);
@@ -125,13 +153,13 @@ namespace Transit.Addon.RoadExtensions.AI
             Vector3 a = vector7;
             float d;
             float num10;
-            if (Line2.Intersect(VectorUtils.XZ(startPostion), VectorUtils.XZ(vector6), VectorUtils.XZ(vector11 - vector9), VectorUtils.XZ(vector8 - vector9), out d, out num10))
+            if (Line2.Intersect(VectorUtils.XZ(startPosition), VectorUtils.XZ(vector6), VectorUtils.XZ(vector11 - vector9), VectorUtils.XZ(vector8 - vector9), out d, out num10))
             {
-                vector6 = startPostion + (vector6 - startPostion) * d;
+                vector6 = startPosition + (vector6 - startPosition) * d;
             }
-            if (Line2.Intersect(VectorUtils.XZ(position2), VectorUtils.XZ(vector7), VectorUtils.XZ(a - vector10), VectorUtils.XZ(vector8 - vector10), out d, out num10))
+            if (Line2.Intersect(VectorUtils.XZ(endPosition), VectorUtils.XZ(vector7), VectorUtils.XZ(a - vector10), VectorUtils.XZ(vector8 - vector10), out d, out num10))
             {
-                vector7 = position2 + (vector7 - position2) * d;
+                vector7 = endPosition + (vector7 - endPosition) * d;
             }
             if (Line2.Intersect(VectorUtils.XZ(vector11 - vector9), VectorUtils.XZ(vector8 - vector9), VectorUtils.XZ(a - vector10), VectorUtils.XZ(vector8 - vector10), out d, out num10))
             {
@@ -147,11 +175,23 @@ namespace Transit.Addon.RoadExtensions.AI
                 Vector3 position5 = vector6 + new Vector3(vector12.x * num13 + vector12.z * num3, 0f, vector12.z * num13 - vector12.x * num3);
                 if (flag2)
                 {
-                    Singleton<ZoneManager>.instance.CreateBlock(out data.m_blockStartLeft, ref randomizer, position5, angle3, num12, data.m_buildIndex);
+                    Singleton<ZoneManager>.instance.CreateBlock(
+                        out segment.m_blockStartLeft, 
+                        ref randomizer, 
+                        position5, 
+                        angle3, 
+                        num12, 
+                        segment.m_buildIndex);
                 }
                 else
                 {
-                    Singleton<ZoneManager>.instance.CreateBlock(out data.m_blockStartRight, ref randomizer, position5, angle3, num12, data.m_buildIndex);
+                    Singleton<ZoneManager>.instance.CreateBlock(
+                        out segment.m_blockStartRight, 
+                        ref randomizer, 
+                        position5, 
+                        angle3, 
+                        num12, 
+                        segment.m_buildIndex);
                 }
             }
             vector12 = VectorUtils.NormalizeXZ(vector7 - vector8, out num11);
@@ -163,84 +203,94 @@ namespace Transit.Addon.RoadExtensions.AI
                 Vector3 position6 = vector8 + new Vector3(vector12.x * num13 + vector12.z * num3, 0f, vector12.z * num13 - vector12.x * num3);
                 if (flag2)
                 {
-                    Singleton<ZoneManager>.instance.CreateBlock(out data.m_blockEndLeft, ref randomizer, position6, angle4, num12, data.m_buildIndex + 1u);
+                    Singleton<ZoneManager>.instance.CreateBlock(
+                        out segment.m_blockEndLeft, 
+                        ref randomizer, 
+                        position6, 
+                        angle4, 
+                        num12, 
+                        segment.m_buildIndex + 1u);
                 }
                 else
                 {
-                    Singleton<ZoneManager>.instance.CreateBlock(out data.m_blockEndRight, ref randomizer, position6, angle4, num12, data.m_buildIndex + 1u);
+                    Singleton<ZoneManager>.instance.CreateBlock(
+                        out segment.m_blockEndRight, 
+                        ref randomizer, 
+                        position6, 
+                        angle4, 
+                        num12, 
+                        segment.m_buildIndex + 1u);
                 }
             }
         }
 
-        private static void CreateZoneBlocksNew_Straight(NetInfo info, ushort segment, ref NetSegment data)
+        private static void CreateZoneBlocksNew_Straight(NetInfo info, Randomizer randomizer, ref NetSegment segment, NetNode startNode, NetNode endNode)
         {
-            NetManager instance = Singleton<NetManager>.instance;
-            Randomizer randomizer = new Randomizer((int)segment);
-            Vector3 startPostion = instance.m_nodes.m_buffer[(int)data.m_startNode].m_position;
-            Vector3 position2 = instance.m_nodes.m_buffer[(int)data.m_endNode].m_position;
-            Vector3 startDirection = data.m_startDirection;
-            Vector3 endDirection = data.m_endDirection;
+            Vector3 startPosition = startNode.m_position;
+            Vector3 endPosition = endNode.m_position;
+            Vector3 startDirection = segment.m_startDirection;
+            Vector3 endDirection = segment.m_endDirection;
             float num2 = Mathf.Max(4f, info.m_halfWidth) + 32f;
 
-            Vector2 vector13 = new Vector2(position2.x - startPostion.x, position2.z - startPostion.z);
-            float magnitude = vector13.magnitude;
+            Vector2 magnitudeVector = new Vector2(endPosition.x - startPosition.x, endPosition.z - startPosition.z);
+            float magnitude = magnitudeVector.magnitude;
             int num14 = Mathf.FloorToInt(magnitude / 8f + 0.1f);
             int num15 = (num14 <= 8) ? num14 : (num14 + 1 >> 1);
             int num16 = (num14 <= 8) ? 0 : (num14 >> 1);
             if (num15 > 0)
             {
                 float num17 = Mathf.Atan2(startDirection.x, -startDirection.z);
-                Vector3 position7 = startPostion + new Vector3(
+                Vector3 position7 = startPosition + new Vector3(
                     startDirection.x * 32f - startDirection.z * num2, 
                     0f, 
                     startDirection.z * 32f + startDirection.x * num2);
                 Singleton<ZoneManager>.instance.CreateBlock(
-                    out data.m_blockStartLeft, 
+                    out segment.m_blockStartLeft, 
                     ref randomizer, 
                     position7, 
                     num17, 
                     num15, 
-                    data.m_buildIndex);
+                    segment.m_buildIndex);
 
-                position7 = startPostion + new Vector3(
+                position7 = startPosition + new Vector3(
                     startDirection.x * (float)(num15 - 4) * 8f + startDirection.z * num2, 
                     0f, 
                     startDirection.z * (float)(num15 - 4) * 8f - startDirection.x * num2);
                 Singleton<ZoneManager>.instance.CreateBlock(
-                    out data.m_blockStartRight, 
+                    out segment.m_blockStartRight, 
                     ref randomizer, 
                     position7, 
                     num17 + 3.14159274f, 
                     num15, 
-                    data.m_buildIndex);
+                    segment.m_buildIndex);
             }
             if (num16 > 0)
             {
                 float num18 = magnitude - (float)num14 * 8f;
                 float num19 = Mathf.Atan2(endDirection.x, -endDirection.z);
-                Vector3 position8 = position2 + new Vector3(
+                Vector3 position8 = endPosition + new Vector3(
                     endDirection.x * (32f + num18) - endDirection.z * num2, 
                     0f, 
                     endDirection.z * (32f + num18) + endDirection.x * num2);
                 Singleton<ZoneManager>.instance.CreateBlock(
-                    out data.m_blockEndLeft, 
+                    out segment.m_blockEndLeft, 
                     ref randomizer, 
                     position8, 
                     num19, 
                     num16, 
-                    data.m_buildIndex + 1u);
+                    segment.m_buildIndex + 1u);
 
-                position8 = position2 + new Vector3(
+                position8 = endPosition + new Vector3(
                     endDirection.x * ((float)(num16 - 4) * 8f + num18) + endDirection.z * num2, 
                     0f, 
                     endDirection.z * ((float)(num16 - 4) * 8f + num18) - endDirection.x * num2);
                 Singleton<ZoneManager>.instance.CreateBlock(
-                    out data.m_blockEndRight, 
+                    out segment.m_blockEndRight, 
                     ref randomizer, 
                     position8, 
                     num19 + 3.14159274f, 
                     num16, 
-                    data.m_buildIndex + 1u);
+                    segment.m_buildIndex + 1u);
             }
         }
     }
