@@ -62,6 +62,9 @@
     <Compile Include="PathFinding\CustomPathFind.Implementation.Threading.cs" />
     <Compile Include="PathFinding\CustomPathFind.Implementation.CalculatePath.cs" />
     <Compile Include="PathFinding\CustomPathFind.Implementation.cs" />
+    <Compile Include="PathFinding\V2\TAMPathFind.cs" />
+    <Compile Include="PathFinding\V2\TAMPathFind.Implementation.cs" />
+    <Compile Include="PathFinding\V2\TAMPathManager.cs" />
     <Compile Include="PathFinding\Vanilla\PathManager.cs" />
     <Compile Include="PathFinding\Vanilla\PathFind.cs" />
     <Compile Include="Tools\Markers\LaneRoutingMarker.cs" />
