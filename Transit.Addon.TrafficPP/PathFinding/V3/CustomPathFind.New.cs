@@ -48,9 +48,7 @@ namespace Transit.Addon.TrafficPP.PathFinding.V3
         object m_bufferLock;
         uint[] m_laneLocation;
         PathUnit.Position[] m_laneTarget;
-
-        bool m_congestionAvoidanceEnabled;
-
+        
         public CustomPathFind()
         {
             this.m_laneLocation = new uint[262144];
@@ -64,8 +62,6 @@ namespace Transit.Addon.TrafficPP.PathFinding.V3
 
         public void PathFindImplementation(uint unit, ref PathUnit data)
         {
-            m_congestionAvoidanceEnabled = false;//(TrafficAIModule.TrafficAIOptions & TrafficAIModule.Options.CongestionAvoidance) != 0;
-
             NetManager instance = Singleton<NetManager>.instance;
             this.m_laneTypes = (NetInfo.LaneType)this.m_pathUnits.m_buffer[(int)((UIntPtr)unit)].m_laneTypes;
             this.m_vehicleTypes = (VehicleInfo.VehicleType)this.m_pathUnits.m_buffer[(int)((UIntPtr)unit)].m_vehicleTypes;
@@ -813,15 +809,6 @@ namespace Transit.Addon.TrafficPP.PathFinding.V3
                         if (flag)
                         {
                             num13 *= 2f;
-                        }
-                        if (m_congestionAvoidanceEnabled)
-                        {
-                            /* ----- Congestion Changes ----- */
-                            // Checks if the lane has space for a vehicle of length 5. If not, increase its cost to avoid it. 
-                            if (!instance.m_lanes.m_buffer[num2].CheckSpace(5)) // the length used here can be tweaked for different results. Haven't had time to test it yet
-                            {
-                                num13 *= 3f; // the factor of cost increase can also be tweaked to achieve different results
-                            }
                         }
                         /* ------------------------------ */
 						float num14 = num13 / ((num5 + LanesManager.GetLaneSpeed(num2) /*lane2.m_speedLimit*/) * 0.5f * this.m_maxLength);

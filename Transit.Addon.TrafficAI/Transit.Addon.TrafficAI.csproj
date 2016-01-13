@@ -55,7 +55,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AI\CustomCarAI.cs" />
+    <Compile Include="AI\CustomCarAI.New.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="PathFinding\CustomPathFind.cs" />
     <Compile Include="TrafficAI.cs" />
     <Compile Include="TrafficAI.Loading.cs" />
