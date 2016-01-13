@@ -62,9 +62,8 @@
     <Compile Include="PathFinding\CustomPathFind.Implementation.Threading.cs" />
     <Compile Include="PathFinding\CustomPathFind.Implementation.CalculatePath.cs" />
     <Compile Include="PathFinding\CustomPathFind.Implementation.cs" />
-    <Compile Include="PathFinding\V2\TAMPathFind.cs" />
-    <Compile Include="PathFinding\V2\TAMPathFind.Implementation.cs" />
-    <Compile Include="PathFinding\V2\TAMPathManager.cs" />
+    <Compile Include="PathFinding\V3\CustomPathFind.cs" />
+    <Compile Include="PathFinding\V3\TAMPathFind.cs" />
     <Compile Include="PathFinding\Vanilla\PathManager.cs" />
     <Compile Include="PathFinding\Vanilla\PathFind.cs" />
     <Compile Include="Tools\Markers\LaneRoutingMarker.cs" />
@@ -92,6 +91,10 @@
       <Project>{80C47696-4D41-4BB6-9CAE-C477FE528ADF}</Project>
       <Name>Transit.Addon</Name>
       <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Transit.Framework.Unsafe\Transit.Framework.Unsafe.csproj">
+      <Project>{7dcc08ef-dc85-47a4-bd6f-79fc52c7ef13}</Project>
+      <Name>Transit.Framework.Unsafe</Name>
     </ProjectReference>
     <ProjectReference Include="..\Transit.Framework\Transit.Framework.csproj">
       <Project>{8891467E-C88E-46B0-96F9-4413DF6DC205}</Project>
