@@ -100,22 +100,38 @@ namespace Transit.Addon.TrafficPP.Core
 
         public bool ConnectsTo(uint laneId)
         {
-            VerifyConnections();
-
-            bool result = true;
             while (!Monitor.TryEnter(this.m_laneConnections, SimulationManager.SYNCHRONIZE_TIMEOUT))
             {
             }
             try
             {
-                result = m_laneConnections.Count == 0 || m_laneConnections.Contains(laneId);
+                if (m_laneConnections.Count == 0)
+                {
+                    return true;
+                }
+
+                if (m_laneConnections.Contains(laneId))
+                {
+                    NetLane lane = NetManager.instance.m_lanes.m_buffer[laneId];
+
+                    if ((lane.m_flags & CONTROL_BIT) != CONTROL_BIT)
+                    {
+                        m_laneConnections.Remove(laneId);
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+
+                }
+
+                return false;
             }
             finally
             {
                 Monitor.Exit(this.m_laneConnections);
             }
-
-            return result;
         }
 
         void VerifyConnections()

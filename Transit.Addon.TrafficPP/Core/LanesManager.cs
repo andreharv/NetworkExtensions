@@ -43,9 +43,15 @@ namespace Transit.Addon.TrafficPP.Core
             return lane;
         }
 
-        public static Lane GetLane(uint laneId)
+        public static Lane GetLane(uint laneId, bool forceCreate = true)
         {
             Lane lane = sm_lanes[laneId];
+
+            if (!forceCreate)
+            {
+                return lane;
+            }
+
             if (lane == null || (NetManager.instance.m_lanes.m_buffer[laneId].m_flags & Lane.CONTROL_BIT) == 0)
                 lane = CreateLane(laneId);
 
@@ -79,9 +85,16 @@ namespace Transit.Addon.TrafficPP.Core
 
         public static bool CheckLaneConnection(uint from, uint to)
         {   
-            Lane lane = GetLane(from);
+            Lane lane = GetLane(from, false);
 
-            return lane.ConnectsTo(to);
+            if (lane == null)
+            {
+                return true;
+            }
+            else
+            {
+                return lane.ConnectsTo(to);
+            }
         }
         #endregion
 
