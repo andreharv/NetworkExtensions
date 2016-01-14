@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Transit.Addon.TrafficPP.AI
 {
-    public class CustomCarAI : VehicleAI
+    public class TAMCarAI : VehicleAI
     {
         // This is the 31th bit in Vehicle.Flags. If CO adds more flags, we'll need to review this
         public const Vehicle.Flags AvoidingCongestionFlag = (Vehicle.Flags)((int)Vehicle.Flags.Transition << 1);

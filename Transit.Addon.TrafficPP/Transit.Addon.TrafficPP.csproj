@@ -52,16 +52,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AI\CustomCarAI.New.cs" />
+    <Compile Include="AI\TAMCarAI.New.cs" />
     <Compile Include="Core\Lane.cs" />
     <Compile Include="Core\LaneSerializationBinder.cs" />
     <Compile Include="Core\LaneSerializationExtension.cs" />
     <Compile Include="Core\LanesManager.cs" />
     <Compile Include="Core\VehicleTypePP.cs" />
-    <Compile Include="PathFinding\V3\CustomPathFind.New.cs" />
-    <Compile Include="PathFinding\V3\TAMPathFind.cs" />
-    <Compile Include="PathFinding\Vanilla\PathManager.cs" />
-    <Compile Include="PathFinding\Vanilla\PathFind.cs" />
+    <Compile Include="PathFinding\TAMPathFind.cs" />
+    <Compile Include="PathFinding\TAMPathFindImplementation.cs" />
     <Compile Include="Tools\Markers\LaneRoutingMarker.cs" />
     <Compile Include="Tools\Markers\SegmentLaneMarker.cs" />
     <Compile Include="TrafficPPModule.Settings.cs" />

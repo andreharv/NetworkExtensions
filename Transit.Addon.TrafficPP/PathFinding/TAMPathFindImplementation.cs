@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using ColossalFramework;
@@ -8,9 +7,9 @@ using Transit.Addon.TrafficPP.Core;
 using Transit.Framework.Unsafe;
 using UnityEngine;
 
-namespace Transit.Addon.TrafficPP.PathFinding.V3
+namespace Transit.Addon.TrafficPP.PathFinding
 {
-    public class CustomPathFind
+    public class TAMPathFindImplementation
     {
         private struct BufferItem
         {
@@ -49,7 +48,7 @@ namespace Transit.Addon.TrafficPP.PathFinding.V3
         uint[] m_laneLocation;
         PathUnit.Position[] m_laneTarget;
         
-        public CustomPathFind()
+        public TAMPathFindImplementation()
         {
             this.m_laneLocation = new uint[262144];
             this.m_laneTarget = new PathUnit.Position[262144];
