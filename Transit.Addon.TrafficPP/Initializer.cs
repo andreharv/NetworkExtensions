@@ -24,10 +24,7 @@ namespace Transit.Addon.TrafficPP
         static readonly string[] sm_collectionPrefixes = { "", "Europe " };
 
         Dictionary<string, PrefabInfo> m_customPrefabs;
-        Dictionary<string, Texture2D> m_customTextures;
         Dictionary<string, VehicleAI> m_replacedAIs;
-        //Queue<Action> m_postLoadingActions;
-        //UITextureAtlas m_thumbnailsTextureAtlas;
         bool m_initialized;
         bool m_incompatibilityWarning;
         float m_gameStartedTime;
@@ -38,16 +35,13 @@ namespace Transit.Addon.TrafficPP
             DontDestroyOnLoad(this);
 
             m_customPrefabs = new Dictionary<string, PrefabInfo>();
-            m_customTextures = new Dictionary<string, Texture2D>();
             m_replacedAIs = new Dictionary<string, VehicleAI>();
-            //m_postLoadingActions = new Queue<Action>();
         }
 
         void Start()
         {
             if ((TrafficPPModule.ActiveOptions & TrafficPPModule.ModOptions.GhostMode) != TrafficPPModule.ModOptions.GhostMode)
             {
-                ReplacePathManager();
                 ReplaceTransportManager();
             }
 #if DEBUG
@@ -77,7 +71,6 @@ namespace Transit.Addon.TrafficPP
 
                 m_customPrefabs.Clear();
                 m_replacedAIs.Clear();
-                //m_postLoadingActions.Clear();
             }
         }
 
@@ -97,9 +90,6 @@ namespace Transit.Addon.TrafficPP
             else if (m_gameStartedTime == 0f)
                 m_gameStartedTime = Time.realtimeSinceStartup;
 
-            //while (m_postLoadingActions.Count > 0)
-            //	m_postLoadingActions.Dequeue().Invoke();
-
             // contributed by Japa
             TransportTool transportTool = ToolsModifierControl.GetCurrentTool<TransportTool>();
             if (transportTool != null)
@@ -109,24 +99,6 @@ namespace Transit.Addon.TrafficPP
                 {
                     customTransportTool.m_prefab = transportTool.m_prefab;
                 }
-            }
-
-            // Checks if CustomPathManager have been replaced by another mod and prints a warning in the log
-            // This check is only run in the first two minutes since game is loaded
-            if (!m_incompatibilityWarning && (TrafficPPModule.ActiveOptions & TrafficPPModule.ModOptions.GhostMode) == TrafficPPModule.ModOptions.None)
-            {
-                if ((Time.realtimeSinceStartup - m_gameStartedTime) < 120f)
-                {
-                    CustomPathManager customPathManager = Singleton<PathManager>.instance as CustomPathManager;
-                    if (customPathManager == null)
-                    {
-                        Logger.LogInfo("CustomPathManager not found! There's an incompatibility with another mod.");
-                        UIView.library.ShowModal<ExceptionPanel>("ExceptionPanel").SetMessage("Incompatibility Issue", "Traffic++ detected an incompatibility with another mod! You can continue playing but it's NOT recommended.", false);
-                        m_incompatibilityWarning = true;
-                    }
-                }
-                else
-                    m_incompatibilityWarning = true;
             }
 
 #if DEBUG
@@ -377,84 +349,6 @@ namespace Transit.Addon.TrafficPP
             m_initialized = true;
 
             Logger.LogInfo("Prefabs queued for loading.");
-        }
-
-        //IEnumerator Print()
-        //{
-        //    yield return new WaitForSeconds(30f);
-
-        //    foreach (var item in Resources.FindObjectsOfTypeAll<GameObject>().Except(GameObject.FindObjectsOfType<GameObject>()))
-        //    {
-        //        if (item.transform.parent == null)
-        //            printGameObjects(item);
-        //    }
-        //}
-
-        //void printGameObjects(GameObject go, int depth = 0)
-        //{
-        //    StringBuilder sb = new StringBuilder();
-        //    for (int i = 0; i < depth; i++)
-        //    {
-        //        sb.Append(">");
-        //    }
-        //    sb.Append("> ");
-        //    sb.Append(go.name);
-        //    sb.Append("\n");
-
-        //    System.IO.File.AppendAllText("MapScenePrefabs.txt", sb.ToString());
-
-        //    printComponents(go, depth);
-
-        //    foreach (Transform t in go.transform)
-        //    {
-        //        printGameObjects(t.gameObject, depth + 1);
-        //    }
-        //}
-
-        //void printComponents(GameObject go, int depth)
-        //{
-        //    foreach (var item in go.GetComponents<Component>())
-        //    {
-        //        StringBuilder sb = new StringBuilder();
-        //        for (int i = 0; i < depth; i++)
-        //        {
-        //            sb.Append(" ");
-        //        }
-        //        sb.Append("  -- ");
-        //        sb.Append(item.GetType().Name);
-        //        sb.Append("\n");
-
-        //        System.IO.File.AppendAllText("MapScenePrefabs.txt", sb.ToString());
-        //    }
-        //}
-
-
-        // Replace the pathfinding system for mine
-        void ReplacePathManager()
-        {
-            if (Singleton<PathManager>.instance as CustomPathManager != null)
-                return;
-
-            Logger.LogInfo("Replacing Path Manager");
-
-            // Change PathManager to CustomPathManager
-            FieldInfo sInstance = typeof(ColossalFramework.Singleton<PathManager>).GetFieldByName("sInstance");
-            PathManager originalPathManager = ColossalFramework.Singleton<PathManager>.instance;
-            CustomPathManager customPathManager = originalPathManager.gameObject.AddComponent<CustomPathManager>();
-            customPathManager.SetOriginalValues(originalPathManager);
-
-            // change the new instance in the singleton
-            sInstance.SetValue(null, customPathManager);
-
-            // change the manager in the SimulationManager
-            FastList<ISimulationManager> managers = (FastList<ISimulationManager>)typeof(SimulationManager).GetFieldByName("m_managers").GetValue(null);
-            managers.Remove(originalPathManager);
-            managers.Add(customPathManager);
-
-            // Destroy in 10 seconds to give time to all references to update to the new manager without crashing
-            GameObject.Destroy(originalPathManager, 10f);
-
-            Logger.LogInfo("Path Manager successfully replaced.");
         }
 
         void ReplaceTransportManager()
