@@ -52,6 +52,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AI\CustomCarAI.New.cs" />
     <Compile Include="Core\Lane.cs" />
     <Compile Include="Core\LaneSerializationBinder.cs" />
     <Compile Include="Core\LaneSerializationExtension.cs" />
