@@ -1,11 +1,13 @@
 ﻿using ICities;
 using Transit.Framework.Modularity;
+using Transit.Framework.Unsafe;
 
 namespace Transit.Addon
 {
     public partial class Mod : LoadingExtensionBase
     {
         private bool _loadTriggered = false;
+        private bool _isReleased = true;
 
         public void OnGameLoaded()
         {
@@ -23,6 +25,13 @@ namespace Transit.Addon
 
         public override void OnCreated(ILoading loading)
         {
+            if (_isReleased)
+            {
+                Redirector.PerformRedirections();
+
+                _isReleased = false;
+            }
+
             foreach (IModule module in Modules)
                 module.OnCreated(loading);
         }
@@ -43,6 +52,13 @@ namespace Transit.Addon
         {
             foreach (IModule module in Modules)
                 module.OnReleased();
+
+            if (_isReleased)
+            {
+                return;
+            }
+
+            Redirector.RevertRedirections();
         }
 
         public void OnEnabled()

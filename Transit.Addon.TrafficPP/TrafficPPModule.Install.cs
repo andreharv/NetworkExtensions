@@ -1,4 +1,6 @@
 ﻿using ICities;
+using Transit.Addon.Core.PathFinding;
+using Transit.Addon.TrafficPP.Core.PathFinding;
 using Transit.Framework;
 using Transit.Framework.Unsafe;
 using UnityEngine;
@@ -16,7 +18,7 @@ namespace Transit.Addon.TrafficPP
 
             if (_isReleased)
             {
-                Redirector.PerformRedirections();
+                PathFinder.SetType<TPPPathFinder>();
 
                 if (AssetPath != null && AssetPath != Assets.PATH_NOT_FOUND)
                 {
@@ -40,7 +42,7 @@ namespace Transit.Addon.TrafficPP
                 return;
             }
 
-            Redirector.RevertRedirections();
+            PathFinder.ResetToDefault();
 
             if (_initializer != null)
             {

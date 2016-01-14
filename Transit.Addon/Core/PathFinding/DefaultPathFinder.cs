@@ -1,15 +1,14 @@
-﻿using System;
+﻿using ColossalFramework;
+using ColossalFramework.Math;
+using System;
 using System.Runtime.CompilerServices;
 using System.Threading;
-using ColossalFramework;
-using ColossalFramework.Math;
-using Transit.Addon.TrafficPP.Core;
 using Transit.Framework.Unsafe;
 using UnityEngine;
 
-namespace Transit.Addon.TrafficPP.PathFinding
+namespace Transit.Addon.Core.PathFinding
 {
-    public class TAMPathFindImplementation
+    public class DefaultPathFinder : IPathFinder
     {
         private struct BufferItem
         {
@@ -48,7 +47,7 @@ namespace Transit.Addon.TrafficPP.PathFinding
         uint[] m_laneLocation;
         PathUnit.Position[] m_laneTarget;
         
-        public TAMPathFindImplementation()
+        public DefaultPathFinder()
         {
             this.m_laneLocation = new uint[262144];
             this.m_laneTarget = new PathUnit.Position[262144];
@@ -59,7 +58,7 @@ namespace Transit.Addon.TrafficPP.PathFinding
             this.m_pathUnits = PathManager.instance.m_pathUnits;
         }
 
-        public void PathFindImplementation(uint unit, ref PathUnit data)
+        public void ProcessPathUnit(uint unit, ref PathUnit data)
         {
             NetManager instance = Singleton<NetManager>.instance;
             this.m_laneTypes = (NetInfo.LaneType)this.m_pathUnits.m_buffer[(int)((UIntPtr)unit)].m_laneTypes;
@@ -575,25 +574,7 @@ namespace Transit.Addon.TrafficPP.PathFinding
                 }
             }
         }
-
-        private float CalculateLaneSpeed(byte startOffset, byte endOffset, ref NetSegment segment, NetInfo.Lane laneInfo)
-        {
-            NetInfo.Direction direction = ((segment.m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None) ? laneInfo.m_finalDirection : NetInfo.InvertDirection(laneInfo.m_finalDirection);
-            if ((byte)(direction & NetInfo.Direction.Avoid) == 0)
-            {
-                return laneInfo.m_speedLimit;
-            }
-            if (endOffset > startOffset && direction == NetInfo.Direction.AvoidForward)
-            {
-                return laneInfo.m_speedLimit * 0.1f;
-            }
-            if (endOffset < startOffset && direction == NetInfo.Direction.AvoidBackward)
-            {
-                return laneInfo.m_speedLimit * 0.1f;
-            }
-            return laneInfo.m_speedLimit * 0.2f;
-        }
-
+		
         private void ProcessItem(BufferItem item, ushort targetNode, bool targetDisabled, ushort segmentID, ref NetSegment segment, uint lane, byte offset, byte connectOffset)
         {
             if ((segment.m_flags & (NetSegment.Flags.PathFailed | NetSegment.Flags.Flooded)) != NetSegment.Flags.None)
@@ -614,14 +595,19 @@ namespace Transit.Addon.TrafficPP.PathFinding
             NetInfo.LaneType laneType = NetInfo.LaneType.None;
             if ((int)item.m_position.m_lane < info2.m_lanes.Length)
             {
+				uint l = instance.m_segments.m_buffer[(int)item.m_position.m_segment].m_lanes;
+				for (int n = 0; l != 0 && n < (int)item.m_position.m_lane; ++n)
+					l = instance.m_lanes.m_buffer[l].m_nextLane;
+					
                 NetInfo.Lane lane2 = info2.m_lanes[(int)item.m_position.m_lane];
-                num3 = lane2.m_speedLimit;
+                num3 = GetLaneSpeedLimit(lane2, l);
+				
                 laneType = lane2.m_laneType;
                 if ((byte)(laneType & (NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle)) != 0)
                 {
                     laneType = (NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle);
                 }
-                num4 = this.CalculateLaneSpeed(connectOffset, item.m_position.m_offset, ref instance.m_segments.m_buffer[(int)item.m_position.m_segment], lane2);
+				num4 = this.CalculateLaneSpeed(connectOffset, item.m_position.m_offset, ref instance.m_segments.m_buffer[(int)item.m_position.m_segment], lane2, l);
             }
             float averageLength = instance.m_segments.m_buffer[(int)item.m_position.m_segment].m_averageLength;
             float num5 = (float)Mathf.Abs((int)(connectOffset - item.m_position.m_offset)) * 0.003921569f * averageLength;
@@ -652,7 +638,7 @@ namespace Transit.Addon.TrafficPP.PathFinding
                         }
                         if (lane3.m_laneType != NetInfo.LaneType.Pedestrian || item2.m_methodDistance < 1000f)
                         {
-                            item2.m_comparisonValue = num7 + num9 / ((num3 + lane3.m_speedLimit) * 0.5f * this.m_maxLength);
+                            item2.m_comparisonValue = num7 + num9 / ((num3 + GetLaneSpeedLimit(lane3, lane)) * 0.5f * this.m_maxLength);
                             if ((segment.m_flags & NetSegment.Flags.Invert) != NetSegment.Flags.None)
                             {
                                 item2.m_direction = NetInfo.InvertDirection(lane3.m_finalDirection);
@@ -667,7 +653,7 @@ namespace Transit.Addon.TrafficPP.PathFinding
                                 {
                                     return;
                                 }
-                                float num10 = this.CalculateLaneSpeed(this.m_startOffsetA, item2.m_position.m_offset, ref segment, lane3);
+                                float num10 = this.CalculateLaneSpeed(this.m_startOffsetA, item2.m_position.m_offset, ref segment, lane3, lane);
                                 float num11 = (float)Mathf.Abs((int)(item2.m_position.m_offset - this.m_startOffsetA)) * 0.003921569f;
                                 item2.m_comparisonValue += num11 * segment.m_averageLength / (num10 * this.m_maxLength);
                             }
@@ -677,7 +663,7 @@ namespace Transit.Addon.TrafficPP.PathFinding
                                 {
                                     return;
                                 }
-                                float num12 = this.CalculateLaneSpeed(this.m_startOffsetB, item2.m_position.m_offset, ref segment, lane3);
+                                float num12 = this.CalculateLaneSpeed(this.m_startOffsetB, item2.m_position.m_offset, ref segment, lane3, lane);
                                 float num13 = (float)Mathf.Abs((int)(item2.m_position.m_offset - this.m_startOffsetB)) * 0.003921569f;
                                 item2.m_comparisonValue += num13 * segment.m_averageLength / (num12 * this.m_maxLength);
                             }
@@ -692,7 +678,7 @@ namespace Transit.Addon.TrafficPP.PathFinding
                 num8++;
             }
         }
-
+        
         private bool ProcessItem(BufferItem item, ushort targetNode, ushort segmentID, ref NetSegment segment, ref int currentTargetIndex, byte connectOffset, bool enableVehicle, bool enablePedestrian)
         {
             bool result = false;
@@ -740,13 +726,16 @@ namespace Transit.Addon.TrafficPP.PathFinding
             VehicleInfo.VehicleType vehicleType = VehicleInfo.VehicleType.None;
             if ((int)item.m_position.m_lane < info2.m_lanes.Length)
             {
+				uint l = instance.m_segments.m_buffer[(int)item.m_position.m_segment].m_lanes;
+				for (int n = 0; l != 0 && n < (int)item.m_position.m_lane; ++n)
+					l = instance.m_lanes.m_buffer[l].m_nextLane;
                 NetInfo.Lane lane = info2.m_lanes[(int)item.m_position.m_lane];
                 laneType = lane.m_laneType;
                 vehicleType = lane.m_vehicleType;
-                num5 = lane.m_speedLimit;
-                num6 = this.CalculateLaneSpeed(connectOffset, item.m_position.m_offset, ref instance.m_segments.m_buffer[(int)item.m_position.m_segment], lane);
-            }
-            float num7 = instance.m_segments.m_buffer[(int)item.m_position.m_segment].m_averageLength;
+                num5 = GetLaneSpeedLimit(lane, l);
+				num6 = this.CalculateLaneSpeed(connectOffset, item.m_position.m_offset, ref instance.m_segments.m_buffer[(int)item.m_position.m_segment], lane, l);            
+			}            
+			float num7 = instance.m_segments.m_buffer[(int)item.m_position.m_segment].m_averageLength;
             if (!this.m_stablePath)
             {
                 Randomizer randomizer = new Randomizer(this.m_pathFindIndex << 16 | (uint)item.m_position.m_segment);
@@ -792,9 +781,12 @@ namespace Transit.Addon.TrafficPP.PathFinding
             while (num12 < num && num2 != 0u)
             {
                 NetInfo.Lane lane2 = info.m_lanes[num12];
-                if ((byte)(lane2.m_finalDirection & direction2) != 0)
+				if ((byte)(lane2.m_finalDirection & direction2) != 0 &&
+                    CanLanesConnect(num2, item.m_laneID))
                 {
-                    if (lane2.CheckType(laneType2, vehicleType2) && (segmentID != item.m_position.m_segment || num12 != (int)item.m_position.m_lane) && (byte)(lane2.m_finalDirection & direction2) != 0)
+					if (lane2.CheckType(laneType2, vehicleType2) && 
+                        (segmentID != item.m_position.m_segment || num12 != (int)item.m_position.m_lane) && 
+                        (byte)(lane2.m_finalDirection & direction2) != 0)
                     {
                         Vector3 a;
                         if ((byte)(direction & NetInfo.Direction.Forward) != 0)
@@ -810,11 +802,12 @@ namespace Transit.Addon.TrafficPP.PathFinding
                         {
                             num13 *= 2f;
                         }
-                        float num14 = num13 / ((num5 + lane2.m_speedLimit) * 0.5f * this.m_maxLength);
+                        float num14 = num13 / ((num5 + GetLaneSpeedLimit(lane2, num2)) * 0.5f * this.m_maxLength);
+
                         BufferItem item2;
                         item2.m_position.m_segment = segmentID;
                         item2.m_position.m_lane = (byte)num12;
-                        item2.m_position.m_offset = (byte)(((byte)(direction & NetInfo.Direction.Forward) == 0) ? 0 : 255);
+                        item2.m_position.m_offset = (byte)((direction & NetInfo.Direction.Forward) == 0 ? 0 : 255);
                         if ((byte)(lane2.m_laneType & laneType) == 0)
                         {
                             item2.m_methodDistance = 0f;
@@ -832,9 +825,10 @@ namespace Transit.Addon.TrafficPP.PathFinding
                                 if (((byte)(item2.m_direction & NetInfo.Direction.Forward) == 0 || item2.m_position.m_offset < this.m_startOffsetA) && ((byte)(item2.m_direction & NetInfo.Direction.Backward) == 0 || item2.m_position.m_offset > this.m_startOffsetA))
                                 {
                                     num2 = instance.m_lanes.m_buffer[(int)((UIntPtr)num2)].m_nextLane;
-                                    goto IL_90F;
+                                    num12++;
+                                    continue;
                                 }
-                                float num15 = this.CalculateLaneSpeed(this.m_startOffsetA, item2.m_position.m_offset, ref segment, lane2);
+                                float num15 = this.CalculateLaneSpeed(this.m_startOffsetA, item2.m_position.m_offset, ref segment, lane2, num2);
                                 float num16 = (float)Mathf.Abs((int)(item2.m_position.m_offset - this.m_startOffsetA)) * 0.003921569f;
                                 item2.m_comparisonValue += num16 * segment.m_averageLength / (num15 * this.m_maxLength);
                             }
@@ -843,9 +837,10 @@ namespace Transit.Addon.TrafficPP.PathFinding
                                 if (((byte)(item2.m_direction & NetInfo.Direction.Forward) == 0 || item2.m_position.m_offset < this.m_startOffsetB) && ((byte)(item2.m_direction & NetInfo.Direction.Backward) == 0 || item2.m_position.m_offset > this.m_startOffsetB))
                                 {
                                     num2 = instance.m_lanes.m_buffer[(int)((UIntPtr)num2)].m_nextLane;
-                                    goto IL_90F;
+                                    num12++;
+                                    continue;
                                 }
-                                float num17 = this.CalculateLaneSpeed(this.m_startOffsetB, item2.m_position.m_offset, ref segment, lane2);
+                                float num17 = this.CalculateLaneSpeed(this.m_startOffsetB, item2.m_position.m_offset, ref segment, lane2, num2);
                                 float num18 = (float)Mathf.Abs((int)(item2.m_position.m_offset - this.m_startOffsetB)) * 0.003921569f;
                                 item2.m_comparisonValue += num18 * segment.m_averageLength / (num17 * this.m_maxLength);
                             }
@@ -862,30 +857,28 @@ namespace Transit.Addon.TrafficPP.PathFinding
                                 int lastTarget = (int)instance.m_lanes.m_buffer[(int)((UIntPtr)num2)].m_lastTarget;
                                 if (currentTargetIndex < firstTarget || currentTargetIndex >= lastTarget)
                                 {
-                                    item2.m_comparisonValue += Mathf.Max(1f, num13 * 3f - 3f) / ((num5 + lane2.m_speedLimit) * 0.5f * this.m_maxLength);
+                                    item2.m_comparisonValue += Mathf.Max(1f, num13 * 3f - 3f) / ((num5 + GetLaneSpeedLimit(lane2, num2)) * 0.5f * this.m_maxLength);
                                 }
                                 if (!this.m_transportVehicle && lane2.m_laneType == NetInfo.LaneType.TransportVehicle)
                                 {
-                                    item2.m_comparisonValue += 20f / ((num5 + lane2.m_speedLimit) * 0.5f * this.m_maxLength);
+                                    item2.m_comparisonValue += 20f / ((num5 + GetLaneSpeedLimit(lane2, num2)) * 0.5f * this.m_maxLength);
                                 }
                             }
                             this.AddBufferItem(item2, item.m_position);
                         }
                     }
-                    goto IL_8F5;
+
+                    num2 = instance.m_lanes.m_buffer[(int)((UIntPtr)num2)].m_nextLane;
+                    num12++;
+                    continue;
                 }
                 if ((byte)(lane2.m_laneType & laneType) != 0 && lane2.m_vehicleType == vehicleType)
                 {
                     num11++;
-                    goto IL_8F5;
                 }
-                goto IL_8F5;
-                IL_90F:
-                num12++;
-                continue;
-                IL_8F5:
+
                 num2 = instance.m_lanes.m_buffer[(int)((UIntPtr)num2)].m_nextLane;
-                goto IL_90F;
+                num12++;
             }
             currentTargetIndex = num11;
             return result;
@@ -924,21 +917,26 @@ namespace Transit.Addon.TrafficPP.PathFinding
                     a2 = instance.m_lanes.m_buffer[(int)((UIntPtr)lane)].m_bezier.a;
                 }
                 num2 = Vector3.Distance(a2, b2);
-                offset = (byte)(((byte)(direction & NetInfo.Direction.Forward) == 0) ? 0 : 255);
+                offset = (byte)((direction & NetInfo.Direction.Forward) == 0 ? 0 : 255);
             }
             float num3 = 1f;
             float num4 = 1f;
             NetInfo.LaneType laneType = NetInfo.LaneType.None;
             if ((int)item.m_position.m_lane < info2.m_lanes.Length)
             {
+
+				uint l = instance.m_segments.m_buffer[(int)item.m_position.m_segment].m_lanes;
+				for (int n = 0; l != 0 && n < (int)item.m_position.m_lane; ++n)
+					l = instance.m_lanes.m_buffer[l].m_nextLane;
                 NetInfo.Lane lane2 = info2.m_lanes[(int)item.m_position.m_lane];
-                num3 = lane2.m_speedLimit;
+                num3 = GetLaneSpeedLimit(lane2, l);
+				
                 laneType = lane2.m_laneType;
                 if ((byte)(laneType & (NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle)) != 0)
                 {
                     laneType = (NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle);
                 }
-                num4 = this.CalculateLaneSpeed(connectOffset, item.m_position.m_offset, ref instance.m_segments.m_buffer[(int)item.m_position.m_segment], lane2);
+				num4 = this.CalculateLaneSpeed(connectOffset, item.m_position.m_offset, ref instance.m_segments.m_buffer[(int)item.m_position.m_segment], lane2, l);
             }
             float averageLength = instance.m_segments.m_buffer[(int)item.m_position.m_segment].m_averageLength;
             float num5 = (float)Mathf.Abs((int)(connectOffset - item.m_position.m_offset)) * 0.003921569f * averageLength;
@@ -965,7 +963,7 @@ namespace Transit.Addon.TrafficPP.PathFinding
                 }
                 if (lane3.m_laneType != NetInfo.LaneType.Pedestrian || item2.m_methodDistance < 1000f)
                 {
-                    item2.m_comparisonValue = num7 + num2 / ((num3 + lane3.m_speedLimit) * 0.25f * this.m_maxLength);
+                    item2.m_comparisonValue = num7 + num2 / ((num3 + GetLaneSpeedLimit(lane3, lane)) * 0.25f * this.m_maxLength);
                     if ((segment.m_flags & NetSegment.Flags.Invert) != NetSegment.Flags.None)
                     {
                         item2.m_direction = NetInfo.InvertDirection(lane3.m_finalDirection);
@@ -980,7 +978,7 @@ namespace Transit.Addon.TrafficPP.PathFinding
                         {
                             return;
                         }
-                        float num8 = this.CalculateLaneSpeed(this.m_startOffsetA, item2.m_position.m_offset, ref segment, lane3);
+                        float num8 = this.CalculateLaneSpeed(this.m_startOffsetA, item2.m_position.m_offset, ref segment, lane3, lane);
                         float num9 = (float)Mathf.Abs((int)(item2.m_position.m_offset - this.m_startOffsetA)) * 0.003921569f;
                         item2.m_comparisonValue += num9 * segment.m_averageLength / (num8 * this.m_maxLength);
                     }
@@ -990,7 +988,7 @@ namespace Transit.Addon.TrafficPP.PathFinding
                         {
                             return;
                         }
-                        float num10 = this.CalculateLaneSpeed(this.m_startOffsetB, item2.m_position.m_offset, ref segment, lane3);
+                        float num10 = this.CalculateLaneSpeed(this.m_startOffsetB, item2.m_position.m_offset, ref segment, lane3, lane);
                         float num11 = (float)Mathf.Abs((int)(item2.m_position.m_offset - this.m_startOffsetB)) * 0.003921569f;
                         item2.m_comparisonValue += num11 * segment.m_averageLength / (num10 * this.m_maxLength);
                     }
@@ -1000,6 +998,7 @@ namespace Transit.Addon.TrafficPP.PathFinding
                 }
             }
         }
+
         private void AddBufferItem(BufferItem item, PathUnit.Position target)
         {
             uint num = this.m_laneLocation[(int)((UIntPtr)item.m_laneID)];
@@ -1063,36 +1062,41 @@ namespace Transit.Addon.TrafficPP.PathFinding
             throw new NotImplementedException("GetLaneDirection is target of redirection and is not implemented.");
         }
 
-        //[MethodImpl(MethodImplOptions.NoInlining)]
-        //[RedirectTo(typeof(PathFind))]
-        //private float CalculateLaneSpeed(byte startOffset, byte endOffset, ref NetSegment segment, NetInfo.Lane laneInfo)
-        //{
-        //    throw new NotImplementedException("CalculateLaneSpeed is target of redirection and is not implemented.");
-        //}
-
-        private static float CalculateLaneSpeed(byte startOffset, byte endOffset, NetSegment segment, NetInfo.Lane laneInfo, uint laneId)
+        private float CalculateLaneSpeed(byte startOffset, byte endOffset, ref NetSegment segment, NetInfo.Lane laneInfo, uint laneId)
         {
-            float speedLimit = (TrafficPPModule.ActiveOptions & TrafficPPModule.ModOptions.RoadCustomizerTool) == TrafficPPModule.ModOptions.RoadCustomizerTool ? LanesManager.GetLaneSpeed(laneId) : laneInfo.m_speedLimit;
-            //float speedLimit = laneInfo.m_speedLimit;
+            float speedLimit = GetLaneSpeedLimit(laneInfo, laneId);
 
             NetInfo.Direction direction = ((segment.m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None) ? laneInfo.m_finalDirection : NetInfo.InvertDirection(laneInfo.m_finalDirection);
             if ((byte)(direction & NetInfo.Direction.Avoid) == 0)
             {
-                //return laneInfo.m_speedLimit;
                 return speedLimit;
             }
             if (endOffset > startOffset && direction == NetInfo.Direction.AvoidForward)
             {
-                //return laneInfo.m_speedLimit * 0.1f;
                 return speedLimit * 0.1f;
             }
             if (endOffset < startOffset && direction == NetInfo.Direction.AvoidBackward)
             {
-                //return laneInfo.m_speedLimit * 0.1f;
                 return speedLimit * 0.1f;
             }
-            //return laneInfo.m_speedLimit * 0.2f;
             return speedLimit * 0.2f;
+        }
+
+        protected virtual float GetLaneSpeedLimit(NetInfo.Lane lane, uint laneId)
+        {
+            return lane.m_speedLimit;
+
+            //return LanesManager.GetLaneSpeed(laneId);
+        }
+
+        protected virtual bool CanLanesConnect(uint laneId1, uint laneId2)
+        {
+            return true;
+
+            //return LanesManager.CheckLaneConnection(laneId1, laneId2);
+            ////&& 
+            ////LanesManager.CanUseLane(this.m_vehicleType, num2) && 
+            ////LanesManager.CanUseLane(this.m_vehicleType, item.m_laneID)
         }
     }
 }

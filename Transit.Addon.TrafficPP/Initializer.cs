@@ -9,7 +9,6 @@ using System.Threading;
 using ColossalFramework;
 using ColossalFramework.Globalization;
 using ColossalFramework.UI;
-using Transit.Addon.TrafficPP.PathFinding;
 using Transit.Addon.TrafficPP.Tools;
 using Transit.Framework;
 using UnityEngine;

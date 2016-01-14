@@ -58,8 +58,7 @@
     <Compile Include="Core\LaneSerializationExtension.cs" />
     <Compile Include="Core\LanesManager.cs" />
     <Compile Include="Core\VehicleTypePP.cs" />
-    <Compile Include="PathFinding\TAMPathFind.cs" />
-    <Compile Include="PathFinding\TAMPathFindImplementation.cs" />
+    <Compile Include="Core\PathFinding\TPPPathFinder.cs" />
     <Compile Include="Tools\Markers\LaneRoutingMarker.cs" />
     <Compile Include="Tools\Markers\SegmentLaneMarker.cs" />
     <Compile Include="TrafficPPModule.Settings.cs" />
