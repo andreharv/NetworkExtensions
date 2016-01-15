@@ -1,4 +1,6 @@
 ﻿
+using Transit.Addon.TrafficPP.Core;
+
 namespace Transit.Addon.TrafficPP
 {
     class NetInfoLane : NetInfo.Lane
@@ -10,19 +12,19 @@ namespace Transit.Addon.TrafficPP
             PedestrianLane
         }
 
-        public RoadManager.VehicleType m_allowedVehicleTypes;
+        public VehicleTypePP m_allowedVehicleTypes;
         public SpecialLaneType m_specialLaneType;
 
 
-        public NetInfoLane(RoadManager.VehicleType vehicleTypes, SpecialLaneType specialLaneType = SpecialLaneType.None)
+        public NetInfoLane(VehicleTypePP vehicleTypes, SpecialLaneType specialLaneType = SpecialLaneType.None)
         {
             this.m_allowedVehicleTypes = vehicleTypes;
             this.m_specialLaneType = specialLaneType;
         }
 
-        public NetInfoLane(NetInfo.Lane lane, SpecialLaneType specialLaneType = SpecialLaneType.None) : this(lane, RoadManager.VehicleType.All, specialLaneType) { }
+        public NetInfoLane(NetInfo.Lane lane, SpecialLaneType specialLaneType = SpecialLaneType.None) : this(lane, VehicleTypePP.All, specialLaneType) { }
 
-        public NetInfoLane(NetInfo.Lane lane, RoadManager.VehicleType vehicleTypes, SpecialLaneType specialLaneType = SpecialLaneType.None) : this(vehicleTypes, specialLaneType)
+        public NetInfoLane(NetInfo.Lane lane, VehicleTypePP vehicleTypes, SpecialLaneType specialLaneType = SpecialLaneType.None) : this(vehicleTypes, specialLaneType)
         {
             CopyAttributes(lane);
         }

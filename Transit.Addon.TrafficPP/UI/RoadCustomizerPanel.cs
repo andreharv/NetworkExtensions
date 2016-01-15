@@ -2,6 +2,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Transit.Addon.TrafficPP.Core;
+using Transit.Addon.TrafficPP.Tools;
 using UnityEngine;
 
 namespace Transit.Addon.TrafficPP.UI
@@ -106,7 +108,7 @@ namespace Transit.Addon.TrafficPP.UI
             RoadCustomizerTool rct = ToolsModifierControl.GetCurrentTool<RoadCustomizerTool>();
             if (rct != null)
             {
-                RoadManager.VehicleType restrictions = rct.GetCurrentVehicleRestrictions();
+                VehicleTypePP restrictions = rct.GetCurrentVehicleRestrictions();
                 float speed = rct.GetCurrentSpeedRestrictions()*50f;
                 
                 for (int i = 0; i < this.m_scrollablePanel.components.Count; i++)
@@ -115,7 +117,7 @@ namespace Transit.Addon.TrafficPP.UI
 
                     if (this.m_panelType == Panel.VehicleRestrictions)
                     {
-                        RoadManager.VehicleType vehicleType = (RoadManager.VehicleType)btn.objectUserData;
+                        VehicleTypePP vehicleType = (VehicleTypePP)btn.objectUserData;
 
                         if ((vehicleType & restrictions) == vehicleType)
                         {
@@ -125,7 +127,7 @@ namespace Transit.Addon.TrafficPP.UI
                             btn.hoveredFgSprite = btn.name + "90%";
                             btn.pressedFgSprite = btn.name + "80%";
                         }
-                        else if (vehicleType == RoadManager.VehicleType.EmergencyVehicles && (restrictions & RoadManager.VehicleType.Emergency) == RoadManager.VehicleType.Emergency)
+                        else if (vehicleType == VehicleTypePP.EmergencyVehicles && (restrictions & VehicleTypePP.Emergency) == VehicleTypePP.Emergency)
                         {
                             btn.stringUserData = "Emergency";
                             btn.hoveredFgSprite = btn.name + "90%";
@@ -177,12 +179,12 @@ namespace Transit.Addon.TrafficPP.UI
             if (m_panelIndex == 0)
             {
                 this.m_panelType = Panel.VehicleRestrictions;
-                this.SpawnEntry("PassengerCar", "PassengerCar", null, null, false, false).objectUserData = RoadManager.VehicleType.PassengerCar;
-                this.SpawnEntry("Bus", "Bus", null, null, false, false).objectUserData = RoadManager.VehicleType.Bus;
-                this.SpawnEntry("CargoTruck", "CargoTruck", null, null, false, false).objectUserData = RoadManager.VehicleType.CargoTruck;
-                this.SpawnEntry("GarbageTruck", "GarbageTruck", null, null, false, false).objectUserData = RoadManager.VehicleType.GarbageTruck;
-                this.SpawnEntry("Hearse", "Hearse", null, null, false, false).objectUserData = RoadManager.VehicleType.Hearse;
-                this.SpawnEntry("Emergency", "Emergency", null, null, false, false).objectUserData = RoadManager.VehicleType.EmergencyVehicles;
+                this.SpawnEntry("PassengerCar", "PassengerCar", null, null, false, false).objectUserData = VehicleTypePP.PassengerCar;
+                this.SpawnEntry("Bus", "Bus", null, null, false, false).objectUserData = VehicleTypePP.Bus;
+                this.SpawnEntry("CargoTruck", "CargoTruck", null, null, false, false).objectUserData = VehicleTypePP.CargoTruck;
+                this.SpawnEntry("GarbageTruck", "GarbageTruck", null, null, false, false).objectUserData = VehicleTypePP.GarbageTruck;
+                this.SpawnEntry("Hearse", "Hearse", null, null, false, false).objectUserData = VehicleTypePP.Hearse;
+                this.SpawnEntry("Emergency", "Emergency", null, null, false, false).objectUserData = VehicleTypePP.EmergencyVehicles;
             }
             //else if (this.m_panelType == Panel.SpeedRestrictions)
             else if (m_panelIndex == 1)
@@ -343,8 +345,8 @@ namespace Transit.Addon.TrafficPP.UI
         {
             if (m_panelType == Panel.VehicleRestrictions)
             {
-                RoadManager.VehicleType vehicleType = (RoadManager.VehicleType)btn.objectUserData;
-                if (vehicleType != RoadManager.VehicleType.None)
+                VehicleTypePP vehicleType = (VehicleTypePP)btn.objectUserData;
+                if (vehicleType != VehicleTypePP.None)
                 {
                     if (String.IsNullOrEmpty(btn.stringUserData))
                     {
@@ -354,14 +356,14 @@ namespace Transit.Addon.TrafficPP.UI
                         btn.hoveredFgSprite = btn.name + "90%";
                         btn.pressedFgSprite = btn.name + "80%";
                     }
-                    else if (vehicleType == RoadManager.VehicleType.EmergencyVehicles && btn.stringUserData != "Emergency")
+                    else if (vehicleType == VehicleTypePP.EmergencyVehicles && btn.stringUserData != "Emergency")
                     {
                         btn.stringUserData = "Emergency";
                         StartCoroutine("EmergencyLights", btn);
                     }
                     else
                     {
-                        if (vehicleType == RoadManager.VehicleType.EmergencyVehicles)
+                        if (vehicleType == VehicleTypePP.EmergencyVehicles)
                             StopCoroutine("EmergencyLights");
 
                         btn.stringUserData = null;
@@ -375,9 +377,9 @@ namespace Transit.Addon.TrafficPP.UI
                     if (rct != null)
                     {
                         if (btn.stringUserData == "Emergency")
-                            rct.ToggleRestriction(vehicleType ^ RoadManager.VehicleType.Emergency);
-                        else if (vehicleType == RoadManager.VehicleType.EmergencyVehicles && btn.stringUserData == null)
-                            rct.ToggleRestriction(RoadManager.VehicleType.Emergency);
+                            rct.ToggleRestriction(vehicleType ^ VehicleTypePP.Emergency);
+                        else if (vehicleType == VehicleTypePP.EmergencyVehicles && btn.stringUserData == null)
+                            rct.ToggleRestriction(VehicleTypePP.Emergency);
                         else
                             rct.ToggleRestriction(vehicleType);		
                     }

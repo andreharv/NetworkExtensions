@@ -52,6 +52,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\PathFinding\DefaultPathFinder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\PathFinding\PathFinder.cs" />
+    <Compile Include="Core\PathFinding\PathFindProxy.cs" />
+    <Compile Include="Core\PathFinding\IPathFinder.cs" />
     <Compile Include="Mod.cs" />
     <Compile Include="Mod.Loading.cs" />
     <Compile Include="Mod.Modules.cs" />
@@ -59,6 +65,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Transit.Framework.Unsafe\Transit.Framework.Unsafe.csproj">
+      <Project>{7dcc08ef-dc85-47a4-bd6f-79fc52c7ef13}</Project>
+      <Name>Transit.Framework.Unsafe</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Transit.Framework\Transit.Framework.csproj">
       <Project>{8891467E-C88E-46B0-96F9-4413DF6DC205}</Project>
       <Name>Transit.Framework</Name>

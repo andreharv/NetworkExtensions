@@ -13,8 +13,6 @@ namespace Transit.Addon.TrafficPP
         public enum ModOptions : long
         {
             None = 0,
-            NoDespawn = 16,
-            CongestionAvoidance = 32,
             RoadCustomizerTool = 1L << 55,
 
             GhostMode = 1L << 62
@@ -25,24 +23,6 @@ namespace Transit.Addon.TrafficPP
 
         public override void OnSettingsUI(UIHelperBase helper)
         {
-            helper.AddCheckbox(
-                "No Despawn by CBeTHaX",
-                "No Despawn by CBeTHaX",
-                s_activeOptions.IsFlagSet(ModOptions.NoDespawn),
-                isChecked =>
-                {
-                    if (isChecked)
-                    {
-                        s_activeOptions = s_activeOptions | ModOptions.NoDespawn;
-                    }
-                    else
-                    {
-                        s_activeOptions = s_activeOptions & ~ModOptions.NoDespawn;
-                    }
-                    FireSaveSettingsNeeded();
-                },
-                true);
-
             helper.AddCheckbox(
                 "Road Customizer Tool",
                 "Road Customizer Tool",
@@ -56,24 +36,6 @@ namespace Transit.Addon.TrafficPP
                     else
                     {
                         s_activeOptions = s_activeOptions & ~ModOptions.RoadCustomizerTool;
-                    }
-                    FireSaveSettingsNeeded();
-                },
-                true);
-
-            helper.AddCheckbox(
-                "Improved AI",
-                "Improved AI",
-                s_activeOptions.IsFlagSet(ModOptions.CongestionAvoidance),
-                isChecked =>
-                {
-                    if (isChecked)
-                    {
-                        s_activeOptions = s_activeOptions | ModOptions.CongestionAvoidance;
-                    }
-                    else
-                    {
-                        s_activeOptions = s_activeOptions & ~ModOptions.CongestionAvoidance;
                     }
                     FireSaveSettingsNeeded();
                 },

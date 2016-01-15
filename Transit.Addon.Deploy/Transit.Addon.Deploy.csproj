@@ -35,6 +35,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Transit.Addon.TrafficAI\Transit.Addon.TrafficAI.csproj">
+      <Project>{20f6a0dc-131c-49cd-9d9b-95b6e41cddff}</Project>
+      <Name>Transit.Addon.TrafficAI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Transit.Addon.TrafficPP\Transit.Addon.TrafficPP.csproj">
       <Project>{D78DECCE-B9B3-4E14-933F-6C0BE10526C5}</Project>
       <Name>Transit.Addon.TrafficPP</Name>
