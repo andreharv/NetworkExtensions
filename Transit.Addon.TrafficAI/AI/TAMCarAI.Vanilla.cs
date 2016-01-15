@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using Transit.Framework.Unsafe;
 using UnityEngine;
 
-namespace Transit.Addon.TrafficAI
+namespace Transit.Addon.TrafficAI.AI
 {
     public class CustomCarAI : VehicleAI
     {

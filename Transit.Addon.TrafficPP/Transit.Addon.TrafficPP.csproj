@@ -52,7 +52,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AI\TAMCarAI.New.cs" />
     <Compile Include="Core\Lane.cs" />
     <Compile Include="Core\LaneSerializationBinder.cs" />
     <Compile Include="Core\LaneSerializationExtension.cs" />
