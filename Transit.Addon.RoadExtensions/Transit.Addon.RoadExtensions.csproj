@@ -59,6 +59,7 @@
     <Compile Include="AI\RExRoadAI.New.cs" />
     <Compile Include="AI\RExRoadAI.cs" />
     <Compile Include="Compatibility\RoadColorChanger.cs" />
+    <Compile Include="Roads\Common\RoadModels.8m.1p5mSW.cs" />
     <Compile Include="Roads\Common\RoadModels.32m.3mSW2mMdn.cs" />
     <Compile Include="Roads\Highways\VanillaHighwayMenuModifier.cs" />
     <Compile Include="Props\BusLaneTextPropBuilder.cs" />
@@ -157,16 +158,22 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\TinyRoads\Alley2L\infotooltip.png" />
-    <Content Include="Roads\TinyRoads\Alley2L\Textures\Ground_Node__AlphaMap.png">
+    <Content Include="Roads\TinyRoads\Alley2L\Textures\Ground_Node__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\TinyRoads\Alley2L\Textures\Ground_Node__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\TinyRoads\Alley2L\Textures\Ground_Segment__AlphaMap.png">
+    <Content Include="Roads\TinyRoads\Alley2L\Textures\Ground_Segment__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\TinyRoads\Alley2L\Textures\Ground_Segment__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Alley2L\Textures\Ground_Trans__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Alley2L\Textures\Ground_Trans__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\TinyRoads\Alley2L\thumbnails.png" />
@@ -1465,13 +1472,19 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <None Include="Roads\TinyRoads\Alley2L\Meshes\Ground.obj">
+    <None Include="Roads\Common\Meshes\8m\1p5mSW\Ground.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\TinyRoads\Alley2L\Meshes\Ground_LOD.obj">
+    <None Include="Roads\Common\Meshes\8m\1p5mSW\Ground_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\TinyRoads\Alley2L\Meshes\Ground_Node_LOD.obj">
+    <None Include="Roads\Common\Meshes\8m\1p5mSW\Ground_Node.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\8m\1p5mSW\Ground_Node_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\8m\1p5mSW\Ground_Trans.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\Ground.obj">

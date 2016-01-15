@@ -38,24 +38,7 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.Alley2L
             ///////////////////////////
             // 3DModeling            //
             ///////////////////////////
-            if (version == NetInfoVersion.Ground)
-            {
-                info.m_surfaceLevel = 0;
-
-                var segments0 = info.m_segments[0];
-                var nodes0 = info.m_nodes[0];
-
-                segments0.SetMeshes
-                    (@"Roads\TinyRoads\Alley2L\Meshes\Ground.obj",
-                     @"Roads\TinyRoads\Alley2L\Meshes\Ground_LOD.obj");
-
-                nodes0.SetMeshes
-                    (@"Roads\TinyRoads\Alley2L\Meshes\Ground.obj",
-                     @"Roads\TinyRoads\Alley2L\Meshes\Ground_Node_LOD.obj");
-
-                info.m_segments = new[] { segments0 };
-                info.m_nodes = new[] { nodes0 };
-            }
+            info.Setup8m1p5mSWMesh(version);
 
             ///////////////////////////
             // Texturing             //
@@ -66,11 +49,24 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.Alley2L
                     info.SetAllSegmentsTexture(
                         new TexturesSet
                            (@"Roads\TinyRoads\Alley2L\Textures\Ground_Segment__MainTex.png",
-                            @"Roads\TinyRoads\Alley2L\Textures\Ground_Segment__AlphaMap.png"));
-                    //info.SetNodesTexture(
-                    //    new TexturesSet
-                    //        (@"Roads\TinyRoads\Alley2L\Textures\Ground_Node__MainTex.png",
-                    //         @"Roads\TinyRoads\Alley2L\Textures\Ground_Node__AlphaMap.png"));
+                            @"Roads\TinyRoads\Alley2L\Textures\Ground_Segment__APRMap.png"));
+                    for (int i = 0; i < info.m_nodes.Count(); i++)
+                    {
+                        if (info.m_nodes[i].m_flagsForbidden == NetNode.Flags.Transition)
+                        {
+                            info.m_nodes[i].SetTextures(
+                                new TexturesSet
+                                    (@"Roads\TinyRoads\Alley2L\Textures\Ground_Node__MainTex.png",
+                                     @"Roads\TinyRoads\Alley2L\Textures\Ground_Node__APRMap.png"));
+                        }
+                        else if (info.m_nodes[i].m_flagsRequired == NetNode.Flags.Transition)
+                        {
+                            info.m_nodes[i].SetTextures(
+                                new TexturesSet
+                                    (@"Roads\TinyRoads\Alley2L\Textures\Ground_Trans__MainTex.png",
+                                     @"Roads\TinyRoads\Alley2L\Textures\Ground_Trans__APRMap.png"));
+                        }
+                    }
                     break;
             }
 
@@ -79,22 +75,37 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.Alley2L
             ///////////////////////////
             info.m_hasParkingSpaces = false;
             info.m_halfWidth = 4f;
-            info.m_pavementWidth = 2f;
-
+            info.m_pavementWidth = 1.5f;
+            info.m_surfaceLevel = 0;
+            info.m_class = roadInfo.m_class.Clone("NExt2LAlley");
+            info.m_class.m_level = (ItemClass.Level)5; //New level
             info.m_lanes = info.m_lanes
                 .Where(l => l.m_laneType != NetInfo.LaneType.Parking)
                 .ToArray();
 
+            var pedLanes = info.m_lanes.Where(l => l.m_laneType == NetInfo.LaneType.Pedestrian);
+            var roadLanes = info.m_lanes.Where(l => l.m_laneType != NetInfo.LaneType.Pedestrian && l.m_laneType != NetInfo.LaneType.None);
+
+            foreach (var pedLane in pedLanes)
+            {
+                pedLane.m_verticalOffset = 0.25f;
+            }
+
+            foreach (var roadLane in roadLanes)
+            {
+                roadLane.m_verticalOffset = 0.1f;
+            }
+
             info.SetRoadLanes(version, new LanesConfiguration
             {
                 IsTwoWay = true,
-                LaneWidth = 2f,
+                LaneWidth = 2.5f,
                 SpeedLimit = 0.6f,
                 BusStopOffset = 0f,
                 PedPropOffsetX = 1.5f
             });
             info.SetupNewSpeedLimitProps(40, 30);
-
+            
             var originPlayerNetAI = roadInfo.GetComponent<PlayerNetAI>();
             var playerNetAI = info.GetComponent<PlayerNetAI>();
 
