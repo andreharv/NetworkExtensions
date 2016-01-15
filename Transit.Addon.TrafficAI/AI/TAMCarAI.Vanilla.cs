@@ -1,13 +1,15 @@
-﻿using ColossalFramework;
-using ColossalFramework.Math;
+﻿using ColossalFramework.Math;
 using System;
 using System.Runtime.CompilerServices;
 using Transit.Framework.Unsafe;
 using UnityEngine;
 
+using VehicleType = VehicleInfo.VehicleType;
+using LaneType = NetInfo.LaneType;
+
 namespace Transit.Addon.TrafficAI.AI
 {
-    public class CustomCarAI : VehicleAI
+    public class TAMCarAI : VehicleAI
     {
         // This is the 31th bit in Vehicle.Flags. If CO adds more flags, we'll need to review this
         public const Vehicle.Flags AvoidingCongestionFlag = (Vehicle.Flags)((int)Vehicle.Flags.Transition << 1);
@@ -15,25 +17,30 @@ namespace Transit.Addon.TrafficAI.AI
         [RedirectFrom(typeof(CarAI), (uint)TrafficAIModule.Options.CongestionAvoidance)]
         public override void SimulationStep(ushort vehicleID, ref Vehicle vehicleData, ref Vehicle.Frame frameData, ushort leaderID, ref Vehicle leaderData, int lodPhysics)
         {
-            uint currentFrameIndex = Singleton<SimulationManager>.instance.m_currentFrameIndex;
+            uint currentFrameIndex = SimulationManager.instance.m_currentFrameIndex;
+
             frameData.m_position += frameData.m_velocity * 0.5f;
             frameData.m_swayPosition += frameData.m_swayVelocity * 0.5f;
+
             float acceleration = this.m_info.m_acceleration;
             float braking = this.m_info.m_braking;
             float speed = frameData.m_velocity.magnitude;
             Vector3 rawDirection = (Vector3)vehicleData.m_targetPos0 - frameData.m_position;
             float sqrDistance = rawDirection.sqrMagnitude;
-            float maxDistance = (speed + acceleration) * (0.5f + 0.5f * (speed + acceleration) / braking) + this.m_info.m_generatedInfo.m_size.z * 0.5f;
+            float minDistance = (speed + acceleration) * (0.5f + 0.5f * (speed + acceleration) / braking) + this.m_info.m_generatedInfo.m_size.z * 0.5f;
             float maxSpeed = Mathf.Max(speed + acceleration, 5f);
-            if (lodPhysics >= 2 && (ulong)(currentFrameIndex >> 4 & 3u) == (ulong)((long)(vehicleID & 3)))
+
+            if (lodPhysics >= 2 && (currentFrameIndex >> 4 & 3) == (vehicleID & 3))
             {
                 maxSpeed *= 2f;
             }
-            float num3 = Mathf.Max((maxDistance - maxSpeed) / 3f, 1f);
+
+            float num3 = Mathf.Max((minDistance - maxSpeed) / 3f, 1f);
             float minSqrDistanceA = maxSpeed * maxSpeed;
             float minSqrDistanceB = num3 * num3;
             int index = 0;
             bool flag = false;
+
             if ((sqrDistance < minSqrDistanceA || vehicleData.m_targetPos3.w < 0.01f) && (leaderData.m_flags & (Vehicle.Flags.WaitingPath | Vehicle.Flags.Stopped)) == Vehicle.Flags.None)
             {
                 if (leaderData.m_path != 0u)
@@ -45,6 +52,7 @@ namespace Transit.Addon.TrafficAI.AI
                         return;
                     }
                 }
+
                 if ((leaderData.m_flags & Vehicle.Flags.WaitingPath) == Vehicle.Flags.None)
                 {
                     while (index < 4)
@@ -62,6 +70,7 @@ namespace Transit.Addon.TrafficAI.AI
                             minSqrDistance = minSqrDistanceB;
                             refPos = vehicleData.GetTargetPos(index - 1);
                         }
+
                         int previousIndex = index;
                         this.UpdateBuildingTargetPositions(vehicleID, ref vehicleData, refPos, leaderID, ref leaderData, ref index, minSqrDistance);
                         if (index == previousIndex)
@@ -69,6 +78,7 @@ namespace Transit.Addon.TrafficAI.AI
                             break;
                         }
                     }
+
                     if (index != 0)
                     {
                         Vector4 targetPos = vehicleData.GetTargetPos(index - 1);
@@ -78,13 +88,16 @@ namespace Transit.Addon.TrafficAI.AI
                         }
                     }
                 }
+
                 rawDirection = (Vector3)vehicleData.m_targetPos0 - frameData.m_position;
                 sqrDistance = rawDirection.sqrMagnitude;
             }
+
             if (leaderData.m_path != 0u && (leaderData.m_flags & Vehicle.Flags.WaitingPath) == Vehicle.Flags.None)
             {
-                NetManager netManager = Singleton<NetManager>.instance;
-                PathManager pathManager = Singleton<PathManager>.instance;
+                NetManager netManager = NetManager.instance;
+                PathManager pathManager = PathManager.instance;
+
                 byte pathIndex = leaderData.m_pathPositionIndex;
                 byte lastTValue = leaderData.m_lastPathOffset;
                 if (pathIndex == 255)
@@ -92,35 +105,39 @@ namespace Transit.Addon.TrafficAI.AI
                     pathIndex = 0;
                 }
                 float vehicleLength = 1f + leaderData.CalculateTotalLength(leaderID);
+                
                 PathUnit.Position pathPos;
-                if (pathManager.m_pathUnits.m_buffer[(int)((UIntPtr)leaderData.m_path)].GetPosition(pathIndex >> 1, out pathPos))
+                if (pathManager.m_pathUnits.m_buffer[leaderData.m_path].GetPosition(pathIndex >> 1, out pathPos))
                 {
-                    netManager.m_segments.m_buffer[(int)pathPos.m_segment].AddTraffic(Mathf.RoundToInt(vehicleLength * 2.5f));
+                    netManager.m_segments.m_buffer[pathPos.m_segment].AddTraffic(Mathf.RoundToInt(vehicleLength * 2.5f));
+
                     bool reservedSpace = false;
                     if ((pathIndex & 1) == 0 || lastTValue == 0)
                     {
                         uint laneID = PathManager.GetLaneID(pathPos);
                         if (laneID != 0u)
                         {
-                            Vector3 lanePos = netManager.m_lanes.m_buffer[(int)((UIntPtr)laneID)].CalculatePosition((float)pathPos.m_offset * 0.003921569f);
+                            Vector3 lanePos = netManager.m_lanes.m_buffer[laneID].CalculatePosition((float)pathPos.m_offset * 0.003921569f);
                             float minDist = 0.5f * speed * speed / this.m_info.m_braking + this.m_info.m_generatedInfo.m_size.z * 0.5f;
                             if (Vector3.Distance(frameData.m_position, lanePos) >= minDist - 1f)
                             {
-                                netManager.m_lanes.m_buffer[(int)((UIntPtr)laneID)].ReserveSpace(vehicleLength);
+                                netManager.m_lanes.m_buffer[laneID].ReserveSpace(vehicleLength);
                                 reservedSpace = true;
                             }
                         }
                     }
-                    if (!reservedSpace && pathManager.m_pathUnits.m_buffer[(int)((UIntPtr)leaderData.m_path)].GetNextPosition(pathIndex >> 1, out pathPos))
+
+                    if (!reservedSpace && pathManager.m_pathUnits.m_buffer[leaderData.m_path].GetNextPosition(pathIndex >> 1, out pathPos))
                     {
-                        uint laneID = PathManager.GetLaneID(pathPos);
-                        if (laneID != 0u)
+                        uint nextLaneID = PathManager.GetLaneID(pathPos);
+                        if (nextLaneID != 0u)
                         {
-                            netManager.m_lanes.m_buffer[(int)((UIntPtr)laneID)].ReserveSpace(vehicleLength);
+                            netManager.m_lanes.m_buffer[nextLaneID].ReserveSpace(vehicleLength);
                         }
                     }
                 }
-                if ((ulong)(currentFrameIndex >> 4 & 15u) == (ulong)((long)(leaderID & 15)))
+
+                if ((currentFrameIndex >> 4 & 15) == (leaderID & 15))
                 {
                     bool congested = false;
                     uint pathUnitID = leaderData.m_path;
@@ -232,7 +249,7 @@ namespace Transit.Addon.TrafficAI.AI
                     targetSpeed = Mathf.Min(targetSpeed, CalculateMaxSpeed(targetDist, 0f, braking * 0.9f));
                     if (!DisableCollisionCheck(leaderID, ref leaderData))
                     {
-                        this.CheckOtherVehicles(vehicleID, ref vehicleData, ref frameData, ref targetSpeed, ref blocked, ref collisionPush, maxDistance, braking * 0.9f, lodPhysics);
+                        this.CheckOtherVehicles(vehicleID, ref vehicleData, ref frameData, ref targetSpeed, ref blocked, ref collisionPush, minDistance, braking * 0.9f, lodPhysics);
                     }
                     if (reversing)
                     {
