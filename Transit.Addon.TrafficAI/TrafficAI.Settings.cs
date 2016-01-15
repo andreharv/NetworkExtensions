@@ -10,7 +10,7 @@ namespace Transit.Addon.TrafficAI
     public partial class TrafficAIModule : ModuleBase
     {
         [Flags]
-        public enum Options
+        public enum Options : long
         {
             None = 0,
 
