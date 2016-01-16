@@ -11,20 +11,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
     {
         public static void SetupNewSpeedLimitProps(this NetInfo info, int newSpeedLimit, int oldSpeedLimit)
         {
-            Framework.Debug.Log("REx: SetupNewSpeedLimitProps");
-
             var newSpeedLimitPI = Prefabs.Find<PropInfo>(newSpeedLimit + " Speed Limit", false);
             var oldSpeedLimitPI = Prefabs.Find<PropInfo>(oldSpeedLimit + " Speed Limit", false);
-
-            if (newSpeedLimitPI == null)
-            {
-                Framework.Debug.Log("REx: newSpeedLimitPI null");
-            }
-
-            if (oldSpeedLimitPI == null)
-            {
-                Framework.Debug.Log("REx: oldSpeedLimitPI null");
-            }
 
             if (newSpeedLimitPI == null || oldSpeedLimitPI == null)
             {
@@ -58,9 +46,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                     newProps.name = lane.m_laneProps.name + "_clone";
                     newProps.m_props = newPropsContent.ToArray();
                     lane.m_laneProps = newProps;
-
-
-                    Framework.Debug.Log("REx: replacing completed");
                 }
             }
 		}

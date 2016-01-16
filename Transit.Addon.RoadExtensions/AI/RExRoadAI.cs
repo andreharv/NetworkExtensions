@@ -1,4 +1,6 @@
 ﻿using System;
+using Transit.Addon.RoadExtensions.Roads.TinyRoads.Alley2L;
+using Transit.Addon.RoadExtensions.Roads.TinyRoads.OneWay1L;
 using Transit.Framework.Unsafe;
 using UnityEngine;
 
@@ -11,7 +13,17 @@ namespace Transit.Addon.RoadExtensions.AI
         {
             try
             {
-                CreateZoneBlocksNew(this.m_info, segment, ref data);
+                switch (this.m_info.name)
+                {
+                    case Alley2LBuilder.NAME:
+                    case OneWay1LBuilder.NAME:
+                        CreateZoneBlocksTiny(this.m_info, segment, ref data);
+                        break;
+
+                    default:
+                        CreateZoneBlocksVanilla(this.m_info, segment, ref data);
+                        break;
+                }
             }
             catch (Exception ex)
             {
