@@ -89,7 +89,7 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.OneWay1L
                 PedPropOffsetX = 2.25f
             });
             info.SetupNewSpeedLimitProps(30, 40);
-            info.TrimArrowsProps();
+            //info.TrimArrowsProps();
             
             var originPlayerNetAI = roadInfo.GetComponent<PlayerNetAI>();
             var playerNetAI = info.GetComponent<PlayerNetAI>();
