@@ -256,61 +256,61 @@ namespace Transit.Addon.RoadExtensions.AI
             Vector2 magnitudeVector = new Vector2(endPosition.x - startPosition.x, endPosition.z - startPosition.z);
             float magnitude = magnitudeVector.magnitude;
             int num14 = Mathf.FloorToInt(magnitude / 8f + 0.1f);
-            int num15 = (num14 <= 8) ? num14 : (num14 + 1 >> 1);
-            int num16 = (num14 <= 8) ? 0 : (num14 >> 1);
-            if (num15 > 0)
+            int rowsLeft = (num14 <= 8) ? num14 : ((num14 + 1) >> 1);
+            int rowsRight = (num14 <= 8) ? 0 : (num14 >> 1);
+            if (rowsLeft > 0)
             {
-                float num17 = Mathf.Atan2(startDirection.x, -startDirection.z);
-                Vector3 position7 = startPosition + new Vector3(
+                float angle = Mathf.Atan2(startDirection.x, -startDirection.z);
+                Vector3 position = startPosition + new Vector3(
                     startDirection.x * 32f - startDirection.z * num2, 
                     0f, 
                     startDirection.z * 32f + startDirection.x * num2);
                 Singleton<ZoneManager>.instance.CreateBlock(
                     out segment.m_blockStartLeft, 
                     ref randomizer, 
-                    position7, 
-                    num17, 
-                    num15, 
+                    position, 
+                    angle, 
+                    rowsLeft, 
                     segment.m_buildIndex);
 
-                position7 = startPosition + new Vector3(
-                    startDirection.x * (float)(num15 - 4) * 8f + startDirection.z * num2, 
+                position = startPosition + new Vector3(
+                    startDirection.x * (float)(rowsLeft - 4) * 8f + startDirection.z * num2, 
                     0f, 
-                    startDirection.z * (float)(num15 - 4) * 8f - startDirection.x * num2);
+                    startDirection.z * (float)(rowsLeft - 4) * 8f - startDirection.x * num2);
                 Singleton<ZoneManager>.instance.CreateBlock(
                     out segment.m_blockStartRight, 
                     ref randomizer, 
-                    position7, 
-                    num17 + 3.14159274f, 
-                    num15, 
+                    position, 
+                    angle + 3.14159274f, 
+                    rowsLeft, 
                     segment.m_buildIndex);
             }
-            if (num16 > 0)
+            if (rowsRight > 0)
             {
                 float num18 = magnitude - (float)num14 * 8f;
-                float num19 = Mathf.Atan2(endDirection.x, -endDirection.z);
-                Vector3 position8 = endPosition + new Vector3(
+                float angle = Mathf.Atan2(endDirection.x, -endDirection.z);
+                Vector3 position = endPosition + new Vector3(
                     endDirection.x * (32f + num18) - endDirection.z * num2, 
                     0f, 
                     endDirection.z * (32f + num18) + endDirection.x * num2);
                 Singleton<ZoneManager>.instance.CreateBlock(
                     out segment.m_blockEndLeft, 
                     ref randomizer, 
-                    position8, 
-                    num19, 
-                    num16, 
+                    position, 
+                    angle, 
+                    rowsRight, 
                     segment.m_buildIndex + 1u);
 
-                position8 = endPosition + new Vector3(
-                    endDirection.x * ((float)(num16 - 4) * 8f + num18) + endDirection.z * num2, 
+                position = endPosition + new Vector3(
+                    endDirection.x * ((float)(rowsRight - 4) * 8f + num18) + endDirection.z * num2, 
                     0f, 
-                    endDirection.z * ((float)(num16 - 4) * 8f + num18) - endDirection.x * num2);
+                    endDirection.z * ((float)(rowsRight - 4) * 8f + num18) - endDirection.x * num2);
                 Singleton<ZoneManager>.instance.CreateBlock(
                     out segment.m_blockEndRight, 
                     ref randomizer, 
-                    position8, 
-                    num19 + 3.14159274f, 
-                    num16, 
+                    position, 
+                    angle + 3.14159274f, 
+                    rowsRight, 
                     segment.m_buildIndex + 1u);
             }
         }
