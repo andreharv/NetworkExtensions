@@ -11,8 +11,20 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
     {
         public static void SetupNewSpeedLimitProps(this NetInfo info, int newSpeedLimit, int oldSpeedLimit)
         {
+            Debug.Log("REx: SetupNewSpeedLimitProps");
+
             var newSpeedLimitPI = Prefabs.Find<PropInfo>(newSpeedLimit + " Speed Limit", false);
             var oldSpeedLimitPI = Prefabs.Find<PropInfo>(oldSpeedLimit + " Speed Limit", false);
+
+            if (newSpeedLimitPI == null)
+            {
+                Debug.Log("REx: newSpeedLimitPI null");
+            }
+
+            if (oldSpeedLimitPI == null)
+            {
+                Debug.Log("REx: oldSpeedLimitPI null");
+            }
 
             if (newSpeedLimitPI == null || oldSpeedLimitPI == null)
             {
@@ -46,6 +58,9 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                     newProps.name = lane.m_laneProps.name + "_clone";
                     newProps.m_props = newPropsContent.ToArray();
                     lane.m_laneProps = newProps;
+
+
+                    Debug.Log("REx: replacing completed");
                 }
             }
 		}
@@ -196,6 +211,26 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             }
         }
 
+        public static void TrimArrowsProps(this NetInfo info)
+        {
+            foreach (var laneProps in info.m_lanes.Select(l => l.m_laneProps).Where(lpi => lpi != null))
+            {
+                var remainingProp = new List<NetLaneProps.Prop>();
+
+                foreach (var prop in laneProps.m_props.Where(p => p.m_prop != null))
+                {
+                    if (prop.m_prop.name.ToLower().Contains("arrow"))
+                    {
+                        continue;
+                    }
+
+                    remainingProp.Add(prop);
+                }
+
+                laneProps.m_props = remainingProp.ToArray();
+            }
+        }
+
         public static NetInfo SetRoadLanes(this NetInfo rdInfo, NetInfoVersion version, LanesConfiguration config)
         {
             if (config.LanesToAdd < 0)
@@ -228,7 +263,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             var laneCollection = new List<NetInfo.Lane>();
 
             laneCollection.AddRange(rdInfo.SetupVehicleLanes(version, config));
-            laneCollection.AddRange(rdInfo.SetupPedestrianLanes(version, config.PedPropOffsetX));
+            laneCollection.AddRange(rdInfo.SetupPedestrianLanes(version, config));
 
             if (rdInfo.m_hasParkingSpaces)
             {
@@ -413,7 +448,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             return vehicleLanes;
         }
 
-        private static IEnumerable<NetInfo.Lane> SetupPedestrianLanes(this NetInfo rdInfo, NetInfoVersion version, float propOffsetX = 0.0f)
+        private static IEnumerable<NetInfo.Lane> SetupPedestrianLanes(this NetInfo rdInfo, NetInfoVersion version, LanesConfiguration config)
         {
             var pedestrianLanes = rdInfo.m_lanes
                 .Where(l => l.m_laneType == NetInfo.LaneType.Pedestrian)
@@ -426,12 +461,12 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                 {
                     var multiplier = pedLane.m_position / Math.Abs(pedLane.m_position);
                     pedLane.m_width = rdInfo.m_pavementWidth - (version == NetInfoVersion.Slope || version == NetInfoVersion.Tunnel ? 3 : 1);
-                    pedLane.m_position = multiplier * (rdInfo.m_halfWidth - ((version == NetInfoVersion.Slope || version == NetInfoVersion.Tunnel ? 2 : 0) + 0.5f * pedLane.m_width));
-                    if (propOffsetX != 0.0f && pedLane.m_laneProps != null)
+                    pedLane.m_position = multiplier * (rdInfo.m_halfWidth - (version == NetInfoVersion.Slope || version == NetInfoVersion.Tunnel ? 2 : 0) - (0.5f * pedLane.m_width) + config.PedLaneOffset);
+                    if (config.PedPropOffsetX != 0.0f && pedLane.m_laneProps != null)
                     {
                         foreach (var pedLaneProp in pedLane.m_laneProps.m_props)
                         {
-                            pedLaneProp.m_position.x += propOffsetX * multiplier;
+                            pedLaneProp.m_position.x += config.PedPropOffsetX * multiplier;
                         }
                     }
                 }
