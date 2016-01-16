@@ -17,7 +17,7 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.Alley2L
         public string DisplayName { get { return "Two-Lane Alley"; } }
         public string CodeName { get { return "Alley_2L"; } }
         public string Description { get { return "A two-lane, tight Alley suitable for neighborhood traffic. This road is not zonable."; } }
-        public string ShortDescription { get { return "No parking, not zoneable, neighborhood traffic"; } }
+        public string ShortDescription { get { return "No parking, zoneable, neighborhood traffic"; } }
         public string UICategory { get { return AdditionnalMenus.ROADS_TINY; } }
 
         public string ThumbnailsPath { get { return string.Empty; } }
@@ -115,9 +115,11 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.Alley2L
                 LaneWidth = 2.5f,
                 SpeedLimit = 0.6f,
                 BusStopOffset = 0f,
-                PedPropOffsetX = 1.5f
+                PedLaneOffset = -0.75f,
+                PedPropOffsetX = 2.25f
             });
-            info.SetupNewSpeedLimitProps(40, 30);
+            info.SetupNewSpeedLimitProps(30, 40);
+            info.TrimArrowsProps();
             
             var originPlayerNetAI = roadInfo.GetComponent<PlayerNetAI>();
             var playerNetAI = info.GetComponent<PlayerNetAI>();

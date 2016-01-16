@@ -10,6 +10,9 @@ namespace Transit.Addon.RoadExtensions.AI
 {
     public partial class RExRoadAI
     {
+        private const float MIN_HALFWIDTH_CURVE = 6f;
+        private const float MIN_HALFWIDTH_STRAIGHT = 4f;
+
         private static void CreateZoneBlocksNew(NetInfo info, ushort segmentId, ref NetSegment segment)
         {
             var netManager = Singleton<NetManager>.instance;
@@ -42,7 +45,7 @@ namespace Transit.Addon.RoadExtensions.AI
             Vector3 startDirection = segment.m_startDirection;
             Vector3 endDirection = segment.m_endDirection;
             float num = startDirection.x * endDirection.x + startDirection.z * endDirection.z;
-            float num2 = Mathf.Max(4f, info.m_halfWidth);
+            float num2 = Mathf.Max(MIN_HALFWIDTH_CURVE, info.m_halfWidth);
             float num3 = 32f;
 
             float num4 = VectorUtils.LengthXZ(endPosition - startPosition);
@@ -230,7 +233,7 @@ namespace Transit.Addon.RoadExtensions.AI
             Vector3 endPosition = endNode.m_position;
             Vector3 startDirection = segment.m_startDirection;
             Vector3 endDirection = segment.m_endDirection;
-            float num2 = Mathf.Max(4f, info.m_halfWidth) + 32f;
+            float num2 = Mathf.Max(MIN_HALFWIDTH_STRAIGHT, info.m_halfWidth) + 32f;
 
             Vector2 magnitudeVector = new Vector2(endPosition.x - startPosition.x, endPosition.z - startPosition.z);
             float magnitude = magnitudeVector.magnitude;

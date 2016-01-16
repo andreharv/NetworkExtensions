@@ -55,7 +55,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AI\RExRoadAI.Original.cs" />
     <Compile Include="AI\RExRoadAI.New.cs" />
     <Compile Include="AI\RExRoadAI.cs" />
     <Compile Include="Compatibility\RoadColorChanger.cs" />
