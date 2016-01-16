@@ -1,5 +1,6 @@
 ﻿using ColossalFramework;
 using ColossalFramework.Math;
+using Transit.Framework;
 using UnityEngine;
 
 #if DEBUG
@@ -10,6 +11,7 @@ namespace Transit.Addon.RoadExtensions.AI
 {
     public partial class RExRoadAI
     {
+        private const float MIN_HALFWIDTH_DEFAULT = 8f;
         private const float MIN_HALFWIDTH_CURVE = 6f;
         private const float MIN_HALFWIDTH_STRAIGHT = 4f;
 
@@ -39,13 +41,21 @@ namespace Transit.Addon.RoadExtensions.AI
 
         private static void CreateZoneBlocksNew_Curve(NetInfo info, Randomizer randomizer, ref NetSegment segment)
         {
+            var minHalfWidth = MIN_HALFWIDTH_CURVE;
+
+            // Exceptions
+            if (info.name == NetInfos.Vanilla.ROAD_2L_GRAVEL)
+            {
+                minHalfWidth = MIN_HALFWIDTH_DEFAULT;
+            }
+
             NetManager instance = Singleton<NetManager>.instance;
             Vector3 startPosition = instance.m_nodes.m_buffer[(int)segment.m_startNode].m_position;
             Vector3 endPosition = instance.m_nodes.m_buffer[(int)segment.m_endNode].m_position;
             Vector3 startDirection = segment.m_startDirection;
             Vector3 endDirection = segment.m_endDirection;
             float num = startDirection.x * endDirection.x + startDirection.z * endDirection.z;
-            float num2 = Mathf.Max(MIN_HALFWIDTH_CURVE, info.m_halfWidth);
+            float num2 = Mathf.Max(minHalfWidth, info.m_halfWidth);
             float num3 = 32f;
 
             float num4 = VectorUtils.LengthXZ(endPosition - startPosition);
@@ -229,11 +239,19 @@ namespace Transit.Addon.RoadExtensions.AI
 
         private static void CreateZoneBlocksNew_Straight(NetInfo info, Randomizer randomizer, ref NetSegment segment, NetNode startNode, NetNode endNode)
         {
+            var minHalfWidth = MIN_HALFWIDTH_STRAIGHT;
+
+            // Exceptions
+            if (info.name == NetInfos.Vanilla.ROAD_2L_GRAVEL)
+            {
+                minHalfWidth = MIN_HALFWIDTH_DEFAULT;
+            }
+
             Vector3 startPosition = startNode.m_position;
             Vector3 endPosition = endNode.m_position;
             Vector3 startDirection = segment.m_startDirection;
             Vector3 endDirection = segment.m_endDirection;
-            float num2 = Mathf.Max(MIN_HALFWIDTH_STRAIGHT, info.m_halfWidth) + 32f;
+            float num2 = Mathf.Max(minHalfWidth, info.m_halfWidth) + 32f;
 
             Vector2 magnitudeVector = new Vector2(endPosition.x - startPosition.x, endPosition.z - startPosition.z);
             float magnitude = magnitudeVector.magnitude;

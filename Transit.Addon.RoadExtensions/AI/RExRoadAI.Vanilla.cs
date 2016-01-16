@@ -6,7 +6,7 @@ namespace Transit.Addon.RoadExtensions.AI
 {
     public partial class RExRoadAI : RoadAI
     {
-        private static void CreateZoneBlocksOriginal(NetInfo info, ushort segment, ref NetSegment data)
+        private static void CreateZoneBlocks(NetInfo info, ushort segment, ref NetSegment data)
         {
             NetManager instance = Singleton<NetManager>.instance;
             Randomizer randomizer = new Randomizer((int)segment);

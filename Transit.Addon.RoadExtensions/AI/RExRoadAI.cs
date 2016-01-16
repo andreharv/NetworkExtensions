@@ -9,8 +9,6 @@ namespace Transit.Addon.RoadExtensions.AI
         [RedirectFrom(typeof(RoadAI))]
         private void CreateZoneBlocks(ushort segment, ref NetSegment data)
         {
-            Debug.Log(">>>> REx: Redirection is on");
-
             try
             {
                 CreateZoneBlocksNew(this.m_info, segment, ref data);
