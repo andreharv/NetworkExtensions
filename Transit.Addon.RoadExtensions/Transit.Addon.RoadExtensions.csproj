@@ -158,16 +158,37 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\TinyRoads\Alley2L\infotooltip.png" />
+    <Content Include="Roads\TinyRoads\Alley2L\Textures\Ground_LOD__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Alley2L\Textures\Ground_Node_LOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Alley2L\Textures\Ground_Node_LOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Roads\TinyRoads\Alley2L\Textures\Ground_Node__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\TinyRoads\Alley2L\Textures\Ground_Node__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Roads\TinyRoads\Alley2L\Textures\Ground_Segment_LOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Alley2L\Textures\Ground_Segment_LOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Roads\TinyRoads\Alley2L\Textures\Ground_Segment__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\TinyRoads\Alley2L\Textures\Ground_Segment__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Alley2L\Textures\Ground_Trans_LOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Alley2L\Textures\Ground_Trans_LOD__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\TinyRoads\Alley2L\Textures\Ground_Trans__APRMap.png">

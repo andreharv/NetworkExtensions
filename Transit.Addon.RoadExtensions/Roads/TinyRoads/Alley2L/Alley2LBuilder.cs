@@ -49,7 +49,12 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.Alley2L
                     info.SetAllSegmentsTexture(
                         new TexturesSet
                            (@"Roads\TinyRoads\Alley2L\Textures\Ground_Segment__MainTex.png",
-                            @"Roads\TinyRoads\Alley2L\Textures\Ground_Segment__APRMap.png"));
+                            @"Roads\TinyRoads\Alley2L\Textures\Ground_Segment__APRMap.png"),
+                        new LODTexturesSet(
+                            @"Roads\TinyRoads\Alley2L\Textures\Ground_Segment_LOD__MainTex.png",
+                            @"Roads\TinyRoads\Alley2L\Textures\Ground_Segment_LOD__APRMap.png",
+                            @"Roads\TinyRoads\Alley2L\Textures\Ground_LOD__XYSMap.png"));
+
                     for (int i = 0; i < info.m_nodes.Count(); i++)
                     {
                         if (info.m_nodes[i].m_flagsForbidden == NetNode.Flags.Transition)
@@ -57,14 +62,22 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.Alley2L
                             info.m_nodes[i].SetTextures(
                                 new TexturesSet
                                     (@"Roads\TinyRoads\Alley2L\Textures\Ground_Node__MainTex.png",
-                                     @"Roads\TinyRoads\Alley2L\Textures\Ground_Node__APRMap.png"));
+                                     @"Roads\TinyRoads\Alley2L\Textures\Ground_Node__APRMap.png"),
+                                new LODTexturesSet(
+                                    @"Roads\TinyRoads\Alley2L\Textures\Ground_Node_LOD__MainTex.png",
+                                    @"Roads\TinyRoads\Alley2L\Textures\Ground_Node_LOD__APRMap.png",
+                                    @"Roads\TinyRoads\Alley2L\Textures\Ground_LOD__XYSMap.png"));
                         }
                         else if (info.m_nodes[i].m_flagsRequired == NetNode.Flags.Transition)
                         {
                             info.m_nodes[i].SetTextures(
                                 new TexturesSet
                                     (@"Roads\TinyRoads\Alley2L\Textures\Ground_Trans__MainTex.png",
-                                     @"Roads\TinyRoads\Alley2L\Textures\Ground_Trans__APRMap.png"));
+                                     @"Roads\TinyRoads\Alley2L\Textures\Ground_Trans__APRMap.png"),
+                                new LODTexturesSet(
+                                    @"Roads\TinyRoads\Alley2L\Textures\Ground_Trans_LOD__MainTex.png",
+                                    @"Roads\TinyRoads\Alley2L\Textures\Ground_Trans_LOD__APRMap.png",
+                                    @"Roads\TinyRoads\Alley2L\Textures\Ground_LOD__XYSMap.png"));
                         }
                     }
                     break;

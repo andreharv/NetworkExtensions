@@ -31,7 +31,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                         nodes1
                             .SetFlags(NetNode.Flags.Transition, NetNode.Flags.None)
                             .SetMeshes
-                            (@"Roads\Common\Meshes\8m\1p5mSW\Ground_Trans.obj");
+                            (@"Roads\Common\Meshes\8m\1p5mSW\Ground_Trans.obj",
+                             @"Roads\Common\Meshes\8m\1p5mSW\Ground_Node_LOD.obj");
 
                         info.m_segments = new[] { segments0 };
                         info.m_nodes = new[] { nodes0, nodes1 };
