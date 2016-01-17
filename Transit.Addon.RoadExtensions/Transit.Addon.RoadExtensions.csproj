@@ -71,6 +71,7 @@
     <Compile Include="RExModule.Install.Init.cs" />
     <Compile Include="Menus\AdditionnalMenus.cs" />
     <Compile Include="Menus\RExRoadsGroupPanel.cs" />
+    <Compile Include="Roads\TinyRoads\TinyRoadMenuModifier.cs" />
     <Compile Include="Roads\TinyRoads\Alley2L\Alley2LBuilder.cs" />
     <Compile Include="Roads\Common\CenterLaneType.cs" />
     <Compile Include="Roads\Common\RoadHelper.cs" />
