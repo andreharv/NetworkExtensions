@@ -18,7 +18,7 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.Alley2L
         public string Name { get { return NAME; } }
         public string DisplayName { get { return NAME; } }
         public string CodeName { get { return "Alley_2L"; } }
-        public string Description { get { return "A two-lane, tight Alley suitable for neighborhood traffic. This road is not zonable."; } }
+        public string Description { get { return "A two-lane, tight Alley suitable for neighborhood traffic."; } }
         public string ShortDescription { get { return "No parking, zoneable, neighborhood traffic"; } }
         public string UICategory { get { return AdditionnalMenus.ROADS_TINY; } }
 
