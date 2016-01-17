@@ -9,12 +9,14 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.OneWay1L
 {
     public class OneWay1LBuilder : Activable, INetInfoBuilderPart
     {
+        public const string NAME = "One-Lane Oneway Road";
+
         public int Order { get { return 1; } }
         public int UIOrder { get { return 5; } }
 
         public string BasedPrefabName { get { return NetInfos.Vanilla.ONEWAY_2L; } }
-        public string Name { get { return "One-Lane Oneway Road"; } }
-        public string DisplayName { get { return "One-Lane Oneway Road"; } }
+        public string Name { get { return NAME; } }
+        public string DisplayName { get { return NAME; } }
         public string CodeName { get { return "Oneway1L"; } }
         public string Description { get { return "A one-lane, oneway road suitable for neighborhood traffic."; } }
         public string ShortDescription { get { return "Oneway, No parking, zoneable, neighborhood traffic"; } }

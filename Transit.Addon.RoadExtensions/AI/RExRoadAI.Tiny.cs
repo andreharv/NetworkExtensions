@@ -12,10 +12,10 @@ namespace Transit.Addon.RoadExtensions.AI
     public partial class RExRoadAI
     {
         private const float MIN_HALFWIDTH_DEFAULT = 8f;
-        private const float MIN_HALFWIDTH_CURVE = 6f;
-        private const float MIN_HALFWIDTH_STRAIGHT = 4f;
+        private const float MIN_HALFWIDTH_TINY_CURVE = 6f;
+        private const float MIN_HALFWIDTH_TINY_STRAIGHT = 4f;
 
-        private static void CreateZoneBlocksNew(NetInfo info, ushort segmentId, ref NetSegment segment)
+        private static void CreateZoneBlocksTiny(NetInfo info, ushort segmentId, ref NetSegment segment)
         {
             var netManager = Singleton<NetManager>.instance;
             var randomizer = new Randomizer((int)segmentId);
@@ -31,23 +31,17 @@ namespace Transit.Addon.RoadExtensions.AI
 
             if (isCurve)
             {
-                CreateZoneBlocksNew_Curve(info, randomizer, ref segment);
+                CreateZoneBlocksTiny_Curve(info, randomizer, ref segment);
             }
             else
             {
-                CreateZoneBlocksNew_Straight(info, randomizer, ref segment, startNode, endNode);
+                CreateZoneBlocksTiny_Straight(info, randomizer, ref segment, startNode, endNode);
             }
         }
 
-        private static void CreateZoneBlocksNew_Curve(NetInfo info, Randomizer randomizer, ref NetSegment segment)
+        private static void CreateZoneBlocksTiny_Curve(NetInfo info, Randomizer randomizer, ref NetSegment segment)
         {
-            var minHalfWidth = MIN_HALFWIDTH_CURVE;
-
-            // Exceptions
-            if (info.name == NetInfos.Vanilla.ROAD_2L_GRAVEL)
-            {
-                minHalfWidth = MIN_HALFWIDTH_DEFAULT;
-            }
+            var minHalfWidth = MIN_HALFWIDTH_TINY_CURVE;
 
             NetManager instance = Singleton<NetManager>.instance;
             Vector3 startPosition = instance.m_nodes.m_buffer[(int)segment.m_startNode].m_position;
@@ -237,80 +231,82 @@ namespace Transit.Addon.RoadExtensions.AI
             }
         }
 
-        private static void CreateZoneBlocksNew_Straight(NetInfo info, Randomizer randomizer, ref NetSegment segment, NetNode startNode, NetNode endNode)
+        private static void CreateZoneBlocksTiny_Straight(NetInfo info, Randomizer randomizer, ref NetSegment segment, NetNode startNode, NetNode endNode)
         {
-            var minHalfWidth = MIN_HALFWIDTH_STRAIGHT;
-
-            // Exceptions
-            if (info.name == NetInfos.Vanilla.ROAD_2L_GRAVEL)
-            {
-                minHalfWidth = MIN_HALFWIDTH_DEFAULT;
-            }
-
-            Vector3 startPosition = startNode.m_position;
-            Vector3 endPosition = endNode.m_position;
-            Vector3 startDirection = segment.m_startDirection;
-            Vector3 endDirection = segment.m_endDirection;
+            var minHalfWidth = MIN_HALFWIDTH_TINY_STRAIGHT;
             float num2 = Mathf.Max(minHalfWidth, info.m_halfWidth) + 32f;
+
+            const float ROW_UNIT_SIZE = 8f;
+            Vector3 startPosition = startNode.m_position;
+            Vector3 startDirection = segment.m_startDirection;
+            float startAngle = Mathf.Atan2(startDirection.x, -startDirection.z);
+            //Debug.Log(">>>>> startAngle: " + startAngle);
+
+            Vector3 endPosition = endNode.m_position;
+            Vector3 endDirection = segment.m_endDirection;
+            float endAngle = Mathf.Atan2(endDirection.x, -endDirection.z);
+            //Debug.Log(">>>>> endAngle: " + endAngle);
 
             Vector2 magnitudeVector = new Vector2(endPosition.x - startPosition.x, endPosition.z - startPosition.z);
             float magnitude = magnitudeVector.magnitude;
-            int num14 = Mathf.FloorToInt(magnitude / 8f + 0.1f);
-            int num15 = (num14 <= 8) ? num14 : (num14 + 1 >> 1);
-            int num16 = (num14 <= 8) ? 0 : (num14 >> 1);
-            if (num15 > 0)
+            int rows = Mathf.FloorToInt(magnitude / ROW_UNIT_SIZE + 0.1f);
+            int startRows = (rows <= 8) ? rows : ((rows + 1) >> 1);
+            int endRows = (rows <= 8) ? 0 : (rows >> 1);
+
+            if (startRows > 0)
             {
-                float num17 = Mathf.Atan2(startDirection.x, -startDirection.z);
-                Vector3 position7 = startPosition + new Vector3(
+
+                Vector3 position = startPosition + new Vector3(
                     startDirection.x * 32f - startDirection.z * num2, 
                     0f, 
                     startDirection.z * 32f + startDirection.x * num2);
                 Singleton<ZoneManager>.instance.CreateBlock(
                     out segment.m_blockStartLeft, 
                     ref randomizer, 
-                    position7, 
-                    num17, 
-                    num15, 
+                    position, 
+                    startAngle, 
+                    startRows, 
                     segment.m_buildIndex);
 
-                position7 = startPosition + new Vector3(
-                    startDirection.x * (float)(num15 - 4) * 8f + startDirection.z * num2, 
+                position = startPosition + new Vector3(
+                    startDirection.x * (float)(startRows - 4) * 8f + startDirection.z * num2, 
                     0f, 
-                    startDirection.z * (float)(num15 - 4) * 8f - startDirection.x * num2);
+                    startDirection.z * (float)(startRows - 4) * 8f - startDirection.x * num2);
                 Singleton<ZoneManager>.instance.CreateBlock(
                     out segment.m_blockStartRight, 
                     ref randomizer, 
-                    position7, 
-                    num17 + 3.14159274f, 
-                    num15, 
+                    position, 
+                    startAngle + 3.14159274f, 
+                    startRows, 
                     segment.m_buildIndex);
             }
-            if (num16 > 0)
+
+            if (endRows > 0)
             {
-                float num18 = magnitude - (float)num14 * 8f;
-                float num19 = Mathf.Atan2(endDirection.x, -endDirection.z);
-                Vector3 position8 = endPosition + new Vector3(
-                    endDirection.x * (32f + num18) - endDirection.z * num2, 
-                    0f, 
+                float num18 = magnitude - (float)rows * 8f;
+
+                Vector3 position = endPosition + new Vector3(
+                    endDirection.x * (32f + num18) - endDirection.z * num2,
+                    0f,
                     endDirection.z * (32f + num18) + endDirection.x * num2);
                 Singleton<ZoneManager>.instance.CreateBlock(
-                    out segment.m_blockEndLeft, 
-                    ref randomizer, 
-                    position8, 
-                    num19, 
-                    num16, 
+                    out segment.m_blockEndLeft,
+                    ref randomizer,
+                    position,
+                    endAngle,
+                    endRows,
                     segment.m_buildIndex + 1u);
 
-                position8 = endPosition + new Vector3(
-                    endDirection.x * ((float)(num16 - 4) * 8f + num18) + endDirection.z * num2, 
-                    0f, 
-                    endDirection.z * ((float)(num16 - 4) * 8f + num18) - endDirection.x * num2);
+                position = endPosition + new Vector3(
+                    endDirection.x * ((float)(endRows - 4) * 8f + num18) + endDirection.z * num2,
+                    0f,
+                    endDirection.z * ((float)(endRows - 4) * 8f + num18) - endDirection.x * num2);
                 Singleton<ZoneManager>.instance.CreateBlock(
-                    out segment.m_blockEndRight, 
-                    ref randomizer, 
-                    position8, 
-                    num19 + 3.14159274f, 
-                    num16, 
+                    out segment.m_blockEndRight,
+                    ref randomizer,
+                    position,
+                    endAngle + 3.14159274f,
+                    endRows,
                     segment.m_buildIndex + 1u);
             }
         }
