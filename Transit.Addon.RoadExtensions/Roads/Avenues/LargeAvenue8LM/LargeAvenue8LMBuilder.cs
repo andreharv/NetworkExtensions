@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using ColossalFramework.Packaging;
+using System.Linq;
 using Transit.Addon.RoadExtensions.Roads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
@@ -33,6 +34,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
             //var highwayInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L_SLOPE);
             var roadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_6L);
             var roadTunnelInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_6L_TUNNEL);
+            var bridgePillar = PrefabCollection<BuildingInfo>.FindLoaded("SuperStack 12m");
 
             ///////////////////////////
             // 3DModeling            //
@@ -89,6 +91,31 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
             rightPedLane.m_laneProps.m_props = rightRoadProps.ToArray();
 
             info.TrimAboveGroundProps(version);
+
+            if (version == NetInfoVersion.Bridge)
+            {
+                var roadBridgeAI = info.GetComponent<RoadBridgeAI>();
+                if (roadBridgeAI != null)
+                {
+                    for(uint i = 0; i < PrefabCollection<BuildingInfo>.LoadedCount(); i++)
+                    {
+                        var prefab = PrefabCollection<BuildingInfo>.GetLoaded(i);
+
+                        if (prefab == null) continue;
+
+                        // only accept buildings with a basic AI
+                        if (prefab.m_buildingAI.GetType() != typeof(BuildingAI)) continue;
+
+                        var asset = PackageManager.FindAssetByName(prefab.name);
+
+                        var crpPath = asset?.package?.packagePath;
+                        Framework.Debug.Log(prefab.name);
+                    }
+                    
+                    roadBridgeAI.m_middlePillarInfo = bridgePillar;
+                }
+
+            }
 
             var owPlayerNetAI = roadInfo.GetComponent<PlayerNetAI>();
             var playerNetAI = info.GetComponent<PlayerNetAI>();
