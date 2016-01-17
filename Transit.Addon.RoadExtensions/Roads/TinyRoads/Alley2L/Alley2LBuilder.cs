@@ -20,8 +20,8 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.Alley2L
         public string ShortDescription { get { return "No parking, zoneable, neighborhood traffic"; } }
         public string UICategory { get { return AdditionnalMenus.ROADS_TINY; } }
 
-        public string ThumbnailsPath { get { return string.Empty; } }
-        public string InfoTooltipPath { get { return string.Empty; } }
+        public string ThumbnailsPath { get { return @"Roads\TinyRoads\Alley2L\thumbnails.png"; } }
+        public string InfoTooltipPath { get { return @"Roads\TinyRoads\Alley2L\infotooltip.png"; } }
 
         public NetInfoVersion SupportedVersions
         {

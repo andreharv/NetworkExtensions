@@ -158,7 +158,12 @@
     <Content Include="Menus\Textures\AdditionnalSubBar.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\TinyRoads\Alley2L\infotooltip.png" />
+    <Content Include="Roads\TinyRoads\Alley2L\thumbnails.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Alley2L\infotooltip.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Roads\TinyRoads\Alley2L\Textures\Ground_LOD__XYSMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -198,7 +203,6 @@
     <Content Include="Roads\TinyRoads\Alley2L\Textures\Ground_Trans__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\TinyRoads\Alley2L\thumbnails.png" />
     <Content Include="Roads\Avenues\MediumAvenue4LTL\infotooltip.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1489,6 +1493,9 @@
     <Content Include="Roads\SmallHeavyRoads\SmallAvenue4L\thumbnails.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Roads\TinyRoads\OneWay1L\thumbnails.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Roads\TinyRoads\OneWay1L\infotooltip.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1517,9 +1524,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\TinyRoads\OneWay1L\Textures\Ground_Segment__MainTex.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\TinyRoads\OneWay1L\thumbnails.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SomeRoads\Textures\planning_road_2_lanes.png" />
