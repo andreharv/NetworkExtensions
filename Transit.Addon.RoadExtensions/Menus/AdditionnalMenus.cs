@@ -26,6 +26,7 @@ namespace Transit.Addon.RoadExtensions.Menus
             const string PATH = @"Menus\Textures\AdditionnalSubBar.png";
 
             const string BASE = "SubBarButtonBase";
+            const string ROADS_TINY_SUBBAR = "SubBar" + AdditionnalMenus.ROADS_TINY;
             const string ROADS_SMALL_HV_SUBBAR = "SubBar" + AdditionnalMenus.ROADS_SMALL_HV;
             const string ROADS_BUSWAYS_SUBBAR = "SubBar" + AdditionnalMenus.ROADS_BUSWAYS;
             const string ROADS_PED_SUBBAR = "SubBar" + AdditionnalMenus.ROADS_PEDESTRIANS;
@@ -42,7 +43,7 @@ namespace Transit.Addon.RoadExtensions.Menus
             var y = 1;
 
             const int TEXTURE_W = 292;
-            const int TEXTURE_H = 96;
+            const int TEXTURE_H = 119;
 
 
 
@@ -72,7 +73,7 @@ namespace Transit.Addon.RoadExtensions.Menus
 
 
             // Button Icons -----------------------------------------------------------------------
-            var buttonIcons = new[] { ROADS_SMALL_HV_SUBBAR, ROADS_BUSWAYS_SUBBAR, ROADS_PED_SUBBAR };
+            var buttonIcons = new[] { ROADS_TINY_SUBBAR, ROADS_SMALL_HV_SUBBAR, ROADS_BUSWAYS_SUBBAR, ROADS_PED_SUBBAR };
             const int ICON_W = 32;
             const int ICON_H = 22;
 
