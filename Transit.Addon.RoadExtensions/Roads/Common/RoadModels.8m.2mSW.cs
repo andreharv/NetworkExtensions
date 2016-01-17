@@ -13,7 +13,9 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                         var segments0 = info.m_segments[0];
                         var nodes0 = info.m_nodes[0];
 
-                        segments0.SetMeshes
+                        segments0
+                            .SetFlagsDefault()
+                            .SetMeshes
                             (@"Roads\Common\Meshes\8m\2mSW\Ground.obj",
                              @"Roads\Common\Meshes\8m\2mSW\Ground_LOD.obj");
 

@@ -19,6 +19,15 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                 return;
             }
 
+            info.ReplaceProps(newSpeedLimitPI, oldSpeedLimitPI);
+        }
+        public static void ReplaceProps(this NetInfo info, PropInfo newPropInfo, PropInfo oldPropInfo)
+        {
+            if (newPropInfo == null || oldPropInfo == null)
+            {
+                return;
+            }
+
             foreach (var lane in info.m_lanes.Where(l => l.m_laneProps != null))
             {
                 if (lane.m_laneProps.m_props == null ||
@@ -27,28 +36,28 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                     continue;
                 }
 
-                var oldSpeedLimitProp = lane
+                var oldProp = lane
                     .m_laneProps
                     .m_props
-                    .FirstOrDefault(prop => prop.m_prop == oldSpeedLimitPI);
+                    .FirstOrDefault(prop => prop.m_prop == oldPropInfo);
 
-                if (oldSpeedLimitProp != null)
+                if (oldProp != null)
                 {
-                    var newSpeedLimitProp = oldSpeedLimitProp.ShallowClone();
-                    newSpeedLimitProp.m_prop = newSpeedLimitPI;
+                    var newSpeedLimitProp = oldProp.ShallowClone();
+                    newSpeedLimitProp.m_prop = newPropInfo;
                     newSpeedLimitProp.m_finalProp = null;
 
                     var newPropsContent = new List<NetLaneProps.Prop>();
-                    newPropsContent.AddRange(lane.m_laneProps.m_props.Where(prop => prop.m_prop != oldSpeedLimitPI));
+                    newPropsContent.AddRange(lane.m_laneProps.m_props.Where(prop => prop.m_prop != oldPropInfo));
                     newPropsContent.Add(newSpeedLimitProp);
 
                     var newProps = ScriptableObject.CreateInstance<NetLaneProps>();
-                    newProps.name = lane.m_laneProps.name + "_clone";
+                    newProps.name = lane.m_laneProps.name;
                     newProps.m_props = newPropsContent.ToArray();
                     lane.m_laneProps = newProps;
                 }
             }
-		}
+        }
 
         public static NetInfo.Lane GetLeftRoadShoulder(this NetInfo info, NetInfo templateInfo, NetInfoVersion version)
         {

@@ -52,19 +52,19 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.OneWay1L
                         new TexturesSet
                            (@"Roads\TinyRoads\OneWay1L\Textures\Ground_Segment__MainTex.png",
                             @"Roads\TinyRoads\OneWay1L\Textures\Ground_Segment__APRMap.png"),
-                        new LODTexturesSet(
-                            @"Roads\TinyRoads\OneWay1L\Textures\Ground_Segment_LOD__MainTex.png",
+                        new LODTexturesSet
+                           (@"Roads\TinyRoads\OneWay1L\Textures\Ground_Segment_LOD__MainTex.png",
                             @"Roads\TinyRoads\OneWay1L\Textures\Ground_Segment_LOD__APRMap.png",
                             @"Roads\TinyRoads\OneWay1L\Textures\Ground_LOD__XYSMap.png"));
 
                     info.SetAllNodesTexture(
-                                new TexturesSet
-                                    (@"Roads\TinyRoads\OneWay1L\Textures\Ground_Node__MainTex.png",
-                                     @"Roads\TinyRoads\OneWay1L\Textures\Ground_Node__APRMap.png"),
-                                new LODTexturesSet(
-                                    @"Roads\TinyRoads\OneWay1L\Textures\Ground_Node_LOD__MainTex.png",
-                                    @"Roads\TinyRoads\OneWay1L\Textures\Ground_Node_LOD__APRMap.png",
-                                    @"Roads\TinyRoads\OneWay1L\Textures\Ground_LOD__XYSMap.png"));
+                        new TexturesSet
+                            (@"Roads\TinyRoads\OneWay1L\Textures\Ground_Node__MainTex.png",
+                             @"Roads\TinyRoads\OneWay1L\Textures\Ground_Node__APRMap.png"),
+                        new LODTexturesSet
+                           (@"Roads\TinyRoads\OneWay1L\Textures\Ground_Node_LOD__MainTex.png",
+                            @"Roads\TinyRoads\OneWay1L\Textures\Ground_Node_LOD__APRMap.png",
+                            @"Roads\TinyRoads\OneWay1L\Textures\Ground_LOD__XYSMap.png"));
                     break;
             }
 
@@ -91,8 +91,18 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.OneWay1L
                 PedPropOffsetX = 2.25f
             });
             info.SetupNewSpeedLimitProps(30, 40);
-            //info.TrimArrowsProps();
-            
+
+            // left traffic light
+            var newLeftTrafficLight = Prefabs.Find<PropInfo>("Traffic Light 01", false);
+            var oldLeftTrafficLight = Prefabs.Find<PropInfo>("Traffic Light 02 Mirror", false);
+
+            if (newLeftTrafficLight == null || oldLeftTrafficLight == null)
+            {
+                return;
+            }
+
+            info.ReplaceProps(newLeftTrafficLight, oldLeftTrafficLight);
+
             var originPlayerNetAI = roadInfo.GetComponent<PlayerNetAI>();
             var playerNetAI = info.GetComponent<PlayerNetAI>();
 
