@@ -1,12 +1,14 @@
 ﻿using ColossalFramework;
+using Transit.Framework.Unsafe;
 
 namespace Transit.Addon.RoadExtensions.Menus
 {
     public class RExRoadsGroupPanel : GeneratedGroupPanel
     {
+        [RedirectFrom(typeof(RoadsGroupPanel))]
         protected override int GetCategoryOrder(string name)
         {
-            if (isMapEditor)
+            if (base.isMapEditor)
             {
                 switch (name)
                 {
@@ -37,7 +39,7 @@ namespace Transit.Addon.RoadExtensions.Menus
                 }
                 return 2147483647;
             }
-            if (isAssetEditor)
+            if (base.isAssetEditor)
             {
                 switch (name)
                 {
