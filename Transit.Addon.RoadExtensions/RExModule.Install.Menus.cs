@@ -81,6 +81,12 @@ namespace Transit.Addon.RoadExtensions
                         {
                             var atlas = AssetManager.instance.LoadAdditionnalMenusThumbnails();
 
+                            var rtButton = group.Find<UIButton>(AdditionnalMenus.ROADS_TINY);
+                            if (rtButton != null)
+                            {
+                                rtButton.atlas = atlas;
+                            }
+
                             var rshvButton = group.Find<UIButton>(AdditionnalMenus.ROADS_SMALL_HV);
                             if (rshvButton != null)
                             {

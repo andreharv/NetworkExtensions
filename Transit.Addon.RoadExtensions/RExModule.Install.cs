@@ -1,5 +1,6 @@
 ﻿using ICities;
 using Transit.Framework;
+using Transit.Framework.Unsafe;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -24,6 +25,8 @@ namespace Transit.Addon.RoadExtensions
 
             if (_isReleased)
             {
+                Redirector.PerformRedirections();
+
                 if (AssetPath != null && AssetPath != Assets.PATH_NOT_FOUND)
                 {
                     _container = new GameObject(REX_OBJECT_NAME);
@@ -69,6 +72,8 @@ namespace Transit.Addon.RoadExtensions
             {
                 return;
             }
+
+            Redirector.RevertRedirections();
 
             if (_initializer != null)
             {

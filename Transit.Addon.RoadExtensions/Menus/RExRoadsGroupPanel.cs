@@ -10,28 +10,30 @@ namespace Transit.Addon.RoadExtensions.Menus
             {
                 switch (name)
                 {
-                    case "RoadsSmall":
+                    case AdditionnalMenus.ROADS_TINY:
                         return 0;
-                    case AdditionnalMenus.ROADS_SMALL_HV:
+                    case "RoadsSmall":
                         return 1;
-                    case "RoadsMedium":
+                    case AdditionnalMenus.ROADS_SMALL_HV:
                         return 2;
-                    case "RoadsLarge":
+                    case "RoadsMedium":
                         return 3;
-                    case "RoadsHighway":
+                    case "RoadsLarge":
                         return 4;
-                    case "RoadsIntersection":
+                    case "RoadsHighway":
                         return 5;
-                    case "PublicTransportBus":
+                    case "RoadsIntersection":
                         return 6;
-                    case "PublicTransportMetro":
+                    case "PublicTransportBus":
                         return 7;
-                    case "PublicTransportTrain":
+                    case "PublicTransportMetro":
                         return 8;
-                    case "PublicTransportShip":
+                    case "PublicTransportTrain":
                         return 9;
-                    case "PublicTransportPlane":
+                    case "PublicTransportShip":
                         return 10;
+                    case "PublicTransportPlane":
+                        return 11;
                 }
                 return 2147483647;
             }
@@ -39,46 +41,50 @@ namespace Transit.Addon.RoadExtensions.Menus
             {
                 switch (name)
                 {
-                    case "RoadsSmall":
+                    case AdditionnalMenus.ROADS_TINY:
                         return 0;
-                    case AdditionnalMenus.ROADS_SMALL_HV:
+                    case "RoadsSmall":
                         return 1;
-                    case "RoadsMedium":
+                    case AdditionnalMenus.ROADS_SMALL_HV:
                         return 2;
-                    case "RoadsLarge":
+                    case "RoadsMedium":
                         return 3;
-                    case "RoadsHighway":
+                    case "RoadsLarge":
                         return 4;
-                    case "RoadsIntersection":
+                    case "RoadsHighway":
                         return 5;
-                    case AdditionnalMenus.ROADS_BUSWAYS:
+                    case "RoadsIntersection":
                         return 6;
-                    case "PublicTransportTrain":
+                    case AdditionnalMenus.ROADS_BUSWAYS:
                         return 7;
-                    case AdditionnalMenus.ROADS_PEDESTRIANS:
+                    case "PublicTransportTrain":
                         return 8;
+                    case AdditionnalMenus.ROADS_PEDESTRIANS:
+                        return 9;
                 }
                 return 2147483647;
             }
 
             switch (name)
             {
-                case "RoadsSmall":
+                case AdditionnalMenus.ROADS_TINY:
                     return 0;
-                case AdditionnalMenus.ROADS_SMALL_HV:
+                case "RoadsSmall":
                     return 1;
-                case "RoadsMedium":
+                case AdditionnalMenus.ROADS_SMALL_HV:
                     return 2;
-                case "RoadsLarge":
+                case "RoadsMedium":
                     return 3;
-                case "RoadsHighway":
+                case "RoadsLarge":
                     return 4;
-                case "RoadsIntersection":
+                case "RoadsHighway":
                     return 5;
-                case AdditionnalMenus.ROADS_BUSWAYS:
+                case "RoadsIntersection":
                     return 6;
-                case AdditionnalMenus.ROADS_PEDESTRIANS:
+                case AdditionnalMenus.ROADS_BUSWAYS:
                     return 7;
+                case AdditionnalMenus.ROADS_PEDESTRIANS:
+                    return 8;
             }
             return 2147483647;
         }
