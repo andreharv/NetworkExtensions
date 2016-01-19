@@ -59,6 +59,7 @@
     <Compile Include="AI\RExRoadAI.cs" />
     <Compile Include="AI\RExRoadAI.Vanilla.cs" />
     <Compile Include="Compatibility\RoadColorChanger.cs" />
+    <Compile Include="Menus\RExGeneratedScrollPanel.cs" />
     <Compile Include="Roads\Common\RoadModels.8m.2mSW.cs" />
     <Compile Include="Roads\Common\RoadModels.8m.1p5mSW.cs" />
     <Compile Include="Roads\Common\RoadModels.32m.3mSW2mMdn.cs" />
