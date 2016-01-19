@@ -59,6 +59,8 @@ namespace Transit.Addon
             }
 
             Redirector.RevertRedirections();
+
+            _isReleased = true;
         }
 
         public void OnEnabled()
