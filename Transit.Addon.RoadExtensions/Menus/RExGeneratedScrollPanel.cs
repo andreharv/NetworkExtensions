@@ -1,28 +1,39 @@
 ﻿using System;
 using ColossalFramework;
 using Transit.Framework.Unsafe;
+using UnityEngine;
 
 namespace Transit.Addon.RoadExtensions.Menus
 {
-    public abstract class RExGeneratedScrollPanel : GeneratedPanel
+    public abstract class RExGeneratedScrollPanel : GeneratedScrollPanel
     {
         [RedirectFrom(typeof (GeneratedScrollPanel))]
-        private PoolList<PrefabInfo> CollectAssets(GeneratedScrollPanel.AssetFilter filter,
-            Comparison<PrefabInfo> comparison, bool ignoreCategories)
+        private PoolList<PrefabInfo> CollectAssets(GeneratedScrollPanel.AssetFilter filter, Comparison<PrefabInfo> comparison, bool ignoreCategories)
         {
             PoolList<PrefabInfo> poolList = PoolList<PrefabInfo>.Obtain();
             if (filter.IsFlagSet(GeneratedScrollPanel.AssetFilter.Net))
             {
+                Debug.Log(string.Format("REx.GSP.CollectAssets: Panel name={0} category={1}", name, this.category));
+
                 uint num = 0u;
                 while ((ulong) num < (ulong) ((long) PrefabCollection<NetInfo>.LoadedCount()))
                 {
                     NetInfo loaded = PrefabCollection<NetInfo>.GetLoaded(num);
-                    if (loaded != null &&
-                        this.IsServiceValid(loaded) &&
-                        this.IsCategoryValid(loaded.category, ignoreCategories) &&
-                        this.IsPlacementRelevant(loaded))
+                    if (loaded != null)
                     {
-                        poolList.Add(loaded);
+                        Debug.Log(string.Format("REx.GSP: NetInfo name={0} category={1} IsServiceValid={2} IsCategoryValid={3} IsPlacementRelevant={4}",
+                            loaded.name,
+                            loaded.category,
+                            this.IsServiceValid(loaded),
+                            this.IsCategoryValid(loaded.category, ignoreCategories),
+                            this.IsPlacementRelevant(loaded)));
+
+                        if (this.IsServiceValid(loaded) &&
+                            this.IsCategoryValid(loaded.category, ignoreCategories) &&
+                            this.IsPlacementRelevant(loaded))
+                        {
+                            poolList.Add(loaded);
+                        }
                     }
                     num += 1u;
                 }
