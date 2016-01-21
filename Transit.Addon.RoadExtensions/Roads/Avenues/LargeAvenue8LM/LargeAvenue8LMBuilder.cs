@@ -34,7 +34,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
             //var highwayInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L_SLOPE);
             var roadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_6L);
             var roadTunnelInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_6L_TUNNEL);
-            var bridgePillar = PrefabCollection<BuildingInfo>.FindLoaded("SuperStack 12m");
 
             ///////////////////////////
             // 3DModeling            //
@@ -112,7 +111,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
                         Framework.Debug.Log(prefab.name);
                     }
                     
-                    roadBridgeAI.m_middlePillarInfo = bridgePillar;
+                    //roadBridgeAI.m_middlePillarInfo = bridgePillar;
                 }
 
             }

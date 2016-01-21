@@ -62,6 +62,11 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                                 (@"Roads\Common\Meshes\32m\3mSW2mMdn\Elevated.obj",
                                  @"Roads\Common\Meshes\32m\3mSW2mMdn\Elevated_LOD.obj");
 
+                        segments1
+                            .SetFlagsDefault()
+                            .SetMeshes
+                                (@"Roads\Common\Meshes\32m\3mSW2mMdn\Bridge_Cables.obj");
+
                         nodes0
                             .SetMeshes
                                 (@"Roads\Common\Meshes\32m\3mSW2mMdn\Elevated_Node.obj",
