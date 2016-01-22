@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activable.cs" />
+    <Compile Include="AtlasProvider.cs" />
     <Compile Include="Installer.cs" />
     <Compile Include="Interfaces\IDescriptor.cs" />
     <Compile Include="Interfaces\IIdentifiable.cs" />
@@ -63,7 +64,6 @@
     <Compile Include="Interfaces\IActivable.cs" />
     <Compile Include="Builders\IMenuItemBuilder.cs" />
     <Compile Include="Builders\IPrefabBuilder.cs" />
-    <Compile Include="Modularity\ITransitMod.cs" />
     <Compile Include="Modularity\ModuleBase.Settings.cs" />
     <Compile Include="Modularity\ModuleAttribute.cs" />
     <Compile Include="Modularity\ModuleBase.Parts.cs" />
@@ -99,7 +99,6 @@
     <Compile Include="_Extensions\NetInfoExtensions.cs" />
     <Compile Include="_Extensions\PluginManagerExtensions.cs" />
     <Compile Include="_Extensions\TextureSetExtensions.cs" />
-    <Compile Include="_Extensions\TransitModExtensions.cs" />
     <Compile Include="_Extensions\TypeExtensions.cs" />
     <Compile Include="Modularity\IActivablePart.cs" />
     <Compile Include="Modularity\ICompatibilityPart.cs" />

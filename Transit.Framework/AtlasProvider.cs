@@ -1,0 +1,27 @@
+﻿using System;
+using System.Collections.Generic;
+using ColossalFramework;
+using ColossalFramework.UI;
+
+namespace Transit.Framework
+{
+    public class AtlasProvider : Singleton<AtlasProvider>
+    {
+        private readonly IDictionary<string, UITextureAtlas> _customAtlases = new Dictionary<string, UITextureAtlas>(StringComparer.InvariantCultureIgnoreCase);
+
+        public void RegisterAltlas(string atlasKey, UITextureAtlas atlas)
+        {
+            _customAtlases[atlasKey.ToUpperInvariant()] = atlas;
+        }
+
+        public bool HasCustomAtlas(string atlasKey)
+        {
+            return _customAtlases.ContainsKey(atlasKey);
+        }
+
+        public UITextureAtlas GetCustomAtlas(string atlasKey)
+        {
+            return _customAtlases[atlasKey];
+        }
+    }
+}

@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Linq;
-using ColossalFramework;
 using ColossalFramework.Globalization;
 using ColossalFramework.UI;
 using Transit.Framework;
 using Transit.Framework.Unsafe;
 using UnityEngine;
-using System.Runtime.CompilerServices;
 
-namespace Transit.Addon.Core
+namespace Transit.Addon.Core.Prerequisites.UI
 {
     public class GeneratedGroupPanelPatch : GeneratedGroupPanel
     {
@@ -61,6 +59,13 @@ namespace Transit.Addon.Core
                     generatedScrollPanel.RefreshPanel();
                 }
             }
+
+            // TAM Edit Start
+            if (AtlasProvider.instance.HasCustomAtlas(spriteBase + category))
+            {
+                uIButton.atlas = AtlasProvider.instance.GetCustomAtlas(spriteBase + category);
+            }
+            // TAM Edit End
 
             string text = spriteBase + category;
             uIButton.normalFgSprite = text;

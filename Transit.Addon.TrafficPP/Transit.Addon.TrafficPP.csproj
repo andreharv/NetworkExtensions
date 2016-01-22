@@ -77,6 +77,10 @@
     <Compile Include="UI\UIUtils.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Transit.Addon.Core\Transit.Addon.Core.csproj">
+      <Project>{61414A57-131A-44CF-ADCE-9179ED788D3C}</Project>
+      <Name>Transit.Addon.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Transit.Addon\Transit.Addon.csproj">
       <Project>{80C47696-4D41-4BB6-9CAE-C477FE528ADF}</Project>
       <Name>Transit.Addon</Name>

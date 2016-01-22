@@ -65,12 +65,7 @@ namespace NetworkExtensions
             }
         }
 
-        private void ModuleSettingsNeedSave()
-        {
-            SaveSettings();
-        }
-
-        private void SaveSettings()
+        protected override void SaveSettings()
         {
             var settingsDoc = new XmlDocument();
             var root = settingsDoc.AppendElement("NetworkExtensions");
