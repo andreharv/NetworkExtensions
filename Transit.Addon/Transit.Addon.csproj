@@ -58,6 +58,7 @@
     <Compile Include="Core\PathFinding\PathFinder.cs" />
     <Compile Include="Core\PathFinding\PathFindProxy.cs" />
     <Compile Include="Core\PathFinding\IPathFinder.cs" />
+    <Compile Include="Core\GeneratedGroupPanelPatch.cs" />
     <Compile Include="Mod.cs" />
     <Compile Include="Mod.Loading.cs" />
     <Compile Include="Mod.Modules.cs" />

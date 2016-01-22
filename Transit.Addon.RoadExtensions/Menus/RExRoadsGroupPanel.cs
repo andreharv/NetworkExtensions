@@ -1,5 +1,7 @@
 ﻿using ColossalFramework;
+using Transit.Framework;
 using Transit.Framework.Unsafe;
+using UnityEngine;
 
 namespace Transit.Addon.RoadExtensions.Menus
 {
@@ -8,7 +10,7 @@ namespace Transit.Addon.RoadExtensions.Menus
         [RedirectFrom(typeof(RoadsGroupPanel))]
         protected override int GetCategoryOrder(string name)
         {
-            if (base.isMapEditor)
+            if (isMapEditor)
             {
                 switch (name)
                 {
@@ -39,7 +41,7 @@ namespace Transit.Addon.RoadExtensions.Menus
                 }
                 return 2147483647;
             }
-            if (base.isAssetEditor)
+            if (isAssetEditor)
             {
                 switch (name)
                 {
