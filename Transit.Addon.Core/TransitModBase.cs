@@ -4,6 +4,11 @@ using ColossalFramework.Steamworks;
 using ICities;
 using Transit.Framework;
 using Transit.Framework.Modularity;
+using UnityEngine;
+
+#if DEBUG
+using Debug = Transit.Framework.Debug;
+#endif
 
 namespace Transit.Addon.Core
 {

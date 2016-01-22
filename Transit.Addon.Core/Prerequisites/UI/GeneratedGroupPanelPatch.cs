@@ -21,7 +21,7 @@ namespace Transit.Addon.Core.Prerequisites.UI
             Type type = typeof(GeneratedScrollPanel)
                 .Assembly
                 .GetTypes()
-                .FirstOrDefault(t => string.Equals(t.Name, name, StringComparison.InvariantCultureIgnoreCase));
+                .FirstOrDefault(t => string.Equals(t.Name, name + "Panel", StringComparison.InvariantCultureIgnoreCase));
             // TAM Edit End
 
             if (type != null && !type.IsSubclassOf(typeof(GeneratedScrollPanel)))
