@@ -20,9 +20,10 @@ namespace Transit.Addon.Core
             string localeID, string unlockText, string spriteBase, bool enabled, bool forceFillContainer)
         {
             // TAM Edit Start
-            Type type = AppDomain
-                .CurrentDomain
-                .GetTypeFromName(name + "Panel");
+            Type type = typeof(GeneratedScrollPanel)
+                .Assembly
+                .GetTypes()
+                .FirstOrDefault(t => string.Equals(t.Name, name, StringComparison.InvariantCultureIgnoreCase));
             // TAM Edit End
 
             if (type != null && !type.IsSubclassOf(typeof(GeneratedScrollPanel)))
