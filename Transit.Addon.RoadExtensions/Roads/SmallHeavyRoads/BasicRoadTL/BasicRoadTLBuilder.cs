@@ -16,7 +16,7 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.BasicRoadTL
         public string DisplayName { get { return "Basic Road with Turning Lane"; } }
         public string Description { get { return "A basic two lane road with an additional center turning lane and no parkings spaces. Supports medium and local traffic. Note: The turning lane goes in both direction so collisions may occur!"; } }
         public string ShortDescription { get { return "No parking, zoneable, low traffic"; } }
-        public string UICategory { get { return AdditionnalMenus.ROADS_SMALL_HV; } }
+        public string UICategory { get { return RExExtendedMenus.ROADS_SMALL_HV; } }
 
         public string ThumbnailsPath { get { return @"Roads\SmallHeavyRoads\BasicRoadTL\thumbnails.png"; } }
         public string InfoTooltipPath { get { return @"Roads\SmallHeavyRoads\BasicRoadTL\infotooltip.png"; } }

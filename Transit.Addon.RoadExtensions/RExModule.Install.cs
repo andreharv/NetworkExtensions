@@ -50,6 +50,7 @@ namespace Transit.Addon.RoadExtensions
                 _assetsInstaller.Host = this;
 
                 _menuAssetsInstaller = _container.AddInstallerComponent<MenuAssetsInstaller>();
+                _menuAssetsInstaller.Host = this;
 
                 _roadsInstaller = _container.AddInstallerComponent<RoadsInstaller>();
                 _roadsInstaller.Host = this;

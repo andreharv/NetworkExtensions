@@ -27,9 +27,9 @@ namespace Transit.Addon.RoadExtensions.AI
             }
             catch (Exception ex)
             {
-                Debug.Log("NExt: Crashed-CreateZoneBlocks");
-                Debug.Log("NExt: " + ex.Message);
-                Debug.Log("NExt: " + ex.ToString());
+                Debug.Log("REx: Crashed-CreateZoneBlocks");
+                Debug.Log("REx: " + ex.Message);
+                Debug.Log("REx: " + ex.ToString());
             }
         }
     }

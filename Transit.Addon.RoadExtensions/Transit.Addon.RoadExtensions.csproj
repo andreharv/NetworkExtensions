@@ -69,7 +69,7 @@
     <Compile Include="RExModule.Install.Roads.cs" />
     <Compile Include="RExModule.Install.Assets.cs" />
     <Compile Include="RExModule.Install.Init.cs" />
-    <Compile Include="Menus\AdditionnalMenus.cs" />
+    <Compile Include="Menus\RExExtendedMenus.cs" />
     <Compile Include="Menus\RExRoadsGroupPanel.cs" />
     <Compile Include="Roads\TinyRoads\TinyRoadMenuModifier.cs" />
     <Compile Include="Roads\TinyRoads\Alley2L\Alley2LBuilder.cs" />
@@ -157,7 +157,7 @@
     <Content Include="Roads\Highways\HighwayRamp\thumbnails.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Menus\Textures\AdditionnalSubBar.png">
+    <Content Include="Menus\Textures\RExExtendedSubBar.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\TinyRoads\Alley2L\thumbnails.png">

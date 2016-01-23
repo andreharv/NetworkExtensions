@@ -14,11 +14,11 @@ namespace Transit.Addon.RoadExtensions.Menus
             {
                 switch (name)
                 {
-                    case AdditionnalMenus.ROADS_TINY:
+                    case RExExtendedMenus.ROADS_TINY:
                         return 0;
                     case "RoadsSmall":
                         return 1;
-                    case AdditionnalMenus.ROADS_SMALL_HV:
+                    case RExExtendedMenus.ROADS_SMALL_HV:
                         return 2;
                     case "RoadsMedium":
                         return 3;
@@ -45,11 +45,11 @@ namespace Transit.Addon.RoadExtensions.Menus
             {
                 switch (name)
                 {
-                    case AdditionnalMenus.ROADS_TINY:
+                    case RExExtendedMenus.ROADS_TINY:
                         return 0;
                     case "RoadsSmall":
                         return 1;
-                    case AdditionnalMenus.ROADS_SMALL_HV:
+                    case RExExtendedMenus.ROADS_SMALL_HV:
                         return 2;
                     case "RoadsMedium":
                         return 3;
@@ -59,11 +59,11 @@ namespace Transit.Addon.RoadExtensions.Menus
                         return 5;
                     case "RoadsIntersection":
                         return 6;
-                    case AdditionnalMenus.ROADS_BUSWAYS:
+                    case RExExtendedMenus.ROADS_BUSWAYS:
                         return 7;
                     case "PublicTransportTrain":
                         return 8;
-                    case AdditionnalMenus.ROADS_PEDESTRIANS:
+                    case RExExtendedMenus.ROADS_PEDESTRIANS:
                         return 9;
                 }
                 return 2147483647;
@@ -71,11 +71,11 @@ namespace Transit.Addon.RoadExtensions.Menus
 
             switch (name)
             {
-                case AdditionnalMenus.ROADS_TINY:
+                case RExExtendedMenus.ROADS_TINY:
                     return 0;
                 case "RoadsSmall":
                     return 1;
-                case AdditionnalMenus.ROADS_SMALL_HV:
+                case RExExtendedMenus.ROADS_SMALL_HV:
                     return 2;
                 case "RoadsMedium":
                     return 3;
@@ -85,9 +85,9 @@ namespace Transit.Addon.RoadExtensions.Menus
                     return 5;
                 case "RoadsIntersection":
                     return 6;
-                case AdditionnalMenus.ROADS_BUSWAYS:
+                case RExExtendedMenus.ROADS_BUSWAYS:
                     return 7;
-                case AdditionnalMenus.ROADS_PEDESTRIANS:
+                case RExExtendedMenus.ROADS_PEDESTRIANS:
                     return 8;
             }
             return 2147483647;
