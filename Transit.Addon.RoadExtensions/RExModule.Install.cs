@@ -1,7 +1,13 @@
 ﻿using ICities;
+using Transit.Addon.Core.Extenders.AI;
+using Transit.Addon.Core.Extenders.UI;
+using Transit.Addon.RoadExtensions.AI;
+using Transit.Addon.RoadExtensions.Menus;
 using Transit.Framework;
 using Transit.Framework.Unsafe;
 using UnityEngine;
+using Transit.Addon.RoadExtensions.Roads.TinyRoads.Alley2L;
+using Transit.Addon.RoadExtensions.Roads.TinyRoads.OneWay1L;
 using Object = UnityEngine.Object;
 
 namespace Transit.Addon.RoadExtensions
@@ -17,7 +23,7 @@ namespace Transit.Addon.RoadExtensions
         private LocalizationInstaller _localizationInstaller = null;
         private AssetsInstaller _assetsInstaller = null;
         private RoadsInstaller _roadsInstaller = null;
-        private MenusInstaller _menusInstaller = null;
+        private MenuInstaller _menuInstaller = null;
 
         public override void OnCreated(ILoading loading)
         {
@@ -25,7 +31,8 @@ namespace Transit.Addon.RoadExtensions
 
             if (_isReleased)
             {
-                Redirector.PerformRedirections();
+                ZoneBlocksCreatorProvider.instance.RegisterCustomCreator<TinyRoadZoneBlocksCreator>(Alley2LBuilder.NAME);
+                ZoneBlocksCreatorProvider.instance.RegisterCustomCreator<TinyRoadZoneBlocksCreator>(OneWay1LBuilder.NAME);
 
                 if (AssetPath != null && AssetPath != Assets.PATH_NOT_FOUND)
                 {
@@ -49,18 +56,11 @@ namespace Transit.Addon.RoadExtensions
                 _assetsInstaller = _container.AddInstallerComponent<AssetsInstaller>();
                 _assetsInstaller.Host = this;
 
+                _menuInstaller = _container.AddInstallerComponent<MenuInstaller>();
+                _menuInstaller.Host = this;
+
                 _roadsInstaller = _container.AddInstallerComponent<RoadsInstaller>();
                 _roadsInstaller.Host = this;
-            }
-        }
-
-        public override void OnLevelLoaded(LoadMode mode)
-        {
-            base.OnLevelLoaded(mode);
-
-            if (_container != null && _menusInstaller == null)
-            {
-                _menusInstaller = _container.AddInstallerComponent<MenusInstaller>();
             }
         }
 
@@ -72,8 +72,6 @@ namespace Transit.Addon.RoadExtensions
             {
                 return;
             }
-
-            Redirector.RevertRedirections();
 
             if (_initializer != null)
             {
@@ -93,16 +91,16 @@ namespace Transit.Addon.RoadExtensions
                 _assetsInstaller = null;
             }
 
+            if (_menuInstaller != null)
+            {
+                Object.Destroy(_menuInstaller);
+                _menuInstaller = null;
+            }
+
             if (_roadsInstaller != null)
             {
                 Object.Destroy(_roadsInstaller);
                 _roadsInstaller = null;
-            }
-
-            if (_menusInstaller != null)
-            {
-                Object.Destroy(_menusInstaller);
-                _menusInstaller = null;
             }
 
             if (_roads != null)

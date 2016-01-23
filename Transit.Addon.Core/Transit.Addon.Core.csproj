@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{80C47696-4D41-4BB6-9CAE-C477FE528ADF}</ProjectGuid>
+    <ProjectGuid>{61414A57-131A-44CF-ADCE-9179ED788D3C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Transit.Addon</RootNamespace>
-    <AssemblyName>Transit.Addon</AssemblyName>
+    <RootNamespace>Transit.Addon.Core</RootNamespace>
+    <AssemblyName>Transit.Addon.Core</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -38,38 +38,40 @@
       <HintPath>..\References\ColossalManaged.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="ICities">
+    <Reference Include="ICities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\ICities.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="UnityEngine">
       <HintPath>..\References\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\PathFinding\DefaultPathFinder.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\PathFinding\PathFinder.cs" />
-    <Compile Include="Core\PathFinding\PathFindProxy.cs" />
-    <Compile Include="Core\PathFinding\IPathFinder.cs" />
-    <Compile Include="Mod.cs" />
-    <Compile Include="Mod.Loading.cs" />
-    <Compile Include="Mod.Settings.cs" />
+    <Compile Include="Extenders\AI\ZoneBlocksCreatorProvider.cs" />
+    <Compile Include="Extenders\UI\AtlasProvider.cs" />
+    <Compile Include="Extenders\UI\ExtendedMenuProvider.cs" />
+    <Compile Include="Extenders\AI\IZoneBlocksCreator.cs" />
+    <Compile Include="Extenders\UI\CategoryOrderProvider.cs" />
+    <Compile Include="Prerequisites\AI\TAMRoadAI.cs" />
+    <Compile Include="Prerequisites\UI\TAMGeneratedGroupPanel.cs" />
+    <Compile Include="Prerequisites\UI\TAMRoadsGroupPanel.cs" />
+    <Compile Include="TransitModBase.LoadingExtension.cs" />
+    <Compile Include="TransitModBase.Modules.cs" />
+    <Compile Include="TransitModBase.cs" />
+    <Compile Include="TransitModBase.Prerequisites.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Transit.Addon.Core\Transit.Addon.Core.csproj">
-      <Project>{61414A57-131A-44CF-ADCE-9179ED788D3C}</Project>
-      <Name>Transit.Addon.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Transit.Framework.Unsafe\Transit.Framework.Unsafe.csproj">
-      <Project>{7dcc08ef-dc85-47a4-bd6f-79fc52c7ef13}</Project>
+      <Project>{7DCC08EF-DC85-47A4-BD6F-79FC52C7EF13}</Project>
       <Name>Transit.Framework.Unsafe</Name>
     </ProjectReference>
     <ProjectReference Include="..\Transit.Framework\Transit.Framework.csproj">
@@ -77,11 +79,7 @@
       <Name>Transit.Framework</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="NotificationSettings.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

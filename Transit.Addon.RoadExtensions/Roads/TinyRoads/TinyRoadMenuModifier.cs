@@ -14,7 +14,7 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads
             var gravelRoadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_2L_GRAVEL, false);
             if (gravelRoadInfo != null)
             {
-                gravelRoadInfo.SetUICategory(AdditionnalMenus.ROADS_TINY);
+                gravelRoadInfo.SetUICategory(RExExtendedMenus.ROADS_TINY);
                 gravelRoadInfo.m_UIPriority = 0;
             }
         }

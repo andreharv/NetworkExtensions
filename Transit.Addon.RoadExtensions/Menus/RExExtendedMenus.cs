@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Transit.Addon.RoadExtensions.Menus
 {
-    public static class AdditionnalMenus
+    public static class RExExtendedMenus
     {
         public const string ROADS_TINY = "RoadsTiny";
         public const string ROADS_SMALL_HV = "RoadsSmallHV";
@@ -18,18 +18,18 @@ namespace Transit.Addon.RoadExtensions.Menus
         {
             var thumbnailAtlas = ScriptableObject.CreateInstance<UITextureAtlas>();
             thumbnailAtlas.padding = 0;
-            thumbnailAtlas.name = "AdditionnalSubBar";
+            thumbnailAtlas.name = "RExExtendedSubBar";
 
             var shader = Shader.Find("UI/Default UI Shader");
             if (shader != null) thumbnailAtlas.material = new Material(shader);
 
-            const string PATH = @"Menus\Textures\AdditionnalSubBar.png";
+            const string PATH = @"Menus\Textures\RExExtendedSubBar.png";
 
             const string BASE = "SubBarButtonBase";
-            const string ROADS_TINY_SUBBAR = "SubBar" + AdditionnalMenus.ROADS_TINY;
-            const string ROADS_SMALL_HV_SUBBAR = "SubBar" + AdditionnalMenus.ROADS_SMALL_HV;
-            const string ROADS_BUSWAYS_SUBBAR = "SubBar" + AdditionnalMenus.ROADS_BUSWAYS;
-            const string ROADS_PED_SUBBAR = "SubBar" + AdditionnalMenus.ROADS_PEDESTRIANS;
+            const string ROADS_TINY_SUBBAR = "SubBar" + RExExtendedMenus.ROADS_TINY;
+            const string ROADS_SMALL_HV_SUBBAR = "SubBar" + RExExtendedMenus.ROADS_SMALL_HV;
+            const string ROADS_BUSWAYS_SUBBAR = "SubBar" + RExExtendedMenus.ROADS_BUSWAYS;
+            const string ROADS_PED_SUBBAR = "SubBar" + RExExtendedMenus.ROADS_PEDESTRIANS;
 
             var versions = new[] { "", "Disabled", "Focused", "Hovered", "Pressed" };
 

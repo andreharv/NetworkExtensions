@@ -1,36 +1,22 @@
-﻿using ICities;
-using Transit.Framework.Modularity;
+﻿using Transit.Addon.Core;
 
 namespace Transit.Addon
 {
-    public sealed partial class Mod : ITransitMod
+    public sealed partial class Mod : TransitModBase
     {
-        public string Name
+        public override ulong WorkshopId
         {
-            get
-            {
-                OnGameLoaded();
-                return _name;
-            }
+            get { return 543703997; }
         }
 
-        public string Description
-        {
-            get
-            {
-                OnGameLoaded();
-                return _description;
-            }
-        }
-
-        public string DefaultFolderPath
+        public override string Name
         {
             get { return _name; }
         }
 
-        public ulong WorkshopId
+        public override string Description
         {
-            get { return 543703997; }
+            get { return _description; }
         }
     }
 }

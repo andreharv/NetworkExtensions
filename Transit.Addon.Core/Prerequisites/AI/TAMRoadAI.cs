@@ -1,11 +1,40 @@
-﻿using ColossalFramework;
+﻿using System;
+using ColossalFramework;
 using ColossalFramework.Math;
+using Transit.Addon.Core.Extenders.AI;
+using Transit.Framework.Unsafe;
 using UnityEngine;
 
-namespace Transit.Addon.RoadExtensions.AI
+namespace Transit.Addon.Core.Prerequisites.AI
 {
-    public partial class RExRoadAI : RoadAI
+    public class TAMRoadAI : RoadAI
     {
+        private const float MIN_HALFWIDTH_DEFAULT = 8f;
+
+        [RedirectFrom(typeof(RoadAI))]
+        private void CreateZoneBlocks(ushort segment, ref NetSegment data)
+        {
+            try
+            {
+                if (ZoneBlocksCreatorProvider.instance.HasCustomCreator(this.m_info.name))
+                {
+                    ZoneBlocksCreatorProvider
+                        .instance
+                        .GetCustomCreator(this.m_info.name)
+                        .CreateZoneBlocks(this.m_info, segment, ref data);
+                }
+                else
+                {
+                    CreateZoneBlocksVanilla(this.m_info, segment, ref data);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.Log("TAM: Crashed-CreateZoneBlocks");
+                Debug.Log("TAM: " + ex.Message);
+                Debug.Log("TAM: " + ex.ToString());
+            }
+        }
         private static void CreateZoneBlocksVanilla(NetInfo info, ushort segmentId, ref NetSegment segment)
         {
             var netManager = Singleton<NetManager>.instance;
