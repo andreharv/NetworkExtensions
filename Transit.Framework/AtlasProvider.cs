@@ -9,7 +9,7 @@ namespace Transit.Framework
     {
         private readonly IDictionary<string, UITextureAtlas> _customAtlases = new Dictionary<string, UITextureAtlas>(StringComparer.InvariantCultureIgnoreCase);
 
-        public void RegisterAltlas(string atlasKey, UITextureAtlas atlas)
+        public void RegisterCustomAtlas(string atlasKey, UITextureAtlas atlas)
         {
             _customAtlases[atlasKey.ToUpperInvariant()] = atlas;
         }

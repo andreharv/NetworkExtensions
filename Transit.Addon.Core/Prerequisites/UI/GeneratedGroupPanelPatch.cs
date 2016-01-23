@@ -61,9 +61,9 @@ namespace Transit.Addon.Core.Prerequisites.UI
             }
 
             // TAM Edit Start
-            if (AtlasProvider.instance.HasCustomAtlas(spriteBase + category))
+            if (AtlasProvider.instance.HasCustomAtlas(category))
             {
-                uIButton.atlas = AtlasProvider.instance.GetCustomAtlas(spriteBase + category);
+                uIButton.atlas = AtlasProvider.instance.GetCustomAtlas(category);
             }
             // TAM Edit End
 

@@ -17,7 +17,7 @@ namespace Transit.Addon.RoadExtensions
         private LocalizationInstaller _localizationInstaller = null;
         private AssetsInstaller _assetsInstaller = null;
         private RoadsInstaller _roadsInstaller = null;
-        private MenusInstaller _menusInstaller = null;
+        private MenuAssetsInstaller _menuAssetsInstaller = null;
 
         public override void OnCreated(ILoading loading)
         {
@@ -49,18 +49,10 @@ namespace Transit.Addon.RoadExtensions
                 _assetsInstaller = _container.AddInstallerComponent<AssetsInstaller>();
                 _assetsInstaller.Host = this;
 
+                _menuAssetsInstaller = _container.AddInstallerComponent<MenuAssetsInstaller>();
+
                 _roadsInstaller = _container.AddInstallerComponent<RoadsInstaller>();
                 _roadsInstaller.Host = this;
-            }
-        }
-
-        public override void OnLevelLoaded(LoadMode mode)
-        {
-            base.OnLevelLoaded(mode);
-
-            if (_container != null && _menusInstaller == null)
-            {
-                _menusInstaller = _container.AddInstallerComponent<MenusInstaller>();
             }
         }
 
@@ -93,16 +85,16 @@ namespace Transit.Addon.RoadExtensions
                 _assetsInstaller = null;
             }
 
+            if (_menuAssetsInstaller != null)
+            {
+                Object.Destroy(_menuAssetsInstaller);
+                _menuAssetsInstaller = null;
+            }
+
             if (_roadsInstaller != null)
             {
                 Object.Destroy(_roadsInstaller);
                 _roadsInstaller = null;
-            }
-
-            if (_menusInstaller != null)
-            {
-                Object.Destroy(_menusInstaller);
-                _menusInstaller = null;
             }
 
             if (_roads != null)
