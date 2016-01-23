@@ -49,7 +49,7 @@ namespace Transit.Addon.RoadExtensions
                 
                 foreach (var cat in categories)
                 {
-                    ExtendedMenuProvider.instance.RegisterNewCategory(cat, GeneratedGroupPanel.GroupFilter.Net);
+                    ExtendedMenuProvider.instance.RegisterNewCategory(cat, GeneratedGroupPanel.GroupFilter.Net, ItemClass.Service.Road);
                 }
                 
                 Loading.QueueAction(() =>

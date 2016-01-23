@@ -182,7 +182,7 @@ namespace Transit.Addon.Core.Prerequisites.UI
                 }
             }
 
-            foreach (var cat in ExtendedMenuProvider.instance.GetNewCategories(GroupFilter.Net))
+            foreach (var cat in ExtendedMenuProvider.instance.GetNewCategories(GroupFilter.Net, service))
             {
                 yield return cat;
             }
