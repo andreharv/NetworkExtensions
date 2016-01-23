@@ -18,7 +18,7 @@ namespace Transit.Addon.RoadExtensions
     public partial class RExModule
     {
         [UsedImplicitly]
-        private class MenuAssetsInstaller : Installer<RExModule>
+        private class MenuInstaller : Installer<RExModule>
         {
             private static bool Done { get; set; } //Only one MenuAssets throughout the application
 
@@ -34,8 +34,14 @@ namespace Transit.Addon.RoadExtensions
                     return;
                 }
 
+                CategoryOrderProvider.instance.RegisterCategory(RExExtendedMenus.ROADS_TINY, 5);
+                CategoryOrderProvider.instance.RegisterCategory(RExExtendedMenus.ROADS_SMALL_HV, 20);
+                CategoryOrderProvider.instance.RegisterCategory(RExExtendedMenus.ROADS_BUSWAYS, 65);
+                CategoryOrderProvider.instance.RegisterCategory(RExExtendedMenus.ROADS_PEDESTRIANS, 75);
+
                 var categories = host.Parts
                     .OfType<IMenuItemBuilder>()
+                    .WhereActivated()
                     .Select(mib => mib.UICategory)
                     .Where(cat => !string.IsNullOrEmpty(cat))
                     .Distinct()
@@ -52,14 +58,14 @@ namespace Transit.Addon.RoadExtensions
                     {
                         var atlas = AssetManager.instance.LoadAdditionnalMenusThumbnails();
 
-                        foreach (var cat in categories)
-                        {
-                            AtlasProvider.instance.RegisterCustomAtlas(cat, atlas);
-                        }
+                        AtlasProvider.instance.RegisterCustomAtlas(RExExtendedMenus.ROADS_TINY, atlas);
+                        AtlasProvider.instance.RegisterCustomAtlas(RExExtendedMenus.ROADS_SMALL_HV, atlas);
+                        AtlasProvider.instance.RegisterCustomAtlas(RExExtendedMenus.ROADS_BUSWAYS, atlas);
+                        AtlasProvider.instance.RegisterCustomAtlas(RExExtendedMenus.ROADS_PEDESTRIANS, atlas);
                     }
                     catch (Exception ex)
                     {
-                        Debug.Log("REx: Crashed-MenuAssetsInstaller");
+                        Debug.Log("REx: Crashed-MenuInstaller");
                         Debug.Log("REx: " + ex.Message);
                         Debug.Log("REx: " + ex.ToString());
                     }

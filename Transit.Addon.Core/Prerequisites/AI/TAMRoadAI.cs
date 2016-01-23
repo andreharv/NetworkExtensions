@@ -5,7 +5,7 @@ using Transit.Addon.Core.Extenders.AI;
 using Transit.Framework.Unsafe;
 using UnityEngine;
 
-namespace Transit.Addon.RoadExtensions.AI
+namespace Transit.Addon.Core.Prerequisites.AI
 {
     public class TAMRoadAI : RoadAI
     {

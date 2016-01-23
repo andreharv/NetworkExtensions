@@ -59,13 +59,15 @@
     <Compile Include="Extenders\UI\AtlasProvider.cs" />
     <Compile Include="Extenders\UI\ExtendedMenuProvider.cs" />
     <Compile Include="Extenders\AI\IZoneBlocksCreator.cs" />
+    <Compile Include="Extenders\UI\CategoryOrderProvider.cs" />
     <Compile Include="Prerequisites\AI\TAMRoadAI.cs" />
+    <Compile Include="Prerequisites\UI\TAMGeneratedGroupPanel.cs" />
+    <Compile Include="Prerequisites\UI\TAMRoadsGroupPanel.cs" />
     <Compile Include="TransitModBase.LoadingExtension.cs" />
     <Compile Include="TransitModBase.Modules.cs" />
     <Compile Include="TransitModBase.cs" />
     <Compile Include="TransitModBase.Prerequisites.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Prerequisites\UI\TAMGeneratedGroupPanel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Transit.Framework.Unsafe\Transit.Framework.Unsafe.csproj">

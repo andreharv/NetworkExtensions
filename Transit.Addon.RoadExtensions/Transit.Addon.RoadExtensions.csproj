@@ -62,13 +62,12 @@
     <Compile Include="Roads\Common\RoadModels.32m.3mSW2mMdn.cs" />
     <Compile Include="Roads\Highways\VanillaHighwayMenuModifier.cs" />
     <Compile Include="Props\BusLaneTextPropBuilder.cs" />
-    <Compile Include="RExModule.Install.MenuAssets.cs" />
+    <Compile Include="RExModule.Install.Menu.cs" />
     <Compile Include="RExModule.Install.Localization.cs" />
     <Compile Include="RExModule.Install.Roads.cs" />
     <Compile Include="RExModule.Install.Assets.cs" />
     <Compile Include="RExModule.Install.Init.cs" />
     <Compile Include="Menus\RExExtendedMenus.cs" />
-    <Compile Include="Menus\RExRoadsGroupPanel.cs" />
     <Compile Include="Roads\TinyRoads\TinyRoadMenuModifier.cs" />
     <Compile Include="Roads\TinyRoads\Alley2L\Alley2LBuilder.cs" />
     <Compile Include="Roads\Common\CenterLaneType.cs" />

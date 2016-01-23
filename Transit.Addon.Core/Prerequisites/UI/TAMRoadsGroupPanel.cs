@@ -1,25 +1,26 @@
-﻿using ColossalFramework;
-using Transit.Framework;
+﻿using Transit.Addon.Core.Extenders.UI;
 using Transit.Framework.Unsafe;
-using UnityEngine;
 
-namespace Transit.Addon.RoadExtensions.Menus
+namespace Transit.Addon.Core.Prerequisites.UI
 {
-    public class RExRoadsGroupPanel : GeneratedGroupPanel
+    public class TAMRoadsGroupPanel : GeneratedGroupPanel
     {
         [RedirectFrom(typeof(RoadsGroupPanel))]
         protected override int GetCategoryOrder(string name)
         {
+            int? order = CategoryOrderProvider.instance.GetOrder(name);
+
+            if (order != null)
+            {
+                return order.Value;
+            }
+
             if (isMapEditor)
             {
                 switch (name)
                 {
-                    case RExExtendedMenus.ROADS_TINY:
-                        return 0;
                     case "RoadsSmall":
                         return 10;
-                    case RExExtendedMenus.ROADS_SMALL_HV:
-                        return 20;
                     case "RoadsMedium":
                         return 30;
                     case "RoadsLarge":
@@ -45,12 +46,8 @@ namespace Transit.Addon.RoadExtensions.Menus
             {
                 switch (name)
                 {
-                    case RExExtendedMenus.ROADS_TINY:
-                        return 0;
                     case "RoadsSmall":
                         return 10;
-                    case RExExtendedMenus.ROADS_SMALL_HV:
-                        return 20;
                     case "RoadsMedium":
                         return 30;
                     case "RoadsLarge":
@@ -59,24 +56,16 @@ namespace Transit.Addon.RoadExtensions.Menus
                         return 50;
                     case "RoadsIntersection":
                         return 60;
-                    case RExExtendedMenus.ROADS_BUSWAYS:
-                        return 70;
                     case "PublicTransportTrain":
-                        return 80;
-                    case RExExtendedMenus.ROADS_PEDESTRIANS:
-                        return 90;
+                        return 70;
                 }
                 return 2147483647;
             }
 
             switch (name)
             {
-                case RExExtendedMenus.ROADS_TINY:
-                    return 0;
                 case "RoadsSmall":
                     return 10;
-                case RExExtendedMenus.ROADS_SMALL_HV:
-                    return 20;
                 case "RoadsMedium":
                     return 30;
                 case "RoadsLarge":
@@ -85,10 +74,6 @@ namespace Transit.Addon.RoadExtensions.Menus
                     return 50;
                 case "RoadsIntersection":
                     return 60;
-                case RExExtendedMenus.ROADS_BUSWAYS:
-                    return 70;
-                case RExExtendedMenus.ROADS_PEDESTRIANS:
-                    return 80;
             }
             return 2147483647;
         }
