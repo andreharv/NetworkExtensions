@@ -1,7 +1,11 @@
 ﻿using ICities;
+using Transit.Addon.Core.Extenders.AI;
+using Transit.Addon.RoadExtensions.AI;
 using Transit.Framework;
 using Transit.Framework.Unsafe;
 using UnityEngine;
+using Transit.Addon.RoadExtensions.Roads.TinyRoads.Alley2L;
+using Transit.Addon.RoadExtensions.Roads.TinyRoads.OneWay1L;
 using Object = UnityEngine.Object;
 
 namespace Transit.Addon.RoadExtensions
@@ -26,6 +30,9 @@ namespace Transit.Addon.RoadExtensions
             if (_isReleased)
             {
                 Redirector.PerformRedirections();
+
+                ZoneBlocksCreatorProvider.instance.RegisterCustomCreator<TinyRoadZoneBlocksCreator>(Alley2LBuilder.NAME);
+                ZoneBlocksCreatorProvider.instance.RegisterCustomCreator<TinyRoadZoneBlocksCreator>(OneWay1LBuilder.NAME);
 
                 if (AssetPath != null && AssetPath != Assets.PATH_NOT_FOUND)
                 {

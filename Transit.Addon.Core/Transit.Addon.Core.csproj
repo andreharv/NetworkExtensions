@@ -55,6 +55,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extenders\AI\ZoneBlocksCreatorProvider.cs" />
+    <Compile Include="Extenders\UI\AtlasProvider.cs" />
+    <Compile Include="Extenders\UI\ExtendedMenuProvider.cs" />
+    <Compile Include="Extenders\AI\IZoneBlocksCreator.cs" />
+    <Compile Include="Prerequisites\AI\TAMRoadAI.cs" />
     <Compile Include="TransitModBase.LoadingExtension.cs" />
     <Compile Include="TransitModBase.Modules.cs" />
     <Compile Include="TransitModBase.cs" />
@@ -72,6 +77,7 @@
       <Name>Transit.Framework</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

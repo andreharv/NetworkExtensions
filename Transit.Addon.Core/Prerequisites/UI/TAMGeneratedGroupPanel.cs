@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using ColossalFramework;
 using ColossalFramework.Globalization;
 using ColossalFramework.UI;
+using Transit.Addon.Core.Extenders.UI;
 using Transit.Framework;
 using Transit.Framework.Unsafe;
 using UnityEngine;

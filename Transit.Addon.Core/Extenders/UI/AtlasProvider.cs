@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using ColossalFramework;
 using ColossalFramework.UI;
 
-namespace Transit.Framework
+namespace Transit.Addon.Core.Extenders.UI
 {
     public class AtlasProvider : Singleton<AtlasProvider>
     {
@@ -11,7 +11,7 @@ namespace Transit.Framework
 
         public void RegisterCustomAtlas(string atlasKey, UITextureAtlas atlas)
         {
-            _customAtlases[atlasKey.ToUpperInvariant()] = atlas;
+            _customAtlases[atlasKey] = atlas;
         }
 
         public bool HasCustomAtlas(string atlasKey)

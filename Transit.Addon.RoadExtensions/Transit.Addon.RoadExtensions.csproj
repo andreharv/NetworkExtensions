@@ -55,9 +55,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AI\RExRoadAI.Tiny.cs" />
-    <Compile Include="AI\RExRoadAI.cs" />
-    <Compile Include="AI\RExRoadAI.Vanilla.cs" />
+    <Compile Include="AI\TinyRoadZoneBlocksCreator.cs" />
     <Compile Include="Compatibility\RoadColorChanger.cs" />
     <Compile Include="Roads\Common\RoadModels.8m.2mSW.cs" />
     <Compile Include="Roads\Common\RoadModels.8m.1p5mSW.cs" />
@@ -1956,6 +1954,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Transit.Addon.Core\Transit.Addon.Core.csproj">
+      <Project>{61414a57-131a-44cf-adce-9179ed788d3c}</Project>
+      <Name>Transit.Addon.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Transit.Framework.Unsafe\Transit.Framework.Unsafe.csproj">
       <Project>{7DCC08EF-DC85-47A4-BD6F-79FC52C7EF13}</Project>
       <Name>Transit.Framework.Unsafe</Name>

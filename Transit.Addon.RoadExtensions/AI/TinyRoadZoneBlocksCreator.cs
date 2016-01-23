@@ -2,6 +2,7 @@
 using ColossalFramework.Math;
 using Transit.Framework;
 using UnityEngine;
+using Transit.Addon.Core.Extenders.AI;
 
 #if DEBUG
 using Debug = Transit.Framework.Debug;
@@ -9,13 +10,12 @@ using Debug = Transit.Framework.Debug;
 
 namespace Transit.Addon.RoadExtensions.AI
 {
-    public partial class RExRoadAI
+    public class TinyRoadZoneBlocksCreator : IZoneBlocksCreator
     {
-        private const float MIN_HALFWIDTH_DEFAULT = 8f;
         private const float MIN_HALFWIDTH_TINY_CURVE = 6f;
         private const float MIN_HALFWIDTH_TINY_STRAIGHT = 4f;
 
-        private static void CreateZoneBlocksTiny(NetInfo info, ushort segmentId, ref NetSegment segment)
+        public void CreateZoneBlocks(NetInfo info, ushort segmentId, ref NetSegment segment)
         {
             var netManager = Singleton<NetManager>.instance;
             var randomizer = new Randomizer((int)segmentId);

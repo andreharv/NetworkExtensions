@@ -17,27 +17,27 @@ namespace Transit.Addon.RoadExtensions.Menus
                     case RExExtendedMenus.ROADS_TINY:
                         return 0;
                     case "RoadsSmall":
-                        return 1;
-                    case RExExtendedMenus.ROADS_SMALL_HV:
-                        return 2;
-                    case "RoadsMedium":
-                        return 3;
-                    case "RoadsLarge":
-                        return 4;
-                    case "RoadsHighway":
-                        return 5;
-                    case "RoadsIntersection":
-                        return 6;
-                    case "PublicTransportBus":
-                        return 7;
-                    case "PublicTransportMetro":
-                        return 8;
-                    case "PublicTransportTrain":
-                        return 9;
-                    case "PublicTransportShip":
                         return 10;
+                    case RExExtendedMenus.ROADS_SMALL_HV:
+                        return 20;
+                    case "RoadsMedium":
+                        return 30;
+                    case "RoadsLarge":
+                        return 40;
+                    case "RoadsHighway":
+                        return 50;
+                    case "RoadsIntersection":
+                        return 60;
+                    case "PublicTransportBus":
+                        return 70;
+                    case "PublicTransportMetro":
+                        return 80;
+                    case "PublicTransportTrain":
+                        return 90;
+                    case "PublicTransportShip":
+                        return 100;
                     case "PublicTransportPlane":
-                        return 11;
+                        return 110;
                 }
                 return 2147483647;
             }
@@ -48,23 +48,23 @@ namespace Transit.Addon.RoadExtensions.Menus
                     case RExExtendedMenus.ROADS_TINY:
                         return 0;
                     case "RoadsSmall":
-                        return 1;
+                        return 10;
                     case RExExtendedMenus.ROADS_SMALL_HV:
-                        return 2;
+                        return 20;
                     case "RoadsMedium":
-                        return 3;
+                        return 30;
                     case "RoadsLarge":
-                        return 4;
+                        return 40;
                     case "RoadsHighway":
-                        return 5;
+                        return 50;
                     case "RoadsIntersection":
-                        return 6;
+                        return 60;
                     case RExExtendedMenus.ROADS_BUSWAYS:
-                        return 7;
+                        return 70;
                     case "PublicTransportTrain":
-                        return 8;
+                        return 80;
                     case RExExtendedMenus.ROADS_PEDESTRIANS:
-                        return 9;
+                        return 90;
                 }
                 return 2147483647;
             }
@@ -74,21 +74,21 @@ namespace Transit.Addon.RoadExtensions.Menus
                 case RExExtendedMenus.ROADS_TINY:
                     return 0;
                 case "RoadsSmall":
-                    return 1;
+                    return 10;
                 case RExExtendedMenus.ROADS_SMALL_HV:
-                    return 2;
+                    return 20;
                 case "RoadsMedium":
-                    return 3;
+                    return 30;
                 case "RoadsLarge":
-                    return 4;
+                    return 40;
                 case "RoadsHighway":
-                    return 5;
+                    return 50;
                 case "RoadsIntersection":
-                    return 6;
+                    return 60;
                 case RExExtendedMenus.ROADS_BUSWAYS:
-                    return 7;
+                    return 70;
                 case RExExtendedMenus.ROADS_PEDESTRIANS:
-                    return 8;
+                    return 80;
             }
             return 2147483647;
         }

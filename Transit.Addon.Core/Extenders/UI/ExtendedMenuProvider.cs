@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using ColossalFramework;
 
-namespace Transit.Framework
+namespace Transit.Addon.Core.Extenders.UI
 {
     public class ExtendedMenuProvider : Singleton<ExtendedMenuProvider>
     {
