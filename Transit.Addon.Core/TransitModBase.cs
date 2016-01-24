@@ -1,24 +1,41 @@
 ﻿using System.IO;
 using ColossalFramework.IO;
 using ColossalFramework.Steamworks;
+using ICities;
+using Transit.Framework;
 using Transit.Framework.Modularity;
 using UnityEngine;
 
-namespace Transit.Framework
+#if DEBUG
+using Debug = Transit.Framework.Debug;
+#endif
+
+namespace Transit.Addon.Core
 {
-    public static class TransitModExtensions
+    public abstract partial class TransitModBase : IUserMod
     {
-        public static string GetAssetPath(this ITransitMod transitMod)
+        public abstract ulong WorkshopId { get; }
+
+        public abstract string Name { get; }
+
+        public abstract string Description { get; }
+
+        public virtual string DefaultFolderPath
         {
-            var basePath = GetAssetPathInternal(transitMod.DefaultFolderPath, transitMod.WorkshopId);
+            get { return Name; }
+        }
+
+        protected string GetAssetPath()
+        {
+            var basePath = GetAssetPathInternal(DefaultFolderPath, WorkshopId);
 
             if (basePath != Assets.PATH_NOT_FOUND)
             {
-                Debug.Log("TFW: Mod path " + basePath);
+                Debug.Log("TAM: Mod path " + basePath);
             }
             else
             {
-                Debug.Log("TFW: Path not found");
+                Debug.Log("TAM: Path not found");
             }
 
             return basePath;
@@ -28,7 +45,7 @@ namespace Transit.Framework
         {
             // 1. Check Local path (CurrentUser\Appdata\Local\Colossal Order\Cities_Skylines\Addons\Mods)
             var localPath = Path.Combine(DataLocation.modsPath, defaultFolderPath);
-            Debug.Log(string.Format("TFW: Exist={0} DataLocation.modsPath={1}", Directory.Exists(localPath), localPath));
+            Debug.Log(string.Format("TAM: Exist={0} DataLocation.modsPath={1}", Directory.Exists(localPath), localPath));
 
             if (Directory.Exists(localPath))
             {
@@ -37,7 +54,7 @@ namespace Transit.Framework
 
             // 2. Check Local path (CurrentUser\Appdata\Local\Colossal Order\Cities_Skylines\Addons\Mods) without spaces
             localPath = Path.Combine(DataLocation.modsPath, defaultFolderPath.Replace(" ", ""));
-            Debug.Log(string.Format("TFW: Exist={0} DataLocation.modsPath={1}", Directory.Exists(localPath), localPath));
+            Debug.Log(string.Format("TAM: Exist={0} DataLocation.modsPath={1}", Directory.Exists(localPath), localPath));
 
             if (Directory.Exists(localPath))
             {
@@ -50,7 +67,7 @@ namespace Transit.Framework
                 if (mod.AsUInt64 == workshopId)
                 {
                     var workshopPath = Steam.workshop.GetSubscribedItemPath(mod);
-                    Debug.Log(string.Format("TFW: Exist={0} WorkshopPath={1}", Directory.Exists(workshopPath), workshopPath));
+                    Debug.Log(string.Format("TAM: Exist={0} WorkshopPath={1}", Directory.Exists(workshopPath), workshopPath));
                     if (Directory.Exists(workshopPath))
                     {
                         return workshopPath;
@@ -60,7 +77,7 @@ namespace Transit.Framework
 
             // 4. Check Cities Skylines files folder
             var csFolderPath = Path.Combine(Path.Combine(DataLocation.gameContentPath, "Mods"), defaultFolderPath);
-            Debug.Log(string.Format("TFW: Exist={0} DataLocation.gameContentPath={1}", Directory.Exists(csFolderPath), csFolderPath));
+            Debug.Log(string.Format("TAM: Exist={0} DataLocation.gameContentPath={1}", Directory.Exists(csFolderPath), csFolderPath));
             if (Directory.Exists(csFolderPath))
             {
                 return csFolderPath;
@@ -68,7 +85,7 @@ namespace Transit.Framework
 
             // 5. Check Cities Skylines files folder without spaces
             csFolderPath = Path.Combine(Path.Combine(DataLocation.gameContentPath, "Mods"), defaultFolderPath.Replace(" ", ""));
-            Debug.Log(string.Format("TFW: Exist={0} DataLocation.gameContentPath={1}", Directory.Exists(csFolderPath), csFolderPath));
+            Debug.Log(string.Format("TAM: Exist={0} DataLocation.gameContentPath={1}", Directory.Exists(csFolderPath), csFolderPath));
             if (Directory.Exists(csFolderPath))
             {
                 return csFolderPath;

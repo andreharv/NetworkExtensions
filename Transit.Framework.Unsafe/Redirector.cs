@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using UnityEngine;
 
 namespace Transit.Framework.Unsafe
 {
@@ -71,11 +72,13 @@ namespace Transit.Framework.Unsafe
 
             private MethodInfo _originalMethod;
             private readonly RedirectCallsState _callsState;
+            public Assembly RedirectionSource { get; set; }
 
-            public MethodRedirection(MethodInfo originalMethod, MethodInfo newMethod)
+            public MethodRedirection(MethodInfo originalMethod, MethodInfo newMethod, Assembly redirectionSource)
             {
                 _originalMethod = originalMethod;
                 _callsState = RedirectionHelper.RedirectCalls(_originalMethod, newMethod);
+                RedirectionSource = redirectionSource;
             }
 
             public void Dispose()
@@ -132,15 +135,22 @@ namespace Transit.Framework.Unsafe
 
                     if (originalMethod != null)
                     {
-                        if (redirectAttr.GetType() == typeof(RedirectFromAttribute))
+                        if (redirectAttr is RedirectFromAttribute)
                         {
-                            if (s_redirections.Where(r => r.OriginalMethod == originalMethod).Count() == 0)
-                                s_redirections.Add(originalMethod.RedirectTo(method));
+                            if (!s_redirections.Any(r => r.OriginalMethod == originalMethod))
+                            {
+                                Debug.Log(string.Format("TAM: Adding redirection from {0}", originalMethod.Name));
+                                s_redirections.Add(originalMethod.RedirectTo(method, callingAssembly));
+                            }
                         }
-                        else
+
+                        if (redirectAttr is RedirectToAttribute)
                         {
-                            if (s_redirections.Where(r => r.OriginalMethod == method).Count() == 0)
-                                s_redirections.Add(method.RedirectTo(originalMethod));
+                            if (!s_redirections.Any(r => r.OriginalMethod == method))
+                            {
+                                Debug.Log(string.Format("TAM: Adding redirection to {0}", originalMethod.Name));
+                                s_redirections.Add(method.RedirectTo(originalMethod, callingAssembly));
+                            }
                         }
                     }
                 }
@@ -153,8 +163,11 @@ namespace Transit.Framework.Unsafe
 
             for (int i = s_redirections.Count - 1; i >= 0; --i)
             {
-                if (s_redirections[i].OriginalMethod.DeclaringType.Assembly == callingAssembly)
+                var redirection = s_redirections[i];
+
+                if (Equals(redirection.RedirectionSource, callingAssembly))
                 {
+                    Debug.Log(string.Format("TAM: Removing redirection {0}", s_redirections[i].OriginalMethod));
                     s_redirections[i].Dispose();
                     s_redirections.RemoveAt(i);
                 }

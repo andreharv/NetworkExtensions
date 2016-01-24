@@ -63,7 +63,6 @@
     <Compile Include="Interfaces\IActivable.cs" />
     <Compile Include="Builders\IMenuItemBuilder.cs" />
     <Compile Include="Builders\IPrefabBuilder.cs" />
-    <Compile Include="Modularity\ITransitMod.cs" />
     <Compile Include="Modularity\ModuleBase.Settings.cs" />
     <Compile Include="Modularity\ModuleAttribute.cs" />
     <Compile Include="Modularity\ModuleBase.Parts.cs" />
@@ -74,6 +73,7 @@
     <Compile Include="Assets.cs" />
     <Compile Include="Builders\MenuItemBuilder.cs" />
     <Compile Include="Interfaces\IShortDescriptor.cs" />
+    <Compile Include="_Extensions\AppDomainExtensions.cs" />
     <Compile Include="_Extensions\AssetManagerExtensions.cs" />
     <Compile Include="_Extensions\CloningExtensions.cs" />
     <Compile Include="_Extensions\CollectionExtensions.cs" />
@@ -98,7 +98,6 @@
     <Compile Include="_Extensions\NetInfoExtensions.cs" />
     <Compile Include="_Extensions\PluginManagerExtensions.cs" />
     <Compile Include="_Extensions\TextureSetExtensions.cs" />
-    <Compile Include="_Extensions\TransitModExtensions.cs" />
     <Compile Include="_Extensions\TypeExtensions.cs" />
     <Compile Include="Modularity\IActivablePart.cs" />
     <Compile Include="Modularity\ICompatibilityPart.cs" />

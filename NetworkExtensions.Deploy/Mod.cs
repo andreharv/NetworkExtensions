@@ -1,38 +1,26 @@
 ﻿using ColossalFramework;
 using ColossalFramework.Plugins;
+using Transit.Addon.Core;
 using Transit.Framework;
 using Transit.Framework.Modularity;
 
 namespace NetworkExtensions
 {
-    public sealed partial class Mod : ITransitMod
+    public sealed partial class Mod : TransitModBase
     {
-        public string Name
+        public override ulong WorkshopId
         {
-            get
-            {
-                OnGameLoaded();
-                return NAME;
-            }
+            get { return 478820060; }
         }
 
-        public string Description
-        {
-            get
-            {
-                OnGameLoaded();
-                return DESCRIPTION;
-            }
-        }
-
-        public string DefaultFolderPath
+        public override string Name
         {
             get { return NAME; }
         }
 
-        public ulong WorkshopId
+        public override string Description
         {
-            get { return 478820060; }
+            get { return DESCRIPTION; }
         }
 
         private const string TAM_MOD_ID = "543703997";

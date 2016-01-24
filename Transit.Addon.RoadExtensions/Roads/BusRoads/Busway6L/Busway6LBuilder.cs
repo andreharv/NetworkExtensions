@@ -21,7 +21,7 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway6L
             {
                 yield return new MenuItemBuilder
                 {
-                    UICategory = AdditionnalMenus.ROADS_BUSWAYS,
+                    UICategory = RExExtendedMenus.ROADS_BUSWAYS,
                     UIOrder = 40,
                     Name = "Large Road With Bus Lanes",
                     DisplayName = "Large Road With Bus Lanes",
@@ -31,7 +31,7 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway6L
                 };
                 yield return new MenuItemBuilder
                 {
-                    UICategory = AdditionnalMenus.ROADS_BUSWAYS,
+                    UICategory = RExExtendedMenus.ROADS_BUSWAYS,
                     UIOrder = 41,
                     Name = "Large Road Decoration Grass With Bus Lanes",
                     DisplayName = "Large Road Decoration Grass With Bus Lanes",
@@ -41,7 +41,7 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway6L
                 };
                 yield return new MenuItemBuilder
                 {
-                    UICategory = AdditionnalMenus.ROADS_BUSWAYS,
+                    UICategory = RExExtendedMenus.ROADS_BUSWAYS,
                     UIOrder = 42,
                     Name = "Large Road Decoration Trees With Bus Lanes",
                     DisplayName = "Large Road Decoration Grass With Bus Lanes",
