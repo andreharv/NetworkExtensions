@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_References", "_References", "{FC5D316C-D7B8-4986-9E91-D3784D4A8CBB}"
 	ProjectSection(SolutionItems) = preProject
@@ -39,11 +39,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Addon", "Transit.Ad
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deploy", "Deploy", "{309D6357-1B62-4C4B-9239-4E2FD95FE267}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Addon.TrafficPP", "Transit.Addon.TrafficPP\Transit.Addon.TrafficPP.csproj", "{D78DECCE-B9B3-4E14-933F-6C0BE10526C5}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkExtensions.Deploy", "NetworkExtensions.Deploy\NetworkExtensions.Deploy.csproj", "{D2DA5492-3DE6-4E7D-AFF1-BB62C950632D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Addon.Core", "Transit.Addon.Core\Transit.Addon.Core.csproj", "{61414A57-131A-44CF-ADCE-9179ED788D3C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Old", "_Old", "{5CF124A2-EAB5-41D2-9A29-A5BD9663364D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -86,10 +86,6 @@ Global
 		{80C47696-4D41-4BB6-9CAE-C477FE528ADF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80C47696-4D41-4BB6-9CAE-C477FE528ADF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80C47696-4D41-4BB6-9CAE-C477FE528ADF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D78DECCE-B9B3-4E14-933F-6C0BE10526C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D78DECCE-B9B3-4E14-933F-6C0BE10526C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D78DECCE-B9B3-4E14-933F-6C0BE10526C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D78DECCE-B9B3-4E14-933F-6C0BE10526C5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D2DA5492-3DE6-4E7D-AFF1-BB62C950632D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D2DA5492-3DE6-4E7D-AFF1-BB62C950632D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2DA5492-3DE6-4E7D-AFF1-BB62C950632D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -103,6 +99,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{8229C9FB-A4EC-43CD-9539-2B3E391C4C29} = {5CF124A2-EAB5-41D2-9A29-A5BD9663364D}
 		{7DFBABEB-DED8-4E16-8AA5-B38C3EF64305} = {309D6357-1B62-4C4B-9239-4E2FD95FE267}
 		{D2DA5492-3DE6-4E7D-AFF1-BB62C950632D} = {309D6357-1B62-4C4B-9239-4E2FD95FE267}
 	EndGlobalSection

@@ -7,7 +7,7 @@ namespace Transit.Addon.TrafficAI
     {
         public override string Name
         {
-            get { return "Traffic AI"; }
+            get { return "Pathfinding"; }
         }
     }
 }

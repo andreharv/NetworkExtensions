@@ -7,7 +7,7 @@ namespace Transit.Addon.TrafficTools
     {
         public override string Name
         {
-            get { return "Traffic Tools"; }
+            get { return "Tools"; }
         }
 
         // Hack For FileManager, deprecated
