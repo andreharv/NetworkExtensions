@@ -13,9 +13,7 @@ namespace Transit.Addon.TrafficTools
         public enum ModOptions : long
         {
             None = 0,
-            RoadCustomizerTool = 1L << 55,
-
-            GhostMode = 1L << 62
+            RoadCustomizerTool = 1L << 55
         }
 
         private static ModOptions s_activeOptions = ModOptions.None;
@@ -36,24 +34,6 @@ namespace Transit.Addon.TrafficTools
                     else
                     {
                         s_activeOptions = s_activeOptions & ~ModOptions.RoadCustomizerTool;
-                    }
-                    FireSaveSettingsNeeded();
-                },
-                true);
-
-            helper.AddCheckbox(
-                "Ghost Mode",
-                "Disables all mod functionality leaving only enough logic to load the map",
-                s_activeOptions.IsFlagSet(ModOptions.GhostMode),
-                isChecked =>
-                {
-                    if (isChecked)
-                    {
-                        s_activeOptions = s_activeOptions | ModOptions.GhostMode;
-                    }
-                    else
-                    {
-                        s_activeOptions = s_activeOptions & ~ModOptions.GhostMode;
                     }
                     FireSaveSettingsNeeded();
                 },
@@ -85,14 +65,7 @@ namespace Transit.Addon.TrafficTools
 
                 if (isEnabled == null)
                 {
-                    if (option == ModOptions.GhostMode)
-                    {
-                        isEnabled = false;
-                    }
-                    else
-                    {
-                        isEnabled = true;
-                    }
+                    isEnabled = true;
                 }
 
                 if (isEnabled.Value)

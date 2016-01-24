@@ -10,6 +10,7 @@ namespace Transit.Addon.Core
         {
             InstallPrerequisites();
             LoadModulesIfNeeded();
+            LoadSettings();
 
             foreach (IModule module in Modules)
                 module.OnEnabled();

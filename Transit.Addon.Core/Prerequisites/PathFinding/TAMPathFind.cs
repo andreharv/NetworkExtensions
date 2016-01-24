@@ -1,22 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
+using Transit.Addon.Core.Extenders.PathFinding;
 using Transit.Framework.Unsafe;
 
-namespace Transit.Addon.Core.PathFinding
+namespace Transit.Addon.Core.Prerequisites.PathFinding
 {
-    public class PathFindProxy : PathFind
+    public class TAMPathFind : PathFind
     {
-        private static readonly Dictionary<int, IPathFinder> s_pathFinds = new Dictionary<int, IPathFinder>();
+        private static readonly Dictionary<int, IPathFindingImplementation> s_pathFinds = new Dictionary<int, IPathFindingImplementation>();
 
         [RedirectFrom(typeof(PathFind))]
         private void PathFindImplementation(uint unit, ref PathUnit data)
         {
             int threadId = Thread.CurrentThread.ManagedThreadId;
-            IPathFinder pathFinder;
+            IPathFindingImplementation pathFinder;
             if (!s_pathFinds.TryGetValue(threadId, out pathFinder))
             {
-                pathFinder = PathFinder.CreateInstance();
+                pathFinder = PathFindingProvider.instance.CreatePathFinding();
                 s_pathFinds.Add(threadId, pathFinder);
             }
 

@@ -21,9 +21,6 @@ namespace NetworkExtensions
 
         public void OnSettingsUI(UIHelperBase helper)
         {
-            LoadModulesIfNeeded();
-            LoadSettings();
-
             UIButton tabTemplate = Resources.FindObjectsOfTypeAll<OptionsKeymappingPanel>()[0]
                                             .GetComponentInChildren<UITabstrip>()
                                             .GetComponentInChildren<UIButton>();
@@ -88,7 +85,7 @@ namespace NetworkExtensions
             }
         }
 
-        private void LoadSettings()
+        protected override void LoadSettings()
         {
             XmlDocument settingsDoc = null;
             if (File.Exists(SETTINGS_FILE))

@@ -1,5 +1,5 @@
 ﻿using ICities;
-using Transit.Addon.Core.PathFinding;
+using Transit.Addon.Core.Extenders.PathFinding;
 using Transit.Addon.TrafficTools.Core.PathFinding;
 using Transit.Framework;
 using UnityEngine;
@@ -17,7 +17,7 @@ namespace Transit.Addon.TrafficTools
 
             if (_isReleased)
             {
-                PathFinder.SetType<ControledPathFinder>();
+                PathFindingProvider.instance.SetType<ControledPathFinding>();
 
                 if (AssetPath != null && AssetPath != Assets.PATH_NOT_FOUND)
                 {
@@ -41,7 +41,7 @@ namespace Transit.Addon.TrafficTools
                 return;
             }
 
-            PathFinder.ResetToDefault();
+            PathFindingProvider.instance.ResetToDefault();
 
             if (_initializer != null)
             {

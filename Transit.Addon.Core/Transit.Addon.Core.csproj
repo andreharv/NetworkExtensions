@@ -60,6 +60,10 @@
     <Compile Include="Extenders\UI\ExtendedMenuProvider.cs" />
     <Compile Include="Extenders\AI\IZoneBlocksCreator.cs" />
     <Compile Include="Extenders\UI\CategoryOrderProvider.cs" />
+    <Compile Include="Prerequisites\PathFinding\VanillaPathFinding.cs" />
+    <Compile Include="Extenders\PathFinding\IPathFindingImplementation.cs" />
+    <Compile Include="Extenders\PathFinding\PathFindingProvider.cs" />
+    <Compile Include="Prerequisites\PathFinding\TAMPathFind.cs" />
     <Compile Include="Prerequisites\AI\TAMRoadAI.cs" />
     <Compile Include="Prerequisites\UI\TAMGeneratedGroupPanel.cs" />
     <Compile Include="Prerequisites\UI\TAMRoadsGroupPanel.cs" />

@@ -13,7 +13,7 @@ namespace Transit.Addon.TrafficTools.Core
             
         public override void OnLoadData()
         {
-            if ((TrafficToolModule.ActiveOptions & TrafficToolModule.ModOptions.RoadCustomizerTool) == TrafficToolModule.ModOptions.None || (TrafficToolModule.ActiveOptions & TrafficToolModule.ModOptions.GhostMode) == TrafficToolModule.ModOptions.GhostMode)
+            if ((TrafficToolModule.ActiveOptions & TrafficToolModule.ModOptions.RoadCustomizerTool) == TrafficToolModule.ModOptions.None)
                 return;
                 
 
@@ -81,7 +81,7 @@ namespace Transit.Addon.TrafficTools.Core
 
         public override void OnSaveData()
         {
-            if ((TrafficToolModule.ActiveOptions & TrafficToolModule.ModOptions.RoadCustomizerTool) == TrafficToolModule.ModOptions.None || (TrafficToolModule.ActiveOptions & TrafficToolModule.ModOptions.GhostMode) == TrafficToolModule.ModOptions.GhostMode)
+            if ((TrafficToolModule.ActiveOptions & TrafficToolModule.ModOptions.RoadCustomizerTool) == TrafficToolModule.ModOptions.None)
                 return;
 
             Logger.LogInfo("Saving road data!");

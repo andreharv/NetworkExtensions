@@ -75,5 +75,7 @@ namespace Transit.Addon.Core
         }
 
         protected abstract void SaveSettings();
+
+        protected abstract void LoadSettings();
     }
 }

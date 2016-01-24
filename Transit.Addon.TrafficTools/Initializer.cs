@@ -39,10 +39,7 @@ namespace Transit.Addon.TrafficTools
 
         void Start()
         {
-            if ((TrafficToolModule.ActiveOptions & TrafficToolModule.ModOptions.GhostMode) != TrafficToolModule.ModOptions.GhostMode)
-            {
-                ReplaceTransportManager();
-            }
+            ReplaceTransportManager();
 #if DEBUG
             //StartCoroutine(Print());
 #endif
@@ -80,9 +77,6 @@ namespace Transit.Addon.TrafficTools
                 TryReplacePrefabs();
                 return;
             }
-
-            if ((TrafficToolModule.ActiveOptions & TrafficToolModule.ModOptions.GhostMode) == TrafficToolModule.ModOptions.GhostMode)
-                return;
 
             if (!Singleton<LoadingManager>.instance.m_loadingComplete)
                 return;
@@ -201,7 +195,7 @@ namespace Transit.Addon.TrafficTools
             {
                 try
                 {
-                    if ((TrafficToolModule.ActiveOptions & TrafficToolModule.ModOptions.GhostMode) != TrafficToolModule.ModOptions.GhostMode && this.m_level == 6)
+                    if (this.m_level == 6)
                     {
                         AddTool<CustomTransportTool>(toolController);
 

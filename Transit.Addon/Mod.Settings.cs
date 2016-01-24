@@ -87,7 +87,7 @@ namespace Transit.Addon
             }
         }
 
-        private XmlDocument LoadSettings()
+        protected override void LoadSettings()
         {
             XmlDocument settingsDoc = null;
             if (File.Exists(SETTINGS_FILE))
@@ -116,101 +116,6 @@ namespace Transit.Addon
                 // Default 
                 module.OnLoadSettings(null);
             }
-
-            return settingsDoc;
-        }
-
-        private void CheckForUpdates()
-        {
-            var settingsDoc = LoadSettings();
-
-            if (settingsDoc == null)
-            {
-                SaveSettings();
-                //NotificationPanel.Panel.Show("Welcome!!!", "Some amazing welcome!", false, "Oh yeah!", null, "On noes! :O", null, true);
-                return;
-            }
-
-            var settingsDocElement = settingsDoc.DocumentElement;
-            var fileVersion = settingsDocElement == null ? string.Empty : settingsDocElement.GetAttribute("Version");
-            if (fileVersion != VERSION)
-            {
-                SaveSettings(); // Updates the version on file so this only shows once
-                //NotificationPanel.Panel.Show("Update!!!", "Some amazing description!", false, "Oh yeah!", null, "On noes! :O", null, true);
-            }
-        }
-
-        private void ShowNotification()
-        {
-            var settingsDoc = LoadSettings();
-            if (settingsDoc == null)
-            {
-                SaveSettings();
-                settingsDoc = LoadSettings();
-            }
-
-            var settingsDocElement = settingsDoc.DocumentElement;
-            _lastNotificationID = settingsDocElement == null ? "None" : settingsDocElement.GetAttribute("LastNotificationID");
-
-            NotificationInfo notification;
-            try
-            {
-                var assetPath = this.GetAssetPath();
-                if (assetPath == Assets.PATH_NOT_FOUND)
-                {
-                    return;
-                }
-
-                var xmlSerializer = new XmlSerializer(typeof(NotificationInfo));
-                using (StreamReader streamReader = new StreamReader(Path.Combine(assetPath, "NotificationSettings.xml")))
-                {
-                    notification = (NotificationInfo)xmlSerializer.Deserialize(streamReader);
-                }
-            }
-            catch
-            {
-                return;
-            }
-
-            _name = notification.modName;
-            _description = notification.modDescription;
-
-            if (notification.notificationID == _lastNotificationID)
-                return;
-
-            _lastNotificationID = notification.notificationID;
-
-            if (String.IsNullOrEmpty(notification.url))
-            {
-                NotificationPanel.Panel.Show(notification.title,
-                    notification.description.Replace(@"\n", Environment.NewLine),
-                    notification.showScrollbar,
-                    notification.playFireworks);
-            }
-            else
-            {
-                NotificationPanel.Panel.Show(notification.title,
-                    notification.description.Replace(@"\n", Environment.NewLine),
-                    notification.showScrollbar,
-                    notification.url,
-                    notification.urlButtonText,
-                    notification.playFireworks);
-            }
-
-            SaveSettings();
-        }
-
-        public struct NotificationInfo
-        {
-            public string modName;
-            public string modDescription;
-            public string notificationID;
-            public string title;
-            public string description;
-            public string url;
-            public string urlButtonText;
-            public bool showScrollbar;
-            public bool playFireworks;
         }
     }
 }

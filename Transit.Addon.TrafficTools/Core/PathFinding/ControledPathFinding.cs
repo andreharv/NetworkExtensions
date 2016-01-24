@@ -1,8 +1,8 @@
-﻿using Transit.Addon.Core.PathFinding;
+﻿using Transit.Addon.Core.Prerequisites.PathFinding;
 
 namespace Transit.Addon.TrafficTools.Core.PathFinding
 {
-    public class ControledPathFinder : DefaultPathFinder
+    public class ControledPathFinding : VanillaPathFinding
     {
         protected override float GetLaneSpeedLimit(NetInfo.Lane lane, uint laneId)
         {

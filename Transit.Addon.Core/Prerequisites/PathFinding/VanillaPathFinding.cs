@@ -1,14 +1,15 @@
-﻿using ColossalFramework;
-using ColossalFramework.Math;
-using System;
+﻿using System;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using ColossalFramework;
+using ColossalFramework.Math;
+using Transit.Addon.Core.Extenders.PathFinding;
 using Transit.Framework.Unsafe;
 using UnityEngine;
 
-namespace Transit.Addon.Core.PathFinding
+namespace Transit.Addon.Core.Prerequisites.PathFinding
 {
-    public class DefaultPathFinder : IPathFinder
+    public class VanillaPathFinding : IPathFindingImplementation
     {
         private struct BufferItem
         {
@@ -47,7 +48,7 @@ namespace Transit.Addon.Core.PathFinding
         uint[] m_laneLocation;
         PathUnit.Position[] m_laneTarget;
         
-        public DefaultPathFinder()
+        public VanillaPathFinding()
         {
             this.m_laneLocation = new uint[262144];
             this.m_laneTarget = new PathUnit.Position[262144];
