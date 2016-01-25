@@ -254,12 +254,19 @@ namespace Transit.Addon.Core.Prerequisites.AI
         private static void CreateZoneBlocksVanilla_Straight(NetInfo info, Randomizer randomizer, ref NetSegment segment, NetNode startNode, NetNode endNode)
         {
             var minHalfWidth = MIN_HALFWIDTH_DEFAULT;
+            var cellOffset = 0f;
+
+            if (ZoneBlocksOffset.Mode == ZoneBlocksOffsetMode.HalfCell)
+            {
+                cellOffset = 0.5f;
+            }
 
             const float ROW_UNIT_SIZE = 8f;
-            Vector3 startPosition = startNode.m_position;
-            Vector3 endPosition = endNode.m_position;
             Vector3 startDirection = segment.m_startDirection;
+            Vector3 startPosition = startNode.m_position - ROW_UNIT_SIZE * cellOffset * startDirection;
+
             Vector3 endDirection = segment.m_endDirection;
+            Vector3 endPosition = endNode.m_position - ROW_UNIT_SIZE * cellOffset * endDirection;
             float num2 = Mathf.Max(minHalfWidth, info.m_halfWidth) + 32f;
 
             Vector2 magnitudeVector = new Vector2(endPosition.x - startPosition.x, endPosition.z - startPosition.z);

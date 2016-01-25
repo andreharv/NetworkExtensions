@@ -120,6 +120,7 @@
     <Compile Include="Roads\TinyRoads\OneWay1L\OneWay1LBuilder.cs" />
     <Compile Include="SomeRoads\PlanningRoadLargeBuilder.cs" />
     <Compile Include="SomeRoads\PlanningRoadSmallBuilder.cs" />
+    <Compile Include="Tools\ZoneBlocksOffsetModifier.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Ground_NodeLOD__APRMap.png">

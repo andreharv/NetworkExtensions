@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="Extenders\AI\IRoadSnappingMode.cs" />
     <Compile Include="Extenders\AI\RoadSnappingModeProvider.cs" />
+    <Compile Include="Extenders\AI\ZoneBlocksOffset.cs" />
     <Compile Include="Extenders\AI\ZoneBlocksCreatorProvider.cs" />
     <Compile Include="Extenders\UI\AtlasProvider.cs" />
     <Compile Include="Extenders\UI\ExtendedMenuProvider.cs" />
