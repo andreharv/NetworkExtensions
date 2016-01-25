@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7422AE58-8B0A-401C-9404-F4A438EFFE10}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TrafficManager</RootNamespace>
+    <AssemblyName>TrafficManager</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>0</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\References\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ColossalManaged">
+      <HintPath>..\References\ColossalManaged.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ICities">
+      <HintPath>..\References\ICities.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\packages\NLog.4.2.2\lib\net35\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Cities_Skylines\Managed\System.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.XML" />
+    <Reference Include="UnityEngine">
+      <HintPath>..\References\UnityEngine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CarState.cs" />
+    <Compile Include="Configuration.cs" />
+    <Compile Include="Custom\AI\CustomCarAI.cs" />
+    <Compile Include="Custom\AI\CustomCargoTruckAI.cs" />
+    <Compile Include="Custom\AI\CustomHumanAI.cs" />
+    <Compile Include="Custom\AI\CustomPassengerCarAI.cs" />
+    <Compile Include="Custom\AI\CustomRoadAI.cs" />
+    <Compile Include="Custom\AI\CustomTrainAI.cs" />
+    <Compile Include="CustomNetTool.cs" />
+    <Compile Include="Custom\Misc\CustomPathFind.cs" />
+    <Compile Include="Custom\Manager\CustomPathManager.cs" />
+    <Compile Include="Traffic\SegmentGeometry.cs" />
+    <Compile Include="LaneRestrictions.cs" />
+    <Compile Include="LoadingExtension.cs" />
+    <Compile Include="UI\Translation.cs" />
+    <Compile Include="Options.cs" />
+    <Compile Include="Traffic\Direction.cs" />
+    <Compile Include="Traffic\TrafficRoadRestrictions.cs" />
+    <Compile Include="Traffic\VehiclePosition.cs" />
+    <Compile Include="State\Flags.cs" />
+    <Compile Include="Traffic\PrioritySegment.cs" />
+    <Compile Include="RedirectionHelper.cs" />
+    <Compile Include="SegmentRestrictions.cs" />
+    <Compile Include="SelfDestruct.cs" />
+    <Compile Include="SerializableDataExtension.cs" />
+    <Compile Include="Log.cs" />
+    <Compile Include="ThreadingExtension.cs" />
+    <Compile Include="TrafficLight\ManualSegment.cs" />
+    <Compile Include="TrafficLight\ManualSegmentLight.cs" />
+    <Compile Include="TrafficLight\ToolMode.cs" />
+    <Compile Include="TrafficLight\TrafficLightSimulation.cs" />
+    <Compile Include="TrafficLight\TrafficLightsManual.cs" />
+    <Compile Include="TrafficLight\TrafficLightsTimed.cs" />
+    <Compile Include="UI\TrafficLightTool.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\TrafficLightToolTextureResources.cs" />
+    <Compile Include="TrafficManagerMod.cs" />
+    <Compile Include="TrafficManagerMode.cs" />
+    <Compile Include="TrafficLight\TimedTrafficStep.cs" />
+    <Compile Include="Traffic\TrafficPriority.cs" />
+    <Compile Include="Traffic\TrafficSegment.cs" />
+    <Compile Include="Traffic\VehicleType.cs" />
+    <Compile Include="UI\CameraCtrl.cs" />
+    <Compile Include="UI\UIBase.cs" />
+    <Compile Include="UI\UITimedLights.cs" />
+    <Compile Include="UI\UITrafficManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\light_1_1.png" />
+    <EmbeddedResource Include="Resources\light_1_2.png" />
+    <EmbeddedResource Include="Resources\light_1_3.png" />
+    <EmbeddedResource Include="Resources\light_2_1.png" />
+    <EmbeddedResource Include="Resources\light_2_2.png" />
+    <EmbeddedResource Include="Resources\light_2_3.png" />
+    <EmbeddedResource Include="Resources\light_3_1.png" />
+    <EmbeddedResource Include="Resources\light_3_2.png" />
+    <EmbeddedResource Include="Resources\light_3_3.png" />
+    <EmbeddedResource Include="Resources\light_4_1.png" />
+    <EmbeddedResource Include="Resources\light_4_2.png" />
+    <EmbeddedResource Include="Resources\light_4_3.png" />
+    <EmbeddedResource Include="Resources\light_5_1.png" />
+    <EmbeddedResource Include="Resources\light_5_2.png" />
+    <EmbeddedResource Include="Resources\light_5_3.png" />
+    <EmbeddedResource Include="Resources\light_6_1.png" />
+    <EmbeddedResource Include="Resources\light_6_2.png" />
+    <EmbeddedResource Include="Resources\light_6_3.png" />
+    <EmbeddedResource Include="Resources\light_counter.png" />
+    <EmbeddedResource Include="Resources\light_mode.png" />
+    <EmbeddedResource Include="Resources\light_yellow.png" />
+    <EmbeddedResource Include="Resources\pedestrian_light_1.png" />
+    <EmbeddedResource Include="Resources\pedestrian_light_2.png" />
+    <EmbeddedResource Include="Resources\pedestrian_mode_1.png" />
+    <EmbeddedResource Include="Resources\pedestrian_mode_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\sign_none.png" />
+    <EmbeddedResource Include="Resources\sign_priority.png" />
+    <EmbeddedResource Include="Resources\sign_stop.png" />
+    <EmbeddedResource Include="Resources\sign_yield.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\lang_pl.txt" />
+    <EmbeddedResource Include="Resources\lang_ru.txt" />
+    <EmbeddedResource Include="Resources\lang_pt.txt" />
+    <EmbeddedResource Include="Resources\lang.txt" />
+    <EmbeddedResource Include="Resources\lang_de.txt" />
+    <EmbeddedResource Include="Resources\lang_ja.txt" />
+    <EmbeddedResource Include="Resources\light_counter_ja.png" />
+    <EmbeddedResource Include="Resources\light_mode_ja.png" />
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <EmbeddedResource Include="Resources\clock_pause.png" />
+    <EmbeddedResource Include="Resources\clock_test.png" />
+    <EmbeddedResource Include="Resources\clock_play.png" />
+    <EmbeddedResource Include="Resources\remove_signs.png" />
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>mkdir "D:\Spiele\SteamLibrary\steamapps\workshop\content\255710\583429740"
+del /Q "D:\Spiele\SteamLibrary\steamapps\workshop\content\255710\583429740\*"
+xcopy /y "$(TargetDir)$(TargetName).*" "D:\Spiele\SteamLibrary\steamapps\workshop\content\255710\583429740"
+</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
