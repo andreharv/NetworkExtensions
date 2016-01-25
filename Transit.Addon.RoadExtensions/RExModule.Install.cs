@@ -34,6 +34,9 @@ namespace Transit.Addon.RoadExtensions
                 ZoneBlocksCreatorProvider.instance.RegisterCustomCreator<TinyRoadZoneBlocksCreator>(Alley2LBuilder.NAME);
                 ZoneBlocksCreatorProvider.instance.RegisterCustomCreator<TinyRoadZoneBlocksCreator>(OneWay1LBuilder.NAME);
 
+                RoadSnappingModeProvider.instance.RegisterCustomSnapping<TinyRoadSnappingMode>(Alley2LBuilder.NAME);
+                RoadSnappingModeProvider.instance.RegisterCustomSnapping<TinyRoadSnappingMode>(OneWay1LBuilder.NAME);
+
                 if (AssetPath != null && AssetPath != Assets.PATH_NOT_FOUND)
                 {
                     _container = new GameObject(REX_OBJECT_NAME);

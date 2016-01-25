@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Transit.Addon.Core.Prerequisites.AI
 {
-    public class TAMRoadAI : RoadAI
+    public partial class TAMRoadAI : RoadAI
     {
         private const float MIN_HALFWIDTH_DEFAULT = 8f;
 

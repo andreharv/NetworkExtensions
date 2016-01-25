@@ -55,12 +55,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extenders\AI\IRoadSnappingMode.cs" />
+    <Compile Include="Extenders\AI\RoadSnappingModeProvider.cs" />
     <Compile Include="Extenders\AI\ZoneBlocksCreatorProvider.cs" />
     <Compile Include="Extenders\UI\AtlasProvider.cs" />
     <Compile Include="Extenders\UI\ExtendedMenuProvider.cs" />
     <Compile Include="Extenders\AI\IZoneBlocksCreator.cs" />
     <Compile Include="Extenders\UI\CategoryOrderProvider.cs" />
-    <Compile Include="Prerequisites\AI\TAMRoadAI.cs" />
+    <Compile Include="Prerequisites\AI\TAMRoadAI.Snapping.cs" />
+    <Compile Include="Prerequisites\AI\TAMRoadAI.CreateZoneBlocks.cs" />
     <Compile Include="Prerequisites\UI\TAMGeneratedGroupPanel.cs" />
     <Compile Include="Prerequisites\UI\TAMRoadsGroupPanel.cs" />
     <Compile Include="TransitModBase.LoadingExtension.cs" />

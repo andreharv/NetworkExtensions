@@ -55,6 +55,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AI\TinyRoadSnappingMode.cs" />
     <Compile Include="AI\TinyRoadZoneBlocksCreator.cs" />
     <Compile Include="Compatibility\RoadColorChanger.cs" />
     <Compile Include="Roads\Common\RoadModels.8m.2mSW.cs" />

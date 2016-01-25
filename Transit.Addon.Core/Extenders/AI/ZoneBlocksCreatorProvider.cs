@@ -23,9 +23,9 @@ namespace Transit.Addon.Core.Extenders.AI
             _customCreators[netinfoName] = _instances[creatorType];
         }
 
-        public bool HasCustomCreator(string atlasKey)
+        public bool HasCustomCreator(string netinfoName)
         {
-            return _customCreators.ContainsKey(atlasKey);
+            return _customCreators.ContainsKey(netinfoName);
         }
 
         public IZoneBlocksCreator GetCustomCreator(string netinfoName)
