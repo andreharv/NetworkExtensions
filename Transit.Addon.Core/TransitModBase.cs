@@ -20,6 +20,8 @@ namespace Transit.Addon.Core
 
         public abstract string Description { get; }
 
+        public abstract string Version { get; }
+
         public virtual string DefaultFolderPath
         {
             get { return Name; }

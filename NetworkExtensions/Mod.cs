@@ -14,12 +14,17 @@ namespace NetworkExtensions
 
         public override string Name
         {
-            get { return NAME; }
+            get { return "Network Extensions"; }
         }
 
         public override string Description
         {
-            get { return DESCRIPTION; }
+            get { return "An addition of highways and roads"; }
+        }
+
+        public override string Version
+        {
+            get { return "1.0.0"; }
         }
 
         private const string TAM_MOD_ID = "543703997";

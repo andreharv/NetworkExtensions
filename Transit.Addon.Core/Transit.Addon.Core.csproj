@@ -74,6 +74,7 @@
     <Compile Include="TransitModBase.LoadingExtension.cs" />
     <Compile Include="TransitModBase.Modules.cs" />
     <Compile Include="TransitModBase.cs" />
+    <Compile Include="TransitModBase.Settings.cs" />
     <Compile Include="TransitModBase.Prerequisites.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
