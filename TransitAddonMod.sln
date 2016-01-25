@@ -47,8 +47,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Addon.Core", "Trans
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TLM", "TLM\TLM.csproj", "{7422AE58-8B0A-401C-9404-F4A438EFFE10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TLM Playground", "TLM Playground\TLM Playground.csproj", "{59242593-E886-4BCE-A4A8-CBFD2CA1FAB5}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -106,10 +104,6 @@ Global
 		{7422AE58-8B0A-401C-9404-F4A438EFFE10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7422AE58-8B0A-401C-9404-F4A438EFFE10}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7422AE58-8B0A-401C-9404-F4A438EFFE10}.Release|Any CPU.Build.0 = Release|Any CPU
-		{59242593-E886-4BCE-A4A8-CBFD2CA1FAB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{59242593-E886-4BCE-A4A8-CBFD2CA1FAB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{59242593-E886-4BCE-A4A8-CBFD2CA1FAB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{59242593-E886-4BCE-A4A8-CBFD2CA1FAB5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

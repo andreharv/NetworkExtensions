@@ -39,13 +39,10 @@ namespace TrafficManager.TrafficLight {
 
 			// setup priority segments & live traffic lights
 			foreach (ushort slaveNodeId in nodeGroup) {
-				NetNode node = Singleton<NetManager>.instance.m_nodes.m_buffer[slaveNodeId];
-
 				for (int s = 0; s < 8; ++s) {
-					ushort segmentId = node.GetSegment(s);
+					ushort segmentId = Singleton<NetManager>.instance.m_nodes.m_buffer[slaveNodeId].GetSegment(s);
 					if (segmentId <= 0)
 						continue;
-					NetSegment segment = Singleton<NetManager>.instance.m_segments.m_buffer[segmentId];
 					TrafficPriority.AddPrioritySegment(slaveNodeId, segmentId, PrioritySegment.PriorityType.None);
 					TrafficLightsManual.AddLiveSegmentLight(slaveNodeId, segmentId);
 				}
@@ -118,9 +115,8 @@ namespace TrafficManager.TrafficLight {
 					TrafficLightSimulation.GetNodeSimulation(timedNodeId).TimedTrafficLights = true;
 
 					// check that live traffic light exists
-					NetNode node = Singleton<NetManager>.instance.m_nodes.m_buffer[timedNodeId];
 					for (int s = 0; s < 8; s++) {
-						var segmentId = node.GetSegment(s);
+						var segmentId = Singleton<NetManager>.instance.m_nodes.m_buffer[timedNodeId].GetSegment(s);
 
 						if (segmentId == 0)
 							continue;
@@ -315,7 +311,6 @@ namespace TrafficManager.TrafficLight {
 				ushort segmentId = Singleton<NetManager>.instance.m_nodes.m_buffer[nodeId].GetSegment(s);
 				if (segmentId <= 0)
 					continue;
-				NetSegment segment = Singleton<NetManager>.instance.m_segments.m_buffer[segmentId];
 
 				List<ushort> invalidSegmentIds = new List<ushort>();
 				bool isNewSegment = true;

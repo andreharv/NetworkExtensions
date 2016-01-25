@@ -10,7 +10,6 @@ using TrafficManager.Traffic;
 using TrafficManager.UI;
 using UnityEngine;
 using TrafficManager.State;
-using TrafficManager.Custom.Misc;
 
 namespace TrafficManager.TrafficLight {
 	[UsedImplicitly]
@@ -1352,11 +1351,10 @@ namespace TrafficManager.TrafficLight {
 					break;
 
 				NetInfo.Lane laneInfo = segmentInfo.m_lanes[i];
-				NetLane lane = Singleton<NetManager>.instance.m_lanes.m_buffer[curLaneId];
 
 				labelStr += "Lane idx " + i + ", id " + curLaneId;
 #if DEBUG
-				labelStr += ", flags: " + ((NetLane.Flags)lane.m_flags).ToString() + ", dir: " + laneInfo.m_direction + ", pos: " + String.Format("{0:0.##}", laneInfo.m_position) + ", sim. idx: " + laneInfo.m_similarLaneIndex + " for " + laneInfo.m_vehicleType;
+				labelStr += ", flags: " + ((NetLane.Flags)Singleton<NetManager>.instance.m_lanes.m_buffer[curLaneId].m_flags).ToString() + ", limit: " + laneInfo.m_speedLimit + ", dir: " + laneInfo.m_direction + ", final: " + laneInfo.m_finalDirection + ", pos: " + String.Format("{0:0.##}", laneInfo.m_position) + ", sim. idx: " + laneInfo.m_similarLaneIndex + " for " + laneInfo.m_vehicleType;
 #endif
 				if (CustomRoadAI.InStartupPhase)
 					labelStr += ", in start-up phase";
@@ -1379,12 +1377,11 @@ namespace TrafficManager.TrafficLight {
 		private void _guiSegments() {
 			Array16<NetSegment> segments = Singleton<NetManager>.instance.m_segments;
 			for (int i = 1; i < segments.m_size; ++i) {
-				NetSegment segment = segments.m_buffer[i];
-				if (segment.m_flags == NetSegment.Flags.None) // segment is unused
+				if (segments.m_buffer[i].m_flags == NetSegment.Flags.None) // segment is unused
 					continue;
-				var segmentInfo = segment.Info;
+				var segmentInfo = segments.m_buffer[i].Info;
 
-				Vector3 centerPos = segment.m_bounds.center;
+				Vector3 centerPos = segments.m_buffer[i].m_bounds.center;
 				var screenPos = Camera.main.WorldToScreenPoint(centerPos);
 				screenPos.y = Screen.height - screenPos.y;
 
@@ -1403,15 +1400,15 @@ namespace TrafficManager.TrafficLight {
 
 				String labelStr = "Segment " + i;
 #if DEBUG
-					labelStr += ", flags: " + segment.m_flags.ToString();
+					labelStr += ", flags: " + segments.m_buffer[i].m_flags.ToString();
 #endif
-				labelStr += "\nTraffic: " + segment.m_trafficDensity + " %";
+				labelStr += "\nTraffic: " + segments.m_buffer[i].m_trafficDensity + " %";
 
 				float meanLaneSpeed = 0f;
 				float meanLaneDensity = 0f;
 
 				int lIndex = 0;
-				uint laneId = segment.m_lanes;
+				uint laneId = segments.m_buffer[i].m_lanes;
 				int validLanes = 0;
 				while (lIndex < segmentInfo.m_lanes.Length && laneId != 0u) {
 					NetInfo.Lane lane = segmentInfo.m_lanes[lIndex];
@@ -1438,7 +1435,7 @@ namespace TrafficManager.TrafficLight {
 				labelStr += " avg. density: " + String.Format("{0:0.##}", meanLaneDensity) + " %)";
 
 #if DEBUG
-				labelStr += "\nstart: " + segment.m_startNode + ", end: " + segment.m_endNode;
+				labelStr += "\nstart: " + segments.m_buffer[i].m_startNode + ", end: " + segments.m_buffer[i].m_endNode;
 #endif
 
 				Vector2 dim = _counterStyle.CalcSize(new GUIContent(labelStr));
@@ -1447,7 +1444,7 @@ namespace TrafficManager.TrafficLight {
 				GUI.Label(labelRect, labelStr, _counterStyle);
 
 				if (Options.showLanes)
-					 _guiLanes(ref segment, ref segmentInfo);
+					 _guiLanes(ref segments.m_buffer[i], ref segmentInfo);
 			}
 		}
 
@@ -1457,11 +1454,10 @@ namespace TrafficManager.TrafficLight {
 		private void _guiNodes() {
 			Array16<NetNode> nodes = Singleton<NetManager>.instance.m_nodes;
 			for (int i = 1; i < nodes.m_size; ++i) {
-				NetNode node = nodes.m_buffer[i];
-				if ((node.m_flags & NetNode.Flags.Created) == NetNode.Flags.None) // node is unused
+				if ((nodes.m_buffer[i].m_flags & NetNode.Flags.Created) == NetNode.Flags.None) // node is unused
 					continue;
 
-				Vector3 pos = node.m_position;
+				Vector3 pos = nodes.m_buffer[i].m_position;
 				var screenPos = Camera.main.WorldToScreenPoint(pos);
 				screenPos.y = Screen.height - screenPos.y;
 
@@ -2413,7 +2409,7 @@ namespace TrafficManager.TrafficLight {
 			if (segment.m_startNode == SelectedNode)
 				dir = NetInfo.Direction.Backward;
 			var dir2 = ((segment.m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None) ? dir : NetInfo.InvertDirection(dir);
-			var dir3 = TrafficPriority.LeftHandDrive ? NetInfo.InvertDirection(dir2) : dir2;
+			var dir3 = TrafficPriority.IsLeftHandDrive() ? NetInfo.InvertDirection(dir2) : dir2;
 
 			var numLanes = 0;
 
@@ -2454,74 +2450,40 @@ namespace TrafficManager.TrafficLight {
 
 		private void _guiLaneChangeWindow(int num) {
 			var instance = Singleton<NetManager>.instance;
-
 			var segment = instance.m_segments.m_buffer[SelectedSegment];
-
 			var info = segment.Info;
 
-			var num2 = segment.m_lanes;
-			var num3 = 0;
 
-			var laneList = new List<float[]>();
+			var laneList = new List<object[]>();
 
-			var dir = NetInfo.Direction.Forward;
-			if (segment.m_startNode == SelectedNode)
-				dir = NetInfo.Direction.Backward;
+			var dir = SelectedNode == segment.m_startNode ? NetInfo.Direction.Backward : NetInfo.Direction.Forward;
 			var dir2 = ((segment.m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None) ? dir : NetInfo.InvertDirection(dir);
-			var dir3 = TrafficPriority.LeftHandDrive ? NetInfo.InvertDirection(dir2) : dir2;
+			var dir3 = TrafficPriority.IsLeftHandDrive() ? NetInfo.InvertDirection(dir2) : dir2;
 
-			var maxValue = 0f;
-
-			while (num3 < info.m_lanes.Length && num2 != 0u) {
-				if (info.m_lanes[num3].m_laneType != NetInfo.LaneType.Pedestrian && info.m_lanes[num3].m_laneType != NetInfo.LaneType.Parking && info.m_lanes[num3].m_laneType != NetInfo.LaneType.None &&
-					info.m_lanes[num3].m_direction == dir3) {
-					laneList.Add(new[] { num2, info.m_lanes[num3].m_position, num3 });
-					maxValue = Mathf.Max(maxValue, info.m_lanes[num3].m_position);
+			var curLaneId = segment.m_lanes;
+			var laneIndex = 0;
+			while (laneIndex < info.m_lanes.Length && curLaneId != 0u) {
+				if (info.m_lanes[laneIndex].m_laneType != NetInfo.LaneType.Pedestrian &&
+					info.m_lanes[laneIndex].m_laneType != NetInfo.LaneType.Parking &&
+					info.m_lanes[laneIndex].m_laneType != NetInfo.LaneType.None &&
+					info.m_lanes[laneIndex].m_finalDirection == dir2) {
+					laneList.Add(new object[] {curLaneId, info.m_lanes[laneIndex].m_position});
 				}
 
-				num2 = instance.m_lanes.m_buffer[num2].m_nextLane;
-				num3++;
+				curLaneId = instance.m_lanes.m_buffer[curLaneId].m_nextLane;
+				laneIndex++;
 			}
 
-			if (!CustomRoadAI.GetSegmentGeometry(SelectedSegment).IsOneWay()) {
-				laneList.Sort(delegate (float[] x, float[] y) {
-					if (!TrafficPriority.LeftHandDrive) {
-						if (Mathf.Abs(y[1]) > Mathf.Abs(x[1])) {
-							return -1;
-						}
-						return 1;
-					}
-					if (Mathf.Abs(x[1]) > Mathf.Abs(y[1])) {
-						return -1;
-					}
+			// sort lanes from left to right
+			laneList.Sort(delegate (object[] x, object[] y) {
+				if ((float)x[1] == (float)y[1])
+					return 0;
+
+				if ((dir2 == NetInfo.Direction.Forward) ^ (float)x[1] < (float)y[1]) {
 					return 1;
-				});
-			} else {
-				laneList.Sort(delegate (float[] x, float[] y) {
-					if (!TrafficPriority.LeftHandDrive) {
-						if (dir3 == NetInfo.Direction.Forward) {
-							if (y[1] + maxValue > x[1] + maxValue) {
-								return -1;
-							}
-							return 1;
-						}
-						if (x[1] + maxValue > y[1] + maxValue) {
-							return -1;
-						}
-						return 1;
-					}
-					if (dir3 == NetInfo.Direction.Forward) {
-						if (x[1] + maxValue > y[1] + maxValue) {
-							return -1;
-						}
-						return 1;
-					}
-					if (y[1] + maxValue > x[1] + maxValue) {
-						return -1;
-					}
-					return 1;
-				});
-			}
+				}
+				return -1;
+			});
 
 			GUILayout.BeginHorizontal();
 
@@ -2543,7 +2505,7 @@ namespace TrafficManager.TrafficLight {
 				};
 
 				GUILayout.BeginVertical(laneStyle);
-				GUILayout.Label(Translation.GetString("Lane") + " " + (i + 1), laneTitleStyle);
+				GUILayout.Label(Translation.GetString("Lane") + " " + (i + 1) + " " + (float)laneList[i][1], laneTitleStyle);
 				GUILayout.BeginVertical();
 				GUILayout.BeginHorizontal();
 				if (!Flags.applyLaneArrowFlags((uint)laneList[i][0])) {
@@ -3053,6 +3015,7 @@ namespace TrafficManager.TrafficLight {
 
 		private bool _timedPanelAdd;
 		private int _timedEditStep = -1;
+		private int _timedViewedStep = -1;
 		private readonly TrafficLightToolTextureResources _trafficLightToolTextureResources = new TrafficLightToolTextureResources();
 
 		private void _guiTimedControlPanel(int num) {
@@ -3117,7 +3080,11 @@ namespace TrafficManager.TrafficLight {
 							GUILayout.Label(Translation.GetString("State") + " " + (i + 1) + ": " + timedNodeMain.GetStep(i).minTime + " - " + timedNodeMain.GetStep(i).maxTime, layout);
 						}
 					} else {
-						GUILayout.Label(Translation.GetString("State") + " " + (i + 1) + ": " + timedNodeMain.GetStep(i).minTime + " - " + timedNodeMain.GetStep(i).maxTime);
+						GUIStyle labelLayout = layout;
+						if (_timedViewedStep == i) {
+							labelLayout = layoutGreen;
+						}
+						GUILayout.Label(Translation.GetString("State") + " " + (i + 1) + ": " + timedNodeMain.GetStep(i).minTime + " - " + timedNodeMain.GetStep(i).maxTime, labelLayout);
 
 						if (_timedEditStep < 0) {
 							GUILayout.BeginHorizontal(GUILayout.Width(100));
@@ -3131,6 +3098,7 @@ namespace TrafficManager.TrafficLight {
 											break;
 										}
 										timedNode2.MoveStep(i, i - 1);
+										_timedViewedStep = i - 1;
 									}
 								}
 							} else {
@@ -3145,6 +3113,7 @@ namespace TrafficManager.TrafficLight {
 											break;
 										}
 										timedNode2.MoveStep(i, i + 1);
+										_timedViewedStep = i + 1;
 									}
 								}
 							} else {
@@ -3155,6 +3124,7 @@ namespace TrafficManager.TrafficLight {
 
 							if (GUILayout.Button(Translation.GetString("View"), GUILayout.Width(70))) {
 								_timedPanelAdd = false;
+								_timedViewedStep = i;
 
 								foreach (var timedNode2 in SelectedNodeIndexes.Select(TrafficLightsTimed.GetTimedLight)) {
 									if (timedNode2 == null) {
@@ -3168,6 +3138,7 @@ namespace TrafficManager.TrafficLight {
 							if (GUILayout.Button(Translation.GetString("Edit"), GUILayout.Width(65))) {
 								_timedPanelAdd = false;
 								_timedEditStep = i;
+								_timedViewedStep = -1;
 								_stepMinValue = timedNodeMain.GetStep(i).minTime;
 								_stepMaxValue = timedNodeMain.GetStep(i).maxTime;
 								_waitFlowBalance = timedNodeMain.GetStep(i).waitFlowBalance;
@@ -3186,6 +3157,7 @@ namespace TrafficManager.TrafficLight {
 
 							if (GUILayout.Button(Translation.GetString("Delete"), GUILayout.Width(70))) {
 								_timedPanelAdd = false;
+								_timedViewedStep = -1;
 
 								foreach (var timeNode in SelectedNodeIndexes.Select(TrafficLightsTimed.GetTimedLight)) {
 									if (timeNode == null) {
@@ -3236,6 +3208,7 @@ namespace TrafficManager.TrafficLight {
 						}
 
 						_timedEditStep = -1;
+						_timedViewedStep = -1;
 						nodeSelectionLocked = false;
 					}
 
@@ -3297,20 +3270,10 @@ namespace TrafficManager.TrafficLight {
 				} else {
 					if (_timedEditStep < 0) {
 						if (GUILayout.Button(Translation.GetString("Add_step"))) {
-							if (timedNodeMain.NumSteps() > 0) {
-								// invert light state from last step
-								foreach (var timedNode in SelectedNodeIndexes.Select(TrafficLightsTimed.GetTimedLight)) {
-									if (timedNode == null) {
-										TrafficLightSimulation.RemoveNodeFromSimulation(SelectedNodeIndexes.First(), true);
-										break;
-									}
-
-									timedNode.Steps[timedNode.NumSteps() - 1].SetLights(true);
-								}
-							}
-
 							_timedPanelAdd = true;
 							nodeSelectionLocked = true;
+							_timedViewedStep = -1;
+							_timedEditStep = -1;
 						}
 					}
 				}

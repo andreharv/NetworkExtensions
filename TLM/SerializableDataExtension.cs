@@ -519,17 +519,15 @@ namespace TrafficManager {
 
 		private static void SaveLaneData(uint i, Configuration configuration) {
 			try {
-				NetLane lane = Singleton<NetManager>.instance.m_lanes.m_buffer[i];
 				//NetLane.Flags flags = (NetLane.Flags)lane.m_flags;
 				/*if ((flags & NetLane.Flags.LeftForwardRight) == NetLane.Flags.None) // only save lanes with explicit lane arrows
 					return;*/
-				var laneSegmentId = lane.m_segment;
+				var laneSegmentId = Singleton<NetManager>.instance.m_lanes.m_buffer[i].m_segment;
 				if (laneSegmentId <= 0)
 					return;
-				if ((lane.m_flags & (ushort)NetLane.Flags.Created) == 0 || laneSegmentId == 0)
+				if ((Singleton<NetManager>.instance.m_lanes.m_buffer[i].m_flags & (ushort)NetLane.Flags.Created) == 0 || laneSegmentId == 0)
 					return;
-				NetSegment segment = Singleton<NetManager>.instance.m_segments.m_buffer[laneSegmentId];
-				if ((segment.m_flags & NetSegment.Flags.Created) == NetSegment.Flags.None)
+				if ((Singleton<NetManager>.instance.m_segments.m_buffer[laneSegmentId].m_flags & NetSegment.Flags.Created) == NetSegment.Flags.None)
 					return;
 
 				//if (TrafficPriority.PrioritySegments.ContainsKey(laneSegmentId)) {

@@ -4,7 +4,6 @@ using ColossalFramework;
 using TrafficManager.Traffic;
 using UnityEngine;
 using TrafficManager.Custom.AI;
-using TrafficManager.Custom.Misc;
 
 namespace TrafficManager.TrafficLight {
 	public class ManualSegmentLight : ICloneable {
@@ -291,6 +290,12 @@ namespace TrafficManager.TrafficLight {
 			} else if (LightRight == RoadBaseAI.TrafficLightState.GreenToRed) {
 				LightRight = RoadBaseAI.TrafficLightState.Red;
 			}
+		}
+
+		internal void makeRed() {
+			LightLeft = RoadBaseAI.TrafficLightState.Red;
+			LightMain = RoadBaseAI.TrafficLightState.Red;
+			LightRight = RoadBaseAI.TrafficLightState.Red;
 		}
 	}
 }

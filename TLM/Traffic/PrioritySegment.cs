@@ -82,9 +82,8 @@ namespace TrafficManager.Traffic {
 			VehicleManager vehicleManager = Singleton<VehicleManager>.instance;
 			NetManager netManager = Singleton<NetManager>.instance;
 
-			NetNode node = netManager.m_nodes.m_buffer[NodeId];
 			for (var s = 0; s < 8; s++) {
-				var segmentId = node.GetSegment(s);
+				var segmentId = netManager.m_nodes.m_buffer[NodeId].GetSegment(s);
 
 				if (segmentId == 0 || segmentId == SegmentId)
 					continue;
@@ -110,8 +109,12 @@ namespace TrafficManager.Traffic {
 				float avgSegmentLength = Singleton<NetManager>.instance.m_segments.m_buffer[carPos.ToSegment].m_averageLength;
 				var normLength = vehicleManager.m_vehicles.m_buffer[vehicleId].CalculateTotalLength(vehicleId) / avgSegmentLength;
 
-				if (numCarsGoingToSegmentId.ContainsKey(carPos.ToSegment))
-					numCarsGoingToSegmentId[carPos.ToSegment] += normLength;
+				if (numCarsGoingToSegmentId.ContainsKey(carPos.ToSegment)) {
+					/*if (carPos.OnEmergency)
+						numCarsGoingToSegmentId[carPos.ToSegment] += 10000f;
+					else*/
+						numCarsGoingToSegmentId[carPos.ToSegment] += normLength;
+				}
 				// "else" must not happen (incoming one-way)
 			}
 			return numCarsGoingToSegmentId;

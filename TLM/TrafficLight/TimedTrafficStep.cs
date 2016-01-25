@@ -4,7 +4,6 @@ using ColossalFramework;
 using TrafficManager.TrafficLight;
 using TrafficManager.Traffic;
 using TrafficManager.Custom.AI;
-using TrafficManager.Custom.Misc;
 
 namespace TrafficManager.TrafficLight {
 	public class TimedTrafficStep : ICloneable {
@@ -201,7 +200,7 @@ namespace TrafficManager.TrafficLight {
 		/// <param name="segmentId"></param>
 		internal void addSegment(ushort segmentId) {
 			segmentLightStates.Add(segmentId, (ManualSegmentLight)TrafficLightsManual.GetOrLiveSegmentLight(nodeId, segmentId).Clone());
-			segmentLightStates[segmentId].makeRedOrGreen();
+			segmentLightStates[segmentId].makeRed();
 		}
 
 		private RoadBaseAI.TrafficLightState calcLightState(RoadBaseAI.TrafficLightState previousState, RoadBaseAI.TrafficLightState currentState, RoadBaseAI.TrafficLightState nextState, bool atStartTransition, bool atEndTransition) {
@@ -305,12 +304,12 @@ namespace TrafficManager.TrafficLight {
 					if (Single.IsNaN(newFlow))
 						newFlow = flow;
 					else
-						newFlow = 0.25f * newFlow + 0.75f * flow; // some smoothing
+						newFlow = 0.1f * newFlow + 0.9f * flow; // some smoothing
 
 					if (Single.IsNaN(newWait))
 						newWait = 0;
 					else
-						newWait = 0.25f * newWait + 0.75f * wait; // some smoothing
+						newWait = 0.1f * newWait + 0.9f * wait; // some smoothing
 
 					// if more cars are waiting than flowing, we change the step
 					bool done = newWait > 0 && newFlow < newWait;
