@@ -35,13 +35,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Transit.Addon.TrafficAI\Transit.Addon.TrafficAI.csproj">
+    <ProjectReference Include="..\Transit.Addon.PathFinding\Transit.Addon.PathFinding.csproj">
       <Project>{20f6a0dc-131c-49cd-9d9b-95b6e41cddff}</Project>
-      <Name>Transit.Addon.TrafficAI</Name>
+      <Name>Transit.Addon.PathFinding</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Transit.Addon.TrafficTools\Transit.Addon.TrafficTools.csproj">
+    <ProjectReference Include="..\Transit.Addon.Tools\Transit.Addon.Tools.csproj">
       <Project>{4499042e-dcd1-4f9f-a3c8-4830108169cd}</Project>
-      <Name>Transit.Addon.TrafficTools</Name>
+      <Name>Transit.Addon.Tools</Name>
     </ProjectReference>
     <ProjectReference Include="..\Transit.Addon\Transit.Addon.csproj">
       <Project>{80C47696-4D41-4BB6-9CAE-C477FE528ADF}</Project>

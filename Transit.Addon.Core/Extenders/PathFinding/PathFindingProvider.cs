@@ -1,25 +1,29 @@
-﻿using System;
-using ColossalFramework;
-using Transit.Addon.Core.Prerequisites.PathFinding;
+﻿using ColossalFramework;
+using System;
 
 namespace Transit.Addon.Core.Extenders.PathFinding
 {
-    public class PathFindingProvider : Singleton<PathFindingProvider>
+    public partial class PathFindingProvider : Singleton<PathFindingProvider>
     {
-        private Type _pathFindType = typeof(VanillaPathFinding);
+        private Type _pathFindType = null;
 
-        public void SetType<T>()
+        public void SetCustomPathFinding<T>()
             where T : IPathFindingImplementation, new()
         {
             _pathFindType = typeof(T);
         }
 
-        public void ResetToDefault()
+        public void DisableCustomPathFinding()
         {
-            _pathFindType = typeof(VanillaPathFinding);
+            _pathFindType = null;
         }
 
-        public IPathFindingImplementation CreatePathFinding()
+        public bool HasCustomPathFinding()
+        {
+            return _pathFindType != null;
+        }
+
+        public IPathFindingImplementation CreateCustomPathFinding()
         {
             return (IPathFindingImplementation)Activator.CreateInstance(_pathFindType);
         }

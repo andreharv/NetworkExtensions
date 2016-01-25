@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_References", "_References", "{FC5D316C-D7B8-4986-9E91-D3784D4A8CBB}"
 	ProjectSection(SolutionItems) = preProject
@@ -27,9 +27,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Framework.Unsafe", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Framework", "Transit.Framework\Transit.Framework.csproj", "{8891467E-C88E-46B0-96F9-4413DF6DC205}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Addon.TrafficTools", "Transit.Addon.TrafficTools\Transit.Addon.TrafficTools.csproj", "{4499042E-DCD1-4F9F-A3C8-4830108169CD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Addon.Tools", "Transit.Addon.Tools\Transit.Addon.Tools.csproj", "{4499042E-DCD1-4F9F-A3C8-4830108169CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Addon.TrafficAI", "Transit.Addon.TrafficAI\Transit.Addon.TrafficAI.csproj", "{20F6A0DC-131C-49CD-9D9B-95B6E41CDDFF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Addon.PathFinding", "Transit.Addon.PathFinding\Transit.Addon.PathFinding.csproj", "{20F6A0DC-131C-49CD-9D9B-95B6E41CDDFF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Addon.RoadExtensions", "Transit.Addon.RoadExtensions\Transit.Addon.RoadExtensions.csproj", "{19FA21B2-39CC-4B90-BE7E-B6BDCCB09208}"
 EndProject
@@ -44,6 +44,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Addon.Core", "Transit.Addon.Core\Transit.Addon.Core.csproj", "{61414A57-131A-44CF-ADCE-9179ED788D3C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Old", "_Old", "{5CF124A2-EAB5-41D2-9A29-A5BD9663364D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkExtensions", "NetworkExtensions\NetworkExtensions.csproj", "{DCD9DD56-9C49-4BA9-8F37-7567444FE7CB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -94,6 +96,10 @@ Global
 		{61414A57-131A-44CF-ADCE-9179ED788D3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61414A57-131A-44CF-ADCE-9179ED788D3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61414A57-131A-44CF-ADCE-9179ED788D3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCD9DD56-9C49-4BA9-8F37-7567444FE7CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCD9DD56-9C49-4BA9-8F37-7567444FE7CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCD9DD56-9C49-4BA9-8F37-7567444FE7CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCD9DD56-9C49-4BA9-8F37-7567444FE7CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -101,6 +107,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{8229C9FB-A4EC-43CD-9539-2B3E391C4C29} = {5CF124A2-EAB5-41D2-9A29-A5BD9663364D}
 		{7DFBABEB-DED8-4E16-8AA5-B38C3EF64305} = {309D6357-1B62-4C4B-9239-4E2FD95FE267}
+		{80C47696-4D41-4BB6-9CAE-C477FE528ADF} = {309D6357-1B62-4C4B-9239-4E2FD95FE267}
 		{D2DA5492-3DE6-4E7D-AFF1-BB62C950632D} = {309D6357-1B62-4C4B-9239-4E2FD95FE267}
+		{DCD9DD56-9C49-4BA9-8F37-7567444FE7CB} = {309D6357-1B62-4C4B-9239-4E2FD95FE267}
 	EndGlobalSection
 EndGlobal

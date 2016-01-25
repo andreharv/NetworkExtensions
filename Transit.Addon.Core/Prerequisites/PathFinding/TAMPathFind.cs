@@ -16,7 +16,15 @@ namespace Transit.Addon.Core.Prerequisites.PathFinding
             IPathFindingImplementation pathFinder;
             if (!s_pathFinds.TryGetValue(threadId, out pathFinder))
             {
-                pathFinder = PathFindingProvider.instance.CreatePathFinding();
+                if (PathFindingProvider.instance.HasCustomPathFinding())
+                {
+                    pathFinder = PathFindingProvider.instance.CreateCustomPathFinding();
+                }
+                else
+                {
+                    pathFinder = new TAMPathFindVanilla();
+                }
+
                 s_pathFinds.Add(threadId, pathFinder);
             }
 
