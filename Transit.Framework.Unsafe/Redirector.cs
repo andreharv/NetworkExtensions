@@ -139,7 +139,7 @@ namespace Transit.Framework.Unsafe
                         {
                             if (!s_redirections.Any(r => r.OriginalMethod == originalMethod))
                             {
-                                Debug.Log(string.Format("TAM: Adding redirection from {0}", originalMethod.Name));
+                                Debug.Log(string.Format("TFW: Adding redirection from {0}", originalMethod.Name));
                                 s_redirections.Add(originalMethod.RedirectTo(method, callingAssembly));
                             }
                         }
@@ -148,7 +148,7 @@ namespace Transit.Framework.Unsafe
                         {
                             if (!s_redirections.Any(r => r.OriginalMethod == method))
                             {
-                                Debug.Log(string.Format("TAM: Adding redirection to {0}", originalMethod.Name));
+                                Debug.Log(string.Format("TFW: Adding redirection to {0}", originalMethod.Name));
                                 s_redirections.Add(method.RedirectTo(originalMethod, callingAssembly));
                             }
                         }
@@ -167,7 +167,7 @@ namespace Transit.Framework.Unsafe
 
                 if (Equals(redirection.RedirectionSource, callingAssembly))
                 {
-                    Debug.Log(string.Format("TAM: Removing redirection {0}", s_redirections[i].OriginalMethod));
+                    Debug.Log(string.Format("TFW: Removing redirection {0}", s_redirections[i].OriginalMethod));
                     s_redirections[i].Dispose();
                     s_redirections.RemoveAt(i);
                 }

@@ -11,12 +11,17 @@ namespace Transit.Addon
 
         public override string Name
         {
-            get { return _name; }
+            get { return "Transit Addons Mod"; }
         }
 
         public override string Description
         {
-            get { return _description; }
+            get { return "Closed Beta"; }
+        }
+
+        public override string Version
+        {
+            get { return "0.0.1"; }
         }
     }
 }

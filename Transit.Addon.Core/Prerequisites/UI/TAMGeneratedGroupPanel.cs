@@ -19,7 +19,9 @@ namespace Transit.Addon.Core.Prerequisites.UI
         private const string kSubbarPanelTemplate = "SubbarPanelTemplate";
 
         [RedirectFrom(typeof (GeneratedGroupPanel))]
+#pragma warning disable 108,114
         protected UIButton SpawnButtonEntry(UITabstrip strip, string name, string category, bool isDefaultCategory,
+#pragma warning restore 108,114
             string localeID, string unlockText, string spriteBase, bool enabled, bool forceFillContainer)
         {
             int objectIndex = (int)typeof(GeneratedGroupPanel).GetField("m_ObjectIndex", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(this);

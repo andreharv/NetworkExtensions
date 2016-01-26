@@ -3,18 +3,18 @@ using ICities;
 using Transit.Framework.Modularity;
 using UnityEngine;
 
-namespace Transit.Addon
+namespace NetworkExtensions
 {
     public partial class Mod
     {
         protected override string SettingsFile
         {
-            get { return "TransitAddonModSettings.xml"; }
+            get { return "NetworkExtensionsConfig.xml"; }
         }
 
         protected override string SettingsNode
         {
-            get { return "TransitAddonMod"; }
+            get { return "NetworkExtensions"; }
         }
 
         private UIScrollablePanel _optionsPanel;
@@ -27,6 +27,13 @@ namespace Transit.Addon
 
             _optionsPanel = ((UIHelper)helper).self as UIScrollablePanel;
             _optionsPanel.autoLayout = false;
+
+            if (IsTAMInstalled)
+            {
+                UILabel label = _optionsPanel.AddUIComponent<UILabel>();
+                label.text = "Transit Addons Mod (TAM) has been detected - Network Extensions have been disabled";
+                return;
+            }
 
             UITabstrip strip = _optionsPanel.AddUIComponent<UITabstrip>();
             strip.relativePosition = new Vector3(0, 0);
@@ -50,10 +57,9 @@ namespace Transit.Addon
                 stripRoot.autoLayoutPadding.top = 5;
                 stripRoot.autoLayoutPadding.left = 10;
                 UIHelper stripHelper = new UIHelper(stripRoot);
-                
+
                 module.OnSettingsUI(stripHelper);
             }
-
         }
     }
 }
