@@ -2,6 +2,7 @@
 
 namespace Transit.Addon.Tools.Core
 {
+    // Legacy
     [Flags]
     public enum TAMVehicleType
     {

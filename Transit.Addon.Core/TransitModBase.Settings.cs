@@ -14,7 +14,7 @@ namespace Transit.Addon.Core
         protected virtual void SaveSettings()
         {
             var settingsDoc = new XmlDocument();
-            var root = settingsDoc.AppendElement(SettingsFile);
+            var root = settingsDoc.AppendElement(SettingsNode);
 
             root.AppendAttribute("Version", Version);
 

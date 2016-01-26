@@ -3,7 +3,10 @@ using Transit.Framework.Modularity;
 using ICities;
 using System.Xml;
 using System;
+using System.Linq;
+using ColossalFramework;
 using ColossalFramework.UI;
+using UnityEngine;
 
 namespace Transit.Addon.PathFinding
 {
@@ -13,45 +16,85 @@ namespace Transit.Addon.PathFinding
         public enum Options : long
         {
             None = 0,
-
             CongestionAvoidance = 1,
         }
 
-        private static Options s_options = Options.CongestionAvoidance;
-        public static Options TrafficAIOptions { get { return s_options; } }
+        private static Options s_activeOptions = Options.None;
+        public static Options PathfindingOptions { get { return s_activeOptions; } }
 
         public override void OnSettingsUI(UIHelperBase helper)
         {
             base.OnSettingsUI(helper);
-
-            helper.AddCheckbox("Congestion Avoidance", "Vehicles will actively avoid congestions", true, OnCheckboxChanged, true, Options.CongestionAvoidance);
-        }        
-
-        public override void OnSaveSettings(XmlElement moduleElement)
-        {
-            TrafficAIOptions.ToXml(moduleElement);
-        }
+            
+            helper.AddCheckbox(
+                "Congestion Avoidance", 
+                "Vehicles will actively avoid congestions",
+                s_activeOptions.IsFlagSet(Options.CongestionAvoidance),
+                isChecked =>
+                {
+                    if (isChecked)
+                    {
+                        s_activeOptions = s_activeOptions | Options.CongestionAvoidance;
+                    }
+                    else
+                    {
+                        s_activeOptions = s_activeOptions & ~Options.CongestionAvoidance;
+                    }
+                    FireSaveSettingsNeeded();
+                },
+                true);
+        } 
 
         public override void OnLoadSettings(XmlElement moduleElement)
         {
-            if (moduleElement != null)
+            foreach (var option in Enum.GetValues(typeof(Options))
+                                       .OfType<Options>()
+                                       .Where(o => o != 0))
             {
-                s_options = (Options)s_options.FromXml(moduleElement);
+                bool? isEnabled = null;
+
+                if (moduleElement != null)
+                {
+                    var nodeList = moduleElement.GetElementsByTagName(option.ToString().ToUpper());
+                    if (nodeList.Count > 0)
+                    {
+                        var node = (XmlElement)nodeList[0];
+                        var nodeValue = true;
+
+                        if (bool.TryParse(node.InnerText, out nodeValue))
+                        {
+                            isEnabled = nodeValue;
+                        }
+                    }
+                }
+
+                if (isEnabled == null)
+                {
+                    isEnabled = true;
+                }
+
+                if (isEnabled.Value)
+                {
+                    s_activeOptions = s_activeOptions | option;
+                }
+                else
+                {
+                    s_activeOptions = s_activeOptions & ~option;
+                }
             }
         }
 
-        private void OnCheckboxChanged(UIComponent c, bool isChecked)
+        public override void OnSaveSettings(XmlElement moduleElement)
         {
-            UICheckBox checkBox = c as UICheckBox;
-            if (checkBox != null && checkBox.objectUserData != null)
-            {
-                Options checkboxOption = (Options)checkBox.objectUserData;
-                if (isChecked)
-                    s_options |= checkboxOption;
-                else
-                    s_options &= ~checkboxOption;
+            base.OnSaveSettings(moduleElement);
 
-                FireSaveSettingsNeeded();
+            foreach (var option in Enum.GetValues(typeof(Options))
+                                       .OfType<Options>()
+                                       .Where(o => o != 0))
+            {
+                moduleElement.AppendElement(
+                    option.ToString().ToUpper(),
+                    s_activeOptions.HasFlag(option).ToString());
             }
         }
     }

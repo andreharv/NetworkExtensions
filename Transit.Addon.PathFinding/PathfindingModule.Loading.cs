@@ -14,7 +14,7 @@ namespace Transit.Addon.PathFinding
         {
             if (mode == LoadMode.NewGame || mode == LoadMode.LoadGame)
             {
-                Redirector.PerformRedirections((ulong)TrafficAIOptions);
+                Redirector.PerformRedirections((ulong)PathfindingOptions);
             }
         }
 
