@@ -45,6 +45,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkExtensions.Deploy", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Addon.Core", "Transit.Addon.Core\Transit.Addon.Core.csproj", "{61414A57-131A-44CF-ADCE-9179ED788D3C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Framework.UI", "Transit.Framework.UI\Transit.Framework.UI.csproj", "{5414D25F-E718-48B7-8C23-8DFEC246B8C9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -98,6 +100,10 @@ Global
 		{61414A57-131A-44CF-ADCE-9179ED788D3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61414A57-131A-44CF-ADCE-9179ED788D3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61414A57-131A-44CF-ADCE-9179ED788D3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5414D25F-E718-48B7-8C23-8DFEC246B8C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5414D25F-E718-48B7-8C23-8DFEC246B8C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5414D25F-E718-48B7-8C23-8DFEC246B8C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5414D25F-E718-48B7-8C23-8DFEC246B8C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
