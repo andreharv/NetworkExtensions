@@ -2,9 +2,10 @@
 A work-in-progress modification for **Cities: Skylines** to add additional road traffic control
 
 # Changelog
-1.4.9, 01/26/2016
+1.4.9, 01/27/2016
+- Junctions may now be added to/removed from timed traffic lights after they are created
+- When viewing/moving a timed step, the displayed/moved step is now highlighted (thanks to Joe for this idea)
 - Performance improvements
-- When viewing/moving a timed step, the displayed/moved step is now marked (thanks to Joe for this idea)
 - Bugfix (AI): Fixed a division by zero error (thanks to @GordonDry for pointing out this problem)
 - Bugfix (AI): Near highway exits vehicles tended to use the outermost lane (thanks to @Zake for pointing out this problem)
 - Bugfix: Some lane arrows disappeared on maps using left-hand traffic systems (thanks to @Mas71 for pointing out this problem)

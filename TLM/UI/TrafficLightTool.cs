@@ -115,7 +115,7 @@ namespace TrafficManager.TrafficLight {
 			SelectedNode = 0;
 			SelectedSegment = 0;
 
-			if (mode != ToolMode.TimedLightsSelectNode && mode != ToolMode.TimedLightsShowLights) {
+			if (mode != ToolMode.TimedLightsSelectNode && mode != ToolMode.TimedLightsShowLights && mode != ToolMode.TimedLightsAddNode && mode != ToolMode.TimedLightsRemoveNode) {
 				ClearSelectedNodes();
 				_timedShowNumbers = false;
 			}
@@ -166,7 +166,9 @@ namespace TrafficManager.TrafficLight {
 					break;
 				case ToolMode.TimedLightsSelectNode:
 				case ToolMode.TimedLightsShowLights:
-					_renderOverlayTimedSelectNodes(cameraInfo);
+				case ToolMode.TimedLightsAddNode:
+				case ToolMode.TimedLightsRemoveNode:
+					_renderOverlayTimedSelectNodes(cameraInfo, _toolMode == ToolMode.TimedLightsRemoveNode);
 					break;
 				case ToolMode.LaneChange:
 					_renderOverlayLaneChange(cameraInfo);
@@ -218,6 +220,12 @@ namespace TrafficManager.TrafficLight {
 					case ToolMode.TimedLightsShowLights:
 						TimedLightSelectNodeToolMode(node);
 						break;
+					case ToolMode.TimedLightsAddNode:
+						TimedLightAddNodeToolMode(node);
+						break;
+					case ToolMode.TimedLightsRemoveNode:
+						TimedLightRemoveNodeToolMode(node);
+						break;
 					case ToolMode.LaneChange:
 						LaneChangeToolMode();
 						break;
@@ -263,6 +271,8 @@ namespace TrafficManager.TrafficLight {
 						_guiTimedTrafficLightsNode();
 						break;
 					case ToolMode.TimedLightsShowLights:
+					case ToolMode.TimedLightsAddNode:
+					case ToolMode.TimedLightsRemoveNode:
 						_guiTimedTrafficLights();
 						break;
 					case ToolMode.LaneChange:
@@ -364,8 +374,8 @@ namespace TrafficManager.TrafficLight {
 			return position;
 		}
 
-		private void _renderOverlayTimedSelectNodes(RenderManager.CameraInfo cameraInfo) {
-			if (! nodeSelectionLocked && _hoveredNetNodeIdx != 0 && !IsNodeSelected(_hoveredNetNodeIdx) && !m_toolController.IsInsideUI && Cursor.visible) {
+		private void _renderOverlayTimedSelectNodes(RenderManager.CameraInfo cameraInfo, bool onlySelected=false) {
+			if (! nodeSelectionLocked && _hoveredNetNodeIdx != 0 && (!IsNodeSelected(_hoveredNetNodeIdx) ^ onlySelected) && !m_toolController.IsInsideUI && Cursor.visible && Flags.mayHaveTrafficLight(_hoveredNetNodeIdx)) {
 				var node = GetNetNode(_hoveredNetNodeIdx);
 				var segment = Singleton<NetManager>.instance.m_segments.m_buffer[node.m_segment0];
 
@@ -562,6 +572,65 @@ namespace TrafficManager.TrafficLight {
 					showTooltip(Translation.GetString("NODE_IS_TIMED_LIGHT"), node.m_position);
 				}
 			}
+		}
+
+		private void TimedLightAddNodeToolMode(NetNode node) {
+			if (_hoveredNetNodeIdx <= 0 || nodeSelectionLocked)
+				return;
+
+			if (SelectedNodeIndexes.Count <= 0) {
+				SetToolMode(ToolMode.TimedLightsSelectNode);
+				return;
+			}
+
+			if (SelectedNodeIndexes.Contains(_hoveredNetNodeIdx))
+				return;
+
+			bool mayEnterBlocked = Options.mayEnterBlockedJunctions;
+			TrafficLightsTimed existingTimedLight = null;
+			foreach (var nodeId in SelectedNodeIndexes) {
+				var nodeSimulation = TrafficLightSimulation.GetNodeSimulation(nodeId);
+				if (nodeSimulation == null)
+					continue;
+				TrafficLightsTimed timedNode = TrafficLightsTimed.GetTimedLight(nodeId);
+				if (timedNode == null)
+					continue;
+
+				mayEnterBlocked = timedNode.vehiclesMayEnterBlockedJunctions;
+				existingTimedLight = timedNode;
+			}
+
+			var timedLight = TrafficLightsTimed.GetTimedLight(_hoveredNetNodeIdx);
+			if (timedLight == null) {
+				var nodeGroup = new List<ushort>();
+				nodeGroup.Add(_hoveredNetNodeIdx);
+				TrafficLightSimulation nodeSim = TrafficLightSimulation.AddNodeToSimulation(_hoveredNetNodeIdx);
+				nodeSim.setupTimedTrafficLight(nodeGroup);
+				timedLight = TrafficLightsTimed.GetTimedLight(_hoveredNetNodeIdx);
+				timedLight.vehiclesMayEnterBlockedJunctions = mayEnterBlocked;
+			}
+
+			timedLight.Join(existingTimedLight);
+			ClearSelectedNodes();
+			foreach (ushort nodeId in timedLight.NodeGroup)
+				AddSelectedNode(nodeId);
+			SetToolMode(ToolMode.TimedLightsShowLights);
+		}
+
+		private void TimedLightRemoveNodeToolMode(NetNode node) {
+			if (_hoveredNetNodeIdx <= 0 || nodeSelectionLocked)
+				return;
+
+			if (SelectedNodeIndexes.Count <= 0) {
+				SetToolMode(ToolMode.TimedLightsSelectNode);
+				return;
+			}
+
+			if (SelectedNodeIndexes.Contains(_hoveredNetNodeIdx)) {
+				TrafficLightSimulation.RemoveNodeFromSimulation(_hoveredNetNodeIdx, false);
+			}
+			RemoveSelectedNode(_hoveredNetNodeIdx);
+			SetToolMode(ToolMode.TimedLightsShowLights);
 		}
 
 		private void ManualSwitchToolMode(NetNode node) {
@@ -2505,7 +2574,7 @@ namespace TrafficManager.TrafficLight {
 				};
 
 				GUILayout.BeginVertical(laneStyle);
-				GUILayout.Label(Translation.GetString("Lane") + " " + (i + 1) + " " + (float)laneList[i][1], laneTitleStyle);
+				GUILayout.Label(Translation.GetString("Lane") + " " + (i + 1), laneTitleStyle);
 				GUILayout.BeginVertical();
 				GUILayout.BeginHorizontal();
 				if (!Flags.applyLaneArrowFlags((uint)laneList[i][0])) {
@@ -2994,7 +3063,7 @@ namespace TrafficManager.TrafficLight {
 					var node2 = GetNetNode(selectedNodeIndex);
 					TrafficLightSimulation.AddNodeToSimulation(selectedNodeIndex);
 					var nodeSimulation = TrafficLightSimulation.GetNodeSimulation(selectedNodeIndex);
-					nodeSimulation.setupTimedTrafficLight();
+					nodeSimulation.setupTimedTrafficLight(TrafficLightTool.SelectedNodeIndexes);
 
 					for (var s = 0; s < 8; s++) {
 						var segment = node2.GetSegment(s);
@@ -3019,6 +3088,19 @@ namespace TrafficManager.TrafficLight {
 		private readonly TrafficLightToolTextureResources _trafficLightToolTextureResources = new TrafficLightToolTextureResources();
 
 		private void _guiTimedControlPanel(int num) {
+			var layout = new GUIStyle { normal = { textColor = new Color(1f, 1f, 1f) } };
+			var layoutRed = new GUIStyle { normal = { textColor = new Color(1f, 0f, 0f) } };
+			var layoutGreen = new GUIStyle { normal = { textColor = new Color(0f, 1f, 0f) } };
+			var layoutYellow = new GUIStyle { normal = { textColor = new Color(1f, 1f, 0f) } };
+
+			if (_toolMode == ToolMode.TimedLightsAddNode || _toolMode == ToolMode.TimedLightsRemoveNode) {
+				GUILayout.Label(Translation.GetString("Select_junction"));
+				if (GUILayout.Button(Translation.GetString("Cancel"))) {
+					SetToolMode(ToolMode.TimedLightsShowLights);
+				} else
+					return;
+			}
+
 			var nodeSimulation = TrafficLightSimulation.GetNodeSimulation(SelectedNodeIndexes[0]);
 			var timedNodeMain = TrafficLightsTimed.GetTimedLight(SelectedNodeIndexes[0]);
 
@@ -3026,11 +3108,6 @@ namespace TrafficManager.TrafficLight {
 				SetToolMode(ToolMode.TimedLightsSelectNode);
 				return;
 			}
-
-			var layout = new GUIStyle { normal = { textColor = new Color(1f, 1f, 1f) } };
-			var layoutRed = new GUIStyle { normal = { textColor = new Color(1f, 0f, 0f) } };
-			var layoutGreen = new GUIStyle { normal = { textColor = new Color(0f, 1f, 0f) } };
-			var layoutYellow = new GUIStyle { normal = { textColor = new Color(1f, 1f, 0f) } };
 
 			for (var i = 0; i < timedNodeMain.NumSteps(); i++) {
 				GUILayout.BeginHorizontal();
@@ -3351,13 +3428,23 @@ namespace TrafficManager.TrafficLight {
 
 			GUILayout.Space(30);
 
-			if (!GUILayout.Button(Translation.GetString("Remove_timed_traffic_light"))) {
-				return;
+			if (GUILayout.Button(Translation.GetString("Add_junction_to_timed_light"))) {
+				SetToolMode(ToolMode.TimedLightsAddNode);
 			}
 
-			DisableTimed();
-			ClearSelectedNodes();
-			SetToolMode(ToolMode.None);
+			if (SelectedNodeIndexes.Count > 1) {
+				if (GUILayout.Button(Translation.GetString("Remove_junction_from_timed_light"))) {
+					SetToolMode(ToolMode.TimedLightsRemoveNode);
+				}
+			}
+
+			GUILayout.Space(30);
+
+			if (GUILayout.Button(Translation.GetString("Remove_timed_traffic_light"))) {
+				DisableTimed();
+				ClearSelectedNodes();
+				SetToolMode(ToolMode.None);
+			}
 		}
 
 		private void makeFlowPolicySlider() {
@@ -3681,7 +3768,7 @@ namespace TrafficManager.TrafficLight {
 				var node = GetNetNode(selectedNodeIndex);
 				TrafficLightSimulation.AddNodeToSimulation(selectedNodeIndex);
 				var nodeSimulation = TrafficLightSimulation.GetNodeSimulation(selectedNodeIndex);
-				nodeSimulation.setupTimedTrafficLight();
+				nodeSimulation.setupTimedTrafficLight(TrafficLightTool.SelectedNodeIndexes);
 
 				for (var s = 0; s < 8; s++) {
 					var segment = node.GetSegment(s);

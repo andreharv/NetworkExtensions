@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using ColossalFramework;
 using TrafficManager.Custom.AI;
 using TrafficManager.Traffic;
+using System.Linq;
 
 namespace TrafficManager.TrafficLight {
 	public class TrafficLightsTimed {
@@ -55,7 +56,7 @@ namespace TrafficManager.TrafficLight {
 			return masterNodeId == nodeId;
 		}
 
-		public void AddStep(int minTime, int maxTime, float waitFlowBalance) {
+		public void AddStep(int minTime, int maxTime, float waitFlowBalance, bool makeRed = false) {
 			if (minTime <= 0)
 				minTime = 1;
 			if (maxTime <= 0)
@@ -63,7 +64,7 @@ namespace TrafficManager.TrafficLight {
 			if (maxTime < minTime)
 				maxTime = minTime;
 
-			Steps.Add(new TimedTrafficStep(minTime, maxTime, waitFlowBalance, nodeId, NodeGroup));
+			Steps.Add(new TimedTrafficStep(minTime, maxTime, waitFlowBalance, nodeId, NodeGroup, makeRed));
 		}
 
 		public void Start() {
@@ -94,7 +95,7 @@ namespace TrafficManager.TrafficLight {
 			foreach (ushort otherNodeId in NodeGroup) {
 				if ((Singleton<NetManager>.instance.m_nodes.m_buffer[otherNodeId].m_flags & NetNode.Flags.Created) == NetNode.Flags.None) {
 					Log.Warning($"Timed housekeeping: Remove node {otherNodeId}");
-                    nodeIdsToDelete.Add(otherNodeId);
+					nodeIdsToDelete.Add(otherNodeId);
 					if (otherNodeId == nodeId) {
 						Log.Warning($"Timed housekeeping: Other is this. mayStart = false");
 						mayStart = false;
@@ -160,6 +161,7 @@ namespace TrafficManager.TrafficLight {
 
 		public void SimulationStep() {
 			uint currentFrame = TimedTrafficStep.getCurrentFrame();
+
 			if (lastSimulationStep >= currentFrame)
 				return;
 			lastSimulationStep = currentFrame;
@@ -178,7 +180,7 @@ namespace TrafficManager.TrafficLight {
 				TrafficLightSimulation.RemoveNodeFromSimulation(nodeId, false);
 				return;
 			}
-			
+
 			// set lights
 			foreach (ushort slaveNodeId in NodeGroup) {
 				TrafficLightsTimed slaveTimedNode = GetTimedLight(slaveNodeId);
@@ -188,8 +190,9 @@ namespace TrafficManager.TrafficLight {
 				}
 				slaveTimedNode.Steps[CurrentStep].SetLights();
 			}
-			if (!Steps[CurrentStep].StepDone(true))
+			if (!Steps[CurrentStep].StepDone(true)) {
 				return;
+			}
 			// step is done
 
 			if (!Steps[CurrentStep].isEndTransitionDone())
@@ -272,8 +275,9 @@ namespace TrafficManager.TrafficLight {
 			Steps.RemoveAt(id);
 		}
 
-		public static void AddTimedLight(ushort nodeid, List<ushort> nodeGroup, bool vehiclesMayEnterBlockedJunctions) {
+		public static TrafficLightsTimed AddTimedLight(ushort nodeid, List<ushort> nodeGroup, bool vehiclesMayEnterBlockedJunctions) {
 			TimedScripts.Add(nodeid, new TrafficLightsTimed(nodeid, nodeGroup, vehiclesMayEnterBlockedJunctions));
+			return TimedScripts[nodeid];
 		}
 
 		public static void RemoveTimedLight(ushort nodeid) {
@@ -306,7 +310,7 @@ namespace TrafficManager.TrafficLight {
 
 				return;
 			}
-			
+
 			for (int s = 0; s < 8; ++s) {
 				ushort segmentId = Singleton<NetManager>.instance.m_nodes.m_buffer[nodeId].GetSegment(s);
 				if (segmentId <= 0)
@@ -351,7 +355,7 @@ namespace TrafficManager.TrafficLight {
 
 						// create a new manual light
 						for (int i = 0; i < NumSteps(); ++i) {
-							Steps[i].addSegment(segmentId);
+							Steps[i].addSegment(segmentId, true);
 							Steps[i].calcMaxSegmentLength();
 						}
 					}
@@ -375,6 +379,73 @@ namespace TrafficManager.TrafficLight {
 		internal void ChangeLightMode(ushort segmentId, ManualSegmentLight.Mode mode) {
 			foreach (TimedTrafficStep step in Steps) {
 				step.ChangeLightMode(segmentId, mode);
+			}
+		}
+
+		internal void Join(TrafficLightsTimed otherTimedLight) {
+			if (NumSteps() < otherTimedLight.NumSteps()) {
+				// increase the number of steps at our timed lights
+				for (int i = NumSteps(); i < otherTimedLight.NumSteps(); ++i) {
+					TimedTrafficStep otherStep = otherTimedLight.GetStep(i);
+					foreach (ushort slaveNodeId in NodeGroup) {
+						TrafficLightsTimed ourTimedLight = TrafficLightsTimed.GetTimedLight(slaveNodeId);
+						ourTimedLight.AddStep(otherStep.minTime, otherStep.maxTime, otherStep.waitFlowBalance, true);
+					}
+				}
+			} else {
+				// increase the number of steps at their timed lights
+				for (int i = otherTimedLight.NumSteps(); i < NumSteps(); ++i) {
+					TimedTrafficStep ourStep = GetStep(i);
+					foreach (ushort slaveNodeId in otherTimedLight.NodeGroup) {
+						TrafficLightsTimed theirTimedLight = TrafficLightsTimed.GetTimedLight(slaveNodeId);
+						theirTimedLight.AddStep(ourStep.minTime, ourStep.maxTime, ourStep.waitFlowBalance, true);
+					}
+				}
+			}
+
+			// join groups and re-defined master node, determine mean min/max times & mean wait-flow-balances
+			HashSet<ushort> newNodeGroupSet = new HashSet<ushort>();
+			newNodeGroupSet.UnionWith(NodeGroup);
+			newNodeGroupSet.UnionWith(otherTimedLight.NodeGroup);
+			List<ushort> newNodeGroup = new List<ushort>(newNodeGroupSet);
+			ushort newMasterNodeId = newNodeGroup[0];
+
+			int[] minTimes = new int[NumSteps()];
+			int[] maxTimes = new int[NumSteps()];
+			float[] waitFlowBalances = new float[NumSteps()];
+
+			foreach (ushort timedNodeId in newNodeGroup) {
+				TrafficLightsTimed timedLight = TrafficLightsTimed.GetTimedLight(timedNodeId);
+				for (int i = 0; i < NumSteps(); ++i) {
+					minTimes[i] += timedLight.GetStep(i).minTime;
+					maxTimes[i] += timedLight.GetStep(i).maxTime;
+					waitFlowBalances[i] += timedLight.GetStep(i).waitFlowBalance;
+				}
+
+				timedLight.NodeGroup = newNodeGroup;
+				timedLight.masterNodeId = newMasterNodeId;
+			}
+
+			// build means
+			if (NumSteps() > 0) {
+				for (int i = 0; i < NumSteps(); ++i) {
+					minTimes[i] = Math.Max(1, minTimes[i] / newNodeGroup.Count);
+					maxTimes[i] = Math.Max(1, maxTimes[i] / newNodeGroup.Count);
+					waitFlowBalances[i] = Math.Max(0.001f, waitFlowBalances[i] / (float)newNodeGroup.Count);
+				}
+			}
+
+			// apply means & reset
+			foreach (ushort timedNodeId in newNodeGroup) {
+				TrafficLightsTimed timedLight = TrafficLightsTimed.GetTimedLight(timedNodeId);
+				timedLight.Stop();
+				timedLight.testMode = false;
+				timedLight.lastSimulationStep = 0;
+				for (int i = 0; i < NumSteps(); ++i) {
+					timedLight.GetStep(i).minTime = minTimes[i];
+					timedLight.GetStep(i).maxTime = maxTimes[i];
+					timedLight.GetStep(i).waitFlowBalance = waitFlowBalances[i];
+				}
 			}
 		}
 	}

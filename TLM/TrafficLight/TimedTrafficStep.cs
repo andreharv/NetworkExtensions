@@ -53,7 +53,7 @@ namespace TrafficManager.TrafficLight {
 
 		public float waitFlowBalance = 1f;
 
-		public TimedTrafficStep(int minTime, int maxTime, float waitFlowBalance, ushort nodeId, List<ushort> groupNodeIds) {
+		public TimedTrafficStep(int minTime, int maxTime, float waitFlowBalance, ushort nodeId, List<ushort> groupNodeIds, bool makeRed=false) {
 			this.nodeId = nodeId;
 			this.minTime = minTime;
 			this.maxTime = maxTime;
@@ -74,7 +74,7 @@ namespace TrafficManager.TrafficLight {
 				if (segmentId <= 0)
 					continue;
 
-				addSegment(segmentId);
+				addSegment(segmentId, makeRed);
 			}
 			calcMaxSegmentLength();
 		}
@@ -198,9 +198,12 @@ namespace TrafficManager.TrafficLight {
 		/// Adds a new segment to this step. After adding all steps the method `rebuildSegmentIds` must be called.
 		/// </summary>
 		/// <param name="segmentId"></param>
-		internal void addSegment(ushort segmentId) {
+		internal void addSegment(ushort segmentId, bool makeRed) {
 			segmentLightStates.Add(segmentId, (ManualSegmentLight)TrafficLightsManual.GetOrLiveSegmentLight(nodeId, segmentId).Clone());
-			segmentLightStates[segmentId].makeRed();
+			if (makeRed)
+				segmentLightStates[segmentId].makeRed();
+			else
+				segmentLightStates[segmentId].makeRedOrGreen();
 		}
 
 		private RoadBaseAI.TrafficLightState calcLightState(RoadBaseAI.TrafficLightState previousState, RoadBaseAI.TrafficLightState currentState, RoadBaseAI.TrafficLightState nextState, bool atStartTransition, bool atEndTransition) {
@@ -259,7 +262,7 @@ namespace TrafficManager.TrafficLight {
 			if (stepDone)
 				return true;
 
-			if (startFrame + maxTime <= getCurrentFrame()) {
+			if (getCurrentFrame() >= startFrame + maxTime) {
 				// maximum time reached. switch!
 #if DEBUG
 				//Log.Message("step finished @ " + nodeId);
@@ -269,10 +272,11 @@ namespace TrafficManager.TrafficLight {
 				return stepDone;
 			}
 
-			if (startFrame + minTime <= getCurrentFrame()) {
+			if (getCurrentFrame() >= startFrame + minTime) {
 				if (timedNode.masterNodeId != nodeId) {
 					if (! TrafficLightsTimed.IsTimedLight(timedNode.masterNodeId)) {
 						invalid = true;
+						endTransitionStart = getCurrentFrame();
 						return true;
 					}
 					TrafficLightsTimed masterTimedNode = TrafficLightsTimed.GetTimedLight(timedNode.masterNodeId);
@@ -289,9 +293,10 @@ namespace TrafficManager.TrafficLight {
 					float wait, flow;
 					uint curFrame = getCurrentFrame();
 					if (lastFlowWaitCalc < curFrame) {
-                        if (!calcWaitFlow(out wait, out flow))
+						if (!calcWaitFlow(out wait, out flow)) {
+							endTransitionStart = getCurrentFrame();
 							return true;
-						else {
+						} else {
 							lastFlowWaitCalc = curFrame;
 						}
 					} else {
@@ -327,6 +332,7 @@ namespace TrafficManager.TrafficLight {
 					return stepDone;
 				}
 			}
+
 			return false;
 		}
 

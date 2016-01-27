@@ -486,28 +486,25 @@ namespace TrafficManager.Custom.AI {
 												vehicleLightState, pedestrianLightState, flag5, pedestrians);
 										}
 
-										if (destinationInfo.m_class.m_service != ItemClass.Service.Road) {
-											switch (vehicleLightState) {
-												case RoadBaseAI.TrafficLightState.RedToGreen:
-													if (num6 < 60u) {
-														maxSpeed = 0f;
-														return;
-													}
-													break;
-												case RoadBaseAI.TrafficLightState.Red:
+										switch (vehicleLightState) {
+											case RoadBaseAI.TrafficLightState.RedToGreen:
+												if (num6 < 60u) {
 													maxSpeed = 0f;
 													return;
-												case RoadBaseAI.TrafficLightState.GreenToRed:
-													if (num6 >= 30u) {
-														maxSpeed = 0f;
-														return;
-													}
-													break;
-											}
+												}
+												break;
+											case RoadBaseAI.TrafficLightState.Red:
+												maxSpeed = 0f;
+												return;
+											case RoadBaseAI.TrafficLightState.GreenToRed:
+												if (num6 >= 30u) {
+													maxSpeed = 0f;
+													return;
+												}
+												break;
 										}
 									} else {
-										//if (debug)
-										Log._Debug($"CarAI: Handling vehicle {vehicleId} @ {destinationNodeId} (timed traffic light) going from seg. {prevPos.m_segment} to {position.m_segment}, {nextPosition.m_segment}");
+										//Log._Debug($"CarAI: Handling vehicle {vehicleId} @ {destinationNodeId} (timed traffic light) going from seg. {prevPos.m_segment} to {position.m_segment}, {nextPosition.m_segment}");
 										// traffic light simulation is active
 										var stopCar = false;
 
@@ -526,22 +523,20 @@ namespace TrafficManager.Custom.AI {
 											}
 										}
 
-										if (destinationInfo.m_class.m_service != ItemClass.Service.Road) {
-											switch (vehicleLightState) {
-												case RoadBaseAI.TrafficLightState.RedToGreen:
-													if (num6 < 60u) {
-														stopCar = true;
-													}
-													break;
-												case RoadBaseAI.TrafficLightState.Red:
+										switch (vehicleLightState) {
+											case RoadBaseAI.TrafficLightState.RedToGreen:
+												if (num6 < 60u) {
 													stopCar = true;
-													break;
-												case RoadBaseAI.TrafficLightState.GreenToRed:
-													if (num6 >= 30u) {
-														stopCar = true;
-													}
-													break;
-											}
+												}
+												break;
+											case RoadBaseAI.TrafficLightState.Red:
+												stopCar = true;
+												break;
+											case RoadBaseAI.TrafficLightState.GreenToRed:
+												if (num6 >= 30u) {
+													stopCar = true;
+												}
+												break;
 										}
 
 										if (vehicleLightState == RoadBaseAI.TrafficLightState.Green && !Options.mayEnterBlockedJunctions) {
@@ -566,8 +561,8 @@ namespace TrafficManager.Custom.AI {
 #endif
 									//bool debug = false;
 #if DEBUG
-									//if (debug)
-									Log._Debug($"Vehicle {vehicleId} is arriving @ seg. {prevPos.m_segment} ({position.m_segment}, {nextPosition.m_segment}), node {destinationNodeId} which is not a traffic light.");
+									if (debug)
+										Log._Debug($"Vehicle {vehicleId} is arriving @ seg. {prevPos.m_segment} ({position.m_segment}, {nextPosition.m_segment}), node {destinationNodeId} which is not a traffic light.");
 #endif
 
 									var prioritySegment = TrafficPriority.GetPrioritySegment(destinationNodeId, prevPos.m_segment);

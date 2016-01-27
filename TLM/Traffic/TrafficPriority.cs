@@ -682,7 +682,7 @@ namespace TrafficManager.Traffic {
 					return true;
 				}
 				if (incomingCar.ToNode != targetCar.ToNode) {
-					Log._Debug($"HasVehiclePriority: incoming car {incomingCarId} goes to node {incomingCar.ToNode} where target car {targetCarId} goes to {targetCar.ToNode}. Ignoring.");
+					//Log._Debug($"HasVehiclePriority: incoming car {incomingCarId} goes to node {incomingCar.ToNode} where target car {targetCarId} goes to {targetCar.ToNode}. Ignoring.");
                     return true;
 				}
 

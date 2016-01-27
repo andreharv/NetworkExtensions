@@ -49,9 +49,9 @@ namespace TrafficManager.TrafficLight {
             }
         }
 
-		public void setupTimedTrafficLight() {
+		public void setupTimedTrafficLight(List<ushort> nodeGroup) {
 			TimedTrafficLights = true;
-			TrafficLightsTimed.AddTimedLight(nodeId, TrafficLightTool.SelectedNodeIndexes, Options.mayEnterBlockedJunctions);
+			TrafficLightsTimed.AddTimedLight(nodeId, nodeGroup, Options.mayEnterBlockedJunctions);
 
 			var node = getNode();
 
@@ -127,7 +127,8 @@ namespace TrafficManager.TrafficLight {
 			var timedNode = TrafficLightsTimed.GetTimedLight(nodeId);
 
 			if (timedNode != null) {
-				foreach (var timedNodeId in timedNode.NodeGroup) {
+				List<ushort> oldNodeGroup = new List<ushort>(timedNode.NodeGroup);
+				foreach (var timedNodeId in oldNodeGroup) {
 					var otherTimedNode = TrafficLightsTimed.GetTimedLight(timedNodeId);
 					var nodeSim = TrafficLightSimulation.GetNodeSimulation(timedNodeId); // `this` is one of `nodeSim`
 					if (nodeSim == null) {
@@ -157,11 +158,12 @@ namespace TrafficManager.TrafficLight {
 		/// Adds a traffic light simulation to the node with the given id
 		/// </summary>
 		/// <param name="nodeId"></param>
-		public static void AddNodeToSimulation(ushort nodeId) {
+		public static TrafficLightSimulation AddNodeToSimulation(ushort nodeId) {
 			if (LightSimulationByNodeId.ContainsKey(nodeId)) {
-				return;
+				return LightSimulationByNodeId[nodeId];
 			}
 			LightSimulationByNodeId.Add(nodeId, new TrafficLightSimulation(nodeId));
+			return LightSimulationByNodeId[nodeId];
 		}
 
 		public static void RemoveNodeFromSimulation(ushort nodeId, bool destroyGroup) {
