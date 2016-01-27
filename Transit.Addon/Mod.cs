@@ -31,17 +31,24 @@ namespace Transit.Addon
             get { return _name; }
         }
 
+        private ulong? _workshopId;
         public ulong WorkshopId
         {
-            get {
-                foreach(var mod in PluginManager.instance.GetPluginsInfo())
+            get
+            {
+                if (_workshopId == null)
                 {
-                    if (mod.userModInstance == this)
+                    foreach(var mod in PluginManager.instance.GetPluginsInfo())
                     {
-                        return mod.publishedFileID.AsUInt64;
+                        if (mod.userModInstance == this)
+                        {
+                            _workshopId = mod.publishedFileID.AsUInt64;
+                        }
                     }
+                    _workshopId = 543703997;
                 }
-                return 543703997;
+
+                return _workshopId.Value;
             }
         }
     }

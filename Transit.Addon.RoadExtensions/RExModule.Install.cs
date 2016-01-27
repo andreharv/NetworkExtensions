@@ -1,5 +1,10 @@
-﻿using ICities;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using ICities;
 using Transit.Framework;
+using Transit.Framework.Builders;
+using Transit.Framework.Modularity;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -17,6 +22,8 @@ namespace Transit.Addon.RoadExtensions
         private AssetsInstaller _assetsInstaller = null;
         private RoadsInstaller _roadsInstaller = null;
         private MenusInstaller _menusInstaller = null;
+
+        private IEnumerable<Action> _lateOperations;
 
         public override void OnCreated(ILoading loading)
         {
@@ -58,6 +65,16 @@ namespace Transit.Addon.RoadExtensions
             if (_container != null && _menusInstaller == null)
             {
                 _menusInstaller = _container.AddInstallerComponent<MenusInstaller>();
+            }
+
+            if (_lateOperations != null)
+            {
+                foreach (var op in _lateOperations)
+                {
+                    op();
+                }
+
+                _lateOperations = null;
             }
         }
 

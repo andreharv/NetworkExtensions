@@ -25,12 +25,12 @@ namespace Transit.Framework
                 .Clone(newPrefabName);
         }
 
-        public static IEnumerable<NetInfo> Build(this INetInfoBuilder builder)
+        public static IEnumerable<NetInfo> Build(this INetInfoBuilder builder, ICollection<Action> lateOperations)
         {
             // Ground versions
-            var groundInfo = builder.BuildVersion(NetInfoVersion.Ground);
-            var groundGrassInfo = builder.BuildVersion(NetInfoVersion.GroundGrass);
-            var groundTreesInfo = builder.BuildVersion(NetInfoVersion.GroundTrees);
+            var groundInfo = builder.BuildVersion(NetInfoVersion.Ground, lateOperations);
+            var groundGrassInfo = builder.BuildVersion(NetInfoVersion.GroundGrass, lateOperations);
+            var groundTreesInfo = builder.BuildVersion(NetInfoVersion.GroundTrees, lateOperations);
 
             var groundInfos = new[] {groundInfo, groundGrassInfo, groundTreesInfo};
             groundInfos = groundInfos.Where(gi => gi != null).ToArray();
@@ -41,10 +41,10 @@ namespace Transit.Framework
             }
 
             // Other versions
-            var elevatedInfo = builder.BuildVersion(NetInfoVersion.Elevated);
-            var bridgeInfo = builder.BuildVersion(NetInfoVersion.Bridge);
-            var tunnelInfo = builder.BuildVersion(NetInfoVersion.Tunnel);
-            var slopeInfo = builder.BuildVersion(NetInfoVersion.Slope);
+            var elevatedInfo = builder.BuildVersion(NetInfoVersion.Elevated, lateOperations);
+            var bridgeInfo = builder.BuildVersion(NetInfoVersion.Bridge, lateOperations);
+            var tunnelInfo = builder.BuildVersion(NetInfoVersion.Tunnel, lateOperations);
+            var slopeInfo = builder.BuildVersion(NetInfoVersion.Slope, lateOperations);
 
             // Setup MenuItems
             if (builder is IMenuItemBuilder)
@@ -98,7 +98,7 @@ namespace Transit.Framework
             if (slopeInfo != null) yield return slopeInfo;
         }
 
-        public static NetInfo BuildVersion(this INetInfoBuilder builder, NetInfoVersion version)
+        public static NetInfo BuildVersion(this INetInfoBuilder builder, NetInfoVersion version, ICollection<Action> lateOperations)
         {
             if (builder.SupportedVersions.HasFlag(version))
             {
@@ -110,6 +110,12 @@ namespace Transit.Framework
                     .Clone(newPrefabName);
 
                 builder.BuildUp(info, version);
+
+                var lateBuilder = builder as INetInfoLateBuilder;
+                if (lateBuilder != null)
+                {
+                    lateOperations.Add(() => lateBuilder.LateBuildUp(info, version));
+                }
 
                 return info;
             }

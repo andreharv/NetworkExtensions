@@ -1531,6 +1531,9 @@
     <None Include="Buildings\Pillars\16m\Meshes\Pillar_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Cable Stay 32m.crp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\Bridge_Cables.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

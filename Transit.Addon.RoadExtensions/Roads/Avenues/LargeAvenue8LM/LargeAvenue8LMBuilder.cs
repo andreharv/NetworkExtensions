@@ -1,25 +1,65 @@
-﻿using ColossalFramework.Packaging;
+﻿using System;
+using ColossalFramework.Packaging;
 using System.Linq;
 using Transit.Addon.RoadExtensions.Roads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
+using Transit.Framework.Modularity;
+using UnityEngine;
 
 namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
 {
-    public partial class LargeAvenue8LMBuilder : Activable, INetInfoBuilderPart
+    public partial class LargeAvenue8LMBuilder : Activable, INetInfoBuilderPart, INetInfoLateBuilder
     {
-        public int Order { get { return 25; } }
-        public int UIOrder { get { return 150; } }
+        public int Order
+        {
+            get { return 25; }
+        }
 
-        public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_6L; } }
-        public string Name { get { return "Eight-Lane Avenue"; } }
-        public string DisplayName { get { return "Eight-Lane Road"; } }
-        public string Description { get { return "An eight-lane road with paved median. Supports heavy urban traffic."; } }
-        public string ShortDescription { get { return "No parking, zoneable, heavy urban traffic"; } }
-        public string UICategory { get { return "RoadsLarge"; } }
+        public int UIOrder
+        {
+            get { return 150; }
+        }
 
-        public string ThumbnailsPath { get { return @"Roads\Avenues\LargeAvenue8LM\thumbnails.png"; } }
-        public string InfoTooltipPath { get { return @"Roads\Avenues\LargeAvenue8LM\infotooltip.png"; } }
+        public string BasedPrefabName
+        {
+            get { return NetInfos.Vanilla.ROAD_6L; }
+        }
+
+        public string Name
+        {
+            get { return "Eight-Lane Avenue"; }
+        }
+
+        public string DisplayName
+        {
+            get { return "Eight-Lane Road"; }
+        }
+
+        public string Description
+        {
+            get { return "An eight-lane road with paved median. Supports heavy urban traffic."; }
+        }
+
+        public string ShortDescription
+        {
+            get { return "No parking, zoneable, heavy urban traffic"; }
+        }
+
+        public string UICategory
+        {
+            get { return "RoadsLarge"; }
+        }
+
+        public string ThumbnailsPath
+        {
+            get { return @"Roads\Avenues\LargeAvenue8LM\thumbnails.png"; }
+        }
+
+        public string InfoTooltipPath
+        {
+            get { return @"Roads\Avenues\LargeAvenue8LM\infotooltip.png"; }
+        }
 
         public NetInfoVersion SupportedVersions
         {
@@ -82,12 +122,13 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
 
             if (version == NetInfoVersion.Bridge)
             {
-                var propsToCenter = new string[] { "street light" };
+                var propsToCenter = new string[] {"street light"};
                 leftRoadProps.CenterProps(propsToCenter, leftPedLane.m_position);
                 rightRoadProps.CenterProps(propsToCenter, rightPedLane.m_position);
 
                 var leftStreetLightProp = leftRoadProps.First(lrp => lrp.m_prop.name.ToLower().Contains("street light"));
-                var rightStreetLightProp = rightRoadProps.First(lrp => lrp.m_prop.name.ToLower().Contains("street light"));
+                var rightStreetLightProp =
+                    rightRoadProps.First(lrp => lrp.m_prop.name.ToLower().Contains("street light"));
                 leftStreetLightProp.m_repeatDistance = 60;
                 rightStreetLightProp.m_repeatDistance = 60;
 
@@ -109,8 +150,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
 
             if (owPlayerNetAI != null && playerNetAI != null)
             {
-                playerNetAI.m_constructionCost = owPlayerNetAI.m_constructionCost * 4 / 3; // Charge by the lane?
-                playerNetAI.m_maintenanceCost = owPlayerNetAI.m_maintenanceCost * 4 / 3; // Charge by the lane?
+                playerNetAI.m_constructionCost = owPlayerNetAI.m_constructionCost*4/3; // Charge by the lane?
+                playerNetAI.m_maintenanceCost = owPlayerNetAI.m_maintenanceCost*4/3; // Charge by the lane?
             }
 
             var roadBaseAI = info.GetComponent<RoadBaseAI>();
@@ -118,6 +159,26 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
             if (roadBaseAI != null)
             {
                 roadBaseAI.m_trafficLights = true;
+            }
+        }
+
+        public void LateBuildUp(NetInfo info, NetInfoVersion version)
+        {
+            if (version == NetInfoVersion.Bridge)
+            {
+                //var bridgePillar = PrefabCollection<BuildingInfo>.FindLoaded(WorkshopId + ".CableStay32m_Data");
+                //if (bridgePillar == null)
+                var bridgePillar = PrefabCollection<BuildingInfo>.FindLoaded("Cable Stay 32m.CableStay32m_Data");
+
+                if (bridgePillar != null)
+                {
+                    var bridgeAI = info.GetComponent<RoadBridgeAI>();
+                    if (bridgeAI != null)
+                    {
+                        bridgeAI.m_middlePillarInfo = bridgePillar;
+                        bridgeAI.m_middlePillarOffset = 58;
+                    }
+                }
             }
         }
     }

@@ -32,15 +32,6 @@ namespace Transit.Addon
 
         public override void OnLevelLoaded(LoadMode mode)
         {
-            var bridgePillar = PrefabCollection<BuildingInfo>.FindLoaded(WorkshopId + ".CableStay32m_Data");
-            if (bridgePillar == null)
-                bridgePillar = PrefabCollection<BuildingInfo>.FindLoaded("Cable Stay 32m.CableStay32m_Data");
-
-            var prefab = PrefabCollection<NetInfo>.FindLoaded("Eight-Lane Avenue Bridge");
-            var ai = prefab.m_netAI as RoadBridgeAI;
-            ai.m_middlePillarInfo = bridgePillar;
-            ai.m_middlePillarOffset = 58;
-
             foreach (IModule module in Modules)
                 module.OnLevelLoaded(mode);
         }
