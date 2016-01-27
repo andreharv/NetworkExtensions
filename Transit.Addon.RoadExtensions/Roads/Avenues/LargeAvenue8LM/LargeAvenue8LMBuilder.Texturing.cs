@@ -52,7 +52,12 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
                             info.m_segments[i].SetTextures(
                             new TexturesSet
                             (@"Roads\Avenues\LargeAvenue8LM\Textures\Bridge_Cables__MainTex.png",
-                            @"Roads\Avenues\LargeAvenue8LM\Textures\Bridge_Cables__APRMap.png")); 
+                            @"Roads\Avenues\LargeAvenue8LM\Textures\Bridge_Cables__APRMap.png",
+                            @"Roads\Avenues\LargeAvenue8LM\Textures\Bridge_Cables__XYSMap.png"),
+                            new LODTexturesSet
+                            (@"Roads\Avenues\LargeAvenue8LM\Textures\Bridge_Cables_LOD__MainTex.png",
+                            @"Roads\Avenues\LargeAvenue8LM\Textures\Bridge_Cables_LOD__APRMap.png",
+                            @"Roads\Avenues\LargeAvenue8LM\Textures\Bridge_Cables_LOD__XYSMap.png"));
                         }
                         else
                         {

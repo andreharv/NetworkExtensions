@@ -1,4 +1,7 @@
-﻿using ICities;
+﻿using ColossalFramework;
+using ColossalFramework.Plugins;
+using ColossalFramework.Steamworks;
+using ICities;
 using Transit.Framework.Modularity;
 
 namespace Transit.Addon
@@ -30,7 +33,16 @@ namespace Transit.Addon
 
         public ulong WorkshopId
         {
-            get { return 543703997; }
+            get {
+                foreach(var mod in PluginManager.instance.GetPluginsInfo())
+                {
+                    if (mod.userModInstance == this)
+                    {
+                        return mod.publishedFileID.AsUInt64;
+                    }
+                }
+                return 543703997;
+            }
         }
     }
 }

@@ -80,6 +80,19 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
             var leftRoadProps = leftPedLane.m_laneProps.m_props.ToList();
             var rightRoadProps = rightPedLane.m_laneProps.m_props.ToList();
 
+            if (version == NetInfoVersion.Bridge)
+            {
+                var propsToCenter = new string[] { "street light" };
+                leftRoadProps.CenterProps(propsToCenter, leftPedLane.m_position);
+                rightRoadProps.CenterProps(propsToCenter, rightPedLane.m_position);
+
+                var leftStreetLightProp = leftRoadProps.First(lrp => lrp.m_prop.name.ToLower().Contains("street light"));
+                var rightStreetLightProp = rightRoadProps.First(lrp => lrp.m_prop.name.ToLower().Contains("street light"));
+                leftStreetLightProp.m_repeatDistance = 60;
+                rightStreetLightProp.m_repeatDistance = 60;
+
+            }
+
             if (version == NetInfoVersion.Slope)
             {
                 leftRoadProps.AddLeftWallLights(info.m_pavementWidth);
@@ -90,31 +103,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
             rightPedLane.m_laneProps.m_props = rightRoadProps.ToArray();
 
             info.TrimAboveGroundProps(version);
-
-            if (version == NetInfoVersion.Bridge)
-            {
-                var roadBridgeAI = info.GetComponent<RoadBridgeAI>();
-                if (roadBridgeAI != null)
-                {
-                    for(uint i = 0; i < PrefabCollection<BuildingInfo>.LoadedCount(); i++)
-                    {
-                        var prefab = PrefabCollection<BuildingInfo>.GetLoaded(i);
-
-                        if (prefab == null) continue;
-
-                        // only accept buildings with a basic AI
-                        if (prefab.m_buildingAI.GetType() != typeof(BuildingAI)) continue;
-
-                        var asset = PackageManager.FindAssetByName(prefab.name);
-
-                        var crpPath = asset?.package?.packagePath;
-                        Framework.Debug.Log(prefab.name);
-                    }
-                    
-                    //roadBridgeAI.m_middlePillarInfo = bridgePillar;
-                }
-
-            }
 
             var owPlayerNetAI = roadInfo.GetComponent<PlayerNetAI>();
             var playerNetAI = info.GetComponent<PlayerNetAI>();

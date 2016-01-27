@@ -65,7 +65,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                         segments1
                             .SetFlagsDefault()
                             .SetMeshes
-                                (@"Roads\Common\Meshes\32m\3mSW2mMdn\Bridge_Cables.obj");
+                                (@"Roads\Common\Meshes\32m\3mSW2mMdn\Bridge_Cables.obj",
+                                @"Roads\Common\Meshes\32m\3mSW2mMdn\Bridge_Cables_LOD.obj");
 
                         nodes0
                             .SetMeshes
