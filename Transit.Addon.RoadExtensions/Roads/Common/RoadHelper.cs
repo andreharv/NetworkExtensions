@@ -139,7 +139,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
         {
             for (var i = 0; i < propsToCenter.Length; i++)
             {
-                if (props.Any(p=>p.m_prop.name.ToLower().Contains(propsToCenter[i].ToLower())))
+                if (props.Any(p => p.m_prop.name.ToLower().Contains(propsToCenter[i].ToLower())))
                 {
                     var propToCenter = props.First(p => p.m_prop.name.ToLower().Contains(propsToCenter[i].ToLower()));
                     propToCenter.m_position.x = -1 * originalLanePos;

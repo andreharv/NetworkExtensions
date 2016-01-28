@@ -120,7 +120,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
             var leftRoadProps = leftPedLane.m_laneProps.m_props.ToList();
             var rightRoadProps = rightPedLane.m_laneProps.m_props.ToList();
 
-            if (version == NetInfoVersion.Bridge)
+            if (version != NetInfoVersion.Tunnel)
             {
                 var propsToCenter = new string[] {"street light"};
                 leftRoadProps.CenterProps(propsToCenter, leftPedLane.m_position);
