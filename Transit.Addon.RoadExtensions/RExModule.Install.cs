@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using ICities;
-using Transit.Addon.Core.Extenders.AI;
-using Transit.Addon.Core.Extenders.UI;
+using Transit.Framework.Extenders.AI;
+using Transit.Framework.Extenders.UI;
 using Transit.Addon.RoadExtensions.AI;
 using Transit.Addon.RoadExtensions.Menus;
 using Transit.Framework;

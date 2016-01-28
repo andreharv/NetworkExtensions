@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ICities;
-using Transit.Addon.Core.Extenders.AI;
+using Transit.Framework.Extenders.AI;
 using UnityEngine;
 
 namespace Transit.Addon.RoadExtensions.Tools

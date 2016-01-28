@@ -1,5 +1,5 @@
 ﻿using ICities;
-using Transit.Addon.Core.Extenders.PathFinding;
+using Transit.Framework.Extenders.PathFinding;
 using Transit.Addon.Tools.Core;
 using Transit.Framework;
 using UnityEngine;

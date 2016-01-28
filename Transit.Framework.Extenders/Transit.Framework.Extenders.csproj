@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DCD9DD56-9C49-4BA9-8F37-7567444FE7CB}</ProjectGuid>
+    <ProjectGuid>{2E44ECA3-D750-4115-B16B-FCA94C49BBA0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NetworkExtensions</RootNamespace>
-    <AssemblyName>NetworkExtensions</AssemblyName>
+    <RootNamespace>Transit.Framework.Extenders</RootNamespace>
+    <AssemblyName>Transit.Framework.Extenders</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -39,26 +39,28 @@
       <HintPath>..\References\ColossalManaged.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="ICities">
-      <HintPath>..\References\ICities.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
     <Reference Include="UnityEngine">
       <HintPath>..\References\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Mod.cs" />
-    <Compile Include="Mod.Settings.cs" />
+    <Compile Include="AI\IRoadSnappingMode.cs" />
+    <Compile Include="AI\IZoneBlocksCreator.cs" />
+    <Compile Include="AI\RoadSnappingModeProvider.cs" />
+    <Compile Include="AI\ZoneBlocksCreatorProvider.cs" />
+    <Compile Include="AI\ZoneBlocksOffset.cs" />
+    <Compile Include="PathFinding\ILaneRoutingManager.cs" />
+    <Compile Include="PathFinding\ILaneSpeedManager.cs" />
+    <Compile Include="PathFinding\IPathFindingImplementation.cs" />
+    <Compile Include="PathFinding\PathFindingProvider.cs" />
+    <Compile Include="PathFinding\PathFindingProvider.LaneRouting.cs" />
+    <Compile Include="PathFinding\PathFindingProvider.LaneSpeed.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Transit.Framework\Transit.Framework.csproj">
-      <Project>{8891467E-C88E-46B0-96F9-4413DF6DC205}</Project>
-      <Name>Transit.Framework</Name>
-    </ProjectReference>
+    <Compile Include="UI\AtlasProvider.cs" />
+    <Compile Include="UI\CategoryOrderProvider.cs" />
+    <Compile Include="UI\ExtendedMenuProvider.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

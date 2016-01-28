@@ -1,7 +1,7 @@
 ﻿using ColossalFramework;
 using ColossalFramework.Plugins;
-using Transit.Addon.Core;
 using Transit.Framework;
+using Transit.Framework.Mod;
 
 namespace NetworkExtensions
 {

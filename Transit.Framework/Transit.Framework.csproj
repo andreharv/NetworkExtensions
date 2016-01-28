@@ -45,7 +45,6 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
       <HintPath>..\References\UnityEngine.dll</HintPath>
@@ -69,6 +68,10 @@
     <Compile Include="Modularity\ModuleBase.Parts.cs" />
     <Compile Include="Modularity\IModule.cs" />
     <Compile Include="Modularity\ModuleBase.cs" />
+    <Compile Include="Mod\TransitModBase.cs" />
+    <Compile Include="Mod\TransitModBase.LoadingExtension.cs" />
+    <Compile Include="Mod\TransitModBase.Modules.cs" />
+    <Compile Include="Mod\TransitModBase.Settings.cs" />
     <Compile Include="NetInfoVersion.cs" />
     <Compile Include="Notification.cs" />
     <Compile Include="Assets.cs" />
@@ -120,6 +123,10 @@
     <ProjectReference Include="..\ObjUnity3D\ObjUnity3D.csproj">
       <Project>{97D70503-6567-41A1-92FC-66D813A53370}</Project>
       <Name>ObjUnity3D</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Transit.Framework.Hooks\Transit.Framework.Hooks.csproj">
+      <Project>{A700F186-B123-45B5-ADFE-B865DF5A0F39}</Project>
+      <Name>Transit.Framework.Hooks</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

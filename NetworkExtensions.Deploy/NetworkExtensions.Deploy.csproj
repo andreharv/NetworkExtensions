@@ -39,10 +39,6 @@
       <Project>{dcd9dd56-9c49-4ba9-8f37-7567444fe7cb}</Project>
       <Name>NetworkExtensions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Transit.Addon.Core\Transit.Addon.Core.csproj">
-      <Project>{61414A57-131A-44CF-ADCE-9179ED788D3C}</Project>
-      <Name>Transit.Addon.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Transit.Addon.RoadExtensions\Transit.Addon.RoadExtensions.csproj">
       <Project>{19FA21B2-39CC-4B90-BE7E-B6BDCCB09208}</Project>
       <Name>Transit.Addon.RoadExtensions</Name>

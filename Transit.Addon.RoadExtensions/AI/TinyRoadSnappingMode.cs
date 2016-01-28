@@ -1,4 +1,4 @@
-﻿using Transit.Addon.Core.Extenders.AI;
+﻿using Transit.Framework.Extenders.AI;
 
 namespace Transit.Addon.RoadExtensions.AI
 {
