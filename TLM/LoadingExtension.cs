@@ -217,8 +217,8 @@ namespace TrafficManager {
 				TrafficPriority.OnLevelUnloading();
 				CustomCarAI.OnLevelUnloading();
 				CustomRoadAI.OnLevelUnloading();
-				TrafficLightsManual.OnLevelUnloading();
-				TrafficLightsTimed.OnLevelUnloading();
+				ManualTrafficLights.OnLevelUnloading();
+				TrafficLightSimulation.OnLevelUnloading();
 				Flags.OnLevelUnloading();
 				Translation.OnLevelUnloading();
 

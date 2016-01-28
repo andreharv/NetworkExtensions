@@ -176,7 +176,7 @@ namespace TrafficManager.Traffic {
 				NetManager netManager = Singleton<NetManager>.instance;
 				if ((netManager.m_segments.m_buffer[segmentId].m_flags & NetSegment.Flags.Created) == NetSegment.Flags.None) {
 					RemovePrioritySegment(nodeId, segmentId);
-					TrafficLightsManual.RemoveSegmentLight(segmentId);
+					ManualTrafficLights.RemoveSegmentLight(segmentId);
 					return false;
 				}
 
@@ -463,7 +463,7 @@ namespace TrafficManager.Traffic {
 #endif
 
 						// Traffic lights
-						if (!TrafficLightsManual.IsSegmentLight(nodeId, incomingSegmentId)) {
+						if (!ManualTrafficLights.IsSegmentLight(nodeId, incomingSegmentId)) {
 #if DEBUG
 							if (debug) {
 								Log._Debug($"Segment {incomingSegmentId} @ {nodeId} does not have live traffic lights.");
@@ -472,7 +472,7 @@ namespace TrafficManager.Traffic {
 							continue;
 						}
 
-						var segmentLight = TrafficLightsManual.GetSegmentLight(nodeId, incomingSegmentId);
+						var segmentLight = ManualTrafficLights.GetSegmentLight(nodeId, incomingSegmentId);
 
 						if (segmentLight.GetLightMain() != RoadBaseAI.TrafficLightState.Green)
 							continue;
@@ -1202,11 +1202,11 @@ namespace TrafficManager.Traffic {
 				}
 
 				// add newly created segments to timed traffic lights
-				if (TrafficLightsTimed.TimedScripts.ContainsKey(nodeId)) {
-					TrafficLightsTimed.TimedScripts[nodeId].handleNewSegments();
-				}
+				TrafficLightSimulation lightSim = TrafficLightSimulation.GetNodeSimulation(nodeId);
+				if (lightSim != null)
+					lightSim.handleNewSegments();
 			} catch (Exception e) {
-				Log.Warning($"Housekeeping failed: {e.Message}");
+				Log.Warning($"Housekeeping failed: {e.ToString()}");
 			}
 		}
 
@@ -1269,8 +1269,8 @@ namespace TrafficManager.Traffic {
 					return false;
 				} else {
 					// check if all timed step segments are valid
-					if (nodeSim.TimedTrafficLights && nodeSim.TimedTrafficLightsActive) {
-						TrafficLightsTimed timedLight = TrafficLightsTimed.GetTimedLight(nodeId);
+					if (nodeSim.IsTimedLightActive()) {
+						TimedTrafficLights timedLight = nodeSim.TimedLight;
 						if (timedLight == null || timedLight.Steps.Count <= 0) {
 							Log.Warning("Housekeeping: Timed light is null or no steps for node {nodeId}!");
 							TrafficLightSimulation.RemoveNodeFromSimulation(nodeId, false);

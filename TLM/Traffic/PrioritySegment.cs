@@ -75,7 +75,7 @@ namespace TrafficManager.Traffic {
 		}
 
 		/// <summary>
-		/// Calculatres for each segment the number of cars going to this segment
+		/// Calculates for each segment the number of cars going to this segment
 		/// </summary>
 		public Dictionary<ushort, float> getNumCarsGoingToSegment(float? minSpeed) {
 			Dictionary<ushort, float> numCarsGoingToSegmentId = new Dictionary<ushort, float>();

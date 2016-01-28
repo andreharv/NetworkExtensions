@@ -1,4 +1,4 @@
-namespace TrafficManager.TrafficLight
+namespace TrafficManager.UI
 {
     public enum ToolMode
     {

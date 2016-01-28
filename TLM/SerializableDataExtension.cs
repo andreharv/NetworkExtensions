@@ -173,7 +173,7 @@ namespace TrafficManager {
 			}
 
 			// load nodes with traffic light simulation
-			if (_configuration.NodeDictionary != null) {
+			/*if (_configuration.NodeDictionary != null) {
 				Log.Info($"Loading {_configuration.NodeDictionary.Count()} traffic light simulations");
 				foreach (var node in _configuration.NodeDictionary) {
 					if (node.Length < 4)
@@ -199,7 +199,7 @@ namespace TrafficManager {
 				}
 			} else {
 				Log.Warning("Traffic light simulation data structure undefined!");
-			}
+			}*/
 
 			// Load live traffic lights
 			/*if (_configuration.ManualSegments != null) {
@@ -251,9 +251,8 @@ namespace TrafficManager {
 						if ((Singleton<NetManager>.instance.m_nodes.m_buffer[nodeid].m_flags & NetNode.Flags.Created) == NetNode.Flags.None)
 							continue;
 						Flags.setNodeTrafficLight(nodeid, true);
-#if DEBUG
+
 						Log._Debug($"Adding Timed Node {i} at node {nodeid}");
-#endif
 
 						bool vehiclesMayEnterBlockedJunctions = false;
 						if (_configuration.TimedNodes[i].Length >= 5) {
@@ -265,10 +264,9 @@ namespace TrafficManager {
 							nodeGroup.Add(_configuration.TimedNodeGroups[i][j]);
 						}
 
-						if (TrafficLightsTimed.IsTimedLight(nodeid)) continue;
-						TrafficLightsTimed.AddTimedLight(nodeid, nodeGroup, vehiclesMayEnterBlockedJunctions);
-						var timedNode = TrafficLightsTimed.GetTimedLight(nodeid);
-						var node = netManager.m_nodes.m_buffer[nodeid];
+						TrafficLightSimulation sim = TrafficLightSimulation.AddNodeToSimulation(nodeid);
+						sim.setupTimedTrafficLight(nodeGroup, vehiclesMayEnterBlockedJunctions);
+						var timedNode = sim.TimedLight;
 
 						timedNode.CurrentStep = _configuration.TimedNodes[i][1];
 
@@ -284,17 +282,17 @@ namespace TrafficManager {
 
 							int minTime = 1;
 							int maxTime = 1;
-							int numSegments = 0;
+							//int numSegments = 0;
 							float waitFlowBalance = 1f;
 
 							if (cfgstep.Length == 2) {
 								minTime = cfgstep[0];
 								maxTime = cfgstep[0];
-								numSegments = cfgstep[1];
+								//numSegments = cfgstep[1];
 							} else if (cfgstep.Length >= 3) {
 								minTime = cfgstep[0];
 								maxTime = cfgstep[1];
-								numSegments = cfgstep[2];
+								//numSegments = cfgstep[2];
 								if (cfgstep.Length == 4) {
 									waitFlowBalance = Convert.ToSingle(cfgstep[3]) / 10f;
 								}
@@ -303,11 +301,13 @@ namespace TrafficManager {
 								}
 							}
 
+							Log._Debug($"Adding timed step to node {nodeid}: min/max: {minTime}/{maxTime}, waitFlowBalance: {waitFlowBalance}");
+
 							timedNode.AddStep(minTime, maxTime, waitFlowBalance);
 							var step = timedNode.Steps[j];
 
 							for (var s = 0; s < 8; s++) {
-								var segmentId = node.GetSegment(s);
+								var segmentId = netManager.m_nodes.m_buffer[nodeid].GetSegment(s);
 								if (segmentId <= 0)
 									continue;
 
@@ -340,7 +340,7 @@ namespace TrafficManager {
 						}
 					} catch (Exception e) {
 						// ignore, as it's probably corrupt save data. it'll be culled on next save
-						Log.Warning("Error loading data from the TimedNodes: " + e.Message);
+						Log.Warning("Error loading data from the TimedNodes: " + e.ToString());
 					}
 				}
 			} else {
@@ -478,15 +478,16 @@ namespace TrafficManager {
 			}
 
 			for (ushort i = 0; i < Singleton<NetManager>.instance.m_nodes.m_size; i++) {
-				if (TrafficLightSimulation.LightSimulationByNodeId != null) {
+				/*if (TrafficLightSimulation.LightSimulationByNodeId != null) {
 					SaveTrafficLightSimulation(i, configuration);
-				}
+				}*/
 
 				/*if (TrafficLightsManual.ManualSegments != null) {
 					SaveManualTrafficLight(i, configuration);
 				}*/
 
-				if (TrafficLightsTimed.TimedScripts != null) {
+				TrafficLightSimulation sim = TrafficLightSimulation.GetNodeSimulation(i);
+				if (sim != null && sim.IsTimedLight()) {
 					SaveTimedTrafficLight(i, configuration);
 				}
 
@@ -562,12 +563,13 @@ namespace TrafficManager {
 			}
 		}
 
-		private static void SaveTimedTrafficLight(int i, Configuration configuration) {
+		private static void SaveTimedTrafficLight(ushort i, Configuration configuration) {
 			try {
-				if (!TrafficLightsTimed.TimedScripts.ContainsKey((ushort)i))
+				TrafficLightSimulation sim = TrafficLightSimulation.GetNodeSimulation(i);
+				if (sim == null || !sim.IsTimedLight())
 					return;
 
-				var timedNode = TrafficLightsTimed.GetTimedLight((ushort)i);
+				var timedNode = sim.TimedLight;
 				timedNode.handleNewSegments();
 
 				configuration.TimedNodes.Add(new[] {
@@ -626,11 +628,11 @@ namespace TrafficManager {
 
 		private static void SaveManualTrafficLight(ushort segmentId, Configuration configuration) {
 			try {
-				if (!TrafficLightsManual.ManualSegments.ContainsKey(segmentId))
+				if (!ManualTrafficLights.ManualSegments.ContainsKey(segmentId))
 					return;
 
-				if (TrafficLightsManual.ManualSegments[segmentId].Node1 != 0) {
-					var manualSegment = TrafficLightsManual.ManualSegments[segmentId].Instance1;
+				if (ManualTrafficLights.ManualSegments[segmentId].Node1 != 0) {
+					var manualSegment = ManualTrafficLights.ManualSegments[segmentId].Instance1;
 
 					configuration.ManualSegments.Add(new[]
 					{
@@ -646,9 +648,9 @@ namespace TrafficManager {
 						Convert.ToInt32(manualSegment.PedestrianEnabled)
 					});
 				}
-				if (TrafficLightsManual.ManualSegments[segmentId].Node2 == 0)
+				if (ManualTrafficLights.ManualSegments[segmentId].Node2 == 0)
 					return;
-				var manualSegmentLight = TrafficLightsManual.ManualSegments[segmentId].Instance2;
+				var manualSegmentLight = ManualTrafficLights.ManualSegments[segmentId].Instance2;
 
 				configuration.ManualSegments.Add(new[]
 				{
@@ -668,14 +670,14 @@ namespace TrafficManager {
 			}
 		}
 
-		private static void SaveTrafficLightSimulation(int i, Configuration configuration) {
+		/*private static void SaveTrafficLightSimulation(int i, Configuration configuration) {
 			try {
 				if (!TrafficLightSimulation.LightSimulationByNodeId.ContainsKey((ushort)i))
 					return;
 				var nodeSim = TrafficLightSimulation.LightSimulationByNodeId[(ushort)i];
 
-				/*if (nodeSim == null)
-					return;*/
+				//if (nodeSim == null)
+				//	return;
 
 				Log.Info($"Saving traffic light simulation at node {i}, timed: {nodeSim.TimedTrafficLights}, active: {nodeSim.TimedTrafficLightsActive}");
 
@@ -688,7 +690,7 @@ namespace TrafficManager {
 			} catch (Exception e) {
 				Log.Error($"Error adding Nodes to Dictionary {e.Message}");
 			}
-		}
+		}*/
 
 		private static void SavePrioritySegment(ushort segmentId, Configuration configuration) {
 			try {

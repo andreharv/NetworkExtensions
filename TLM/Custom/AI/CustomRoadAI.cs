@@ -6,6 +6,7 @@ using TrafficManager.Traffic;
 using UnityEngine;
 using ColossalFramework.Math;
 using System.Threading;
+using TrafficManager.UI;
 
 namespace TrafficManager.Custom.AI {
 	class CustomRoadAI : RoadBaseAI {
@@ -50,7 +51,7 @@ namespace TrafficManager.Custom.AI {
 				TrafficPriority.TrafficLightSimulationStep();
 
 				var nodeSim = TrafficLightSimulation.GetNodeSimulation(nodeId);
-				if (nodeSim == null || (nodeSim.TimedTrafficLights && !nodeSim.TimedTrafficLightsActive)) {
+				if (nodeSim == null || !nodeSim.IsTimedLightActive()) {
 					OriginalSimulationStep(nodeId, ref data);
 				}
 			} catch (Exception e) {

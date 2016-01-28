@@ -323,13 +323,18 @@ namespace TrafficManager.State {
 				if (nodeId <= 0 || !nodeTrafficLightFlag.ContainsKey(nodeId))
 					return;
 
+				bool mayHaveLight = mayHaveTrafficLight(nodeId);
 				bool flag = nodeTrafficLightFlag[nodeId];
-				if (flag) {
+				if (flag && mayHaveLight) {
 					//Log.Message($"Adding traffic light @ node {nodeId}");
 					Singleton<NetManager>.instance.m_nodes.m_buffer[nodeId].m_flags |= NetNode.Flags.TrafficLights;
 				} else {
 					//Log.Message($"Removing traffic light @ node {nodeId}");
 					Singleton<NetManager>.instance.m_nodes.m_buffer[nodeId].m_flags &= ~NetNode.Flags.TrafficLights;
+					if (!mayHaveLight) {
+						Log.Warning($"Flags: Refusing to apply traffic light flag at node {nodeId}");
+						nodeTrafficLightFlag.Remove(nodeId);
+					}
 				}
 			} finally {
 				Monitor.Exit(nodeLightLock);

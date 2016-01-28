@@ -199,7 +199,7 @@ namespace TrafficManager.Custom.AI {
 
 							// add upcoming segments only if there is a timed traffic light
 							TrafficLightSimulation nodeSim = TrafficLightSimulation.GetNodeSimulation(realTimeDestinationNodes[i]);
-							if (i > 0 && (nodeSim == null || !nodeSim.TimedTrafficLights || !nodeSim.TimedTrafficLightsActive))
+							if (i > 0 && (nodeSim == null || !nodeSim.IsTimedLight() || !nodeSim.IsTimedLightActive()))
 								continue;
 
 							VehiclePosition upcomingVehiclePos = new VehiclePosition();
@@ -423,8 +423,8 @@ namespace TrafficManager.Custom.AI {
 					var isJoinedJunction = (prevLaneFlags & NetLane.Flags.JoinedJunction) != NetLane.Flags.None;
 					bool checkSpace = !Options.mayEnterBlockedJunctions;
 					TrafficLightSimulation nodeSim = TrafficLightSimulation.GetNodeSimulation(destinationNodeId);
-					if (nodeSim != null && nodeSim.TimedTrafficLights && nodeSim.TimedTrafficLightsActive) {
-						TrafficLightsTimed timedNode = TrafficLightsTimed.GetTimedLight(destinationNodeId);
+					if (nodeSim != null && nodeSim.IsTimedLightActive()) {
+						TimedTrafficLights timedNode = nodeSim.TimedLight;
 						if (timedNode != null && timedNode.vehiclesMayEnterBlockedJunctions) {
 							checkSpace = false;
 						}
@@ -468,10 +468,13 @@ namespace TrafficManager.Custom.AI {
 
 									var destinationInfo = netManager.m_nodes.m_buffer[destinationNodeId].Info;
 									RoadBaseAI.TrafficLightState vehicleLightState;
-									ManualSegmentLight light = TrafficLightsManual.GetSegmentLight(previousDestinationNode, prevPos.m_segment); // TODO rework
+									ManualSegmentLight light = ManualTrafficLights.GetSegmentLight(previousDestinationNode, prevPos.m_segment); // TODO rework
 
-									if (light == null || nodeSimulation == null ||
-										(nodeSimulation.TimedTrafficLights && !nodeSimulation.TimedTrafficLightsActive)) {
+									if (light == null || nodeSimulation == null || !nodeSimulation.IsTimedLightActive()) {
+										/*if (destinationNodeId == 20164) {
+											Log.Warning($"No sim @ node {destinationNodeId}");
+                                        }*/
+
 										RoadBaseAI.TrafficLightState pedestrianLightState;
 										bool flag5;
 										bool pedestrians;

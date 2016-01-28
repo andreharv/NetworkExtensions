@@ -40,7 +40,7 @@ namespace TrafficManager.TrafficLight {
 		public uint lastFlowWaitCalc = 0;
 
 		private List<ushort> groupNodeIds;
-		private TrafficLightsTimed timedNode;
+		private TimedTrafficLights timedNode;
 
 		public Dictionary<ushort, ManualSegmentLight> segmentLightStates = new Dictionary<ushort, ManualSegmentLight>();
 
@@ -58,7 +58,7 @@ namespace TrafficManager.TrafficLight {
 			this.minTime = minTime;
 			this.maxTime = maxTime;
 			this.waitFlowBalance = waitFlowBalance;
-			this.timedNode = TrafficLightsTimed.GetTimedLight(nodeId);
+			this.timedNode = TrafficLightSimulation.GetNodeSimulation(nodeId).TimedLight;
 
 			this.groupNodeIds = groupNodeIds;
 
@@ -176,7 +176,7 @@ namespace TrafficManager.TrafficLight {
 
 					segLightState.makeRedOrGreen(); // TODO temporary fix
 
-					var segmentLight = TrafficLightsManual.GetSegmentLight(nodeId, segmentId);
+					var segmentLight = ManualTrafficLights.GetSegmentLight(nodeId, segmentId);
 					if (segmentLight == null)
 						continue;
 
@@ -185,6 +185,10 @@ namespace TrafficManager.TrafficLight {
 					segmentLight.LightLeft = calcLightState(prevLightState.LightLeft, segLightState.LightLeft, nextLightState.LightLeft, atStartTransition, atEndTransition);
 					segmentLight.LightRight = calcLightState(prevLightState.LightRight, segLightState.LightRight, nextLightState.LightRight, atStartTransition, atEndTransition);
 					segmentLight.LightPedestrian = calcLightState(prevLightState.LightPedestrian, segLightState.LightPedestrian, nextLightState.LightPedestrian, atStartTransition, atEndTransition);
+
+					if (nodeId == 20164) {
+						Log._Debug($"Step @ {nodeId}: Segment {segmentId}: {segmentLight.LightLeft.ToString()} {segmentLight.LightMain.ToString()} {segmentLight.LightRight.ToString()} {segmentLight.LightPedestrian.ToString()}");
+                    }
 
 					segmentLight.UpdateVisuals();
 				}
@@ -199,7 +203,7 @@ namespace TrafficManager.TrafficLight {
 		/// </summary>
 		/// <param name="segmentId"></param>
 		internal void addSegment(ushort segmentId, bool makeRed) {
-			segmentLightStates.Add(segmentId, (ManualSegmentLight)TrafficLightsManual.GetOrLiveSegmentLight(nodeId, segmentId).Clone());
+			segmentLightStates.Add(segmentId, (ManualSegmentLight)ManualTrafficLights.GetOrLiveSegmentLight(nodeId, segmentId).Clone());
 			if (makeRed)
 				segmentLightStates[segmentId].makeRed();
 			else
@@ -224,7 +228,7 @@ namespace TrafficManager.TrafficLight {
 				var segLightState = e.Value;
 				
 				//if (segment == 0) continue;
-				var segmentLight = TrafficLightsManual.GetSegmentLight(nodeId, segmentId);
+				var segmentLight = ManualTrafficLights.GetSegmentLight(nodeId, segmentId);
 				if (segmentLight == null)
 					continue;
 
@@ -274,12 +278,15 @@ namespace TrafficManager.TrafficLight {
 
 			if (getCurrentFrame() >= startFrame + minTime) {
 				if (timedNode.masterNodeId != nodeId) {
-					if (! TrafficLightsTimed.IsTimedLight(timedNode.masterNodeId)) {
+					TrafficLightSimulation masterSim = TrafficLightSimulation.GetNodeSimulation(timedNode.masterNodeId);
+
+					if (masterSim == null || !masterSim.IsTimedLight()) {
 						invalid = true;
+						stepDone = true;
 						endTransitionStart = getCurrentFrame();
 						return true;
 					}
-					TrafficLightsTimed masterTimedNode = TrafficLightsTimed.GetTimedLight(timedNode.masterNodeId);
+					TimedTrafficLights masterTimedNode = masterSim.TimedLight;
 					bool done = masterTimedNode.Steps[masterTimedNode.CurrentStep].StepDone(updateValues);
 #if DEBUG
 					//Log.Message("step finished (1) @ " + nodeId);
@@ -294,8 +301,9 @@ namespace TrafficManager.TrafficLight {
 					uint curFrame = getCurrentFrame();
 					if (lastFlowWaitCalc < curFrame) {
 						if (!calcWaitFlow(out wait, out flow)) {
+							stepDone = true;
 							endTransitionStart = getCurrentFrame();
-							return true;
+							return stepDone;
 						} else {
 							lastFlowWaitCalc = curFrame;
 						}
@@ -350,9 +358,10 @@ namespace TrafficManager.TrafficLight {
 
 			// we are the master node. calculate traffic data
 			foreach (ushort timedNodeId in groupNodeIds) {
-				if (!TrafficLightsTimed.IsTimedLight(timedNodeId))
+				TrafficLightSimulation sim = TrafficLightSimulation.GetNodeSimulation(timedNodeId);
+				if (sim == null || !sim.IsTimedLight())
 					continue;
-				TrafficLightsTimed slaveTimedNode = TrafficLightsTimed.GetTimedLight(timedNodeId);
+				TimedTrafficLights slaveTimedNode = sim.TimedLight;
 				if (slaveTimedNode.NumSteps() <= timedNode.CurrentStep) {
 					for (int i = 0; i < slaveTimedNode.NumSteps(); ++i)
 						slaveTimedNode.GetStep(i).invalid = true;
