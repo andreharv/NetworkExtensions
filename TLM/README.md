@@ -2,6 +2,11 @@
 A work-in-progress modification for **Cities: Skylines** to add additional road traffic control
 
 # Changelog
+1.4.10
+- AI: Parameters tuned
+- Code improvements
+- Bugfix: Flowing/Waiting vehicles count corrected
+
 1.4.9, 01/27/2016
 - Junctions may now be added to/removed from timed traffic lights after they are created
 - When viewing/moving a timed step, the displayed/moved step is now highlighted (thanks to Joe for this idea)

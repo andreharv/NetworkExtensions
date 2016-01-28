@@ -7,7 +7,6 @@ using TrafficManager.Custom.AI;
 
 namespace TrafficManager.TrafficLight {
 	public class TimedTrafficStep : ICloneable {
-		public ushort nodeId;
 		/// <summary>
 		/// The number of time units this traffic light remains in the current state at least
 		/// </summary>
@@ -53,16 +52,15 @@ namespace TrafficManager.TrafficLight {
 
 		public float waitFlowBalance = 1f;
 
-		public TimedTrafficStep(int minTime, int maxTime, float waitFlowBalance, ushort nodeId, List<ushort> groupNodeIds, bool makeRed=false) {
-			this.nodeId = nodeId;
+		public TimedTrafficStep(TimedTrafficLights timedNode, int minTime, int maxTime, float waitFlowBalance, List<ushort> groupNodeIds, bool makeRed=false) {
 			this.minTime = minTime;
 			this.maxTime = maxTime;
 			this.waitFlowBalance = waitFlowBalance;
-			this.timedNode = TrafficLightSimulation.GetNodeSimulation(nodeId).TimedLight;
+			this.timedNode = timedNode;
 
 			this.groupNodeIds = groupNodeIds;
 
-			var node = TrafficLightTool.GetNetNode(nodeId);
+			var node = TrafficLightTool.GetNetNode(timedNode.NodeId);
 			minFlow = Single.NaN;
 			maxWait = Single.NaN;
 
@@ -80,7 +78,7 @@ namespace TrafficManager.TrafficLight {
 		}
 
 		internal void calcMaxSegmentLength() {
-			var node = TrafficLightTool.GetNetNode(nodeId);
+			var node = TrafficLightTool.GetNetNode(timedNode.NodeId);
 
 			maxSegmentLength = 0;
 			for (var s = 0; s < 8; s++) {
@@ -176,7 +174,7 @@ namespace TrafficManager.TrafficLight {
 
 					segLightState.makeRedOrGreen(); // TODO temporary fix
 
-					var segmentLight = ManualTrafficLights.GetSegmentLight(nodeId, segmentId);
+					var segmentLight = ManualTrafficLights.GetSegmentLight(timedNode.NodeId, segmentId);
 					if (segmentLight == null)
 						continue;
 
@@ -186,9 +184,9 @@ namespace TrafficManager.TrafficLight {
 					segmentLight.LightRight = calcLightState(prevLightState.LightRight, segLightState.LightRight, nextLightState.LightRight, atStartTransition, atEndTransition);
 					segmentLight.LightPedestrian = calcLightState(prevLightState.LightPedestrian, segLightState.LightPedestrian, nextLightState.LightPedestrian, atStartTransition, atEndTransition);
 
-					if (nodeId == 20164) {
-						Log._Debug($"Step @ {nodeId}: Segment {segmentId}: {segmentLight.LightLeft.ToString()} {segmentLight.LightMain.ToString()} {segmentLight.LightRight.ToString()} {segmentLight.LightPedestrian.ToString()}");
-                    }
+					/*if (timedNode.NodeId == 20164) {
+						Log._Debug($"Step @ {timedNode.NodeId}: Segment {segmentId}: {segmentLight.LightLeft.ToString()} {segmentLight.LightMain.ToString()} {segmentLight.LightRight.ToString()} {segmentLight.LightPedestrian.ToString()}");
+                    }*/
 
 					segmentLight.UpdateVisuals();
 				}
@@ -203,7 +201,7 @@ namespace TrafficManager.TrafficLight {
 		/// </summary>
 		/// <param name="segmentId"></param>
 		internal void addSegment(ushort segmentId, bool makeRed) {
-			segmentLightStates.Add(segmentId, (ManualSegmentLight)ManualTrafficLights.GetOrLiveSegmentLight(nodeId, segmentId).Clone());
+			segmentLightStates.Add(segmentId, (ManualSegmentLight)ManualTrafficLights.GetOrLiveSegmentLight(timedNode.NodeId, segmentId).Clone());
 			if (makeRed)
 				segmentLightStates[segmentId].makeRed();
 			else
@@ -228,7 +226,7 @@ namespace TrafficManager.TrafficLight {
 				var segLightState = e.Value;
 				
 				//if (segment == 0) continue;
-				var segmentLight = ManualTrafficLights.GetSegmentLight(nodeId, segmentId);
+				var segmentLight = ManualTrafficLights.GetSegmentLight(timedNode.NodeId, segmentId);
 				if (segmentLight == null)
 					continue;
 
@@ -277,7 +275,7 @@ namespace TrafficManager.TrafficLight {
 			}
 
 			if (getCurrentFrame() >= startFrame + minTime) {
-				if (timedNode.masterNodeId != nodeId) {
+				if (timedNode.masterNodeId != timedNode.NodeId) {
 					TrafficLightSimulation masterSim = TrafficLightSimulation.GetNodeSimulation(timedNode.masterNodeId);
 
 					if (masterSim == null || !masterSim.IsTimedLight()) {
@@ -351,10 +349,16 @@ namespace TrafficManager.TrafficLight {
 		/// <param name="flow"></param>
 		/// <returns>true if the values could be calculated, false otherwise</returns>
 		public bool calcWaitFlow(out float wait, out float flow) {
-			int numFlows = 0;
-			int numWaits = 0;
-			float curMeanFlow = 0;
-			float curMeanWait = 0;
+#if DEBUG
+			bool debug = timedNode.NodeId == 17857;
+#else
+			bool debug = false;
+#endif
+
+			uint numFlows = 0;
+			uint numWaits = 0;
+			uint curMeanFlow = 0;
+			uint curMeanWait = 0;
 
 			// we are the master node. calculate traffic data
 			foreach (ushort timedNodeId in groupNodeIds) {
@@ -385,15 +389,15 @@ namespace TrafficManager.TrafficLight {
 					}
 
 					bool startPhase = getCurrentFrame() <= startFrame + minTime + 2; // during start phase all vehicles on "green" segments are counted as flowing
-					Dictionary<ushort, float>[] carsToSegmentMetrics = new Dictionary<ushort, float>[startPhase ? 1 : 2];
+					Dictionary<ushort, uint>[] carsToSegmentMetrics = new Dictionary<ushort, uint>[startPhase ? 1 : 2];
 					try {
-						carsToSegmentMetrics[0] = fromSeg.getNumCarsGoingToSegment(null);
+						carsToSegmentMetrics[0] = fromSeg.getNumCarsGoingToSegment(null, debug);
 					} catch (Exception ex) {
 						Log.Warning("calcWaitFlow: " + ex.ToString());
 					}
 					if (!startPhase) {
 						try {
-							carsToSegmentMetrics[1] = fromSeg.getNumCarsGoingToSegment(0.1f);
+							carsToSegmentMetrics[1] = fromSeg.getNumCarsGoingToSegment(0.1f, debug);
 						} catch (Exception ex) {
 							Log.Warning("calcWaitFlow: " + ex.ToString());
 						}
@@ -401,7 +405,7 @@ namespace TrafficManager.TrafficLight {
 
 					// build directions from toSegment to fromSegment
 					Dictionary<ushort, Direction> directions = new Dictionary<ushort, Direction>();
-					foreach (KeyValuePair<ushort, float> f in carsToSegmentMetrics[0]) {
+					foreach (KeyValuePair<ushort, uint> f in carsToSegmentMetrics[0]) {
 						var toSegmentId = f.Key;
 						SegmentGeometry geometry = CustomRoadAI.GetSegmentGeometry(fromSegmentId);
 						Direction dir = geometry.GetDirection(toSegmentId, timedNodeId);
@@ -413,9 +417,9 @@ namespace TrafficManager.TrafficLight {
 						if (carsToSegmentMetrics[i] == null)
 							continue;
 
-						foreach (KeyValuePair<ushort, float> f in carsToSegmentMetrics[i]) {
-							var toSegmentId = f.Key;
-							var totalNormCarLength = f.Value;
+						foreach (KeyValuePair<ushort, uint> f in carsToSegmentMetrics[i]) {
+							ushort toSegmentId = f.Key;
+							uint totalNormCarLength = f.Value;
 
 							bool addToFlow = false;
 							switch (directions[toSegmentId]) {
@@ -437,11 +441,11 @@ namespace TrafficManager.TrafficLight {
 							if (addToFlow) {
 								if (i > 0 || startPhase) {
 									++numFlows;
-									curMeanFlow += (float)totalNormCarLength/* * segmentWeight*/;
+									curMeanFlow += totalNormCarLength;
 								}
 							} else if (i == 0) {
 								++numWaits;
-								curMeanWait += (float)totalNormCarLength/* * segmentWeight*/;
+								curMeanWait += totalNormCarLength;
 							}
 						}
 					}
@@ -461,14 +465,15 @@ namespace TrafficManager.TrafficLight {
 			}
 
 			if (numFlows > 0)
-				curMeanFlow /= (float)numFlows;
+				curMeanFlow /= numFlows;
 			if (numWaits > 0)
-				curMeanWait /= (float)numWaits;
+				curMeanWait /= numWaits;
 
-			curMeanFlow /= waitFlowBalance; // a value smaller than 1 rewards steady traffic currents
+			float fCurMeanFlow = curMeanFlow;
+			fCurMeanFlow /= 100f * waitFlowBalance; // a value smaller than 1 rewards steady traffic currents
 
-			wait = curMeanWait;
-			flow = curMeanFlow;
+			wait = (float)curMeanWait / 100f;
+			flow = fCurMeanFlow;
 			return true;
 		}
 

@@ -3352,7 +3352,7 @@ namespace TrafficManager.TrafficLight {
 
 							foreach (var sim in SelectedNodeIndexes.Select(TrafficLightSimulation.GetNodeSimulation)) {
 #if DEBUG
-								Log._Debug("Starting traffic light @ " + sim.TimedLight.nodeId);
+								Log._Debug("Starting traffic light @ " + sim.TimedLight.NodeId);
 #endif
 								sim.TimedLight.Start();
 							}

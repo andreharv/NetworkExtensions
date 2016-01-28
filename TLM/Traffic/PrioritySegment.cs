@@ -75,10 +75,11 @@ namespace TrafficManager.Traffic {
 		}
 
 		/// <summary>
-		/// Calculates for each segment the number of cars going to this segment
+		/// Calculates for each segment the number of cars going to this segment.
+		/// We use integer arithmetic for better performance.
 		/// </summary>
-		public Dictionary<ushort, float> getNumCarsGoingToSegment(float? minSpeed) {
-			Dictionary<ushort, float> numCarsGoingToSegmentId = new Dictionary<ushort, float>();
+		public Dictionary<ushort, uint> getNumCarsGoingToSegment(float? minSpeed, bool debug=false) {
+			Dictionary<ushort, uint> numCarsGoingToSegmentId = new Dictionary<ushort, uint>();
 			VehicleManager vehicleManager = Singleton<VehicleManager>.instance;
 			NetManager netManager = Singleton<NetManager>.instance;
 
@@ -97,17 +98,27 @@ namespace TrafficManager.Traffic {
 			foreach (KeyValuePair<ushort, VehiclePosition> e in Vehicles) {
 				var vehicleId = e.Key;
 				var carPos = e.Value;
+#if DEBUG
+				if (debug) {
+					Log._Debug($"getNumCarsGoingToSegment: Handling vehicle {vehicleId} going to {carPos.ToSegment}");
+				}
+#endif
 
 				if (vehicleId <= 0 || carPos.ToSegment <= 0)
 					continue;
 				if ((vehicleManager.m_vehicles.m_buffer[vehicleId].m_flags & Vehicle.Flags.Created) == Vehicle.Flags.None)
 					continue;
-				float speed = vehicleManager.m_vehicles.m_buffer[vehicleId].GetLastFrameVelocity().magnitude;
-				if (minSpeed != null && speed < minSpeed)
+				if (minSpeed != null && vehicleManager.m_vehicles.m_buffer[vehicleId].GetLastFrameVelocity().magnitude < minSpeed)
 					continue;
 
-				float avgSegmentLength = Singleton<NetManager>.instance.m_segments.m_buffer[carPos.ToSegment].m_averageLength;
-				var normLength = vehicleManager.m_vehicles.m_buffer[vehicleId].CalculateTotalLength(vehicleId) / avgSegmentLength;
+				uint avgSegmentLength = (uint)Singleton<NetManager>.instance.m_segments.m_buffer[SegmentId].m_averageLength;
+				uint normLength = (uint)(vehicleManager.m_vehicles.m_buffer[vehicleId].CalculateTotalLength(vehicleId) * 100u) / avgSegmentLength;
+
+#if DEBUG
+				if (debug) {
+					Log._Debug($"getNumCarsGoingToSegment: NormLength of vehicle {vehicleId} going to {carPos.ToSegment}: {avgSegmentLength} -> {normLength}");
+				}
+#endif
 
 				if (numCarsGoingToSegmentId.ContainsKey(carPos.ToSegment)) {
 					/*if (carPos.OnEmergency)

@@ -573,7 +573,7 @@ namespace TrafficManager {
 				timedNode.handleNewSegments();
 
 				configuration.TimedNodes.Add(new[] {
-					timedNode.nodeId,
+					timedNode.NodeId,
 					timedNode.CurrentStep,
 					timedNode.NumSteps(),
 					Convert.ToInt32(timedNode.IsStarted()),
