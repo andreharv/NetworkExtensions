@@ -1,4 +1,4 @@
-#define DEBUGPF
+#define DEBUGPFx
 #define DEBUGLOCKSx
 #define DEBUGCOSTSx
 
@@ -487,7 +487,7 @@ namespace TrafficManager.Custom.PathFinding {
 				}
 				uint laneID = PathManager.GetLaneID(currentPosition);
 				// NON-STOCK CODE START
-				CustomRoadAI.AddTraffic(laneID, (ushort)(this._isHeavyVehicle ? 4 : 2), (ushort)Singleton<NetManager>.instance.m_segments.m_buffer[currentPosition.m_segment].Info.m_lanes[currentPosition.m_lane].m_speedLimit, false);
+				CustomRoadAI.AddTraffic(laneID, (ushort)(this._isHeavyVehicle ? 3 : 1), (ushort)Singleton<NetManager>.instance.m_segments.m_buffer[currentPosition.m_segment].Info.m_lanes[currentPosition.m_lane].m_speedLimit, false);
 				// NON-STOCK CODE END
 				currentPosition = this._laneTarget[(int)((UIntPtr)laneID)];
 			}
@@ -789,21 +789,6 @@ namespace TrafficManager.Custom.PathFinding {
 						break;
 					}
 
-					/*if (Options.nodesOverlay) {
-						bool isRealRight = TrafficPriority.IsRightSegment(prevSegment, nextSegmentId, nextNodeId);
-						bool isRealLeft = TrafficPriority.IsLeftSegment(prevSegment, nextSegmentId, nextNodeId);
-						bool isRealStraight = !isRealRight && !isRealLeft;
-						if (rightRemaining > 0) {
-							if (!isRealRight)
-								Log.Warning($"k={k}: segment {nextSegmentId} ({prevSegment}) is not right. rightRemaining={rightRemaining}. hasStraight={hasStraight}, hasLeft={hasLeft}. realRSL: {isRealLeft},{isRealStraight},{isRealRight}");
-						} else if (rightRemaining < 0) {
-							if (!isRealLeft)
-								Log.Warning($"k={k}: segment {nextSegmentId} ({prevSegment}) is not left. rightRemaining={rightRemaining}. hasStraight={hasStraight}, hasLeft={hasLeft}. realRSL: {isRealLeft},{isRealStraight},{isRealRight}");
-						} else if (!hasLeft) {
-							if (!isRealStraight)
-								Log.Warning($"k={k}: segment {nextSegmentId} ({prevSegment}) is not straight. rightRemaining={rightRemaining}. hasStraight={hasStraight}, hasLeft={hasLeft}. realRSL: {isRealLeft},{isRealStraight},{isRealRight}");
-						}
-					}*/
 					//mCurrentState = 23;
 					// NON-STOCK CODE START //
 					bool nextIsHighway = false;
@@ -1053,13 +1038,13 @@ namespace TrafficManager.Custom.PathFinding {
 										logBuf.Add($"Next lane within bounds. nextLaneI={nextLaneI}");
 #endif
 								} else {
-									if (totalIncomingLanes >= prevSimiliarLaneCount) {
-										if (nextLeftSimilarIndex < 0) {
-											// too few lanes at prevSegment or nextSegment: sort right
+									if (nextLeftSimilarIndex < 0) {
+										// too few lanes at prevSegment or nextSegment: sort right
+										if (totalIncomingLanes >= prevSimiliarLaneCount)
 											nextLaneI = Convert.ToInt32(indexByRightSimilarLaneIndex[prevRightSimilarLaneIndex]) - 1;
-										} else {
+									} else {
+										if (totalOutgoingLanes >= nextCompatibleLaneCount)
 											nextLaneI = Convert.ToInt32(indexByRightSimilarLaneIndex[0]) - 1;
-										}
 									}
 #if DEBUGPF
 									if (debug)
@@ -1823,7 +1808,7 @@ namespace TrafficManager.Custom.PathFinding {
 
 								//sCurrentState = 23;
 #if DEBUGCOSTS
-								bool costDebug = debug;
+								bool costDebug = targetNodeId == 11330 && Options.disableSomething1;
 								List<String> logBuf = null;
 								if (costDebug)
 									logBuf = new List<String>();
@@ -1832,33 +1817,44 @@ namespace TrafficManager.Custom.PathFinding {
 
 								// vehicles should choose lanes with low traffic volume, but should neither change lanes too frequently nor change to too distant lanes.
 
-								// calculate mean speed metric
-								float divMetric;
-								divMetric = nextSpeed * nextMaxSpeed;
-								if (nextSpeed >= 0.5f) {
-									divMetric = (float)Math.Round(UnityEngine.Random.Range(0.5f, 1f) / 3f) * 3f * nextMaxSpeed;
-								}
+								// calculate speed metric
+								float meanSpeed = (nextSpeed + prevSpeed) * 0.5f;
+								float meanMaxSpeed = (nextMaxSpeed + prevMaxSpeed) * 0.5f;
+								float divMetric = meanSpeed * meanMaxSpeed;
+								
+								/*int rnd = _pathRandomizer.Int32(0, 2);
+								if (rnd == 0) {
+									divMetric = meanMaxSpeed / 3f;
+								} else if (rnd == 1) {
+									divMetric = meanMaxSpeed * 2f / 3f;
+								} else {
+									if (Options.disableSomething1)
+										Log._Debug("OK");
+									divMetric = meanMaxSpeed;
+								}*/
 
-								// calculate mean density metric
+								// calculate density metric
 								float multMetric = 1f;
-								if (nextSpeed < 0.5f) {
-									multMetric *= Options.getPathCostMultiplicator() * (1f + nextDensity); // mean densities (discretized)
+								if (meanSpeed < 0.5f) {
+									multMetric = 1f + Options.getPathCostMultiplicator() * prevDensity; // 1 .. 1+pathCostMultiplicator
 								}
 
 								// calculate metric
-								float metric = Math.Max(0.01f, multMetric) / Math.Max(0.1f, divMetric);
+								float metric = Math.Max(0.01f, multMetric) / Math.Max(0.5f, divMetric);
 
-								// multiplay with lane distance
+								// multiply with lane distance
 								float laneDist = Convert.ToSingle(Math.Abs(nextRightSimilarLaneIndex - prevRightSimilarLaneIndex));
+								float laneMetric = 1f;
 								if (!wantToChangeLane) {
-									metric *= (float)Math.Pow(Options.someValue, laneDist);
+									laneMetric = (float)Math.Pow(Options.someValue, laneDist);
 								} else {
-									metric *= (laneDist + 1f);
+									laneMetric = (laneDist + 1f);
 								}
+								metric *= laneMetric;
 
 #if DEBUGCOSTS
 								if (costDebug) {
-									logBuf.Add($"Path from {segmentID} (lane {nextRightSimilarLaneIndex} from right, idx {laneIndex}) to {item.m_position.m_segment} (lane {prevRightSimilarLaneIndex} from right, idx {item.m_position.m_lane}: nextDens={nextDens} meanSpeed={meanSpeed}");
+									logBuf.Add($"Path from {segmentID} (lane {nextRightSimilarLaneIndex} from right, idx {laneIndex}) to {item.m_position.m_segment} (lane {prevRightSimilarLaneIndex} from right, idx {item.m_position.m_lane}: meanMaxSpeed={meanMaxSpeed} meanSpeed={meanSpeed} divMetric={divMetric} prevDensity={prevDensity} multMetric={multMetric} laneDist={laneDist} laneMetric={laneMetric} metric={metric}");
 								}
 #endif
 
@@ -1868,8 +1864,8 @@ namespace TrafficManager.Custom.PathFinding {
 								distanceOverMeanMaxSpeed = (metric * distanceOnBezier) / this._maxLength;
 
 #if DEBUG
-								if ((segmentID == 25320 || segmentID == 31177) && Options.disableSomething1)
-									Log._Debug($"Costs for lane {curLaneId} @ {segmentID}: prevSpeed={prevSpeed} nextSpeed={nextSpeed} prevDensity={prevDensity} nextDensity={nextDensity} divMetric={divMetric}, multMetric={multMetric} laneDist={laneDist} metric={metric} distanceOnBezier={distanceOnBezier} prevCost={item2.m_comparisonValue} newCost={distanceOnBezier+item2.m_comparisonValue}");
+								/*if ((segmentID == 25320 || segmentID == 31177) && Options.disableSomething1)
+									Log._Debug($"Costs for lane {curLaneId} @ {segmentID}: prevSpeed={prevSpeed} nextSpeed={nextSpeed} prevDensity={prevDensity} nextDensity={nextDensity} divMetric={divMetric}, multMetric={multMetric} laneDist={laneDist} metric={metric} distanceOnBezier={distanceOnBezier} prevCost={item2.m_comparisonValue} newCost={distanceOnBezier+item2.m_comparisonValue}");*/
 #endif
 
 								if (distanceOverMeanMaxSpeed < 0f) {
@@ -1882,7 +1878,7 @@ namespace TrafficManager.Custom.PathFinding {
 									Log._Debug($"Pathfinding: comparisonValue is >1, NaN or Infinity: {item2.m_comparisonValue}");
 #endif
 #if DEBUGPF
-									Log.Error($"THREAD #{Thread.CurrentThread.ManagedThreadId}, PF {this._pathFindIndex}: distanceOverMeanMaxSpeed is NaN! distanceOverMeanMaxSpeed={distanceOverMeanMaxSpeed}, nextSpeed={nextSpeed}, prevSpeed={prevSpeed}");
+									//Log.Error($"THREAD #{Thread.CurrentThread.ManagedThreadId}, PF {this._pathFindIndex}: distanceOverMeanMaxSpeed is NaN! distanceOverMeanMaxSpeed={distanceOverMeanMaxSpeed}, nextSpeed={nextSpeed}, prevSpeed={prevSpeed}");
 #endif
 									distanceOverMeanMaxSpeed = oldDistanceOverMaxSpeed;
 								}
@@ -1920,7 +1916,7 @@ namespace TrafficManager.Custom.PathFinding {
 									Log._Debug($"Pathfinding: comparisonValue is >1, NaN or Infinity: {item2.m_comparisonValue}");
 #endif
 #if DEBUG
-									Log.Error($"THREAD #{Thread.CurrentThread.ManagedThreadId}, PF {this._pathFindIndex}: Comparison value > 1, NaN or infinity! distanceOverMeanMaxSpeed={distanceOverMeanMaxSpeed}, nextSpeed={nextSpeed}, prevSpeed={prevSpeed}");
+									//Log.Error($"THREAD #{Thread.CurrentThread.ManagedThreadId}, PF {this._pathFindIndex}: Comparison value > 1, NaN or infinity! distanceOverMeanMaxSpeed={distanceOverMeanMaxSpeed}, nextSpeed={nextSpeed}, prevSpeed={prevSpeed}");
 #endif
 									item2.m_comparisonValue = 1f;
 									addItem = false;
