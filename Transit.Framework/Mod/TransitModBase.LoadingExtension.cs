@@ -1,6 +1,6 @@
 ﻿using ICities;
-using Transit.Framework.Hooks;
 using Transit.Framework.Modularity;
+using Transit.Framework.Prerequisites;
 
 namespace Transit.Framework.Mod
 {
@@ -8,7 +8,7 @@ namespace Transit.Framework.Mod
     {
         public virtual void OnEnabled()
         {
-            HooksHandler.InstallHooksForMod(this);
+            ModPrerequisites.InstallForMod(this);
             LoadModulesIfNeeded();
             LoadSettings();
 
@@ -21,7 +21,7 @@ namespace Transit.Framework.Mod
             foreach (IModule module in Modules)
                 module.OnDisabled();
 
-            HooksHandler.UnInstallHooksForMod(this);
+            ModPrerequisites.UninstallForMod(this);
         }
 
         public override void OnCreated(ILoading loading)

@@ -53,7 +53,7 @@
   <ItemGroup>
     <Compile Include="AI\TAMRoadAI.CreateZoneBlocks.cs" />
     <Compile Include="AI\TAMRoadAI.Snapping.cs" />
-    <Compile Include="HooksHandler.cs" />
+    <Compile Include="HooksInstaller.cs" />
     <Compile Include="PathFinding\TAMPathFind.cs" />
     <Compile Include="PathFinding\TAMPathFind.Vanilla.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -68,6 +68,10 @@
     <ProjectReference Include="..\Transit.Framework.Unsafe\Transit.Framework.Unsafe.csproj">
       <Project>{7DCC08EF-DC85-47A4-BD6F-79FC52C7EF13}</Project>
       <Name>Transit.Framework.Unsafe</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Transit.Framework\Transit.Framework.csproj">
+      <Project>{8891467E-C88E-46B0-96F9-4413DF6DC205}</Project>
+      <Name>Transit.Framework</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
