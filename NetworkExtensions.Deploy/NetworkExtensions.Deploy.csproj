@@ -8,8 +8,8 @@
     <ProjectGuid>{D2DA5492-3DE6-4E7D-AFF1-BB62C950632D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NetworkExtensions</RootNamespace>
-    <AssemblyName>NetworkExtensions</AssemblyName>
+    <RootNamespace>NetworkExtensions.Deploy</RootNamespace>
+    <AssemblyName>NetworkExtensions.Deploy</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -32,30 +32,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>..\References\Assembly-CSharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="ColossalManaged">
-      <HintPath>..\References\ColossalManaged.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="ICities">
-      <HintPath>..\References\ICities.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.Xml" />
-    <Reference Include="UnityEngine">
-      <HintPath>..\References\UnityEngine.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Mod.cs" />
-    <Compile Include="Mod.Settings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NetworkExtensions\NetworkExtensions.csproj">
+      <Project>{dcd9dd56-9c49-4ba9-8f37-7567444fe7cb}</Project>
+      <Name>NetworkExtensions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Transit.Addon.Core\Transit.Addon.Core.csproj">
       <Project>{61414A57-131A-44CF-ADCE-9179ED788D3C}</Project>
       <Name>Transit.Addon.Core</Name>
@@ -71,7 +54,12 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>del "$(TargetDir)*.pdb"
+    <PostBuildEvent>forfiles /P "$(ProjectDir)bin\$(ConfigurationName)" /S /M *.CRP /C "cmd /c move @file "$(ProjectDir)bin\$(ConfigurationName)""
+
+del "$(TargetDir)NetworkExtensions.Deploy.dll"
+del "$(TargetDir)*.pdb"
+rd /s /q "$(TargetDir)\Buildings"
+
 if $(ConfigurationName) == Debug (
 rd /s /q  "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\NetworkExtensions"
 mkdir "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\NetworkExtensions"
@@ -81,6 +69,9 @@ rd /s /q  "D:\Games\Steam\SteamApps\workshop\content\255710\478820060"
 mkdir "D:\Games\Steam\SteamApps\workshop\content\255710\478820060"
 xcopy /q /y /e "$(ProjectDir)bin\$(ConfigurationName)" "D:\Games\Steam\SteamApps\workshop\content\255710\478820060"
 )</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>del /f /q "$(TargetDir)"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

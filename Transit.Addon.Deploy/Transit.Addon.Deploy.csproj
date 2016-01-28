@@ -35,13 +35,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Transit.Addon.TrafficAI\Transit.Addon.TrafficAI.csproj">
+    <ProjectReference Include="..\Transit.Addon.PathFinding\Transit.Addon.PathFinding.csproj">
       <Project>{20f6a0dc-131c-49cd-9d9b-95b6e41cddff}</Project>
-      <Name>Transit.Addon.TrafficAI</Name>
+      <Name>Transit.Addon.PathFinding</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Transit.Addon.TrafficPP\Transit.Addon.TrafficPP.csproj">
-      <Project>{D78DECCE-B9B3-4E14-933F-6C0BE10526C5}</Project>
-      <Name>Transit.Addon.TrafficPP</Name>
+    <ProjectReference Include="..\Transit.Addon.Tools\Transit.Addon.Tools.csproj">
+      <Project>{4499042e-dcd1-4f9f-a3c8-4830108169cd}</Project>
+      <Name>Transit.Addon.Tools</Name>
     </ProjectReference>
     <ProjectReference Include="..\Transit.Addon\Transit.Addon.csproj">
       <Project>{80C47696-4D41-4BB6-9CAE-C477FE528ADF}</Project>
@@ -54,8 +54,13 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>del "$(TargetDir)*.pdb"
+    <PostBuildEvent>forfiles /P "$(ProjectDir)bin\$(ConfigurationName)" /S /M *.CRP /C "cmd /c move @file "$(ProjectDir)bin\$(ConfigurationName)""
+
 del "$(TargetDir)Transit.Addon.Deploy.dll"
+del "$(TargetDir)*.pdb"
+rd /s /q "$(TargetDir)\Buildings"
+
+
 if $(ConfigurationName) == Debug (
 rd /s /q  "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\Transit Addons Mod"
 mkdir "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\Transit Addons Mod"
@@ -65,6 +70,9 @@ rd /s /q  "D:\Games\Steam\SteamApps\workshop\content\255710\543703997"
 mkdir "D:\Games\Steam\SteamApps\workshop\content\255710\543703997"
 xcopy /q /y /e "$(ProjectDir)bin\$(ConfigurationName)" "D:\Games\Steam\SteamApps\workshop\content\255710\543703997"
 )</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>del /f /q "$(TargetDir)"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

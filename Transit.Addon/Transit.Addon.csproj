@@ -52,14 +52,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\PathFinding\DefaultPathFinder.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\PathFinding\PathFinder.cs" />
-    <Compile Include="Core\PathFinding\PathFindProxy.cs" />
-    <Compile Include="Core\PathFinding\IPathFinder.cs" />
     <Compile Include="Mod.cs" />
-    <Compile Include="Mod.Loading.cs" />
     <Compile Include="Mod.Settings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -76,11 +69,6 @@
       <Project>{8891467E-C88E-46B0-96F9-4413DF6DC205}</Project>
       <Name>Transit.Framework</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="NotificationSettings.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

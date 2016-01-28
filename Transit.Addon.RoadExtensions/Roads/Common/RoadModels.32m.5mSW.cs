@@ -33,7 +33,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                         var node2 = node0.ShallowClone();
 
                         node2
-                            .SetFlags(NetNode.Flags.Underground, NetNode.Flags.None)
                             .SetMeshes
                             (@"Roads\Common\Meshes\32m\5mSW\Slope_U_Node.obj",
                              @"Roads\Common\Meshes\32m\5mSW\Slope_U_Node.obj");

@@ -1,6 +1,5 @@
 ﻿using ICities;
 using Transit.Framework.Modularity;
-using UnityEngine;
 
 namespace Transit.Addon.Core
 {
@@ -10,6 +9,7 @@ namespace Transit.Addon.Core
         {
             InstallPrerequisites();
             LoadModulesIfNeeded();
+            LoadSettings();
 
             foreach (IModule module in Modules)
                 module.OnEnabled();
