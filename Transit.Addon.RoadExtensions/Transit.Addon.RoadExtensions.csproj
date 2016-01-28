@@ -1525,13 +1525,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <None Include="Buildings\Pillars\16m\Meshes\Pillar.obj">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Buildings\Pillars\16m\Meshes\Pillar_LOD.obj">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Cable Stay 32m.crp">
+    <None Include="Buildings\BridgePillar_CableStay32m.crp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\Bridge_Cables.obj">
@@ -2001,6 +1995,9 @@
   <PropertyGroup>
     <PostBuildEvent>
     </PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>del /f /q "$(TargetDir)"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
