@@ -1,4 +1,5 @@
-﻿using Transit.Framework;
+﻿using Transit.Addon.RoadExtensions.Compatibility;
+using Transit.Framework;
 using Transit.Framework.Texturing;
 
 namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway4L
@@ -7,24 +8,27 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway4L
     {
         private static void SetupTextures(NetInfo info, NetInfoVersion version)
         {
+            RoadColorChanger rcc = new RoadColorChanger();
+            var aprMapPath = (rcc.IsPluginActive ? rcc.GetTexturePrefix() : @"Roads\");
+
             switch (version)
             {
                 case NetInfoVersion.Ground:
                     info.SetAllSegmentsTexture(
                         new TexturesSet(
                             @"Roads\Highways\Highway4L\Textures\Ground_Segment__MainTex.png",
-                            @"Roads\Highways\Highway4L\Textures\Ground_Segment__APRMap.png"),
+                            aprMapPath + @"Highways\Highway4L\Textures\Ground_Segment__APRMap.png"),
                         new LODTexturesSet
                            (@"Roads\Highways\Highway4L\Textures\Ground_SegmentLOD__MainTex.png",
-                            @"Roads\Highways\Highway4L\Textures\Ground_SegmentLOD__APRMap.png",
+                            aprMapPath + @"Highways\Highway4L\Textures\Ground_SegmentLOD__APRMap.png",
                             @"Roads\Highways\Highway4L\Textures\Ground_LOD__XYSMap.png"));
                     info.SetAllNodesTexture(
                         new TexturesSet
                            (@"Roads\Highways\Highway4L\Textures\Ground_Node__MainTex.png",
-                            @"Roads\Highways\Highway4L\Textures\Ground_Node__APRMap.png"),
+                            aprMapPath + @"Highways\Highway4L\Textures\Ground_Node__APRMap.png"),
                         new LODTexturesSet
                            (@"Roads\Highways\Highway4L\Textures\Ground_NodeLOD__MainTex.png",
-                            @"Roads\Highways\Highway4L\Textures\Ground_NodeLOD__APRMap.png",
+                            aprMapPath + @"Highways\Highway4L\Textures\Ground_NodeLOD__APRMap.png",
                             @"Roads\Highways\Highway4L\Textures\Ground_LOD__XYSMap.png"));
                     break;
 
@@ -33,18 +37,18 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway4L
                     info.SetAllSegmentsTexture(
                         new TexturesSet(
                             @"Roads\Highways\Highway4L\Textures\Elevated_Segment__MainTex.png",
-                            @"Roads\Highways\Highway4L\Textures\Elevated_Segment__APRMap.png"),
+                            aprMapPath + @"Highways\Highway4L\Textures\Elevated_Segment__APRMap.png"),
                         new LODTexturesSet
                            (@"Roads\Highways\Highway4L\Textures\Elevated_SegmentLOD__MainTex.png",
-                            @"Roads\Highways\Highway4L\Textures\Elevated_SegmentLOD__APRMap.png",
+                            aprMapPath + @"Highways\Highway4L\Textures\Elevated_SegmentLOD__APRMap.png",
                             @"Roads\Highways\Highway4L\Textures\Elevated_LOD__XYSMap.png"));
                     info.SetAllNodesTexture(
                         new TexturesSet
                            (@"Roads\Highways\Highway4L\Textures\Elevated_Node__MainTex.png",
-                            @"Roads\Highways\Highway4L\Textures\Elevated_Node__APRMap.png"),
+                            aprMapPath + @"Highways\Highway4L\Textures\Elevated_Node__APRMap.png"),
                         new LODTexturesSet
                            (@"Roads\Highways\Highway4L\Textures\Elevated_NodeLOD__MainTex.png",
-                            @"Roads\Highways\Highway4L\Textures\Elevated_NodeLOD__APRMap.png",
+                            aprMapPath + @"Highways\Highway4L\Textures\Elevated_NodeLOD__APRMap.png",
                             @"Roads\Highways\Highway4L\Textures\Elevated_LOD__XYSMap.png"));
                     break;
 
@@ -52,7 +56,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway4L
                     info.SetAllSegmentsTexture(
                         new TexturesSet
                            (@"Roads\Highways\Highway4L\Textures\Slope_Segment__MainTex.png",
-                            @"Roads\Highways\Highway4L\Textures\Slope_Segment_Open__APRMap.png"),
+                            aprMapPath + @"Highways\Highway4L\Textures\Slope_Segment_Open__APRMap.png"),
                         new LODTexturesSet
                             (@"Roads\Highways\Highway4L\Textures\Slope_SegmentLOD__MainTex.png",
                              @"Roads\Highways\Highway4L\Textures\Slope_SegmentLOD__APRMap.png",
@@ -60,28 +64,28 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway4L
                     info.SetAllNodesTexture(
                         new TexturesSet
                            (@"Roads\Highways\Highway4L\Textures\Slope_Node__MainTex.png",
-                            @"Roads\Highways\Highway4L\Textures\Ground_Node__APRMap.png"),
+                            aprMapPath + @"Highways\Highway4L\Textures\Ground_Node__APRMap.png"),
                         new LODTexturesSet
                            (@"Roads\Highways\Highway4L\Textures\Ground_NodeLOD__MainTex.png",
-                            @"Roads\Highways\Highway4L\Textures\Ground_NodeLOD__APRMap.png",
+                            aprMapPath + @"Highways\Highway4L\Textures\Ground_NodeLOD__APRMap.png",
                             @"Roads\Highways\Highway4L\Textures\Ground_LOD__XYSMap.png"));
                     break;
                 case NetInfoVersion.Tunnel:
                     info.SetAllSegmentsTexture(
                         new TexturesSet
                            (@"Roads\Highways\Highway4L\Textures\Tunnel_Segment__MainTex.png",
-                            @"Roads\Highways\Highway4L\Textures\Tunnel__APRMap.png"),
+                            aprMapPath + @"Highways\Highway4L\Textures\Tunnel" + (rcc.IsPluginActive ? "_Segment" : "") + "__APRMap.png"),
                         new LODTexturesSet
                            (@"Roads\Highways\Highway4L\Textures\Tunnel_SegmentLOD__MainTex.png",
-                            @"Roads\Highways\Highway4L\Textures\TunnelLOD__APRMap.png",
+                            aprMapPath + @"Highways\Highway4L\Textures\TunnelLOD__APRMap.png",
                             @"Roads\Highways\Highway4L\Textures\Slope_LOD__XYSMap.png"));
                     info.SetAllNodesTexture(
                         new TexturesSet
                            (@"Roads\Highways\Highway4L\Textures\Tunnel_Node__MainTex.png",
-                            @"Roads\Highways\Highway4L\Textures\Tunnel__APRMap.png"),
+                            aprMapPath + @"Highways\Highway4L\Textures\Tunnel" + (rcc.IsPluginActive ? "_Node" : "") + "__APRMap.png"),
                         new LODTexturesSet
                            (@"Roads\Highways\Highway4L\Textures\Tunnel_NodeLOD__MainTex.png",
-                            @"Roads\Highways\Highway4L\Textures\TunnelLOD__APRMap.png",
+                            aprMapPath + @"Highways\Highway4L\Textures\TunnelLOD__APRMap.png",
                             @"Roads\Highways\Highway4L\Textures\Slope_LOD__XYSMap.png"));
                     break;
             }

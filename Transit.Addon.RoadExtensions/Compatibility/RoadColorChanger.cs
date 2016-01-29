@@ -34,6 +34,11 @@ namespace Transit.Addon.RoadExtensions.Compatibility
             }
         }
 
+        public string GetTexturePrefix()
+        {
+            return @"Compatibility\";
+        }
+
         public class Configuration2
         {
             public float highway_red = 0.25f;

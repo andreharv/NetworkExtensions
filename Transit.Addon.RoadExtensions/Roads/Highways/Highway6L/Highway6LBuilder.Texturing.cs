@@ -1,4 +1,5 @@
-﻿using Transit.Framework;
+﻿using Transit.Addon.RoadExtensions.Compatibility;
+using Transit.Framework;
 using Transit.Framework.Texturing;
 
 namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway6L
@@ -7,82 +8,85 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway6L
     {
         private static void SetupTextures(NetInfo info, NetInfoVersion version)
         {
+            RoadColorChanger rcc = new RoadColorChanger();
+            var aprMapPath = (rcc.IsPluginActive ? rcc.GetTexturePrefix() : @"Roads\");
+
             switch (version)
             {
                 case NetInfoVersion.Ground:
                     info.SetAllSegmentsTexture(
                         new TexturesSet(
-                            @"Roads\Highways\Highway6L\Textures\Ground\Segment__MainTex.png",
-                            @"Roads\Highways\Highway6L\Textures\Ground\Segment__APRMap.png"),
+                            @"Roads\Highways\Highway6L\Textures\Ground_Segment__MainTex.png",
+                            aprMapPath + @"Highways\Highway6L\Textures\Ground_Segment__APRMap.png"),
                         new LODTexturesSet
-                           (@"Roads\Highways\Highway6L\Textures\Ground\SegmentLOD__MainTex.png",
-                            @"Roads\Highways\Highway6L\Textures\Ground\SegmentLOD__APRMap.png",
-                            @"Roads\Highways\Highway6L\Textures\Ground\SegmentLOD__XYSMap.png"));
+                           (@"Roads\Highways\Highway6L\Textures\Ground_SegmentLOD__MainTex.png",
+                            aprMapPath + @"Highways\Highway6L\Textures\Ground_SegmentLOD__APRMap.png",
+                            @"Roads\Highways\Highway6L\Textures\Ground_SegmentLOD__XYSMap.png"));
                     info.SetAllNodesTexture(
                         new TexturesSet
-                           (@"Roads\Highways\Highway6L\Textures\Ground\Node__MainTex.png",
-                            @"Roads\Highways\Highway6L\Textures\Ground\Node__APRMap.png"),
+                           (@"Roads\Highways\Highway6L\Textures\Ground_Node__MainTex.png",
+                            aprMapPath + @"Highways\Highway6L\Textures\Ground_Node__APRMap.png"),
                         new LODTexturesSet
-                           (@"Roads\Highways\Highway6L\Textures\Ground\NodeLOD__MainTex.png",
-                            @"Roads\Highways\Highway6L\Textures\Ground\NodeLOD__APRMap.png",
-                            @"Roads\Highways\Highway6L\Textures\Ground\NodeLOD__XYSMap.png"));
+                           (@"Roads\Highways\Highway6L\Textures\Ground_NodeLOD__MainTex.png",
+                            aprMapPath + @"Highways\Highway6L\Textures\Ground_NodeLOD__APRMap.png",
+                            @"Roads\Highways\Highway6L\Textures\Ground_NodeLOD__XYSMap.png"));
                     break;
 
                 case NetInfoVersion.Elevated:
                 case NetInfoVersion.Bridge:
                     info.SetAllSegmentsTexture(
                         new TexturesSet(
-                            @"Roads\Highways\Highway6L\Textures\ElevatedBridge\Segment__MainTex.png",
-                            @"Roads\Highways\Highway6L\Textures\ElevatedBridge\Segment__APRMap.png"),
+                            @"Roads\Highways\Highway6L\Textures\Elevated_Segment__MainTex.png",
+                            aprMapPath + @"Highways\Highway6L\Textures\Elevated_Segment__APRMap.png"),
                         new LODTexturesSet
-                           (@"Roads\Highways\Highway6L\Textures\ElevatedBridge\SegmentLOD__MainTex.png",
-                            @"Roads\Highways\Highway6L\Textures\ElevatedBridge\SegmentLOD__APRMap.png",
-                            @"Roads\Highways\Highway6L\Textures\ElevatedBridge\LOD__XYSMap.png"));
+                           (@"Roads\Highways\Highway6L\Textures\Elevated_SegmentLOD__MainTex.png",
+                            aprMapPath + @"Highways\Highway6L\Textures\Elevated_SegmentLOD__APRMap.png",
+                            @"Roads\Highways\Highway6L\Textures\Elevated_LOD__XYSMap.png"));
                     info.SetAllNodesTexture(
                         new TexturesSet
-                           (@"Roads\Highways\Highway6L\Textures\ElevatedBridge\Node__MainTex.png",
-                            @"Roads\Highways\Highway6L\Textures\ElevatedBridge\Node__APRMap.png"),
+                           (@"Roads\Highways\Highway6L\Textures\Elevated_Node__MainTex.png",
+                            aprMapPath + @"Highways\Highway6L\Textures\Elevated_Node__APRMap.png"),
                         new LODTexturesSet
-                           (@"Roads\Highways\Highway6L\Textures\ElevatedBridge\NodeLOD__MainTex.png",
-                            @"Roads\Highways\Highway6L\Textures\ElevatedBridge\NodeLOD__APRMap.png",
-                            @"Roads\Highways\Highway6L\Textures\ElevatedBridge\LOD__XYSMap.png"));
+                           (@"Roads\Highways\Highway6L\Textures\Elevated_NodeLOD__MainTex.png",
+                            aprMapPath + @"Highways\Highway6L\Textures\Elevated_NodeLOD__APRMap.png",
+                            @"Roads\Highways\Highway6L\Textures\Elevated_LOD__XYSMap.png"));
                     break;
 
                 case NetInfoVersion.Slope:
                     info.SetAllSegmentsTexture(
                         new TexturesSet
-                           (@"Roads\Highways\Highway6L\Textures\Slope\Segment__MainTex.png",
-                            @"Roads\Highways\Highway6L\Textures\Slope\Segment__APRMap.png"),
+                           (@"Roads\Highways\Highway6L\Textures\Slope_Segment__MainTex.png",
+                            aprMapPath + @"Highways\Highway6L\Textures\Slope_Segment__APRMap.png"),
                         new LODTexturesSet
-                            (@"Roads\Highways\Highway6L\Textures\Slope\SegmentLOD__MainTex.png",
-                            @"Roads\Highways\Highway6L\Textures\Slope\SegmentLOD__APRMap.png",
-                            @"Roads\Highways\Highway6L\Textures\Slope\SegmentLOD__XYSMap.png"));
+                            (@"Roads\Highways\Highway6L\Textures\Slope_SegmentLOD__MainTex.png",
+                            aprMapPath + @"Highways\Highway6L\Textures\Slope_SegmentLOD__APRMap.png",
+                            @"Roads\Highways\Highway6L\Textures\Slope_SegmentLOD__XYSMap.png"));
                     info.SetAllNodesTexture(
                         new TexturesSet
-                           (@"Roads\Highways\Highway6L\Textures\Tunnel\Node__MainTex.png",
-                            @"Roads\Highways\Highway6L\Textures\Ground\Node__APRMap.png"),
+                           (@"Roads\Highways\Highway6L\Textures\Tunnel_Node__MainTex.png",
+                            aprMapPath + @"Highways\Highway6L\Textures\Ground_Node__APRMap.png"),
                         new LODTexturesSet
-                           (@"Roads\Highways\Highway6L\Textures\Ground\NodeLOD__MainTex.png",
-                            @"Roads\Highways\Highway6L\Textures\Ground\NodeLOD__APRMap.png",
-                            @"Roads\Highways\Highway6L\Textures\Ground\NodeLOD__XYSMap.png"));
+                           (@"Roads\Highways\Highway6L\Textures\Ground_NodeLOD__MainTex.png",
+                            aprMapPath + @"Highways\Highway6L\Textures\Ground_NodeLOD__APRMap.png",
+                            @"Roads\Highways\Highway6L\Textures\Ground_NodeLOD__XYSMap.png"));
                     break;
                 case NetInfoVersion.Tunnel:
                     info.SetAllSegmentsTexture(
                         new TexturesSet
-                           (@"Roads\Highways\Highway6L\Textures\Tunnel\Segment__MainTex.png",
-                            @"Roads\Highways\Highway6L\Textures\Tunnel\Segment__APRMap.png"),
+                           (@"Roads\Highways\Highway6L\Textures\Tunnel_Segment__MainTex.png",
+                            aprMapPath + @"Highways\Highway6L\Textures\Tunnel_Segment__APRMap.png"),
                         new LODTexturesSet
-                           (@"Roads\Highways\Highway6L\Textures\Tunnel\SegmentLOD__MainTex.png",
-                            @"Roads\Highways\Highway6L\Textures\Tunnel\SegmentLOD__APRMap.png",
-                            @"Roads\Highways\Highway6L\Textures\Tunnel\NodeLOD__XYSMap.png"));
+                           (@"Roads\Highways\Highway6L\Textures\Tunnel_SegmentLOD__MainTex.png",
+                            aprMapPath + @"Highways\Highway6L\Textures\Tunnel_SegmentLOD__APRMap.png",
+                            @"Roads\Highways\Highway6L\Textures\Tunnel_NodeLOD__XYSMap.png"));
                     info.SetAllNodesTexture(
                         new TexturesSet
-                           (@"Roads\Highways\Highway6L\Textures\Tunnel\Node__MainTex.png",
-                            @"Roads\Highways\Highway6L\Textures\Tunnel\Segment__APRMap.png"),
+                           (@"Roads\Highways\Highway6L\Textures\Tunnel_Node__MainTex.png",
+                            aprMapPath + @"Highways\Highway6L\Textures\Tunnel_" + (rcc.IsPluginActive ? "Node" : "Segment") + "__APRMap.png"),
                         new LODTexturesSet
-                           (@"Roads\Highways\Highway6L\Textures\Tunnel\NodeLOD__MainTex.png",
-                            @"Roads\Highways\Highway6L\Textures\Tunnel\SegmentLOD__APRMap.png",
-                            @"Roads\Highways\Highway6L\Textures\Tunnel\NodeLOD__XYSMap.png"));
+                           (@"Roads\Highways\Highway6L\Textures\Tunnel_NodeLOD__MainTex.png",
+                            aprMapPath + @"Highways\Highway6L\Textures\Tunnel_SegmentLOD__APRMap.png",
+                            @"Roads\Highways\Highway6L\Textures\Tunnel_NodeLOD__XYSMap.png"));
                     break;
             }
         }
