@@ -133,24 +133,26 @@ namespace Transit.Framework.Unsafe
                         }
                     }
 
-                    if (originalMethod != null)
+                    if (originalMethod == null)
                     {
-                        if (redirectAttr is RedirectFromAttribute)
-                        {
-                            if (!s_redirections.Any(r => r.OriginalMethod == originalMethod))
-                            {
-                                Debug.Log(string.Format("TFW: Adding redirection from {0}", originalMethod.Name));
-                                s_redirections.Add(originalMethod.RedirectTo(method, callingAssembly));
-                            }
-                        }
+                        throw new Exception(string.Format("TFW: Original method {0} has not been found for redirection", originalName));
+                    }
 
-                        if (redirectAttr is RedirectToAttribute)
+                    if (redirectAttr is RedirectFromAttribute)
+                    {
+                        if (!s_redirections.Any(r => r.OriginalMethod == originalMethod))
                         {
-                            if (!s_redirections.Any(r => r.OriginalMethod == method))
-                            {
-                                Debug.Log(string.Format("TFW: Adding redirection to {0}", originalMethod.Name));
-                                s_redirections.Add(method.RedirectTo(originalMethod, callingAssembly));
-                            }
+                            Debug.Log(string.Format("TFW: Adding redirection from {0}", originalMethod.Name));
+                            s_redirections.Add(originalMethod.RedirectTo(method, callingAssembly));
+                        }
+                    }
+
+                    if (redirectAttr is RedirectToAttribute)
+                    {
+                        if (!s_redirections.Any(r => r.OriginalMethod == method))
+                        {
+                            Debug.Log(string.Format("TFW: Adding redirection to {0}", originalMethod.Name));
+                            s_redirections.Add(method.RedirectTo(originalMethod, callingAssembly));
                         }
                     }
                 }

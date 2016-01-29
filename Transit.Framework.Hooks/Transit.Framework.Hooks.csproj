@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AI\TAMRoadAI.CreateZoneBlocks.cs" />
+    <Compile Include="AI\TAMNetAI.CheckBuildPosition.cs" />
     <Compile Include="AI\TAMRoadAI.Snapping.cs" />
     <Compile Include="HooksInstaller.cs" />
     <Compile Include="PathFinding\TAMPathFind.cs" />

@@ -1,15 +1,11 @@
-﻿using System;
-using ColossalFramework;
-using ColossalFramework.Math;
-using Transit.Framework.Extenders.AI;
+﻿using Transit.Framework.Extenders.AI;
 using Transit.Framework.Unsafe;
-using UnityEngine;
 
 namespace Transit.Framework.Hooks.AI
 {
     public partial class TAMRoadAI : RoadAI
     {
-        [RedirectFrom(typeof(RoadAI))]
+        [RedirectFrom(typeof (RoadAI))]
         public override float GetLengthSnap()
         {
             if (RoadSnappingModeProvider.instance.HasCustomSnapping(this.m_info.name))
