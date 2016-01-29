@@ -107,9 +107,8 @@ namespace TrafficManager.Traffic {
 			if (nodeId <= 0)
 				return;
 
-			var node = Singleton<NetManager>.instance.m_nodes.m_buffer[nodeId];
 			for (var s = 0; s < 8; s++) {
-				var segmentId = node.GetSegment(s);
+				var segmentId = Singleton<NetManager>.instance.m_nodes.m_buffer[nodeId].GetSegment(s);
 				if (segmentId <= 0)
 					continue;
 
@@ -139,9 +138,8 @@ namespace TrafficManager.Traffic {
 			if (nodeId <= 0)
 				return ret;
 
-			var node = Singleton<NetManager>.instance.m_nodes.m_buffer[nodeId];
 			for (var s = 0; s < 8; s++) {
-				var segmentId = node.GetSegment(s);
+				var segmentId = Singleton<NetManager>.instance.m_nodes.m_buffer[nodeId].GetSegment(s);
 				if (segmentId <= 0)
 					continue;
 
@@ -291,7 +289,7 @@ namespace TrafficManager.Traffic {
 				}
 
 				if (targetVehiclePos.ToNode != nodeId) {
-					Log._Debug($"HasIncomingVehicles: The vehicle {targetVehicleId} is not driving on a segment adjacent to node {nodeId}.");
+					//Log._Debug($"HasIncomingVehicles: The vehicle {targetVehicleId} is not driving on a segment adjacent to node {nodeId}.");
 					return false;
 				}/* else if (targetVehiclePos.FromSegment == 22980u && nodeId == 13630u) {
 					Log.Error("vehicleId " + targetVehicleId + ". ToNode: " + targetVehiclePos.ToNode + ". FromSegment: " + targetVehiclePos.FromSegment + ". ToSegment: " + targetVehiclePos.ToSegment);
@@ -978,92 +976,6 @@ namespace TrafficManager.Traffic {
 			return Vector3.Cross(fromDir, toDir).y >= 0.5;
 		}
 
-		// not very important:
-		/*
-		public static bool HasLeftLane(ushort nodeId, int segmentId) {
-			var instance = Singleton<NetManager>.instance;
-			var segment = Singleton<NetManager>.instance.m_segments.m_buffer[segmentId];
-			var dir = NetInfo.Direction.Forward;
-			if (segment.m_startNode == nodeId)
-				dir = NetInfo.Direction.Backward;
-			var dir2 = ((segment.m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None) ? dir : NetInfo.InvertDirection(dir);
-			var dir3 = LeftHandDrive ? NetInfo.InvertDirection(dir2) : dir2;
-
-			var info = segment.Info;
-
-			var num2 = segment.m_lanes;
-			var num3 = 0;
-
-			while (num3 < info.m_lanes.Length && num2 != 0u) {
-				var flags = (NetLane.Flags)Singleton<NetManager>.instance.m_lanes.m_buffer[num2].m_flags;
-
-				if (info.m_lanes[num3].m_direction == dir3 && (flags & NetLane.Flags.Left) != NetLane.Flags.None) {
-					return true;
-				}
-
-				num2 = instance.m_lanes.m_buffer[(int)((UIntPtr)num2)].m_nextLane;
-				num3++;
-			}
-
-			return false;
-		}
-
-		public static bool HasForwardLane(ushort nodeId, int segmentId) {
-			var instance = Singleton<NetManager>.instance;
-			var segment = Singleton<NetManager>.instance.m_segments.m_buffer[segmentId];
-			var dir = NetInfo.Direction.Forward;
-			if (segment.m_startNode == nodeId)
-				dir = NetInfo.Direction.Backward;
-			var dir2 = ((segment.m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None) ? dir : NetInfo.InvertDirection(dir);
-			var dir3 = LeftHandDrive ? NetInfo.InvertDirection(dir2) : dir2;
-
-			var info = segment.Info;
-
-			var num2 = segment.m_lanes;
-			var num3 = 0;
-
-			while (num3 < info.m_lanes.Length && num2 != 0u) {
-				var flags = (NetLane.Flags)Singleton<NetManager>.instance.m_lanes.m_buffer[num2].m_flags;
-
-				if (info.m_lanes[num3].m_direction == dir3 && (flags & NetLane.Flags.Left) != NetLane.Flags.Forward) {
-					return true;
-				}
-
-				num2 = instance.m_lanes.m_buffer[(int)((UIntPtr)num2)].m_nextLane;
-				num3++;
-			}
-
-			return false;
-		}
-
-		public static bool HasRightLane(ushort nodeId, int segmentId) {
-			var instance = Singleton<NetManager>.instance;
-			var segment = Singleton<NetManager>.instance.m_segments.m_buffer[segmentId];
-			var dir = NetInfo.Direction.Forward;
-			if (segment.m_startNode == nodeId)
-				dir = NetInfo.Direction.Backward;
-			var dir2 = ((segment.m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None) ? dir : NetInfo.InvertDirection(dir);
-			var dir3 = LeftHandDrive ? NetInfo.InvertDirection(dir2) : dir2;
-
-			var info = segment.Info;
-
-			var num2 = segment.m_lanes;
-			var num3 = 0;
-
-			while (num3 < info.m_lanes.Length && num2 != 0u) {
-				var flags = (NetLane.Flags)Singleton<NetManager>.instance.m_lanes.m_buffer[num2].m_flags;
-
-				if (info.m_lanes[num3].m_direction == dir3 && (flags & NetLane.Flags.Left) != NetLane.Flags.Right) {
-					return true;
-				}
-
-				num2 = instance.m_lanes.m_buffer[(int)((UIntPtr)num2)].m_nextLane;
-				num3++;
-			}
-
-			return false;
-		}*/
-
 		public static Vector3 GetSegmentDir(int segment, ushort nodeid) {
 			var instance = Singleton<NetManager>.instance;
 
@@ -1160,9 +1072,8 @@ namespace TrafficManager.Traffic {
 				Flags.applyNodeTrafficLightFlag(nodeId);
 
 				// update lane arrows
-				var node = netManager.m_nodes.m_buffer[nodeId];
 				for (var s = 0; s < 8; s++) {
-					var segmentId = node.GetSegment(s);
+					var segmentId = netManager.m_nodes.m_buffer[nodeId].GetSegment(s);
 					if (segmentId <= 0)
 						continue;
 
@@ -1246,14 +1157,13 @@ namespace TrafficManager.Traffic {
 			NetManager netManager = Singleton<NetManager>.instance;
 
 			Flags.applyNodeTrafficLightFlag(nodeId);
-			var node = netManager.m_nodes.m_buffer[nodeId];
-			if ((node.m_flags & NetNode.Flags.Created) == NetNode.Flags.None) {
+			if ((netManager.m_nodes.m_buffer[nodeId].m_flags & NetNode.Flags.Created) == NetNode.Flags.None) {
 				nodeState = NodeValidityState.Unused;
 				Log.Warning($"Housekeeping: Node {nodeId} is unused!");
 				return false; // node is unused
 			}
 
-			bool hasTrafficLight = (node.m_flags & NetNode.Flags.TrafficLights) != NetNode.Flags.None;
+			bool hasTrafficLight = (netManager.m_nodes.m_buffer[nodeId].m_flags & NetNode.Flags.TrafficLights) != NetNode.Flags.None;
 			var nodeSim = TrafficLightSimulation.GetNodeSimulation(nodeId);
 			if (nodeSim != null) {
 				if (! Flags.mayHaveTrafficLight(nodeId)) {
@@ -1290,7 +1200,7 @@ namespace TrafficManager.Traffic {
 			} else {
 				byte numSegmentsWithSigns = 0;
 				for (var s = 0; s < 8; s++) {
-					var segmentId = node.GetSegment(s);
+					var segmentId = netManager.m_nodes.m_buffer[nodeId].GetSegment(s);
 					if (segmentId <= 0)
 						continue;
 					if (netManager.m_segments.m_buffer[segmentId].m_startNode != nodeId && netManager.m_segments.m_buffer[segmentId].m_endNode != nodeId)

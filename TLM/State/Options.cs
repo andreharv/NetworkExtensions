@@ -10,7 +10,7 @@ using TrafficManager.Traffic;
 using TrafficManager.State;
 using TrafficManager.UI;
 
-namespace TrafficManager {
+namespace TrafficManager.State {
 
 	public class Options : MonoBehaviour {
 		private static UIDropDown simAccuracyDropdown = null;

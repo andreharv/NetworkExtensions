@@ -7,6 +7,7 @@ using TrafficManager.TrafficLight;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using TrafficManager.Custom.PathFinding;
+using TrafficManager.State;
 
 namespace TrafficManager.Custom.AI {
 	internal class CustomCarAI : CarAI {
@@ -79,11 +80,10 @@ namespace TrafficManager.Custom.AI {
 				if ((Singleton<PathManager>.instance.m_pathUnits.m_buffer[currentPathUnitId].m_pathFindFlags & PathUnit.FLAG_READY) != 0) {
 					// The path(unit) is established and is ready for use: get the vehicle's current position in terms of segment and lane
 					realTimePositions.Add(Singleton<PathManager>.instance.m_pathUnits.m_buffer[currentPathUnitId].GetPosition(vehicleData.m_pathPositionIndex >> 1));
-					var currentSegment = netManager.m_segments.m_buffer[realTimePositions[0].m_segment];
 					if (realTimePositions[0].m_offset == 0) {
-						realTimeDestinationNodes.Add(currentSegment.m_startNode);
+						realTimeDestinationNodes.Add(netManager.m_segments.m_buffer[realTimePositions[0].m_segment].m_startNode);
 					} else {
-						realTimeDestinationNodes.Add(currentSegment.m_endNode);
+						realTimeDestinationNodes.Add(netManager.m_segments.m_buffer[realTimePositions[0].m_segment].m_endNode);
 					}
 
 					if (maxUpcomingPathPositions > 0) {
@@ -113,11 +113,10 @@ namespace TrafficManager.Custom.AI {
 
 							ushort destNodeId = 0;
 							if (nextRealTimePosition.m_segment > 0) {
-								var nextSegment = netManager.m_segments.m_buffer[nextRealTimePosition.m_segment];
 								if (nextRealTimePosition.m_offset == 0) {
-									destNodeId = nextSegment.m_startNode;
+									destNodeId = netManager.m_segments.m_buffer[nextRealTimePosition.m_segment].m_startNode;
 								} else {
-									destNodeId = nextSegment.m_endNode;
+									destNodeId = netManager.m_segments.m_buffer[nextRealTimePosition.m_segment].m_endNode;
 								}
 							}
 
@@ -697,8 +696,8 @@ namespace TrafficManager.Custom.AI {
 
 															var info3 = netManager.m_segments.m_buffer[position.m_segment].Info;
 															if (info3.m_lanes != null && info3.m_lanes.Length > position.m_lane) {
-																maxSpeed =
-																	CalculateTargetSpeed(vehicleId, ref vehicleData, info3.m_lanes[position.m_lane].m_speedLimit, netManager.m_lanes.m_buffer[(int)((UIntPtr)laneID)].m_curve) * 0.8f;
+																//maxSpeed = CalculateTargetSpeed(vehicleId, ref vehicleData, info3.m_lanes[position.m_lane].m_speedLimit, netManager.m_lanes.m_buffer[(int)((UIntPtr)laneID)].m_curve) * 0.8f;
+																maxSpeed = CalculateTargetSpeed(vehicleId, ref vehicleData, SpeedLimitManager.GetLockFreeGameSpeedLimit(laneID), netManager.m_lanes.m_buffer[(int)((UIntPtr)laneID)].m_curve) * 0.8f;
 															} else {
 																maxSpeed = CalculateTargetSpeed(vehicleId, ref vehicleData, 1f, 0f) * 0.8f;
 															}
@@ -731,24 +730,23 @@ namespace TrafficManager.Custom.AI {
 
 			var info2 = netManager.m_segments.m_buffer[position.m_segment].Info;
 			if (info2.m_lanes != null && info2.m_lanes.Length > position.m_lane) {
-				var laneSpeedLimit = info2.m_lanes[position.m_lane].m_speedLimit;
+				var laneSpeedLimit = SpeedLimitManager.GetLockFreeGameSpeedLimit(laneID); // info2.m_lanes[position.m_lane].m_speedLimit;
 
-				if (TrafficRoadRestrictions.IsSegment(position.m_segment)) {
+				/*if (TrafficRoadRestrictions.IsSegment(position.m_segment)) {
 					var restrictionSegment = TrafficRoadRestrictions.GetSegment(position.m_segment);
 
 					if (restrictionSegment.SpeedLimits[position.m_lane] > 0.1f) {
 						laneSpeedLimit = restrictionSegment.SpeedLimits[position.m_lane];
 					}
-				}
+				}*/
 
-				maxSpeed = CalculateTargetSpeed(vehicleId, ref vehicleData, laneSpeedLimit,
-					netManager.m_lanes.m_buffer[(int)((UIntPtr)laneID)].m_curve);
+				maxSpeed = CalculateTargetSpeed(vehicleId, ref vehicleData, laneSpeedLimit,	netManager.m_lanes.m_buffer[(int)((UIntPtr)laneID)].m_curve);
 			} else {
 				maxSpeed = CalculateTargetSpeed(vehicleId, ref vehicleData, 1f, 0f);
 			}
 
 			if (isRecklessDriver)
-				maxSpeed *= Random.Range(1.2f, 2.5f);
+				maxSpeed *= Random.Range(1.5f, 3f);
 		}
 
 		public void TmCalculateSegmentPositionPathFinder(ushort vehicleId, ref Vehicle vehicleData,
@@ -758,15 +756,15 @@ namespace TrafficManager.Custom.AI {
 				out pos, out dir);
 			var info = instance.m_segments.m_buffer[position.m_segment].Info;
 			if (info.m_lanes != null && info.m_lanes.Length > position.m_lane) {
-				var laneSpeedLimit = info.m_lanes[position.m_lane].m_speedLimit;
+				var laneSpeedLimit = SpeedLimitManager.GetLockFreeGameSpeedLimit(laneId); //info.m_lanes[position.m_lane].m_speedLimit;
 
-				if (TrafficRoadRestrictions.IsSegment(position.m_segment)) {
+				/*if (TrafficRoadRestrictions.IsSegment(position.m_segment)) {
 					var restrictionSegment = TrafficRoadRestrictions.GetSegment(position.m_segment);
 
 					if (restrictionSegment.SpeedLimits[position.m_lane] > 0.1f) {
 						laneSpeedLimit = restrictionSegment.SpeedLimits[position.m_lane];
 					}
-				}
+				}*/
 
 				maxSpeed = CalculateTargetSpeed(vehicleId, ref vehicleData, laneSpeedLimit,
 					instance.m_lanes.m_buffer[(int)((UIntPtr)laneId)].m_curve);

@@ -16,6 +16,7 @@ namespace TrafficManager.UI {
 		private static UIButton _buttonTimedMain;
 		private static UIButton _buttonLaneChange;
 		//private static UIButton _buttonLaneRestrictions;
+		private static UIButton _buttonSpeedLimits;
 		private static UIButton _buttonClearTraffic;
 		private static UIButton _buttonToggleDespawn;
 		private static UITextField _goToField = null;
@@ -37,14 +38,14 @@ namespace TrafficManager.UI {
 			backgroundSprite = "GenericPanel";
 			color = new Color32(75, 75, 135, 255);
 			width = Translation.getMenuWidth();
-			height = LoadingExtension.IsPathManagerCompatible ? 310 : 230;
+			height = LoadingExtension.IsPathManagerCompatible ? 350 : 270;
 #if DEBUG
 			height += 160;		
 #endif
 			relativePosition = new Vector3(85f, 80f);
 
 			UILabel title = AddUIComponent<UILabel>();
-			title.text = "Version 1.4.9";
+			title.text = "Version 1.5.0";
 			title.relativePosition = new Vector3(50.0f, 5.0f);
 
 			int y = 30;
@@ -63,6 +64,9 @@ namespace TrafficManager.UI {
 				//buttonLaneRestrictions = _createButton("Road Restrictions", new Vector3(15f, 230f), clickLaneRestrictions);
 			}
 
+			_buttonSpeedLimits = _createButton(Translation.GetString("Speed_limits"), y, clickSpeedLimits);
+			y += 40;
+			
 			_buttonClearTraffic = _createButton(Translation.GetString("Clear_Traffic"), y, clickClearTraffic);
 			y += 40;
 
@@ -190,6 +194,16 @@ namespace TrafficManager.UI {
 			}
 		}
 
+		private void clickSpeedLimits(UIComponent component, UIMouseEventParameter eventParam) {
+			if (TrafficLightTool.getToolMode() != ToolMode.SpeedLimits) {
+				_buttonSpeedLimits.focusedBgSprite = "ButtonMenuFocused";
+				TrafficLightTool.SetToolMode(ToolMode.SpeedLimits);
+			} else {
+				_buttonSpeedLimits.focusedBgSprite = "ButtonMenu";
+				TrafficLightTool.SetToolMode(ToolMode.None);
+			}
+		}
+
 		/// <summary>
 		/// Removes the focused sprite from all menu buttons
 		/// </summary>
@@ -207,6 +221,8 @@ namespace TrafficManager.UI {
 			//_buttonLaneRestrictions.focusedBgSprite = "ButtonMenu";
 			if (_buttonClearTraffic != null)
 				_buttonClearTraffic.focusedBgSprite = "ButtonMenu";
+			if (_buttonSpeedLimits != null)
+				_buttonSpeedLimits.focusedBgSprite = "ButtonMenu";
 			if (_buttonToggleDespawn != null)
 				_buttonToggleDespawn.focusedBgSprite = "ButtonMenu";
 		}
@@ -294,17 +310,15 @@ namespace TrafficManager.UI {
 				if (TrafficLightTool.SelectedSegment == 0) return;
 				var instance = Singleton<NetManager>.instance;
 
-				var segment = instance.m_segments.m_buffer[TrafficLightTool.SelectedSegment];
+				var info = instance.m_segments.m_buffer[TrafficLightTool.SelectedSegment].Info;
 
-				var info = segment.Info;
-
-				var num2 = segment.m_lanes;
+				var num2 = instance.m_segments.m_buffer[TrafficLightTool.SelectedSegment].m_lanes;
 				var num3 = 0;
 
 				var dir = NetInfo.Direction.Forward;
-				if (segment.m_startNode == TrafficLightTool.SelectedNode)
+				if (instance.m_segments.m_buffer[TrafficLightTool.SelectedSegment].m_startNode == TrafficLightTool.SelectedNode)
 					dir = NetInfo.Direction.Backward;
-				var dir3 = ((segment.m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None) ? dir : NetInfo.InvertDirection(dir);
+				var dir3 = ((instance.m_segments.m_buffer[TrafficLightTool.SelectedSegment].m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None) ? dir : NetInfo.InvertDirection(dir);
 
 				while (num3 < info.m_lanes.Length && num2 != 0u) {
 					if (info.m_lanes[num3].m_laneType != NetInfo.LaneType.Pedestrian && info.m_lanes[num3].m_direction == dir3) {

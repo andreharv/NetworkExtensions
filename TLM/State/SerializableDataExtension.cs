@@ -13,7 +13,7 @@ using Random = UnityEngine.Random;
 using Timer = System.Timers.Timer;
 using TrafficManager.State;
 
-namespace TrafficManager {
+namespace TrafficManager.State {
 	public class SerializableDataExtension : SerializableDataExtensionBase {
 		private const string DataId = "TrafficManager_v1.0";
 
@@ -436,6 +436,14 @@ namespace TrafficManager {
 			} else {
 				Log.Warning("Lane arrow data structure undefined!");
 			}
+
+			// load speed limits
+			if (_configuration.LaneSpeedLimits != null) {
+				foreach (Configuration.LaneSpeedLimit laneSpeedLimit in _configuration.LaneSpeedLimits)
+					Flags.setLaneSpeedLimit(laneSpeedLimit.laneId, laneSpeedLimit.speedLimit);
+			} else {
+				Log.Warning("Lane speed limit structure undefined!");
+			}
 		}
 
 		private static ushort fixLaneFlags(ushort flags) {
@@ -498,6 +506,10 @@ namespace TrafficManager {
 				for (uint i = 0; i < Singleton<NetManager>.instance.m_lanes.m_buffer.Length; i++) {
 					SaveLaneData(i, configuration);
 				}
+			}
+
+			foreach (KeyValuePair<uint, ushort> e in Flags.getAllLaneSpeedLimits()) {
+				SaveLaneSpeedLimit(new Configuration.LaneSpeedLimit(e.Key, e.Value), configuration);
 			}
 
 			var binaryFormatter = new BinaryFormatter();
@@ -691,6 +703,11 @@ namespace TrafficManager {
 				Log.Error($"Error adding Nodes to Dictionary {e.Message}");
 			}
 		}*/
+
+		private static void SaveLaneSpeedLimit(Configuration.LaneSpeedLimit laneSpeedLimit, Configuration configuration) {
+			Log._Debug($"Saving speed limit of lane {laneSpeedLimit.laneId}: {laneSpeedLimit.speedLimit}");
+			configuration.LaneSpeedLimits.Add(laneSpeedLimit);
+		}
 
 		private static void SavePrioritySegment(ushort segmentId, Configuration configuration) {
 			try {

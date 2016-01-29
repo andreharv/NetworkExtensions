@@ -824,16 +824,15 @@ namespace TrafficManager.Traffic {
 		private static bool calculateIsOutgoingOneWay(ushort segmentId, ushort nodeId) {
 			var instance = Singleton<NetManager>.instance;
 
-			var segment = instance.m_segments.m_buffer[segmentId];
-			var info = segment.Info;
+			var info = instance.m_segments.m_buffer[segmentId].Info;
 
 			var dir = NetInfo.Direction.Forward;
-			if (segment.m_startNode == nodeId)
+			if (instance.m_segments.m_buffer[segmentId].m_startNode == nodeId)
 				dir = NetInfo.Direction.Backward;
-			var dir2 = ((segment.m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None) ? dir : NetInfo.InvertDirection(dir);
+			var dir2 = ((instance.m_segments.m_buffer[segmentId].m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None) ? dir : NetInfo.InvertDirection(dir);
 			var dir3 = TrafficPriority.IsLeftHandDrive() ? NetInfo.InvertDirection(dir2) : dir2;
 
-			var laneId = segment.m_lanes;
+			var laneId = instance.m_segments.m_buffer[segmentId].m_lanes;
 			var laneIndex = 0;
 			while (laneIndex < info.m_lanes.Length && laneId != 0u) {
 				if (info.m_lanes[laneIndex].m_laneType != NetInfo.LaneType.Pedestrian &&
@@ -855,13 +854,12 @@ namespace TrafficManager.Traffic {
 		private bool calculateIsOneWay() {
 			var instance = Singleton<NetManager>.instance;
 
-			var segment = instance.m_segments.m_buffer[segmentId];
-			var info = segment.Info;
+			var info = instance.m_segments.m_buffer[segmentId].Info;
 
 			var hasForward = false;
 			var hasBackward = false;
 
-			var laneId = segment.m_lanes;
+			var laneId = instance.m_segments.m_buffer[segmentId].m_lanes;
 			var laneIndex = 0;
 			while (laneIndex < info.m_lanes.Length && laneId != 0u) {
 				if (info.m_lanes[laneIndex].m_laneType != NetInfo.LaneType.Pedestrian &&

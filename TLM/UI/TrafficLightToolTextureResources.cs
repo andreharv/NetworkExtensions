@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using TrafficManager.Traffic;
 using TrafficManager.UI;
 using UnityEngine;
 
-namespace TrafficManager.TrafficLight
+namespace TrafficManager.UI
 {
     public class TrafficLightToolTextureResources
     {
@@ -41,6 +43,7 @@ namespace TrafficManager.TrafficLight
 		public static readonly Texture2D ClockPlayTexture2D;
 		public static readonly Texture2D ClockPauseTexture2D;
 		public static readonly Texture2D ClockTestTexture2D;
+		public static readonly Dictionary<ushort, Texture2D> SpeedLimitTextures;
 
 		static TrafficLightToolTextureResources()
         {
@@ -93,6 +96,10 @@ namespace TrafficManager.TrafficLight
 			ClockPauseTexture2D = LoadDllResource("clock_pause.png", 512, 512);
 			ClockTestTexture2D = LoadDllResource("clock_test.png", 512, 512);
 
+			SpeedLimitTextures = new Dictionary<ushort, Texture2D>();
+			foreach (ushort speedLimit in SpeedLimitManager.AvailableSpeedLimits) {
+				SpeedLimitTextures.Add(speedLimit, LoadDllResource(speedLimit.ToString() + ".png", 200, 200));
+			}
 		}
 
         private static Texture2D LoadDllResource(string resourceName, int width, int height)
@@ -150,5 +157,5 @@ namespace TrafficManager.TrafficLight
                 stream.Position = originalPosition;
             }
         }
-    }
+	}
 }

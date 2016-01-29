@@ -33,12 +33,39 @@ namespace TrafficManager.State {
 		private static Dictionary<uint, LaneArrows> laneArrowFlags = new Dictionary<uint, LaneArrows>();
 
 		/// <summary>
+		/// For each lane: Defines the currently set speed limit
+		/// </summary>
+		private static Dictionary<uint, ushort> laneSpeedLimit = new Dictionary<uint, ushort>();
+
+		/// <summary>
 		/// For each lane: Defines the lane arrows which are set in highway rule mode (they are not saved)
 		/// </summary>
 		private static Dictionary<uint, LaneArrows> highwayLaneArrowFlags = new Dictionary<uint, LaneArrows>();
 
+		public static ushort[] laneSpeedLimitArray; // for lock-free access (used by CustomCarAI)
+
 		private static object laneArrowLock = new object();
+		private static object laneSpeedLimitLock = new object();
 		private static object nodeLightLock = new object();
+
+		private static bool initDone = false;
+
+		public static bool IsInitDone() {
+			return initDone;
+		}
+
+		public static void OnLevelLoading() {
+			if (initDone)
+				return;
+
+			laneSpeedLimitArray = new ushort[Singleton<NetManager>.instance.m_lanes.m_size];
+			for (uint i = 0; i < laneSpeedLimitArray.Length; ++i) {
+				if (((NetLane.Flags) Singleton<NetManager>.instance.m_lanes.m_buffer[i].m_flags & NetLane.Flags.Created) == NetLane.Flags.None)
+					continue;
+				laneSpeedLimitArray[i] = SpeedLimitManager.GetCustomSpeedLimit(i);
+			}
+			initDone = true;
+		}
 
 		public static void resetTrafficLights(bool all) {
 			nodeTrafficLightFlag.Clear();
@@ -124,6 +151,35 @@ namespace TrafficManager.State {
 			}
 		}
 
+		public static void setLaneSpeedLimit(uint laneId, ushort speedLimit) {
+			if (laneId <= 0)
+				return;
+
+			try {
+				Monitor.Enter(laneSpeedLimitLock);
+
+				if (((NetLane.Flags)Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags & NetLane.Flags.Created) == NetLane.Flags.None) {
+					return;
+				}
+				ushort segmentId = Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_segment;
+				if (segmentId == 0) {
+					return;
+				}
+				if ((Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].m_flags & NetSegment.Flags.Created) == NetSegment.Flags.None) {
+					return;
+				}
+
+				Log._Debug($"Flags.setLaneSpeedLimit: setting speed limit of lane {laneId} to {speedLimit}");
+
+				laneSpeedLimit[laneId] = speedLimit;
+				if (!initDone)
+					OnLevelLoading();
+				laneSpeedLimitArray[laneId] = speedLimit;
+			} finally {
+				Monitor.Exit(laneSpeedLimitLock);
+			}
+		}
+
 		public static void setLaneArrowFlags(uint laneId, LaneArrows flags) {
 			if (laneId <= 0)
 				return;
@@ -163,6 +219,32 @@ namespace TrafficManager.State {
 			} finally {
 				Monitor.Exit(laneArrowLock);
 			}
+		}
+
+		public static ushort? getLaneSpeedLimit(uint laneId) {
+			try {
+				Monitor.Enter(laneSpeedLimitLock);
+
+				if (laneId <= 0 || !laneSpeedLimit.ContainsKey(laneId))
+					return null;
+
+				return laneSpeedLimit[laneId];
+			} finally {
+				Monitor.Exit(laneSpeedLimitLock);
+			}
+		}
+
+		internal static Dictionary<uint, ushort> getAllLaneSpeedLimits() {
+			Dictionary<uint, ushort> ret = new Dictionary<uint, ushort>();
+			try {
+				Monitor.Enter(laneSpeedLimitLock);
+
+				ret = new Dictionary<uint, ushort>(laneSpeedLimit);
+
+			} finally {
+				Monitor.Exit(laneSpeedLimitLock);
+			}
+			return ret;
 		}
 
 		public static LaneArrows? getLaneArrowFlags(uint laneId) {
@@ -342,11 +424,11 @@ namespace TrafficManager.State {
 		}
 
 		public static bool applyLaneArrowFlags(uint laneId) {
+			if (laneId <= 0)
+				return true;
+
 			try {
 				Monitor.Enter(laneArrowLock);
-
-				if (laneId <= 0)
-					return true;
 
 				uint laneFlags = (uint)Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags;
 
@@ -437,6 +519,8 @@ namespace TrafficManager.State {
 		}
 
 		internal static void OnLevelUnloading() {
+			initDone = false;
+			laneSpeedLimitArray = null;
 			clearAll();
 		}
 	}

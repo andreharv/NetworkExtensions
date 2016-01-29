@@ -62,7 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CarState.cs" />
-    <Compile Include="Configuration.cs" />
+    <Compile Include="State\Configuration.cs" />
     <Compile Include="Custom\AI\CustomCarAI.cs" />
     <Compile Include="Custom\AI\CustomCargoTruckAI.cs" />
     <Compile Include="Custom\AI\CustomHumanAI.cs" />
@@ -76,8 +76,10 @@
     <Compile Include="LaneRestrictions.cs" />
     <Compile Include="LoadingExtension.cs" />
     <Compile Include="UI\Translation.cs" />
-    <Compile Include="Options.cs" />
+    <Compile Include="State\Options.cs" />
     <Compile Include="Traffic\Direction.cs" />
+    <Compile Include="Traffic\SpeedLimit.cs" />
+    <Compile Include="Traffic\SpeedLimitManager.cs" />
     <Compile Include="Traffic\TrafficRoadRestrictions.cs" />
     <Compile Include="Traffic\VehiclePosition.cs" />
     <Compile Include="State\Flags.cs" />
@@ -85,7 +87,7 @@
     <Compile Include="RedirectionHelper.cs" />
     <Compile Include="SegmentRestrictions.cs" />
     <Compile Include="SelfDestruct.cs" />
-    <Compile Include="SerializableDataExtension.cs" />
+    <Compile Include="State\SerializableDataExtension.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="ThreadingExtension.cs" />
     <Compile Include="TrafficLight\ManualSegment.cs" />
@@ -142,6 +144,9 @@
     <EmbeddedResource Include="Resources\sign_yield.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\light_counter_pl.png" />
+    <EmbeddedResource Include="Resources\light_mode_pl.png" />
+    <EmbeddedResource Include="Resources\pedestrian_mode_2_pl.png" />
     <EmbeddedResource Include="Resources\lang_fr.txt" />
     <EmbeddedResource Include="Resources\lang_pl.txt" />
     <EmbeddedResource Include="Resources\lang_ru.txt" />
@@ -154,6 +159,19 @@
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Resources\0.png" />
+    <EmbeddedResource Include="Resources\10.png" />
+    <EmbeddedResource Include="Resources\100.png" />
+    <EmbeddedResource Include="Resources\120.png" />
+    <EmbeddedResource Include="Resources\130.png" />
+    <EmbeddedResource Include="Resources\20.png" />
+    <EmbeddedResource Include="Resources\30.png" />
+    <EmbeddedResource Include="Resources\40.png" />
+    <EmbeddedResource Include="Resources\50.png" />
+    <EmbeddedResource Include="Resources\60.png" />
+    <EmbeddedResource Include="Resources\70.png" />
+    <EmbeddedResource Include="Resources\80.png" />
+    <EmbeddedResource Include="Resources\90.png" />
     <EmbeddedResource Include="Resources\clock_pause.png" />
     <EmbeddedResource Include="Resources\clock_test.png" />
     <EmbeddedResource Include="Resources\clock_play.png" />

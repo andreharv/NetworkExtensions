@@ -7,6 +7,7 @@ using UnityEngine;
 using ColossalFramework.Math;
 using System.Threading;
 using TrafficManager.UI;
+using TrafficManager.State;
 
 namespace TrafficManager.Custom.AI {
 	class CustomRoadAI : RoadBaseAI {
@@ -86,7 +87,7 @@ namespace TrafficManager.Custom.AI {
 								uint currentDensities = currentLaneDensities[curLaneId] << 4;
 
 								if (!InStartupPhase) {
-									currentMeanSpeed = (byte)Math.Min(100u, ((currentSpeeds * 100u) / buf) / ((uint)(Math.Max(data.Info.m_lanes[laneIndex].m_speedLimit * 8f, 1f)))); // 0 .. 100, m_speedLimit of highway is 2, actual max. vehicle speed on highway is 16, that's why we use x*8 == x<<3 (don't ask why CO uses different units for velocity)
+									currentMeanSpeed = (byte)Math.Min(100u, ((currentSpeeds * 100u) / buf) / ((uint)(Math.Max(SpeedLimitManager.GetLockFreeGameSpeedLimit(curLaneId) * 8f, 1f)))); // 0 .. 100, m_speedLimit of highway is 2, actual max. vehicle speed on highway is 16, that's why we use x*8 == x<<3 (don't ask why CO uses different units for velocity)
 								}
 								currentMeanDensity = (byte)Math.Min(100u, (uint)((currentDensities * 100u) / Convert.ToUInt32(Math.Max(Singleton<NetManager>.instance.m_lanes.m_buffer[curLaneId].m_length, 1f)))); // 0 .. 100
 							} else {
@@ -96,9 +97,9 @@ namespace TrafficManager.Custom.AI {
 								}
 							}
 
-							if (segmentID == 22980) {
+							/*if (segmentID == 22980) {
 								Log._Debug($"Lane {curLaneId}: currentMeanSpeed={currentMeanSpeed} currentMeanDensity={currentMeanDensity}");
-							}
+							}*/
 
 							if (currentMeanSpeed >= laneMeanSpeeds[curLaneId])
 								laneMeanSpeeds[curLaneId] = (byte)Math.Min((int)laneMeanSpeeds[curLaneId] + 5, currentMeanSpeed);

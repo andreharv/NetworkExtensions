@@ -10,8 +10,9 @@ using TrafficManager.Traffic;
 using TrafficManager.UI;
 using UnityEngine;
 using TrafficManager.State;
+using TrafficManager.TrafficLight;
 
-namespace TrafficManager.TrafficLight {
+namespace TrafficManager.UI {
 	[UsedImplicitly]
 	public class TrafficLightTool : DefaultTool {
 		private static ToolMode _toolMode;
@@ -52,7 +53,7 @@ namespace TrafficManager.TrafficLight {
 		private static bool _timedShowNumbers;
 
 		private const float DebugCloseLod = 300f;
-		private const float PriorityCloseLod = 1000f;
+		private const float PriorityCloseLod = 600f;
 
 		private uint tooltipStartFrame = 0;
 		private String tooltipText = null;
@@ -61,6 +62,8 @@ namespace TrafficManager.TrafficLight {
 		private uint currentFrame = 0;
 
 		private static bool nodeSelectionLocked = false;
+
+		private static Dictionary<ushort, Dictionary<NetInfo.Direction, Vector3>> segmentCenterByDir = new Dictionary<ushort, Dictionary<NetInfo.Direction, Vector3>>();
 
 		static Rect ResizeGUI(Rect rect) {
 			var rectX = (rect.x / 800) * Screen.width;
@@ -98,8 +101,10 @@ namespace TrafficManager.TrafficLight {
 			_toolMode = mode;
 			nodeSelectionLocked = false;
 
-			if (mode == ToolMode.None)
+			if (mode == ToolMode.None) {
 				UITrafficManager.deactivateButtons();
+				segmentCenterByDir.Clear();
+			}
 
 			if (mode != ToolMode.ManualSwitch) {
 				DisableManual();
@@ -176,6 +181,8 @@ namespace TrafficManager.TrafficLight {
 				case ToolMode.LaneRestrictions:
 					_renderOverlayLaneRestrictions(cameraInfo);
 					break;
+				case ToolMode.SpeedLimits:
+					break;
 				default:
 					base.RenderOverlay(cameraInfo);
 					break;
@@ -204,30 +211,30 @@ namespace TrafficManager.TrafficLight {
 					return;
 				}
 
-				var node = GetNetNode(_hoveredNetNodeIdx);
-
 				switch (_toolMode) {
 					case ToolMode.SwitchTrafficLight:
-						SwitchTrafficLightToolMode(node);
+						SwitchTrafficLightToolMode(ref Singleton<NetManager>.instance.m_nodes.m_buffer[_hoveredNetNodeIdx]);
 						break;
 					case ToolMode.AddPrioritySigns:
-						//AddPrioritySignsToolMode(node);
+						//AddPrioritySignsToolMode(ref Singleton<NetManager>.instance.m_nodes.m_buffer[_hoveredNetNodeIdx]);
 						break;
 					case ToolMode.ManualSwitch:
-						ManualSwitchToolMode(node);
+						ManualSwitchToolMode(ref Singleton<NetManager>.instance.m_nodes.m_buffer[_hoveredNetNodeIdx]);
 						break;
 					case ToolMode.TimedLightsSelectNode:
 					case ToolMode.TimedLightsShowLights:
-						TimedLightSelectNodeToolMode(node);
+						TimedLightSelectNodeToolMode(ref Singleton<NetManager>.instance.m_nodes.m_buffer[_hoveredNetNodeIdx]);
 						break;
 					case ToolMode.TimedLightsAddNode:
-						TimedLightAddNodeToolMode(node);
+						TimedLightAddNodeToolMode(ref Singleton<NetManager>.instance.m_nodes.m_buffer[_hoveredNetNodeIdx]);
 						break;
 					case ToolMode.TimedLightsRemoveNode:
-						TimedLightRemoveNodeToolMode(node);
+						TimedLightRemoveNodeToolMode(ref Singleton<NetManager>.instance.m_nodes.m_buffer[_hoveredNetNodeIdx]);
 						break;
 					case ToolMode.LaneChange:
 						LaneChangeToolMode();
+						break;
+					case ToolMode.SpeedLimits:
 						break;
 					case ToolMode.LaneRestrictions:
 						LaneRestrictionsToolMode();
@@ -245,8 +252,8 @@ namespace TrafficManager.TrafficLight {
 					mouseClickProcessed = false;
 				}
 
+				_guiSegments();
 				if (Options.nodesOverlay) {
-					_guiSegments();
 					_guiNodes();
 #if DEBUG
 					_guiVehicles();
@@ -278,6 +285,9 @@ namespace TrafficManager.TrafficLight {
 					case ToolMode.LaneChange:
 						_guiLaneChange();
 						break;
+					case ToolMode.SpeedLimits:
+						_guiSpeedLimits();
+						break;
 					case ToolMode.LaneRestrictions:
 						_guiLaneRestrictions();
 						break;
@@ -290,19 +300,17 @@ namespace TrafficManager.TrafficLight {
 		private void _renderOverlaySwitch(RenderManager.CameraInfo cameraInfo, bool warning = false) {
 			if (_hoveredNetNodeIdx == 0) return;
 
-			var node = GetNetNode(_hoveredNetNodeIdx);
-
 			// no highlight for existing priority node in sign mode
 			if (_toolMode == ToolMode.AddPrioritySigns && TrafficPriority.IsPriorityNode(_hoveredNetNodeIdx))
 				return;
 
-			if ((node.m_flags & NetNode.Flags.Junction) == NetNode.Flags.None) return;
+			if ((Singleton<NetManager>.instance.m_nodes.m_buffer[_hoveredNetNodeIdx].m_flags & NetNode.Flags.Junction) == NetNode.Flags.None) return;
 
-			var segment = Singleton<NetManager>.instance.m_segments.m_buffer[node.m_segment0];
+			var segment = Singleton<NetManager>.instance.m_segments.m_buffer[Singleton<NetManager>.instance.m_nodes.m_buffer[_hoveredNetNodeIdx].m_segment0];
 
 			Bezier3 bezier;
-			bezier.a = node.m_position;
-			bezier.d = node.m_position;
+			bezier.a = Singleton<NetManager>.instance.m_nodes.m_buffer[_hoveredNetNodeIdx].m_position;
+			bezier.d = Singleton<NetManager>.instance.m_nodes.m_buffer[_hoveredNetNodeIdx].m_position;
 
 			var color = GetToolColor(warning, false);
 
@@ -323,13 +331,12 @@ namespace TrafficManager.TrafficLight {
 
 		private void RenderManualSelectionOverlay(RenderManager.CameraInfo cameraInfo) {
 			if (_hoveredNetNodeIdx == 0) return;
-			var node = GetNetNode(_hoveredNetNodeIdx);
-			var segment = Singleton<NetManager>.instance.m_segments.m_buffer[node.m_segment0];
+			var segment = Singleton<NetManager>.instance.m_segments.m_buffer[Singleton<NetManager>.instance.m_nodes.m_buffer[_hoveredNetNodeIdx].m_segment0];
 
 			//if ((node.m_flags & NetNode.Flags.TrafficLights) == NetNode.Flags.None) return;
 			Bezier3 bezier;
-			bezier.a = node.m_position;
-			bezier.d = node.m_position;
+			bezier.a = Singleton<NetManager>.instance.m_nodes.m_buffer[_hoveredNetNodeIdx].m_position;
+			bezier.d = Singleton<NetManager>.instance.m_nodes.m_buffer[_hoveredNetNodeIdx].m_position;
 
 			var color = GetToolColor(false, false);
 
@@ -339,19 +346,17 @@ namespace TrafficManager.TrafficLight {
 		}
 
 		private void RenderManualNodeOverlays(RenderManager.CameraInfo cameraInfo) {
-			var node = GetNetNode(SelectedNode);
-
 			var nodeSimulation = TrafficLightSimulation.GetNodeSimulation(SelectedNode);
 
 			for (var i = 0; i < 8; i++) {
 				var colorGray = new Color(0.25f, 0.25f, 0.25f, 0.25f);
-				ushort segmentId = node.GetSegment(i);
+				ushort segmentId = Singleton<NetManager>.instance.m_nodes.m_buffer[SelectedNode].GetSegment(i);
 
 				if (segmentId == 0 ||
 					(nodeSimulation != null && ManualTrafficLights.IsSegmentLight(SelectedNode, segmentId)))
 					continue;
 
-				var position = CalculateNodePositionForSegment(node, segmentId);
+				var position = CalculateNodePositionForSegment(Singleton<NetManager>.instance.m_nodes.m_buffer[SelectedNode], segmentId);
 
 				var width = _hoveredButton[0] == segmentId ? 11.25f : 10f;
 				_renderOverlayDraw(cameraInfo, colorGray, position, width, segmentId != _hoveredButton[0]);
@@ -376,13 +381,12 @@ namespace TrafficManager.TrafficLight {
 
 		private void _renderOverlayTimedSelectNodes(RenderManager.CameraInfo cameraInfo, bool onlySelected=false) {
 			if (! nodeSelectionLocked && _hoveredNetNodeIdx != 0 && (!IsNodeSelected(_hoveredNetNodeIdx) ^ onlySelected) && !m_toolController.IsInsideUI && Cursor.visible && Flags.mayHaveTrafficLight(_hoveredNetNodeIdx)) {
-				var node = GetNetNode(_hoveredNetNodeIdx);
-				var segment = Singleton<NetManager>.instance.m_segments.m_buffer[node.m_segment0];
+				var segment = Singleton<NetManager>.instance.m_segments.m_buffer[Singleton<NetManager>.instance.m_nodes.m_buffer[_hoveredNetNodeIdx].m_segment0];
 
 				//if ((node.m_flags & NetNode.Flags.TrafficLights) != NetNode.Flags.None) {
 					Bezier3 bezier;
-					bezier.a = node.m_position;
-					bezier.d = node.m_position;
+					bezier.a = Singleton<NetManager>.instance.m_nodes.m_buffer[_hoveredNetNodeIdx].m_position;
+					bezier.d = Singleton<NetManager>.instance.m_nodes.m_buffer[_hoveredNetNodeIdx].m_position;
 
 					var color = GetToolColor(false, false);
 
@@ -395,13 +399,12 @@ namespace TrafficManager.TrafficLight {
 			if (SelectedNodeIndexes.Count <= 0) return;
 
 			foreach (var index in SelectedNodeIndexes) {
-				var node = GetNetNode(index);
-				var segment = Singleton<NetManager>.instance.m_segments.m_buffer[node.m_segment0];
+				var segment = Singleton<NetManager>.instance.m_segments.m_buffer[Singleton<NetManager>.instance.m_nodes.m_buffer[index].m_segment0];
 
 				Bezier3 bezier;
 
-				bezier.a = node.m_position;
-				bezier.d = node.m_position;
+				bezier.a = Singleton<NetManager>.instance.m_nodes.m_buffer[index].m_position;
+				bezier.d = Singleton<NetManager>.instance.m_nodes.m_buffer[index].m_position;
 
 				var color = GetToolColor(true, false);
 
@@ -417,37 +420,28 @@ namespace TrafficManager.TrafficLight {
 				var netFlags = Singleton<NetManager>.instance.m_nodes.m_buffer[_hoveredNetNodeIdx].m_flags;
 
 				if ((netFlags & NetNode.Flags.Junction) != NetNode.Flags.None) {
-
-					var hoveredSegment = Singleton<NetManager>.instance.m_segments.m_buffer[_hoveredSegmentIdx];
-
-					NetTool.RenderOverlay(cameraInfo, ref hoveredSegment, GetToolColor(false, false),
+					NetTool.RenderOverlay(cameraInfo, ref Singleton<NetManager>.instance.m_segments.m_buffer[_hoveredSegmentIdx], GetToolColor(false, false),
 						GetToolColor(false, false));
 				}
 			}
 
 			if (SelectedSegment == 0) return;
 
-			var selectedSegment = Singleton<NetManager>.instance.m_segments.m_buffer[SelectedSegment];
-
-			NetTool.RenderOverlay(cameraInfo, ref selectedSegment, GetToolColor(true, false), GetToolColor(true, false));
+			NetTool.RenderOverlay(cameraInfo, ref Singleton<NetManager>.instance.m_segments.m_buffer[SelectedSegment], GetToolColor(true, false), GetToolColor(true, false));
 		}
 
 		private void _renderOverlayLaneRestrictions(RenderManager.CameraInfo cameraInfo) {
 			if (_selectedSegmentIds.Count > 0) {
 				// ReSharper disable once LoopCanBePartlyConvertedToQuery - can't be converted because segment is pass by ref
 				foreach (var index in _selectedSegmentIds) {
-					var segment = Singleton<NetManager>.instance.m_segments.m_buffer[index];
-
-					NetTool.RenderOverlay(cameraInfo, ref segment, GetToolColor(true, false),
+					NetTool.RenderOverlay(cameraInfo, ref Singleton<NetManager>.instance.m_segments.m_buffer[index], GetToolColor(true, false),
 						GetToolColor(true, false));
 				}
 			}
 
 			if (_hoveredSegmentIdx == 0) return;
 
-			var hoveredSegment = Singleton<NetManager>.instance.m_segments.m_buffer[_hoveredSegmentIdx];
-
-			NetTool.RenderOverlay(cameraInfo, ref hoveredSegment, GetToolColor(false, false),
+			NetTool.RenderOverlay(cameraInfo, ref Singleton<NetManager>.instance.m_segments.m_buffer[_hoveredSegmentIdx], GetToolColor(false, false),
 				GetToolColor(false, false));
 		}
 
@@ -545,7 +539,7 @@ namespace TrafficManager.TrafficLight {
 			SelectedNode = _hoveredNetNodeIdx;
 		}
 
-		private void TimedLightSelectNodeToolMode(NetNode node) {
+		private void TimedLightSelectNodeToolMode(ref NetNode node) {
 			if (_hoveredNetNodeIdx <= 0 || nodeSelectionLocked)
 				return;
 
@@ -575,7 +569,7 @@ namespace TrafficManager.TrafficLight {
 			}
 		}
 
-		private void TimedLightAddNodeToolMode(NetNode node) {
+		private void TimedLightAddNodeToolMode(ref NetNode node) {
 			if (_hoveredNetNodeIdx <= 0 || nodeSelectionLocked)
 				return;
 
@@ -621,7 +615,7 @@ namespace TrafficManager.TrafficLight {
 			SetToolMode(ToolMode.TimedLightsShowLights);
 		}
 
-		private void TimedLightRemoveNodeToolMode(NetNode node) {
+		private void TimedLightRemoveNodeToolMode(ref NetNode node) {
 			if (_hoveredNetNodeIdx <= 0 || nodeSelectionLocked)
 				return;
 
@@ -637,7 +631,7 @@ namespace TrafficManager.TrafficLight {
 			SetToolMode(ToolMode.TimedLightsShowLights);
 		}
 
-		private void ManualSwitchToolMode(NetNode node) {
+		private void ManualSwitchToolMode(ref NetNode node) {
 			if (SelectedNode != 0) return;
 
 			TrafficLightSimulation sim = TrafficLightSimulation.GetNodeSimulation(_hoveredNetNodeIdx);
@@ -649,13 +643,11 @@ namespace TrafficManager.TrafficLight {
 
 				SelectedNode = _hoveredNetNodeIdx;
 
-				var node2 = GetNetNode(SelectedNode);
-
 				sim = TrafficLightSimulation.AddNodeToSimulation(SelectedNode);
 				sim.FlagManualTrafficLights = true;
 
 				for (var s = 0; s < 8; s++) {
-					var segment = node2.GetSegment(s);
+					var segment = Singleton<NetManager>.instance.m_nodes.m_buffer[SelectedNode].GetSegment(s);
 					if (segment != 0 && !TrafficPriority.IsPrioritySegment(SelectedNode, segment)) {
 						TrafficPriority.AddPrioritySegment(SelectedNode, segment, PrioritySegment.PriorityType.None);
 					}
@@ -689,7 +681,7 @@ namespace TrafficManager.TrafficLight {
 			}
 		}
 
-		private void SwitchTrafficLightToolMode(NetNode node) {
+		private void SwitchTrafficLightToolMode(ref NetNode node) {
 			if ((node.m_flags & NetNode.Flags.Junction) != NetNode.Flags.None) {
 				_switchTrafficLights();
 			} else {
@@ -698,13 +690,12 @@ namespace TrafficManager.TrafficLight {
 		}
 
 		private void LaneRestrictionsToolMode() {
-			var segment = Singleton<NetManager>.instance.m_segments.m_buffer[_hoveredSegmentIdx];
-			var info = segment.Info;
+			var info = Singleton<NetManager>.instance.m_segments.m_buffer[_hoveredSegmentIdx].Info;
 
 			if (TrafficRoadRestrictions.IsSegment(_hoveredSegmentIdx)) {
 				if (_selectedSegmentIds.Count > 0) {
 					showTooltip(Translation.GetString("Road_is_already_in_a_group!"),
-						Singleton<NetManager>.instance.m_nodes.m_buffer[segment.m_startNode]
+						Singleton<NetManager>.instance.m_nodes.m_buffer[Singleton<NetManager>.instance.m_segments.m_buffer[_hoveredSegmentIdx].m_startNode]
 							.m_position);
 				} else {
 					var restSegment = TrafficRoadRestrictions.GetSegment(_hoveredSegmentIdx);
@@ -723,7 +714,7 @@ namespace TrafficManager.TrafficLight {
 
 						if (info.m_lanes.Length != info2.m_lanes.Length) {
 							showTooltip(Translation.GetString("All_selected_roads_must_be_of_the_same_type!"),
-								Singleton<NetManager>.instance.m_nodes.m_buffer[segment.m_startNode]
+								Singleton<NetManager>.instance.m_nodes.m_buffer[Singleton<NetManager>.instance.m_segments.m_buffer[_hoveredSegmentIdx].m_startNode]
 									.m_position);
 						} else {
 							AddSelectedSegment(_hoveredSegmentIdx);
@@ -739,26 +730,21 @@ namespace TrafficManager.TrafficLight {
 			var hoveredSegment = false;
 
 			if (SelectedNode != 0) {
-				var node = GetNetNode(SelectedNode);
-
 				var nodeSimulation = TrafficLightSimulation.GetNodeSimulation(SelectedNode);
 
-				if (node.CountSegments() == 2) {
-					_guiManualTrafficLightsCrosswalk(node);
+				if (Singleton<NetManager>.instance.m_nodes.m_buffer[SelectedNode].CountSegments() == 2) {
+					_guiManualTrafficLightsCrosswalk(ref Singleton<NetManager>.instance.m_nodes.m_buffer[SelectedNode]);
 					return;
 				}
 
 				for (var i = 0; i < 8; i++) {
-					var segmentId = node.GetSegment(i);
+					var segmentId = Singleton<NetManager>.instance.m_nodes.m_buffer[SelectedNode].GetSegment(i);
 
 					if (segmentId == 0 || nodeSimulation == null ||
 						!ManualTrafficLights.IsSegmentLight(SelectedNode, segmentId)) continue;
 
 					var segmentDict = ManualTrafficLights.GetSegmentLight(SelectedNode, segmentId);
-
-					var segment = Singleton<NetManager>.instance.m_segments.m_buffer[segmentId];
-
-					var position = CalculateNodePositionForSegment(node, segment);
+					var position = CalculateNodePositionForSegment(Singleton<NetManager>.instance.m_nodes.m_buffer[SelectedNode], Singleton<NetManager>.instance.m_segments.m_buffer[segmentId]);
 
 					var screenPos = Camera.main.WorldToScreenPoint(position);
 					screenPos.y = Screen.height - screenPos.y;
@@ -1280,7 +1266,7 @@ namespace TrafficManager.TrafficLight {
 			return position;
 		}
 
-		private void _guiManualTrafficLightsCrosswalk(NetNode node) {
+		private void _guiManualTrafficLightsCrosswalk(ref NetNode node) {
 			var hoveredSegment = false;
 
 			ushort segment1 = 0;
@@ -1300,21 +1286,18 @@ namespace TrafficManager.TrafficLight {
 
 			var segmentDict1 = ManualTrafficLights.GetSegmentLight(SelectedNode, segment1);
 			var segmentDict2 = ManualTrafficLights.GetSegmentLight(SelectedNode, segment2);
-
-			var segment = Singleton<NetManager>.instance.m_segments.m_buffer[segment1];
-
 			var position = node.m_position;
 
 			const float offset = 0f;
 
-			if (segment.m_startNode == SelectedNode) {
-				position.x += segment.m_startDirection.x * offset;
-				position.y += segment.m_startDirection.y * offset;
-				position.z += segment.m_startDirection.z * offset;
+			if (Singleton<NetManager>.instance.m_segments.m_buffer[segment1].m_startNode == SelectedNode) {
+				position.x += Singleton<NetManager>.instance.m_segments.m_buffer[segment1].m_startDirection.x * offset;
+				position.y += Singleton<NetManager>.instance.m_segments.m_buffer[segment1].m_startDirection.y * offset;
+				position.z += Singleton<NetManager>.instance.m_segments.m_buffer[segment1].m_startDirection.z * offset;
 			} else {
-				position.x += segment.m_endDirection.x * offset;
-				position.y += segment.m_endDirection.y * offset;
-				position.z += segment.m_endDirection.z * offset;
+				position.x += Singleton<NetManager>.instance.m_segments.m_buffer[segment1].m_endDirection.x * offset;
+				position.y += Singleton<NetManager>.instance.m_segments.m_buffer[segment1].m_endDirection.y * offset;
+				position.z += Singleton<NetManager>.instance.m_segments.m_buffer[segment1].m_endDirection.z * offset;
 			}
 
 			var guiColor = GUI.color;
@@ -1427,7 +1410,7 @@ namespace TrafficManager.TrafficLight {
 
 				labelStr += "Lane idx " + i + ", id " + curLaneId;
 #if DEBUG
-				labelStr += ", flags: " + ((NetLane.Flags)Singleton<NetManager>.instance.m_lanes.m_buffer[curLaneId].m_flags).ToString() + ", limit: " + laneInfo.m_speedLimit + ", dir: " + laneInfo.m_direction + ", final: " + laneInfo.m_finalDirection + ", pos: " + String.Format("{0:0.##}", laneInfo.m_position) + ", sim. idx: " + laneInfo.m_similarLaneIndex + " for " + laneInfo.m_vehicleType;
+				labelStr += ", flags: " + ((NetLane.Flags)Singleton<NetManager>.instance.m_lanes.m_buffer[curLaneId].m_flags).ToString() + ", limit: " + SpeedLimitManager.GetCustomSpeedLimit(curLaneId) + " km/h, dir: " + laneInfo.m_direction + ", final: " + laneInfo.m_finalDirection + ", pos: " + String.Format("{0:0.##}", laneInfo.m_position) + ", sim. idx: " + laneInfo.m_similarLaneIndex + " for " + laneInfo.m_vehicleType;
 #endif
 				if (CustomRoadAI.InStartupPhase)
 					labelStr += ", in start-up phase";
@@ -1461,63 +1444,68 @@ namespace TrafficManager.TrafficLight {
 				if (screenPos.z < 0)
 					continue;
 
+				// draw speed limits
+				drawSpeedLimitHandles((ushort)i, _toolMode != ToolMode.SpeedLimits);
+
 				var camPos = Singleton<SimulationManager>.instance.m_simulationView.m_position;
 				var diff = centerPos - camPos;
 				if (diff.magnitude > DebugCloseLod)
 					continue; // do not draw if too distant
 
-				var zoom = 1.0f / diff.magnitude * 150f;
+				if (Options.nodesOverlay) {
+					var zoom = 1.0f / diff.magnitude * 150f;
 
-				_counterStyle.fontSize = (int)(12f * zoom);
-				_counterStyle.normal.textColor = new Color(1f, 0f, 0f);
+					_counterStyle.fontSize = (int)(12f * zoom);
+					_counterStyle.normal.textColor = new Color(1f, 0f, 0f);
 
-				String labelStr = "Segment " + i;
+					String labelStr = "Segment " + i;
 #if DEBUG
 					labelStr += ", flags: " + segments.m_buffer[i].m_flags.ToString();
 #endif
-				labelStr += "\nTraffic: " + segments.m_buffer[i].m_trafficDensity + " %";
+					labelStr += "\nTraffic: " + segments.m_buffer[i].m_trafficDensity + " %";
 
-				float meanLaneSpeed = 0f;
-				float meanLaneDensity = 0f;
+					float meanLaneSpeed = 0f;
+					float meanLaneDensity = 0f;
 
-				int lIndex = 0;
-				uint laneId = segments.m_buffer[i].m_lanes;
-				int validLanes = 0;
-				while (lIndex < segmentInfo.m_lanes.Length && laneId != 0u) {
-					NetInfo.Lane lane = segmentInfo.m_lanes[lIndex];
-					if (lane.CheckType(NetInfo.LaneType.Vehicle | NetInfo.LaneType.PublicTransport | NetInfo.LaneType.TransportVehicle, VehicleInfo.VehicleType.Car)) {
-						if (CustomRoadAI.laneMeanSpeeds[laneId] >= 0) {
-							meanLaneSpeed += (float)CustomRoadAI.laneMeanSpeeds[laneId];
-							meanLaneDensity += (float)CustomRoadAI.laneMeanDensities[laneId];
-							++validLanes;
+					int lIndex = 0;
+					uint laneId = segments.m_buffer[i].m_lanes;
+					int validLanes = 0;
+					while (lIndex < segmentInfo.m_lanes.Length && laneId != 0u) {
+						NetInfo.Lane lane = segmentInfo.m_lanes[lIndex];
+						if (lane.CheckType(NetInfo.LaneType.Vehicle | NetInfo.LaneType.PublicTransport | NetInfo.LaneType.TransportVehicle, VehicleInfo.VehicleType.Car)) {
+							if (CustomRoadAI.laneMeanSpeeds[laneId] >= 0) {
+								meanLaneSpeed += (float)CustomRoadAI.laneMeanSpeeds[laneId];
+								meanLaneDensity += (float)CustomRoadAI.laneMeanDensities[laneId];
+								++validLanes;
+							}
 						}
+						lIndex++;
+						laneId = Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_nextLane;
 					}
-					lIndex++;
-					laneId = Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_nextLane;
-				}
 
-				if (validLanes > 0) {
-					meanLaneSpeed /= Convert.ToSingle(validLanes);
-					meanLaneDensity /= Convert.ToSingle(validLanes);
-				}
+					if (validLanes > 0) {
+						meanLaneSpeed /= Convert.ToSingle(validLanes);
+						meanLaneDensity /= Convert.ToSingle(validLanes);
+					}
 
-				if (CustomRoadAI.InStartupPhase)
-					labelStr += " (in start-up phase,";
-				else
-					labelStr += " (avg. speed: " + String.Format("{0:0.##}", meanLaneSpeed) + " %,";
-				labelStr += " avg. density: " + String.Format("{0:0.##}", meanLaneDensity) + " %)";
+					if (CustomRoadAI.InStartupPhase)
+						labelStr += " (in start-up phase,";
+					else
+						labelStr += " (avg. speed: " + String.Format("{0:0.##}", meanLaneSpeed) + " %,";
+					labelStr += " avg. density: " + String.Format("{0:0.##}", meanLaneDensity) + " %)";
 
 #if DEBUG
-				labelStr += "\nstart: " + segments.m_buffer[i].m_startNode + ", end: " + segments.m_buffer[i].m_endNode;
+					labelStr += "\nstart: " + segments.m_buffer[i].m_startNode + ", end: " + segments.m_buffer[i].m_endNode;
 #endif
 
-				Vector2 dim = _counterStyle.CalcSize(new GUIContent(labelStr));
-				Rect labelRect = new Rect(screenPos.x - dim.x / 2f, screenPos.y, dim.x, dim.y);
+					Vector2 dim = _counterStyle.CalcSize(new GUIContent(labelStr));
+					Rect labelRect = new Rect(screenPos.x - dim.x / 2f, screenPos.y, dim.x, dim.y);
 
-				GUI.Label(labelRect, labelStr, _counterStyle);
+					GUI.Label(labelRect, labelStr, _counterStyle);
 
-				if (Options.showLanes)
-					 _guiLanes(ref segments.m_buffer[i], ref segmentInfo);
+					if (Options.showLanes)
+						_guiLanes(ref segments.m_buffer[i], ref segmentInfo);
+				}
 			}
 		}
 
@@ -1614,15 +1602,13 @@ namespace TrafficManager.TrafficLight {
 			var hoveredSegment = false;
 
 			foreach (var nodeId in SelectedNodeIndexes) {
-				var node = GetNetNode(nodeId);
-
 				var nodeSimulation = TrafficLightSimulation.GetNodeSimulation(nodeId);
 				if (nodeSimulation == null || !nodeSimulation.IsTimedLight())
 					continue;
 				TimedTrafficLights timedNode = nodeSimulation.TimedLight;
 
 				for (var i = 0; i < 8; i++) {
-					ushort srcSegmentId = node.GetSegment(i); // source segment
+					ushort srcSegmentId = Singleton<NetManager>.instance.m_nodes.m_buffer[nodeId].GetSegment(i); // source segment
 
 					if (srcSegmentId == 0 || nodeSimulation == null ||
 						!ManualTrafficLights.IsSegmentLight(nodeId, srcSegmentId)) continue;
@@ -1632,20 +1618,18 @@ namespace TrafficManager.TrafficLight {
 						liveSegmentLight.makeRedOrGreen();
 					}
 
-					var segment = Singleton<NetManager>.instance.m_segments.m_buffer[srcSegmentId];
-
-					var position = node.m_position;
+					var position = Singleton<NetManager>.instance.m_nodes.m_buffer[nodeId].m_position;
 
 					var offset = 25f;
 
-					if (segment.m_startNode == nodeId) {
-						position.x += segment.m_startDirection.x * offset;
-						position.y += segment.m_startDirection.y * offset;
-						position.z += segment.m_startDirection.z * offset;
+					if (Singleton<NetManager>.instance.m_segments.m_buffer[srcSegmentId].m_startNode == nodeId) {
+						position.x += Singleton<NetManager>.instance.m_segments.m_buffer[srcSegmentId].m_startDirection.x * offset;
+						position.y += Singleton<NetManager>.instance.m_segments.m_buffer[srcSegmentId].m_startDirection.y * offset;
+						position.z += Singleton<NetManager>.instance.m_segments.m_buffer[srcSegmentId].m_startDirection.z * offset;
 					} else {
-						position.x += segment.m_endDirection.x * offset;
-						position.y += segment.m_endDirection.y * offset;
-						position.z += segment.m_endDirection.z * offset;
+						position.x += Singleton<NetManager>.instance.m_segments.m_buffer[srcSegmentId].m_endDirection.x * offset;
+						position.y += Singleton<NetManager>.instance.m_segments.m_buffer[srcSegmentId].m_endDirection.y * offset;
+						position.z += Singleton<NetManager>.instance.m_segments.m_buffer[srcSegmentId].m_endDirection.z * offset;
 					}
 
 					var guiColor = GUI.color;
@@ -2461,16 +2445,15 @@ namespace TrafficManager.TrafficLight {
 			_cursorInSecondaryPanel = false;
 
 			if (SelectedNode == 0 || SelectedSegment == 0) return;
-			var segment = Singleton<NetManager>.instance.m_segments.m_buffer[SelectedSegment];
 
-			var info = segment.Info;
-			var num2 = segment.m_lanes;
+			var info = Singleton<NetManager>.instance.m_segments.m_buffer[SelectedSegment].Info;
+			var num2 = Singleton<NetManager>.instance.m_segments.m_buffer[SelectedSegment].m_lanes;
 			var num3 = 0;
 
 			var dir = NetInfo.Direction.Forward;
-			if (segment.m_startNode == SelectedNode)
+			if (Singleton<NetManager>.instance.m_segments.m_buffer[SelectedSegment].m_startNode == SelectedNode)
 				dir = NetInfo.Direction.Backward;
-			var dir2 = ((segment.m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None) ? dir : NetInfo.InvertDirection(dir);
+			var dir2 = ((Singleton<NetManager>.instance.m_segments.m_buffer[SelectedSegment].m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None) ? dir : NetInfo.InvertDirection(dir);
 			var dir3 = TrafficPriority.IsLeftHandDrive() ? NetInfo.InvertDirection(dir2) : dir2;
 
 			var numLanes = 0;
@@ -2512,17 +2495,16 @@ namespace TrafficManager.TrafficLight {
 
 		private void _guiLaneChangeWindow(int num) {
 			var instance = Singleton<NetManager>.instance;
-			var segment = instance.m_segments.m_buffer[SelectedSegment];
-			var info = segment.Info;
+			var info = instance.m_segments.m_buffer[SelectedSegment].Info;
 
 
 			var laneList = new List<object[]>();
 
-			var dir = SelectedNode == segment.m_startNode ? NetInfo.Direction.Backward : NetInfo.Direction.Forward;
-			var dir2 = ((segment.m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None) ? dir : NetInfo.InvertDirection(dir);
+			var dir = SelectedNode == instance.m_segments.m_buffer[SelectedSegment].m_startNode ? NetInfo.Direction.Backward : NetInfo.Direction.Forward;
+			var dir2 = ((instance.m_segments.m_buffer[SelectedSegment].m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None) ? dir : NetInfo.InvertDirection(dir);
 			var dir3 = TrafficPriority.IsLeftHandDrive() ? NetInfo.InvertDirection(dir2) : dir2;
 
-			var curLaneId = segment.m_lanes;
+			var curLaneId = instance.m_segments.m_buffer[SelectedSegment].m_lanes;
 			var laneIndex = 0;
 			while (laneIndex < info.m_lanes.Length && curLaneId != 0u) {
 				if (info.m_lanes[laneIndex].m_laneType != NetInfo.LaneType.Pedestrian &&
@@ -2593,6 +2575,157 @@ namespace TrafficManager.TrafficLight {
 			GUILayout.EndHorizontal();
 		}
 
+		private static void calculateSegmentCenterByDir(ushort segmentId, Dictionary<NetInfo.Direction, Vector3> segmentCenterByDir) {
+			segmentCenterByDir.Clear();
+
+			NetInfo segmentInfo = Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].Info;
+			uint curLaneId = Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].m_lanes;
+			Dictionary<NetInfo.Direction, int> numCentersByDir = new Dictionary<NetInfo.Direction, int>();
+			int laneIndex = 0;
+			while (laneIndex < segmentInfo.m_lanes.Length && curLaneId != 0u) {
+				if ((segmentInfo.m_lanes[laneIndex].m_laneType & (NetInfo.LaneType.Vehicle | NetInfo.LaneType.PublicTransport)) == NetInfo.LaneType.None)
+					goto nextIter;
+
+				NetInfo.Direction dir = segmentInfo.m_lanes[laneIndex].m_direction;
+				Vector3 bezierCenter = Singleton<NetManager>.instance.m_lanes.m_buffer[curLaneId].m_bezier.Position(0.5f);
+
+				if (!segmentCenterByDir.ContainsKey(dir)) {
+					segmentCenterByDir[dir] = bezierCenter;
+					numCentersByDir[dir] = 1;
+				} else {
+					segmentCenterByDir[dir] += bezierCenter;
+					numCentersByDir[dir]++;
+				}
+
+				nextIter:
+
+				curLaneId = Singleton<NetManager>.instance.m_lanes.m_buffer[curLaneId].m_nextLane;
+				laneIndex++;
+			}
+
+			foreach (KeyValuePair<NetInfo.Direction, int> e in numCentersByDir) {
+				segmentCenterByDir[e.Key] /= (float)e.Value;
+			}
+		}
+
+		private void _guiSpeedLimits() {
+			_cursorInSecondaryPanel = false;
+
+			var style = new GUIStyle {
+				normal = { background = _secondPanelTexture },
+				alignment = TextAnchor.MiddleCenter,
+				border =
+				{
+					bottom = 2,
+					top = 2,
+					right = 2,
+					left = 2
+				}
+			};
+
+			var windowRect = ResizeGUI(new Rect(155, 45, 7 * 105, 210));
+			GUILayout.Window(254, windowRect, _guiSpeedLimitsWindow, Translation.GetString("Speed_limits"), style);
+			_cursorInSecondaryPanel = windowRect.Contains(Event.current.mousePosition);
+		}
+
+		//private int speedLimitPage = 0;
+		//private int speedLimitsPerPage = 13;
+		private int curSpeedLimitIndex = 0;
+
+		private void _guiSpeedLimitsWindow(int num) {
+			//int speedLimitPages = SpeedLimitManager.AvailableSpeedLimits.Count % speedLimitsPerPage == 0 ? SpeedLimitManager.AvailableSpeedLimits.Count / speedLimitsPerPage : SpeedLimitManager.AvailableSpeedLimits.Count / speedLimitsPerPage + 1;
+			GUILayout.BeginHorizontal();
+			
+			/*GUILayout.BeginVertical();
+			GUILayout.FlexibleSpace();
+			if (GUILayout.Button("< " + Translation.GetString("Previous"))) {
+				speedLimitPage = (speedLimitPage + speedLimitPages - 1) % speedLimitPages;
+			}
+			GUILayout.FlexibleSpace();
+			GUILayout.EndVertical();*/
+
+			Color oldColor = GUI.color;
+			//for (int i = speedLimitPage * speedLimitsPerPage; i < Math.Min(SpeedLimitManager.AvailableSpeedLimits.Count, speedLimitPage * speedLimitsPerPage + speedLimitsPerPage); ++i) {
+			for (int i = 0; i < SpeedLimitManager.AvailableSpeedLimits.Count; ++i) {
+				if (curSpeedLimitIndex != i)
+					GUI.color = Color.gray;
+				if (GUILayout.Button(TrafficLightToolTextureResources.SpeedLimitTextures[SpeedLimitManager.AvailableSpeedLimits[i]], GUILayout.Width(100), GUILayout.Height(100))) {
+					curSpeedLimitIndex = i;
+				}
+				GUI.color = oldColor;
+
+				if (i == 6) {
+					GUILayout.EndHorizontal();
+					GUILayout.BeginHorizontal();
+				}
+			}
+
+			/*GUILayout.BeginVertical();
+			GUILayout.FlexibleSpace();
+			if (GUILayout.Button(Translation.GetString("Next") + " >")) {
+				speedLimitPage = (speedLimitPage + 1) % speedLimitPages;
+			}
+			GUILayout.FlexibleSpace();
+			GUILayout.EndVertical();*/
+
+			GUILayout.EndHorizontal();
+		}
+
+		private void drawSpeedLimitHandles(ushort segmentId, bool viewOnly) {
+			// draw speedlimits over mean middle points of lane beziers
+			if (!segmentCenterByDir.ContainsKey(segmentId)) {
+				segmentCenterByDir.Add(segmentId, new Dictionary<NetInfo.Direction, Vector3>());
+				calculateSegmentCenterByDir(segmentId, segmentCenterByDir[segmentId]);
+			}
+
+			foreach (KeyValuePair<NetInfo.Direction, Vector3> e in segmentCenterByDir[segmentId]) {
+				var screenPos = Camera.main.WorldToScreenPoint(e.Value);
+				screenPos.y = Screen.height - screenPos.y;
+				if (screenPos.z < 0)
+					return;
+				var camPos = Singleton<SimulationManager>.instance.m_simulationView.m_position;
+				var diff = e.Value - camPos;
+
+				if (diff.magnitude > PriorityCloseLod)
+					return; // do not draw if too distant
+
+				ItemClass connectionClass = Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].Info.GetConnectionClass();
+				if (!(connectionClass.m_service == ItemClass.Service.Road ||
+					(connectionClass.m_service == ItemClass.Service.PublicTransport && connectionClass.m_subService == ItemClass.SubService.PublicTransportTrain)))
+					return;
+
+				var zoom = 1.0f / diff.magnitude * 100f;
+				var size = 110f * zoom;
+				var guiColor = GUI.color;
+				var boundingBox = new Rect(screenPos.x - size / 2, screenPos.y - size / 2, size, size);
+				bool hoveredHandle = !viewOnly && IsMouseOver(boundingBox);
+
+				if (hoveredHandle) {
+					// mouse hovering over sign
+					guiColor.a = 0.8f;
+				} else {
+					guiColor.a = 0.5f;
+					size = 90f * zoom;
+				}
+
+				GUI.color = guiColor;
+
+				var drawingBox = new Rect(screenPos.x - size / 2, screenPos.y - size / 2, size, size);
+				GUI.DrawTexture(drawingBox, TrafficLightToolTextureResources.SpeedLimitTextures[SpeedLimitManager.GetCustomSpeedLimit(segmentId, e.Key)]);
+
+				if (!viewOnly && IsMouseOver(drawingBox) && Input.GetMouseButtonDown(0)) {
+					// change the speed limit to the selected one
+					ushort speedLimitToSet = SpeedLimitManager.AvailableSpeedLimits[curSpeedLimitIndex];
+					Log._Debug($"Setting speed limit of segment {segmentId}, dir {e.Key.ToString()} to {speedLimitToSet}");
+					SpeedLimitManager.SetSpeedLimit(segmentId, e.Key, speedLimitToSet);
+					//mouseClickProcessed = true;
+				}
+
+				guiColor.a = 1f;
+				GUI.color = guiColor;
+			}
+		}
+
 		private void _guiLaneRestrictions() {
 			_cursorInSecondaryPanel = false;
 
@@ -2601,12 +2734,9 @@ namespace TrafficManager.TrafficLight {
 			}
 
 			var instance = Singleton<NetManager>.instance;
+			var info2 = instance.m_segments.m_buffer[_selectedSegmentIds[0]].Info;
 
-			var segment2 = instance.m_segments.m_buffer[_selectedSegmentIds[0]];
-
-			var info2 = segment2.Info;
-
-			var num2 = segment2.m_lanes;
+			var num2 = instance.m_segments.m_buffer[_selectedSegmentIds[0]].m_lanes;
 			const int num3 = 0;
 
 			var numLanes = 0;
@@ -2716,8 +2846,7 @@ namespace TrafficManager.TrafficLight {
 
 			if (GUILayout.Button(Translation.GetString("Add_zoning"), GUILayout.Width(140))) {
 				foreach (var selectedSegmentIndex in _selectedSegmentIds) {
-					var segment = Singleton<NetManager>.instance.m_segments.m_buffer[selectedSegmentIndex];
-					var info = segment.Info;
+					var info = Singleton<NetManager>.instance.m_segments.m_buffer[selectedSegmentIndex].Info;
 
 					CreateZoneBlocks(selectedSegmentIndex, ref Singleton<NetManager>.instance.m_segments.m_buffer[selectedSegmentIndex], info);
 				}
@@ -2725,12 +2854,10 @@ namespace TrafficManager.TrafficLight {
 
 			if (GUILayout.Button(Translation.GetString("Remove_zoning"), GUILayout.Width(140))) {
 				foreach (var selectedSegmentIndex in _selectedSegmentIds) {
-					var segment = Singleton<NetManager>.instance.m_segments.m_buffer[selectedSegmentIndex];
-
-					Singleton<ZoneManager>.instance.ReleaseBlock(segment.m_blockStartLeft);
-					Singleton<ZoneManager>.instance.ReleaseBlock(segment.m_blockStartRight);
-					Singleton<ZoneManager>.instance.ReleaseBlock(segment.m_blockEndLeft);
-					Singleton<ZoneManager>.instance.ReleaseBlock(segment.m_blockEndRight);
+					Singleton<ZoneManager>.instance.ReleaseBlock(Singleton<NetManager>.instance.m_segments.m_buffer[selectedSegmentIndex].m_blockStartLeft);
+					Singleton<ZoneManager>.instance.ReleaseBlock(Singleton<NetManager>.instance.m_segments.m_buffer[selectedSegmentIndex].m_blockStartRight);
+					Singleton<ZoneManager>.instance.ReleaseBlock(Singleton<NetManager>.instance.m_segments.m_buffer[selectedSegmentIndex].m_blockEndLeft);
+					Singleton<ZoneManager>.instance.ReleaseBlock(Singleton<NetManager>.instance.m_segments.m_buffer[selectedSegmentIndex].m_blockEndRight);
 
 					Singleton<NetManager>.instance.m_segments.m_buffer[selectedSegmentIndex].m_blockStartLeft = 0;
 					Singleton<NetManager>.instance.m_segments.m_buffer[selectedSegmentIndex].m_blockStartRight = 0;
@@ -2740,12 +2867,8 @@ namespace TrafficManager.TrafficLight {
 			}
 
 			var instance = Singleton<NetManager>.instance;
-
-			var segment2 = instance.m_segments.m_buffer[_selectedSegmentIds[0]];
-
-			var info2 = segment2.Info;
-
-			var num2 = segment2.m_lanes;
+			var info2 = instance.m_segments.m_buffer[_selectedSegmentIds[0]].Info;
+			var num2 = instance.m_segments.m_buffer[_selectedSegmentIds[0]].m_lanes;
 			var num3 = 0;
 
 			var laneList = new List<float[]>();
@@ -3015,8 +3138,7 @@ namespace TrafficManager.TrafficLight {
 						break;
 					}
 
-					var node = GetNetNode((ushort)nodeId);
-					var nodePositionVector3 = node.m_position;
+					var nodePositionVector3 = Singleton<NetManager>.instance.m_nodes.m_buffer[nodeId].m_position;
 					var camPos = Singleton<SimulationManager>.instance.m_simulationView.m_position;
 					var diff = nodePositionVector3 - camPos;
 					if (diff.magnitude > PriorityCloseLod)
@@ -3053,13 +3175,12 @@ namespace TrafficManager.TrafficLight {
 
 				_waitFlowBalance = 1f;
 				foreach (var selectedNodeIndex in SelectedNodeIndexes) {
-					var node2 = GetNetNode(selectedNodeIndex);
 					TrafficLightSimulation.AddNodeToSimulation(selectedNodeIndex);
 					var nodeSimulation = TrafficLightSimulation.GetNodeSimulation(selectedNodeIndex);
 					nodeSimulation.setupTimedTrafficLight(TrafficLightTool.SelectedNodeIndexes);
 
 					for (var s = 0; s < 8; s++) {
-						var segment = node2.GetSegment(s);
+						var segment = Singleton<NetManager>.instance.m_nodes.m_buffer[selectedNodeIndex].GetSegment(s);
 						if (segment <= 0)
 							continue;
 
@@ -3487,25 +3608,22 @@ namespace TrafficManager.TrafficLight {
 					
 					foreach (var prioritySegment in prioritySegments) {
 						var nodeId = prioritySegment.NodeId;
-						var node = GetNetNode((ushort)nodeId);
 						//Log.Message("_guiPrioritySigns: nodeId=" + nodeId);
 
-						var segment = Singleton<NetManager>.instance.m_segments.m_buffer[segmentId];
-
-						var nodePositionVector3 = node.m_position;
+						var nodePositionVector3 = Singleton<NetManager>.instance.m_nodes.m_buffer[nodeId].m_position;
 						var camPos = Singleton<SimulationManager>.instance.m_simulationView.m_position;
 						var diff = nodePositionVector3 - camPos;
 						if (diff.magnitude > PriorityCloseLod)
 							continue; // do not draw if too distant
 						
-						if (segment.m_startNode == (ushort)nodeId) {
-							nodePositionVector3.x += segment.m_startDirection.x * 10f;
-							nodePositionVector3.y += segment.m_startDirection.y * 10f;
-							nodePositionVector3.z += segment.m_startDirection.z * 10f;
+						if (Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].m_startNode == (ushort)nodeId) {
+							nodePositionVector3.x += Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].m_startDirection.x * 10f;
+							nodePositionVector3.y += Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].m_startDirection.y * 10f;
+							nodePositionVector3.z += Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].m_startDirection.z * 10f;
 						} else {
-							nodePositionVector3.x += segment.m_endDirection.x * 10f;
-							nodePositionVector3.y += segment.m_endDirection.y * 10f;
-							nodePositionVector3.z += segment.m_endDirection.z * 10f;
+							nodePositionVector3.x += Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].m_endDirection.x * 10f;
+							nodePositionVector3.y += Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].m_endDirection.y * 10f;
+							nodePositionVector3.z += Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].m_endDirection.z * 10f;
 						}
 
 						var nodeScreenPosition = Camera.main.WorldToScreenPoint(nodePositionVector3);
@@ -3564,7 +3682,7 @@ namespace TrafficManager.TrafficLight {
 								if (clicked && hoveredSegment) {
 									Log._Debug("Click on node " + nodeId + ", segment " + segmentId + " to change prio type (4)");
 									//Log.Message("PrioritySegment.Type = None");
-									prioritySegment.Type = GetNumberOfMainRoads(nodeId, node) >= 2
+									prioritySegment.Type = GetNumberOfMainRoads(nodeId, ref Singleton<NetManager>.instance.m_nodes.m_buffer[nodeId]) >= 2
 										? PrioritySegment.PriorityType.Yield
 										: PrioritySegment.PriorityType.Main;
 									clicked = false;
@@ -3579,8 +3697,7 @@ namespace TrafficManager.TrafficLight {
 
 				ushort hoveredExistingNodeId = 0;
 				foreach (ushort nodeId in nodeIdsWithSigns) {
-					var node = GetNetNode(nodeId);
-					var nodePositionVector3 = node.m_position;
+					var nodePositionVector3 = Singleton<NetManager>.instance.m_nodes.m_buffer[nodeId].m_position;
 					var camPos = Singleton<SimulationManager>.instance.m_simulationView.m_position;
 					var diff = nodePositionVector3 - camPos;
 					if (diff.magnitude > PriorityCloseLod)
@@ -3610,7 +3727,6 @@ namespace TrafficManager.TrafficLight {
 
 				// add a new or delete a priority segment node
 				if (_hoveredNetNodeIdx != 0 || hoveredExistingNodeId != 0) {
-					var node = GetNetNode((ushort)_hoveredNetNodeIdx);
 					bool delete = false;
 					if (hoveredExistingNodeId > 0) {
 						delete = true;
@@ -3618,7 +3734,7 @@ namespace TrafficManager.TrafficLight {
 
 					// determine if we may add new priority signs to this node
 					bool ok = false;
-					if ((node.m_flags & NetNode.Flags.TrafficLights) == NetNode.Flags.None) {
+					if ((Singleton<NetManager>.instance.m_nodes.m_buffer[_hoveredNetNodeIdx].m_flags & NetNode.Flags.TrafficLights) == NetNode.Flags.None) {
 						// no traffic light set
 						ok = true;
 					} else {
@@ -3641,7 +3757,7 @@ namespace TrafficManager.TrafficLight {
 								TrafficPriority.AddPriorityNode(_hoveredNetNodeIdx);
 							}
 						} else {
-							showTooltip(Translation.GetString("NODE_IS_TIMED_LIGHT"), node.m_position);
+							showTooltip(Translation.GetString("NODE_IS_TIMED_LIGHT"), Singleton<NetManager>.instance.m_nodes.m_buffer[_hoveredNetNodeIdx].m_position);
 						}
 					}
 				}
@@ -3650,7 +3766,7 @@ namespace TrafficManager.TrafficLight {
 			}
 		}
 
-		private static int GetNumberOfMainRoads(ushort nodeId, NetNode node) {
+		private static int GetNumberOfMainRoads(ushort nodeId, ref NetNode node) {
 			var numMainRoads = 0;
 			for (var s = 0; s < 8; s++) {
 				var segmentId2 = node.GetSegment(s);
@@ -3668,8 +3784,8 @@ namespace TrafficManager.TrafficLight {
 			return numMainRoads;
 		}
 
-		private bool IsMouseOver(Rect nodeBoundingBox) {
-			return nodeBoundingBox.Contains(Event.current.mousePosition);
+		private bool IsMouseOver(Rect boundingBox) {
+			return boundingBox.Contains(Event.current.mousePosition);
 		}
 
 		private bool checkClicked() {
@@ -3687,12 +3803,10 @@ namespace TrafficManager.TrafficLight {
 		}
 
 		private void _switchTrafficLights() {
-			var node = GetNetNode(_hoveredNetNodeIdx);
-
-			if ((node.m_flags & NetNode.Flags.TrafficLights) != NetNode.Flags.None) {
+			if ((Singleton<NetManager>.instance.m_nodes.m_buffer[_hoveredNetNodeIdx].m_flags & NetNode.Flags.TrafficLights) != NetNode.Flags.None) {
 				TrafficLightSimulation sim = TrafficLightSimulation.GetNodeSimulation(_hoveredNetNodeIdx);
 				if (sim != null && sim.IsTimedLight()) {
-					showTooltip(Translation.GetString("NODE_IS_TIMED_LIGHT"), node.m_position);
+					showTooltip(Translation.GetString("NODE_IS_TIMED_LIGHT"), Singleton<NetManager>.instance.m_nodes.m_buffer[_hoveredNetNodeIdx].m_position);
 				} else {
 					TrafficLightSimulation.RemoveNodeFromSimulation(_hoveredNetNodeIdx, true); // TODO refactor!
 					Flags.setNodeTrafficLight(_hoveredNetNodeIdx, false); // TODO refactor!
@@ -3705,13 +3819,12 @@ namespace TrafficManager.TrafficLight {
 
 		public void AddTimedNodes() {
 			foreach (var selectedNodeIndex in SelectedNodeIndexes) {
-				var node = GetNetNode(selectedNodeIndex);
 				TrafficLightSimulation.AddNodeToSimulation(selectedNodeIndex);
 				var nodeSimulation = TrafficLightSimulation.GetNodeSimulation(selectedNodeIndex);
 				nodeSimulation.setupTimedTrafficLight(TrafficLightTool.SelectedNodeIndexes);
 
 				for (var s = 0; s < 8; s++) {
-					var segment = node.GetSegment(s);
+					var segment = Singleton<NetManager>.instance.m_nodes.m_buffer[selectedNodeIndex].GetSegment(s);
 
 					if (segment != 0 && !TrafficPriority.IsPrioritySegment(selectedNodeIndex, segment)) {
 						TrafficPriority.AddPrioritySegment(selectedNodeIndex, segment, PrioritySegment.PriorityType.None);
@@ -3723,7 +3836,6 @@ namespace TrafficManager.TrafficLight {
 		public bool SwitchManual() {
 			if (SelectedNode == 0) return false;
 
-			var node = GetNetNode(SelectedNode);
 			var nodeSimulation = TrafficLightSimulation.GetNodeSimulation(SelectedNode);
 
 			if (nodeSimulation == null) {
@@ -3734,7 +3846,7 @@ namespace TrafficManager.TrafficLight {
 				nodeSimulation.FlagManualTrafficLights = true;
 
 				for (var s = 0; s < 8; s++) {
-					var segment = node.GetSegment(s);
+					var segment = Singleton<NetManager>.instance.m_nodes.m_buffer[SelectedNode].GetSegment(s);
 
 					if (segment != 0 && !TrafficPriority.IsPrioritySegment(SelectedNode, segment)) {
 						TrafficPriority.AddPrioritySegment(SelectedNode, segment, PrioritySegment.PriorityType.None);
@@ -3747,7 +3859,7 @@ namespace TrafficManager.TrafficLight {
 			TrafficLightSimulation.RemoveNodeFromSimulation(SelectedNode, true);
 
 			for (var s = 0; s < 8; s++) {
-				var segment = node.GetSegment(s);
+				var segment = Singleton<NetManager>.instance.m_nodes.m_buffer[SelectedNode].GetSegment(s);
 
 				if (segment != 0 && !TrafficPriority.IsPrioritySegment(SelectedNode, segment)) {
 					TrafficPriority.AddPrioritySegment(SelectedNode, segment, PrioritySegment.PriorityType.None);
@@ -3771,18 +3883,10 @@ namespace TrafficManager.TrafficLight {
 			if (SelectedNodeIndexes.Count <= 0) return;
 
 			foreach (var selectedNodeIndex in SelectedNodeIndexes) {
-				GetNetNode(selectedNodeIndex);
 				var nodeSimulation = TrafficLightSimulation.GetNodeSimulation(selectedNodeIndex);
 				if (nodeSimulation == null) continue;
 				nodeSimulation.Destroy(true);
 			}
-		}
-
-		public NetNode GetCurrentNetNode() {
-			return GetNetNode(_hoveredNetNodeIdx);
-		}
-		public static NetNode GetNetNode(ushort index) {
-			return Singleton<NetManager>.instance.m_nodes.m_buffer[index];
 		}
 
 		private static void AddSelectedNode(ushort node) {

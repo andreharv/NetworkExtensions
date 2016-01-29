@@ -248,8 +248,10 @@ namespace TrafficManager {
 				Instance = this;
 
 				determinePathManagerCompatible();
+				Flags.OnLevelLoading();
 				TrafficPriority.OnLevelLoading();
 				CustomRoadAI.OnLevelLoading();
+				SpeedLimitManager.GetDefaultSpeedLimits();
 
 				initDetours();
 

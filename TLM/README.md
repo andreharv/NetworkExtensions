@@ -2,7 +2,8 @@
 A work-in-progress modification for **Cities: Skylines** to add additional road traffic control
 
 # Changelog
-1.4.10
+1.5.0
+- New feature: Speed restrictions
 - AI: Parameters tuned
 - Code improvements
 - Bugfix: Flowing/Waiting vehicles count corrected
