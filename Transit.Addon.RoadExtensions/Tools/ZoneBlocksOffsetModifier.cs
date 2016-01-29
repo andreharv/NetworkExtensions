@@ -10,24 +10,31 @@ namespace Transit.Addon.RoadExtensions.Tools
 {
     public class ZoneBlocksOffsetModifier : ThreadingExtensionBase
     {
+        private static Color _originalColor;
+
         public override void OnUpdate(float realTimeDelta, float simulationTimeDelta)
         {
-            if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) && 
-                (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)))
+            if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
             {
-                if (Input.GetKeyDown(KeyCode.O))
+                if (ZoneBlocksOffset.Mode != ZoneBlocksOffsetMode.HalfCell)
                 {
-                    // CTRL + ALT + O to toggle HalfCell zonings
-                    switch (ZoneBlocksOffset.Mode)
-                    {
-                        case ZoneBlocksOffsetMode.Default:
-                            ZoneBlocksOffset.Mode = ZoneBlocksOffsetMode.HalfCell;
-                            break;
-                        case ZoneBlocksOffsetMode.HalfCell:
-                            ZoneBlocksOffset.Mode = ZoneBlocksOffsetMode.Default;
-                            break;
-                    }
-                    Debug.Log("REx: Changed ZoneBlocksOffset for " + ZoneBlocksOffset.Mode);
+                    ZoneBlocksOffset.Mode = ZoneBlocksOffsetMode.HalfCell;
+
+                    // 0 181 255 255
+                    _originalColor = ToolsModifierControl.toolController.m_validColor;
+
+                    // change tool overlay color so user can see that the detour is enabled
+                    ToolsModifierControl.toolController.m_validColor = new Color(60f / 255f, 0f, 1f, 1f);
+                }
+            }
+
+            if (Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.RightShift))
+            {
+                if (ZoneBlocksOffset.Mode != ZoneBlocksOffsetMode.Default)
+                {
+                    ZoneBlocksOffset.Mode = ZoneBlocksOffsetMode.Default;
+
+                    ToolsModifierControl.toolController.m_validColor = _originalColor;
                 }
             }
         }
