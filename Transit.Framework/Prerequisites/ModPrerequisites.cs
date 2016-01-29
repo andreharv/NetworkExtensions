@@ -70,19 +70,37 @@ namespace Transit.Framework.Prerequisites
 
         private static void DoInstallation()
         {
-            foreach (var p in GetAllPrerequisites())
+            try
             {
-                Debug.Log(string.Format("TFW: Installing Prerequisite {0}", p.GetType().Name));
-                p.Install();
+                foreach (var p in GetAllPrerequisites())
+                {
+                    Debug.Log(string.Format("TFW: Installing Prerequisite {0}", p.GetType().Name));
+                    p.Install();
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.Log("TFW: Crashed-Prerequisites Installation");
+                Debug.Log("TFW: " + ex.Message);
+                Debug.Log("TFW: " + ex.ToString());
             }
         }
 
         private static void DoUninstallation()
         {
-            foreach (var p in GetAllPrerequisites())
+            try
             {
-                Debug.Log(string.Format("TFW: Uninstalling Prerequisites {0}", p.GetType().Name));
-                p.Uninstall();
+                foreach (var p in GetAllPrerequisites())
+                {
+                    Debug.Log(string.Format("TFW: Uninstalling Prerequisites {0}", p.GetType().Name));
+                    p.Uninstall();
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.Log("TFW: Crashed-Prerequisites Uninstallation");
+                Debug.Log("TFW: " + ex.Message);
+                Debug.Log("TFW: " + ex.ToString());
             }
         }
     }
