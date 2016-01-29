@@ -14,8 +14,20 @@ namespace Transit.Addon.RoadExtensions.Tools
 
         public override void OnUpdate(float realTimeDelta, float simulationTimeDelta)
         {
+
             if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
             {
+                var tool = ToolsModifierControl.toolController.CurrentTool as NetTool;
+                if (tool == null)
+                {
+                    return;
+                }
+
+                if (tool.m_mode != NetTool.Mode.Upgrade)
+                {
+                    return;
+                }
+
                 if (ZoneBlocksOffset.Mode != ZoneBlocksOffsetMode.HalfCell)
                 {
                     ZoneBlocksOffset.Mode = ZoneBlocksOffsetMode.HalfCell;
@@ -23,7 +35,7 @@ namespace Transit.Addon.RoadExtensions.Tools
                     // 0 181 255 255
                     _originalColor = ToolsModifierControl.toolController.m_validColor;
 
-                    // change tool overlay color so user can see that the detour is enabled
+                    // change tool overlay color so user can see that the modifier is enabled
                     ToolsModifierControl.toolController.m_validColor = new Color(60f / 255f, 0f, 1f, 1f);
                 }
             }
