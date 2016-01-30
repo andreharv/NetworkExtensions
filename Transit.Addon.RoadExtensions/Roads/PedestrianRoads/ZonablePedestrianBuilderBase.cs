@@ -1,6 +1,7 @@
 ﻿using System;
 using Transit.Addon.RoadExtensions.Menus;
 using Transit.Framework;
+using Transit.Framework.Texturing;
 using UnityEngine;
 
 namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
@@ -19,11 +20,11 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
             {
                 case NetInfoVersion.Ground:
                     pedestrianBridge.SetAllSegmentsTexture(
-                        new TexturesSet
+                        new TextureSet
                            (null,
                             @"Roads\PedestrianRoads\Textures\Ground_Segment__AlphaMap.png"));
                     pedestrianBridge.SetAllNodesTexture(
-                        new TexturesSet
+                        new TextureSet
                            (null,
                             @"Roads\PedestrianRoads\Textures\Ground_Segment__AlphaMap.png"));
                     break;

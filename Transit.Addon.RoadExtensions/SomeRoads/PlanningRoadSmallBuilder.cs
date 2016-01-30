@@ -36,8 +36,8 @@
 
 //        public void BuildUp(NetInfo info, NetInfoVersion version)
 //        {
-//            info.SetSegmentsTexture(new TexturesSet(@"SomeNetwork\Textures\planning_road_2_lanes.png"));
-//            info.SetNodesTexture(new TexturesSet(@"SomeNetwork\Textures\planning_road_2_lanes.png"));
+//            info.SetSegmentsTexture(new TextureSet(@"SomeNetwork\Textures\planning_road_2_lanes.png"));
+//            info.SetNodesTexture(new TextureSet(@"SomeNetwork\Textures\planning_road_2_lanes.png"));
 
 //            info.m_lanes = new NetInfo.Lane[] { };
 //            info.m_color.r = 0.4f;

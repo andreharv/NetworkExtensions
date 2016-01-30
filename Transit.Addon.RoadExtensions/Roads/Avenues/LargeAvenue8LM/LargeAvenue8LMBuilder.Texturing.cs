@@ -1,4 +1,5 @@
 ﻿using Transit.Framework;
+using Transit.Framework.Texturing;
 
 namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
 {
@@ -10,36 +11,36 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
             {
                 case NetInfoVersion.Ground:
                     info.SetAllSegmentsTexture(
-                        new TexturesSet
+                        new TextureSet
                             (@"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Segment__MainTex.png",
                             @"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Segment__APRMap.png"),
-                    new LODTexturesSet
+                    new LODTextureSet
                             (@"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Segment_LOD__MainTex.png",
                             @"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Segment_LOD__APRMap.png",
                             @"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Segment_LOD__XYSMap.png"));
                     info.SetAllNodesTexture(
-                        new TexturesSet
+                        new TextureSet
                             (@"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Node__MainTex.png",
                             @"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Node__APRMap.png"),
-                        new LODTexturesSet
+                        new LODTextureSet
                            (@"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Node_LOD__MainTex.png",
                             @"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Node_LOD__APRMap.png",
                             @"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Segment_LOD__XYSMap.png"));
                     break;
                 case NetInfoVersion.Elevated:
                     info.SetAllSegmentsTexture(
-                        new TexturesSet
+                        new TextureSet
                             (@"Roads\Avenues\LargeAvenue8LM\Textures\Elevated_Segment__MainTex.png",
                             @"Roads\Avenues\LargeAvenue8LM\Textures\Elevated_Segment__APRMap.png"),
-                        new LODTexturesSet
+                        new LODTextureSet
                             (@"Roads\Avenues\LargeAvenue8LM\Textures\Elevated_Segment_LOD__MainTex.png",
                             @"Roads\Avenues\LargeAvenue8LM\Textures\Elevated_Segment_LOD__APRMap.png",
                             @"Roads\Avenues\LargeAvenue8LM\Textures\Elevated_Segment_LOD__XYSMap.png"));
                     info.SetAllNodesTexture(
-                        new TexturesSet
+                        new TextureSet
                             (@"Roads\Avenues\LargeAvenue8LM\Textures\Elevated_Node__MainTex.png",
                             @"Roads\Avenues\LargeAvenue8LM\Textures\Elevated_Node__APRMap.png"),
-                        new LODTexturesSet
+                        new LODTextureSet
                             (@"Roads\Avenues\LargeAvenue8LM\Textures\Elevated_Segment_LOD__MainTex.png",
                             @"Roads\Avenues\LargeAvenue8LM\Textures\Elevated_Node_LOD__APRMap.png",
                             @"Roads\Avenues\LargeAvenue8LM\Textures\Elevated_Segment_LOD__XYSMap.png"));
@@ -50,11 +51,11 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
                         if (info.m_segments[i].m_mesh.name == "Bridge_Cables")
                         {
                             info.m_segments[i].SetTextures(
-                            new TexturesSet
+                            new TextureSet
                             (@"Roads\Avenues\LargeAvenue8LM\Textures\Bridge_Cables__MainTex.png",
                             @"Roads\Avenues\LargeAvenue8LM\Textures\Bridge_Cables__APRMap.png",
                             @"Roads\Avenues\LargeAvenue8LM\Textures\Bridge_Cables__XYSMap.png"),
-                            new LODTexturesSet
+                            new LODTextureSet
                             (@"Roads\Avenues\LargeAvenue8LM\Textures\Bridge_Cables_LOD__MainTex.png",
                             @"Roads\Avenues\LargeAvenue8LM\Textures\Bridge_Cables_LOD__APRMap.png",
                             @"Roads\Avenues\LargeAvenue8LM\Textures\Bridge_Cables_LOD__XYSMap.png"));
@@ -62,10 +63,10 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
                         else
                         {
                             info.m_segments[i].SetTextures(
-                            new TexturesSet
+                            new TextureSet
                                 (@"Roads\Avenues\LargeAvenue8LM\Textures\Elevated_Segment__MainTex.png",
                                 @"Roads\Avenues\LargeAvenue8LM\Textures\Elevated_Segment__APRMap.png"),
-                            new LODTexturesSet
+                            new LODTextureSet
                                 (@"Roads\Avenues\LargeAvenue8LM\Textures\Elevated_Segment_LOD__MainTex.png",
                                 @"Roads\Avenues\LargeAvenue8LM\Textures\Elevated_Segment_LOD__APRMap.png",
                                 @"Roads\Avenues\LargeAvenue8LM\Textures\Elevated_Segment_LOD__XYSMap.png"));
@@ -73,10 +74,10 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
                     }
 
                     info.SetAllNodesTexture(
-                        new TexturesSet
+                        new TextureSet
                             (@"Roads\Avenues\LargeAvenue8LM\Textures\Elevated_Node__MainTex.png",
                             @"Roads\Avenues\LargeAvenue8LM\Textures\Elevated_Node__APRMap.png"),
-                        new LODTexturesSet
+                        new LODTextureSet
                             (@"Roads\Avenues\LargeAvenue8LM\Textures\Elevated_Segment_LOD__MainTex.png",
                             @"Roads\Avenues\LargeAvenue8LM\Textures\Elevated_Node_LOD__APRMap.png",
                             @"Roads\Avenues\LargeAvenue8LM\Textures\Elevated_Segment_LOD__XYSMap.png"));
@@ -87,17 +88,17 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
                         if (info.m_segments[i].m_mesh.name == "medium-tunnel-slope")
                         {
                             info.m_segments[i].SetTextures(
-                        new TexturesSet
+                        new TextureSet
                             (@"Roads\Avenues\LargeAvenue8LM\Textures\Slope_Segment__MainTex.png",
                                     @"Roads\Avenues\LargeAvenue8LM\Textures\Slope_Segment_Cover__APRMap.png"));
                         }
                         else
                         {
                             info.m_segments[i].SetTextures(
-                                new TexturesSet
+                                new TextureSet
                                     (@"Roads\Avenues\LargeAvenue8LM\Textures\Slope_Segment__MainTex.png",
                                     @"Roads\Avenues\LargeAvenue8LM\Textures\Slope_Segment__APRMap.png"),
-                                new LODTexturesSet
+                                new LODTextureSet
                                     (@"Roads\Avenues\LargeAvenue8LM\Textures\Slope_Segment_LOD__MainTex.png",
                                     @"Roads\Avenues\LargeAvenue8LM\Textures\Slope_Segment_LOD__APRMap.png",
                                     @"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Segment_LOD__XYSMap.png"));
@@ -109,10 +110,10 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
                         if (info.m_nodes[i].m_mesh.name == "Slope_U_Node")
                     {
                             info.m_nodes[i].SetTextures(
-                                new TexturesSet
+                                new TextureSet
                                     (@"Roads\Avenues\LargeAvenue8LM\Textures\Slope_Segment__MainTex.png",
                                     @"Roads\Avenues\LargeAvenue8LM\Textures\Tunnel_Node__APRMap.png"),
-                                new LODTexturesSet
+                                new LODTextureSet
                                     (@"Roads\Avenues\LargeAvenue8LM\Textures\Slope_Segment_LOD__MainTex.png",
                                     @"Roads\Avenues\LargeAvenue8LM\Textures\Slope_Segment_LOD__APRMap.png",
                                     @"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Segment_LOD__XYSMap.png"));
@@ -120,10 +121,10 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
                         else
                         {
                             info.m_nodes[i].SetTextures(
-                                new TexturesSet
+                                new TextureSet
                                     (@"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Node__MainTex.png",
                                     @"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Node__APRMap.png"),
-                                new LODTexturesSet
+                                new LODTextureSet
                                     (@"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Node_LOD__MainTex.png",
                                     @"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Node_LOD__APRMap.png",
                                     @"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Segment_LOD__XYSMap.png"));
@@ -133,18 +134,18 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
                 case NetInfoVersion.Tunnel:
                     {
                         info.SetAllSegmentsTexture(
-                            new TexturesSet
+                            new TextureSet
                                 (@"Roads\Avenues\LargeAvenue8LM\Textures\Tunnel_Segment__MainTex.png",
                                 @"Roads\Avenues\LargeAvenue8LM\Textures\Tunnel_Segment__APRMap.png"),
-                            new LODTexturesSet
+                            new LODTextureSet
                                 (@"Roads\Avenues\LargeAvenue8LM\Textures\Tunnel_Segment_LOD__MainTex.png",
                                 @"Roads\Avenues\LargeAvenue8LM\Textures\Tunnel_Segment_LOD__APRMap.png",
                                 @"Roads\Avenues\LargeAvenue8LM\Textures\Tunnel_Segment_LOD__XYSMap.png"));
                         info.SetAllNodesTexture(
-                            new TexturesSet
+                            new TextureSet
                                 (@"Roads\Avenues\LargeAvenue8LM\Textures\Tunnel_Segment__MainTex.png",
                                 @"Roads\Avenues\LargeAvenue8LM\Textures\Tunnel_Node__APRMap.png"),
-                            new LODTexturesSet
+                            new LODTextureSet
                                 (@"Roads\Avenues\LargeAvenue8LM\Textures\Tunnel_Segment_LOD__MainTex.png",
                                 @"Roads\Avenues\LargeAvenue8LM\Textures\Tunnel_Segment_LOD__APRMap.png",
                                 @"Roads\Avenues\LargeAvenue8LM\Textures\Tunnel_Segment_LOD__XYSMap.png"));
