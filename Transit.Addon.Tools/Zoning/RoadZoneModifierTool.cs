@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using ColossalFramework;
 using ICities;
 using Transit.Framework.Extenders.AI;
 using UnityEngine;
 
-namespace Transit.Addon.RoadExtensions.Tools
+namespace Transit.Addon.Tools.Zoning
 {
     public class RoadZoneModifierTool : ThreadingExtensionBase
     {
@@ -32,6 +29,16 @@ namespace Transit.Addon.RoadExtensions.Tools
 
         public override void OnUpdate(float realTimeDelta, float simulationTimeDelta)
         {
+            if (!ToolModule.ActiveOptions.IsFlagSet(ToolModule.ModOptions.RoadZoneModifier))
+            {
+                return;
+            }
+
+            if (ToolsModifierControl.toolController == null)
+            {
+                return;
+            }
+
             var isUpgradeNetToolActive = GetIsUpgradeNetToolActive();
 
             // Keys Down --------------------------------------------------------------------------

@@ -13,7 +13,8 @@ namespace Transit.Addon.Tools
         public enum ModOptions : long
         {
             None = 0,
-            RoadCustomizerTool = 1L << 55
+            RoadZoneModifier = 1L << 0,
+            RoadCustomizerTool = 1L << 1
         }
 
         private static ModOptions s_activeOptions = ModOptions.None;
@@ -21,6 +22,24 @@ namespace Transit.Addon.Tools
 
         public override void OnSettingsUI(UIHelperBase helper)
         {
+            helper.AddCheckbox(
+                "Road Zone Modifier",
+                "Press SHIFT (or SHIFT+CTRL) on the Upgrade Road tool to use",
+                s_activeOptions.IsFlagSet(ModOptions.RoadZoneModifier), 
+                isChecked =>
+                {
+                    if (isChecked)
+                    {
+                        s_activeOptions = s_activeOptions | ModOptions.RoadZoneModifier;
+                    }
+                    else
+                    {
+                        s_activeOptions = s_activeOptions & ~ModOptions.RoadZoneModifier;
+                    }
+                    FireSaveSettingsNeeded();
+                },
+                true);
+
             helper.AddCheckbox(
                 "Road Customizer Tool",
                 "Road Customizer Tool",
