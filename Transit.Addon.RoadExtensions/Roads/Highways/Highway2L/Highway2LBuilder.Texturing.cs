@@ -8,8 +8,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway2L
     {
         private static void SetupTextures(NetInfo info, NetInfoVersion version)
         {
-            RoadColorChanger rcc = new RoadColorChanger();
-            var aprMapPath = (rcc.IsPluginActive ? rcc.GetTexturePrefix() : @"Roads\");
+            var aprMapPath = (RoadColorChanger.IsPluginActive ? RoadColorChanger.GetTexturePrefix() : @"Roads\");
 
             switch (version)
             {
@@ -75,7 +74,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway2L
                     info.SetAllSegmentsTexture(
                         new TexturesSet
                            (@"Roads\Highways\Highway2L\Textures\Tunnel_Segment__MainTex.png",
-                            aprMapPath + @"Highways\Highway2L\Textures\Tunnel" + (rcc.IsPluginActive ? "_Segment" : "") + "__APRMap.png"),
+                            aprMapPath + @"Highways\Highway2L\Textures\Tunnel" + (RoadColorChanger.IsPluginActive ? "_Segment" : "") + "__APRMap.png"),
                         new LODTexturesSet
                            (@"Roads\Highways\Highway2L\Textures\Tunnel_SegmentLOD__MainTex.png",
                             aprMapPath + @"Highways\Highway2L\Textures\TunnelLOD__APRMap.png",
@@ -83,7 +82,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway2L
                     info.SetAllNodesTexture(
                         new TexturesSet
                            (@"Roads\Highways\Highway2L\Textures\Tunnel_Node__MainTex.png",
-                            aprMapPath + @"Highways\Highway2L\Textures\Tunnel" + (rcc.IsPluginActive ? "_Node" : "") + "__APRMap.png"),
+                            aprMapPath + @"Highways\Highway2L\Textures\Tunnel" + (RoadColorChanger.IsPluginActive ? "_Node" : "") + "__APRMap.png"),
                         new LODTexturesSet
                            (@"Roads\Highways\Highway2L\Textures\Tunnel_NodeLOD__MainTex.png",
                             aprMapPath + @"Highways\Highway2L\Textures\TunnelLOD__APRMap.png",

@@ -8,8 +8,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway6L
     {
         private static void SetupTextures(NetInfo info, NetInfoVersion version)
         {
-            RoadColorChanger rcc = new RoadColorChanger();
-            var aprMapPath = (rcc.IsPluginActive ? rcc.GetTexturePrefix() : @"Roads\");
+            var aprMapPath = (RoadColorChanger.IsPluginActive ? RoadColorChanger.GetTexturePrefix() : @"Roads\");
 
             switch (version)
             {
@@ -82,7 +81,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway6L
                     info.SetAllNodesTexture(
                         new TexturesSet
                            (@"Roads\Highways\Highway6L\Textures\Tunnel_Node__MainTex.png",
-                            aprMapPath + @"Highways\Highway6L\Textures\Tunnel_" + (rcc.IsPluginActive ? "Node" : "Segment") + "__APRMap.png"),
+                            aprMapPath + @"Highways\Highway6L\Textures\Tunnel_" + (RoadColorChanger.IsPluginActive ? "Node" : "Segment") + "__APRMap.png"),
                         new LODTexturesSet
                            (@"Roads\Highways\Highway6L\Textures\Tunnel_NodeLOD__MainTex.png",
                             aprMapPath + @"Highways\Highway6L\Textures\Tunnel_SegmentLOD__APRMap.png",

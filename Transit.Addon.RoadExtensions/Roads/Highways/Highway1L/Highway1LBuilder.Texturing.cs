@@ -8,8 +8,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway1L
     {
         private static void SetupTextures(NetInfo info, NetInfoVersion version)
         {
-            RoadColorChanger rcc = new RoadColorChanger();
-            var aprMapPath = (rcc.IsPluginActive ? rcc.GetTexturePrefix() : @"Roads\");
+            var aprMapPath = (RoadColorChanger.IsPluginActive ? RoadColorChanger.GetTexturePrefix() : @"Roads\");
 
             switch (version)
             {
