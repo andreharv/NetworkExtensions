@@ -19,6 +19,15 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                 return;
             }
 
+            info.ReplaceProps(newSpeedLimitPI, oldSpeedLimitPI);
+        }
+        public static void ReplaceProps(this NetInfo info, PropInfo newPropInfo, PropInfo oldPropInfo)
+        {
+            if (newPropInfo == null || oldPropInfo == null)
+            {
+                return;
+            }
+
             foreach (var lane in info.m_lanes.Where(l => l.m_laneProps != null))
             {
                 if (lane.m_laneProps.m_props == null ||
@@ -27,28 +36,28 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                     continue;
                 }
 
-                var oldSpeedLimitProp = lane
+                var oldProp = lane
                     .m_laneProps
                     .m_props
-                    .FirstOrDefault(prop => prop.m_prop == oldSpeedLimitPI);
+                    .FirstOrDefault(prop => prop.m_prop == oldPropInfo);
 
-                if (oldSpeedLimitProp != null)
+                if (oldProp != null)
                 {
-                    var newSpeedLimitProp = oldSpeedLimitProp.ShallowClone();
-                    newSpeedLimitProp.m_prop = newSpeedLimitPI;
+                    var newSpeedLimitProp = oldProp.ShallowClone();
+                    newSpeedLimitProp.m_prop = newPropInfo;
                     newSpeedLimitProp.m_finalProp = null;
 
                     var newPropsContent = new List<NetLaneProps.Prop>();
-                    newPropsContent.AddRange(lane.m_laneProps.m_props.Where(prop => prop.m_prop != oldSpeedLimitPI));
+                    newPropsContent.AddRange(lane.m_laneProps.m_props.Where(prop => prop.m_prop != oldPropInfo));
                     newPropsContent.Add(newSpeedLimitProp);
 
                     var newProps = ScriptableObject.CreateInstance<NetLaneProps>();
-                    newProps.name = lane.m_laneProps.name + "_clone";
+                    newProps.name = lane.m_laneProps.name;
                     newProps.m_props = newPropsContent.ToArray();
                     lane.m_laneProps = newProps;
                 }
             }
-		}
+        }
 
         public static NetInfo.Lane GetLeftRoadShoulder(this NetInfo info, NetInfo templateInfo, NetInfoVersion version)
         {
@@ -135,6 +144,24 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             return laneProps;
         }
 
+        public static void CenterProps(this ICollection<NetLaneProps.Prop> props, string[] propsToCenter, float originalLanePos)
+        {
+            for (var i = 0; i < propsToCenter.Length; i++)
+            {
+                if (props.Any(p => p.m_prop.name.ToLower().Contains(propsToCenter[i].ToLower())))
+                {
+                    var propToCenter = props.First(p => p.m_prop.name.ToLower().Contains(propsToCenter[i].ToLower()));
+                    propToCenter.m_position.x = -1 * originalLanePos;
+                    propToCenter.m_position.z = originalLanePos > 0 ? 0.26f : 0;
+                    //var propToRemove = props.First(p => p.m_prop.name.ToLower().Contains(propsToCenter[i].ToLower()));
+                    //var tempProp = propToRemove.ShallowClone();
+                    //props.Remove(propToRemove);
+
+                    //props.Add(tempProp);
+                }
+            }
+        }
+
         public static void AddLeftWallLights(this ICollection<NetLaneProps.Prop> props, float pavementWidth)
         {
             var wallLightPropInfo = Prefabs.Find<PropInfo>("Wall Light Orange");
@@ -196,6 +223,26 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             }
         }
 
+        public static void TrimArrowsProps(this NetInfo info)
+        {
+            foreach (var laneProps in info.m_lanes.Select(l => l.m_laneProps).Where(lpi => lpi != null))
+            {
+                var remainingProp = new List<NetLaneProps.Prop>();
+
+                foreach (var prop in laneProps.m_props.Where(p => p.m_prop != null))
+                {
+                    if (prop.m_prop.name.ToLower().Contains("arrow"))
+                    {
+                        continue;
+                    }
+
+                    remainingProp.Add(prop);
+                }
+
+                laneProps.m_props = remainingProp.ToArray();
+            }
+        }
+
         public static NetInfo SetRoadLanes(this NetInfo rdInfo, NetInfoVersion version, LanesConfiguration config)
         {
             if (config.LanesToAdd < 0)
@@ -228,7 +275,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             var laneCollection = new List<NetInfo.Lane>();
 
             laneCollection.AddRange(rdInfo.SetupVehicleLanes(version, config));
-            laneCollection.AddRange(rdInfo.SetupPedestrianLanes(version, config.PedPropOffsetX));
+            laneCollection.AddRange(rdInfo.SetupPedestrianLanes(version, config));
 
             if (rdInfo.m_hasParkingSpaces)
             {
@@ -247,33 +294,81 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                 .ToArray();
 
             var nbLanes = vehicleLanes.Count();
-            int positionStartOffset;
-            switch (config.CenterLane)
+            var nbUsableLanes = nbLanes - (config.CenterLane == CenterLaneType.TurningLane ? 2 : 0);
+            var nbUsableLanesPerSide = nbUsableLanes / 2;
+            var hasCenterLane = nbUsableLanes % 2 == 1;
+
+            var positionStart = 0f;
+
+            if (config.CenterLane == CenterLaneType.Median ||
+                config.CenterLane == CenterLaneType.TurningLane)
             {
-                case CenterLaneType.TurningLane:
-                    positionStartOffset = 2;
-                    break;
-                case CenterLaneType.None:
-                    positionStartOffset = 1;
-                    break;
-                case CenterLaneType.Median:
-                    positionStartOffset = 0;
-                    break;
-                default:
-                    positionStartOffset = 1;
-                    break;
+                positionStart -= config.CenterLaneWidth / 2;
             }
-            var positionStart = config.LaneWidth * ((positionStartOffset - nbLanes) / 2f);
+            else if (hasCenterLane)
+            {
+                positionStart -= config.LaneWidth / 2;
+            }
+
+            positionStart -= config.LaneWidth * (nbUsableLanesPerSide - 1) + config.LaneWidth /2 ;
+
+            //Debug.Log(">>>> NbLanes : " + nbLanes);
+            //Debug.Log(">>>> NbUsableLanes : " + nbUsableLanes);
+            //Debug.Log(">>>> NbUsableLanesPerSide : " + nbUsableLanesPerSide);
+            //Debug.Log(">>>> HasCenterLane : " + hasCenterLane);
+            //Debug.Log(">>>> LaneWidth : " + config.LaneWidth);
+            //Debug.Log(">>>> PositionStart : " + positionStart);
 
             for (var i = 0; i < nbLanes; i++)
             {
                 var l = vehicleLanes[i];
-                l.m_position = positionStart + (i + (config.CenterLane == CenterLaneType.Median && i + 1 > nbLanes / 2 ? 1 : 0)) * config.LaneWidth;
-                var isTurningLane = (config.CenterLane == CenterLaneType.TurningLane && (i == nbLanes - 1 || l.m_position == 0f));
+
+                var isTurningLane =
+                   config.CenterLane == CenterLaneType.TurningLane &&
+                   i >= nbUsableLanesPerSide && i <= nbLanes - nbUsableLanesPerSide - 1;
+                var is2ndTurningLane =
+                   config.CenterLane == CenterLaneType.TurningLane &&
+                   i >= nbUsableLanesPerSide + 1 && i <= nbLanes - nbUsableLanesPerSide - 1;
+
                 if (isTurningLane)
                 {
                     l.m_position = 0;
                 }
+                else
+                {
+                    if (i < nbUsableLanesPerSide)
+                    {
+                        l.m_position =
+                            positionStart +
+                            (i * config.LaneWidth);
+                    }
+                    else
+                    {
+                        if (config.CenterLane == CenterLaneType.Median)
+                        {
+                            l.m_position =
+                                positionStart +
+                                (i * config.LaneWidth) +
+                                config.CenterLaneWidth;
+                        }
+                        else if(config.CenterLane == CenterLaneType.TurningLane)
+                        {
+                            l.m_position =
+                                positionStart +
+                                ((i - 2) * config.LaneWidth) +
+                                config.CenterLaneWidth;
+                        }
+                        else
+                        {
+                            l.m_position =
+                                positionStart +
+                                (i * config.LaneWidth);
+                        }
+                    }
+                }
+                
+                //Debug.Log(">>>> Lane Id : " + i + " Position : " + l.m_position);
+
                 l.m_allowStop = false;
                 l.m_width = config.LaneWidth;
 
@@ -291,15 +386,28 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
 
                 if (config.IsTwoWay)
                 {
-                    if ((!isTurningLane && l.m_position < 0.0f) || (isTurningLane && i == nbLanes - 1))
+                    if (isTurningLane)
                     {
-                        l.m_direction = NetInfo.Direction.Backward;
-                        l.m_finalDirection = NetInfo.Direction.Backward;
+                        if (!is2ndTurningLane)
+                        {
+                            l.m_direction = NetInfo.Direction.Backward;
+                        }
+                        else
+                        {
+                            l.m_direction = NetInfo.Direction.Forward;
+                        }
                     }
                     else
                     {
-                        l.m_direction = NetInfo.Direction.Forward;
-                        l.m_finalDirection = NetInfo.Direction.Forward;
+                        if (l.m_position < 0.0f)
+                        {
+                            l.m_direction = NetInfo.Direction.Backward;
+                        }
+                        else
+                        {
+                            l.m_direction = NetInfo.Direction.Forward;
+                        }
+
                     }
                 }
 
@@ -352,7 +460,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             return vehicleLanes;
         }
 
-        private static IEnumerable<NetInfo.Lane> SetupPedestrianLanes(this NetInfo rdInfo, NetInfoVersion version, float propOffsetX = 0.0f)
+        private static IEnumerable<NetInfo.Lane> SetupPedestrianLanes(this NetInfo rdInfo, NetInfoVersion version, LanesConfiguration config)
         {
             var pedestrianLanes = rdInfo.m_lanes
                 .Where(l => l.m_laneType == NetInfo.LaneType.Pedestrian)
@@ -365,12 +473,12 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                 {
                     var multiplier = pedLane.m_position / Math.Abs(pedLane.m_position);
                     pedLane.m_width = rdInfo.m_pavementWidth - (version == NetInfoVersion.Slope || version == NetInfoVersion.Tunnel ? 3 : 1);
-                    pedLane.m_position = multiplier * (rdInfo.m_halfWidth - ((version == NetInfoVersion.Slope || version == NetInfoVersion.Tunnel ? 2 : 0) + 0.5f * pedLane.m_width));
-                    if (propOffsetX != 0.0f && pedLane.m_laneProps != null)
+                    pedLane.m_position = multiplier * (rdInfo.m_halfWidth - (version == NetInfoVersion.Slope || version == NetInfoVersion.Tunnel ? 2 : 0) - (0.5f * pedLane.m_width) + config.PedLaneOffset);
+                    if (config.PedPropOffsetX != 0.0f && pedLane.m_laneProps != null)
                     {
                         foreach (var pedLaneProp in pedLane.m_laneProps.m_props)
                         {
-                            pedLaneProp.m_position.x += propOffsetX * multiplier;
+                            pedLaneProp.m_position.x += config.PedPropOffsetX * multiplier;
                         }
                     }
                 }

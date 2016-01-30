@@ -5,7 +5,7 @@ namespace Transit.Framework
 {
     public static class TextureSetExtensions
     {
-        public static Material CreateRoadMaterial(this TexturesSet textureSet, Material originalMaterial)
+        public static Material CreateRoadMaterial(this TextureSet textureSet, Material originalMaterial)
         {
             var material = Object.Instantiate(originalMaterial);
 

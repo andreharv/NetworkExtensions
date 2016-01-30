@@ -34,36 +34,36 @@ namespace Transit.Framework.Texturing
             switch (type)
             {
                 case TextureType.Default:
-                {
-                    var texture = new Texture2D(1, 1);
-                    texture.name = textureName;
-                    texture.LoadImage(textureBytes);
-                    texture.anisoLevel = 8;
-                    texture.filterMode = FilterMode.Trilinear;
-                    texture.Apply();
-                    return texture;
-                }
+                    {
+                        var texture = new Texture2D(1, 1, TextureFormat.ARGB32, true);
+                        texture.name = textureName;
+                        texture.LoadImage(textureBytes);
+                        texture.anisoLevel = 8;
+                        texture.filterMode = FilterMode.Bilinear;
+                        texture.Apply();
+                        return texture;
+                    }
 
                 case TextureType.LOD:
-                {
-                    var texture = new Texture2D(1, 1, TextureFormat.ARGB32, false);
-                    texture.name = textureName;
-                    texture.LoadImage(textureBytes);
-                    texture.anisoLevel = 8;
-                    texture.filterMode = FilterMode.Trilinear;
-                    texture.Apply();
-                    texture.Compress(false);
-                    return texture;
-                }
+                    {
+                        var texture = new Texture2D(1, 1, TextureFormat.ARGB32, false);
+                        texture.name = textureName;
+                        texture.LoadImage(textureBytes);
+                        texture.anisoLevel = 8;
+                        texture.filterMode = FilterMode.Bilinear;
+                        texture.Apply();
+                        texture.Compress(false);
+                        return texture;
+                    }
 
                 case TextureType.UI:
-                {
-                    var texture = new Texture2D(1, 1, TextureFormat.ARGB32, false);
-                    texture.name = textureName;
-                    texture.LoadImage(textureBytes);
-                    texture.Apply();
-                    return texture;
-                }
+                    {
+                        var texture = new Texture2D(1, 1, TextureFormat.ARGB32, false);
+                        texture.name = textureName;
+                        texture.LoadImage(textureBytes);
+                        texture.Apply();
+                        return texture;
+                    }
 
                 default:
                     throw new ArgumentOutOfRangeException("type");

@@ -5,7 +5,7 @@ namespace Transit.Framework
 {
     public static partial class NetInfoExtensions
     {
-        public static NetInfo SetAllNodesTexture(this NetInfo info, TexturesSet newTextures, LODTexturesSet newLODTextures = null)
+        public static NetInfo SetAllNodesTexture(this NetInfo info, TextureSet newTextures, LODTextureSet newLODTextures = null)
         {
             foreach (var node in info.m_nodes)
             {
@@ -15,7 +15,7 @@ namespace Transit.Framework
             return info;
         }
 
-        public static NetInfo.Node SetTextures(this NetInfo.Node node, TexturesSet newTextures, LODTexturesSet newLODTextures = null)
+        public static NetInfo.Node SetTextures(this NetInfo.Node node, TextureSet newTextures, LODTextureSet newLODTextures = null)
         {
             if (newTextures != null)
             {

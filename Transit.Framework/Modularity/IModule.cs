@@ -13,8 +13,6 @@ namespace Transit.Framework.Modularity
 
         IEnumerable<IModulePart> Parts { get; }
 
-        void OnGameLoaded();
-
         void OnCreated(ILoading loading);
 
         void OnLevelLoaded(LoadMode mode);

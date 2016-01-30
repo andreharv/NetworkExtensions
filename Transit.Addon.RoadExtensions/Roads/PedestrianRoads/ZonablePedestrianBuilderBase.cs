@@ -9,7 +9,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
     public abstract class ZonablePedestrianBuilderBase : Activable
     {
         public string BasedPrefabName { get { return NetInfos.Vanilla.PED_GRAVEL; } }
-        public string UICategory { get { return AdditionnalMenus.ROADS_PEDESTRIANS; } }
+        public string UICategory { get { return RExExtendedMenus.ROADS_PEDESTRIANS; } }
 
         public virtual void BuildUp(NetInfo pedestrianBridge, NetInfoVersion version)
         {
@@ -20,11 +20,11 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
             {
                 case NetInfoVersion.Ground:
                     pedestrianBridge.SetAllSegmentsTexture(
-                        new TexturesSet
+                        new TextureSet
                            (null,
                             @"Roads\PedestrianRoads\Textures\Ground_Segment__AlphaMap.png"));
                     pedestrianBridge.SetAllNodesTexture(
-                        new TexturesSet
+                        new TextureSet
                            (null,
                             @"Roads\PedestrianRoads\Textures\Ground_Segment__AlphaMap.png"));
                     break;

@@ -18,8 +18,6 @@ namespace Transit.Framework.Modularity
 
         public virtual bool IsEnabled { get; set; }
 
-        public virtual void OnGameLoaded() { }
-
         public virtual void OnCreated(ILoading loading) { }
 
         public virtual void OnLevelLoaded(LoadMode mode) { }

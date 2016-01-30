@@ -1,36 +1,44 @@
-﻿using ICities;
-using Transit.Framework.Modularity;
+﻿using ColossalFramework.Plugins;
+using Transit.Framework.Mod;
 
 namespace Transit.Addon
 {
-    public sealed partial class Mod : ITransitMod
+    public sealed partial class Mod : TransitModBase
     {
-        public string Name
+        private ulong? _workshopId;
+        public override ulong WorkshopId
         {
             get
             {
-                OnGameLoaded();
-                return _name;
+                if (_workshopId == null)
+                {
+                    foreach(var mod in PluginManager.instance.GetPluginsInfo())
+                    {
+                        if (mod.userModInstance == this)
+                        {
+                            _workshopId = mod.publishedFileID.AsUInt64;
+                        }
+                    }
+                    _workshopId = 543703997;
+                }
+
+                return _workshopId.Value;
             }
         }
 
-        public string Description
+        public override string Name
         {
-            get
-            {
-                OnGameLoaded();
-                return _description;
-            }
+            get { return "Transit Addons Mod"; }
         }
 
-        public string DefaultFolderPath
+        public override string Description
         {
-            get { return _name; }
+            get { return "Closed Beta"; }
         }
 
-        public ulong WorkshopId
+        public override string Version
         {
-            get { return 543703997; }
+            get { return "0.0.1"; }
         }
     }
 }

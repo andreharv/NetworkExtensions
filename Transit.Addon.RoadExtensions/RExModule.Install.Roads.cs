@@ -131,6 +131,8 @@ namespace Transit.Addon.RoadExtensions
                     .WhereActivated()
                     .ToArray();
 
+                var lateOperations = new List<Action>();
+
                 foreach (var niBuilder in niBuilders)
                 {
                     var builder = niBuilder;
@@ -139,7 +141,7 @@ namespace Transit.Addon.RoadExtensions
                     {
                         try
                         {
-                            newInfos.AddRange(builder.Build());
+                            newInfos.AddRange(builder.Build(lateOperations));
 
                             Debug.Log(string.Format("REx: {0} installed", builder.Name));
                         }
@@ -175,6 +177,11 @@ namespace Transit.Addon.RoadExtensions
                         PrefabCollection<NetInfo>.InitializePrefabs(roads.name, roads.m_prefabs, new string[] {});
                         PrefabCollection<NetInfo>.BindPrefabs();
                     }
+                });
+
+                Loading.QueueAction(() =>
+                {
+                    host._lateOperations = lateOperations;
                 });
             }
 

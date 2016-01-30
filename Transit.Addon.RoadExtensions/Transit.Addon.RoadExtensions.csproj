@@ -48,7 +48,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
       <HintPath>..\References\UnityEngine.dll</HintPath>
@@ -60,13 +59,19 @@
     <Compile Include="Roads\Highways\Highway2L\Highway2LTexturePack.cs" />
     <Compile Include="Roads\Highways\VanillaHighwayMenuModifier.cs" />
     <Compile Include="Props\BusLaneTextPropBuilder.cs" />
-    <Compile Include="RExModule.Install.Menus.cs" />
+    <Compile Include="AI\TinyRoadSnappingMode.cs" />
+    <Compile Include="AI\TinyRoadZoneBlocksCreator.cs" />
+    <Compile Include="Roads\Common\RoadModels.8m.2mSW.cs" />
+    <Compile Include="Roads\Common\RoadModels.8m.1p5mSW.cs" />
+    <Compile Include="Roads\Common\RoadModels.32m.3mSW2mMdn.cs" />
+    <Compile Include="RExModule.Install.Menu.cs" />
     <Compile Include="RExModule.Install.Localization.cs" />
     <Compile Include="RExModule.Install.Roads.cs" />
     <Compile Include="RExModule.Install.Assets.cs" />
     <Compile Include="RExModule.Install.Init.cs" />
-    <Compile Include="Menus\AdditionnalMenus.cs" />
-    <Compile Include="Menus\RExRoadsGroupPanel.cs" />
+    <Compile Include="Menus\RExExtendedMenus.cs" />
+    <Compile Include="Roads\TinyRoads\TinyRoadMenuModifier.cs" />
+    <Compile Include="Roads\TinyRoads\Alley2L\Alley2LBuilder.cs" />
     <Compile Include="Roads\Common\CenterLaneType.cs" />
     <Compile Include="Roads\Common\RoadHelper.cs" />
     <Compile Include="Roads\Common\RoadModels.32m.5mSW.cs" />
@@ -75,6 +80,8 @@
     <Compile Include="Roads\Avenues\MediumAvenue4LTL\MediumAvenue4LTLBuilder.Texturing.cs" />
     <Compile Include="Roads\Avenues\MediumAvenue4L\MediumAvenue4LBuilder.cs" />
     <Compile Include="Roads\Avenues\MediumAvenue4L\MediumAvenue4LBuilder.Texturing.cs" />
+    <Compile Include="Roads\Avenues\LargeAvenue8LM\LargeAvenue8LMBuilder.cs" />
+    <Compile Include="Roads\Avenues\LargeAvenue8LM\LargeAvenue8LMBuilder.Texturing.cs" />
     <Compile Include="Roads\SmallHeavyRoads\BasicRoadTL\BasicRoadTLBuilder.cs" />
     <Compile Include="Roads\SmallHeavyRoads\BasicRoadTL\BasicRoadTLBuilder.Texturing.cs" />
     <Compile Include="Roads\Highways\Common\HighwayModels.32m.cs" />
@@ -111,218 +118,324 @@
     <Compile Include="RExModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Roads\Highways\Highway6L\Highway6LBuilder.cs" />
+    <Compile Include="Roads\TinyRoads\OneWay1L\OneWay1LBuilder.cs" />
     <Compile Include="SomeRoads\PlanningRoadLargeBuilder.cs" />
     <Compile Include="SomeRoads\PlanningRoadSmallBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Compatibility\RoadColorChanger\Highway1L\Textures\Elevated_NodeLOD__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway1L\Textures\Elevated_NodeLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway1L\Textures\Elevated_Node__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway1L\Textures\Elevated_Node__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway1L\Textures\Elevated_SegmentLOD__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway1L\Textures\Elevated_SegmentLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway1L\Textures\Elevated_Segment__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway1L\Textures\Elevated_Segment__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway1L\Textures\Ground_NodeLOD__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway1L\Textures\Ground_NodeLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway1L\Textures\Ground_Node__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway1L\Textures\Ground_Node__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway1L\Textures\Ground_SegmentLOD__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway1L\Textures\Ground_SegmentLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway1L\Textures\Ground_Segment__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway1L\Textures\Ground_Segment__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway1L\Textures\Slope_SegmentLOD__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway1L\Textures\Slope_SegmentLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway1L\Textures\Slope_Segment_Open__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway1L\Textures\Slope_Segment_Open__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway1L\Textures\TunnelLOD__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway1L\Textures\TunnelLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway1L\Textures\Tunnel_Node__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway1L\Textures\Tunnel_Node__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway1L\Textures\Tunnel_Segment__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway1L\Textures\Tunnel_Segment__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway2L\Textures\Elevated_NodeLOD__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway2L\Textures\Elevated_NodeLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway2L\Textures\Elevated_Node__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway2L\Textures\Elevated_Node__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway2L\Textures\Elevated_SegmentLOD__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway2L\Textures\Elevated_SegmentLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway2L\Textures\Elevated_Segment__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway2L\Textures\Elevated_Segment__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway2L\Textures\Ground_NodeLOD__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway2L\Textures\Ground_NodeLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway2L\Textures\Ground_Node__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway2L\Textures\Ground_Node__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway2L\Textures\Ground_SegmentLOD__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway2L\Textures\Ground_SegmentLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway2L\Textures\Ground_Segment__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway2L\Textures\Ground_Segment__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway2L\Textures\Slope_SegmentLOD__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway2L\Textures\Slope_SegmentLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway2L\Textures\Slope_Segment_Open__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway2L\Textures\Slope_Segment_Open__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway2L\Textures\TunnelLOD__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway2L\Textures\TunnelLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway2L\Textures\Tunnel_Node__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway2L\Textures\Tunnel_Node__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway2L\Textures\Tunnel_Segment__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway2L\Textures\Tunnel_Segment__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway4L\Textures\Elevated_NodeLOD__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway4L\Textures\Elevated_NodeLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway4L\Textures\Elevated_Node__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway4L\Textures\Elevated_Node__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway4L\Textures\Elevated_SegmentLOD__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway4L\Textures\Elevated_SegmentLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway4L\Textures\Elevated_Segment__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway4L\Textures\Elevated_Segment__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway4L\Textures\Ground_NodeLOD__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway4L\Textures\Ground_NodeLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway4L\Textures\Ground_Node__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway4L\Textures\Ground_Node__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway4L\Textures\Ground_SegmentLOD__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway4L\Textures\Ground_SegmentLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway4L\Textures\Ground_Segment__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway4L\Textures\Ground_Segment__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway4L\Textures\Slope_SegmentLOD__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway4L\Textures\Slope_SegmentLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway4L\Textures\Slope_Segment_Open__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway4L\Textures\Slope_Segment_Open__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway4L\Textures\TunnelLOD__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway4L\Textures\TunnelLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway4L\Textures\Tunnel_Node__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway4L\Textures\Tunnel_Node__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway4L\Textures\Tunnel_Segment__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway4L\Textures\Tunnel_Segment__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway5L\Textures\Elevated_NodeLOD__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway5L\Textures\Elevated_NodeLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway5L\Textures\Elevated_Node__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway5L\Textures\Elevated_Node__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway5L\Textures\Elevated_SegmentLOD__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway5L\Textures\Elevated_SegmentLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway5L\Textures\Elevated_Segment__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway5L\Textures\Elevated_Segment__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway5L\Textures\Ground_NodeLOD__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway5L\Textures\Ground_NodeLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway5L\Textures\Ground_Node__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway5L\Textures\Ground_Node__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway5L\Textures\Ground_SegmentLOD__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway5L\Textures\Ground_SegmentLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway5L\Textures\Ground_Segment__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway5L\Textures\Ground_Segment__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway5L\Textures\Slope_NodeLOD__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway5L\Textures\Slope_NodeLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway5L\Textures\Slope_Node__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway5L\Textures\Slope_Node__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway5L\Textures\Slope_SegmentLOD__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway5L\Textures\Slope_SegmentLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway5L\Textures\Slope_Segment__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway5L\Textures\Slope_Segment__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway5L\Textures\Tunnel_Node__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway5L\Textures\Tunnel_Node__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway5L\Textures\Tunnel_SegmentLOD__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway5L\Textures\Tunnel_SegmentLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway5L\Textures\Tunnel_Segment__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway5L\Textures\Tunnel_Segment__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway6L\Textures\Elevated_NodeLOD__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway6L\Textures\Elevated_NodeLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway6L\Textures\Elevated_Node__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway6L\Textures\Elevated_Node__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway6L\Textures\Elevated_SegmentLOD__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway6L\Textures\Elevated_SegmentLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway6L\Textures\Elevated_Segment__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway6L\Textures\Elevated_Segment__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway6L\Textures\Ground_NodeLOD__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway6L\Textures\Ground_NodeLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway6L\Textures\Ground_Node__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway6L\Textures\Ground_Node__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway6L\Textures\Ground_SegmentLOD__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway6L\Textures\Ground_SegmentLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway6L\Textures\Ground_Segment__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway6L\Textures\Ground_Segment__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway6L\Textures\Slope_NodeLOD__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway6L\Textures\Slope_NodeLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway6L\Textures\Slope_SegmentLOD__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway6L\Textures\Slope_SegmentLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway6L\Textures\Slope_Segment__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway6L\Textures\Slope_Segment__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway6L\Textures\Tunnel_Node__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway6L\Textures\Tunnel_Node__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway6L\Textures\Tunnel_SegmentLOD__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway6L\Textures\Tunnel_SegmentLOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Compatibility\RoadColorChanger\Highway6L\Textures\Tunnel_Segment__APRMap.png">
+    <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway6L\Textures\Tunnel_Segment__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\Highways\Highway2L\Textures\Ground_Node__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\Highways\Highway2L\Textures\Ground_Segment__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Bridge_Cables_LOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Bridge_Cables_LOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Bridge_Cables_LOD__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Bridge_Cables__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Bridge_Cables__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Bridge_Cables__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Elevated_Node_LOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Elevated_Node__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Elevated_Node__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Elevated_Segment_LOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Elevated_Segment_LOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Elevated_Segment_LOD__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Elevated_Segment__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Elevated_Segment__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Ground_Node_LOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Ground_Node_LOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Ground_Node__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Ground_Node__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Ground_Segment_LOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Ground_Segment_LOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Ground_Segment_LOD__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Ground_Segment__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Ground_Segment__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Slope_Segment_Cover__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Slope_Segment_LOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Slope_Segment_LOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Slope_Segment_LOD__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Slope_Segment__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Slope_Segment__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Tunnel_Node__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Tunnel_Segment_LOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Tunnel_Segment_LOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Tunnel_Segment_LOD__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Tunnel_Segment__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Tunnel_Segment__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\Highways\Highway3LBarrier\thumbnails.png">
@@ -541,13 +654,13 @@
     <Content Include="Roads\Highways\Highway6L\Textures\Tunnel_NodeLOD__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Roads\Highways\Highway5L\thumbnails.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Roads\Highways\Highway6L\thumbnails.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\Highways\HighwayRamp\thumbnails.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Menus\Textures\AdditionnalSubBar.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\Common\Textures\APRMap\Base_Slope__APRMap.png">
@@ -593,6 +706,54 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\Common\Textures\MainTex\Line_Yellow_Solid__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Menus\Textures\RExExtendedSubBar.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Alley2L\thumbnails.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Alley2L\infotooltip.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Alley2L\Textures\Ground_LOD__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Alley2L\Textures\Ground_Node_LOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Alley2L\Textures\Ground_Node_LOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Alley2L\Textures\Ground_Node__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Alley2L\Textures\Ground_Node__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Alley2L\Textures\Ground_Segment_LOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Alley2L\Textures\Ground_Segment_LOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Alley2L\Textures\Ground_Segment__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Alley2L\Textures\Ground_Segment__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Alley2L\Textures\Ground_Trans_LOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Alley2L\Textures\Ground_Trans_LOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Alley2L\Textures\Ground_Trans__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Alley2L\Textures\Ground_Trans__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\Avenues\MediumAvenue4LTL\infotooltip.png">
@@ -740,6 +901,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\Avenues\MediumAvenue4L\thumbnails.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\infotooltip.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LM\thumbnails.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\SmallHeavyRoads\BasicRoadTL\infotooltip.png">
@@ -1669,11 +1836,134 @@
     <Content Include="Roads\SmallHeavyRoads\SmallAvenue4L\thumbnails.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Roads\TinyRoads\OneWay1L\thumbnails.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\OneWay1L\infotooltip.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\OneWay1L\Textures\Ground_LOD__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\OneWay1L\Textures\Ground_Node_LOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\OneWay1L\Textures\Ground_Node_LOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\OneWay1L\Textures\Ground_Node__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\OneWay1L\Textures\Ground_Node__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\OneWay1L\Textures\Ground_Segment_LOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\OneWay1L\Textures\Ground_Segment_LOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\OneWay1L\Textures\Ground_Segment__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\OneWay1L\Textures\Ground_Segment__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="SomeRoads\Textures\planning_road_2_lanes.png" />
     <Content Include="SomeRoads\thumbnail_atlas.png" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <None Include="Buildings\BridgePillar_CableStay32m.crp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\Bridge_Cables.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\Bridge_Cables_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\Elevated.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\Elevated_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\Elevated_Node.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\Elevated_Node_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\Ground.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\Ground_Node.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\Ground_Node_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\Slope.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\Slope_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\Slope_Node.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\Slope_Node_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\Slope_U_Node.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\Slope_U_Node_Gray.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\Slope_U_Node_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\Tunnel.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\Tunnel_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\Tunnel_Node.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\Tunnel_Node_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\8m\1p5mSW\Ground.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\8m\1p5mSW\Ground_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\8m\1p5mSW\Ground_Node.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\8m\1p5mSW\Ground_Node_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\8m\1p5mSW\Ground_Trans.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\8m\2mSW\Ground.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\8m\2mSW\Ground_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\8m\2mSW\Ground_Node.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\8m\2mSW\Ground_Node_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Roads\Highways\Common\Meshes\16m\Elevated.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -2065,6 +2355,10 @@
     <None Include="Roads\Common\Meshes\Ground_LOD.obj" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Transit.Framework.Extenders\Transit.Framework.Extenders.csproj">
+      <Project>{2E44ECA3-D750-4115-B16B-FCA94C49BBA0}</Project>
+      <Name>Transit.Framework.Extenders</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Transit.Framework.Unsafe\Transit.Framework.Unsafe.csproj">
       <Project>{7DCC08EF-DC85-47A4-BD6F-79FC52C7EF13}</Project>
       <Name>Transit.Framework.Unsafe</Name>

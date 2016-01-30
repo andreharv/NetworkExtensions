@@ -1,7 +1,6 @@
-﻿using Transit.Framework;
-using Transit.Framework.Texturing;
+﻿using Transit.Framework.Texturing;
 
-namespace Transit.Addon.RoadExtensions.Highways.Highway2L
+namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway2L
 {
     public class Highway2LTexturePack
     {
