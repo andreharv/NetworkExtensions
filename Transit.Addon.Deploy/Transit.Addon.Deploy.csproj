@@ -35,10 +35,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Transit.Addon.PathFinding\Transit.Addon.PathFinding.csproj">
-      <Project>{20f6a0dc-131c-49cd-9d9b-95b6e41cddff}</Project>
-      <Name>Transit.Addon.PathFinding</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Transit.Addon.Tools\Transit.Addon.Tools.csproj">
       <Project>{4499042e-dcd1-4f9f-a3c8-4830108169cd}</Project>
       <Name>Transit.Addon.Tools</Name>
@@ -50,6 +46,22 @@
     <ProjectReference Include="..\Transit.Addon.RoadExtensions\Transit.Addon.RoadExtensions.csproj">
       <Project>{19FA21B2-39CC-4B90-BE7E-B6BDCCB09208}</Project>
       <Name>Transit.Addon.RoadExtensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Transit.Framework.Extenders\Transit.Framework.Extenders.csproj">
+      <Project>{2e44eca3-d750-4115-b16b-fca94c49bba0}</Project>
+      <Name>Transit.Framework.Extenders</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Transit.Framework.Hooks\Transit.Framework.Hooks.csproj">
+      <Project>{a700f186-b123-45b5-adfe-b865df5a0f39}</Project>
+      <Name>Transit.Framework.Hooks</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Transit.Framework.Unsafe\Transit.Framework.Unsafe.csproj">
+      <Project>{7dcc08ef-dc85-47a4-bd6f-79fc52c7ef13}</Project>
+      <Name>Transit.Framework.Unsafe</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Transit.Framework\Transit.Framework.csproj">
+      <Project>{8891467e-c88e-46b0-96f9-4413df6dc205}</Project>
+      <Name>Transit.Framework</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

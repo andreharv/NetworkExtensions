@@ -1,9 +1,5 @@
-﻿using Transit.Addon.Core;
-﻿using ColossalFramework;
-using ColossalFramework.Plugins;
-using ColossalFramework.Steamworks;
-using ICities;
-using Transit.Framework.Modularity;
+﻿using ColossalFramework.Plugins;
+using Transit.Framework.Mod;
 
 namespace Transit.Addon
 {

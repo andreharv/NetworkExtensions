@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using ICities;
-using Transit.Addon.Core.Extenders.AI;
-using Transit.Addon.Core.Extenders.UI;
+using Transit.Framework.Extenders.AI;
+using Transit.Framework.Extenders.UI;
 using Transit.Addon.RoadExtensions.AI;
 using Transit.Addon.RoadExtensions.Menus;
 using Transit.Framework;
@@ -40,6 +40,9 @@ namespace Transit.Addon.RoadExtensions
             {
                 ZoneBlocksCreatorProvider.instance.RegisterCustomCreator<TinyRoadZoneBlocksCreator>(Alley2LBuilder.NAME);
                 ZoneBlocksCreatorProvider.instance.RegisterCustomCreator<TinyRoadZoneBlocksCreator>(OneWay1LBuilder.NAME);
+
+                RoadSnappingModeProvider.instance.RegisterCustomSnapping<TinyRoadSnappingMode>(Alley2LBuilder.NAME);
+                RoadSnappingModeProvider.instance.RegisterCustomSnapping<TinyRoadSnappingMode>(OneWay1LBuilder.NAME);
 
                 if (AssetPath != null && AssetPath != Assets.PATH_NOT_FOUND)
                 {

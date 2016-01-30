@@ -63,10 +63,6 @@
     <Compile Include="PathfindingModule.Settings.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Transit.Addon.Core\Transit.Addon.Core.csproj">
-      <Project>{61414A57-131A-44CF-ADCE-9179ED788D3C}</Project>
-      <Name>Transit.Addon.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Transit.Addon\Transit.Addon.csproj">
       <Project>{80c47696-4d41-4bb6-9cae-c477fe528adf}</Project>
       <Name>Transit.Addon</Name>

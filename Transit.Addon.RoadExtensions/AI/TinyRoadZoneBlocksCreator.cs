@@ -2,7 +2,7 @@
 using ColossalFramework.Math;
 using Transit.Framework;
 using UnityEngine;
-using Transit.Addon.Core.Extenders.AI;
+using Transit.Framework.Extenders.AI;
 
 #if DEBUG
 using Debug = Transit.Framework.Debug;
@@ -235,17 +235,21 @@ namespace Transit.Addon.RoadExtensions.AI
         {
             var minHalfWidth = MIN_HALFWIDTH_TINY_STRAIGHT;
             float num2 = Mathf.Max(minHalfWidth, info.m_halfWidth) + 32f;
+            var cellOffset = 0f;
+
+            if (ZoneBlocksOffset.Mode == ZoneBlocksOffsetMode.HalfCell)
+            {
+                cellOffset = 0.5f;
+            }
 
             const float ROW_UNIT_SIZE = 8f;
-            Vector3 startPosition = startNode.m_position;
             Vector3 startDirection = segment.m_startDirection;
+            Vector3 startPosition = startNode.m_position - ROW_UNIT_SIZE * cellOffset * startDirection;
             float startAngle = Mathf.Atan2(startDirection.x, -startDirection.z);
-            //Debug.Log(">>>>> startAngle: " + startAngle);
 
-            Vector3 endPosition = endNode.m_position;
             Vector3 endDirection = segment.m_endDirection;
+            Vector3 endPosition = endNode.m_position - ROW_UNIT_SIZE * cellOffset * endDirection;
             float endAngle = Mathf.Atan2(endDirection.x, -endDirection.z);
-            //Debug.Log(">>>>> endAngle: " + endAngle);
 
             Vector2 magnitudeVector = new Vector2(endPosition.x - startPosition.x, endPosition.z - startPosition.z);
             float magnitude = magnitudeVector.magnitude;

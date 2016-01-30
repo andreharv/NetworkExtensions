@@ -57,10 +57,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Transit.Addon.Core\Transit.Addon.Core.csproj">
-      <Project>{61414A57-131A-44CF-ADCE-9179ED788D3C}</Project>
-      <Name>Transit.Addon.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Transit.Framework.Unsafe\Transit.Framework.Unsafe.csproj">
       <Project>{7dcc08ef-dc85-47a4-bd6f-79fc52c7ef13}</Project>
       <Name>Transit.Framework.Unsafe</Name>

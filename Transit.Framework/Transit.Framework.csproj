@@ -45,7 +45,6 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
       <HintPath>..\References\UnityEngine.dll</HintPath>
@@ -69,6 +68,12 @@
     <Compile Include="Modularity\ModuleBase.Parts.cs" />
     <Compile Include="Modularity\IModule.cs" />
     <Compile Include="Modularity\ModuleBase.cs" />
+    <Compile Include="Prerequisites\IModPrerequisite.cs" />
+    <Compile Include="Prerequisites\ModPrerequisites.cs" />
+    <Compile Include="Mod\TransitModBase.cs" />
+    <Compile Include="Mod\TransitModBase.LoadingExtension.cs" />
+    <Compile Include="Mod\TransitModBase.Modules.cs" />
+    <Compile Include="Mod\TransitModBase.Settings.cs" />
     <Compile Include="NetInfoVersion.cs" />
     <Compile Include="Notification.cs" />
     <Compile Include="Assets.cs" />
@@ -79,6 +84,7 @@
     <Compile Include="_Extensions\CloningExtensions.cs" />
     <Compile Include="_Extensions\CollectionExtensions.cs" />
     <Compile Include="_Extensions\NetLanePropsExtensions.cs" />
+    <Compile Include="_Extensions\ObjectExtensions.cs" />
     <Compile Include="_Extensions\PrefabBuilderExtensions.cs" />
     <Compile Include="_Extensions\GameObjectExtensions.cs" />
     <Compile Include="_Extensions\NetInfoBuilderExtensions.cs" />
