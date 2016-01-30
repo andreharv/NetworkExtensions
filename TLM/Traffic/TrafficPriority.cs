@@ -284,7 +284,7 @@ namespace TrafficManager.Traffic {
 
 				VehiclePosition targetVehiclePos = GetVehiclePosition(targetVehicleId);
 				if (!targetVehiclePos.Valid) {
-					Log._Debug($"HasIncomingVehicles: {targetVehicleId} @ {nodeId}, fromSegment: {targetVehiclePos.FromSegment}, toSegment: {targetVehiclePos.ToSegment}. Car does not exist!");
+					Log._Debug($"HasIncomingVehicles: {targetVehicleId} @ {nodeId}, fromSegment: {targetVehiclePos.FromSegment}, toSegment: {targetVehiclePos.ToSegment}. Target position is invalid!");
 					return false;
 				}
 
@@ -538,9 +538,9 @@ namespace TrafficManager.Traffic {
 				}
 
 				if (trafficSeg.Instance1 != null)
-					trafficSeg.Instance1.RemoveCar(vehicleId); // modifies markedVehicles
+					trafficSeg.Instance1.RemoveVehicle(vehicleId); // modifies markedVehicles
 				if (trafficSeg.Instance2 != null)
-					trafficSeg.Instance2.RemoveCar(vehicleId); // modifies markedVehicles
+					trafficSeg.Instance2.RemoveVehicle(vehicleId); // modifies markedVehicles
 			}
 		}
 
@@ -592,8 +592,8 @@ namespace TrafficManager.Traffic {
 							Log._Debug($"We have old data from target car {targetCarId}. It is currently on segment {curPos.m_segment}.");
 						}
 #endif
-						RemoveVehicleFromSegments(targetCarId);
-						Vehicles[targetCarId].Valid = false;
+						/*RemoveVehicleFromSegments(targetCarId);
+						Vehicles[targetCarId].Valid = false;*/
 
 						if (Options.simAccuracy <= 1) {
 							CustomCarAI.HandleVehicle(targetCarId, ref Singleton<VehicleManager>.instance.m_vehicles.m_buffer[targetCarId], false, false, 1);
@@ -609,8 +609,6 @@ namespace TrafficManager.Traffic {
 						Log._Debug($"We have old data from target car {targetCarId}. It does not have a valid path.");
 					}
 #endif
-					RemoveVehicleFromSegments(targetCarId);
-					Vehicles[targetCarId].Valid = false;
 					return true;
 				}
 
@@ -625,8 +623,8 @@ namespace TrafficManager.Traffic {
 							Log._Debug($"We have old data from incoming car {incomingCarId}. It is currently on segment {curPos.m_segment}.");
 						}
 #endif
-						RemoveVehicleFromSegments(incomingCarId);
-						Vehicles[incomingCarId].Valid = false;
+						/*RemoveVehicleFromSegments(incomingCarId);
+						Vehicles[incomingCarId].Valid = false;*/
 
 						if (Options.simAccuracy <= 1) {
 							CustomCarAI.HandleVehicle(incomingCarId, ref Singleton<VehicleManager>.instance.m_vehicles.m_buffer[incomingCarId], false, false, 1);
@@ -640,8 +638,6 @@ namespace TrafficManager.Traffic {
 						Log._Debug($"We have old data from incoming car {incomingCarId}. It does not have a valid path.");
 					}
 #endif
-					RemoveVehicleFromSegments(incomingCarId);
-					Vehicles[incomingCarId].Valid = false;
 					return true;
 				}
 
@@ -675,10 +671,6 @@ namespace TrafficManager.Traffic {
 					return true;
 				}*/
 
-				if (targetCar == null || incomingCar == null) {
-					Log._Debug($"HasVehiclePriority: incoming car {incomingCarId} or targetCar {targetCarId} is null.");
-					return true;
-				}
 				if (incomingCar.ToNode != targetCar.ToNode) {
 					//Log._Debug($"HasVehiclePriority: incoming car {incomingCarId} goes to node {incomingCar.ToNode} where target car {targetCarId} goes to {targetCar.ToNode}. Ignoring.");
                     return true;
@@ -882,7 +874,7 @@ namespace TrafficManager.Traffic {
 				markedVehicles[i].Clear();
 		}
 
-		public static bool IsLaneOrderConflictFree(ushort segmentId, uint leftLaneIndex, uint rightLaneIndex) {
+		public static bool IsLaneOrderConflictFree(ushort segmentId, uint leftLaneIndex, uint rightLaneIndex) { // TODO I think this is incorrect. See TrafficLightTool._guiLaneChangeWindow
 			try {
 				NetInfo segmentInfo = Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].Info;
 				NetInfo.Direction normDirection = IsLeftHandDrive() ? NetInfo.Direction.Forward : NetInfo.Direction.Backward; // direction to normalize indices to
@@ -1022,14 +1014,27 @@ namespace TrafficManager.Traffic {
 			}
 		}
 
+		private static List<ushort> vehicleIdsToDelete = new List<ushort>();
+
 		public static void segmentHousekeeping(ushort segmentId) {
-			if (PrioritySegments[segmentId] == null)
+			NetManager netManager = Singleton<NetManager>.instance;
+
+			// update lane arrows
+			uint laneId = netManager.m_segments.m_buffer[segmentId].m_lanes;
+			while (laneId != 0) {
+				if (!Flags.applyLaneArrowFlags(laneId)) {
+					Flags.removeLaneArrowFlags(laneId);
+				}
+				laneId = netManager.m_lanes.m_buffer[laneId].m_nextLane;
+			}
+
+			/*if (PrioritySegments[segmentId] == null)
 				return;
 			var prioritySegment = PrioritySegments[segmentId];
 
 			// segment is valid, check for invalid cars
+			vehicleIdsToDelete.Clear();
 			if (prioritySegment.Node1 != 0) {
-				List<ushort> vehicleIdsToDelete = new List<ushort>();
 				foreach (KeyValuePair<ushort, VehiclePosition> e in prioritySegment.Instance1.getCars()) {
 					var vehicleId = e.Key;
 					if ((Singleton<VehicleManager>.instance.m_vehicles.m_buffer[vehicleId].m_flags & Vehicle.Flags.Created) == Vehicle.Flags.None) {
@@ -1044,9 +1049,8 @@ namespace TrafficManager.Traffic {
 				}
 			}
 
+			vehicleIdsToDelete.Clear();
 			if (prioritySegment.Node2 != 0) {
-				List<ushort> vehicleIdsToDelete = new List<ushort>();
-
 				foreach (KeyValuePair<ushort, VehiclePosition> e in prioritySegment.Instance2.getCars()) {
 					var vehicleId = e.Key;
 					if ((Singleton<VehicleManager>.instance.m_vehicles.m_buffer[vehicleId].m_flags & Vehicle.Flags.Created) == Vehicle.Flags.None) {
@@ -1059,7 +1063,7 @@ namespace TrafficManager.Traffic {
 					prioritySegment.Instance2.RemoveCar(vehicleId);
 					Vehicles[vehicleId].Valid = false;
 				}
-			}
+			}*/
 		}
 
 		public static void nodeHousekeeping(ushort nodeId) {
@@ -1070,21 +1074,6 @@ namespace TrafficManager.Traffic {
 				VehicleManager vehicleManager = Singleton<VehicleManager>.instance;
 
 				Flags.applyNodeTrafficLightFlag(nodeId);
-
-				// update lane arrows
-				for (var s = 0; s < 8; s++) {
-					var segmentId = netManager.m_nodes.m_buffer[nodeId].GetSegment(s);
-					if (segmentId <= 0)
-						continue;
-
-					uint laneId = netManager.m_segments.m_buffer[segmentId].m_lanes;
-					while (laneId != 0) {
-						if (!Flags.applyLaneArrowFlags(laneId)) {
-							Flags.removeLaneArrowFlags(laneId);
-						}
-						laneId = netManager.m_lanes.m_buffer[laneId].m_nextLane;
-					}
-				}
 
 				if (IsPriorityNode(nodeId)) {
 					NodeValidityState nodeState = NodeValidityState.Valid;
@@ -1156,7 +1145,6 @@ namespace TrafficManager.Traffic {
 
 			NetManager netManager = Singleton<NetManager>.instance;
 
-			Flags.applyNodeTrafficLightFlag(nodeId);
 			if ((netManager.m_nodes.m_buffer[nodeId].m_flags & NetNode.Flags.Created) == NetNode.Flags.None) {
 				nodeState = NodeValidityState.Unused;
 				Log.Warning($"Housekeeping: Node {nodeId} is unused!");

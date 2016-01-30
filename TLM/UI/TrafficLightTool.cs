@@ -2486,10 +2486,21 @@ namespace TrafficManager.UI {
 				}
 			};
 
-			var windowRect3 = ResizeGUI(new Rect(155, 45, numLanes * 118, 60));
+            Vector3 nodePos = Singleton<NetManager>.instance.m_nodes.m_buffer[SelectedNode].m_position;
+			var screenPos = Camera.main.WorldToScreenPoint(nodePos);
+			screenPos.y = Screen.height - screenPos.y;
+			Log._Debug($"node pos of {SelectedNode}: {nodePos.ToString()} {screenPos.ToString()}");
+			if (screenPos.z < 0)
+				return;
+			var camPos = Singleton<SimulationManager>.instance.m_simulationView.m_position;
+			var diff = nodePos - camPos;
 
+			if (diff.magnitude > PriorityCloseLod)
+				return; // do not draw if too distant
+
+			int width = numLanes * 118;
+			var windowRect3 = new Rect(screenPos.x - width/2, screenPos.y - 70, width, 60);
 			GUILayout.Window(250, windowRect3, _guiLaneChangeWindow, "", style);
-
 			_cursorInSecondaryPanel = windowRect3.Contains(Event.current.mousePosition);
 		}
 
@@ -2556,15 +2567,15 @@ namespace TrafficManager.UI {
 					Flags.removeLaneArrowFlags((uint)laneList[i][0]);
 				}
 				if (GUILayout.Button("←", ((flags & NetLane.Flags.Left) == NetLane.Flags.Left ? style1 : style2), GUILayout.Width(35), GUILayout.Height(25))) {
-					if (!toggleLaneFlag((uint)laneList[i][0], Flags.LaneArrows.Left) && SelectedNode > 0)
+					if (!Flags.toggleLaneArrowFlags((uint)laneList[i][0], Flags.LaneArrows.Left) && SelectedNode > 0)
 						showTooltip(Translation.GetString("Lane_Arrow_Changer_Disabled"), Singleton<NetManager>.instance.m_nodes.m_buffer[SelectedNode].m_position);
 				}
 				if (GUILayout.Button("↑", ((flags & NetLane.Flags.Forward) == NetLane.Flags.Forward ? style1 : style2), GUILayout.Width(25), GUILayout.Height(35))) {
-					if (!toggleLaneFlag((uint)laneList[i][0], Flags.LaneArrows.Forward) && SelectedNode > 0)
+					if (!Flags.toggleLaneArrowFlags((uint)laneList[i][0], Flags.LaneArrows.Forward) && SelectedNode > 0)
 						showTooltip(Translation.GetString("Lane_Arrow_Changer_Disabled"), Singleton<NetManager>.instance.m_nodes.m_buffer[SelectedNode].m_position);
 				}
 				if (GUILayout.Button("→", ((flags & NetLane.Flags.Right) == NetLane.Flags.Right ? style1 : style2), GUILayout.Width(35), GUILayout.Height(25))) {
-					if (!toggleLaneFlag((uint)laneList[i][0], Flags.LaneArrows.Right) && SelectedNode > 0)
+					if (!Flags.toggleLaneArrowFlags((uint)laneList[i][0], Flags.LaneArrows.Right) && SelectedNode > 0)
 						showTooltip(Translation.GetString("Lane_Arrow_Changer_Disabled"), Singleton<NetManager>.instance.m_nodes.m_buffer[SelectedNode].m_position);
 				}
 				GUILayout.EndHorizontal();
@@ -2672,19 +2683,24 @@ namespace TrafficManager.UI {
 		}
 
 		private void drawSpeedLimitHandles(ushort segmentId, bool viewOnly) {
+			if (!LoadingExtension.IsPathManagerCompatible) {
+				return;
+			}
+
 			// draw speedlimits over mean middle points of lane beziers
-			if (!segmentCenterByDir.ContainsKey(segmentId)) {
+				if (!segmentCenterByDir.ContainsKey(segmentId)) {
 				segmentCenterByDir.Add(segmentId, new Dictionary<NetInfo.Direction, Vector3>());
 				calculateSegmentCenterByDir(segmentId, segmentCenterByDir[segmentId]);
 			}
 
 			foreach (KeyValuePair<NetInfo.Direction, Vector3> e in segmentCenterByDir[segmentId]) {
-				var screenPos = Camera.main.WorldToScreenPoint(e.Value);
+				Vector3 signPos = e.Value;
+				var screenPos = Camera.main.WorldToScreenPoint(signPos);
 				screenPos.y = Screen.height - screenPos.y;
 				if (screenPos.z < 0)
 					return;
 				var camPos = Singleton<SimulationManager>.instance.m_simulationView.m_position;
-				var diff = e.Value - camPos;
+				var diff = signPos - camPos;
 
 				if (diff.magnitude > PriorityCloseLod)
 					return; // do not draw if too distant
@@ -2711,9 +2727,13 @@ namespace TrafficManager.UI {
 				GUI.color = guiColor;
 
 				var drawingBox = new Rect(screenPos.x - size / 2, screenPos.y - size / 2, size, size);
-				GUI.DrawTexture(drawingBox, TrafficLightToolTextureResources.SpeedLimitTextures[SpeedLimitManager.GetCustomSpeedLimit(segmentId, e.Key)]);
+				try {
+					GUI.DrawTexture(drawingBox, TrafficLightToolTextureResources.SpeedLimitTextures[SpeedLimitManager.GetCustomSpeedLimit(segmentId, e.Key)]);
+				} catch (Exception ex) {
+					Log.Error("segment " + segmentId + " limit: " + SpeedLimitManager.GetCustomSpeedLimit(segmentId, e.Key) + ", ex: " + ex.ToString());
+				}
 
-				if (!viewOnly && IsMouseOver(drawingBox) && Input.GetMouseButtonDown(0)) {
+				if (!viewOnly && IsMouseOver(drawingBox) && Input.GetMouseButton(0)) {
 					// change the speed limit to the selected one
 					ushort speedLimitToSet = SpeedLimitManager.AvailableSpeedLimits[curSpeedLimitIndex];
 					Log._Debug($"Setting speed limit of segment {segmentId}, dir {e.Key.ToString()} to {speedLimitToSet}");
@@ -2955,10 +2975,6 @@ namespace TrafficManager.UI {
 				GUILayout.EndVertical();
 			}
 			GUILayout.EndHorizontal();
-		}
-
-		private bool toggleLaneFlag(uint laneId, Flags.LaneArrows flags) {
-			return Flags.toggleLaneArrowFlags(laneId, flags);
 		}
 
 		private Texture2D MakeTex(int width, int height, Color col) {

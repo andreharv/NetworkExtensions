@@ -12,6 +12,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 using Timer = System.Timers.Timer;
 using TrafficManager.State;
+using TrafficManager.Custom.AI;
 
 namespace TrafficManager.State {
 	public class SerializableDataExtension : SerializableDataExtensionBase {
@@ -30,6 +31,8 @@ namespace TrafficManager.State {
 		
 		public override void OnLoadData() {
 			Log.Info("Loading Traffic Manager: PE Data");
+			Flags.OnBeforeLoadData();
+			CustomRoadAI.OnBeforeLoadData();
 			byte[] data = _serializableData.LoadData(DataId);
 			DeserializeData(data);
 
@@ -405,30 +408,30 @@ namespace TrafficManager.State {
 				foreach (var split in lanes.Select(lane => lane.Split(':')).Where(split => split.Length > 1)) {
 					try {
 						Log.Info($"Split Data: {split[0]} , {split[1]}");
-						var laneIndex = Convert.ToUInt32(split[0]);
+						var laneId = Convert.ToUInt32(split[0]);
 						uint flags = Convert.ToUInt32(split[1]);
 
 						//make sure we don't cause any overflows because of bad save data.
-						if (Singleton<NetManager>.instance.m_lanes.m_buffer.Length <= laneIndex)
+						if (Singleton<NetManager>.instance.m_lanes.m_buffer.Length <= laneId)
 							continue;
 
 						if (flags > ushort.MaxValue)
 							continue;
 
-						if ((Singleton<NetManager>.instance.m_lanes.m_buffer[laneIndex].m_flags & (ushort)NetLane.Flags.Created) == 0 || Singleton<NetManager>.instance.m_lanes.m_buffer[laneIndex].m_segment == 0)
+						if ((Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags & (ushort)NetLane.Flags.Created) == 0 || Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_segment == 0)
 							continue;
 
-						Singleton<NetManager>.instance.m_lanes.m_buffer[laneIndex].m_flags = fixLaneFlags(Singleton<NetManager>.instance.m_lanes.m_buffer[laneIndex].m_flags);
+						Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags = fixLaneFlags(Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags);
 
 						uint laneArrowFlags = flags & Flags.lfr;
-						uint origFlags = (Singleton<NetManager>.instance.m_lanes.m_buffer[laneIndex].m_flags & Flags.lfr);
+						uint origFlags = (Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags & Flags.lfr);
 #if DEBUG
-						Log._Debug("Setting flags for lane " + laneIndex + " to " + flags + " (" + ((Flags.LaneArrows)(laneArrowFlags)).ToString() + ")");
+						Log._Debug("Setting flags for lane " + laneId + " to " + flags + " (" + ((Flags.LaneArrows)(laneArrowFlags)).ToString() + ")");
 						if ((origFlags | laneArrowFlags) == origFlags) { // only load if setting differs from default
-							Log._Debug("Flags for lane " + laneIndex + " are original (" + ((NetLane.Flags)(origFlags)).ToString() + ")");
+							Log._Debug("Flags for lane " + laneId + " are original (" + ((NetLane.Flags)(origFlags)).ToString() + ")");
 						}
 #endif
-						Flags.setLaneArrowFlags(laneIndex, (Flags.LaneArrows)(laneArrowFlags));
+						Flags.setLaneArrowFlags(laneId, (Flags.LaneArrows)(laneArrowFlags));
 					} catch (Exception e) {
 						Log.Error($"Error loading Lane Split data. Length: {split.Length} value: {split}\nError: {e.Message}");
 					}

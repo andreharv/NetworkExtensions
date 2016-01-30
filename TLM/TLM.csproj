@@ -78,7 +78,6 @@
     <Compile Include="UI\Translation.cs" />
     <Compile Include="State\Options.cs" />
     <Compile Include="Traffic\Direction.cs" />
-    <Compile Include="Traffic\SpeedLimit.cs" />
     <Compile Include="Traffic\SpeedLimitManager.cs" />
     <Compile Include="Traffic\TrafficRoadRestrictions.cs" />
     <Compile Include="Traffic\VehiclePosition.cs" />

@@ -38,7 +38,7 @@ namespace TrafficManager.UI {
 			backgroundSprite = "GenericPanel";
 			color = new Color32(75, 75, 135, 255);
 			width = Translation.getMenuWidth();
-			height = LoadingExtension.IsPathManagerCompatible ? 350 : 270;
+			height = LoadingExtension.IsPathManagerCompatible ? 350 : 230;
 #if DEBUG
 			height += 160;		
 #endif
@@ -62,10 +62,10 @@ namespace TrafficManager.UI {
 				_buttonLaneChange = _createButton(Translation.GetString("Change_lane_arrows"), y, clickChangeLanes);
 				y += 40;
 				//buttonLaneRestrictions = _createButton("Road Restrictions", new Vector3(15f, 230f), clickLaneRestrictions);
-			}
 
-			_buttonSpeedLimits = _createButton(Translation.GetString("Speed_limits"), y, clickSpeedLimits);
-			y += 40;
+				_buttonSpeedLimits = _createButton(Translation.GetString("Speed_limits"), y, clickSpeedLimits);
+				y += 40;
+			}
 			
 			_buttonClearTraffic = _createButton(Translation.GetString("Clear_Traffic"), y, clickClearTraffic);
 			y += 40;
