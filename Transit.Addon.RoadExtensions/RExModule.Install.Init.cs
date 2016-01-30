@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using JetBrains.Annotations;
-using Transit.Addon.Core.Extenders.AI;
+using Transit.Framework.Extenders.AI;
 using Transit.Addon.RoadExtensions.AI;
 using Transit.Framework;
 using Transit.Framework.Unsafe;

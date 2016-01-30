@@ -1,22 +1,44 @@
-﻿using Transit.Addon.Core;
+﻿using ColossalFramework.Plugins;
+using Transit.Framework.Mod;
 
 namespace Transit.Addon
 {
     public sealed partial class Mod : TransitModBase
     {
+        private ulong? _workshopId;
         public override ulong WorkshopId
         {
-            get { return 543703997; }
+            get
+            {
+                if (_workshopId == null)
+                {
+                    foreach(var mod in PluginManager.instance.GetPluginsInfo())
+                    {
+                        if (mod.userModInstance == this)
+                        {
+                            _workshopId = mod.publishedFileID.AsUInt64;
+                        }
+                    }
+                    _workshopId = 543703997;
+                }
+
+                return _workshopId.Value;
+            }
         }
 
         public override string Name
         {
-            get { return _name; }
+            get { return "Transit Addons Mod"; }
         }
 
         public override string Description
         {
-            get { return _description; }
+            get { return "Closed Beta"; }
+        }
+
+        public override string Version
+        {
+            get { return "0.0.1"; }
         }
     }
 }

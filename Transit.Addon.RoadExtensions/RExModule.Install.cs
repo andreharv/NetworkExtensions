@@ -1,10 +1,15 @@
-﻿using ICities;
-using Transit.Addon.Core.Extenders.AI;
-using Transit.Addon.Core.Extenders.UI;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using ICities;
+using Transit.Framework.Extenders.AI;
+using Transit.Framework.Extenders.UI;
 using Transit.Addon.RoadExtensions.AI;
 using Transit.Addon.RoadExtensions.Menus;
 using Transit.Framework;
 using Transit.Framework.Unsafe;
+using Transit.Framework.Builders;
+using Transit.Framework.Modularity;
 using UnityEngine;
 using Transit.Addon.RoadExtensions.Roads.TinyRoads.Alley2L;
 using Transit.Addon.RoadExtensions.Roads.TinyRoads.OneWay1L;
@@ -25,6 +30,8 @@ namespace Transit.Addon.RoadExtensions
         private RoadsInstaller _roadsInstaller = null;
         private MenuInstaller _menuInstaller = null;
 
+        private IEnumerable<Action> _lateOperations;
+
         public override void OnCreated(ILoading loading)
         {
             base.OnCreated(loading);
@@ -33,6 +40,9 @@ namespace Transit.Addon.RoadExtensions
             {
                 ZoneBlocksCreatorProvider.instance.RegisterCustomCreator<TinyRoadZoneBlocksCreator>(Alley2LBuilder.NAME);
                 ZoneBlocksCreatorProvider.instance.RegisterCustomCreator<TinyRoadZoneBlocksCreator>(OneWay1LBuilder.NAME);
+
+                RoadSnappingModeProvider.instance.RegisterCustomSnapping<TinyRoadSnappingMode>(Alley2LBuilder.NAME);
+                RoadSnappingModeProvider.instance.RegisterCustomSnapping<TinyRoadSnappingMode>(OneWay1LBuilder.NAME);
 
                 if (AssetPath != null && AssetPath != Assets.PATH_NOT_FOUND)
                 {
@@ -61,6 +71,26 @@ namespace Transit.Addon.RoadExtensions
 
                 _roadsInstaller = _container.AddInstallerComponent<RoadsInstaller>();
                 _roadsInstaller.Host = this;
+            }
+        }
+		
+        public override void OnLevelLoaded(LoadMode mode)
+        {
+            base.OnLevelLoaded(mode);
+
+            if (_container != null && _menuInstaller == null)
+            {
+                _menuInstaller = _container.AddInstallerComponent<MenuInstaller>();
+            }
+
+            if (_lateOperations != null)
+            {
+                foreach (var op in _lateOperations)
+                {
+                    op();
+                }
+
+                _lateOperations = null;
             }
         }
 
