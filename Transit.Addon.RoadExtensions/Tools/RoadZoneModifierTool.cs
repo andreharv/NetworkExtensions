@@ -54,7 +54,7 @@ namespace Transit.Addon.RoadExtensions.Tools
             {
                 if (isUpgradeNetToolActive && _isActive)
                 {
-                    ZoneBlocksOffset.Mode = ZoneBlocksOffsetMode.Default;
+                    ZoneBlocksOffset.Mode = ZoneBlocksOffsetMode.ForcedDefault;
                 }
             }
 

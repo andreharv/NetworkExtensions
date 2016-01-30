@@ -13,6 +13,7 @@ namespace Transit.Framework.Extenders.AI
     public enum ZoneBlocksOffsetMode
     {
         Default,
-        HalfCell
+        HalfCell,
+        ForcedDefault
     }
 }
