@@ -768,8 +768,7 @@ namespace TrafficManager.Custom.AI {
 					}
 				}*/
 
-				maxSpeed = CalculateTargetSpeed(vehicleId, ref vehicleData, laneSpeedLimit,
-					instance.m_lanes.m_buffer[(int)((UIntPtr)laneId)].m_curve);
+				maxSpeed = CalculateTargetSpeed(vehicleId, ref vehicleData, laneSpeedLimit,	instance.m_lanes.m_buffer[(int)((UIntPtr)laneId)].m_curve);
 			} else {
 				maxSpeed = CalculateTargetSpeed(vehicleId, ref vehicleData, 1f, 0f);
 			}

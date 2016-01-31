@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TrafficManager.Traffic;
 using UnityEngine;
 
 namespace TrafficManager.Custom.AI {
@@ -100,6 +101,30 @@ namespace TrafficManager.Custom.AI {
 				}
 			} catch (Exception ex) {
 				Log.Error("Error in TrainAI.SimulationStep: " + ex.ToString());
+			}
+		}
+
+		public void TmCalculateSegmentPosition(ushort vehicleID, ref Vehicle vehicleData, PathUnit.Position nextPosition, PathUnit.Position position, uint laneID, byte offset, PathUnit.Position prevPos, uint prevLaneID, byte prevOffset, out Vector3 pos, out Vector3 dir, out float maxSpeed) {
+			NetManager instance = Singleton<NetManager>.instance;
+			instance.m_lanes.m_buffer[(int)((UIntPtr)laneID)].CalculatePositionAndDirection((float)offset * 0.003921569f, out pos, out dir);
+			NetInfo info = instance.m_segments.m_buffer[(int)position.m_segment].Info;
+			if (info.m_lanes != null && info.m_lanes.Length > (int)position.m_lane) {
+				var laneSpeedLimit = SpeedLimitManager.GetLockFreeGameSpeedLimit(position.m_segment, position.m_lane, laneID, ref info.m_lanes[position.m_lane]);
+				maxSpeed = this.CalculateTargetSpeed(vehicleID, ref vehicleData, laneSpeedLimit, instance.m_lanes.m_buffer[(int)((UIntPtr)laneID)].m_curve);
+			} else {
+				maxSpeed = this.CalculateTargetSpeed(vehicleID, ref vehicleData, 1f, 0f);
+			}
+		}
+
+		public void TmCalculateSegmentPositionPathFinder(ushort vehicleID, ref Vehicle vehicleData, PathUnit.Position position, uint laneID, byte offset, out Vector3 pos, out Vector3 dir, out float maxSpeed) {
+			NetManager instance = Singleton<NetManager>.instance;
+			instance.m_lanes.m_buffer[(int)((UIntPtr)laneID)].CalculatePositionAndDirection((float)offset * 0.003921569f, out pos, out dir);
+			NetInfo info = instance.m_segments.m_buffer[(int)position.m_segment].Info;
+			if (info.m_lanes != null && info.m_lanes.Length > (int)position.m_lane) {
+				var laneSpeedLimit = SpeedLimitManager.GetLockFreeGameSpeedLimit(position.m_segment, position.m_lane, laneID, ref info.m_lanes[position.m_lane]);
+				maxSpeed = this.CalculateTargetSpeed(vehicleID, ref vehicleData, laneSpeedLimit, instance.m_lanes.m_buffer[(int)((UIntPtr)laneID)].m_curve);
+			} else {
+				maxSpeed = this.CalculateTargetSpeed(vehicleID, ref vehicleData, 1f, 0f);
 			}
 		}
 	}

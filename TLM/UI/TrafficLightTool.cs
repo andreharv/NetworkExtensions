@@ -2683,9 +2683,9 @@ namespace TrafficManager.UI {
 		}
 
 		private void drawSpeedLimitHandles(ushort segmentId, bool viewOnly) {
-			if (!LoadingExtension.IsPathManagerCompatible) {
+			/*if (!LoadingExtension.IsPathManagerCompatible) {
 				return;
-			}
+			}*/
 
 			// draw speedlimits over mean middle points of lane beziers
 				if (!segmentCenterByDir.ContainsKey(segmentId)) {

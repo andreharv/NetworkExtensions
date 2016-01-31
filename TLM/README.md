@@ -2,7 +2,10 @@
 A work-in-progress modification for **Cities: Skylines** to add additional road traffic control
 
 # Changelog
-1.5.0
+1.5.1, 01/31/2016
+- Trains are now following speed limits
+
+1.5.0, 01/30/2016
 - New feature: Speed restrictions (as requested by @Gfurst)
 - AI: Parameters tuned
 - Code improvements
