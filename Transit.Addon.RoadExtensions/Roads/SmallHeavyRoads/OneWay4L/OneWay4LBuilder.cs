@@ -13,7 +13,7 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.OneWay4L
 
         public string BasedPrefabName { get { return NetInfos.Vanilla.ONEWAY_2L; } }
         public string Name { get { return "Oneway4L"; } }
-        public string DisplayName { get { return "Small Four-Lane Oneway"; } }
+        public string DisplayName { get { return "Four-Lane Oneway"; } }
         public string Description { get { return "A four-lane one-way road without parkings spaces. Supports medium traffic."; } }
         public string ShortDescription { get { return "No parking, zoneable, medium traffic"; } }
         public string UICategory { get { return RExExtendedMenus.ROADS_SMALL_HV; } }
@@ -48,7 +48,6 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.OneWay4L
             // Set up                //
             ///////////////////////////
             info.m_hasParkingSpaces = false;
-            info.m_class = owRoadInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL3L_ROAD);
             info.m_pavementWidth = (version != NetInfoVersion.Slope && version != NetInfoVersion.Tunnel ? 2 : 5);
             info.m_halfWidth = (version != NetInfoVersion.Slope && version != NetInfoVersion.Tunnel ? 8 : 11);
 
@@ -56,11 +55,11 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.OneWay4L
             {
                 info.m_setVehicleFlags = Vehicle.Flags.Transition;
                 info.m_setCitizenFlags = CitizenInstance.Flags.Transition;
-                info.m_class = owRoadTunnelInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL3L_ROAD_TUNNEL);
+                info.m_class = owRoadTunnelInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL4L_ROAD_TUNNEL);
             }
             else
             {
-                info.m_class = owRoadInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL3L_ROAD);
+                info.m_class = owRoadInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL4L_ROAD);
             }
 
             // Setting up lanes
@@ -72,8 +71,9 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.OneWay4L
                 BusStopOffset = 0f,
                 SpeedLimit = 1.2f
             });
-            var leftPedLane = info.GetLeftRoadShoulder(owRoadInfo, version);
-            var rightPedLane = info.GetRightRoadShoulder(owRoadInfo, version);
+            var leftPedLane = info.GetLeftRoadShoulder();
+            var rightPedLane = info.GetRightRoadShoulder();
+
             //Setting Up Props
             var leftRoadProps = leftPedLane.m_laneProps.m_props.ToList();
             var rightRoadProps = rightPedLane.m_laneProps.m_props.ToList();
@@ -91,8 +91,7 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.OneWay4L
             info.SetupNewSpeedLimitProps(60, 40);
 
 
-            //var propLanes = info.m_lanes.Where(l => l.m_laneProps != null && (l.m_laneProps.name.ToLower().Contains("left") || l.m_laneProps.name.ToLower().Contains("right"))).ToList();
-
+            // AI
             var owPlayerNetAI = owRoadInfo.GetComponent<PlayerNetAI>();
             var playerNetAI = info.GetComponent<PlayerNetAI>();
 

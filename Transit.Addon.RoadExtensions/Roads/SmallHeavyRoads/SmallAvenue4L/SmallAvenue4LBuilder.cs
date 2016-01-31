@@ -49,7 +49,6 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.SmallAvenue4L
             // Set up                //
             ///////////////////////////
             info.m_hasParkingSpaces = false;
-            info.m_class = owRoadInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL3L_ROAD);
             info.m_pavementWidth = (version != NetInfoVersion.Slope && version != NetInfoVersion.Tunnel ? 2 : 5);
             info.m_halfWidth = (version != NetInfoVersion.Slope && version != NetInfoVersion.Tunnel ? 8 : 11);
 
@@ -57,11 +56,11 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.SmallAvenue4L
             {
                 info.m_setVehicleFlags = Vehicle.Flags.Transition;
                 info.m_setCitizenFlags = CitizenInstance.Flags.Transition;
-                info.m_class = owRoadTunnelInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL3L_ROAD_TUNNEL);
+                info.m_class = owRoadTunnelInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL4L_ROAD_TUNNEL);
             }
             else
             {
-                info.m_class = owRoadInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL3L_ROAD);
+                info.m_class = owRoadInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL4L_ROAD);
             }
 
             // Setting up lanes
@@ -73,8 +72,8 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.SmallAvenue4L
                 BusStopOffset = 0f,
                 SpeedLimit = 1.0f
             });
-            var leftPedLane = info.GetLeftRoadShoulder(owRoadInfo, version);
-            var rightPedLane = info.GetRightRoadShoulder(owRoadInfo, version);
+            var leftPedLane = info.GetLeftRoadShoulder();
+            var rightPedLane = info.GetRightRoadShoulder();
 
             // Fix for T++ legacy support
             var lanes = info.m_lanes.OrderBy(l => l.m_position).ToArray();
@@ -106,9 +105,7 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.SmallAvenue4L
             info.TrimAboveGroundProps(version);
             info.SetupNewSpeedLimitProps(50, 40);
 
-
-            //var propLanes = info.m_lanes.Where(l => l.m_laneProps != null && (l.m_laneProps.name.ToLower().Contains("left") || l.m_laneProps.name.ToLower().Contains("right"))).ToList();
-
+            // AI
             var owPlayerNetAI = owRoadInfo.GetComponent<PlayerNetAI>();
             var playerNetAI = info.GetComponent<PlayerNetAI>();
 

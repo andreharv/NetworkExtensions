@@ -5,7 +5,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
     {
         public int LanesToAdd { get; set; }
         public float PedLaneOffset { get; set; }
-        public float PedPropOffsetX { get; set; }
+        public float? PedPropOffsetX { get; set; }
         public float? SpeedLimit { get; set; }
         public float LaneWidth { get; set; }
         public bool IsTwoWay { get; set; }
@@ -17,7 +17,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
         {
             LanesToAdd = 0;
             PedLaneOffset = 0.0f;
-            PedPropOffsetX = 0.0f;
+            PedPropOffsetX = null;
             SpeedLimit = null;
             LaneWidth = 3.0f;
             IsTwoWay = true;

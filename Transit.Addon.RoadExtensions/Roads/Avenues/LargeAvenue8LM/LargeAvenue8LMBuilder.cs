@@ -34,7 +34,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
             ///////////////////////////
             // Template              //
             ///////////////////////////
-            //var highwayInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L_SLOPE);
             var roadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_6L);
             var roadTunnelInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_6L_TUNNEL);
 
@@ -59,11 +58,11 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
             {
                 info.m_setVehicleFlags = Vehicle.Flags.Transition;
                 info.m_setCitizenFlags = CitizenInstance.Flags.Transition;
-                info.m_class = roadTunnelInfo.m_class.Clone(NetInfoClasses.NEXT_MEDIUM_ROAD_TUNNEL);
+                info.m_class = roadTunnelInfo.m_class.Clone(NetInfoClasses.NEXT_XLARGE_ROAD_TUNNEL);
             }
             else
             {
-                info.m_class = roadInfo.m_class.Clone(NetInfoClasses.NEXT_MEDIUM_ROAD);
+                info.m_class = roadInfo.m_class.Clone(NetInfoClasses.NEXT_XLARGE_ROAD);
             }
 
             // Setting up lanes
@@ -72,29 +71,35 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
                 IsTwoWay = true,
                 LanesToAdd = 2,
                 LaneWidth = version == NetInfoVersion.Slope ? 2.75f : 3,
-                PedPropOffsetX = 1,
+                PedPropOffsetX = version == NetInfoVersion.Slope ? 1.5f : 1f,
                 CenterLane = CenterLaneType.Median,
                 CenterLaneWidth = 2,
                 BusStopOffset = 0f
             });
-            var leftPedLane = info.GetLeftRoadShoulder(roadInfo, version);
-            var rightPedLane = info.GetRightRoadShoulder(roadInfo, version);
+            var leftPedLane = info.GetLeftRoadShoulder();
+            var rightPedLane = info.GetRightRoadShoulder();
+
             //Setting Up Props
             var leftRoadProps = leftPedLane.m_laneProps.m_props.ToList();
             var rightRoadProps = rightPedLane.m_laneProps.m_props.ToList();
 
             if (version != NetInfoVersion.Tunnel)
             {
-                var propsToCenter = new string[] {"street light"};
+                var propsToCenter = new[] {"street light"};
                 leftRoadProps.CenterProps(propsToCenter, leftPedLane.m_position);
                 rightRoadProps.CenterProps(propsToCenter, rightPedLane.m_position);
 
-                var leftStreetLightProp = leftRoadProps.First(lrp => lrp.m_prop.name.ToLower().Contains("street light"));
-                var rightStreetLightProp =
-                    rightRoadProps.First(lrp => lrp.m_prop.name.ToLower().Contains("street light"));
-                leftStreetLightProp.m_repeatDistance = 60;
-                rightStreetLightProp.m_repeatDistance = 60;
+                var leftStreetLightProp = leftRoadProps.FirstOrDefault(lrp => lrp.m_prop.name.ToLower().Contains("street light"));
+                if (leftStreetLightProp != null)
+                {
+                    leftStreetLightProp.m_repeatDistance = 60;
+                }
 
+                var rightStreetLightProp = rightRoadProps.FirstOrDefault(lrp => lrp.m_prop.name.ToLower().Contains("street light"));
+                if (rightStreetLightProp != null)
+                {
+                    rightStreetLightProp.m_repeatDistance = 60;
+                }
             }
 
             if (version == NetInfoVersion.Slope)
@@ -108,6 +113,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
 
             info.TrimAboveGroundProps(version);
 
+            // AI
             var owPlayerNetAI = roadInfo.GetComponent<PlayerNetAI>();
             var playerNetAI = info.GetComponent<PlayerNetAI>();
 
