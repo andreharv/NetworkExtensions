@@ -1,10 +1,10 @@
 ﻿using Transit.Framework;
 
-namespace Transit.Addon.RoadExtensions.Roads.Highways.Common
+namespace Transit.Addon.RoadExtensions.Roads.DivHighways.Common
 {
-    public static partial class HighwayModels
+    public static partial class DivHighwayModels
     {
-        public static void Setup32mMesh(this NetInfo info, NetInfoVersion version)
+        public static void Setup32mGrassMesh(this NetInfo info, NetInfoVersion version)
         {
             ///////////////////////////
             // Template              //
@@ -12,39 +12,44 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Common
             var highwayInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L);
             var defaultMaterial = highwayInfo.m_nodes[0].m_material;
 
+            var railInfo = Prefabs.Find<NetInfo>("Train Track");
+            var railShader = railInfo.m_nodes[1].m_material.shader;
+
             if (version == NetInfoVersion.Ground)
             {
                 var segments0 = info.m_segments[0];
                 var nodes0 = info.m_nodes[0];
-
-                segments0.m_backwardForbidden = NetSegment.Flags.None;
-                segments0.m_backwardRequired = NetSegment.Flags.None;
-
-                segments0.m_forwardForbidden = NetSegment.Flags.None;
-                segments0.m_forwardRequired = NetSegment.Flags.None;
-
                 var nodes1 = nodes0.ShallowClone();
+                var nodes2 = nodes0.ShallowClone();
 
-                nodes0.m_flagsForbidden = NetNode.Flags.Transition;
-                nodes0.m_flagsRequired = NetNode.Flags.None;
+                segments0
+                    .SetFlagsDefault()
+                    .SetMeshes
+                        (@"Roads\Highways\Common\Meshes\32m\Ground.obj",
+                         @"Roads\Highways\Common\Meshes\32m\Ground_LOD.obj");
 
-                nodes1.m_flagsForbidden = NetNode.Flags.None;
-                nodes1.m_flagsRequired = NetNode.Flags.Transition;
+                nodes0
+                    .SetFlags(NetNode.Flags.None, NetNode.Flags.Transition)
+                    .SetMeshes
+                        (@"Roads\Highways\Common\Meshes\32m\Ground_Node.obj",
+                         @"Roads\Highways\Common\Meshes\32m\Ground_Node_LOD.obj");
 
-                segments0.SetMeshes
-                    (@"Roads\Highways\Common\Meshes\32m\Ground.obj",
-                     @"Roads\Highways\Common\Meshes\32m\Ground_LOD.obj");
+                nodes1
+                    .SetFlags(NetNode.Flags.Transition, NetNode.Flags.None)
+                    .SetMeshes
+                        (@"Roads\Highways\Common\Meshes\32m\Ground_Trans.obj",
+                         @"Roads\Highways\Common\Meshes\32m\Ground_Trans_LOD.obj");
 
-                nodes0.SetMeshes
-                    (@"Roads\Highways\Common\Meshes\32m\Ground_Node.obj",
-                     @"Roads\Highways\Common\Meshes\32m\Ground_Node_LOD.obj");
+                nodes2
+                    .SetFlags(NetNode.Flags.None, NetNode.Flags.None)
+                    .SetMeshes
+                        (@"Roads\DivHighways\Common\Meshes\32mGrass\Ground_Node_Grass.obj");
 
-                nodes1.SetMeshes
-                    (@"Roads\Highways\Common\Meshes\32m\Ground_Trans.obj",
-                     @"Roads\Highways\Common\Meshes\32m\Ground_Trans_LOD.obj");
+                //nodes2.m_directConnect = true;
+                nodes2.m_material.shader = railShader;
 
                 info.m_segments = new[] { segments0 };
-                info.m_nodes = new[] { nodes0, nodes1 };
+                info.m_nodes = new[] { nodes0, nodes1, nodes2 };
             }
             else if (version == NetInfoVersion.Elevated)
             {

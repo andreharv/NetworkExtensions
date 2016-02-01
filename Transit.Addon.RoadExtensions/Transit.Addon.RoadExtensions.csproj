@@ -60,6 +60,9 @@
     <Compile Include="Roads\Common\RoadModels.8m.2mSW.cs" />
     <Compile Include="Roads\Common\RoadModels.8m.1p5mSW.cs" />
     <Compile Include="Roads\Common\RoadModels.32m.3mSW2mMdn.cs" />
+    <Compile Include="Roads\DivHighways\Common\DivHighwayModels.32m.cs" />
+    <Compile Include="Roads\DivHighways\DivHighway4L\DivHighway4LBuilder.cs" />
+    <Compile Include="Roads\DivHighways\DivHighway4L\DivHighway4LBuilder.Texturing.cs" />
     <Compile Include="Roads\Highways\VanillaHighwayMenuModifier.cs" />
     <Compile Include="Props\BusLaneTextPropBuilder.cs" />
     <Compile Include="RExModule.Install.Menu.cs" />
@@ -224,6 +227,36 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\Avenues\LargeAvenue8LM\Textures\Tunnel_Segment__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\DivHighways\DivHighway4L\Textures\Ground_Elevated_Segment__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\DivHighways\DivHighway4L\Textures\Ground_Elevated_Segment__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\DivHighways\DivHighway4L\Textures\Ground_NodeLOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\DivHighways\DivHighway4L\Textures\Ground_NodeLOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\DivHighways\DivHighway4L\Textures\Ground_NodeLOD__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\DivHighways\DivHighway4L\Textures\Ground_Node__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\DivHighways\DivHighway4L\Textures\Ground_Node__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\DivHighways\DivHighway4L\Textures\Ground_SegmentLOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\DivHighways\DivHighway4L\Textures\Ground_SegmentLOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\DivHighways\DivHighway4L\Textures\Ground_SegmentLOD__XYSMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\Highways\Highway3LBarrier\thumbnails.png">
@@ -1696,6 +1729,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\Common\Meshes\8m\2mSW\Ground_Node_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\DivHighways\Common\Meshes\32mGrass\Ground.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\DivHighways\Common\Meshes\32mGrass\Ground_Node_Grass.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\Highways\Common\Meshes\16m\Elevated.obj">
