@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{98128597-13A2-4C17-96C9-4DFAC0CA0828}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Transit.Addon.TrafficTools</RootNamespace>
+    <AssemblyName>Transit.Addon.TrafficTools</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\References\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ColossalManaged">
+      <HintPath>..\References\ColossalManaged.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ICities">
+      <HintPath>..\References\ICities.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine">
+      <HintPath>..\References\UnityEngine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools\RCT\Modes\LaneRestrictions\LaneRestrictorSubMenu.cs" />
+    <Compile Include="Tools\RCT\Modes\LaneRestrictions\LaneRestrictorTool.cs" />
+    <Compile Include="Tools\RCT\Modes\LaneRestrictions\LaneSpeedRestrictorSubMenu.cs" />
+    <Compile Include="Tools\RCT\Modes\LaneRestrictions\LaneVehicleRestrictorSubMenu.cs" />
+    <Compile Include="Tools\RCT\Modes\LaneRouting\LaneRoutingTool.cs" />
+    <Compile Include="Tools\RCT\Modes\TrafficLights\TrafficLightsTool.cs" />
+    <Compile Include="Tools\RCT\RoadCustomizerTool.cs" />
+    <Compile Include="Tools\RCT\Modes\LaneRouting\LaneRoutingTemplatesSubMenu.cs" />
+    <Compile Include="Tools\RCT\RoadCustomizerToolsMenu.cs" />
+    <Compile Include="Tools\RCT\Modes\TrafficLights\TrafficLightsSubMenu.cs" />
+    <Compile Include="TrafficTools.cs" />
+    <Compile Include="TrafficTools.Loading.cs" />
+    <Compile Include="TrafficTools.Settings.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Transit.Addon.PathFinding\Transit.Addon.PathFinding.csproj">
+      <Project>{20f6a0dc-131c-49cd-9d9b-95b6e41cddff}</Project>
+      <Name>Transit.Addon.TrafficAI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Transit.Addon\Transit.Addon.csproj">
+      <Project>{80c47696-4d41-4bb6-9cae-c477fe528adf}</Project>
+      <Name>Transit.Addon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Transit.Framework.UI\Transit.Framework.UI.csproj">
+      <Project>{5414d25f-e718-48b7-8c23-8dfec246b8c9}</Project>
+      <Name>Transit.Framework.UI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Transit.Framework.Unsafe\Transit.Framework.Unsafe.csproj">
+      <Project>{7dcc08ef-dc85-47a4-bd6f-79fc52c7ef13}</Project>
+      <Name>Transit.Framework.Unsafe</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Transit.Framework\Transit.Framework.csproj">
+      <Project>{8891467e-c88e-46b0-96f9-4413df6dc205}</Project>
+      <Name>Transit.Framework</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Tools\RCT\UI\laneRestrictor.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\RCT\UI\laneRouting.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\RCT\UI\UISpeedSigns.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\RCT\UI\UIThumbnails.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\RCT\UI\UIVehicleRestrictions.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
