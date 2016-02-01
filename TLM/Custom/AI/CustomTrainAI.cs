@@ -25,71 +25,72 @@ namespace TrafficManager.Custom.AI {
 					this.TrySpawn(vehicleId, ref vehicleData);
 				}
 
+				bool reversed = (vehicleData.m_flags & Vehicle.Flags.Reversed) != Vehicle.Flags.None;
+				ushort frontVehicleId;
+				if (reversed) {
+					frontVehicleId = vehicleData.GetLastVehicle(vehicleId);
+				} else {
+					frontVehicleId = vehicleId;
+				}
+
 				/// NON-STOCK CODE START ///
 				try {
-					CustomCarAI.HandleVehicle(vehicleId, ref Singleton<VehicleManager>.instance.m_vehicles.m_buffer[vehicleId], false, false, 5);
+					CustomCarAI.HandleVehicle(frontVehicleId, ref Singleton<VehicleManager>.instance.m_vehicles.m_buffer[frontVehicleId], false, false, 5);
 				} catch (Exception e) {
 					Log.Error("TrainAI TrafficManagerSimulationStep Error: " + e.ToString());
 				}
 				/// NON-STOCK CODE END ///
 
-				bool flag = (vehicleData.m_flags & Vehicle.Flags.Reversed) != Vehicle.Flags.None;
-				ushort num;
-				if (flag) {
-					num = vehicleData.GetLastVehicle(vehicleId);
-				} else {
-					num = vehicleId;
-				}
 				VehicleManager instance = Singleton<VehicleManager>.instance;
-				VehicleInfo info = instance.m_vehicles.m_buffer[(int)num].Info;
-				info.m_vehicleAI.SimulationStep(num, ref instance.m_vehicles.m_buffer[(int)num], vehicleId, ref vehicleData, 0);
+				VehicleInfo info = instance.m_vehicles.m_buffer[(int)frontVehicleId].Info;
+				info.m_vehicleAI.SimulationStep(frontVehicleId, ref instance.m_vehicles.m_buffer[(int)frontVehicleId], vehicleId, ref vehicleData, 0);
 				if ((vehicleData.m_flags & (Vehicle.Flags.Created | Vehicle.Flags.Deleted)) != Vehicle.Flags.Created) {
 					return;
 				}
 				bool flag2 = (vehicleData.m_flags & Vehicle.Flags.Reversed) != Vehicle.Flags.None;
-				if (flag2 != flag) {
-					flag = flag2;
-					if (flag) {
-						num = vehicleData.GetLastVehicle(vehicleId);
+				if (flag2 != reversed) {
+					reversed = flag2;
+					if (reversed) {
+						frontVehicleId = vehicleData.GetLastVehicle(vehicleId);
 					} else {
-						num = vehicleId;
+						frontVehicleId = vehicleId;
 					}
-					info = instance.m_vehicles.m_buffer[(int)num].Info;
-					info.m_vehicleAI.SimulationStep(num, ref instance.m_vehicles.m_buffer[(int)num], vehicleId, ref vehicleData, 0);
+					info = instance.m_vehicles.m_buffer[(int)frontVehicleId].Info;
+					info.m_vehicleAI.SimulationStep(frontVehicleId, ref instance.m_vehicles.m_buffer[(int)frontVehicleId], vehicleId, ref vehicleData, 0);
 					if ((vehicleData.m_flags & (Vehicle.Flags.Created | Vehicle.Flags.Deleted)) != Vehicle.Flags.Created) {
 						return;
 					}
 					flag2 = ((vehicleData.m_flags & Vehicle.Flags.Reversed) != Vehicle.Flags.None);
-					if (flag2 != flag) {
+					if (flag2 != reversed) {
 						Singleton<VehicleManager>.instance.ReleaseVehicle(vehicleId);
 						return;
 					}
 				}
-				if (flag) {
-					num = instance.m_vehicles.m_buffer[(int)num].m_leadingVehicle;
+				if (reversed) {
+					frontVehicleId = instance.m_vehicles.m_buffer[(int)frontVehicleId].m_leadingVehicle;
 					int num2 = 0;
-					while (num != 0) {
-						info = instance.m_vehicles.m_buffer[(int)num].Info;
-						info.m_vehicleAI.SimulationStep(num, ref instance.m_vehicles.m_buffer[(int)num], vehicleId, ref vehicleData, 0);
+					while (frontVehicleId != 0) {
+						info = instance.m_vehicles.m_buffer[(int)frontVehicleId].Info;
+						info.m_vehicleAI.SimulationStep(frontVehicleId, ref instance.m_vehicles.m_buffer[(int)frontVehicleId], vehicleId, ref vehicleData, 0);
 						if ((vehicleData.m_flags & (Vehicle.Flags.Created | Vehicle.Flags.Deleted)) != Vehicle.Flags.Created) {
 							return;
 						}
-						num = instance.m_vehicles.m_buffer[(int)num].m_leadingVehicle;
+						frontVehicleId = instance.m_vehicles.m_buffer[(int)frontVehicleId].m_leadingVehicle;
 						if (++num2 > 16384) {
 							CODebugBase<LogChannel>.Error(LogChannel.Core, "Invalid list detected!\n" + Environment.StackTrace);
 							break;
 						}
 					}
 				} else {
-					num = instance.m_vehicles.m_buffer[(int)num].m_trailingVehicle;
+					frontVehicleId = instance.m_vehicles.m_buffer[(int)frontVehicleId].m_trailingVehicle;
 					int num3 = 0;
-					while (num != 0) {
-						info = instance.m_vehicles.m_buffer[(int)num].Info;
-						info.m_vehicleAI.SimulationStep(num, ref instance.m_vehicles.m_buffer[(int)num], vehicleId, ref vehicleData, 0);
+					while (frontVehicleId != 0) {
+						info = instance.m_vehicles.m_buffer[(int)frontVehicleId].Info;
+						info.m_vehicleAI.SimulationStep(frontVehicleId, ref instance.m_vehicles.m_buffer[(int)frontVehicleId], vehicleId, ref vehicleData, 0);
 						if ((vehicleData.m_flags & (Vehicle.Flags.Created | Vehicle.Flags.Deleted)) != Vehicle.Flags.Created) {
 							return;
 						}
-						num = instance.m_vehicles.m_buffer[(int)num].m_trailingVehicle;
+						frontVehicleId = instance.m_vehicles.m_buffer[(int)frontVehicleId].m_trailingVehicle;
 						if (++num3 > 16384) {
 							CODebugBase<LogChannel>.Error(LogChannel.Core, "Invalid list detected!\n" + Environment.StackTrace);
 							break;

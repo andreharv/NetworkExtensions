@@ -250,6 +250,7 @@ namespace TrafficManager {
         }
 
 		public override void OnLevelUnloading() {
+			Log.Info("OnLevelUnloading");
 			base.OnLevelUnloading();
 			if (Instance == null)
 				Instance = this;
