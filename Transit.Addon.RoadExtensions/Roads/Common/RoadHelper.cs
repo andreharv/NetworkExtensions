@@ -70,13 +70,13 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             return info.m_lanes.Last(l => l.m_laneType == NetInfo.LaneType.Pedestrian);
         }
 
-        public static void RemoveProps(this ICollection<NetLaneProps.Prop> props, string[] propsToCenter)
+        public static void RemoveProps(this ICollection<NetLaneProps.Prop> props, string[] propsToRemove)
         {
-            for (var i = 0; i < propsToCenter.Length; i++)
+            for (var i = 0; i < propsToRemove.Length; i++)
             {
-                if (props.Any(p => p.m_prop.name.ToLower().Contains(propsToCenter[i].ToLower())))
+                if (props.Any(p => p.m_prop.name.ToLower().Contains(propsToRemove[i].ToLower())))
                 {
-                    var propToCenter = props.First(p => p.m_prop.name.ToLower().Contains(propsToCenter[i].ToLower()));
+                    var propToCenter = props.First(p => p.m_prop.name.ToLower().Contains(propsToRemove[i].ToLower()));
                     props.Remove(propToCenter);
                 }
             }

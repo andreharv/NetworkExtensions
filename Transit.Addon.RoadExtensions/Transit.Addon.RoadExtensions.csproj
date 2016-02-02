@@ -55,6 +55,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Compatibility\ModernLightingPack.cs" />
     <Compile Include="Compatibility\RoadColorChanger.cs" />
     <Compile Include="Roads\Common\RoadHelper.LaneSetup.cs" />
     <Compile Include="Roads\Highways\VanillaHighwayMenuModifier.cs" />

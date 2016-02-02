@@ -1,12 +1,10 @@
-﻿using System;
-using ColossalFramework.Packaging;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Transit.Addon.RoadExtensions.Compatibility;
 using Transit.Addon.RoadExtensions.Roads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
-using Transit.Framework.Modularity;
 using UnityEngine;
-using System.Collections.Generic;
 
 namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
 {
@@ -29,6 +27,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
         {
             get { return NetInfoVersion.All; }
         }
+
+        private const string MEDIAN_LANE_NAME = "Median";
 
         public void BuildUp(NetInfo info, NetInfoVersion version)
         {
@@ -77,14 +77,49 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
                 CenterLaneWidth = 2,
                 BusStopOffset = 0f
             });
+
             var leftPedLane = info.GetLeftRoadShoulder();
             var rightPedLane = info.GetRightRoadShoulder();
+
+            // Adding median lane
+            var medianLane = new NetInfo.Lane
+            {
+                m_position = 0,
+                m_width = 2,
+                m_vehicleType = VehicleInfo.VehicleType.None,
+                m_laneProps = ScriptableObject.CreateInstance<NetLaneProps>(),
+            };
+
+            medianLane.m_laneProps.name = MEDIAN_LANE_NAME;
+            medianLane.m_laneProps.m_props = new NetLaneProps.Prop[0];
+
+            info.m_lanes = info.m_lanes.Union(medianLane).ToArray();
 
             //Setting Up Props
             var leftRoadProps = leftPedLane.m_laneProps.m_props.ToList();
             var rightRoadProps = rightPedLane.m_laneProps.m_props.ToList();
 
-            if (version == NetInfoVersion.Bridge || version == NetInfoVersion.Elevated)
+            var replaceStreetLight = false;
+            var removeStreetLight = false;
+
+            if (ModernLightingPack.IsPluginActive)
+            {
+                if (version == NetInfoVersion.Ground ||
+                    version == NetInfoVersion.Bridge ||
+                    version == NetInfoVersion.Elevated)
+                {
+                    replaceStreetLight = true;
+                }
+            }
+
+            if (replaceStreetLight ||
+                version == NetInfoVersion.Bridge ||
+                version == NetInfoVersion.Slope)
+            {
+                removeStreetLight = true;
+            }
+
+            if (removeStreetLight)
             {
                 var propsToRemove = new[] { "street light" };
                 leftRoadProps.RemoveProps(propsToRemove);
@@ -122,36 +157,12 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
 
         public void LateBuildUp(NetInfo info, NetInfoVersion version)
         {
+            // Installing BridgePillar
             if (version == NetInfoVersion.Bridge)
             {
                 //var bridgePillar = PrefabCollection<BuildingInfo>.FindLoaded(WorkshopId + ".CableStay32m_Data");
                 //if (bridgePillar == null)
                 var bridgePillar = PrefabCollection<BuildingInfo>.FindLoaded("BridgePillar.CableStay32m_Data");
-                var aveLightInfo = PrefabCollection<PropInfo>.FindLoaded("609644643.StainlessAvenueLight_Data");
-                var centerLaneProps = new List<NetLaneProps.Prop>();
-                var centerLane = new NetInfo.Lane()
-                {
-                    m_position = 0,
-                    m_width = 2,
-                    m_vehicleType = VehicleInfo.VehicleType.None,
-                };
-
-                centerLaneProps.Add(new NetLaneProps.Prop()
-                {
-                    m_prop = aveLightInfo,
-                    m_finalProp = aveLightInfo,
-                    m_position = new Vector3(0, 0, 0),
-                    m_probability = 100,
-                    m_repeatDistance = 40
-                });
-
-                centerLane.m_laneProps = ScriptableObject.CreateInstance<NetLaneProps>();
-                centerLane.m_laneProps.m_props = centerLaneProps.ToArray();
-
-                var tempLanes = info.m_lanes.ToList();
-                tempLanes.Add(centerLane);
-                info.m_lanes = tempLanes.ToArray();
-
                 if (bridgePillar != null)
                 {
                     var bridgeAI = info.GetComponent<RoadBridgeAI>();
@@ -159,6 +170,37 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
                     {
                         bridgeAI.m_middlePillarInfo = bridgePillar;
                         bridgeAI.m_middlePillarOffset = 58;
+                    }
+                }
+            }
+
+            // Installing ModernLightingPack.StainlessAvenueLight
+            if (ModernLightingPack.IsPluginActive)
+            {
+                if (version == NetInfoVersion.Ground ||
+                    version == NetInfoVersion.Bridge ||
+                    version == NetInfoVersion.Elevated)
+                {
+                    var aveLightInfo = PrefabCollection<PropInfo>.FindLoaded(ModernLightingPack.MOD_ID + ".StainlessAvenueLight_Data");
+
+                    if (aveLightInfo != null)
+                    {
+                        var medianLane = info.m_lanes.First(l => l.m_laneProps != null && l.m_laneProps.name == MEDIAN_LANE_NAME);
+
+                        var newProp = new NetLaneProps.Prop
+                        {
+                            m_prop = aveLightInfo,
+                            m_finalProp = aveLightInfo,
+                            m_position = new Vector3(0, 0, 0),
+                            m_probability = 100,
+                            m_repeatDistance = 40
+                        };
+
+                        medianLane.m_laneProps.m_props = medianLane
+                            .m_laneProps
+                            .m_props
+                            .Union(newProp)
+                            .ToArray();
                     }
                 }
             }
