@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
-using Transit.Framework.Extenders.PathFinding;
-using Transit.Framework.Unsafe;
+using Transit.Framework.ExtensionPoints.PathFinding;
+using Transit.Framework.Redirection;
 
 namespace Transit.Framework.Hooks.PathFinding
 {

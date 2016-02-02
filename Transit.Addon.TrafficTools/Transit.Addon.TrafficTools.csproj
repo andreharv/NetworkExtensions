@@ -42,12 +42,7 @@
       <HintPath>..\References\ICities.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
       <HintPath>..\References\UnityEngine.dll</HintPath>
       <Private>False</Private>
@@ -70,21 +65,17 @@
     <Compile Include="TrafficTools.Settings.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Transit.Addon.PathFinding\Transit.Addon.PathFinding.csproj">
-      <Project>{20f6a0dc-131c-49cd-9d9b-95b6e41cddff}</Project>
-      <Name>Transit.Addon.TrafficAI</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Transit.Addon\Transit.Addon.csproj">
       <Project>{80c47696-4d41-4bb6-9cae-c477fe528adf}</Project>
       <Name>Transit.Addon</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Transit.Framework.UI\Transit.Framework.UI.csproj">
-      <Project>{5414d25f-e718-48b7-8c23-8dfec246b8c9}</Project>
-      <Name>Transit.Framework.UI</Name>
+    <ProjectReference Include="..\Transit.Framework.ExtensionPoints\Transit.Framework.ExtensionPoints.csproj">
+      <Project>{2E44ECA3-D750-4115-B16B-FCA94C49BBA0}</Project>
+      <Name>Transit.Framework.ExtensionPoints</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Transit.Framework.Unsafe\Transit.Framework.Unsafe.csproj">
+    <ProjectReference Include="..\Transit.Framework.Redirection\Transit.Framework.Redirection.csproj">
       <Project>{7dcc08ef-dc85-47a4-bd6f-79fc52c7ef13}</Project>
-      <Name>Transit.Framework.Unsafe</Name>
+      <Name>Transit.Framework.Redirection</Name>
     </ProjectReference>
     <ProjectReference Include="..\Transit.Framework\Transit.Framework.csproj">
       <Project>{8891467e-c88e-46b0-96f9-4413df6dc205}</Project>

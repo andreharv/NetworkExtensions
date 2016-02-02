@@ -2,7 +2,7 @@
 using System;
 using Transit.Framework.Modularity;
 using Transit.Framework.UI;
-using Transit.Framework.Unsafe;
+using Transit.Framework.Redirection;
 
 namespace Transit.Addon.TrafficTools
 {

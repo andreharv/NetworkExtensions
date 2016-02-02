@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ColossalFramework.UI;
 using JetBrains.Annotations;
-using Transit.Framework.Extenders.UI;
+using Transit.Framework.ExtensionPoints.UI;
 using Transit.Addon.RoadExtensions.Menus;
 using Transit.Framework;
 using Transit.Framework.Builders;

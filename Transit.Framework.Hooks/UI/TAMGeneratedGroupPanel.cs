@@ -6,9 +6,9 @@ using System.Runtime.CompilerServices;
 using ColossalFramework;
 using ColossalFramework.Globalization;
 using ColossalFramework.UI;
-using Transit.Framework.Extenders.UI;
+using Transit.Framework.ExtensionPoints.UI;
 using Transit.Framework;
-using Transit.Framework.Unsafe;
+using Transit.Framework.Redirection;
 using UnityEngine;
 
 namespace Transit.Framework.Hooks.UI

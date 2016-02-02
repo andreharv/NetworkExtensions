@@ -46,7 +46,6 @@
       <HintPath>..\References\ICities.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
@@ -2309,21 +2308,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Transit.Framework.Extenders\Transit.Framework.Extenders.csproj">
+    <ProjectReference Include="..\Transit.Framework.ExtensionPoints\Transit.Framework.ExtensionPoints.csproj">
       <Project>{2E44ECA3-D750-4115-B16B-FCA94C49BBA0}</Project>
-      <Name>Transit.Framework.Extenders</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Transit.Framework.Unsafe\Transit.Framework.Unsafe.csproj">
-      <Project>{7DCC08EF-DC85-47A4-BD6F-79FC52C7EF13}</Project>
-      <Name>Transit.Framework.Unsafe</Name>
+      <Name>Transit.Framework.ExtensionPoints</Name>
     </ProjectReference>
     <ProjectReference Include="..\Transit.Framework\Transit.Framework.csproj">
       <Project>{8891467E-C88E-46B0-96F9-4413DF6DC205}</Project>
       <Name>Transit.Framework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ObjUnity3D\ObjUnity3D.csproj">
-      <Project>{97d70503-6567-41a1-92fc-66d813a53370}</Project>
-      <Name>ObjUnity3D</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

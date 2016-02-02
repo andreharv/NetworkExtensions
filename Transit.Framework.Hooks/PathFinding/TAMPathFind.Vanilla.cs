@@ -3,8 +3,8 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using ColossalFramework;
 using ColossalFramework.Math;
-using Transit.Framework.Extenders.PathFinding;
-using Transit.Framework.Unsafe;
+using Transit.Framework.ExtensionPoints.PathFinding;
+using Transit.Framework.Redirection;
 using UnityEngine;
 
 namespace Transit.Framework.Hooks.PathFinding

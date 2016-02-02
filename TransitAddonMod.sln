@@ -23,7 +23,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjUnity3D", "ObjUnity3D\Ob
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSL-Traffic", "CSL-Traffic\CSL-Traffic.csproj", "{8229C9FB-A4EC-43CD-9539-2B3E391C4C29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Framework.Unsafe", "Transit.Framework.Unsafe\Transit.Framework.Unsafe.csproj", "{7DCC08EF-DC85-47A4-BD6F-79FC52C7EF13}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Framework.Redirection", "Transit.Framework.Redirection\Transit.Framework.Redirection.csproj", "{7DCC08EF-DC85-47A4-BD6F-79FC52C7EF13}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Framework", "Transit.Framework\Transit.Framework.csproj", "{8891467E-C88E-46B0-96F9-4413DF6DC205}"
 EndProject
@@ -41,15 +41,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deploy", "Deploy", "{309D63
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkExtensions.Deploy", "NetworkExtensions.Deploy\NetworkExtensions.Deploy.csproj", "{D2DA5492-3DE6-4E7D-AFF1-BB62C950632D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Framework.UI", "Transit.Framework.UI\Transit.Framework.UI.csproj", "{5414D25F-E718-48B7-8C23-8DFEC246B8C9}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Old", "_Old", "{5CF124A2-EAB5-41D2-9A29-A5BD9663364D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkExtensions", "NetworkExtensions\NetworkExtensions.csproj", "{DCD9DD56-9C49-4BA9-8F37-7567444FE7CB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Framework.Hooks", "Transit.Framework.Hooks\Transit.Framework.Hooks.csproj", "{A700F186-B123-45B5-ADFE-B865DF5A0F39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Framework.Extenders", "Transit.Framework.Extenders\Transit.Framework.Extenders.csproj", "{2E44ECA3-D750-4115-B16B-FCA94C49BBA0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Framework.ExtensionPoints", "Transit.Framework.ExtensionPoints\Transit.Framework.ExtensionPoints.csproj", "{2E44ECA3-D750-4115-B16B-FCA94C49BBA0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Addon.TrafficTools", "Transit.Addon.TrafficTools\Transit.Addon.TrafficTools.csproj", "{98128597-13A2-4C17-96C9-4DFAC0CA0828}"
 EndProject
@@ -98,10 +96,6 @@ Global
 		{D2DA5492-3DE6-4E7D-AFF1-BB62C950632D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2DA5492-3DE6-4E7D-AFF1-BB62C950632D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2DA5492-3DE6-4E7D-AFF1-BB62C950632D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5414D25F-E718-48B7-8C23-8DFEC246B8C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5414D25F-E718-48B7-8C23-8DFEC246B8C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5414D25F-E718-48B7-8C23-8DFEC246B8C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5414D25F-E718-48B7-8C23-8DFEC246B8C9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DCD9DD56-9C49-4BA9-8F37-7567444FE7CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DCD9DD56-9C49-4BA9-8F37-7567444FE7CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCD9DD56-9C49-4BA9-8F37-7567444FE7CB}.Release|Any CPU.ActiveCfg = Release|Any CPU

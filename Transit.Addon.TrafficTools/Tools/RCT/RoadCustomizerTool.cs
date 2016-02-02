@@ -1,4 +1,6 @@
 ﻿using ColossalFramework.Math;
+using Transit.Framework;
+using Transit.Framework.ExtensionPoints.UI;
 using Transit.Framework.UI;
 using UnityEngine;
 
@@ -231,9 +233,9 @@ namespace Transit.Addon.TrafficTools
         public static void Init()
         {
             if (TrafficToolsModule.TrafficToolsOptions != TrafficToolsModule.Options.None)
-            {                
-                GameToolbar.SpawnEntry(typeof(RoadCustomizerToolsMenu), "Road Customizer Tools", null, "ToolbarIcon", true, 11);
-                GameToolbar.SpawnSmallSeparator(12);
+            {
+                GameMainToolbarItemsProvider.SpawnEntry(typeof(RoadCustomizerToolsMenu), "Road Customizer Tools", null, "ToolbarIcon", true, 11);
+                GameMainToolbarItemsProvider.SpawnSmallSeparator(12);
             }
         }
 
