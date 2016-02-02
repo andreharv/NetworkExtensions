@@ -327,7 +327,7 @@
     <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway6L\Textures\Tunnel_Segment__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Props\LightPropsDefinition.xml">
+    <Content Include="LightPropsDefinition.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\Highways\Highway2L\Textures\Ground_Node__MainTex.png">
