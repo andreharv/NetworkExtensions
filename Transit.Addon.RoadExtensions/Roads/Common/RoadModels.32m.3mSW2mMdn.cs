@@ -80,7 +80,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                 case NetInfoVersion.Slope:
                     {
                         var segment0 = info.m_segments[0];
-                        var segment1 = slopeInfo.m_segments[1];
+                        var segment1 = slopeInfo.m_segments[1].ShallowClone();
                         var segment2 = info.m_segments[1];
 
                         var node0 = info.m_nodes[0];
