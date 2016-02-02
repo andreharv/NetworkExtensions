@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LightPropsDefinition>
+  <Props>
+    <Prop name="StainlessAvenueLight">
+      <Effects>
+        <Effect name="Street Light Highway">
+          <Position x="3.4" y="10.32" z="0" />
+          <Direction x="0" y="-1" z="0" />
+        </Effect>
+        <Effect name="Street Light Highway">
+          <Position x="-3.4" y="10.32" z="0" />
+          <Direction x="0" y="-1" z="0" />
+        </Effect>
+      </Effects>
+    </Prop>
+
+  </Props>
+</LightPropsDefinition>

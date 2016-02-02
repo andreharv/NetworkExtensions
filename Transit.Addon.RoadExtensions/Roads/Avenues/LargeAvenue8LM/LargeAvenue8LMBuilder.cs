@@ -6,6 +6,7 @@ using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.Modularity;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
 {
@@ -83,23 +84,11 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
             var leftRoadProps = leftPedLane.m_laneProps.m_props.ToList();
             var rightRoadProps = rightPedLane.m_laneProps.m_props.ToList();
 
-            if (version != NetInfoVersion.Tunnel)
+            if (version == NetInfoVersion.Bridge || version == NetInfoVersion.Elevated)
             {
-                var propsToCenter = new[] {"street light"};
-                leftRoadProps.CenterProps(propsToCenter, leftPedLane.m_position);
-                rightRoadProps.CenterProps(propsToCenter, rightPedLane.m_position);
-
-                var leftStreetLightProp = leftRoadProps.FirstOrDefault(lrp => lrp.m_prop.name.ToLower().Contains("street light"));
-                if (leftStreetLightProp != null)
-                {
-                    leftStreetLightProp.m_repeatDistance = 60;
-                }
-
-                var rightStreetLightProp = rightRoadProps.FirstOrDefault(lrp => lrp.m_prop.name.ToLower().Contains("street light"));
-                if (rightStreetLightProp != null)
-                {
-                    rightStreetLightProp.m_repeatDistance = 60;
-                }
+                var propsToRemove = new[] { "street light" };
+                leftRoadProps.RemoveProps(propsToRemove);
+                rightRoadProps.RemoveProps(propsToRemove);
             }
 
             if (version == NetInfoVersion.Slope)
@@ -137,7 +126,31 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
             {
                 //var bridgePillar = PrefabCollection<BuildingInfo>.FindLoaded(WorkshopId + ".CableStay32m_Data");
                 //if (bridgePillar == null)
-                var bridgePillar = PrefabCollection<BuildingInfo>.FindLoaded("Cable Stay 32m.CableStay32m_Data");
+                var bridgePillar = PrefabCollection<BuildingInfo>.FindLoaded("BridgePillar.CableStay32m_Data");
+                var aveLightInfo = PrefabCollection<PropInfo>.FindLoaded("609644643.StainlessAvenueLight_Data");
+                var centerLaneProps = new List<NetLaneProps.Prop>();
+                var centerLane = new NetInfo.Lane()
+                {
+                    m_position = 0,
+                    m_width = 2,
+                    m_vehicleType = VehicleInfo.VehicleType.None,
+                };
+
+                centerLaneProps.Add(new NetLaneProps.Prop()
+                {
+                    m_prop = aveLightInfo,
+                    m_finalProp = aveLightInfo,
+                    m_position = new Vector3(0, 0, 0),
+                    m_probability = 100,
+                    m_repeatDistance = 40
+                });
+
+                centerLane.m_laneProps = ScriptableObject.CreateInstance<NetLaneProps>();
+                centerLane.m_laneProps.m_props = centerLaneProps.ToArray();
+
+                var tempLanes = info.m_lanes.ToList();
+                tempLanes.Add(centerLane);
+                info.m_lanes = tempLanes.ToArray();
 
                 if (bridgePillar != null)
                 {
