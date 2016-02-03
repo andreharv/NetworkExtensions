@@ -99,35 +99,12 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
             var leftRoadProps = leftPedLane.m_laneProps.m_props.ToList();
             var rightRoadProps = rightPedLane.m_laneProps.m_props.ToList();
 
-            var replaceStreetLight = false;
-            var removeStreetLight = false;
-
-            if (ModernLightingPack.IsPluginActive)
-            {
-                if (version == NetInfoVersion.Ground ||
-                    version == NetInfoVersion.Bridge ||
-                    version == NetInfoVersion.Elevated)
-                {
-                    replaceStreetLight = true;
-                }
-            }
-
-            if (replaceStreetLight ||
-                version == NetInfoVersion.Bridge ||
-                version == NetInfoVersion.Slope)
-            {
-                removeStreetLight = true;
-            }
-
-            if (removeStreetLight)
+            if (version == NetInfoVersion.Slope || 
+                version == NetInfoVersion.Bridge) // They are interferring with the cables
             {
                 var propsToRemove = new[] { "street light" };
                 leftRoadProps.RemoveProps(propsToRemove);
                 rightRoadProps.RemoveProps(propsToRemove);
-            }
-
-            if (version == NetInfoVersion.Slope)
-            {
                 leftRoadProps.AddLeftWallLights(info.m_pavementWidth);
                 rightRoadProps.AddRightWallLights(info.m_pavementWidth);
             }
@@ -175,33 +152,41 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
             }
 
             // Installing ModernLightingPack.StainlessAvenueLight
-            if (ModernLightingPack.IsPluginActive)
+            if (version == NetInfoVersion.Ground ||
+                version == NetInfoVersion.Bridge ||
+                version == NetInfoVersion.Elevated)
             {
-                if (version == NetInfoVersion.Ground ||
-                    version == NetInfoVersion.Bridge ||
-                    version == NetInfoVersion.Elevated)
+                var aveLightInfo = PrefabCollection<PropInfo>.FindLoaded("StreetLight.StainlessAvenueLight_Data");
+
+                if (aveLightInfo != null)
                 {
-                    var aveLightInfo = PrefabCollection<PropInfo>.FindLoaded(ModernLightingPack.MOD_ID + ".StainlessAvenueLight_Data");
+                    var leftPedLane = info.GetLeftRoadShoulder();
+                    var rightPedLane = info.GetRightRoadShoulder();
+                    var medianLane = info.m_lanes.First(l => l.m_laneProps != null && l.m_laneProps.name == MEDIAN_LANE_NAME);
 
-                    if (aveLightInfo != null)
+                    var leftRoadProps = leftPedLane.m_laneProps.m_props.ToList();
+                    var rightRoadProps = rightPedLane.m_laneProps.m_props.ToList();
+
+                    var propsToRemove = new[] { "street light" };
+                    leftRoadProps.RemoveProps(propsToRemove);
+                    rightRoadProps.RemoveProps(propsToRemove);
+
+                    var newProp = new NetLaneProps.Prop
                     {
-                        var medianLane = info.m_lanes.First(l => l.m_laneProps != null && l.m_laneProps.name == MEDIAN_LANE_NAME);
+                        m_prop = aveLightInfo,
+                        m_finalProp = aveLightInfo,
+                        m_position = new Vector3(0, 0, 0),
+                        m_probability = 100,
+                        m_repeatDistance = 40
+                    };
 
-                        var newProp = new NetLaneProps.Prop
-                        {
-                            m_prop = aveLightInfo,
-                            m_finalProp = aveLightInfo,
-                            m_position = new Vector3(0, 0, 0),
-                            m_probability = 100,
-                            m_repeatDistance = 40
-                        };
-
-                        medianLane.m_laneProps.m_props = medianLane
-                            .m_laneProps
-                            .m_props
-                            .Union(newProp)
-                            .ToArray();
-                    }
+                    leftPedLane.m_laneProps.m_props = leftRoadProps.ToArray();
+                    rightPedLane.m_laneProps.m_props = rightRoadProps.ToArray();
+                    medianLane.m_laneProps.m_props = medianLane
+                        .m_laneProps
+                        .m_props
+                        .Union(newProp)
+                        .ToArray();
                 }
             }
         }
