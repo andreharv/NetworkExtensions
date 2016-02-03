@@ -43,6 +43,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
       <HintPath>..\References\UnityEngine.dll</HintPath>
       <Private>False</Private>
@@ -58,7 +59,7 @@
     <Compile Include="Tools\RCT\Modes\TrafficLights\TrafficLightsTool.cs" />
     <Compile Include="Tools\RCT\RoadCustomizerTool.cs" />
     <Compile Include="Tools\RCT\Modes\LaneRouting\LaneRoutingTemplatesSubMenu.cs" />
-    <Compile Include="Tools\RCT\RoadCustomizerToolsMenu.cs" />
+    <Compile Include="Menus\RoadEditorMenu.cs" />
     <Compile Include="Tools\RCT\Modes\TrafficLights\TrafficLightsSubMenu.cs" />
     <Compile Include="TrafficTools.cs" />
     <Compile Include="TrafficTools.Loading.cs" />
@@ -83,6 +84,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Menus\Textures\RoadEditor.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Tools\RCT\UI\laneRestrictor.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -1,5 +1,9 @@
-﻿using ICities;
+﻿using System.Linq;
+using System.Xml;
+using ColossalFramework;
+using ICities;
 using System;
+using Transit.Framework;
 using Transit.Framework.Modularity;
 
 namespace Transit.Addon.TrafficTools
@@ -7,28 +11,37 @@ namespace Transit.Addon.TrafficTools
     public partial class TrafficToolsModule : ModuleBase
     {
         [Flags]
-        public enum Options
+        public enum ModOptions : long
         {
             None = 0,
-
-            LaneRoutingTool         = 1 << 27,
-            LaneRestrictorTool      = 1 << 28,
+            LaneRoutingTool         = 1L << 0,
+            //LaneRestrictorTool      = 1 << 28,
             //LanePrioritiesTool      = 1 << 29,
-            TrafficLightsTool       = 1 << 30
+            //TrafficLightsTool       = 1 << 30
         }
 
-        private static Options s_options = Options.LaneRoutingTool | Options.LaneRestrictorTool/* | Options.TrafficLightsTool*/;
-        public static Options TrafficToolsOptions { get { return s_options; } }
+        private static ModOptions s_activeOptions = ModOptions.LaneRoutingTool /*| Options.LaneRestrictorTool/* | Options.TrafficLightsTool*/;
+        public static ModOptions TrafficToolsOptions { get { return s_activeOptions; } }
 
         public override void OnSettingsUI(UIHelperBase helper)
         {
-            //helper.AddCheckbox(
-            //    "Lane Routing Tool",
-            //    "Allows you to customize entry and exit points in junctions.",
-            //    (TrafficToolsOptions & Options.LaneRoutingTool) != 0,
-            //    OnCheckboxChanged,
-            //    true,
-            //    Options.LaneRoutingTool);
+            helper.AddCheckbox(
+                "Lane Routing Tool",
+                "Allows you to customize entry and exit points in junctions.",
+                s_activeOptions.IsFlagSet(ModOptions.LaneRoutingTool), 
+                isChecked =>
+                {
+                    if (isChecked)
+                    {
+                        s_activeOptions = s_activeOptions | ModOptions.LaneRoutingTool;
+                    }
+                    else
+                    {
+                        s_activeOptions = s_activeOptions & ~ModOptions.LaneRoutingTool;
+                    }
+                    FireSaveSettingsNeeded();
+                },
+                true);
 
             //helper.AddCheckbox(
             //    "Lane Restrictor Tool",
@@ -45,6 +58,59 @@ namespace Transit.Addon.TrafficTools
             //    OnCheckboxChanged,
             //    true,
             //    Options.TrafficLightsTool);
+        }
+
+        public override void OnLoadSettings(XmlElement moduleElement)
+        {
+            foreach (var option in Enum.GetValues(typeof(ModOptions))
+                                       .OfType<ModOptions>()
+                                       .Where(o => o != 0))
+            {
+                bool? isEnabled = null;
+
+                if (moduleElement != null)
+                {
+                    var nodeList = moduleElement.GetElementsByTagName(option.ToString().ToUpper());
+                    if (nodeList.Count > 0)
+                    {
+                        var node = (XmlElement)nodeList[0];
+                        var nodeValue = true;
+
+                        if (bool.TryParse(node.InnerText, out nodeValue))
+                        {
+                            isEnabled = nodeValue;
+                        }
+                    }
+                }
+
+                if (isEnabled == null)
+                {
+                    isEnabled = true;
+                }
+
+                if (isEnabled.Value)
+                {
+                    s_activeOptions = s_activeOptions | option;
+                }
+                else
+                {
+                    s_activeOptions = s_activeOptions & ~option;
+                }
+            }
+        }
+
+        public override void OnSaveSettings(XmlElement moduleElement)
+        {
+            base.OnSaveSettings(moduleElement);
+
+            foreach (var option in Enum.GetValues(typeof(ModOptions))
+                                       .OfType<ModOptions>()
+                                       .Where(o => o != 0))
+            {
+                moduleElement.AppendElement(
+                    option.ToString().ToUpper(),
+                    s_activeOptions.HasFlag(option).ToString());
+            }
         }
     }
 }

@@ -120,7 +120,8 @@ namespace Transit.Framework.UI
             return uiButton;
         }
 
-        protected UIButton AddMode<T>(string name) where T : ToolBase
+        protected UIButton AddTool<T>(string name) 
+            where T : ToolBase
         {
             if (_modesBar == null)
                 CreateModesPanel();
@@ -178,7 +179,7 @@ namespace Transit.Framework.UI
                 }
             };
 
-            modeButton.eventClicked += (UIComponent component, UIMouseEventParameter eventParam) =>
+            modeButton.eventClicked += (component, eventParam) =>
             {
                 onClickAction();
             };
@@ -194,11 +195,11 @@ namespace Transit.Framework.UI
             if (_modesBar != null)
                 return false;
 
-            UIComponent zoningOptionsPanel = this.m_OptionsBar.Find("ZoningOptionPanel");
-            if (zoningOptionsPanel != null)
+            UIComponent templatePanel = this.m_OptionsBar.Find("ZoningOptionPanel");
+            if (templatePanel != null)
             {
-                Vector2 relativePos = zoningOptionsPanel.relativePosition;
-                UIComponent newOptionsPanel = GameObject.Instantiate<UIComponent>(zoningOptionsPanel);
+                Vector2 relativePos = templatePanel.relativePosition;
+                UIComponent newOptionsPanel = GameObject.Instantiate<UIComponent>(templatePanel);
 
                 _modesBar = m_OptionsBar.AttachUIComponent(newOptionsPanel.gameObject) as UITabstrip;
                 _modesBar.cachedName = GetType().Name;
@@ -208,14 +209,14 @@ namespace Transit.Framework.UI
                 GameObject.Destroy(_modesBar.GetComponent<ZoningOptionPanel>());
                 GameObject.Destroy(_modesBar.GetComponent<TutorialUITag>());
 
-                _modeButtonTemplate = zoningOptionsPanel.transform.FindChild("Fill").gameObject;
+                _modeButtonTemplate = templatePanel.transform.FindChild("Fill").gameObject;
 
                 for (int i = _modesBar.transform.childCount - 1; i >= 0; --i)
                 {
                     GameObject.Destroy(_modesBar.transform.GetChild(i).gameObject);
                 }
 
-                GetComponent<UIComponent>().eventVisibilityChanged += (UIComponent component, bool isVisible) =>
+                GetComponent<UIComponent>().eventVisibilityChanged += (component, isVisible) =>
                 {
                     _modesBar.isVisible = isVisible;
                 };

@@ -1,11 +1,11 @@
-﻿using System;
+﻿using ColossalFramework;
+using ColossalFramework.Globalization;
+using ColossalFramework.UI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using ColossalFramework;
-using ColossalFramework.Globalization;
-using ColossalFramework.UI;
 using Transit.Framework.ExtensionPoints.UI;
 using Transit.Framework.Redirection;
 using UnityEngine;
@@ -39,9 +39,9 @@ namespace Transit.Framework.Hooks.UI
                 m_BulldozerButton.tooltip = Locale.Get("MAIN_TOOL", "Bulldozer") + " - " + unlockText;
             }
 
-            var entries = new List<ToolbarItemInfo>
+            var items = new List<IToolbarItemInfo>
             {
-                new ToolbarItemInfo
+                new VanillaToolbarItemInfo
                 {
                     Name = "Zoning",
                     UnlockText = GetUnlockText(UnlockManager.Feature.Zoning),
@@ -49,7 +49,7 @@ namespace Transit.Framework.Hooks.UI
                     Enabled = ZoningPanel.IsZoningPossible(),
                     Order = 20
                 },
-                new ToolbarItemInfo
+                new VanillaToolbarItemInfo
                 {
                     Name = "District",
                     UnlockText = GetUnlockText(UnlockManager.Feature.Districts),
@@ -57,18 +57,14 @@ namespace Transit.Framework.Hooks.UI
                     Enabled = IsUnlocked(UnlockManager.Feature.Districts),
                     Order = 30
                 },
-                new ToolbarItemInfo
-                {
-                    Order = 40,
-                    BigSeparator = true
-                }
+                new ToolbarBigSeparatorItemInfo(40)
             };
 
             int[] format = new int[] { 3, 6, 8 };
             int formatIndex = 0, orderCount = 1;
             for (int i = 0; i < kServices.Length; i++)
             {
-                entries.Add(new ToolbarItemInfo
+                items.Add(new VanillaToolbarItemInfo
                 {
                     Name = kServices[i].enumName,
                     UnlockText = GetUnlockText(kServices[i].enumValue),
@@ -84,18 +80,14 @@ namespace Transit.Framework.Hooks.UI
 
                 if (format.Length > formatIndex && format[formatIndex] == i)
                 {
-                    entries.Add(new ToolbarItemInfo
-                    {
-                        Order = ++orderCount * 10,
-                        SmallSeparator = true
-                    });
+                    items.Add(new ToolbarSmallSeparatorItemInfo(++orderCount * 10));
                     ++formatIndex;
                 }
 
                 ++orderCount;
             }
 
-            entries.Add(new ToolbarItemInfo
+            items.Add(new VanillaToolbarItemInfo
             {
                 Name = "Wonders",
                 UnlockText = GetUnlockText(UnlockManager.Feature.Wonders),
@@ -104,32 +96,28 @@ namespace Transit.Framework.Hooks.UI
                 Order = 180
             });
 
-            entries.Add(new ToolbarItemInfo
-            {
-                Order = 190,
-                BigSeparator = true
-            });
+            items.Add(new ToolbarBigSeparatorItemInfo(190));
+            items.AddRange(GameMainToolbarItemsManager.CustomEntries);
 
-            entries.AddRange(GameMainToolbarItemsProvider.CustomEntries);
-            entries = entries.OrderBy(e => e.Order).ToList();
-
-            foreach (var entry in entries)
+            foreach (var entry in items.OrderBy(e => e.Order))
             {
-                if (entry.SmallSeparator)
+                if (entry is ToolbarSmallSeparatorItemInfo)
                 {
                     SpawnSmallSeparator(uiTabstrip);
                 }
-                else if (entry.BigSeparator)
+                else if (entry is ToolbarBigSeparatorItemInfo)
                 {
                     SpawnSeparator(uiTabstrip);
                 }
-                else if (entry.Type != null)
+                else if (entry is VanillaToolbarItemInfo)
                 {
-                    SpawnEntry(uiTabstrip, entry.Name, "MAIN_TOOL", entry.UnlockText, entry.SpriteBase, entry.Enabled, entry.Type);
+                    var info = entry as VanillaToolbarItemInfo;
+
+                    SpawnSubEntry(uiTabstrip, info.Name, "MAIN_TOOL", info.UnlockText, info.SpriteBase, info.Enabled);
                 }
-                else
+                else if (entry is IToolbarMenuItemInfo) 
                 {
-                    SpawnSubEntry(uiTabstrip, entry.Name, "MAIN_TOOL", entry.UnlockText, entry.SpriteBase, entry.Enabled);
+                    SpawnMenuItemEntry(uiTabstrip, entry as IToolbarMenuItemInfo);
                 }
             }
 
@@ -174,23 +162,9 @@ namespace Transit.Framework.Hooks.UI
             m_IsRefreshing = false;
         }
 
-        internal UIButton SpawnEntry(UITabstrip strip, string name, string localeID, string unlockText, string spriteBase, bool enabled, Type type = null)
+        internal UIButton SpawnMenuItemEntry(UITabstrip strip, IToolbarMenuItemInfo menuItemInfo)
         {
             int objectIndex = (int)typeof(MainToolbar).GetField("m_ObjectIndex", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(this);
-
-            string groupName = name + "Group";
-            if (type == null)
-            {
-                Debug.Log("Custom Entry " + name + " without type");
-                type = Type.GetType(groupName + "Panel");
-            }
-
-
-            if (type != null && !type.IsSubclassOf(typeof(GeneratedGroupPanel)))
-                type = null;
-
-            if (type == null)
-                return null;
 
             UIButton uiButton;
             if (strip.childCount > objectIndex)
@@ -201,40 +175,45 @@ namespace Transit.Framework.Hooks.UI
             {
                 GameObject mainToolbarButtonTemplate = UITemplateManager.GetAsGameObject(kMainToolbarButtonTemplate);
                 GameObject scrollableSubPanelTemplate = UITemplateManager.GetAsGameObject(kScrollableSubPanelTemplate);
-                uiButton = strip.AddTab(name, mainToolbarButtonTemplate, scrollableSubPanelTemplate, new Type[] { type }) as UIButton;
+                uiButton = strip.AddTab(menuItemInfo.Name, mainToolbarButtonTemplate, scrollableSubPanelTemplate, new[] { menuItemInfo.PanelType }) as UIButton;
             }
 
-            uiButton.isEnabled = enabled;
-            uiButton.GetComponent<TutorialUITag>().tutorialTag = name;
+            if (uiButton == null)
+            {
+                return null;
+            }
 
-            GeneratedGroupPanel generatedGroupPanel = strip.GetComponentInContainer(uiButton, type) as GeneratedGroupPanel;
+            uiButton.isEnabled = true;
+            uiButton.GetComponent<TutorialUITag>().tutorialTag = menuItemInfo.Name;
+
+            var generatedGroupPanel = strip.GetComponentInContainer(uiButton, menuItemInfo.PanelType) as GeneratedGroupPanel;
             if (generatedGroupPanel != null)
             {
                 generatedGroupPanel.component.isInteractive = true;
                 generatedGroupPanel.m_OptionsBar = m_OptionsBar;
                 generatedGroupPanel.m_DefaultInfoTooltipAtlas = m_DefaultInfoTooltipAtlas;
-                if (enabled)
-                    generatedGroupPanel.RefreshPanel();
+                generatedGroupPanel.RefreshPanel();
             }
 
+            // Do something
 
-            uiButton.normalBgSprite = GetBackgroundSprite(uiButton, spriteBase, name, "Normal");
-            uiButton.focusedBgSprite = GetBackgroundSprite(uiButton, spriteBase, name, "Focused");
-            uiButton.hoveredBgSprite = GetBackgroundSprite(uiButton, spriteBase, name, "Hovered");
-            uiButton.pressedBgSprite = GetBackgroundSprite(uiButton, spriteBase, name, "Pressed");
-            uiButton.disabledBgSprite = GetBackgroundSprite(uiButton, spriteBase, name, "Disabled");
+            //uiButton.normalBgSprite = GetBackgroundSprite(uiButton, spriteBase, name, "Normal");
+            //uiButton.focusedBgSprite = GetBackgroundSprite(uiButton, spriteBase, name, "Focused");
+            //uiButton.hoveredBgSprite = GetBackgroundSprite(uiButton, spriteBase, name, "Hovered");
+            //uiButton.pressedBgSprite = GetBackgroundSprite(uiButton, spriteBase, name, "Pressed");
+            //uiButton.disabledBgSprite = GetBackgroundSprite(uiButton, spriteBase, name, "Disabled");
 
-            string fgSpriteBase = spriteBase + name;
-            uiButton.normalFgSprite = fgSpriteBase;
-            uiButton.focusedFgSprite = fgSpriteBase + "Focused";
-            uiButton.hoveredFgSprite = fgSpriteBase + "Hovered";
-            uiButton.pressedFgSprite = fgSpriteBase + "Pressed";
-            uiButton.disabledFgSprite = fgSpriteBase + "Disabled";
+            //string fgSpriteBase = spriteBase + name;
+            //uiButton.normalFgSprite = fgSpriteBase;
+            //uiButton.focusedFgSprite = fgSpriteBase + "Focused";
+            //uiButton.hoveredFgSprite = fgSpriteBase + "Hovered";
+            //uiButton.pressedFgSprite = fgSpriteBase + "Pressed";
+            //uiButton.disabledFgSprite = fgSpriteBase + "Disabled";
 
-            if (unlockText != null)
-                uiButton.tooltip = Locale.Get(localeID, name) + " - " + unlockText;
-            else
-                uiButton.tooltip = Locale.Get(localeID, name);
+            //if (unlockText != null)
+            //    uiButton.tooltip = Locale.Get(localeID, name) + " - " + unlockText;
+            //else
+            //    uiButton.tooltip = Locale.Get(localeID, name);
 
             typeof(MainToolbar).GetField("m_ObjectIndex", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(this, objectIndex + 1);
             return uiButton;

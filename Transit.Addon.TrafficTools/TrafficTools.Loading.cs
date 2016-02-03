@@ -1,7 +1,6 @@
 ﻿using ICities;
-using System;
-using Transit.Framework.Modularity;
-using Transit.Framework.UI;
+using Transit.Addon.TrafficTools.Menus;
+using Transit.Framework.ExtensionPoints.UI;
 using Transit.Framework.Redirection;
 
 namespace Transit.Addon.TrafficTools
@@ -10,7 +9,23 @@ namespace Transit.Addon.TrafficTools
     {
         public override void OnCreated(ILoading loading)
         {
-            RoadCustomizerTool.Init();
+            base.OnCreated(loading);
+
+            if (TrafficToolsOptions != ModOptions.None)
+            {
+                GameMainToolbarItemsManager.AddItem<RoadEditorToolbarItemInfo>();
+                GameMainToolbarItemsManager.AddSmallSeparator(12);
+            }
+        }
+
+        public override void OnReleased()
+        {
+            base.OnReleased();
+
+            // Not required
+            //ToolsModifierControl.toolController.RemoveTool<LaneRoutingTool>();
+            //ToolsModifierControl.toolController.RemoveTool<LaneRestrictorTool>();
+            //ToolsModifierControl.toolController.RemoveTool<TrafficLightsTool>();
         }
 
         public override void OnLevelLoaded(LoadMode mode)
@@ -22,11 +37,5 @@ namespace Transit.Addon.TrafficTools
         {
             Redirector.RevertRedirections();
         }
-
-        // Not sure this is needed
-        //public override void OnReleased()
-        //{
-        //    RoadCustomizerTool.CleanUp();
-        //}
     }
 }

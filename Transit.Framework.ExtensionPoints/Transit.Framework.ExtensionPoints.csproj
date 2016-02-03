@@ -62,7 +62,13 @@
     <Compile Include="UI\AtlasProvider.cs" />
     <Compile Include="UI\CategoryOrderProvider.cs" />
     <Compile Include="UI\ExtendedMenuProvider.cs" />
-    <Compile Include="UI\GameMainToolbarItemsProvider.cs" />
+    <Compile Include="UI\GameMainToolbarItemsManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Transit.Framework\Transit.Framework.csproj">
+      <Project>{8891467E-C88E-46B0-96F9-4413DF6DC205}</Project>
+      <Name>Transit.Framework</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

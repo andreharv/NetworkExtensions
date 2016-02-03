@@ -227,25 +227,5 @@ namespace Transit.Addon.TrafficTools
         }
 
         #endregion
-
-        #region Initialization
-
-        public static void Init()
-        {
-            if (TrafficToolsModule.TrafficToolsOptions != TrafficToolsModule.Options.None)
-            {
-                GameMainToolbarItemsProvider.SpawnEntry(typeof(RoadCustomizerToolsMenu), "Road Customizer Tools", null, "ToolbarIcon", true, 11);
-                GameMainToolbarItemsProvider.SpawnSmallSeparator(12);
-            }
-        }
-
-        public static void CleanUp()
-        {
-            ToolsModifierControl.toolController.RemoveTool<LaneRoutingTool>();
-            ToolsModifierControl.toolController.RemoveTool<LaneRestrictorTool>();
-            ToolsModifierControl.toolController.RemoveTool<TrafficLightsTool>();
-        }
-
-        #endregion
     }
 }

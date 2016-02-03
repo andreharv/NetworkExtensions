@@ -16,7 +16,7 @@ namespace Transit.Framework.Hooks
             Redirector.RevertRedirections();
 
             // TODO: do this every time the mod is "Released" instead of "Disabled"
-            GameMainToolbarItemsProvider.Reset();
+            GameMainToolbarItemsManager.Reset();
         }
     }
 }
