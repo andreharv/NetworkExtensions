@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace Transit.Framework.Hooks.UI
 {
-    public class TAMGameMainToolbar : GameMainToolbar
+    public class TAMGameMainToolbar : MainToolbar
     {
         private static int s_lastSelection = -1;
 

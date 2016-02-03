@@ -39,6 +39,10 @@
       <Project>{4499042e-dcd1-4f9f-a3c8-4830108169cd}</Project>
       <Name>Transit.Addon.Tools</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Transit.Addon.TrafficTools\Transit.Addon.TrafficTools.csproj">
+      <Project>{98128597-13a2-4c17-96c9-4dfac0ca0828}</Project>
+      <Name>Transit.Addon.TrafficTools</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Transit.Addon\Transit.Addon.csproj">
       <Project>{80C47696-4D41-4BB6-9CAE-C477FE528ADF}</Project>
       <Name>Transit.Addon</Name>
