@@ -156,7 +156,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
                 version == NetInfoVersion.Bridge ||
                 version == NetInfoVersion.Elevated)
             {
-                var aveLightInfo = PrefabCollection<PropInfo>.FindLoaded("StreetLight.StainlessAvenueLight_Data");
+                var aveLightInfo = PrefabCollection<PropInfo>.FindLoaded("609644643.StainlessAvenueLight_Data");
 
                 if (aveLightInfo != null)
                 {
