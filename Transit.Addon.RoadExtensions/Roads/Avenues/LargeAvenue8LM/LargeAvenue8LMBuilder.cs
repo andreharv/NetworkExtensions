@@ -105,6 +105,10 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
                 var propsToRemove = new[] { "street light" };
                 leftRoadProps.RemoveProps(propsToRemove);
                 rightRoadProps.RemoveProps(propsToRemove);
+            }
+
+            if (version == NetInfoVersion.Slope)
+            {
                 leftRoadProps.AddLeftWallLights(info.m_pavementWidth);
                 rightRoadProps.AddRightWallLights(info.m_pavementWidth);
             }
