@@ -96,6 +96,9 @@
     <Compile Include="UI\ToolbarSubMenu.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UI\Toolbar\Items\IToolbarItemInfo.cs" />
+    <Compile Include="UI\Toolbar\Items\IToolbarMenuItemInfo.cs" />
+    <Compile Include="UI\Toolbar\Items\ToolbarSeparatorItemInfo.cs" />
     <Compile Include="_Extensions\AppDomainExtensions.cs" />
     <Compile Include="_Extensions\AssetManagerExtensions.cs" />
     <Compile Include="_Extensions\CloningExtensions.cs" />

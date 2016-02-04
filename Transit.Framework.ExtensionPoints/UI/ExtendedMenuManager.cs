@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using ColossalFramework;
 
 namespace Transit.Framework.ExtensionPoints.UI
 {
-    public class ExtendedMenuProvider : Singleton<ExtendedMenuProvider>
+    public class ExtendedMenuManager
     {
-        private readonly IDictionary<string, ICollection<string>> _extendedMenus = new Dictionary<string, ICollection<string>>(StringComparer.InvariantCultureIgnoreCase);
+        private static readonly IDictionary<string, ICollection<string>> _extendedMenus = new Dictionary<string, ICollection<string>>(StringComparer.InvariantCultureIgnoreCase);
 
-        public void RegisterNewCategory(string newCategory, GeneratedGroupPanel.GroupFilter group, ItemClass.Service service)
+        public static void RegisterNewCategory(string newCategory, GeneratedGroupPanel.GroupFilter group, ItemClass.Service service)
         {
             var id = group + "." + service;
 
@@ -23,7 +22,7 @@ namespace Transit.Framework.ExtensionPoints.UI
             }
         }
 
-        public IEnumerable<string> GetNewCategories(GeneratedGroupPanel.GroupFilter group, ItemClass.Service service)
+        public static IEnumerable<string> GetNewCategories(GeneratedGroupPanel.GroupFilter group, ItemClass.Service service)
         {
             var id = group + "." + service;
 

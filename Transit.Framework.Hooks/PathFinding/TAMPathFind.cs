@@ -16,9 +16,9 @@ namespace Transit.Framework.Hooks.PathFinding
             IPathFindingImplementation pathFinder;
             if (!s_pathFinds.TryGetValue(threadId, out pathFinder))
             {
-                if (PathFindingProvider.instance.HasCustomPathFinding())
+                if (PathFindingManager.instance.HasCustomPathFinding())
                 {
-                    pathFinder = PathFindingProvider.instance.CreateCustomPathFinding();
+                    pathFinder = PathFindingManager.instance.CreateCustomPathFinding();
                 }
                 else
                 {

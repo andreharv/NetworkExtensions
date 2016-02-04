@@ -1246,11 +1246,11 @@ namespace Transit.Framework.Hooks.PathFinding
         private float GetLaneSpeedLimit(NetInfo.Lane lane, uint laneId)
         {
             //return LanesManager.GetLaneSpeed(laneId);
-            if (PathFindingProvider.instance.HasCustomLaneSpeedManager())
+            if (PathFindingManager.instance.HasCustomLaneSpeed())
             {
-                return PathFindingProvider
+                return PathFindingManager
                     .instance
-                    .GetCustomLaneSpeedManager()
+                    .GetCustomLaneSpeed()
                     .GetLaneSpeedLimit(lane, laneId);
             }
 
@@ -1263,11 +1263,11 @@ namespace Transit.Framework.Hooks.PathFinding
             ////&& 
             ////LanesManager.CanUseLane(this.m_vehicleType, num2) && 
             ////LanesManager.CanUseLane(this.m_vehicleType, item.m_laneID)
-            if (PathFindingProvider.instance.HasCustomLaneRoutingManager())
+            if (PathFindingManager.instance.HasCustomLaneRouting())
             {
-                return PathFindingProvider
+                return PathFindingManager
                     .instance
-                    .GetCustomLaneRoutingManager()
+                    .GetCustomLaneRouting()
                     .CanLanesConnect(laneId1, laneId2);
             }
 

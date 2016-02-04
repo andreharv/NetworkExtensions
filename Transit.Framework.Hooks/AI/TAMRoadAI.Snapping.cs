@@ -8,10 +8,9 @@ namespace Transit.Framework.Hooks.AI
         [RedirectFrom(typeof (RoadAI))]
         public override float GetLengthSnap()
         {
-            if (RoadSnappingModeProvider.instance.HasCustomSnapping(this.m_info.name))
+            if (RoadSnappingModeManager.HasCustomSnapping(this.m_info.name))
             {
-                return RoadSnappingModeProvider
-                    .instance
+                return RoadSnappingModeManager
                     .GetCustomSnapping(this.m_info.name)
                     .GetLengthSnap();
             }

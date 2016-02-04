@@ -17,8 +17,8 @@ namespace Transit.Addon.Tools
 
             if (_isReleased)
             {
-                PathFindingProvider.instance.SetCustomLaneRoutingManager(LanesManager.instance);
-                PathFindingProvider.instance.SetCustomLaneSpeedManager(LanesManager.instance);
+                PathFindingManager.instance.DefineCustomLaneRouting(LanesManager.instance);
+                PathFindingManager.instance.DefineCustomLaneSpeed(LanesManager.instance);
 
                 if (AssetPath != null && AssetPath != Assets.PATH_NOT_FOUND)
                 {
@@ -42,8 +42,8 @@ namespace Transit.Addon.Tools
                 return;
             }
 
-            PathFindingProvider.instance.DisableCustomLaneRoutingManager();
-            PathFindingProvider.instance.DisableCustomLaneSpeedManager();
+            PathFindingManager.instance.DisableCustomLaneRouting();
+            PathFindingManager.instance.DisableCustomLaneSpeed();
 
             if (_initializer != null)
             {

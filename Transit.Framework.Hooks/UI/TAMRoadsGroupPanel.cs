@@ -8,7 +8,7 @@ namespace Transit.Framework.Hooks.UI
         [RedirectFrom(typeof(RoadsGroupPanel))]
         protected override int GetCategoryOrder(string name)
         {
-            int? order = CategoryOrderProvider.instance.GetOrder(name);
+            int? order = RoadCategoryOrderManager.GetOrder(name);
 
             if (order != null)
             {

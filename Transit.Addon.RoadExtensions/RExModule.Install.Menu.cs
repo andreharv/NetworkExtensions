@@ -34,10 +34,10 @@ namespace Transit.Addon.RoadExtensions
                     return;
                 }
 
-                CategoryOrderProvider.instance.RegisterCategory(RExExtendedMenus.ROADS_TINY, 5);
-                CategoryOrderProvider.instance.RegisterCategory(RExExtendedMenus.ROADS_SMALL_HV, 20);
-                CategoryOrderProvider.instance.RegisterCategory(RExExtendedMenus.ROADS_BUSWAYS, 65);
-                CategoryOrderProvider.instance.RegisterCategory(RExExtendedMenus.ROADS_PEDESTRIANS, 75);
+                RoadCategoryOrderManager.RegisterCategory(RExExtendedMenus.ROADS_TINY, 5);
+                RoadCategoryOrderManager.RegisterCategory(RExExtendedMenus.ROADS_SMALL_HV, 20);
+                RoadCategoryOrderManager.RegisterCategory(RExExtendedMenus.ROADS_BUSWAYS, 65);
+                RoadCategoryOrderManager.RegisterCategory(RExExtendedMenus.ROADS_PEDESTRIANS, 75);
 
                 var categories = host.Parts
                     .OfType<IMenuItemBuilder>()
@@ -49,7 +49,7 @@ namespace Transit.Addon.RoadExtensions
                 
                 foreach (var cat in categories)
                 {
-                    ExtendedMenuProvider.instance.RegisterNewCategory(cat, GeneratedGroupPanel.GroupFilter.Net, ItemClass.Service.Road);
+                    ExtendedMenuManager.RegisterNewCategory(cat, GeneratedGroupPanel.GroupFilter.Net, ItemClass.Service.Road);
                 }
                 
                 Loading.QueueAction(() =>
@@ -58,10 +58,10 @@ namespace Transit.Addon.RoadExtensions
                     {
                         var atlas = AssetManager.instance.LoadAdditionnalMenusThumbnails();
 
-                        AtlasProvider.instance.RegisterCustomAtlas(RExExtendedMenus.ROADS_TINY, atlas);
-                        AtlasProvider.instance.RegisterCustomAtlas(RExExtendedMenus.ROADS_SMALL_HV, atlas);
-                        AtlasProvider.instance.RegisterCustomAtlas(RExExtendedMenus.ROADS_BUSWAYS, atlas);
-                        AtlasProvider.instance.RegisterCustomAtlas(RExExtendedMenus.ROADS_PEDESTRIANS, atlas);
+                        AtlasProvider.RegisterCustomAtlas(RExExtendedMenus.ROADS_TINY, atlas);
+                        AtlasProvider.RegisterCustomAtlas(RExExtendedMenus.ROADS_SMALL_HV, atlas);
+                        AtlasProvider.RegisterCustomAtlas(RExExtendedMenus.ROADS_BUSWAYS, atlas);
+                        AtlasProvider.RegisterCustomAtlas(RExExtendedMenus.ROADS_PEDESTRIANS, atlas);
                     }
                     catch (Exception ex)
                     {

@@ -1,27 +1,27 @@
 ﻿
 namespace Transit.Framework.ExtensionPoints.PathFinding
 {
-    public partial class PathFindingProvider
+    public partial class PathFindingManager
     {
         private ILaneSpeedManager _laneSpeedManager = null;
 
-        public void SetCustomLaneSpeedManager<T>(T managerInstance)
+        public void DefineCustomLaneSpeed<T>(T managerInstance)
             where T : ILaneSpeedManager
         {
             _laneSpeedManager = managerInstance;
         }
 
-        public void DisableCustomLaneSpeedManager()
+        public void DisableCustomLaneSpeed()
         {
             _laneSpeedManager = null;
         }
 
-        public bool HasCustomLaneSpeedManager()
+        public bool HasCustomLaneSpeed()
         {
             return _laneSpeedManager != null;
         }
 
-        public ILaneSpeedManager GetCustomLaneSpeedManager()
+        public ILaneSpeedManager GetCustomLaneSpeed()
         {
             return _laneSpeedManager;
         }

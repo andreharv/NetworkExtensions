@@ -8,12 +8,22 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Transit.Framework.ExtensionPoints.UI;
 using Transit.Framework.Redirection;
+using Transit.Framework.UI.Toolbar.Items;
 using UnityEngine;
 
 namespace Transit.Framework.Hooks.UI
 {
     public class TAMGameMainToolbar : MainToolbar
     {
+        private class VanillaToolbarItemInfo : IToolbarItemInfo
+        {
+            public string Name { get; set; }
+            public string UnlockText { get; set; }
+            public string SpriteBase { get; set; }
+            public bool Enabled { get; set; }
+            public int Order { get; set; }
+        }
+
         private static int s_lastSelection = -1;
 
         private static readonly PositionData<ItemClass.Service>[] kServices = Utils.GetOrderedEnumData<ItemClass.Service>("Game");
@@ -60,7 +70,7 @@ namespace Transit.Framework.Hooks.UI
                 new ToolbarBigSeparatorItemInfo(40)
             };
 
-            int[] format = new int[] { 3, 6, 8 };
+            int[] format = { 3, 6, 8 };
             int formatIndex = 0, orderCount = 1;
             for (int i = 0; i < kServices.Length; i++)
             {
@@ -126,10 +136,10 @@ namespace Transit.Framework.Hooks.UI
             {
                 UIButton uIButton = SpawnButtonEntry(uiTabstrip, "Policies", "MAIN_TOOL", GetUnlockText(UnlockManager.Feature.Policies), "ToolbarIcon", IsUnlocked(UnlockManager.Feature.Policies));
                 policiesIndex = uIButton.zOrder;
-                ToolsModifierControl.policiesPanel.SetParentButton(uIButton);
+                policiesPanel.SetParentButton(uIButton);
                 UIButton uIButton2 = SpawnButtonEntry(uiTabstrip, "Money", "MAIN_TOOL", GetUnlockText(UnlockManager.Feature.Economy), "ToolbarIcon", IsUnlocked(UnlockManager.Feature.Economy));
                 economyIndex = uIButton2.zOrder;
-                ToolsModifierControl.economyPanel.SetParentButton(uIButton2);
+                economyPanel.SetParentButton(uIButton2);
             }
             else
             {
@@ -144,8 +154,8 @@ namespace Transit.Framework.Hooks.UI
             FieldInfo m_eventsRegistered = typeof(GameMainToolbar).GetField("m_EventsRegistered", BindingFlags.Instance | BindingFlags.NonPublic);
             if (!(bool)m_eventsRegistered.GetValue(this))
             {
-                uiTabstrip.tabPages.components[policiesIndex].eventVisibilityChanged += new PropertyChangedEventHandler<bool>(this.ShowHidePoliciesPanel);
-                uiTabstrip.tabPages.components[economyIndex].eventVisibilityChanged += new PropertyChangedEventHandler<bool>(this.ShowHideEconomyPanel);
+                uiTabstrip.tabPages.components[policiesIndex].eventVisibilityChanged += this.ShowHidePoliciesPanel;
+                uiTabstrip.tabPages.components[economyIndex].eventVisibilityChanged += this.ShowHideEconomyPanel;
             }
             m_eventsRegistered.SetValue(this, true);
 

@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using ColossalFramework;
 
 namespace Transit.Framework.ExtensionPoints.UI
 {
-    public class CategoryOrderProvider : Singleton<CategoryOrderProvider>
+    public class RoadCategoryOrderManager
     {
-        private readonly IDictionary<string, int> _categoryOrders = new Dictionary<string, int>(StringComparer.InvariantCultureIgnoreCase);
+        private static readonly IDictionary<string, int> _categoryOrders = new Dictionary<string, int>(StringComparer.InvariantCultureIgnoreCase);
 
-        public void RegisterCategory(string category, int order)
+        public static void RegisterCategory(string category, int order)
         {
             _categoryOrders[category] = order;
         }
 
-        public int? GetOrder(string category)
+        public static int? GetOrder(string category)
         {
             if (!_categoryOrders.ContainsKey(category))
             {

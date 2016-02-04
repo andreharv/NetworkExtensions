@@ -1,17 +1,12 @@
-﻿using System;
+﻿using ICities;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using ICities;
-using Transit.Framework.ExtensionPoints.AI;
-using Transit.Framework.ExtensionPoints.UI;
 using Transit.Addon.RoadExtensions.AI;
-using Transit.Addon.RoadExtensions.Menus;
-using Transit.Framework;
-using Transit.Framework.Builders;
-using Transit.Framework.Modularity;
-using UnityEngine;
 using Transit.Addon.RoadExtensions.Roads.TinyRoads.Alley2L;
 using Transit.Addon.RoadExtensions.Roads.TinyRoads.OneWay1L;
+using Transit.Framework;
+using Transit.Framework.ExtensionPoints.AI;
+using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace Transit.Addon.RoadExtensions
@@ -37,11 +32,11 @@ namespace Transit.Addon.RoadExtensions
 
             if (_isReleased)
             {
-                ZoneBlocksCreatorProvider.instance.RegisterCustomCreator<TinyRoadZoneBlocksCreator>(Alley2LBuilder.NAME);
-                ZoneBlocksCreatorProvider.instance.RegisterCustomCreator<TinyRoadZoneBlocksCreator>(OneWay1LBuilder.NAME);
+                RoadZoneBlocksCreationManager.RegisterCustomCreator<TinyRoadZoneBlocksCreator>(Alley2LBuilder.NAME);
+                RoadZoneBlocksCreationManager.RegisterCustomCreator<TinyRoadZoneBlocksCreator>(OneWay1LBuilder.NAME);
 
-                RoadSnappingModeProvider.instance.RegisterCustomSnapping<TinyRoadSnappingMode>(Alley2LBuilder.NAME);
-                RoadSnappingModeProvider.instance.RegisterCustomSnapping<TinyRoadSnappingMode>(OneWay1LBuilder.NAME);
+                RoadSnappingModeManager.RegisterCustomSnapping<TinyRoadSnappingMode>(Alley2LBuilder.NAME);
+                RoadSnappingModeManager.RegisterCustomSnapping<TinyRoadSnappingMode>(OneWay1LBuilder.NAME);
 
                 if (AssetPath != null && AssetPath != Assets.PATH_NOT_FOUND)
                 {

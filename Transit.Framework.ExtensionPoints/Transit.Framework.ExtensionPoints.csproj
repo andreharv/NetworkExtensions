@@ -49,19 +49,19 @@
   <ItemGroup>
     <Compile Include="AI\IRoadSnappingMode.cs" />
     <Compile Include="AI\IZoneBlocksCreator.cs" />
-    <Compile Include="AI\RoadSnappingModeProvider.cs" />
-    <Compile Include="AI\ZoneBlocksCreatorProvider.cs" />
+    <Compile Include="AI\RoadSnappingModeManager.cs" />
+    <Compile Include="AI\RoadZoneBlocksCreationManager.cs" />
     <Compile Include="AI\ZoneBlocksOffset.cs" />
     <Compile Include="PathFinding\ILaneRoutingManager.cs" />
     <Compile Include="PathFinding\ILaneSpeedManager.cs" />
     <Compile Include="PathFinding\IPathFindingImplementation.cs" />
-    <Compile Include="PathFinding\PathFindingProvider.cs" />
-    <Compile Include="PathFinding\PathFindingProvider.LaneRouting.cs" />
-    <Compile Include="PathFinding\PathFindingProvider.LaneSpeed.cs" />
+    <Compile Include="PathFinding\PathFindingManager.cs" />
+    <Compile Include="PathFinding\PathFindingManager.LaneRouting.cs" />
+    <Compile Include="PathFinding\PathFindingManager.LaneSpeed.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\AtlasProvider.cs" />
-    <Compile Include="UI\CategoryOrderProvider.cs" />
-    <Compile Include="UI\ExtendedMenuProvider.cs" />
+    <Compile Include="UI\RoadCategoryOrderManager.cs" />
+    <Compile Include="UI\ExtendedMenuManager.cs" />
     <Compile Include="UI\GameMainToolbarItemsManager.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -16,10 +16,9 @@ namespace Transit.Framework.Hooks.AI
         {
             try
             {
-                if (ZoneBlocksCreatorProvider.instance.HasCustomCreator(this.m_info.name))
+                if (RoadZoneBlocksCreationManager.HasCustomCreator(this.m_info.name))
                 {
-                    ZoneBlocksCreatorProvider
-                        .instance
+                    RoadZoneBlocksCreationManager
                         .GetCustomCreator(this.m_info.name)
                         .CreateZoneBlocks(this.m_info, segment, ref data);
                 }

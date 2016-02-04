@@ -66,9 +66,9 @@ namespace Transit.Framework.Hooks.UI
             }
 
             // TAM Edit Start
-            if (AtlasProvider.instance.HasCustomAtlas(category))
+            if (AtlasProvider.HasCustomAtlas(category))
             {
-                uIButton.atlas = AtlasProvider.instance.GetCustomAtlas(category);
+                uIButton.atlas = AtlasProvider.GetCustomAtlas(category);
             }
             // TAM Edit End
 
@@ -184,7 +184,7 @@ namespace Transit.Framework.Hooks.UI
                 }
             }
 
-            foreach (var cat in ExtendedMenuProvider.instance.GetNewCategories(GroupFilter.Net, service))
+            foreach (var cat in ExtendedMenuManager.GetNewCategories(GroupFilter.Net, service))
             {
                 yield return cat;
             }

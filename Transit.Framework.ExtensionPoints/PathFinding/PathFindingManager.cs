@@ -3,11 +3,11 @@ using System;
 
 namespace Transit.Framework.ExtensionPoints.PathFinding
 {
-    public partial class PathFindingProvider : Singleton<PathFindingProvider>
+    public partial class PathFindingManager : Singleton<PathFindingManager>
     {
         private Type _pathFindType = null;
 
-        public void SetCustomPathFinding<T>()
+        public void DefineCustomPathFinding<T>()
             where T : IPathFindingImplementation, new()
         {
             _pathFindType = typeof(T);
