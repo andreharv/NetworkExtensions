@@ -9,17 +9,15 @@ using System.Runtime.CompilerServices;
 using Transit.Framework.ExtensionPoints.UI;
 using Transit.Framework.Redirection;
 using Transit.Framework.UI.Toolbar.Items;
-using UnityEngine;
 
 namespace Transit.Framework.Hooks.UI
 {
-    public class TAMGameMainToolbar : MainToolbar
+    public partial class TAMGameMainToolbar : MainToolbar
     {
         private class VanillaToolbarItemInfo : IToolbarItemInfo
         {
             public string Name { get; set; }
             public string UnlockText { get; set; }
-            public string SpriteBase { get; set; }
             public bool Enabled { get; set; }
             public int Order { get; set; }
         }
@@ -55,7 +53,6 @@ namespace Transit.Framework.Hooks.UI
                 {
                     Name = "Zoning",
                     UnlockText = GetUnlockText(UnlockManager.Feature.Zoning),
-                    SpriteBase = "ToolbarIcon",
                     Enabled = ZoningPanel.IsZoningPossible(),
                     Order = 20
                 },
@@ -63,7 +60,6 @@ namespace Transit.Framework.Hooks.UI
                 {
                     Name = "District",
                     UnlockText = GetUnlockText(UnlockManager.Feature.Districts),
-                    SpriteBase = "ToolbarIcon",
                     Enabled = IsUnlocked(UnlockManager.Feature.Districts),
                     Order = 30
                 },
@@ -78,7 +74,6 @@ namespace Transit.Framework.Hooks.UI
                 {
                     Name = kServices[i].enumName,
                     UnlockText = GetUnlockText(kServices[i].enumValue),
-                    SpriteBase = "ToolbarIcon",
                     Enabled = IsUnlocked(kServices[i].enumValue),
                     Order = orderCount * 10
                 });
@@ -101,7 +96,6 @@ namespace Transit.Framework.Hooks.UI
             {
                 Name = "Wonders",
                 UnlockText = GetUnlockText(UnlockManager.Feature.Wonders),
-                SpriteBase = "ToolbarIcon",
                 Enabled = IsUnlocked(UnlockManager.Feature.Wonders),
                 Order = 180
             });
@@ -123,11 +117,13 @@ namespace Transit.Framework.Hooks.UI
                 {
                     var info = entry as VanillaToolbarItemInfo;
 
-                    SpawnSubEntry(uiTabstrip, info.Name, "MAIN_TOOL", info.UnlockText, info.SpriteBase, info.Enabled);
+                    SpawnSubEntry(uiTabstrip, info.Name, "MAIN_TOOL", info.UnlockText, "ToolbarIcon", info.Enabled);
                 }
-                else if (entry is IToolbarMenuItemInfo) 
+                else if (entry is IToolbarMenuItemInfo)
                 {
-                    SpawnMenuItemEntry(uiTabstrip, entry as IToolbarMenuItemInfo);
+                    var info = entry as IToolbarMenuItemInfo;
+
+                    SpawnSubEntry(uiTabstrip, info.Name, "MAIN_TOOL", string.Empty, "ToolbarIcon", true, info.PanelType);
                 }
             }
 
@@ -170,63 +166,6 @@ namespace Transit.Framework.Hooks.UI
             typeof(GameMainToolbar).GetField("m_EconomyIndex", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(this, economyIndex);
 
             m_IsRefreshing = false;
-        }
-
-        internal UIButton SpawnMenuItemEntry(UITabstrip strip, IToolbarMenuItemInfo menuItemInfo)
-        {
-            int objectIndex = (int)typeof(MainToolbar).GetField("m_ObjectIndex", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(this);
-
-            UIButton uiButton;
-            if (strip.childCount > objectIndex)
-            {
-                uiButton = strip.components[objectIndex] as UIButton;
-            }
-            else
-            {
-                GameObject mainToolbarButtonTemplate = UITemplateManager.GetAsGameObject(kMainToolbarButtonTemplate);
-                GameObject scrollableSubPanelTemplate = UITemplateManager.GetAsGameObject(kScrollableSubPanelTemplate);
-                uiButton = strip.AddTab(menuItemInfo.Name, mainToolbarButtonTemplate, scrollableSubPanelTemplate, new[] { menuItemInfo.PanelType }) as UIButton;
-            }
-
-            if (uiButton == null)
-            {
-                return null;
-            }
-
-            uiButton.isEnabled = true;
-            uiButton.GetComponent<TutorialUITag>().tutorialTag = menuItemInfo.Name;
-
-            var generatedGroupPanel = strip.GetComponentInContainer(uiButton, menuItemInfo.PanelType) as GeneratedGroupPanel;
-            if (generatedGroupPanel != null)
-            {
-                generatedGroupPanel.component.isInteractive = true;
-                generatedGroupPanel.m_OptionsBar = m_OptionsBar;
-                generatedGroupPanel.m_DefaultInfoTooltipAtlas = m_DefaultInfoTooltipAtlas;
-                generatedGroupPanel.RefreshPanel();
-            }
-
-            // Do something
-
-            //uiButton.normalBgSprite = GetBackgroundSprite(uiButton, spriteBase, name, "Normal");
-            //uiButton.focusedBgSprite = GetBackgroundSprite(uiButton, spriteBase, name, "Focused");
-            //uiButton.hoveredBgSprite = GetBackgroundSprite(uiButton, spriteBase, name, "Hovered");
-            //uiButton.pressedBgSprite = GetBackgroundSprite(uiButton, spriteBase, name, "Pressed");
-            //uiButton.disabledBgSprite = GetBackgroundSprite(uiButton, spriteBase, name, "Disabled");
-
-            //string fgSpriteBase = spriteBase + name;
-            //uiButton.normalFgSprite = fgSpriteBase;
-            //uiButton.focusedFgSprite = fgSpriteBase + "Focused";
-            //uiButton.hoveredFgSprite = fgSpriteBase + "Hovered";
-            //uiButton.pressedFgSprite = fgSpriteBase + "Pressed";
-            //uiButton.disabledFgSprite = fgSpriteBase + "Disabled";
-
-            //if (unlockText != null)
-            //    uiButton.tooltip = Locale.Get(localeID, name) + " - " + unlockText;
-            //else
-            //    uiButton.tooltip = Locale.Get(localeID, name);
-
-            typeof(MainToolbar).GetField("m_ObjectIndex", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(this, objectIndex + 1);
-            return uiButton;
         }
 
         #region Proxy Methods

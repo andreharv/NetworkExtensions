@@ -66,9 +66,10 @@ namespace Transit.Framework.Hooks.UI
             }
 
             // TAM Edit Start
-            if (AtlasProvider.HasCustomAtlas(category))
+            var customAtlas = AtlasManager.instance.GetAtlas(category);
+            if (customAtlas != null)
             {
-                uIButton.atlas = AtlasProvider.GetCustomAtlas(category);
+                uIButton.atlas = customAtlas;
             }
             // TAM Edit End
 

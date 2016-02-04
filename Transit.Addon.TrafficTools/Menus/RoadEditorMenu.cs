@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using Transit.Framework;
 using Transit.Framework.UI;
-using Transit.Framework.UI.Toolbar;
 using Transit.Framework.UI.Toolbar.Items;
 using UnityEngine;
 
@@ -11,9 +10,10 @@ namespace Transit.Addon.TrafficTools.Menus
 {
     public class RoadEditorToolbarItemInfo : IToolbarMenuItemInfo
     {
-        public string Name { get { return @"Road Editor"; } }
-        public string Description { get { return @"Road Editor"; } }
-        public string ThumbnailsPath { get { return @"Menus\Textures\RoadEditor.png"; } }
+        public const string NAME = "RoadEditor";
+
+        public string Name { get { return NAME; } }
+        public string Description { get { return "Road Editor"; } }
         public int Order { get { return 11; } }
         public Type PanelType { get { return typeof(RoadEditorMenu); } }
     }

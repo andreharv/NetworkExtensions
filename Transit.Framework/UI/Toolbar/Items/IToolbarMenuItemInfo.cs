@@ -1,12 +1,10 @@
 ﻿using System;
+using Transit.Framework.Interfaces;
 
 namespace Transit.Framework.UI.Toolbar.Items
 {
-    public interface IToolbarMenuItemInfo : IToolbarItemInfo
+    public interface IToolbarMenuItemInfo : IToolbarItemInfo, IIdentifiable, IDescriptor
     {
-        string Name { get; }
-        string Description { get; }
-        string ThumbnailsPath { get; }
         Type PanelType { get; }
     }
 }

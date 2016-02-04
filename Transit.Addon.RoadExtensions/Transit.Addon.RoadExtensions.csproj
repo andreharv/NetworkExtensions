@@ -46,6 +46,7 @@
       <HintPath>..\References\ICities.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
@@ -55,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Compatibility\RoadColorChanger.cs" />
+    <Compile Include="Menus\RExExtendedMenus.cs" />
     <Compile Include="Roads\Common\RoadHelper.LaneSetup.cs" />
     <Compile Include="Roads\Highways\VanillaHighwayMenuModifier.cs" />
     <Compile Include="Props\BusLaneTextPropBuilder.cs" />
@@ -68,7 +70,7 @@
     <Compile Include="RExModule.Install.Roads.cs" />
     <Compile Include="RExModule.Install.Assets.cs" />
     <Compile Include="RExModule.Install.Init.cs" />
-    <Compile Include="Menus\RExExtendedMenus.cs" />
+    <Compile Include="Menus\RExExtendedSubBarAtlasBuilder.cs" />
     <Compile Include="Roads\TinyRoads\TinyRoadMenuModifier.cs" />
     <Compile Include="Roads\TinyRoads\Alley2L\Alley2LBuilder.cs" />
     <Compile Include="Roads\Common\CenterLaneType.cs" />

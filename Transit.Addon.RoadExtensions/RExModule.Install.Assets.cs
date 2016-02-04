@@ -1,5 +1,6 @@
 ﻿using System;
 using JetBrains.Annotations;
+using Transit.Addon.RoadExtensions.Menus;
 using Transit.Framework;
 using UnityEngine;
 
@@ -47,6 +48,22 @@ namespace Transit.Addon.RoadExtensions
                         }
                     });
                 }
+                
+                Loading.QueueAction(() =>
+                {
+                    try
+                    {
+                        AtlasManager.instance.Include<RExExtendedSubBarAtlasBuilder>();
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.Log("REx: Crashed-MenuAssetsInstaller");
+                        Debug.Log("REx: " + ex.Message);
+                        Debug.Log("REx: " + ex.ToString());
+                    }
+
+                    Done = true;
+                });
 
                 Done = true;
             }

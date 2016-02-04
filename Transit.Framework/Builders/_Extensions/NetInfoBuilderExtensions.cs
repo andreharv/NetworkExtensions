@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Transit.Framework.Builders;
 
-namespace Transit.Framework
+namespace Transit.Framework.Builders
 {
     public static class NetInfoBuilderExtensions
     {
