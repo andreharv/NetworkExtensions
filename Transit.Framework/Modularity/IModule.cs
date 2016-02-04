@@ -32,5 +32,9 @@ namespace Transit.Framework.Modularity
         void OnSaveSettings(XmlElement moduleElement);
 
         event SaveSettingsNeededEventHandler SaveSettingsNeeded;
+
+        void OnInstallAssets();
+
+        void OnInstallLocalization();
     }
 }

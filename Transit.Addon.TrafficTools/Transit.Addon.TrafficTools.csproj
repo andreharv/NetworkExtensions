@@ -81,10 +81,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Menus\Textures\Tools.png">
+    <Content Include="Menus\Textures\ToolsMenus.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Menus\Textures\ToolsBG.png" />
+    <Content Include="Menus\Textures\ToolsMenusBG.png" />
     <Content Include="Tools\RCT\UI\laneRestrictor.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
