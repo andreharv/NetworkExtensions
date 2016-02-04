@@ -51,6 +51,18 @@ namespace Transit.Framework.Mod
             foreach (IModule module in Modules)
                 module.OnReleased();
 
+            if (_localizationInstaller != null)
+            {
+                Object.Destroy(_localizationInstaller);
+                _localizationInstaller = null;
+            }
+
+            if (_assetsInstaller != null)
+            {
+                Object.Destroy(_assetsInstaller);
+                _assetsInstaller = null;
+            }
+
             _isReleased = true;
         }
     }
