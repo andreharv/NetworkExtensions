@@ -78,10 +78,6 @@
     <Compile Include="Zoning\RoadZoneModifierTool.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Transit.Addon\Transit.Addon.csproj">
-      <Project>{80c47696-4d41-4bb6-9cae-c477fe528adf}</Project>
-      <Name>Transit.Addon</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Transit.Framework.ExtensionPoints\Transit.Framework.ExtensionPoints.csproj">
       <Project>{2E44ECA3-D750-4115-B16B-FCA94C49BBA0}</Project>
       <Name>Transit.Framework.ExtensionPoints</Name>
