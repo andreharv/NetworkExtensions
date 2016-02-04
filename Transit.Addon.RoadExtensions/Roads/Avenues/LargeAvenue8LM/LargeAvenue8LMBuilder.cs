@@ -154,45 +154,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
                     }
                 }
             }
-
-            // Installing ModernLightingPack.StainlessAvenueLight
-            if (version == NetInfoVersion.Ground ||
-                version == NetInfoVersion.Bridge ||
-                version == NetInfoVersion.Elevated)
-            {
-                var aveLightInfo = PrefabCollection<PropInfo>.FindLoaded("609644643.StainlessAvenueLight_Data");
-
-                if (aveLightInfo != null)
-                {
-                    var leftPedLane = info.GetLeftRoadShoulder();
-                    var rightPedLane = info.GetRightRoadShoulder();
-                    var medianLane = info.m_lanes.First(l => l.m_laneProps != null && l.m_laneProps.name == MEDIAN_LANE_NAME);
-
-                    var leftRoadProps = leftPedLane.m_laneProps.m_props.ToList();
-                    var rightRoadProps = rightPedLane.m_laneProps.m_props.ToList();
-
-                    var propsToRemove = new[] { "street light" };
-                    leftRoadProps.RemoveProps(propsToRemove);
-                    rightRoadProps.RemoveProps(propsToRemove);
-
-                    var newProp = new NetLaneProps.Prop
-                    {
-                        m_prop = aveLightInfo,
-                        m_finalProp = aveLightInfo,
-                        m_position = new Vector3(0, 0, 0),
-                        m_probability = 100,
-                        m_repeatDistance = 40
-                    };
-
-                    leftPedLane.m_laneProps.m_props = leftRoadProps.ToArray();
-                    rightPedLane.m_laneProps.m_props = rightRoadProps.ToArray();
-                    medianLane.m_laneProps.m_props = medianLane
-                        .m_laneProps
-                        .m_props
-                        .Union(newProp)
-                        .ToArray();
-                }
-            }
         }
     }
 }
