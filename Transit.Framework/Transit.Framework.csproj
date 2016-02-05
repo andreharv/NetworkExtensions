@@ -96,7 +96,7 @@
     <Compile Include="Assets.cs" />
     <Compile Include="Builders\MenuItemBuilder.cs" />
     <Compile Include="Interfaces\IShortDescriptor.cs" />
-    <Compile Include="UI\ToolbarMenu.cs">
+    <Compile Include="UI\MultiModeGroupPanel.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UI\ToolbarSubMenu.cs">

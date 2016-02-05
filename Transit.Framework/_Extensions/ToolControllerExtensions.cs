@@ -5,14 +5,17 @@ namespace Transit.Framework
 {
     public static class ToolControllerExtensions
     {
-        public static void AddTool<T>(this ToolController toolController) where T : ToolBase
+        public static T AddTool<T>(this ToolController toolController) where T : ToolBase
         {
-            if (toolController.GetComponent<T>() != null)
-                return;
+            var toolInstance = toolController.GetComponent<T>();
+            if (toolInstance != null)
+                return toolInstance;
 
-            toolController.gameObject.AddComponent<T>();
+            toolInstance = toolController.gameObject.AddComponent<T>();
 
             UpdateTools(toolController);
+
+            return toolInstance;
         }
 
         public static void RemoveTool<T>(this ToolController toolController) where T : ToolBase

@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Transit.Framework.UI
 {
-    public abstract class ToolbarMenu : GeneratedGroupPanel
+    public abstract class MultiModeGroupPanel : GeneratedGroupPanel
     {
         private GameObject _modeButtonTemplate;
         private bool _panelRefreshed;
@@ -120,15 +120,15 @@ namespace Transit.Framework.UI
             return uiButton;
         }
 
-        protected UIButton AddTool<T>(string name) 
+        protected UIButton AddMode<T>(string name) 
             where T : ToolBase
         {
             if (_modesBar == null)
                 CreateModesPanel();
 
-            toolController.AddTool<T>();
+            var tool = toolController.AddTool<T>();
 
-            GameObject newMode = GameObject.Instantiate<GameObject>(_modeButtonTemplate);
+            GameObject newMode = GameObject.Instantiate(_modeButtonTemplate);
             UIButton modeButton = _modesBar.AttachUIComponent(newMode) as UIButton;
 
             modeButton.name = name;
@@ -136,9 +136,15 @@ namespace Transit.Framework.UI
             modeButton.group = _modesBar;
             modeButton.zOrder = _numModes++;
 
+            var customAtlas = AtlasManager.instance.GetAtlas(name);
+            if (customAtlas != null)
+            {
+                modeButton.atlas = customAtlas;
+            }
+
             Action onClickAction = () =>
             {
-                ToolsModifierControl.SetTool<T>();
+                SetTool<T>();
 
                 foreach (KeyValuePair<string, List<UIComponent>> pair in _modePanels)
                 {

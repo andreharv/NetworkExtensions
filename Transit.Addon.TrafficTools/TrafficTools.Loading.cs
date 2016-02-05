@@ -4,7 +4,6 @@ using Transit.Framework;
 using Transit.Framework.ExtensionPoints.UI;
 using Transit.Framework.Modularity;
 using Transit.Framework.Redirection;
-using UnityEngine;
 
 namespace Transit.Addon.TrafficTools
 {
@@ -15,6 +14,7 @@ namespace Transit.Addon.TrafficTools
             base.OnInstallingAssets();
 
             AtlasManager.instance.Include<ToolsMenuAtlasBuilder>();
+            AtlasManager.instance.Include<ToolsAtlasBuilder>();
         }
 
         public override void OnInstallingContent()

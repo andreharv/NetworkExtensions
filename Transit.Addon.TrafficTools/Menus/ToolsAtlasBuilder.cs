@@ -7,28 +7,28 @@ using UnityEngine;
 
 namespace Transit.Addon.TrafficTools.Menus
 {
-    public class ToolsMenuAtlasBuilder : IAtlasBuilder
+    public class ToolsAtlasBuilder : IAtlasBuilder
     {
         public IEnumerable<string> Keys
         {
-            get { yield return RoadEditorToolbarItemInfo.NAME; }
+            get { yield return "LaneRoutingTool"; }
         }
 
         public UITextureAtlas Build()
         {
             var thumbnailAtlas = ScriptableObject.CreateInstance<UITextureAtlas>();
             thumbnailAtlas.padding = 0;
-            thumbnailAtlas.name = "ToolsMenu";
+            thumbnailAtlas.name = "Tools";
 
             var shader = Shader.Find("UI/Default UI Shader");
             if (shader != null) thumbnailAtlas.material = new Material(shader);
 
             const string PATH = @"Menus\Textures\ToolsMenu.png";
 
-            const string BG = "ToolbarIconBase";
-            var bgVersions = new[] { "Normal", "Focused", "Hovered", "Pressed", "Disabled" };
+            const string BG = "OptionBaseBase";
+            var bgVersions = new[] { "", "Focused", "Hovered", "Pressed", "Disabled" };
 
-            const string FG = "ToolbarIconRoadEditor";
+            const string FG = "LaneRoutingTool";
             var fgVersions = new[] { "", "Focused", "Hovered", "Pressed", "Disabled" };
 
             var texture = AssetManager.instance.GetTexture(PATH, TextureType.UI);
