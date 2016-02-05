@@ -13,7 +13,6 @@ namespace Transit.Addon.TrafficTools.Menus
         public const string NAME = "RoadEditor";
 
         public string Name { get { return NAME; } }
-        public string Description { get { return "Road Editor"; } }
         public int Order { get { return 11; } }
         public Type PanelType { get { return typeof(RoadEditorMenu); } }
     }
