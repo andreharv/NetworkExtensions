@@ -29,7 +29,7 @@ namespace Transit.Framework
 
         public UITextureAtlas GetAtlas(string atlasKey)
         {
-            if (_atlases.ContainsKey(atlasKey))
+            if (!_atlases.ContainsKey(atlasKey))
             {
                 return null;
             }

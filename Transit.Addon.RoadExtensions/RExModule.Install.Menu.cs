@@ -43,6 +43,8 @@ namespace Transit.Addon.RoadExtensions
                 {
                     ExtendedMenuManager.RegisterNewCategory(cat, GeneratedGroupPanel.GroupFilter.Net, ItemClass.Service.Road);
                 }
+
+                Done = true;
             }
         }
     }

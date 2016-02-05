@@ -1,6 +1,7 @@
 ﻿using System;
 using JetBrains.Annotations;
 using Transit.Framework.Modularity;
+using UnityEngine;
 
 #if DEBUG
 using Transit.Framework;

@@ -3,6 +3,7 @@ using ColossalFramework.Globalization;
 using JetBrains.Annotations;
 using System;
 using Transit.Framework.Modularity;
+using UnityEngine;
 
 #if DEBUG
 using Transit.Framework;

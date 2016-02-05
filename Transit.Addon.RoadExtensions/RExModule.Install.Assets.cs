@@ -29,25 +29,6 @@ namespace Transit.Addon.RoadExtensions
                 {
                     return;
                 }
-
-                foreach (var action in AssetManager.instance.CreateLoadingSequence(host.AssetPath))
-                {
-                    var localAction = action;
-
-                    Loading.QueueAction(() =>
-                    {
-                        try
-                        {
-                            localAction();
-                        }
-                        catch (Exception ex)
-                        {
-                            Debug.Log("REx: Crashed-AssetsInstaller");
-                            Debug.Log("REx: " + ex.Message);
-                            Debug.Log("REx: " + ex.ToString());
-                        }
-                    });
-                }
                 
                 Loading.QueueAction(() =>
                 {
@@ -61,8 +42,6 @@ namespace Transit.Addon.RoadExtensions
                         Debug.Log("REx: " + ex.Message);
                         Debug.Log("REx: " + ex.ToString());
                     }
-
-                    Done = true;
                 });
 
                 Done = true;
