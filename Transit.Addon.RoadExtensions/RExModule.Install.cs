@@ -1,10 +1,15 @@
-﻿using ICities;
+﻿using System.Linq;
+using ColossalFramework;
+using ColossalFramework.Globalization;
+using ICities;
 using System;
 using System.Collections.Generic;
 using Transit.Addon.RoadExtensions.AI;
+using Transit.Addon.RoadExtensions.Menus;
 using Transit.Addon.RoadExtensions.Roads.TinyRoads.Alley2L;
 using Transit.Addon.RoadExtensions.Roads.TinyRoads.OneWay1L;
 using Transit.Framework;
+using Transit.Framework.Builders;
 using Transit.Framework.ExtensionPoints.AI;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -13,69 +18,64 @@ namespace Transit.Addon.RoadExtensions
 {
     public partial class RExModule
     {
-        private bool _isReleased = true;
         private GameObject _container = null;
         private NetCollection _roads = null;
         private PropCollection _props = null;
 
-        private Initializer _initializer = null;
-        private LocalizationInstaller _localizationInstaller = null;
-        private AssetsInstaller _assetsInstaller = null;
         private RoadsInstaller _roadsInstaller = null;
         private MenuInstaller _menuInstaller = null;
 
         private IEnumerable<Action> _lateOperations;
 
-        public override void OnCreated(ILoading loading)
+        public override void OnInstallingLocalization()
         {
-            base.OnCreated(loading);
+            base.OnInstallingLocalization();
 
-            if (_isReleased)
+            var locale = SingletonLite<LocaleManager>.instance.GetLocale();
+
+            locale.CreateMenuTitleLocalizedString(Menus.RExExtendedMenus.ROADS_TINY, "Tiny Roads");
+            locale.CreateMenuTitleLocalizedString(Menus.RExExtendedMenus.ROADS_SMALL_HV, "Small Heavy Roads");
+            locale.CreateMenuTitleLocalizedString(Menus.RExExtendedMenus.ROADS_BUSWAYS, "Buslane Roads");
+            locale.CreateMenuTitleLocalizedString(Menus.RExExtendedMenus.ROADS_PEDESTRIANS, "Pedestrian Roads");
+
+            var menuItemBuilders = new List<IMenuItemBuilder>();
+            menuItemBuilders.AddRange(Parts.OfType<IMenuItemBuilder>());
+            menuItemBuilders.AddRange(Parts.OfType<IMenuItemBuildersProvider>().SelectMany(mib => mib.MenuItemBuilders));
+
+            foreach (var builder in menuItemBuilders)
             {
-                RoadZoneBlocksCreationManager.RegisterCustomCreator<TinyRoadZoneBlocksCreator>(Alley2LBuilder.NAME);
-                RoadZoneBlocksCreationManager.RegisterCustomCreator<TinyRoadZoneBlocksCreator>(OneWay1LBuilder.NAME);
-
-                RoadSnappingModeManager.RegisterCustomSnapping<TinyRoadSnappingMode>(Alley2LBuilder.NAME);
-                RoadSnappingModeManager.RegisterCustomSnapping<TinyRoadSnappingMode>(OneWay1LBuilder.NAME);
-
-                if (AssetPath != null && AssetPath != Assets.PATH_NOT_FOUND)
-                {
-                    _container = new GameObject(REX_OBJECT_NAME);
-
-                    _initializer = _container.AddInstallerComponent<Initializer>();
-                    _initializer.InstallationCompleted += InitializationCompleted;
-                }
-
-                _isReleased = false;
+                locale.CreateNetTitleLocalizedString(builder.Name, builder.DisplayName);
+                locale.CreateNetDescriptionLocalizedString(builder.Name, builder.Description);
             }
         }
 
-        private void InitializationCompleted()
+        public override void OnInstallingAssets()
         {
-            if (_container != null)
-            {
-                _localizationInstaller = _container.AddInstallerComponent<LocalizationInstaller>();
-                _localizationInstaller.Host = this;
+            base.OnInstallingAssets();
 
-                _assetsInstaller = _container.AddInstallerComponent<AssetsInstaller>();
-                _assetsInstaller.Host = this;
+            AtlasManager.instance.Include<RExExtendedSubBarAtlasBuilder>();
+        }
 
-                _menuInstaller = _container.AddInstallerComponent<MenuInstaller>();
-                _menuInstaller.Host = this;
+        public override void OnInstallingContent()
+        {
+            _container = new GameObject(REX_OBJECT_NAME);
 
-                _roadsInstaller = _container.AddInstallerComponent<RoadsInstaller>();
-                _roadsInstaller.Host = this;
-            }
+            RoadZoneBlocksCreationManager.RegisterCustomCreator<TinyRoadZoneBlocksCreator>(Alley2LBuilder.NAME);
+            RoadZoneBlocksCreationManager.RegisterCustomCreator<TinyRoadZoneBlocksCreator>(OneWay1LBuilder.NAME);
+
+            RoadSnappingModeManager.RegisterCustomSnapping<TinyRoadSnappingMode>(Alley2LBuilder.NAME);
+            RoadSnappingModeManager.RegisterCustomSnapping<TinyRoadSnappingMode>(OneWay1LBuilder.NAME);
+
+            _menuInstaller = _container.AddInstallerComponent<MenuInstaller>();
+            _menuInstaller.Host = this;
+
+            _roadsInstaller = _container.AddInstallerComponent<RoadsInstaller>();
+            _roadsInstaller.Host = this;
         }
 		
         public override void OnLevelLoaded(LoadMode mode)
         {
             base.OnLevelLoaded(mode);
-
-            if (_container != null && _menuInstaller == null)
-            {
-                _menuInstaller = _container.AddInstallerComponent<MenuInstaller>();
-            }
 
             if (_lateOperations != null)
             {
@@ -91,29 +91,6 @@ namespace Transit.Addon.RoadExtensions
         public override void OnReleased()
         {
             base.OnReleased();
-
-            if (_isReleased)
-            {
-                return;
-            }
-
-            if (_initializer != null)
-            {
-                Object.Destroy(_initializer);
-                _initializer = null;
-            }
-
-            if (_localizationInstaller != null)
-            {
-                Object.Destroy(_localizationInstaller);
-                _localizationInstaller = null;
-            }
-
-            if (_assetsInstaller != null)
-            {
-                Object.Destroy(_assetsInstaller);
-                _assetsInstaller = null;
-            }
 
             if (_menuInstaller != null)
             {
@@ -144,8 +121,6 @@ namespace Transit.Addon.RoadExtensions
                 Object.Destroy(_container);
                 _container = null;
             }
-
-            _isReleased = true;
         }
     }
 }

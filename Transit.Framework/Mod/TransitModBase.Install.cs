@@ -25,6 +25,9 @@ namespace Transit.Framework.Mod
                 {
                     _container = new GameObject(Name.Replace(" ", ""));
 
+                    foreach (IModule module in Modules)
+                        module.OnCreated(loading);
+
                     _localizationInstaller = _container.AddInstallerComponent<LocalizationInstaller>();
                     _localizationInstaller.Host = this;
 
@@ -32,7 +35,7 @@ namespace Transit.Framework.Mod
                     _assetsInstaller.Host = this;
 
                     foreach (IModule module in Modules)
-                        module.OnCreated(loading);
+                        module.OnInstallingContent();
                 }
 
                 _isReleased = false;

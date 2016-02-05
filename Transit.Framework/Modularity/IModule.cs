@@ -2,6 +2,7 @@
 using System.Xml;
 using ICities;
 using Transit.Framework.Interfaces;
+using UnityEngine;
 
 namespace Transit.Framework.Modularity
 {
@@ -33,8 +34,10 @@ namespace Transit.Framework.Modularity
 
         event SaveSettingsNeededEventHandler SaveSettingsNeeded;
 
-        void OnInstallAssets();
+        void OnInstallingLocalization();
 
-        void OnInstallLocalization();
+        void OnInstallingAssets();
+
+        void OnInstallingContent();
     }
 }

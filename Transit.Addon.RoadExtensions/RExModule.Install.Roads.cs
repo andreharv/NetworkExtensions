@@ -20,16 +20,6 @@ namespace Transit.Addon.RoadExtensions
         {
             protected override bool ValidatePrerequisites()
             {
-                if (!LocalizationInstaller.Done)
-                {
-                    return false;
-                }
-
-                if (!AssetsInstaller.Done)
-                {
-                    return false;
-                }
-
                 var roadObject = GameObject.Find(ROAD_NETCOLLECTION);
                 if (roadObject == null)
                 {

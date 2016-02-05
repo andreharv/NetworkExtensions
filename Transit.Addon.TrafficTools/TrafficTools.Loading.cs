@@ -10,22 +10,22 @@ namespace Transit.Addon.TrafficTools
 {
     public partial class TrafficToolsModule : ModuleBase
     {
-        public override void OnCreated(ILoading loading)
+        public override void OnInstallingAssets()
         {
-            base.OnCreated(loading);
+            base.OnInstallingAssets();
+
+            AtlasManager.instance.Include<ToolsMenuAtlasBuilder>();
+        }
+
+        public override void OnInstallingContent()
+        {
+            base.OnInstallingContent();
 
             if (TrafficToolsOptions != ModOptions.None)
             {
                 GameMainToolbarItemsManager.AddItem<RoadEditorToolbarItemInfo>();
                 GameMainToolbarItemsManager.AddSmallSeparator(12);
             }
-        }
-
-        public override void OnInstallAssets()
-        {
-            base.OnInstallAssets();
-
-            AtlasManager.instance.Include<ToolsMenuAtlasBuilder>();
         }
 
         public override void OnReleased()

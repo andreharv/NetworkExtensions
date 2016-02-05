@@ -14,7 +14,7 @@ namespace Transit.Framework.Mod
         public virtual void OnInstallAssets()
         {
             foreach (IModule module in Modules)
-                module.OnInstallAssets();
+                module.OnInstallingAssets();
         }
 
         [UsedImplicitly]

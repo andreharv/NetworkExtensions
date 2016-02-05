@@ -16,7 +16,7 @@ namespace Transit.Framework.Mod
         public virtual void OnInstallLocalization()
         {
             foreach (IModule module in Modules)
-                module.OnInstallLocalization();
+                module.OnInstallingLocalization();
         }
 
         [UsedImplicitly]

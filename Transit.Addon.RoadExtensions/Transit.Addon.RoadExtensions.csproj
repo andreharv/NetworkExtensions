@@ -66,10 +66,7 @@
     <Compile Include="Roads\Common\RoadModels.8m.1p5mSW.cs" />
     <Compile Include="Roads\Common\RoadModels.32m.3mSW2mMdn.cs" />
     <Compile Include="RExModule.Install.Menu.cs" />
-    <Compile Include="RExModule.Install.Localization.cs" />
     <Compile Include="RExModule.Install.Roads.cs" />
-    <Compile Include="RExModule.Install.Assets.cs" />
-    <Compile Include="RExModule.Install.Init.cs" />
     <Compile Include="Menus\RExExtendedSubBarAtlasBuilder.cs" />
     <Compile Include="Roads\TinyRoads\TinyRoadMenuModifier.cs" />
     <Compile Include="Roads\TinyRoads\Alley2L\Alley2LBuilder.cs" />
