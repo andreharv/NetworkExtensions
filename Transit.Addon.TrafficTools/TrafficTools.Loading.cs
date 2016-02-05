@@ -1,11 +1,14 @@
 ﻿using ICities;
 using Transit.Addon.TrafficTools.Menus;
+using Transit.Framework;
 using Transit.Framework.ExtensionPoints.UI;
+using Transit.Framework.Modularity;
 using Transit.Framework.Redirection;
+using UnityEngine;
 
 namespace Transit.Addon.TrafficTools
 {
-    public partial class TrafficToolsModule
+    public partial class TrafficToolsModule : ModuleBase
     {
         public override void OnCreated(ILoading loading)
         {
@@ -16,6 +19,13 @@ namespace Transit.Addon.TrafficTools
                 GameMainToolbarItemsManager.AddItem<RoadEditorToolbarItemInfo>();
                 GameMainToolbarItemsManager.AddSmallSeparator(12);
             }
+        }
+
+        public override void OnInstallAssets()
+        {
+            base.OnInstallAssets();
+
+            AtlasManager.instance.Include<ToolsMenuAtlasBuilder>();
         }
 
         public override void OnReleased()

@@ -33,7 +33,7 @@ namespace Transit.Framework.Mod
                 {
                     return;
                 }
-
+                
                 foreach (var action in AssetManager.instance.CreateLoadingSequence(host.AssetPath))
                 {
                     var localAction = action;

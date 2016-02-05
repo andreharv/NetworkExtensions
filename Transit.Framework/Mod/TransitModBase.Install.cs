@@ -63,6 +63,12 @@ namespace Transit.Framework.Mod
                 _assetsInstaller = null;
             }
 
+            if (_container != null)
+            {
+                Object.Destroy(_container);
+                _container = null;
+            }
+
             _isReleased = true;
         }
     }

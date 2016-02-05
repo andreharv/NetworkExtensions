@@ -84,7 +84,6 @@
     <Content Include="Menus\Textures\ToolsMenus.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Menus\Textures\ToolsMenusBG.png" />
     <Content Include="Tools\RCT\UI\laneRestrictor.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
