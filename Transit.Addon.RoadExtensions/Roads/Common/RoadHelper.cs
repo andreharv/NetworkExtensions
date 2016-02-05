@@ -70,6 +70,11 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             return info.m_lanes.Last(l => l.m_laneType == NetInfo.LaneType.Pedestrian);
         }
 
+        public static NetInfo.Lane GetMedianLane(this NetInfo info)
+        {
+            return info.m_lanes.FirstOrDefault(l => l.m_laneType == NetInfo.LaneType.None && l.m_position == 0);
+        }
+
         public static void RemoveProps(this ICollection<NetLaneProps.Prop> props, string[] propsToRemove)
         {
             for (var i = 0; i < propsToRemove.Length; i++)
@@ -79,6 +84,15 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                     var propToCenter = props.First(p => p.m_prop.name.ToLower().Contains(propsToRemove[i].ToLower()));
                     props.Remove(propToCenter);
                 }
+            }
+        }
+
+        public static void DeOrangifyLight(this NetLaneProps.Prop prop)
+        {
+            var highwayLight = EffectCollection.FindEffect("Street Light Highway");
+            for (var i = 0; i < prop.m_prop.m_effects.Length; i++)
+            {
+                prop.m_prop.m_effects[i].m_effect = highwayLight;
             }
         }
 

@@ -13,7 +13,9 @@ namespace Transit.Framework
             public const string ROAD_4L = "Medium Road";
             public const string ROAD_4L_BRIDGE = "Medium Road Bridge";
             public const string ROAD_4L_SLOPE = "Medium Road Slope";
+            public const string ROAD_4L_TUNNEL = "Medium Road Tunnel";
             public const string ROAD_6L = "Large Road";
+            public const string ROAD_6L_BRIDGE = "Large Road Bridge";
             public const string ROAD_6L_TUNNEL = "Large Road Tunnel";
             public const string ROAD_6L_GRASS = "Large Road Decoration Grass";
             public const string ROAD_6L_TREES = "Large Road Decoration Trees";
