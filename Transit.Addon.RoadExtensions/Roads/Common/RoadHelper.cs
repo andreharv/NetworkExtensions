@@ -70,6 +70,11 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             return info.m_lanes.Last(l => l.m_laneType == NetInfo.LaneType.Pedestrian);
         }
 
+        public static NetInfo.Lane GetMedianLane(this NetInfo info)
+        {
+            return info.m_lanes.FirstOrDefault(l => l.m_laneType == NetInfo.LaneType.None && l.m_position == 0);
+        }
+
         public static void RemoveProps(this ICollection<NetLaneProps.Prop> props, string[] propsToRemove)
         {
             for (var i = 0; i < propsToRemove.Length; i++)

@@ -48,6 +48,13 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                 laneCollection.AddRange(rdInfo.SetupParkingLanes());
             }
 
+            var medianLane = rdInfo.m_lanes.FirstOrDefault(l => l.m_laneType == NetInfo.LaneType.None && l.m_position == 0);
+            if (config.CenterLane == CenterLaneType.Median && medianLane != null)
+            {
+                medianLane = medianLane.SetupMedianLane(config, version);
+                laneCollection.Add(medianLane);
+            }
+
             rdInfo.m_lanes = laneCollection.OrderBy(l => l.m_position).ToArray();
 
             return rdInfo;
@@ -76,7 +83,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                 positionStart -= config.LaneWidth / 2;
             }
 
-            positionStart -= config.LaneWidth * (nbUsableLanesPerSide - 1) + config.LaneWidth /2 ;
+            positionStart -= config.LaneWidth * (nbUsableLanesPerSide - 1) + config.LaneWidth / 2;
 
             //Debug.Log(">>>> NbLanes : " + nbLanes);
             //Debug.Log(">>>> NbUsableLanes : " + nbUsableLanes);
@@ -117,7 +124,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                                 (i * config.LaneWidth) +
                                 config.CenterLaneWidth;
                         }
-                        else if(config.CenterLane == CenterLaneType.TurningLane)
+                        else if (config.CenterLane == CenterLaneType.TurningLane)
                         {
                             l.m_position =
                                 positionStart +
@@ -132,7 +139,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                         }
                     }
                 }
-                
+
                 //Debug.Log(">>>> Lane Id : " + i + " Position : " + l.m_position);
 
                 l.m_allowStop = false;
@@ -262,6 +269,41 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             return parkingLanes;
         }
 
+        private static NetInfo.Lane SetupMedianLane(this NetInfo.Lane lane, LanesConfiguration config, NetInfoVersion version)
+        {
+            var laneProps = lane.m_laneProps.Clone();
+            for (var i = 0; i < laneProps.m_props.Length; i++)
+            {
+                var prop = laneProps.m_props[i];
+                if (prop.m_position.x != 0)
+                {
+                    if (prop.m_prop.name.ToLower().Contains("sign")
+                        || prop.m_prop.name.ToLower().Contains("speed limit"))
+                    {
+                        var multiplier = prop.m_position.z / Math.Abs(prop.m_position.z);
+                        prop.m_position = new Vector3(0, 1, 8 * multiplier);
+                    }
+                    else
+                    {
+                        var multiplier = prop.m_position.x / Math.Abs(prop.m_position.x);
+                        var offset = 0.0f;
+
+                        if (version == NetInfoVersion.Slope)
+                        {
+                            offset = 0.1f;
+                        }
+                        else
+                        {
+                            offset = 0.55f;
+                        }
+                        prop.m_position.x += multiplier * offset * (config.CenterLaneWidth - lane.m_width);
+                    }
+                }
+                lane.m_laneProps = laneProps;
+            }
+
+            return lane;
+        }
         private static void SetupTurningLaneProps(NetInfo.Lane lane)
         {
             var isLeftDriving = Singleton<SimulationManager>.instance.m_metaData.m_invertTraffic == SimulationMetaData.MetaBool.True;

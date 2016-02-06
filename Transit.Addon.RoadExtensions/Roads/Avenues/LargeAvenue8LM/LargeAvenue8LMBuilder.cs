@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Transit.Addon.RoadExtensions.Compatibility;
+using Transit.Addon.RoadExtensions.Props;
 using Transit.Addon.RoadExtensions.Roads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
@@ -13,7 +14,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
         public int Order { get { return 25; } }
         public int UIOrder { get { return 150; } }
 
-        public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_6L; } }
+        public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_4L; } }
         public string Name { get { return "Eight-Lane Avenue"; } }
         public string DisplayName { get { return "Eight-Lane Road"; } }
         public string Description { get { return "An eight-lane road with paved median. Supports heavy urban traffic."; } }
@@ -22,22 +23,19 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
 
         public string ThumbnailsPath { get { return @"Roads\Avenues\LargeAvenue8LM\thumbnails.png"; } }
         public string InfoTooltipPath { get { return @"Roads\Avenues\LargeAvenue8LM\infotooltip.png"; } }
-
+        
         public NetInfoVersion SupportedVersions
         {
             get { return NetInfoVersion.All; }
         }
-
-        private const string MEDIAN_LANE_NAME = "Median";
 
         public void BuildUp(NetInfo info, NetInfoVersion version)
         {
             ///////////////////////////
             // Template              //
             ///////////////////////////
+            var roadTunnelInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_4L_TUNNEL);
             var roadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_6L);
-            var roadTunnelInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_6L_TUNNEL);
-
             ///////////////////////////
             // 3DModeling            //
             ///////////////////////////
@@ -70,7 +68,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
             info.SetRoadLanes(version, new LanesConfiguration
             {
                 IsTwoWay = true,
-                LanesToAdd = 2,
+                LanesToAdd = 4,
                 LaneWidth = version == NetInfoVersion.Slope ? 2.75f : 3,
                 PedPropOffsetX = version == NetInfoVersion.Slope ? 1.5f : 1f,
                 CenterLane = CenterLaneType.Median,
@@ -78,33 +76,33 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
                 BusStopOffset = 0f
             });
 
+            var medianLane = info.GetMedianLane();
             var leftPedLane = info.GetLeftRoadShoulder();
             var rightPedLane = info.GetRightRoadShoulder();
 
-            // Adding median lane
-            var medianLane = new NetInfo.Lane
+            // Fix for T++ legacy support (reordering)
+            if (medianLane != null)
             {
-                m_position = 0,
-                m_width = 2,
-                m_vehicleType = VehicleInfo.VehicleType.None,
-                m_laneProps = ScriptableObject.CreateInstance<NetLaneProps>(),
-            };
-
-            medianLane.m_laneProps.name = MEDIAN_LANE_NAME;
-            medianLane.m_laneProps.m_props = new NetLaneProps.Prop[0];
-
-            info.m_lanes = info.m_lanes.Union(medianLane).ToArray();
+                info.m_lanes = info
+                    .m_lanes
+                    .Except(medianLane)
+                    .Union(medianLane)
+                    .ToArray();
+            }
 
             //Setting Up Props
             var leftRoadProps = leftPedLane.m_laneProps.m_props.ToList();
             var rightRoadProps = rightPedLane.m_laneProps.m_props.ToList();
+            var medianRoadProps = medianLane?.m_laneProps?.m_props.ToList();
 
-            if (version == NetInfoVersion.Slope || 
-                version == NetInfoVersion.Bridge) // They are interferring with the cables
+            if (version != NetInfoVersion.Tunnel)
             {
-                var propsToRemove = new[] { "street light" };
-                leftRoadProps.RemoveProps(propsToRemove);
-                rightRoadProps.RemoveProps(propsToRemove);
+                var medianStreetLight = medianRoadProps?.FirstOrDefault(p => p.m_prop.name.ToLower().Contains("avenue light"));
+                if (medianStreetLight != null)
+                {
+                    medianStreetLight.m_finalProp = 
+                    medianStreetLight.m_prop = Prefabs.Find<PropInfo>(LargeAvenueMedianLightBuilder.NAME);
+                }
             }
 
             if (version == NetInfoVersion.Slope)
@@ -115,6 +113,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
 
             leftPedLane.m_laneProps.m_props = leftRoadProps.ToArray();
             rightPedLane.m_laneProps.m_props = rightRoadProps.ToArray();
+            if (medianLane != null && medianLane.m_laneProps != null)
+                medianLane.m_laneProps.m_props = medianRoadProps.ToArray();
 
             info.TrimAboveGroundProps(version);
 
@@ -124,8 +124,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
 
             if (owPlayerNetAI != null && playerNetAI != null)
             {
-                playerNetAI.m_constructionCost = owPlayerNetAI.m_constructionCost*4/3; // Charge by the lane?
-                playerNetAI.m_maintenanceCost = owPlayerNetAI.m_maintenanceCost*4/3; // Charge by the lane?
+                playerNetAI.m_constructionCost = owPlayerNetAI.m_constructionCost * 2; // Charge by the lane?
+                playerNetAI.m_maintenanceCost = owPlayerNetAI.m_maintenanceCost * 2; // Charge by the lane?
             }
 
             var roadBaseAI = info.GetComponent<RoadBaseAI>();
@@ -138,17 +138,16 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
 
         public void LateBuildUp(NetInfo info, NetInfoVersion version)
         {
-            // Installing BridgePillar
             if (version == NetInfoVersion.Bridge)
             {
-                //var bridgePillar = PrefabCollection<BuildingInfo>.FindLoaded(WorkshopId + ".CableStay32m_Data");
-                //if (bridgePillar == null)
                 var bridgePillar = PrefabCollection<BuildingInfo>.FindLoaded("BridgePillar.CableStay32m_Data");
                 if (bridgePillar != null)
                 {
                     var bridgeAI = info.GetComponent<RoadBridgeAI>();
                     if (bridgeAI != null)
                     {
+                        bridgeAI.m_doubleLength = true;
+                        bridgeAI.m_bridgePillarInfo = null;
                         bridgeAI.m_middlePillarInfo = bridgePillar;
                         bridgeAI.m_middlePillarOffset = 58;
                     }
@@ -157,3 +156,4 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
         }
     }
 }
+
