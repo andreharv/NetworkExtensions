@@ -14,6 +14,12 @@ namespace Transit.Framework
                 .ToArray();
         }
 
+        public static IEnumerable<T> Except<T>(this IEnumerable<T> enumerable, T other)
+            where T : class
+        {
+            return enumerable.Except(new[] { other });
+        }
+
         public static IEnumerable<T> Union<T>(this IEnumerable<T> enumerable, T other)
             where T : class
         {

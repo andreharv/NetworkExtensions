@@ -76,14 +76,24 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
                 BusStopOffset = 0f
             });
 
-            var medianPedLane = info.GetMedianLane();
+            var medianLane = info.GetMedianLane();
             var leftPedLane = info.GetLeftRoadShoulder();
             var rightPedLane = info.GetRightRoadShoulder();
+
+            // Fix for T++ legacy support (reordering)
+            if (medianLane != null)
+            {
+                info.m_lanes = info
+                    .m_lanes
+                    .Except(medianLane)
+                    .Union(medianLane)
+                    .ToArray();
+            }
 
             //Setting Up Props
             var leftRoadProps = leftPedLane.m_laneProps.m_props.ToList();
             var rightRoadProps = rightPedLane.m_laneProps.m_props.ToList();
-            var medianRoadProps = medianPedLane?.m_laneProps?.m_props.ToList();
+            var medianRoadProps = medianLane?.m_laneProps?.m_props.ToList();
 
             if (version != NetInfoVersion.Tunnel)
             {
@@ -103,8 +113,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
 
             leftPedLane.m_laneProps.m_props = leftRoadProps.ToArray();
             rightPedLane.m_laneProps.m_props = rightRoadProps.ToArray();
-            if (medianPedLane != null && medianPedLane.m_laneProps != null)
-                medianPedLane.m_laneProps.m_props = medianRoadProps.ToArray();
+            if (medianLane != null && medianLane.m_laneProps != null)
+                medianLane.m_laneProps.m_props = medianRoadProps.ToArray();
 
             info.TrimAboveGroundProps(version);
 
