@@ -85,11 +85,14 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
             var rightRoadProps = rightPedLane.m_laneProps.m_props.ToList();
             var medianRoadProps = medianPedLane?.m_laneProps?.m_props.ToList();
 
-            var medianStreetLight = medianRoadProps?.FirstOrDefault(p => p.m_prop.name.ToLower().Contains("avenue light"));
-            if (medianStreetLight != null)
+            if (version != NetInfoVersion.Tunnel)
             {
-                medianStreetLight.m_finalProp = 
-                medianStreetLight.m_prop = Prefabs.Find<PropInfo>(LargeAvenueLightBuilder.NAME);
+                var medianStreetLight = medianRoadProps?.FirstOrDefault(p => p.m_prop.name.ToLower().Contains("avenue light"));
+                if (medianStreetLight != null)
+                {
+                    medianStreetLight.m_finalProp = 
+                    medianStreetLight.m_prop = Prefabs.Find<PropInfo>(LargeAvenueMedianLightBuilder.NAME);
+                }
             }
 
             if (version == NetInfoVersion.Slope)

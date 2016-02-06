@@ -56,7 +56,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Compatibility\RoadColorChanger.cs" />
-    <Compile Include="Props\LargeAvenueLightBuilder.cs" />
+    <Compile Include="Props\MediumAvenueSideLightBuilder.cs" />
+    <Compile Include="Props\LargeAvenueMedianLightBuilder.cs" />
     <Compile Include="Roads\Common\RoadHelper.LaneSetup.cs" />
     <Compile Include="Roads\Highways\VanillaHighwayMenuModifier.cs" />
     <Compile Include="Props\BusLaneTextPropBuilder.cs" />
