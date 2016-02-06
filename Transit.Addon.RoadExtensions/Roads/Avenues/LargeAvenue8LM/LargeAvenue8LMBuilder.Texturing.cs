@@ -90,8 +90,12 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
                             info.m_segments[i].SetTextures(
                         new TextureSet
                             (@"Roads\Avenues\LargeAvenue8LM\Textures\Slope_Segment__MainTex.png",
-                                    @"Roads\Avenues\LargeAvenue8LM\Textures\Slope_Segment_Cover__APRMap.png"));
-                        }
+                            @"Roads\Avenues\LargeAvenue8LM\Textures\Slope_Segment_Cover__APRMap.png"),
+                        new LODTextureSet
+                            (@"Roads\Avenues\LargeAvenue8LM\Textures\Slope_Segment_LOD__MainTex.png",
+                            @"Roads\Avenues\LargeAvenue8LM\Textures\Slope_Segment_LOD__APRMap.png",
+                            @"Roads\Avenues\LargeAvenue8LM\Textures\Slope_Segment_LOD__XYSMap.png"));
+            }
                         else
                         {
                             info.m_segments[i].SetTextures(
@@ -101,7 +105,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
                                 new LODTextureSet
                                     (@"Roads\Avenues\LargeAvenue8LM\Textures\Slope_Segment_LOD__MainTex.png",
                                     @"Roads\Avenues\LargeAvenue8LM\Textures\Slope_Segment_LOD__APRMap.png",
-                                    @"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Segment_LOD__XYSMap.png"));
+                                    @"Roads\Avenues\LargeAvenue8LM\Textures\Slope_Segment_LOD__XYSMap.png"));
                         }
                     }
 
@@ -116,7 +120,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
                                 new LODTextureSet
                                     (@"Roads\Avenues\LargeAvenue8LM\Textures\Slope_Segment_LOD__MainTex.png",
                                     @"Roads\Avenues\LargeAvenue8LM\Textures\Slope_Segment_LOD__APRMap.png",
-                                    @"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Segment_LOD__XYSMap.png"));
+                                    @"Roads\Avenues\LargeAvenue8LM\Textures\Slope_Segment_LOD__XYSMap.png"));
             }
                         else
                         {
@@ -127,7 +131,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
                                 new LODTextureSet
                                     (@"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Node_LOD__MainTex.png",
                                     @"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Node_LOD__APRMap.png",
-                                    @"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Segment_LOD__XYSMap.png"));
+                                    @"Roads\Avenues\LargeAvenue8LM\Textures\Slope_Segment_LOD__XYSMap.png"));
                         }
                     }
                     break;

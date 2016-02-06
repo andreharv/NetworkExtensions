@@ -51,7 +51,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             var medianLane = rdInfo.m_lanes.FirstOrDefault(l => l.m_laneType == NetInfo.LaneType.None && l.m_position == 0);
             if (config.CenterLane == CenterLaneType.Median && medianLane != null)
             {
-                medianLane = medianLane.SetupMedianLane(config);
+                medianLane = medianLane.SetupMedianLane(config, version);
                 laneCollection.Add(medianLane);
             }
 
@@ -269,7 +269,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             return parkingLanes;
         }
 
-        private static NetInfo.Lane SetupMedianLane(this NetInfo.Lane lane, LanesConfiguration config)
+        private static NetInfo.Lane SetupMedianLane(this NetInfo.Lane lane, LanesConfiguration config, NetInfoVersion version)
         {
             var laneProps = lane.m_laneProps.Clone();
             for (var i = 0; i < laneProps.m_props.Length; i++)
@@ -281,12 +281,22 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                         || prop.m_prop.name.ToLower().Contains("speed limit"))
                     {
                         var multiplier = prop.m_position.z / Math.Abs(prop.m_position.z);
-                        prop.m_position = new Vector3(0, 0, 8 * multiplier);
+                        prop.m_position = new Vector3(0, 1, 8 * multiplier);
                     }
                     else
                     {
                         var multiplier = prop.m_position.x / Math.Abs(prop.m_position.x);
-                        prop.m_position.x += multiplier * 0.55f * (config.CenterLaneWidth - lane.m_width);
+                        var offset = 0.0f;
+
+                        if (version == NetInfoVersion.Slope)
+                        {
+                            offset = 0.1f;
+                        }
+                        else
+                        {
+                            offset = 0.55f;
+                        }
+                        prop.m_position.x += multiplier * offset * (config.CenterLaneWidth - lane.m_width);
                     }
                 }
                 lane.m_laneProps = laneProps;
