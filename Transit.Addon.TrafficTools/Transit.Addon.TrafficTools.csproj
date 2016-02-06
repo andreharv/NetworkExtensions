@@ -50,8 +50,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Menus\ToolsAtlasBuilder.cs" />
-    <Compile Include="Menus\ToolsMenuAtlasBuilder.cs" />
+    <Compile Include="Menus\Textures\ToolsAtlasBuilder.cs" />
+    <Compile Include="Menus\Textures\ToolsMenuAtlasBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\RCT\Modes\LaneRestrictions\LaneRestrictorSubMenu.cs" />
     <Compile Include="Tools\RCT\Modes\LaneRestrictions\LaneRestrictorTool.cs" />
@@ -87,12 +87,6 @@
     </Content>
     <Content Include="Menus\Textures\ToolsMenu.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tools\RCT\UI\laneRestrictor.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tools\RCT\UI\laneRouting.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Tools\RCT\UI\UISpeedSigns.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

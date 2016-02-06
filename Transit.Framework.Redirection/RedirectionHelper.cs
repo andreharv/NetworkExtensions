@@ -59,8 +59,15 @@ namespace Transit.Framework.Redirection
 
         public static void RevertRedirect(MethodInfo from, RedirectCallsState state)
         {
-            var fptr1 = from.MethodHandle.GetFunctionPointer();
-            RevertJumpTo(fptr1, state);
+            try
+            {
+                var fptr1 = from.MethodHandle.GetFunctionPointer();
+                RevertJumpTo(fptr1, state);
+            }
+            catch
+            {
+                // ignored
+            }
         }
 
         /// <summary>

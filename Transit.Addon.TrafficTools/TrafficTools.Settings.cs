@@ -14,13 +14,13 @@ namespace Transit.Addon.TrafficTools
         public enum ModOptions : long
         {
             None = 0,
-            LaneRoutingTool         = 1L << 0,
-            //LaneRestrictorTool      = 1 << 28,
-            //LanePrioritiesTool      = 1 << 29,
-            //TrafficLightsTool       = 1 << 30
+            LaneRoutingTool         = 1L << 1,
+            LaneRestrictorTool      = 1L << 5,
+            TrafficLightsTool       = 1L << 10,
+            //LanePrioritiesTool      = 1 << 29
         }
 
-        private static ModOptions s_activeOptions = ModOptions.LaneRoutingTool /*| Options.LaneRestrictorTool/* | Options.TrafficLightsTool*/;
+        private static ModOptions s_activeOptions = ModOptions.LaneRoutingTool | ModOptions.LaneRestrictorTool | ModOptions.TrafficLightsTool;
         public static ModOptions TrafficToolsOptions { get { return s_activeOptions; } }
 
         public override void OnSettingsUI(UIHelperBase helper)
@@ -43,21 +43,41 @@ namespace Transit.Addon.TrafficTools
                 },
                 true);
 
-            //helper.AddCheckbox(
-            //    "Lane Restrictor Tool",
-            //    "Allows you to restrict vehicle and speed usage on lanes.",
-            //    (TrafficToolsOptions & Options.LaneRestrictorTool) != 0,
-            //    OnCheckboxChanged,
-            //    true,
-            //    Options.LaneRestrictorTool);
+            helper.AddCheckbox(
+                "Lane Restrictor Tool",
+                "Allows you to restrict vehicle and speed usage on lanes.",
+                s_activeOptions.IsFlagSet(ModOptions.LaneRestrictorTool),
+                isChecked =>
+                {
+                    if (isChecked)
+                    {
+                        s_activeOptions = s_activeOptions | ModOptions.LaneRestrictorTool;
+                    }
+                    else
+                    {
+                        s_activeOptions = s_activeOptions & ~ModOptions.LaneRestrictorTool;
+                    }
+                    FireSaveSettingsNeeded();
+                },
+                true);
 
-            //helper.AddCheckbox(
-            //    "Traffic Lights Tool",
-            //    "Allows you to toggle and setup sequences at traffic lights.",
-            //    (TrafficToolsOptions & Options.TrafficLightsTool) != 0,
-            //    OnCheckboxChanged,
-            //    true,
-            //    Options.TrafficLightsTool);
+            helper.AddCheckbox(
+                "Traffic Lights Tool",
+                "Allows you to toggle and setup sequences at traffic lights.",
+                s_activeOptions.IsFlagSet(ModOptions.LaneRestrictorTool),
+                isChecked =>
+                {
+                    if (isChecked)
+                    {
+                        s_activeOptions = s_activeOptions | ModOptions.LaneRestrictorTool;
+                    }
+                    else
+                    {
+                        s_activeOptions = s_activeOptions & ~ModOptions.LaneRestrictorTool;
+                    }
+                    FireSaveSettingsNeeded();
+                },
+                true);
         }
 
         public override void OnLoadSettings(XmlElement moduleElement)

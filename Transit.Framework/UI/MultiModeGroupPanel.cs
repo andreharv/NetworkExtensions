@@ -148,11 +148,11 @@ namespace Transit.Framework.UI
             modeButton.pressedFgSprite = name + "Pressed";
             modeButton.disabledFgSprite = name + "Disabled";
 
-            modeButton.normalBgSprite = "OptionBaseBase";
-            modeButton.focusedBgSprite = "OptionBaseBase" + "Focused";
-            modeButton.hoveredBgSprite = "OptionBaseBase" + "Hovered";
-            modeButton.pressedBgSprite = "OptionBaseBase" + "Pressed";
-            modeButton.disabledBgSprite = "OptionBaseBase" + "Disabled";
+            modeButton.normalBgSprite = "OptionBase";
+            modeButton.focusedBgSprite = "OptionBase" + "Focused";
+            modeButton.hoveredBgSprite = "OptionBase" + "Hovered";
+            modeButton.pressedBgSprite = "OptionBase" + "Pressed";
+            modeButton.disabledBgSprite = "OptionBase" + "Disabled";
 
             Action onClickAction = () =>
             {
