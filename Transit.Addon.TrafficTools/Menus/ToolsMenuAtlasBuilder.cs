@@ -39,8 +39,8 @@ namespace Transit.Addon.TrafficTools.Menus
             var x = 1;
             var y = 1;
 
-            const int TEXTURE_W = 174;
-            const int TEXTURE_H = 88; // Was 93
+            const int TEXTURE_W = 178;
+            const int TEXTURE_H = 86;
 
 
 
@@ -78,7 +78,7 @@ namespace Transit.Addon.TrafficTools.Menus
             }
             y += BG_ICON_H + 1;
 
-            const int FG_ICON_W = 36; // Was 41
+            const int FG_ICON_W = 36;
             const int FG_ICON_H = 36;
             foreach (var t in fgVersions)
             {

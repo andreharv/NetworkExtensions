@@ -24,7 +24,7 @@ namespace Transit.Addon.TrafficTools
             if (TrafficToolsOptions != ModOptions.None)
             {
                 GameMainToolbarItemsManager.AddItem<RoadEditorToolbarItemInfo>();
-                GameMainToolbarItemsManager.AddSmallSeparator(12);
+                GameMainToolbarItemsManager.AddBigSeparator(12);
             }
         }
 
