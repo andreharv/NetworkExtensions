@@ -56,6 +56,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Compatibility\RoadColorChanger.cs" />
+    <Compile Include="Props\MediumAvenueSideLightBuilder.cs" />
+    <Compile Include="Props\LargeAvenueMedianLightBuilder.cs" />
     <Compile Include="Roads\Common\RoadHelper.LaneSetup.cs" />
     <Compile Include="Roads\Highways\VanillaHighwayMenuModifier.cs" />
     <Compile Include="Props\BusLaneTextPropBuilder.cs" />
@@ -325,9 +327,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway6L\Textures\Tunnel_Segment__APRMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="LightPropsDefinition.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\Highways\Highway2L\Textures\Ground_Node__MainTex.png">
@@ -1833,9 +1832,6 @@
   <ItemGroup />
   <ItemGroup>
     <None Include="Buildings\BridgePillar.CableStay32m.crp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Props\StreetLight.StainlessAvenueLight.crp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\Bridge_Cables.obj">
