@@ -57,6 +57,8 @@
   <ItemGroup>
     <Compile Include="Compatibility\RoadColorChanger.cs" />
     <Compile Include="Menus\RExExtendedMenus.cs" />
+    <Compile Include="Props\MediumAvenueSideLightBuilder.cs" />
+    <Compile Include="Props\LargeAvenueMedianLightBuilder.cs" />
     <Compile Include="Roads\Common\RoadHelper.LaneSetup.cs" />
     <Compile Include="Roads\Highways\VanillaHighwayMenuModifier.cs" />
     <Compile Include="Props\BusLaneTextPropBuilder.cs" />
@@ -1827,7 +1829,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <None Include="Buildings\BridgePillar_CableStay32m.crp">
+    <None Include="Buildings\BridgePillar.CableStay32m.crp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\Bridge_Cables.obj">
