@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Transit.Addon.RoadExtensions.Compatibility;
+using Transit.Addon.RoadExtensions.Props;
 using Transit.Addon.RoadExtensions.Roads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
@@ -85,8 +86,11 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
             var medianRoadProps = medianPedLane?.m_laneProps?.m_props.ToList();
 
             var medianStreetLight = medianRoadProps?.FirstOrDefault(p => p.m_prop.name.ToLower().Contains("avenue light"));
-            if (medianStreetLight != null) 
-                medianStreetLight.DeOrangifyLight();
+            if (medianStreetLight != null)
+            {
+                medianStreetLight.m_finalProp = 
+                medianStreetLight.m_prop = Prefabs.Find<PropInfo>(LargeAvenueLightBuilder.NAME);
+            }
 
             if (version == NetInfoVersion.Slope)
             {

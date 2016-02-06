@@ -87,15 +87,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             }
         }
 
-        public static void DeOrangifyLight(this NetLaneProps.Prop prop)
-        {
-            var highwayLight = EffectCollection.FindEffect("Street Light Highway");
-            for (var i = 0; i < prop.m_prop.m_effects.Length; i++)
-            {
-                prop.m_prop.m_effects[i].m_effect = highwayLight;
-            }
-        }
-
         public static void AddLeftWallLights(this ICollection<NetLaneProps.Prop> props, float pavementWidth)
         {
             var wallLightPropInfo = Prefabs.Find<PropInfo>("Wall Light Orange");
