@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace Transit.Addon.TrafficTools
+namespace Transit.Addon.TrafficTools.RoadEditor.LaneRouting
 {
-    public class LaneRoutingTool : RoadCustomizerTool
+    public class LaneRoutingTool : RoadEditorToolBase
     {
         public enum Template
         {

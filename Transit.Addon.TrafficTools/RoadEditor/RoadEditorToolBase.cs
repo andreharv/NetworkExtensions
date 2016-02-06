@@ -1,12 +1,9 @@
 ﻿using ColossalFramework.Math;
-using Transit.Framework;
-using Transit.Framework.ExtensionPoints.UI;
-using Transit.Framework.UI;
 using UnityEngine;
 
-namespace Transit.Addon.TrafficTools
+namespace Transit.Addon.TrafficTools.RoadEditor
 {
-    public abstract partial class RoadCustomizerTool : ToolBase
+    public abstract partial class RoadEditorToolBase : ToolBase
     {
         protected enum Mode
         {

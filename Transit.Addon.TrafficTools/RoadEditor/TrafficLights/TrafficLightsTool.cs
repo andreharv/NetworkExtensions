@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace Transit.Addon.TrafficTools
+namespace Transit.Addon.TrafficTools.RoadEditor.TrafficLights
 {
-    public class TrafficLightsTool : RoadCustomizerTool
+    public class TrafficLightsTool : RoadEditorToolBase
     {
         protected override void OnSelectNode()
         {

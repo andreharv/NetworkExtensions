@@ -1,11 +1,8 @@
-﻿using ColossalFramework.UI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
+using ColossalFramework.UI;
 using Transit.Framework.UI;
 
-namespace Transit.Addon.TrafficTools
+namespace Transit.Addon.TrafficTools.RoadEditor.LaneRestrictions
 {
     public abstract class LaneRestrictorSubMenu : ToolbarSubMenu
     {

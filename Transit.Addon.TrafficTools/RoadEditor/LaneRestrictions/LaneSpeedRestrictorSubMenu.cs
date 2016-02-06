@@ -1,9 +1,9 @@
-﻿using ColossalFramework.UI;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using ColossalFramework.UI;
 using Transit.Framework;
 using UnityEngine;
 
-namespace Transit.Addon.TrafficTools
+namespace Transit.Addon.TrafficTools.RoadEditor.LaneRestrictions
 {
     public class LaneSpeedRestrictorSubMenu : LaneRestrictorSubMenu
     {
@@ -12,7 +12,7 @@ namespace Transit.Addon.TrafficTools
             base.RefreshPanel();
 
             if (_atlas == null)
-                _atlas = AssetManager.instance.GetThumbnails("UISpeedSigns", @"Tools\RCT\UI\UISpeedSigns.png");
+                _atlas = AssetManager.instance.GetThumbnails("UISpeedSigns", @"RoadEditor\LaneRestrictions\Textures\UISpeedSigns.png");
 
             SpawnEntry(15);
             for (int i = 1; i < 15; i++)

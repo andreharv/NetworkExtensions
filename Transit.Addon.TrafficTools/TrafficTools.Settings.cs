@@ -26,7 +26,7 @@ namespace Transit.Addon.TrafficTools
         public override void OnSettingsUI(UIHelperBase helper)
         {
             helper.AddCheckbox(
-                "Lane Routing Tool",
+                "Lane Routing",
                 "Allows you to customize entry and exit points in junctions.",
                 s_activeOptions.IsFlagSet(ModOptions.LaneRoutingTool), 
                 isChecked =>
@@ -44,7 +44,7 @@ namespace Transit.Addon.TrafficTools
                 true);
 
             helper.AddCheckbox(
-                "Lane Restrictor Tool",
+                "Lane Restrictor",
                 "Allows you to restrict vehicle and speed usage on lanes.",
                 s_activeOptions.IsFlagSet(ModOptions.LaneRestrictorTool),
                 isChecked =>
@@ -62,7 +62,7 @@ namespace Transit.Addon.TrafficTools
                 true);
 
             helper.AddCheckbox(
-                "Traffic Lights Tool",
+                "Traffic Lights",
                 "Allows you to toggle and setup sequences at traffic lights.",
                 s_activeOptions.IsFlagSet(ModOptions.LaneRestrictorTool),
                 isChecked =>

@@ -1,11 +1,11 @@
 ﻿using System;
-using ColossalFramework.UI;
-using Transit.Framework;
+using Transit.Addon.TrafficTools.RoadEditor.LaneRestrictions;
+using Transit.Addon.TrafficTools.RoadEditor.LaneRouting;
+using Transit.Addon.TrafficTools.RoadEditor.TrafficLights;
 using Transit.Framework.UI;
 using Transit.Framework.UI.Toolbar.Items;
-using UnityEngine;
 
-namespace Transit.Addon.TrafficTools.Menus
+namespace Transit.Addon.TrafficTools.RoadEditor
 {
     public class RoadEditorToolbarItemInfo : IToolbarMenuItemInfo
     {

@@ -1,11 +1,10 @@
-﻿using ColossalFramework.Math;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Transit.Addon.TrafficTools
+namespace Transit.Addon.TrafficTools.RoadEditor.LaneRestrictions
 {
-    public class LaneRestrictorTool : RoadCustomizerTool
+    public class LaneRestrictorTool : RoadEditorToolBase
     {
         enum SelectMode
         {
