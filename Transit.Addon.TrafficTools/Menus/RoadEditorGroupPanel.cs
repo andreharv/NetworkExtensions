@@ -1,10 +1,6 @@
-﻿using ColossalFramework.UI;
-using System;
-using System.Collections.Generic;
-using Transit.Framework;
+﻿using System;
 using Transit.Framework.UI;
 using Transit.Framework.UI.Toolbar.Items;
-using UnityEngine;
 
 namespace Transit.Addon.TrafficTools.Menus
 {
@@ -23,25 +19,10 @@ namespace Transit.Addon.TrafficTools.Menus
         {
             var options = TrafficToolsModule.TrafficToolsOptions;
 
-            //var buttons = new List<UIButton>();
-            //var textures = new List<Texture2D>();
             if ((options & TrafficToolsModule.ModOptions.LaneRoutingTool) != 0)
             {
-                //UIButton button = AddMode<LaneRoutingTool>("LaneRoutingTool");
                 AddMode<LaneRoutingTool>("LaneRoutingTool");
-                SpawnMenuEntry("Lane Routing Tool", typeof(LaneRoutingTemplatesSubMenu), "LaneRoutingTemplates", null, "SubBar", null, true);
-
-                //Texture2D tex = AssetManager.instance.GetTexture(@"Tools\RCT\UI\laneRouting.png", TextureType.UI);
-                //tex.name = "laneRouting";
-                //textures.Add(tex);
-
-                //button.disabledFgSprite = 
-                //button.pressedFgSprite = 
-                //button.hoveredFgSprite = 
-                //button.focusedFgSprite = 
-                //button.normalFgSprite = "laneRouting";
-
-                //buttons.Add(button);
+                SpawnMenuEntry("LaneRoutingTool", typeof(LaneRoutingTemplatesSubMenu), "LaneRoutingTemplates", null, "SubBar", null, true);
             }
 
             //if ((options & TrafficToolsModule.ModOptions.LaneRestrictorTool) != 0)
@@ -69,33 +50,6 @@ namespace Transit.Addon.TrafficTools.Menus
 
             //    button.disabledFgSprite = button.pressedFgSprite = button.hoveredFgSprite = button.focusedFgSprite = button.normalFgSprite = "trafficLights";
             //    buttons.Add(button);
-            //}
-
-            //// Thumbnails
-            //if (buttons.Count == 0)
-            //    return;
-
-            //UIButton btn = buttons[0];
-            //textures.Add(btn.atlas.sprites.Find(s => s.name == "OptionBase").texture);
-            //textures.Add(btn.atlas.sprites.Find(s => s.name == "OptionBaseDisabled").texture);
-            //textures.Add(btn.atlas.sprites.Find(s => s.name == "OptionBaseFocused").texture);
-            //textures.Add(btn.atlas.sprites.Find(s => s.name == "OptionBaseHovered").texture);
-            //textures.Add(btn.atlas.sprites.Find(s => s.name == "OptionBasePressed").texture);
-
-            //UITextureAtlas atlas = ScriptableObject.CreateInstance<UITextureAtlas>();
-            //atlas.padding = 0;
-            //atlas.name = "RCT";
-
-            //var shader = Shader.Find("UI/Default UI Shader");
-            //if (shader != null)
-            //    atlas.material = new Material(shader);
-
-            //atlas.material.mainTexture = new Texture2D(1, 1);
-            //atlas.AddTextures(textures.ToArray());
-
-            //foreach (var b in buttons)
-            //{
-            //    b.atlas = atlas;
             //}
         }
     }

@@ -142,6 +142,18 @@ namespace Transit.Framework.UI
                 modeButton.atlas = customAtlas;
             }
 
+            modeButton.normalFgSprite = name;
+            modeButton.focusedFgSprite = name + "Focused";
+            modeButton.hoveredFgSprite = name + "Hovered";
+            modeButton.pressedFgSprite = name + "Pressed";
+            modeButton.disabledFgSprite = name + "Disabled";
+
+            modeButton.normalBgSprite = "OptionBaseBase";
+            modeButton.focusedBgSprite = "OptionBaseBase" + "Focused";
+            modeButton.hoveredBgSprite = "OptionBaseBase" + "Hovered";
+            modeButton.pressedBgSprite = "OptionBaseBase" + "Pressed";
+            modeButton.disabledBgSprite = "OptionBaseBase" + "Disabled";
+
             Action onClickAction = () =>
             {
                 SetTool<T>();
