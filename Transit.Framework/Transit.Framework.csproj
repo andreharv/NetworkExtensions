@@ -96,10 +96,11 @@
     <Compile Include="Assets.cs" />
     <Compile Include="Builders\MenuItemBuilder.cs" />
     <Compile Include="Interfaces\IShortDescriptor.cs" />
+    <Compile Include="UI\CustomGroupPanelBase.cs" />
     <Compile Include="UI\MultiModeGroupPanel.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\ToolbarSubMenu.cs">
+    <Compile Include="UI\CustomScrollPanelBase.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UI\Toolbar\Items\IToolbarItemInfo.cs" />

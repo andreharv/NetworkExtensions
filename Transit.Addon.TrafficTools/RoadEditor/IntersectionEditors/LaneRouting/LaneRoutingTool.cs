@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Transit.Addon.TrafficTools.RoadEditor.LaneRouting
+namespace Transit.Addon.TrafficTools.RoadEditor.IntersectionEditors.LaneRouting
 {
     public class LaneRoutingTool : RoadEditorToolBase
     {

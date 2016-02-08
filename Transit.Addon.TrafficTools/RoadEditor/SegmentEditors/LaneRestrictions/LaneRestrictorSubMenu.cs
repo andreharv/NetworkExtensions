@@ -4,7 +4,7 @@ using Transit.Framework.UI;
 
 namespace Transit.Addon.TrafficTools.RoadEditor.LaneRestrictions
 {
-    public abstract class LaneRestrictorSubMenu : ToolbarSubMenu
+    public abstract class LaneRestrictorSubMenu : CustomScrollPanelBase
     {
         protected UITextureAtlas _atlas;
 

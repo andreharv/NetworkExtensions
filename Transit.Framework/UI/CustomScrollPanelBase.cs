@@ -2,7 +2,7 @@
 
 namespace Transit.Framework.UI
 {
-    public abstract class ToolbarSubMenu : GeneratedScrollPanel
+    public abstract class CustomScrollPanelBase : GeneratedScrollPanel
     {
         protected UIScrollablePanel _scrollablePanel;
 

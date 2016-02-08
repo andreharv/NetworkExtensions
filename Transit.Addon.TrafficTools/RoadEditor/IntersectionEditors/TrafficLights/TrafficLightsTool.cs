@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Transit.Addon.TrafficTools.RoadEditor.TrafficLights
+namespace Transit.Addon.TrafficTools.RoadEditor.IntersectionEditors.TrafficLights
 {
     public class TrafficLightsTool : RoadEditorToolBase
     {

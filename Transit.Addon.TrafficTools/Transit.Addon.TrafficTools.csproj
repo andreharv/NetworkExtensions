@@ -42,6 +42,7 @@
       <HintPath>..\References\ICities.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
@@ -53,16 +54,20 @@
     <Compile Include="Menus\Textures\ToolsAtlasBuilder.cs" />
     <Compile Include="Menus\Textures\ToolsMenuAtlasBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RoadEditor\LaneRestrictions\LaneRestrictorSubMenu.cs" />
-    <Compile Include="RoadEditor\LaneRestrictions\LaneRestrictorTool.cs" />
-    <Compile Include="RoadEditor\LaneRestrictions\LaneSpeedRestrictorSubMenu.cs" />
-    <Compile Include="RoadEditor\LaneRestrictions\LaneVehicleRestrictorSubMenu.cs" />
-    <Compile Include="RoadEditor\LaneRouting\LaneRoutingTool.cs" />
-    <Compile Include="RoadEditor\TrafficLights\TrafficLightsTool.cs" />
+    <Compile Include="RoadEditor\IntersectionEditors\LaneRouting\LaneRoutingToolBuilder.cs" />
+    <Compile Include="RoadEditor\IntersectionEditors\TrafficLights\TrafficLightsToolBuilder.cs" />
+    <Compile Include="RoadEditor\IToolBuilder.cs" />
+    <Compile Include="RoadEditor\SegmentEditors\LaneRestrictions\LaneRestrictorSubMenu.cs" />
+    <Compile Include="RoadEditor\SegmentEditors\LaneRestrictions\LaneRestrictorTool.cs" />
+    <Compile Include="RoadEditor\SegmentEditors\LaneRestrictions\LaneSpeedRestrictorSubMenu.cs" />
+    <Compile Include="RoadEditor\SegmentEditors\LaneRestrictions\LaneVehicleRestrictorSubMenu.cs" />
+    <Compile Include="RoadEditor\IntersectionEditors\LaneRouting\LaneRoutingTool.cs" />
+    <Compile Include="RoadEditor\SegmentEditors\SegmentEditorsPanel.cs" />
+    <Compile Include="RoadEditor\IntersectionEditors\TrafficLights\TrafficLightsTool.cs" />
     <Compile Include="RoadEditor\RoadEditorToolBase.cs" />
-    <Compile Include="RoadEditor\LaneRouting\LaneRoutingTemplatesSubMenu.cs" />
+    <Compile Include="RoadEditor\IntersectionEditors\IntersectionEditorsPanel.cs" />
     <Compile Include="RoadEditor\RoadEditorGroupPanel.cs" />
-    <Compile Include="RoadEditor\TrafficLights\TrafficLightsSubMenu.cs" />
+    <Compile Include="RoadEditor\IntersectionEditors\TrafficLights\TrafficLightsSubMenu.cs" />
     <Compile Include="TrafficTools.cs" />
     <Compile Include="TrafficTools.Loading.cs" />
     <Compile Include="TrafficTools.Settings.cs" />
@@ -88,19 +93,31 @@
     <Content Include="Menus\Textures\ToolsMenu.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="RoadEditor\LaneRestrictions\Textures\UISpeedSigns.png">
+    <Content Include="RoadEditor\IntersectionEditors\LaneRouting\infotooltip.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="RoadEditor\LaneRestrictions\Textures\UIThumbnails.png">
+    <Content Include="RoadEditor\IntersectionEditors\LaneRouting\thumbnails.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="RoadEditor\LaneRestrictions\Textures\UIVehicleRestrictions.png">
+    <Content Include="RoadEditor\IntersectionEditors\TrafficLights\infotooltip.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="RoadEditor\IntersectionEditors\TrafficLights\thumbnails.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="RoadEditor\SegmentEditors\LaneRestrictions\Textures\UISpeedSigns.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="RoadEditor\SegmentEditors\LaneRestrictions\Textures\UIThumbnails.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="RoadEditor\SegmentEditors\LaneRestrictions\Textures\UIVehicleRestrictions.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="RoadEditor\LaneRouting\Textures\" />
-    <Folder Include="RoadEditor\TrafficLights\Textures\" />
+    <Folder Include="RoadEditor\IntersectionEditors\LaneRouting\Textures\" />
+    <Folder Include="RoadEditor\IntersectionEditors\TrafficLights\Textures\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
