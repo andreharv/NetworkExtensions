@@ -57,11 +57,12 @@
     <Compile Include="RoadEditor\IntersectionEditors\LaneRouting\LaneRoutingToolBuilder.cs" />
     <Compile Include="RoadEditor\IntersectionEditors\TrafficLights\TrafficLightsToolBuilder.cs" />
     <Compile Include="RoadEditor\IToolBuilder.cs" />
+    <Compile Include="_Extensions\OverlayEffectExtensions.cs" />
+    <Compile Include="RoadEditor\RoadNodeEditorToolBase.cs" />
     <Compile Include="RoadEditor\SegmentEditors\LaneRestrictions\LaneRestrictorSubMenu.cs" />
     <Compile Include="RoadEditor\SegmentEditors\LaneRestrictions\LaneRestrictorTool.cs" />
     <Compile Include="RoadEditor\SegmentEditors\LaneRestrictions\LaneSpeedRestrictorSubMenu.cs" />
     <Compile Include="RoadEditor\SegmentEditors\LaneRestrictions\LaneVehicleRestrictorSubMenu.cs" />
-    <Compile Include="RoadEditor\IntersectionEditors\LaneRouting\LaneRoutingTool.cs" />
     <Compile Include="RoadEditor\SegmentEditors\SegmentEditorsPanel.cs" />
     <Compile Include="RoadEditor\IntersectionEditors\TrafficLights\TrafficLightsTool.cs" />
     <Compile Include="RoadEditor\RoadEditorToolBase.cs" />

@@ -38,10 +38,10 @@ namespace Transit.Addon.TrafficTools.RoadEditor.LaneRestrictions
         protected override void OnRenderLane(RenderManager.CameraInfo camera)
         {
             foreach (uint laneId in _selectedLanes)
-                RenderLane(camera, laneId, Color.green);
+                RenderManager.instance.OverlayEffect.DrawLaneSelection(camera, laneId, Color.green);
 
             foreach (uint laneId in _hoveredLanes)
-                RenderLane(camera, laneId, Color.blue);
+                RenderManager.instance.OverlayEffect.DrawLaneSelection(camera, laneId, Color.blue);
         }
     }
 }

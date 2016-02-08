@@ -1,6 +1,5 @@
 ﻿using Transit.Framework;
-using Transit.Framework.Builders;
-using Transit.Framework.Modularity;
+using UnityEngine;
 
 namespace Transit.Addon.TrafficTools.RoadEditor.IntersectionEditors.LaneRouting
 {
@@ -16,6 +15,30 @@ namespace Transit.Addon.TrafficTools.RoadEditor.IntersectionEditors.LaneRouting
 
         public string ThumbnailsPath { get { return @"RoadEditor\IntersectionEditors\LaneRouting\thumbnails.png"; } }
         public string InfoTooltipPath { get { return @"RoadEditor\IntersectionEditors\LaneRouting\infotooltip.png"; } }
+    }
+
+    public class LaneRoutingTool : RoadNodeEditorToolBase
+    {
+        //protected uint _entryLane, _exitLane;
+        //protected ushort _hoveredNode;
+
+        //protected override void CustomAwake()
+        //{
+        //    _entryLane = _exitLane = 0;
+        //    _hoveredNode = 0;
+        //}
+
+        //protected override void OnRenderNode(RenderManager.CameraInfo camera)
+        //{
+        //    if (_hoveredNode == 0)
+        //        return;
+
+        //    NetNode node = NetManager.instance.m_nodes.m_buffer[_hoveredNode];
+        //    Color color = node.CountSegments() > 1 ? Color.green : Color.red;
+        //    RenderManager.instance.OverlayEffect.DrawNodeSelection(camera, _hoveredNode, color);
+
+        //    // TODO: render connections on this node
+        //}
     }
 }
 

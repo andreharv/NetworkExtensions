@@ -187,42 +187,5 @@ namespace Transit.Addon.TrafficTools.RoadEditor
 
             return false;
         }
-
-        #region Rendering
-
-        public static void RenderNode(RenderManager.CameraInfo camera, ushort nodeId, Color color, float size = 15f)
-        {
-            if (nodeId == 0)
-                return;
-
-            NetNode node = NetManager.instance.m_nodes.m_buffer[nodeId];
-            RenderManager.instance.OverlayEffect.DrawCircle(camera, color, node.m_position, size, node.m_position.y - 1f, node.m_position.y + 1f, true, true);
-        }
-
-        public static void RenderLane(RenderManager.CameraInfo camera, uint laneId, Color color, float size = 1.5f)
-        {
-            if (laneId == 0)
-                return;
-
-            Bezier3 bezier = NetManager.instance.m_lanes.m_buffer[laneId].m_bezier;
-            RenderManager.instance.OverlayEffect.DrawBezier(camera, color, bezier, size, 0, 0, Mathf.Min(bezier.a.y, bezier.d.y) - 1f, Mathf.Max(bezier.a.y, bezier.d.y) + 1f, true, true);
-        }
-
-        public static void RenderBezier(RenderManager.CameraInfo camera, Vector3 start, Vector3 end, Vector3 middlePoint, Color color, float size = 0.1f)
-        {
-            Bezier3 bezier;
-            bezier.a = start;
-            bezier.d = end;
-            NetSegment.CalculateMiddlePoints(bezier.a, (middlePoint - bezier.a).normalized, bezier.d, (middlePoint - bezier.d).normalized, false, false, out bezier.b, out bezier.c);
-
-            RenderManager.instance.OverlayEffect.DrawBezier(camera, color, bezier, size, 0, 0, Mathf.Min(bezier.a.y, bezier.d.y) - 1f, Mathf.Max(bezier.a.y, bezier.d.y) + 1f, true, true);
-        }
-
-        public static void RenderBlip(RenderManager.CameraInfo camera, Vector3 pos, Color color, float size = 2f)
-        {
-            RenderManager.instance.OverlayEffect.DrawCircle(camera, color, pos, size, pos.y - 1f, pos.y + 1f, true, true);
-        }
-
-        #endregion
     }
 }

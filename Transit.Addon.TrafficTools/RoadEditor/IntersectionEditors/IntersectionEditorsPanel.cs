@@ -8,6 +8,7 @@ using Transit.Addon.TrafficTools.RoadEditor.IntersectionEditors.TrafficLights;
 using Transit.Framework;
 using Transit.Framework.Interfaces;
 using Transit.Framework.UI;
+using UnityEngine;
 
 namespace Transit.Addon.TrafficTools.RoadEditor.IntersectionEditors
 {
@@ -52,6 +53,25 @@ namespace Transit.Addon.TrafficTools.RoadEditor.IntersectionEditors
             //LaneRoutingTool lrt = ToolsModifierControl.GetCurrentTool<LaneRoutingTool>();
             //if (lrt != null)
             //    lrt.TemplateMode = (LaneRoutingTool.Template)comp.objectUserData;
+
+            if (ToolsModifierControl.GetCurrentTool<LaneRoutingTool>() != null)
+            {
+                //ToolsModifierControl.SetTool<LaneRoutingTool>();
+            }
+            else
+            {
+                StartCoroutine(SetRoadCustomizerTool());
+            }
+        }
+
+        IEnumerator SetRoadCustomizerTool()
+        {
+            ToolsModifierControl.SetTool<LaneRoutingTool>();
+
+            while (ToolsModifierControl.GetCurrentTool<LaneRoutingTool>() == null)
+                yield return new WaitForEndOfFrame();
+
+            ToolsModifierControl.SetTool<LaneRoutingTool>();
         }
     }
 }
