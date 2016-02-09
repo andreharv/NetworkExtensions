@@ -4,7 +4,7 @@ using Transit.Framework;
 using Transit.Framework.Builders;
 using UnityEngine;
 
-namespace Transit.Addon.RoadExtensions.Menus
+namespace Transit.Addon.RoadExtensions.Menus.Roads.Textures
 {
     public class RExExtendedSubBarAtlasBuilder : IAtlasBuilder
     {
@@ -28,7 +28,7 @@ namespace Transit.Addon.RoadExtensions.Menus
             var shader = Shader.Find("UI/Default UI Shader");
             if (shader != null) thumbnailAtlas.material = new Material(shader);
 
-            const string PATH = @"Menus\Textures\RExExtendedSubBar.png";
+            const string PATH = @"Menus\Roads\Textures\RExExtendedSubBar.png";
 
             const string BASE = "SubBarButtonBase";
             const string ROADS_TINY_SUBBAR = "SubBar" + RExExtendedMenus.ROADS_TINY;

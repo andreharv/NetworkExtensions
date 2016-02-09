@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using Transit.Addon.RoadExtensions.AI;
 using Transit.Addon.RoadExtensions.Menus;
+using Transit.Addon.RoadExtensions.Menus.Roads;
+using Transit.Addon.RoadExtensions.Menus.Roads.Textures;
 using Transit.Addon.RoadExtensions.Roads.TinyRoads.Alley2L;
 using Transit.Addon.RoadExtensions.Roads.TinyRoads.OneWay1L;
 using Transit.Framework;
@@ -33,10 +35,10 @@ namespace Transit.Addon.RoadExtensions
 
             var locale = SingletonLite<LocaleManager>.instance.GetLocale();
 
-            locale.CreateMenuTitleLocalizedString(Menus.RExExtendedMenus.ROADS_TINY, "Tiny Roads");
-            locale.CreateMenuTitleLocalizedString(Menus.RExExtendedMenus.ROADS_SMALL_HV, "Small Heavy Roads");
-            locale.CreateMenuTitleLocalizedString(Menus.RExExtendedMenus.ROADS_BUSWAYS, "Buslane Roads");
-            locale.CreateMenuTitleLocalizedString(Menus.RExExtendedMenus.ROADS_PEDESTRIANS, "Pedestrian Roads");
+            locale.CreateMenuTitleLocalizedString(RExExtendedMenus.ROADS_TINY, "Tiny Roads");
+            locale.CreateMenuTitleLocalizedString(RExExtendedMenus.ROADS_SMALL_HV, "Small Heavy Roads");
+            locale.CreateMenuTitleLocalizedString(RExExtendedMenus.ROADS_BUSWAYS, "Buslane Roads");
+            locale.CreateMenuTitleLocalizedString(RExExtendedMenus.ROADS_PEDESTRIANS, "Pedestrian Roads");
 
             var menuItemBuilders = new List<IMenuItemBuilder>();
             menuItemBuilders.AddRange(Parts.OfType<IMenuItemBuilder>());

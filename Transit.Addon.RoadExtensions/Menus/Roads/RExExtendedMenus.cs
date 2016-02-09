@@ -1,5 +1,5 @@
 ﻿
-namespace Transit.Addon.RoadExtensions.Menus
+namespace Transit.Addon.RoadExtensions.Menus.Roads
 {
     public static class RExExtendedMenus
     {

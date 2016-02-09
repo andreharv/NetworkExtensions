@@ -56,7 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Compatibility\RoadColorChanger.cs" />
-    <Compile Include="Menus\RExExtendedMenus.cs" />
+    <Compile Include="Menus\Roads\RExExtendedMenus.cs" />
     <Compile Include="Props\MediumAvenueSideLightBuilder.cs" />
     <Compile Include="Props\LargeAvenueMedianLightBuilder.cs" />
     <Compile Include="Roads\Common\RoadHelper.LaneSetup.cs" />
@@ -69,7 +69,7 @@
     <Compile Include="Roads\Common\RoadModels.32m.3mSW2mMdn.cs" />
     <Compile Include="RExModule.Install.Menu.cs" />
     <Compile Include="RExModule.Install.Roads.cs" />
-    <Compile Include="Menus\RExExtendedSubBarAtlasBuilder.cs" />
+    <Compile Include="Menus\Roads\Textures\RExExtendedSubBarAtlasBuilder.cs" />
     <Compile Include="Roads\TinyRoads\TinyRoadMenuModifier.cs" />
     <Compile Include="Roads\TinyRoads\Alley2L\Alley2LBuilder.cs" />
     <Compile Include="Roads\Common\CenterLaneType.cs" />
@@ -663,7 +663,7 @@
     <Content Include="Roads\Highways\HighwayRamp\thumbnails.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Menus\Textures\RExExtendedSubBar.png">
+    <Content Include="Menus\Roads\Textures\RExExtendedSubBar.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\TinyRoads\Alley2L\thumbnails.png">
