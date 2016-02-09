@@ -1,7 +1,7 @@
 ﻿using ColossalFramework.Math;
 using UnityEngine;
 
-namespace Transit.Addon.TrafficTools.RoadEditor
+namespace Transit.Addon.TrafficTools.Common
 {
     public abstract partial class RoadEditorToolBase : ToolBase
     {

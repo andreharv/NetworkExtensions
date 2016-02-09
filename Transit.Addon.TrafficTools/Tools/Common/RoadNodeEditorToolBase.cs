@@ -1,7 +1,7 @@
 ﻿using ColossalFramework.Math;
 using UnityEngine;
 
-namespace Transit.Addon.TrafficTools.RoadEditor
+namespace Transit.Addon.TrafficTools.Common
 {
     public enum MouseKeyCode : int
     {
@@ -12,18 +12,7 @@ namespace Transit.Addon.TrafficTools.RoadEditor
 
     public abstract class RoadNodeEditorToolBase : ToolBase
     {
-        private ushort? _hoveredNodeId;//, _selectedNode;
-
-        //protected sealed override void Awake()
-        //{
-        //    base.Awake(); // necessary to set toolController
-
-        //    //_hoveredNode = _selectedNode = 0;
-            
-        //    CustomAwake();
-        //}
-
-        //protected virtual void CustomAwake() { }
+        private ushort? _hoveredNodeId;
 
         protected override void OnToolUpdate()
         {
@@ -41,30 +30,35 @@ namespace Transit.Addon.TrafficTools.RoadEditor
             var leftButtonClicked = Input.GetMouseButtonUp((int)MouseKeyCode.LeftButton);
             var rightButtonClicked = Input.GetMouseButtonUp((int)MouseKeyCode.RightButton);
 
-
             if (nodeId == NODE_NULL)
             {
                 _hoveredNodeId = null;
                 return;
             }
-
+            
             if (!leftButtonClicked && !rightButtonClicked)
             {
                 _hoveredNodeId = nodeId;
             }
-
-            if (leftButtonClicked)
+            else
             {
-                OnNodeClicked(MouseKeyCode.LeftButton);
-            }
+                NetNode? node = GetNode(nodeId);
 
-            if (rightButtonClicked)
-            {
-                OnNodeClicked(MouseKeyCode.RightButton);
+                if (node != null)
+                {
+                    if (leftButtonClicked)
+                    {
+                        OnNodeClicked(node.Value, MouseKeyCode.LeftButton);
+                    }
+                    else // if (rightButtonClicked)
+                    {
+                        OnNodeClicked(node.Value, MouseKeyCode.RightButton);
+                    }
+                }
             }
         }
 
-        protected virtual void OnNodeClicked(MouseKeyCode code) { }
+        protected abstract void OnNodeClicked(NetNode node, MouseKeyCode code);
 
         public override void RenderOverlay(RenderManager.CameraInfo camera)
         {
@@ -77,26 +71,12 @@ namespace Transit.Addon.TrafficTools.RoadEditor
 
             if (node != null)
             {
-                Color color = node.Value.CountSegments() > 1 ? Color.green : Color.red;
+                Color color = node.Value.CountSegments() > 1 ? Color.blue : Color.red;
                 RenderManager.instance.OverlayEffect.DrawNodeSelection(camera, node.Value, color); 
             }
 
             // TODO: render connections on this node
         }
-
-        //protected virtual void OnRenderNode(RenderManager.CameraInfo camera) { }
-
-        //protected bool TrySelectNode(out ushort nodeId)
-        //{
-        //    //if (RaycastNode(out _hoveredNode) && Input.GetMouseButtonUp(0))
-        //    //{
-        //    //    nodeId = _hoveredNode;
-        //    //    return true;
-        //    //}
-
-        //    nodeId = 0;
-        //    return false;
-        //}
 
         protected const ushort NODE_NULL = 0;
 

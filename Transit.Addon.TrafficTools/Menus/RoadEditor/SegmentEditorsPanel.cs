@@ -1,7 +1,7 @@
 ﻿using ColossalFramework.UI;
 using Transit.Framework.UI;
 
-namespace Transit.Addon.TrafficTools.RoadEditor.SegmentEditors
+namespace Transit.Addon.TrafficTools.Menus.RoadEditor
 {
     public class SegmentEditorsPanel : CustomScrollPanelBase
     {

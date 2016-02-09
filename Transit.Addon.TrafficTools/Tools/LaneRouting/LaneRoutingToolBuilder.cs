@@ -1,7 +1,8 @@
-﻿using Transit.Framework;
-using UnityEngine;
+﻿using System;
+using Transit.Addon.TrafficTools.Common;
+using Transit.Framework;
 
-namespace Transit.Addon.TrafficTools.RoadEditor.IntersectionEditors.LaneRouting
+namespace Transit.Addon.TrafficTools.LaneRouting
 {
     public class LaneRoutingToolBuilder : Activable, IToolBuilder
     {
@@ -13,8 +14,10 @@ namespace Transit.Addon.TrafficTools.RoadEditor.IntersectionEditors.LaneRouting
         public string Description { get { return "Allows you to customize entry and exit points in junctions."; } }
         public string UICategory { get { return "IntersectionEditors"; } }
 
-        public string ThumbnailsPath { get { return @"RoadEditor\IntersectionEditors\LaneRouting\thumbnails.png"; } }
-        public string InfoTooltipPath { get { return @"RoadEditor\IntersectionEditors\LaneRouting\infotooltip.png"; } }
+        public string ThumbnailsPath { get { return @"Tools\LaneRouting\thumbnails.png"; } }
+        public string InfoTooltipPath { get { return @"Tools\LaneRouting\infotooltip.png"; } }
+
+        public Type ToolType { get { return typeof (LaneRoutingTool); } }
     }
 
     public class LaneRoutingTool : RoadNodeEditorToolBase
@@ -39,6 +42,8 @@ namespace Transit.Addon.TrafficTools.RoadEditor.IntersectionEditors.LaneRouting
 
         //    // TODO: render connections on this node
         //}
+
+        protected override void OnNodeClicked(NetNode node, MouseKeyCode code) { }
     }
 }
 

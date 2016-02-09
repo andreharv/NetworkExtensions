@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using ColossalFramework.UI;
-using Transit.Addon.TrafficTools.RoadEditor;
 using Transit.Framework;
 using Transit.Framework.Builders;
 using UnityEngine;
 
-namespace Transit.Addon.TrafficTools.Menus.Textures
+namespace Transit.Addon.TrafficTools.Menus.RoadEditor.Textures
 {
     public class ToolsMenuAtlasBuilder : IAtlasBuilder
     {
@@ -23,7 +22,7 @@ namespace Transit.Addon.TrafficTools.Menus.Textures
             var shader = Shader.Find("UI/Default UI Shader");
             if (shader != null) thumbnailAtlas.material = new Material(shader);
 
-            const string PATH = @"Menus\Textures\ToolsMenu.png";
+            const string PATH = @"Menus\RoadEditor\Textures\ToolsMenu.png";
 
             const string BG = "ToolbarIconBase";
             var bgVersions = new[] { "Normal", "Focused", "Hovered", "Pressed", "Disabled" };

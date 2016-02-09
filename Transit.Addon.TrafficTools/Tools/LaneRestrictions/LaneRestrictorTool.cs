@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Transit.Addon.TrafficTools.Common;
 using UnityEngine;
 
 namespace Transit.Addon.TrafficTools.RoadEditor.LaneRestrictions

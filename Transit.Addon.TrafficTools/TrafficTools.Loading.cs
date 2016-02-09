@@ -1,6 +1,7 @@
 ﻿using ICities;
 using Transit.Addon.TrafficTools.Menus;
-using Transit.Addon.TrafficTools.Menus.Textures;
+using Transit.Addon.TrafficTools.Menus.RoadEditor;
+using Transit.Addon.TrafficTools.Menus.RoadEditor.Textures;
 using Transit.Addon.TrafficTools.RoadEditor;
 using Transit.Framework;
 using Transit.Framework.ExtensionPoints.UI;

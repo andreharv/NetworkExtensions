@@ -1,6 +1,6 @@
 ﻿using Transit.Framework.UI;
 
-namespace Transit.Addon.TrafficTools.RoadEditor.IntersectionEditors.TrafficLights
+namespace Transit.Addon.TrafficTools.TrafficLights
 {
     public class TrafficLightsSubMenu : CustomScrollPanelBase
     {
