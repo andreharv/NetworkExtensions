@@ -53,6 +53,8 @@
   <ItemGroup>
     <Compile Include="Menus\RoadEditor\IntersectionEditorsPanel.cs" />
     <Compile Include="Tools\LaneRouting\LaneRoutingToolBuilder.cs" />
+    <Compile Include="Tools\LaneRouting\Markers\LaneEdgeMarker.cs" />
+    <Compile Include="Tools\LaneRouting\Markers\SegmentLaneMarker.cs" />
     <Compile Include="Tools\TrafficLights\TrafficLightsSubMenu.cs" />
     <Compile Include="Tools\TrafficLights\TrafficLightsTool.cs" />
     <Compile Include="Tools\TrafficLights\TrafficLightsToolBuilder.cs" />
@@ -68,6 +70,7 @@
     <Compile Include="Menus\RoadEditor\Textures\ToolsAtlasBuilder.cs" />
     <Compile Include="Menus\RoadEditor\Textures\ToolsMenuAtlasBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="_Extensions\NetManagerExtensions.cs" />
     <Compile Include="_Extensions\OverlayEffectExtensions.cs" />
     <Compile Include="TrafficTools.cs" />
     <Compile Include="TrafficTools.Loading.cs" />

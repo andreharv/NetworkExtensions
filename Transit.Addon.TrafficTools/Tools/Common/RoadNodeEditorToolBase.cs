@@ -1,4 +1,5 @@
 ﻿using ColossalFramework.Math;
+using Transit.Addon.TrafficTools._Extensions;
 using UnityEngine;
 
 namespace Transit.Addon.TrafficTools.Common
@@ -30,7 +31,7 @@ namespace Transit.Addon.TrafficTools.Common
             var leftButtonClicked = Input.GetMouseButtonUp((int)MouseKeyCode.LeftButton);
             var rightButtonClicked = Input.GetMouseButtonUp((int)MouseKeyCode.RightButton);
 
-            if (nodeId == NODE_NULL)
+            if (nodeId == NetManagerHelper.NODE_NULL)
             {
                 _hoveredNodeId = null;
                 return;
@@ -39,26 +40,24 @@ namespace Transit.Addon.TrafficTools.Common
             if (!leftButtonClicked && !rightButtonClicked)
             {
                 _hoveredNodeId = nodeId;
+                OnNodeHovered(nodeId);
             }
             else
             {
-                NetNode? node = GetNode(nodeId);
-
-                if (node != null)
+                if (leftButtonClicked)
                 {
-                    if (leftButtonClicked)
-                    {
-                        OnNodeClicked(node.Value, MouseKeyCode.LeftButton);
-                    }
-                    else // if (rightButtonClicked)
-                    {
-                        OnNodeClicked(node.Value, MouseKeyCode.RightButton);
-                    }
+                    OnNodeClicked(nodeId, MouseKeyCode.LeftButton);
+                }
+                else // if (rightButtonClicked)
+                {
+                    OnNodeClicked(nodeId, MouseKeyCode.RightButton);
                 }
             }
         }
 
-        protected abstract void OnNodeClicked(NetNode node, MouseKeyCode code);
+        protected virtual void OnNodeHovered(ushort nodeId) {}
+
+        protected abstract void OnNodeClicked(ushort nodeId, MouseKeyCode code);
 
         public override void RenderOverlay(RenderManager.CameraInfo camera)
         {
@@ -67,32 +66,13 @@ namespace Transit.Addon.TrafficTools.Common
             if (_hoveredNodeId == null)
                 return;
 
-            NetNode? node = GetNode(_hoveredNodeId.Value);
+            NetNode? node = NetManager.instance.GetNode(_hoveredNodeId.Value);
 
             if (node != null)
             {
                 Color color = node.Value.CountSegments() > 1 ? Color.blue : Color.red;
                 RenderManager.instance.OverlayEffect.DrawNodeSelection(camera, node.Value, color); 
             }
-
-            // TODO: render connections on this node
-        }
-
-        protected const ushort NODE_NULL = 0;
-
-        private static NetNode? GetNode(int nodeId)
-        {
-            if (nodeId == NODE_NULL)
-            {
-                return null;
-            }
-
-            if (nodeId < NetManager.instance.m_nodes.m_buffer.Length)
-            {
-                return NetManager.instance.m_nodes.m_buffer[nodeId];
-            }
-
-            return null;
         }
 
         protected static ushort GetCursorNode()
@@ -110,12 +90,12 @@ namespace Transit.Addon.TrafficTools.Common
 
             if (!RayCast(raycastInput, out output))
             {
-                return NODE_NULL;
+                return NetManagerHelper.NODE_NULL;
             }
 
             nodeId = output.m_netNode;
 
-            if (nodeId == NODE_NULL)
+            if (nodeId == NetManagerHelper.NODE_NULL)
             {
                 // Joao Farias: I tried caching the raycast input, since it always has the same properties, but it causes weird issues
                 NetManager netManager = NetManager.instance;
