@@ -131,6 +131,8 @@ namespace Transit.Addon.TrafficTools.LaneRouting
             var nodeOffsetMultiplier = node.CountSegments() <= 2 ? 3 : 1;
             var segmentId = node.m_segment0;
 
+            var anchorColorId = 0;
+
             for (var i = 0; i < 8 && segmentId != 0; i++)
             {
                 var segment = allSegments.m_buffer[segmentId];
@@ -170,12 +172,13 @@ namespace Transit.Addon.TrafficTools.LaneRouting
                             laneId,
                             lanePos + segmentOffset,
                             isOrigin,
-                            markers.m_size));
+                            isOrigin ? anchorColorId : anchorColorId + 1));
                     }
 
                     laneId = allLanes.m_buffer[laneId].m_nextLane;
                 }
 
+                anchorColorId += 2;
                 segmentId = segment.GetRightSegment(selectedNodeId);
                 if (segmentId == node.m_segment0)
                     segmentId = 0;

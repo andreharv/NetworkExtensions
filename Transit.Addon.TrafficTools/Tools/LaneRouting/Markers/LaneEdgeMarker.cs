@@ -10,6 +10,7 @@ namespace Transit.Addon.TrafficTools.LaneRouting.Markers
         Selected
     }
 
+    // LaneRoutingMarker
     public class LaneEdgeMarker
     {
         public uint LaneId { get; private set; }
@@ -19,12 +20,12 @@ namespace Transit.Addon.TrafficTools.LaneRouting.Markers
         public Color Color { get; private set; }
         public FastList<LaneEdgeMarker> Connections { get; private set; }
 
-        public LaneEdgeMarker(uint laneId, Vector3 position, bool isOrigin, int marketId)
+        public LaneEdgeMarker(uint laneId, Vector3 position, bool isOrigin, int colorId)
         {
             LaneId = laneId;
             Position = position;
             IsOrigin = isOrigin;
-            Color = colors[marketId];
+            Color = colors[colorId];
             State = UIState.Default;
             Connections = new FastList<LaneEdgeMarker>();
         }
