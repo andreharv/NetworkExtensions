@@ -51,21 +51,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Markers\NetNodeMarker.cs" />
     <Compile Include="Menus\RoadEditor\IntersectionEditorsPanel.cs" />
-    <Compile Include="Tools\LaneRouting\LaneRoutingToolBuilder.cs" />
-    <Compile Include="Tools\LaneRouting\Markers\LaneEdgeMarker.cs" />
-    <Compile Include="Tools\LaneRouting\Markers\SegmentLaneMarker.cs" />
-    <Compile Include="Tools\TrafficLights\TrafficLightsSubMenu.cs" />
-    <Compile Include="Tools\TrafficLights\TrafficLightsTool.cs" />
-    <Compile Include="Tools\TrafficLights\TrafficLightsToolBuilder.cs" />
-    <Compile Include="Tools\Common\IToolBuilder.cs" />
+    <Compile Include="Common\MouseKeyCode.cs" />
+    <Compile Include="Common\Markers\UIMarkerBase.cs" />
+    <Compile Include="Common\UIState.cs" />
+    <Compile Include="Tools\LaneRouting\NetLaneRoutingToolBuilder.cs" />
+    <Compile Include="Tools\LaneRouting\Markers\NetLaneAnchorMarker.cs" />
+    <Compile Include="Tools\LaneRouting\Markers\NetNodeRoutingMarker.cs" />
+    <Compile Include="Common\Markers\NetNodeMarkerBase.cs" />
+    <Compile Include="Common\IToolBuilder.cs" />
     <Compile Include="Menus\RoadEditor\RoadEditorGroupPanel.cs" />
-    <Compile Include="Tools\Common\RoadEditorToolBase.cs" />
-    <Compile Include="Tools\Common\RoadNodeEditorToolBase.cs" />
-    <Compile Include="Tools\LaneRestrictions\LaneRestrictorSubMenu.cs" />
-    <Compile Include="Tools\LaneRestrictions\LaneRestrictorTool.cs" />
-    <Compile Include="Tools\LaneRestrictions\LaneSpeedRestrictorSubMenu.cs" />
-    <Compile Include="Tools\LaneRestrictions\LaneVehicleRestrictorSubMenu.cs" />
+    <Compile Include="Common\NetNodeEditorToolBase.cs" />
     <Compile Include="Menus\RoadEditor\SegmentEditorsPanel.cs" />
     <Compile Include="Menus\RoadEditor\Textures\ToolsAtlasBuilder.cs" />
     <Compile Include="Menus\RoadEditor\Textures\ToolsMenuAtlasBuilder.cs" />
@@ -95,21 +92,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Tools\LaneRouting\thumbnails.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tools\TrafficLights\infotooltip.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tools\TrafficLights\thumbnails.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tools\LaneRestrictions\Textures\UISpeedSigns.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tools\LaneRestrictions\Textures\UIThumbnails.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tools\LaneRestrictions\Textures\UIVehicleRestrictions.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Menus\RoadEditor\Textures\Tools.png">

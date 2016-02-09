@@ -1,61 +1,78 @@
-﻿using System;
+﻿using Transit.Addon.TrafficTools.Common;
+using Transit.Addon.TrafficTools.Common.Markers;
 using UnityEngine;
 
 namespace Transit.Addon.TrafficTools.LaneRouting.Markers
 {
-    public enum UIState
-    {
-        Default,
-        Hovered,
-        Selected
-    }
-
-    // LaneRoutingMarker
-    public class LaneEdgeMarker
+    public class NetLaneAnchorMarker : UIMarkerBase
     {
         public uint LaneId { get; private set; }
         public Vector3 Position { get; private set; }
         public bool IsOrigin { get; private set; }
-        public UIState State { get; private set; }
         public Color Color { get; private set; }
-        public FastList<LaneEdgeMarker> Connections { get; private set; }
+        public FastList<NetLaneAnchorMarker> Connections { get; private set; }
 
-        public LaneEdgeMarker(uint laneId, Vector3 position, bool isOrigin, int colorId)
+        public NetLaneAnchorMarker(uint laneId, Vector3 position, bool isOrigin, int colorId) : base()
         {
             LaneId = laneId;
             Position = position;
             IsOrigin = isOrigin;
             Color = colors[colorId];
-            State = UIState.Default;
-            Connections = new FastList<LaneEdgeMarker>();
+            Connections = new FastList<NetLaneAnchorMarker>();
         }
 
-        public void SetState(UIState state)
-        {
-            State = state;
-        }
-
-        public void Render(RenderManager.CameraInfo camera)
+        public override void OnRendered(RenderManager.CameraInfo camera)
         {
             if (IsOrigin)
             {
-                switch (State)
+                switch (GetState())
                 {
                     case UIState.Default:
                         RenderManager.instance.OverlayEffect.DrawCircle(camera, Color, Position, 1f, Position.y - 1f, Position.y + 1f, true, true);
                         break;
                     case UIState.Hovered:
-                        RenderManager.instance.OverlayEffect.DrawCircle(camera, Color, Position, 2f, Position.y - 1f, Position.y + 1f, true, true);
+                    case UIState.Hovered | UIState.Selected:
+                        RenderManager.instance.OverlayEffect.DrawCircle(camera, Color, Position, 1f, Position.y - 1f, Position.y + 1f, true, true);
+                        RenderManager.instance.OverlayEffect.DrawCircle(camera, Color.cyan, Position, 2f, Position.y - 1f, Position.y + 1f, true, true);
                         break;
                     case UIState.Selected:
+                        RenderManager.instance.OverlayEffect.DrawCircle(camera, Color, Position, 1f, Position.y - 1f, Position.y + 1f, true, true);
+                        RenderManager.instance.OverlayEffect.DrawCircle(camera, Color.green, Position, 2f, Position.y - 1f, Position.y + 1f, true, true);
                         break;
                 }
             }
         }
 
 
-        private static readonly Color32[] colors = 
+        private static readonly Color32[] colors =
         {
+            Color.white,
+            new Color32(240, 255, 255, 255), // azure
+            
+            new Color32(255, 215, 0, 255), // gold
+            new Color32(184, 134, 11, 255), // dark golden rod
+
+            new Color32(70, 130, 180, 255), // steel blue
+            new Color32(0, 191, 255, 255), // deep sky blue
+
+            new Color32(255, 165, 0, 255), // orange
+            new Color32(220, 20, 60, 255), // crimson
+
+            new Color32(127, 255, 0, 255), // chartreuse
+            new Color32(0, 100, 0, 255), // dark green
+            
+            Color.blue,
+            Color.grey,
+
+            new Color32(240, 230, 140, 255), // khaki
+            new Color32(128, 128, 0, 255), // olive
+            
+            new Color32(0, 139, 139, 255), // dark cyan
+            Color.cyan,
+
+            new Color32(255, 0, 255, 255), // Magenta 
+            new Color32(128, 0, 128, 255), // Purple
+
             new Color32(161, 64, 206, 255),
             new Color32(79, 251, 8, 255),
             new Color32(243, 96, 44, 255),

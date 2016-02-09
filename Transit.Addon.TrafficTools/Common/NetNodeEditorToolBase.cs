@@ -1,19 +1,25 @@
 ﻿using ColossalFramework.Math;
-using Transit.Addon.TrafficTools._Extensions;
+using System.Collections.Generic;
+using Transit.Addon.TrafficTools.Common.Markers;
 using UnityEngine;
 
 namespace Transit.Addon.TrafficTools.Common
 {
-    public enum MouseKeyCode : int
+    public abstract class NetNodeEditorToolBase<TMarker> : ToolBase
+        where TMarker : NetNodeMarkerBase
     {
-        LeftButton = 0,
-        RightButton = 1,
-    }
+        protected readonly IDictionary<ushort, TMarker> Markers = new Dictionary<ushort, TMarker>();
+        private TMarker _hoveredMarker = null;
 
+        private TMarker GetOrCreateMarker(ushort nodeId)
+        {
+            if (!Markers.ContainsKey(nodeId))
+            {
+                Markers[nodeId] = NetNodeMarker.Create<TMarker>(nodeId);
+            }
 
-    public abstract class RoadNodeEditorToolBase : ToolBase
-    {
-        private ushort? _hoveredNodeId;
+            return Markers[nodeId];
+        }
 
         protected override void OnToolUpdate()
         {
@@ -31,51 +37,95 @@ namespace Transit.Addon.TrafficTools.Common
             var leftButtonClicked = Input.GetMouseButtonUp((int)MouseKeyCode.LeftButton);
             var rightButtonClicked = Input.GetMouseButtonUp((int)MouseKeyCode.RightButton);
 
-            if (nodeId == NetManagerHelper.NODE_NULL)
+            if (nodeId == null)
             {
-                _hoveredNodeId = null;
-                return;
-            }
-            
-            if (!leftButtonClicked && !rightButtonClicked)
-            {
-                _hoveredNodeId = nodeId;
-                OnNodeHovered(nodeId);
-            }
-            else
-            {
+                if (_hoveredMarker != null)
+                {
+                    OnMarkerHoveringEnded(_hoveredMarker);
+                    _hoveredMarker = null;
+                }
+
                 if (leftButtonClicked)
                 {
-                    OnNodeClicked(nodeId, MouseKeyCode.LeftButton);
+                    OnNonMarkerClicked(MouseKeyCode.LeftButton);
                 }
                 else // if (rightButtonClicked)
                 {
-                    OnNodeClicked(nodeId, MouseKeyCode.RightButton);
+                    OnNonMarkerClicked(MouseKeyCode.RightButton);
+                }
+                return;
+            }
+
+            var isHovering = !leftButtonClicked && !rightButtonClicked;
+            if (isHovering)
+            {
+                var nodeMarker = GetOrCreateMarker(nodeId.Value);
+
+                if (_hoveredMarker != nodeMarker)
+                {
+                    if (_hoveredMarker != null)
+                    {
+                        OnMarkerHoveringEnded(_hoveredMarker);
+                    }
+                    _hoveredMarker = nodeMarker;
+                    OnMarkerHoveringStarted(_hoveredMarker);
+                }
+
+                OnMarkerHovering(_hoveredMarker);
+
+                return;
+            }
+
+            if (leftButtonClicked)
+            {
+                if (_hoveredMarker != null)
+                {
+                    OnMarkerClicked(_hoveredMarker, MouseKeyCode.LeftButton);
+                }
+            }
+            else // if (rightButtonClicked)
+            {
+                if (_hoveredMarker != null)
+                {
+                    OnMarkerClicked(_hoveredMarker, MouseKeyCode.RightButton);
                 }
             }
         }
 
-        protected virtual void OnNodeHovered(ushort nodeId) {}
+        protected virtual void OnMarkerHoveringStarted(TMarker marker)
+        {
+            marker.SetHoveringStarted();
+        }
 
-        protected abstract void OnNodeClicked(ushort nodeId, MouseKeyCode code);
+        protected virtual void OnMarkerHoveringEnded(TMarker marker)
+        {
+            marker.SetHoveringEnded();
+        }
+
+        protected virtual void OnMarkerHovering(TMarker marker)
+        {
+            marker.OnHovering();
+        }
+
+        protected virtual void OnMarkerClicked(TMarker marker, MouseKeyCode code)
+        {
+        }
+
+        protected virtual void OnNonMarkerClicked(MouseKeyCode code)
+        {
+        }
 
         public override void RenderOverlay(RenderManager.CameraInfo camera)
         {
             base.RenderOverlay(camera);
 
-            if (_hoveredNodeId == null)
-                return;
-
-            NetNode? node = NetManager.instance.GetNode(_hoveredNodeId.Value);
-
-            if (node != null)
+            if (_hoveredMarker != null)
             {
-                Color color = node.Value.CountSegments() > 1 ? Color.blue : Color.red;
-                RenderManager.instance.OverlayEffect.DrawNodeSelection(camera, node.Value, color); 
+                _hoveredMarker.OnRendered(camera);
             }
         }
 
-        protected static ushort GetCursorNode()
+        protected static ushort? GetCursorNode()
         {
             RaycastInput raycastInput = new RaycastInput(Camera.main.ScreenPointToRay(Input.mousePosition), Camera.main.farClipPlane);
             raycastInput.m_netService.m_service = ItemClass.Service.Road;
@@ -90,12 +140,12 @@ namespace Transit.Addon.TrafficTools.Common
 
             if (!RayCast(raycastInput, out output))
             {
-                return NetManagerHelper.NODE_NULL;
+                return null;
             }
 
             nodeId = output.m_netNode;
 
-            if (nodeId == NetManagerHelper.NODE_NULL)
+            if (nodeId == 0)
             {
                 // Joao Farias: I tried caching the raycast input, since it always has the same properties, but it causes weird issues
                 NetManager netManager = NetManager.instance;
@@ -115,7 +165,14 @@ namespace Transit.Addon.TrafficTools.Common
                 }
             }
 
-            return nodeId;
+            if (nodeId == 0)
+            {
+                return null;
+            }
+            else
+            {
+                return nodeId;
+            }
         }
 
         protected bool RaycastBezier(Bezier3 bezier)

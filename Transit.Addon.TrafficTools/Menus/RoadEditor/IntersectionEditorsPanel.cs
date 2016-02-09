@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using ColossalFramework;
+﻿using ColossalFramework;
 using ColossalFramework.UI;
+using System.Collections.Generic;
 using Transit.Addon.TrafficTools.Common;
 using Transit.Addon.TrafficTools.LaneRouting;
-using Transit.Addon.TrafficTools.RoadEditor;
-using Transit.Addon.TrafficTools.TrafficLights;
+//using Transit.Addon.TrafficTools.TrafficLights;
 using Transit.Framework;
 using Transit.Framework.Interfaces;
 using Transit.Framework.UI;
@@ -19,13 +18,13 @@ namespace Transit.Addon.TrafficTools.Menus.RoadEditor
 
             IEnumerable<IToolBuilder> toolBuilders = new IToolBuilder[]
             {
-                new LaneRoutingToolBuilder(),
-                new TrafficLightsToolBuilder(),
+                new NetLaneRoutingToolBuilder(),
+                //new TrafficLightsToolBuilder(),
             };
 
             foreach (var builder in toolBuilders)
             {
-                toolController.AddTool<LaneRoutingTool>();
+                toolController.AddTool<NetLaneRoutingTool>();
 
                 var toolName = builder.GetCodeName();
                 UITextureAtlas atlas = null;

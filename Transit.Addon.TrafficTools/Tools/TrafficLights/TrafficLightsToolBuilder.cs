@@ -18,7 +18,7 @@ namespace Transit.Addon.TrafficTools.TrafficLights
         public string ThumbnailsPath { get { return @"Tools\TrafficLights\thumbnails.png"; } }
         public string InfoTooltipPath { get { return @"Tools\TrafficLights\infotooltip.png"; } }
 
-        public Type ToolType { get { return typeof(LaneRoutingTool); } }
+        public Type ToolType { get { return typeof(NetLaneRoutingTool); } }
     }
 }
 
