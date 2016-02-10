@@ -5,11 +5,11 @@ using UnityEngine;
 
 namespace Transit.Addon.TrafficTools.LaneRouting.Markers
 {
-    public class NetNodeRoutingMarker : NetNodeMarkerBase
+    public class NodeRoutingMarker : NodeMarkerBase
     {
-        private IEnumerable<NetNodeLaneAnchor> _laneAnchors;
+        private IEnumerable<LaneRoutingMarker> _laneAnchors;
 
-        private IEnumerable<NetNodeLaneAnchor> LaneAnchors
+        private IEnumerable<LaneRoutingMarker> LaneAnchors
         {
             get
             {
@@ -22,7 +22,7 @@ namespace Transit.Addon.TrafficTools.LaneRouting.Markers
             }
         }
 
-        public NetNodeRoutingMarker(ushort nodeId) : base(nodeId)
+        public NodeRoutingMarker(ushort nodeId) : base(nodeId)
         {
             Init();
         }
@@ -33,9 +33,9 @@ namespace Transit.Addon.TrafficTools.LaneRouting.Markers
             IsEnabled = node != null && node.Value.CountSegments() > 1;
         }
 
-        private IEnumerable<NetNodeLaneAnchor> InitLaneAnchors()
+        private IEnumerable<LaneRoutingMarker> InitLaneAnchors()
         {
-            var markers = new List<NetNodeLaneAnchor>();
+            var markers = new List<LaneRoutingMarker>();
 
             var allNodes = NetManager.instance.m_nodes;
             var allSegments = NetManager.instance.m_segments;
@@ -82,7 +82,7 @@ namespace Transit.Addon.TrafficTools.LaneRouting.Markers
                             lanePos = allLanes.m_buffer[laneId].m_bezier.a;
                         }
 
-                        markers.Add(new NetNodeLaneAnchor(
+                        markers.Add(new LaneRoutingMarker(
                             NodeId,
                             laneId,
                             lanePos + segmentOffset,

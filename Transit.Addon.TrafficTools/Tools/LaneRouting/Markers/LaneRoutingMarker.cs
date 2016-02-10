@@ -1,25 +1,26 @@
-﻿using ColossalFramework.Math;
+﻿using System.Collections.Generic;
+using ColossalFramework.Math;
 using Transit.Addon.TrafficTools.Common;
 using Transit.Addon.TrafficTools.Common.Markers;
 using UnityEngine;
 
 namespace Transit.Addon.TrafficTools.LaneRouting.Markers
 {
-    public class NetNodeLaneAnchor : NetNodeMarkerBase
+    public class LaneRoutingMarker : NodeMarkerBase
     {
         public uint LaneId { get; private set; }
         public Vector3 Position { get; private set; }
         public bool IsOrigin { get; private set; }
         public Color Color { get; private set; }
-        public FastList<NetNodeLaneAnchor> Connections { get; private set; }
+        public ICollection<LaneRoutingMarker> Routes { get; private set; }
 
-        public NetNodeLaneAnchor(ushort nodeId, uint laneId, Vector3 position, bool isOrigin, int colorId) : base(nodeId)
+        public LaneRoutingMarker(ushort nodeId, uint laneId, Vector3 position, bool isOrigin, int colorId) : base(nodeId)
         {
             LaneId = laneId;
             Position = position;
             IsOrigin = isOrigin;
             Color = colors[colorId];
-            Connections = new FastList<NetNodeLaneAnchor>();
+            Routes = new HashSet<LaneRoutingMarker>();
         }
 
         public override void OnRendered(RenderManager.CameraInfo camera)

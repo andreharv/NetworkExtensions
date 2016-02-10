@@ -24,11 +24,11 @@ namespace Transit.Addon.TrafficTools.LaneRouting
         public Type ToolType { get { return typeof (NetLaneRoutingTool); } }
     }
 
-    public class NetLaneRoutingTool : NetNodeEditorToolBase<NetNodeRoutingMarker>
+    public class NetLaneRoutingTool : NetNodeEditorToolBase<NodeRoutingMarker>
     {
-        private NetNodeRoutingMarker _selectedMarker;
+        private NodeRoutingMarker _selectedMarker;
 
-        protected override void OnMarkerClicked(NetNodeRoutingMarker marker, MouseKeyCode code)
+        protected override void OnMarkerClicked(NodeRoutingMarker marker, MouseKeyCode code)
         {
             switch (code)
             {

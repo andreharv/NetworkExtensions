@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Transit.Addon.TrafficTools.Common
 {
     public abstract class NetNodeEditorToolBase<TMarker> : ToolBase
-        where TMarker : NetNodeMarkerBase
+        where TMarker : NodeMarkerBase
     {
         protected readonly IDictionary<ushort, TMarker> Markers = new Dictionary<ushort, TMarker>();
         private TMarker _hoveredMarker = null;
@@ -15,7 +15,7 @@ namespace Transit.Addon.TrafficTools.Common
         {
             if (!Markers.ContainsKey(nodeId))
             {
-                Markers[nodeId] = NetNodeMarker.Create<TMarker>(nodeId);
+                Markers[nodeId] = NodeMarker.Create<TMarker>(nodeId);
             }
 
             return Markers[nodeId];
