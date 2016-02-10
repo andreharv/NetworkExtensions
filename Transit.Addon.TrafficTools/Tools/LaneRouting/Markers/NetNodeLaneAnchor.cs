@@ -1,24 +1,25 @@
-﻿using Transit.Addon.TrafficTools.Common;
+﻿using ColossalFramework.Math;
+using Transit.Addon.TrafficTools.Common;
 using Transit.Addon.TrafficTools.Common.Markers;
 using UnityEngine;
 
 namespace Transit.Addon.TrafficTools.LaneRouting.Markers
 {
-    public class NetLaneAnchorMarker : UIMarkerBase
+    public class NetNodeLaneAnchor : NetNodeMarkerBase
     {
         public uint LaneId { get; private set; }
         public Vector3 Position { get; private set; }
         public bool IsOrigin { get; private set; }
         public Color Color { get; private set; }
-        public FastList<NetLaneAnchorMarker> Connections { get; private set; }
+        public FastList<NetNodeLaneAnchor> Connections { get; private set; }
 
-        public NetLaneAnchorMarker(uint laneId, Vector3 position, bool isOrigin, int colorId) : base()
+        public NetNodeLaneAnchor(ushort nodeId, uint laneId, Vector3 position, bool isOrigin, int colorId) : base(nodeId)
         {
             LaneId = laneId;
             Position = position;
             IsOrigin = isOrigin;
             Color = colors[colorId];
-            Connections = new FastList<NetLaneAnchorMarker>();
+            Connections = new FastList<NetNodeLaneAnchor>();
         }
 
         public override void OnRendered(RenderManager.CameraInfo camera)
@@ -35,14 +36,53 @@ namespace Transit.Addon.TrafficTools.LaneRouting.Markers
                         RenderManager.instance.OverlayEffect.DrawCircle(camera, Color, Position, 1f, Position.y - 1f, Position.y + 1f, true, true);
                         break;
                     case UIState.Selected:
-                    case UIState.Selected |UIState.Hovered:
-                        RenderManager.instance.OverlayEffect.DrawCircle(camera, new Color32(0, 255, 0, 40), Position, 1.5f, Position.y - 1f, Position.y + 1f, true, true);
-                        RenderManager.instance.OverlayEffect.DrawCircle(camera, Color, Position, 1f, Position.y - 1f, Position.y + 1f, true, true);
+                    case UIState.Selected | UIState.Hovered:
+                        RenderSelection(camera);
                         break;
                 }
             }
         }
 
+        private void RenderSelection(RenderManager.CameraInfo camera)
+        {
+            RenderManager.instance.OverlayEffect.DrawCircle(camera, new Color32(0, 255, 0, 40), Position, 1.5f, Position.y - 1f, Position.y + 1f, true, true);
+            RenderManager.instance.OverlayEffect.DrawCircle(camera, Color, Position, 1f, Position.y - 1f, Position.y + 1f, true, true);
+
+            var cursorPosition = GetCursorPositionInNode();
+            if (cursorPosition != null)
+            {
+                RenderRouting(camera, cursorPosition.Value);
+            }
+        }
+
+        private void RenderRouting(RenderManager.CameraInfo cameraInfo, Vector3 endPosition)
+        {
+            Vector3 middlePoint = NetManager.instance.m_nodes.m_buffer[NodeId].m_position;
+
+            Bezier3 bezier;
+            bezier.a = Position;
+            bezier.d = endPosition;
+            NetSegment.CalculateMiddlePoints(bezier.a, (middlePoint - bezier.a).normalized, bezier.d, (middlePoint - bezier.d).normalized, false, false, out bezier.b, out bezier.c);
+
+            RenderManager.instance.OverlayEffect.DrawBezier(cameraInfo, Color, bezier, 0.1f, 0, 0, Mathf.Min(bezier.a.y, bezier.d.y) - 1f, Mathf.Max(bezier.a.y, bezier.d.y) + 1f, true, true);
+        }
+
+        private Vector3? GetCursorPositionInNode()
+        {
+            ToolBase.RaycastOutput output;
+            NetLaneRoutingTool.RayCastSegmentAndNode(out output);
+
+            var nodeId = output.m_netNode;
+
+            if (nodeId == NodeId)
+            {
+                return output.m_hitPos;
+            }
+            else
+            {
+                return null;
+            }
+        }
 
         private static readonly Color32[] colors =
         {

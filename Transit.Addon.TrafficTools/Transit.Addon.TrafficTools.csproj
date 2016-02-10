@@ -57,7 +57,7 @@
     <Compile Include="Common\Markers\UIMarkerBase.cs" />
     <Compile Include="Common\UIState.cs" />
     <Compile Include="Tools\LaneRouting\NetLaneRoutingToolBuilder.cs" />
-    <Compile Include="Tools\LaneRouting\Markers\NetLaneAnchorMarker.cs" />
+    <Compile Include="Tools\LaneRouting\Markers\NetNodeLaneAnchor.cs" />
     <Compile Include="Tools\LaneRouting\Markers\NetNodeRoutingMarker.cs" />
     <Compile Include="Common\Markers\NetNodeMarkerBase.cs" />
     <Compile Include="Common\IToolBuilder.cs" />
