@@ -47,39 +47,11 @@ namespace Transit.Addon.TrafficTools.LaneRouting.Markers
             RenderManager.instance.OverlayEffect.DrawCircle(camera, new Color32(0, 255, 0, 40), Position, 1.5f, Position.y - 1f, Position.y + 1f, true, true);
             RenderManager.instance.OverlayEffect.DrawCircle(camera, Color, Position, 1f, Position.y - 1f, Position.y + 1f, true, true);
 
-            var cursorPosition = GetCursorPositionInNode();
+            var cursorPosition = TAMToolBase.GetCursorPositionInNode(NodeId);
             if (cursorPosition != null)
             {
-                RenderRouting(camera, cursorPosition.Value);
-            }
-        }
-
-        private void RenderRouting(RenderManager.CameraInfo cameraInfo, Vector3 endPosition)
-        {
-            Vector3 middlePoint = NetManager.instance.m_nodes.m_buffer[NodeId].m_position;
-
-            Bezier3 bezier;
-            bezier.a = Position;
-            bezier.d = endPosition;
-            NetSegment.CalculateMiddlePoints(bezier.a, (middlePoint - bezier.a).normalized, bezier.d, (middlePoint - bezier.d).normalized, false, false, out bezier.b, out bezier.c);
-
-            RenderManager.instance.OverlayEffect.DrawBezier(cameraInfo, Color, bezier, 0.1f, 0, 0, Mathf.Min(bezier.a.y, bezier.d.y) - 1f, Mathf.Max(bezier.a.y, bezier.d.y) + 1f, true, true);
-        }
-
-        private Vector3? GetCursorPositionInNode()
-        {
-            ToolBase.RaycastOutput output;
-            NetLaneRoutingTool.RayCastSegmentAndNode(out output);
-
-            var nodeId = output.m_netNode;
-
-            if (nodeId == NodeId)
-            {
-                return output.m_hitPos;
-            }
-            else
-            {
-                return null;
+                var nodePosition = NetManager.instance.m_nodes.m_buffer[NodeId].m_position;
+                RenderManager.instance.OverlayEffect.DrawRouting(camera, Position, cursorPosition.Value, nodePosition, Color);
             }
         }
 

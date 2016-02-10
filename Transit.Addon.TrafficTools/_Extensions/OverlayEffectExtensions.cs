@@ -26,7 +26,7 @@ namespace Transit.Addon.TrafficTools
             effect.DrawCircle(camera, color, pos, size, pos.y - 1f, pos.y + 1f, true, true);
         }
 
-        public static void DrawBezier(this OverlayEffect effect, RenderManager.CameraInfo camera, Vector3 start, Vector3 end, Vector3 middlePoint, Color color, float size = 0.1f)
+        public static void DrawRouting(this OverlayEffect effect, RenderManager.CameraInfo camera, Vector3 start, Vector3 end, Vector3 middlePoint, Color color, float size = 0.1f)
         {
             Bezier3 bezier;
             bezier.a = start;

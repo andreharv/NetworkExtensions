@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Markers\NodeMarker.cs" />
+    <Compile Include="Common\TAMToolBase.cs" />
     <Compile Include="Menus\RoadEditor\IntersectionEditorsPanel.cs" />
     <Compile Include="Common\MouseKeyCode.cs" />
     <Compile Include="Common\Markers\UIMarkerBase.cs" />
