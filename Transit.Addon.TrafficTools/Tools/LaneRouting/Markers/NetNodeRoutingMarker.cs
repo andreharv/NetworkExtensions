@@ -15,7 +15,7 @@ namespace Transit.Addon.TrafficTools.LaneRouting.Markers
             {
                 if (_laneMarkers == null)
                 {
-                    Init();
+                    _laneMarkers = InitLaneMarkers();
                 }
 
                 return _laneMarkers;
@@ -24,7 +24,18 @@ namespace Transit.Addon.TrafficTools.LaneRouting.Markers
 
         //private NodeLaneRoutingMarker _selectedMarker;
 
+        public NetNodeRoutingMarker(ushort nodeId) : base(nodeId)
+        {
+            Init();
+        }
+
         private void Init()
+        {
+            var node = NetManager.instance.GetNode(NodeId);
+            IsEnabled = node != null && node.Value.CountSegments() > 1;
+        }
+
+        private IEnumerable<NetLaneAnchorMarker> InitLaneMarkers()
         {
             var markers = new List<NetLaneAnchorMarker>();
 
@@ -108,15 +119,7 @@ namespace Transit.Addon.TrafficTools.LaneRouting.Markers
             //    }
             //}
 
-            _laneMarkers = markers;
-
-
-            IsEnabled = node.CountSegments() > 1;
-        }
-
-        public NetNodeRoutingMarker(ushort nodeId) : base(nodeId)
-        {
-            
+            return markers;
         }
 
         public override void OnHovering()

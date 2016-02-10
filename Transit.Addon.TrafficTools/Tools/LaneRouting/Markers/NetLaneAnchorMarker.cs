@@ -32,12 +32,12 @@ namespace Transit.Addon.TrafficTools.LaneRouting.Markers
                         break;
                     case UIState.Hovered:
                     case UIState.Hovered | UIState.Selected:
+                        RenderManager.instance.OverlayEffect.DrawCircle(camera, new Color32(255,255,255,40), Position, 1.5f, Position.y - 1f, Position.y + 1f, true, true);
                         RenderManager.instance.OverlayEffect.DrawCircle(camera, Color, Position, 1f, Position.y - 1f, Position.y + 1f, true, true);
-                        RenderManager.instance.OverlayEffect.DrawCircle(camera, Color.cyan, Position, 2f, Position.y - 1f, Position.y + 1f, true, true);
                         break;
                     case UIState.Selected:
-                        RenderManager.instance.OverlayEffect.DrawCircle(camera, Color, Position, 1f, Position.y - 1f, Position.y + 1f, true, true);
                         RenderManager.instance.OverlayEffect.DrawCircle(camera, Color.green, Position, 2f, Position.y - 1f, Position.y + 1f, true, true);
+                        RenderManager.instance.OverlayEffect.DrawCircle(camera, Color, Position, 1f, Position.y - 1f, Position.y + 1f, true, true);
                         break;
                 }
             }
@@ -46,23 +46,23 @@ namespace Transit.Addon.TrafficTools.LaneRouting.Markers
 
         private static readonly Color32[] colors =
         {
-            Color.white,
             new Color32(240, 255, 255, 255), // azure
-            
-            new Color32(255, 215, 0, 255), // gold
+            Color.blue,
+
+            new Color32(239, 239, 239, 255),
+            Color.grey,
+
+            new Color32(255, 204, 102, 255),
             new Color32(184, 134, 11, 255), // dark golden rod
 
             new Color32(70, 130, 180, 255), // steel blue
             new Color32(0, 191, 255, 255), // deep sky blue
 
-            new Color32(255, 165, 0, 255), // orange
-            new Color32(220, 20, 60, 255), // crimson
-
             new Color32(127, 255, 0, 255), // chartreuse
             new Color32(0, 100, 0, 255), // dark green
-            
-            Color.blue,
-            Color.grey,
+
+            new Color32(255, 165, 0, 255), // orange
+            new Color32(220, 20, 60, 255), // crimson
 
             new Color32(240, 230, 140, 255), // khaki
             new Color32(128, 128, 0, 255), // olive

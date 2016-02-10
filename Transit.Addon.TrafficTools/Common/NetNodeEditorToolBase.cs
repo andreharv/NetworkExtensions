@@ -49,7 +49,7 @@ namespace Transit.Addon.TrafficTools.Common
                 {
                     OnNonMarkerClicked(MouseKeyCode.LeftButton);
                 }
-                else // if (rightButtonClicked)
+                else if (rightButtonClicked)
                 {
                     OnNonMarkerClicked(MouseKeyCode.RightButton);
                 }

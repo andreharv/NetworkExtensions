@@ -34,7 +34,10 @@ namespace Transit.Addon.TrafficTools.LaneRouting
                 case MouseKeyCode.LeftButton:
                     if (_selectedMarker != marker)
                     {
-                        _selectedMarker.UnSelect();
+                        if (_selectedMarker != null)
+                        {
+                            _selectedMarker.UnSelect();
+                        }
                         _selectedMarker = marker;
                         _selectedMarker.Select();
                     }

@@ -1,4 +1,5 @@
 ﻿using ColossalFramework;
+using UnityEngine;
 
 namespace Transit.Addon.TrafficTools.Common.Markers
 {
@@ -18,12 +19,13 @@ namespace Transit.Addon.TrafficTools.Common.Markers
 
         private void SetState(UIState state)
         {
+            //Debug.Log(">>>>>>>>>>>> SetState: " +state);
             _state = state;
         }
 
         public bool IsEnabled
         {
-            get { return _state.IsFlagSet(UIState.Disabled); }
+            get { return !_state.IsFlagSet(UIState.Disabled); }
             set
             {
                 if (value)
