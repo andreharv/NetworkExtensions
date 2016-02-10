@@ -22,8 +22,6 @@ namespace Transit.Addon.TrafficTools.LaneRouting.Markers
             }
         }
 
-        //private NodeLaneRoutingMarker _selectedMarker;
-
         public NetNodeRoutingMarker(ushort nodeId) : base(nodeId)
         {
             Init();
@@ -151,7 +149,7 @@ namespace Transit.Addon.TrafficTools.LaneRouting.Markers
             }
         }
 
-        public override void Select()
+        public void OnClicked()
         {
             if (!IsEnabled)
             {
@@ -160,11 +158,37 @@ namespace Transit.Addon.TrafficTools.LaneRouting.Markers
 
             if (!IsSelected)
             {
-                base.Select();
+                SetSelected();
+            }
+            else
+            {
+                var mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+                var bounds = new Bounds(Vector3.zero, Vector3.one);
+                foreach (var laneMarker in LaneMarkers)
+                {
+                    bounds.center = laneMarker.Position;
+                    if (bounds.IntersectRay(mouseRay))
+                    {
+                        Debug.Log(">>>>>>>>> IntersectRay");
+                        if (!laneMarker.IsSelected)
+                        {
+                            Debug.Log(">>>>>>>>> laneMarkerSelected");
+                            laneMarker.SetSelected();
+                        }
+                    }
+                    else
+                    {
+                        if (laneMarker.IsSelected)
+                        {
+                            Debug.Log(">>>>>>>>> laneMarkerUnSelected");
+                            laneMarker.SetUnSelected();
+                        }
+                    }
+                }
             }
         }
 
-        public override void UnSelect()
+        public void UnSelect()
         {
             if (!IsEnabled)
             {
@@ -173,7 +197,31 @@ namespace Transit.Addon.TrafficTools.LaneRouting.Markers
 
             if (IsSelected)
             {
-                base.UnSelect();
+                ClearLaneHoverings();
+                ClearLaneSelections();
+                SetUnSelected();
+            }
+        }
+
+        private void ClearLaneHoverings()
+        {
+            foreach (var laneMarker in LaneMarkers)
+            {
+                if (laneMarker.IsHovered)
+                {
+                    laneMarker.SetHoveringEnded();
+                }
+            }
+        }
+
+        private void ClearLaneSelections()
+        {
+            foreach (var laneMarker in LaneMarkers)
+            {
+                if (laneMarker.IsSelected)
+                {
+                    laneMarker.SetUnSelected();
+                }
             }
         }
 

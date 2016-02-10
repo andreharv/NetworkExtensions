@@ -67,7 +67,7 @@ namespace Transit.Addon.TrafficTools.Common.Markers
 
         public bool IsSelected { get { return _state.IsFlagSet(UIState.Selected); } }
 
-        public virtual void Select()
+        public virtual void SetSelected()
         {
             switch (_state)
             {
@@ -80,7 +80,7 @@ namespace Transit.Addon.TrafficTools.Common.Markers
             }
         }
 
-        public virtual void UnSelect()
+        public virtual void SetUnSelected()
         {
             if (_state.IsFlagSet(UIState.Hovered))
             {

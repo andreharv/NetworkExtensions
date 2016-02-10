@@ -38,8 +38,12 @@ namespace Transit.Addon.TrafficTools.LaneRouting
                         {
                             _selectedMarker.UnSelect();
                         }
+                    }
+
+                    if (marker.IsEnabled)
+                    {
                         _selectedMarker = marker;
-                        _selectedMarker.Select();
+                        _selectedMarker.OnClicked();
                     }
                     break;
                 case MouseKeyCode.RightButton:

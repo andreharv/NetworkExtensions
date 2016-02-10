@@ -31,12 +31,12 @@ namespace Transit.Addon.TrafficTools.LaneRouting.Markers
                         RenderManager.instance.OverlayEffect.DrawCircle(camera, Color, Position, 1f, Position.y - 1f, Position.y + 1f, true, true);
                         break;
                     case UIState.Hovered:
-                    case UIState.Hovered | UIState.Selected:
-                        RenderManager.instance.OverlayEffect.DrawCircle(camera, new Color32(255,255,255,40), Position, 1.5f, Position.y - 1f, Position.y + 1f, true, true);
+                        RenderManager.instance.OverlayEffect.DrawCircle(camera, new Color32(255, 255, 255, 40), Position, 1.5f, Position.y - 1f, Position.y + 1f, true, true);
                         RenderManager.instance.OverlayEffect.DrawCircle(camera, Color, Position, 1f, Position.y - 1f, Position.y + 1f, true, true);
                         break;
                     case UIState.Selected:
-                        RenderManager.instance.OverlayEffect.DrawCircle(camera, Color.green, Position, 2f, Position.y - 1f, Position.y + 1f, true, true);
+                    case UIState.Selected |UIState.Hovered:
+                        RenderManager.instance.OverlayEffect.DrawCircle(camera, new Color32(0, 255, 0, 40), Position, 1.5f, Position.y - 1f, Position.y + 1f, true, true);
                         RenderManager.instance.OverlayEffect.DrawCircle(camera, Color, Position, 1f, Position.y - 1f, Position.y + 1f, true, true);
                         break;
                 }
@@ -46,10 +46,10 @@ namespace Transit.Addon.TrafficTools.LaneRouting.Markers
 
         private static readonly Color32[] colors =
         {
-            new Color32(240, 255, 255, 255), // azure
+            new Color32(200, 255, 255, 255),
             Color.blue,
 
-            new Color32(239, 239, 239, 255),
+            new Color32(200, 200, 255, 255),
             Color.grey,
 
             new Color32(255, 204, 102, 255),
