@@ -19,28 +19,26 @@ namespace Transit.Addon.TrafficTools.LaneRouting.Markers
             LaneId = laneId;
             Position = position;
             IsOrigin = isOrigin;
+            IsEnabled = isOrigin;
             Color = colors[colorId];
             Routes = new HashSet<LaneRoutingMarker>();
         }
 
         public override void OnRendered(RenderManager.CameraInfo camera)
         {
-            if (IsOrigin)
+            switch (GetState())
             {
-                switch (GetState())
-                {
-                    case UIState.Default:
-                        RenderManager.instance.OverlayEffect.DrawCircle(camera, Color, Position, 1f, Position.y - 1f, Position.y + 1f, true, true);
-                        break;
-                    case UIState.Hovered:
-                        RenderManager.instance.OverlayEffect.DrawCircle(camera, new Color32(255, 255, 255, 40), Position, 1.5f, Position.y - 1f, Position.y + 1f, true, true);
-                        RenderManager.instance.OverlayEffect.DrawCircle(camera, Color, Position, 1f, Position.y - 1f, Position.y + 1f, true, true);
-                        break;
-                    case UIState.Selected:
-                    case UIState.Selected | UIState.Hovered:
-                        RenderSelection(camera);
-                        break;
-                }
+                case UIState.Default:
+                    RenderManager.instance.OverlayEffect.DrawCircle(camera, Color, Position, 1f, Position.y - 1f, Position.y + 1f, true, true);
+                    break;
+                case UIState.Hovered:
+                    RenderManager.instance.OverlayEffect.DrawCircle(camera, new Color32(255, 255, 255, 40), Position, 1.5f, Position.y - 1f, Position.y + 1f, true, true);
+                    RenderManager.instance.OverlayEffect.DrawCircle(camera, Color, Position, 1f, Position.y - 1f, Position.y + 1f, true, true);
+                    break;
+                case UIState.Selected:
+                case UIState.Selected | UIState.Hovered:
+                    RenderSelection(camera);
+                    break;
             }
         }
 

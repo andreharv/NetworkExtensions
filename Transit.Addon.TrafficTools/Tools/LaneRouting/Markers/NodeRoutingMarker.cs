@@ -7,18 +7,17 @@ namespace Transit.Addon.TrafficTools.LaneRouting.Markers
 {
     public class NodeRoutingMarker : NodeMarkerBase
     {
-        private IEnumerable<LaneRoutingMarker> _laneAnchors;
-
-        private IEnumerable<LaneRoutingMarker> LaneAnchors
+        private IEnumerable<LaneRoutingMarker> _laneMarkers;
+        private IEnumerable<LaneRoutingMarker> LaneMarkers
         {
             get
             {
-                if (_laneAnchors == null)
+                if (_laneMarkers == null)
                 {
-                    _laneAnchors = InitLaneAnchors();
+                    _laneMarkers = InitLaneMarkers();
                 }
 
-                return _laneAnchors;
+                return _laneMarkers;
             }
         }
 
@@ -33,7 +32,7 @@ namespace Transit.Addon.TrafficTools.LaneRouting.Markers
             IsEnabled = node != null && node.Value.CountSegments() > 1;
         }
 
-        private IEnumerable<LaneRoutingMarker> InitLaneAnchors()
+        private IEnumerable<LaneRoutingMarker> InitLaneMarkers()
         {
             var markers = new List<LaneRoutingMarker>();
 
@@ -123,29 +122,35 @@ namespace Transit.Addon.TrafficTools.LaneRouting.Markers
 
         public override void OnHovering()
         {
-            base.OnHovering();
+            if (!IsEnabled)
+            {
+                return;
+            }
 
             if (IsSelected)
             {
-                var mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-                var bounds = new Bounds(Vector3.zero, Vector3.one);
-                foreach (var laneMarker in LaneAnchors)
+                var laneMarker = GetCursorLaneMarker();
+
+                if (_hoveredLaneMarker == laneMarker)
                 {
-                    bounds.center = laneMarker.Position;
-                    if (bounds.IntersectRay(mouseRay))
-                    {
-                        if (!laneMarker.IsHovered)
-                        {
-                            laneMarker.SetHoveringStarted();
-                        }
-                    }
-                    else
-                    {
-                        if (laneMarker.IsHovered)
-                        {
-                            laneMarker.SetHoveringEnded();
-                        }
-                    }
+                    return;
+                }
+
+                if (_hoveredLaneMarker != null &&
+                    _hoveredLaneMarker.IsHovered)
+                {
+                    _hoveredLaneMarker.SetHoveringEnded();
+                }
+
+                if (laneMarker != null)
+                {
+                    _hoveredLaneMarker = laneMarker;
+                    _hoveredLaneMarker.SetHoveringStarted();
+                }
+
+                if (_hoveredLaneMarker != null)
+                {
+                    _hoveredLaneMarker.OnHovering();
                 }
             }
         }
@@ -163,28 +168,62 @@ namespace Transit.Addon.TrafficTools.LaneRouting.Markers
             }
             else
             {
-                var mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-                var bounds = new Bounds(Vector3.zero, Vector3.one);
-                foreach (var laneMarker in LaneAnchors)
+                var laneMarker = GetCursorLaneMarker();
+
+                if (laneMarker == null)
                 {
-                    bounds.center = laneMarker.Position;
-                    if (bounds.IntersectRay(mouseRay))
-                    {
-                        if (!laneMarker.IsSelected)
-                        {
-                            laneMarker.SetSelected();
-                        }
-                    }
-                    else
-                    {
-                        if (laneMarker.IsSelected)
-                        {
-                            laneMarker.SetUnSelected();
-                        }
-                    }
+                    return;
                 }
+
+                if (_originLaneMarker == laneMarker)
+                {
+                    return;
+                }
+
+                if (_originLaneMarker != null &&
+                    _originLaneMarker.IsSelected)
+                {
+                    _originLaneMarker.SetUnSelected();
+                }
+
+                _originLaneMarker = laneMarker;
+                _originLaneMarker.SetSelected();
+
+                ShowDestinations();
             }
         }
+
+        private LaneRoutingMarker GetCursorLaneMarker()
+        {
+            var mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            var bounds = new Bounds(Vector3.zero, Vector3.one);
+            foreach (var laneMarker in LaneMarkers)
+            {
+                bounds.center = laneMarker.Position;
+                if (bounds.IntersectRay(mouseRay))
+                {
+                    return laneMarker;
+                }
+            }
+
+            return null;
+        }
+
+        private void ShowDestinations()
+        {
+            foreach (var laneMarker in LaneMarkers)
+            {
+                if (laneMarker == _originLaneMarker)
+                {
+                    continue;
+                }
+
+                laneMarker.IsEnabled = !laneMarker.IsOrigin;
+            }
+        }
+
+        private LaneRoutingMarker _hoveredLaneMarker;
+        private LaneRoutingMarker _originLaneMarker;
 
         public void UnSelect()
         {
@@ -203,7 +242,7 @@ namespace Transit.Addon.TrafficTools.LaneRouting.Markers
 
         private void ClearLaneHoverings()
         {
-            foreach (var laneMarker in LaneAnchors)
+            foreach (var laneMarker in LaneMarkers)
             {
                 if (laneMarker.IsHovered)
                 {
@@ -214,7 +253,7 @@ namespace Transit.Addon.TrafficTools.LaneRouting.Markers
 
         private void ClearLaneSelections()
         {
-            foreach (var laneMarker in LaneAnchors)
+            foreach (var laneMarker in LaneMarkers)
             {
                 if (laneMarker.IsSelected)
                 {
@@ -237,7 +276,7 @@ namespace Transit.Addon.TrafficTools.LaneRouting.Markers
 
                 if (IsSelected)
                 {
-                    foreach (var marker in LaneAnchors)
+                    foreach (var marker in LaneMarkers)
                     {
                         marker.OnRendered(camera);
                     }
