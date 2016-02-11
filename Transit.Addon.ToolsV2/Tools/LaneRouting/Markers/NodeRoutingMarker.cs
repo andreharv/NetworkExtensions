@@ -221,6 +221,16 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Markers
             }
         }
 
+        public override void SetSelected()
+        {
+            base.SetSelected();
+
+            if (_anchors == null)
+            {
+                _anchors = InitAnchors();
+            }
+        }
+
         private void ToggleRoute(LaneAnchorMarker destination)
         {
             if (!_routes.ContainsKey(_editedOriginAnchor))

@@ -8,7 +8,7 @@ namespace Transit.Addon.ToolsV2
     {
         public override string Name
         {
-            get { return "Traffic Tools"; }
+            get { return "Tools V2"; }
         }
     }
 }

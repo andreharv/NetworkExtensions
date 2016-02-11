@@ -51,12 +51,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\ISerializer.cs" />
     <Compile Include="Common\Markers\NodeMarker.cs" />
     <Compile Include="Common\TAMToolBase.cs" />
     <Compile Include="Menus\RoadEditor\IntersectionEditorsPanel.cs" />
     <Compile Include="Common\MouseKeyCode.cs" />
     <Compile Include="Common\Markers\UIMarkerBase.cs" />
     <Compile Include="Common\UIState.cs" />
+    <Compile Include="Tools\LaneRouting\DataLegacy\TPP\_Extensions\TPPLaneDataExtensions.cs" />
+    <Compile Include="Tools\LaneRouting\Data\LaneRoutingData.cs" />
+    <Compile Include="Tools\LaneRouting\Data\NodeRoutingDataSerializer.cs" />
+    <Compile Include="Tools\LaneRouting\Data\NodeRoutingData.cs" />
+    <Compile Include="Tools\LaneRouting\DataLegacy\TPP\TPPLaneDataSerializer.cs" />
+    <Compile Include="Tools\LaneRouting\Data\NodeRoutingDataSerializationBinder.cs" />
     <Compile Include="Tools\LaneRouting\NetLaneRoutingToolBuilder.cs" />
     <Compile Include="Tools\LaneRouting\Markers\LaneAnchorMarker.cs" />
     <Compile Include="Tools\LaneRouting\Markers\NodeRoutingMarker.cs" />
@@ -68,6 +75,12 @@
     <Compile Include="Menus\RoadEditor\Textures\ToolsAtlasBuilder.cs" />
     <Compile Include="Menus\RoadEditor\Textures\ToolsMenuAtlasBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools\LaneRouting\DataLegacy\TPP\TPPLaneData.cs" />
+    <Compile Include="Tools\LaneRouting\DataLegacy\TPP\TPPLaneDataSerializationBinder.cs" />
+    <Compile Include="Tools\LaneRouting\Core\RoutingDataManager.cs" />
+    <Compile Include="Tools\LaneRouting\Core\LanesManager.cs" />
+    <Compile Include="Tools\LaneRouting\DataLegacy\TPP\TPPVehicleType.cs" />
+    <Compile Include="Tools\LaneRouting\Core\NetInfoLane.cs" />
     <Compile Include="_Extensions\Color32Extensions.cs" />
     <Compile Include="_Extensions\NetManagerExtensions.cs" />
     <Compile Include="_Extensions\OverlayEffectExtensions.cs" />
