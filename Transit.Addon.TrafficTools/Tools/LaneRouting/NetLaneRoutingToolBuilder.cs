@@ -38,16 +38,33 @@ namespace Transit.Addon.TrafficTools.LaneRouting
                         if (_selectedMarker != null)
                         {
                             _selectedMarker.UnSelect();
+                            _selectedMarker = null;
                         }
                     }
 
                     if (marker.IsEnabled)
                     {
                         _selectedMarker = marker;
-                        _selectedMarker.OnClicked();
+                        _selectedMarker.OnLeftClicked();
                     }
                     break;
+
                 case MouseKeyCode.RightButton:
+                    if (_selectedMarker != marker)
+                    {
+                        if (_selectedMarker != null)
+                        {
+                            _selectedMarker.UnSelect();
+                            _selectedMarker = null;
+                        }
+                    }
+                    else
+                    {
+                        if (_selectedMarker != null)
+                        {
+                            _selectedMarker.OnRightClicked();
+                        }
+                    }
                     break;
             }
         }

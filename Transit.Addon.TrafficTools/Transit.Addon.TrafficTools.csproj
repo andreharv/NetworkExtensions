@@ -58,7 +58,7 @@
     <Compile Include="Common\Markers\UIMarkerBase.cs" />
     <Compile Include="Common\UIState.cs" />
     <Compile Include="Tools\LaneRouting\NetLaneRoutingToolBuilder.cs" />
-    <Compile Include="Tools\LaneRouting\Markers\LaneRoutingMarker.cs" />
+    <Compile Include="Tools\LaneRouting\Markers\LaneAnchorMarker.cs" />
     <Compile Include="Tools\LaneRouting\Markers\NodeRoutingMarker.cs" />
     <Compile Include="Common\Markers\NodeMarkerBase.cs" />
     <Compile Include="Common\IToolBuilder.cs" />
@@ -68,6 +68,7 @@
     <Compile Include="Menus\RoadEditor\Textures\ToolsAtlasBuilder.cs" />
     <Compile Include="Menus\RoadEditor\Textures\ToolsMenuAtlasBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="_Extensions\Color32Extensions.cs" />
     <Compile Include="_Extensions\NetManagerExtensions.cs" />
     <Compile Include="_Extensions\OverlayEffectExtensions.cs" />
     <Compile Include="TrafficTools.cs" />

@@ -29,7 +29,10 @@ namespace Transit.Addon.TrafficTools.Common.Markers
             {
                 if (value)
                 {
-                    SetState(UIState.Default);
+                    if (_state.IsFlagSet(UIState.Disabled))
+                    {
+                        SetState(_state & ~UIState.Disabled);
+                    }
                 }
                 else
                 {
@@ -81,13 +84,9 @@ namespace Transit.Addon.TrafficTools.Common.Markers
 
         public virtual void SetUnSelected()
         {
-            if (_state.IsFlagSet(UIState.Hovered))
+            if (_state.IsFlagSet(UIState.Selected))
             {
-                SetState(UIState.Default | UIState.Hovered);
-            }
-            else
-            {
-                SetState(UIState.Default);
+                SetState(_state & ~UIState.Selected);
             }
         }
 
