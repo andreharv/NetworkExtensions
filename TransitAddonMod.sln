@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_References", "_References", "{FC5D316C-D7B8-4986-9E91-D3784D4A8CBB}"
 	ProjectSection(SolutionItems) = preProject
@@ -84,7 +84,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Framework.Extension
 		{8891467E-C88E-46B0-96F9-4413DF6DC205} = {8891467E-C88E-46B0-96F9-4413DF6DC205}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Addon.TrafficTools", "Transit.Addon.TrafficTools\Transit.Addon.TrafficTools.csproj", "{98128597-13A2-4C17-96C9-4DFAC0CA0828}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Addon.ToolsV2", "Transit.Addon.ToolsV2\Transit.Addon.ToolsV2.csproj", "{98128597-13A2-4C17-96C9-4DFAC0CA0828}"
 	ProjectSection(ProjectDependencies) = postProject
 		{A700F186-B123-45B5-ADFE-B865DF5A0F39} = {A700F186-B123-45B5-ADFE-B865DF5A0F39}
 	EndProjectSection
