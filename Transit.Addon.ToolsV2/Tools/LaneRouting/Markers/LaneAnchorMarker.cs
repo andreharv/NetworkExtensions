@@ -63,8 +63,8 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Markers
                     case UIState.Hovered:
                         RenderManager.instance.OverlayEffect.DrawCircle(camera, Color, Position, 0.3f, Position.y - 1f, Position.y + 1f, true, true);
                         RenderManager.instance.OverlayEffect.DrawCircle(camera, Color, Position, 0.5f, Position.y - 1f, Position.y + 1f, true, true);
-                        RenderManager.instance.OverlayEffect.DrawCircle(camera, new Color32(0, 255, 0, 40), Position, 0.8f, Position.y - 1f, Position.y + 1f, true, true);
-                        RenderManager.instance.OverlayEffect.DrawCircle(camera, new Color32(0, 255, 0, 40), Position, 1.0f, Position.y - 1f, Position.y + 1f, true, true);
+                        //RenderManager.instance.OverlayEffect.DrawCircle(camera, new Color32(0, 255, 0, 40), Position, 1.0f, Position.y - 1f, Position.y + 1f, true, true);
+                        RenderManager.instance.OverlayEffect.DrawCircle(camera, new Color32(0, 255, 0, 40), Position, 1.5f, Position.y - 1f, Position.y + 1f, true, true);
                         break;
                     //case UIState.Selected:
                     //case UIState.Selected | UIState.Hovered:
@@ -78,35 +78,19 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Markers
         private static readonly Color32[] colors =
         {
             new Color32(0,   0,   220, 255),
-            new Color32(0,   220, 0,   255),
             new Color32(200, 100, 0,   255),
+            new Color32(100,   0, 200, 255),
             new Color32(200, 200, 0,   255),
+
             new Color32(0,   100, 200, 255),
             new Color32(0,   200, 100, 255),
             new Color32(200, 50, 0,   255),
             new Color32(100, 200, 0,   255),
+
             new Color32(0,   200, 200, 255),
             new Color32(0,   50, 200, 255),
             new Color32(0,   200, 50, 255),
             new Color32(50, 200, 0,   255),
-
-            // Tests
-            //new Color32(150, 150, 255, 255),
-            //new Color32(150, 255, 255, 255),
-            //new Color32(255, 150, 0, 255),
-            //new Color32(150, 255, 150, 255),
-            
-            //new Color32(30,  144, 255, 255),
-            //new Color32(255, 150, 0,   255),
-            //new Color32(100, 100, 255, 255),
-            //new Color32(100, 255, 255, 255),
-            //new Color32(255, 255, 100, 255),
-            //new Color32(100, 255, 100, 255),
-
-            //new Color32(50, 50, 255, 255),
-            //new Color32(50, 255, 255, 255),
-            //new Color32(255, 255, 50, 255),
-            //new Color32(50, 255, 50, 255),
 
 
             new Color32(184, 134, 11, 255), // dark golden rod

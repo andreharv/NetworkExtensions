@@ -52,7 +52,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\ISerializer.cs" />
-    <Compile Include="Common\Markers\NodeMarker.cs" />
     <Compile Include="Common\TAMToolBase.cs" />
     <Compile Include="Menus\RoadEditor\IntersectionEditorsPanel.cs" />
     <Compile Include="Common\MouseKeyCode.cs" />
@@ -64,13 +63,12 @@
     <Compile Include="Tools\LaneRouting\Data\NodeRoutingData.cs" />
     <Compile Include="Tools\LaneRouting\DataLegacy\TPP\TPPLaneDataSerializer.cs" />
     <Compile Include="Tools\LaneRouting\Data\NodeRoutingDataSerializationBinder.cs" />
-    <Compile Include="Tools\LaneRouting\NetLaneRoutingToolBuilder.cs" />
+    <Compile Include="Tools\LaneRouting\RoutingToolBuilder.cs" />
     <Compile Include="Tools\LaneRouting\Markers\LaneAnchorMarker.cs" />
     <Compile Include="Tools\LaneRouting\Markers\NodeRoutingMarker.cs" />
     <Compile Include="Common\Markers\NodeMarkerBase.cs" />
     <Compile Include="Common\IToolBuilder.cs" />
     <Compile Include="Menus\RoadEditor\RoadEditorGroupPanel.cs" />
-    <Compile Include="Common\NetNodeEditorToolBase.cs" />
     <Compile Include="Menus\RoadEditor\SegmentEditorsPanel.cs" />
     <Compile Include="Menus\RoadEditor\Textures\ToolsAtlasBuilder.cs" />
     <Compile Include="Menus\RoadEditor\Textures\ToolsMenuAtlasBuilder.cs" />

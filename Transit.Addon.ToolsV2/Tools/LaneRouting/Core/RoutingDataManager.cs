@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Transit.Addon.ToolsV2.LaneRouting.Data;
 using Transit.Addon.ToolsV2.LaneRouting.DataLegacy.TPP;
+using Transit.Addon.ToolsV2.LaneRouting.Markers;
+using UnityEngine;
 
 namespace Transit.Addon.ToolsV2.LaneRouting.Core
 {
@@ -29,6 +31,14 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Core
                 routingData.AddRange(loadedData);
             }
 
+            _routingData = routingData
+                .Where(NodeRoutingMarker.IsDataRelevant)
+                .ToList();
+
+            // TODO: Make sure to initialize the tool Waaayy before here
+            var routingTool = ToolsModifierControl.GetTool<RoutingTool>();
+            routingTool.SetInitialMarkers(_routingData.Select(d => new NodeRoutingMarker(d)));
+
             //FastList<ushort> nodesList = new FastList<ushort>();
             //foreach (TPPLaneData lane in lanes)
             //{
@@ -54,10 +64,6 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Core
             //    //    if (n < info.m_lanes.Length)
             //    //        lane.m_speed = info.m_lanes[n].m_speedLimit;
             //    //}
-
-            //}
-
-            _routingData = routingData;
         }
 
         public override void OnSaveData()
@@ -65,7 +71,7 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Core
             //if ((ToolModule.ActiveOptions & ToolModule.ModOptions.RoadCustomizerTool) == ToolModule.ModOptions.None)
             //    return;
 
-            new NodeRoutingDataSerializer().SerializeData(serializableDataManager, _routingData.ToArray());
+            //new NodeRoutingDataSerializer().SerializeData(serializableDataManager, _routingData.ToArray());
         }
     }
 }

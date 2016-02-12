@@ -18,13 +18,13 @@ namespace Transit.Addon.ToolsV2.Menus.RoadEditor
 
             IEnumerable<IToolBuilder> toolBuilders = new IToolBuilder[]
             {
-                new NetLaneRoutingToolBuilder(),
+                new RoutingToolBuilder(),
                 //new TrafficLightsToolBuilder(),
             };
 
             foreach (var builder in toolBuilders)
             {
-                toolController.AddTool<NetLaneRoutingTool>();
+                toolController.AddTool<RoutingTool>();
 
                 var toolName = builder.GetCodeName();
                 UITextureAtlas atlas = null;

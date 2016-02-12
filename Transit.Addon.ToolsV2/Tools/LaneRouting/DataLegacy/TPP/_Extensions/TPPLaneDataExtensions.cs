@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Transit.Addon.ToolsV2.LaneRouting.Data;
 
@@ -10,25 +11,49 @@ namespace Transit.Addon.ToolsV2.LaneRouting.DataLegacy.TPP
         public static IEnumerable<NodeRoutingData> ConvertToNodeRouting(this IEnumerable<TPPLaneData> tppData)
         {
             var groupByNodeId = tppData
+                .Where(d => d != null)
                 .Where(d => d.m_nodeId != 0)
-                .GroupBy(d => d.m_nodeId);
+                .GroupBy(d => d.m_nodeId)
+                .ToArray();
 
             foreach (var group in groupByNodeId)
             {
                 var nodeRouting = new NodeRoutingData
                 {
-                    NodeId = @group.Key
+                    NodeId = group.Key
                 };
-
-                foreach (var lane in group.Where(g => g.m_laneId != 0).OrderBy(g => g.m_laneId))
+                
+                foreach (var lane in group.Where(d => d.m_laneId != 0).OrderBy(d => d.m_laneId))
                 {
-                    foreach (var connection in lane.m_laneConnections.Where(c => c != 0).OrderBy(c => c))
+                    if (lane.m_laneConnections != null)
                     {
-                        nodeRouting.Routes.Add(new LaneRoutingData()
+                        foreach (var connection in lane.m_laneConnections.Where(c => c != 0).OrderBy(c => c))
                         {
-                            OriginLaneId = (ushort)lane.m_laneId,
-                            DestinationLaneId = (ushort)connection,
-                        });
+                            var originNetLane = NetManager.instance.m_lanes.m_buffer[lane.m_laneId];
+                            var originSegment = originNetLane.m_segment;
+
+                            if (originSegment == 0)
+                            {
+                                continue;
+                            }
+
+                            var destNetLane = NetManager.instance.m_lanes.m_buffer[connection];
+                            var destSegment = destNetLane.m_segment;
+
+                            if (destSegment == 0)
+                            {
+                                continue;
+                            }
+
+                            nodeRouting.Routes.Add(new LaneRoutingData()
+                            {
+                                OriginSegmentId = originSegment,
+                                OriginLaneId = (ushort)lane.m_laneId,
+
+                                DestinationSegmentId = destSegment,
+                                DestinationLaneId = (ushort)connection,
+                            });
+                        }
                     }
                 }
 
