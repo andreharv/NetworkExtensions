@@ -18,15 +18,15 @@ namespace Transit.Addon.ToolsV2.Menus.RoadEditor
     {
         protected override void Initialize()
         {
-            var options = TrafficToolsModule.TrafficToolsOptions;
+            var options = ToolModuleV2.TrafficToolsOptions;
 
-            if (options.IsFlagSet(TrafficToolsModule.ModOptions.LaneRoutingTool) ||
-                options.IsFlagSet(TrafficToolsModule.ModOptions.TrafficLightsTool))
+            if (options.IsFlagSet(ToolModuleV2.ModOptions.LaneRoutingTool) ||
+                options.IsFlagSet(ToolModuleV2.ModOptions.TrafficLightsTool))
             {
                 SpawnCategory<IntersectionEditorsPanel>("IntersectionEditors", null, "SubBar", null, true);
             }
 
-            if (options.IsFlagSet(TrafficToolsModule.ModOptions.LaneRestrictorTool))
+            if (options.IsFlagSet(ToolModuleV2.ModOptions.LaneRestrictorTool))
             {
                 SpawnCategory<SegmentEditorsPanel>("SegmentEditors", null, "SubBar", null, true);
             }

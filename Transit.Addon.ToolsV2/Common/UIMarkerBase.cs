@@ -1,7 +1,6 @@
 ﻿using ColossalFramework;
-using UnityEngine;
 
-namespace Transit.Addon.ToolsV2.Common.Markers
+namespace Transit.Addon.ToolsV2.Common
 {
     public abstract class UIMarkerBase
     {

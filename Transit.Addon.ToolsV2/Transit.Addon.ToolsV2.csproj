@@ -55,7 +55,7 @@
     <Compile Include="Common\TAMToolBase.cs" />
     <Compile Include="Menus\RoadEditor\IntersectionEditorsPanel.cs" />
     <Compile Include="Common\MouseKeyCode.cs" />
-    <Compile Include="Common\Markers\UIMarkerBase.cs" />
+    <Compile Include="Common\UIMarkerBase.cs" />
     <Compile Include="Common\UIState.cs" />
     <Compile Include="Tools\LaneRouting\DataLegacy\TPP\_Extensions\TPPLaneDataExtensions.cs" />
     <Compile Include="Tools\LaneRouting\Data\LaneRoutingData.cs" />
@@ -67,7 +67,6 @@
     <Compile Include="Tools\LaneRouting\RoutingToolBuilder.cs" />
     <Compile Include="Tools\LaneRouting\Markers\LaneAnchorMarker.cs" />
     <Compile Include="Tools\LaneRouting\Markers\NodeRoutingMarker.cs" />
-    <Compile Include="Common\Markers\NodeMarkerBase.cs" />
     <Compile Include="Common\IToolBuilder.cs" />
     <Compile Include="Menus\RoadEditor\RoadEditorGroupPanel.cs" />
     <Compile Include="Menus\RoadEditor\SegmentEditorsPanel.cs" />
@@ -83,9 +82,9 @@
     <Compile Include="_Extensions\Color32Extensions.cs" />
     <Compile Include="_Extensions\NetManagerExtensions.cs" />
     <Compile Include="_Extensions\OverlayEffectExtensions.cs" />
-    <Compile Include="TrafficTools.cs" />
-    <Compile Include="TrafficTools.Loading.cs" />
-    <Compile Include="TrafficTools.Settings.cs" />
+    <Compile Include="ToolModuleV2.cs" />
+    <Compile Include="ToolModuleV2.Install.cs" />
+    <Compile Include="ToolModuleV2.Settings.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Transit.Framework.ExtensionPoints\Transit.Framework.ExtensionPoints.csproj">

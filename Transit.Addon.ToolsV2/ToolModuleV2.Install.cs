@@ -10,7 +10,7 @@ using Transit.Framework.Redirection;
 
 namespace Transit.Addon.ToolsV2
 {
-    public partial class TrafficToolsModule : ModuleBase
+    public partial class ToolModuleV2 : ModuleBase
     {
         public override void OnInstallingAssets()
         {

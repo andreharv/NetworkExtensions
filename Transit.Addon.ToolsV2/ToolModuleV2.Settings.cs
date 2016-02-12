@@ -8,7 +8,7 @@ using Transit.Framework.Modularity;
 
 namespace Transit.Addon.ToolsV2
 {
-    public partial class TrafficToolsModule : ModuleBase
+    public partial class ToolModuleV2 : ModuleBase
     {
         [Flags]
         public enum ModOptions : long
