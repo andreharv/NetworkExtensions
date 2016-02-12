@@ -37,7 +37,7 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Core
 
             // TODO: Make sure to initialize the tool Waaayy before here
             var routingTool = ToolsModifierControl.GetTool<RoutingTool>();
-            routingTool.SetInitialMarkers(_routingData.Select(d => new NodeRoutingMarker(d)));
+            routingTool.CreateInitialMarkers(_routingData);
 
             //FastList<ushort> nodesList = new FastList<ushort>();
             //foreach (TPPLaneData lane in lanes)

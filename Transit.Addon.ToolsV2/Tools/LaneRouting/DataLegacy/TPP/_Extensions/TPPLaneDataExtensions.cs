@@ -48,10 +48,10 @@ namespace Transit.Addon.ToolsV2.LaneRouting.DataLegacy.TPP
                             nodeRouting.Routes.Add(new LaneRoutingData()
                             {
                                 OriginSegmentId = originSegment,
-                                OriginLaneId = (ushort)lane.m_laneId,
+                                OriginLaneId = lane.m_laneId,
 
                                 DestinationSegmentId = destSegment,
-                                DestinationLaneId = (ushort)connection,
+                                DestinationLaneId = connection,
                             });
                         }
                     }

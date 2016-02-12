@@ -8,9 +8,10 @@ using UnityEngine;
 
 namespace Transit.Addon.ToolsV2.LaneRouting.Markers
 {
-    public class NodeRoutingMarker : NodeMarkerBase
+    public class NodeRoutingMarker : UIMarkerBase
     {
         private readonly NodeRoutingData _data;
+
         private LaneAnchorMarker _hoveredAnchor;
         private LaneAnchorMarker _editedOriginAnchor;
         private readonly IDictionary<LaneAnchorMarker, ICollection<LaneAnchorMarker>> _routes = new Dictionary<LaneAnchorMarker, ICollection<LaneAnchorMarker>>();
@@ -29,19 +30,11 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Markers
             }
         }
 
-        public NodeRoutingMarker(ushort nodeId) : base(nodeId)
-        {
-            Init();
-        }
-
-        public NodeRoutingMarker(NodeRoutingData data) : base(data.NodeId)
+        public NodeRoutingMarker(NodeRoutingData data)
         {
             _data = data;
 
             Init();
-
-            //TEMP FOR TESTs!
-            InitContentIfNeeded();
         }
 
         public static bool IsDataRelevant(NodeRoutingData data)
@@ -52,7 +45,7 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Markers
 
         private void Init()
         {
-            var node = NetManager.instance.GetNode(NodeId);
+            var node = NetManager.instance.GetNode(_data.NodeId);
             IsEnabled = node != null && node.Value.CountSegments() > 1;
         }
 
@@ -77,7 +70,7 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Markers
             var allSegments = NetManager.instance.m_segments;
             var allLanes = NetManager.instance.m_lanes;
 
-            var node = allNodes.m_buffer[NodeId];
+            var node = allNodes.m_buffer[_data.NodeId];
             var nodeOffsetMultiplier = node.CountSegments() <= 2 ? 3 : 1;
             var segmentId = node.m_segment0;
 
@@ -86,8 +79,8 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Markers
             for (var i = 0; i < 8 && segmentId != 0; i++)
             {
                 var segment = allSegments.m_buffer[segmentId];
-                var segmentOffset = segment.FindDirection(segmentId, NodeId) * nodeOffsetMultiplier;
-                var isEndNode = segment.m_endNode == NodeId;
+                var segmentOffset = segment.FindDirection(segmentId, _data.NodeId) * nodeOffsetMultiplier;
+                var isEndNode = segment.m_endNode == _data.NodeId;
                 var netInfo = segment.Info;
                 var netInfoLanes = netInfo.m_lanes;
                 var laneId = segment.m_lanes;
@@ -130,29 +123,10 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Markers
                 }
 
                 anchorColorId++;
-                segmentId = segment.GetRightSegment(NodeId);
+                segmentId = segment.GetRightSegment(_data.NodeId);
                 if (segmentId == node.m_segment0)
                     segmentId = 0;
             }
-
-            //for (int i = 0; i < markers.m_size; i++)
-            //{
-            //    if (!markers.m_buffer[i].IsSource)
-            //        continue;
-
-            //    uint[] connections = LanesManager.instance.GetLaneConnections(markers.m_buffer[i].LaneId);
-            //    if (connections == null || connections.Length == 0)
-            //        continue;
-
-            //    for (int j = 0; j < markers.m_size; j++)
-            //    {
-            //        if (markers.m_buffer[j].IsSource)
-            //            continue;
-
-            //        if (connections.Contains(markers.m_buffer[j].LaneId))
-            //            markers.m_buffer[i].Connections.Add(markers.m_buffer[j]);
-            //    }
-            //}
 
             _anchors = anchors;
         }
@@ -163,17 +137,10 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Markers
             {
                 foreach (var r in _data.Routes)
                 {
-                    Debug.Log(string.Format(">>>>>>>>>>>> Route: {0}.{1} -> {2}.{3}", r.OriginSegmentId, r.OriginLaneId, r.DestinationSegmentId, r.DestinationLaneId));
-
                     var anchors = FindAnchors(r);
                     if (anchors != null)
                     {
-                        Debug.Log(">>>>>>>>>>>> anchors found");
                         ToggleRoute(anchors.Value.Key, anchors.Value.Value);
-                    }
-                    else
-                    {
-                        Debug.Log(">>>>>>>>>>>> anchors not found");
                     }
                 }
             }
@@ -184,10 +151,8 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Markers
             LaneAnchorMarker originAnchor = null;
             LaneAnchorMarker destinationAnchor = null;
 
-            foreach (var a in _anchors) // FindAnchors
+            foreach (var a in _anchors) // FindAnchors is being call on init, dont replace by Anchors
             {
-                Debug.Log(string.Format(">>>>>>>>>>>> Anchor: {0}.{1}", a.SegmentId, a.LaneId));
-
                 if (a.SegmentId == data.OriginSegmentId &&
                     a.LaneId == data.OriginLaneId)
                 {
@@ -427,7 +392,7 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Markers
 
         public override void OnRendered(RenderManager.CameraInfo camera)
         {
-            var node = NetManager.instance.GetNode(NodeId);
+            var node = NetManager.instance.GetNode(_data.NodeId);
 
             if (node != null)
             {
@@ -465,7 +430,7 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Markers
 
         private void RenderEditingRoute(RenderManager.CameraInfo camera, NetNode node)
         {
-            var cursorPosition = TAMToolBase.GetCursorPositionInNode(NodeId);
+            var cursorPosition = TAMToolBase.GetCursorPositionInNode(_data.NodeId);
             if (cursorPosition != null)
             {
                 RenderManager.instance.OverlayEffect.DrawRouting(camera, _editedOriginAnchor.Position, cursorPosition.Value, node.m_position, _editedOriginAnchor.Color, ROUTE_WIDTH);

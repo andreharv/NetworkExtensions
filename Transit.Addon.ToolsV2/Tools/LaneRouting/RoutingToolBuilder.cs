@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Transit.Addon.ToolsV2.Common;
+using Transit.Addon.ToolsV2.LaneRouting.Data;
 using Transit.Addon.ToolsV2.LaneRouting.Markers;
 using Transit.Framework;
 using UnityEngine;
@@ -34,17 +35,18 @@ namespace Transit.Addon.ToolsV2.LaneRouting
         {
             if (!Markers.ContainsKey(nodeId))
             {
-                Markers[nodeId] = new NodeRoutingMarker(nodeId);
+                // TODO: Notify the RoutingDataManager when creating a NodeRoutingData
+                Markers[nodeId] = new NodeRoutingMarker(new NodeRoutingData { NodeId = nodeId });
             }
 
             return Markers[nodeId];
         }
 
-        public void SetInitialMarkers(IEnumerable<NodeRoutingMarker> markers)
+        public void CreateInitialMarkers(IEnumerable<NodeRoutingData> routingData)
         {
-            foreach (var m in markers)
+            foreach (var d in routingData)
             {
-                Markers[m.NodeId] = m;
+                Markers[d.NodeId] = new NodeRoutingMarker(d);
             }
         }
 
