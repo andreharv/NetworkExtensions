@@ -1,43 +1,69 @@
 ﻿using ICities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Transit.Addon.ToolsV2.LaneRouting.Data;
 using Transit.Addon.ToolsV2.LaneRouting.DataLegacy.TPP;
-using Transit.Addon.ToolsV2.LaneRouting.Markers;
-using UnityEngine;
 
 namespace Transit.Addon.ToolsV2.LaneRouting.Core
 {
     public class RoutingDataManager : SerializableDataExtensionBase
     {
-        private static ICollection<NodeRoutingData> _routingData;
+        private static IDictionary<uint, NodeRoutingData> _routingData;
+
+        public static IEnumerable<NodeRoutingData> GetAllData()
+        {
+            if (_routingData == null)
+            {
+                throw new Exception("Routing has not been initialized/loaded yet");
+            }
+
+            return _routingData.Values;
+        }
+
+        public static NodeRoutingData GetOrCreateData(ushort nodeId)
+        {
+            if (_routingData == null)
+            {
+                throw new Exception("Routing has not been initialized/loaded yet");
+            }
+
+            if (!_routingData.ContainsKey(nodeId))
+            {
+                _routingData[nodeId] = new NodeRoutingData { NodeId = nodeId };
+            }
+
+            return _routingData[nodeId];
+        }
 
         public override void OnLoadData()
         {
             //if ((ToolModule.ActiveOptions & ToolModule.ModOptions.RoadCustomizerTool) == ToolModule.ModOptions.None)
             //    return;
 
-            var routingData = new List<NodeRoutingData>();
+            var loadedData = new List<NodeRoutingData>();
 
             var tppData = new TPPLaneSerializer().DeserializeData(serializableDataManager);
             if (tppData != null)
             {
-                routingData.AddRange(tppData.ConvertToNodeRouting());
+                loadedData.AddRange(tppData.ConvertToNodeRouting());
             }
 
-            var loadedData = new NodeRoutingDataSerializer().DeserializeData(serializableDataManager);
-            if (loadedData != null)
+            var tamData = new NodeRoutingDataSerializer().DeserializeData(serializableDataManager);
+            if (tamData != null)
             {
-                routingData.AddRange(loadedData);
+                loadedData.AddRange(loadedData);
             }
 
-            _routingData = routingData
-                .Where(NodeRoutingMarker.IsDataRelevant)
-                .ToList();
+            _routingData = new Dictionary<uint, NodeRoutingData>();
+            foreach (var data in loadedData.Where(d => d.IsRelevant()))
+            {
+                _routingData[data.NodeId] = data;
+            }
 
-            // TODO: Make sure to initialize the tool Waaayy before here
-            var routingTool = ToolsModifierControl.GetTool<RoutingTool>();
-            routingTool.CreateInitialMarkers(_routingData);
+            //// TODO: Make sure to initialize the tool Waaayy before here
+            //var routingTool = ToolsModifierControl.GetTool<RoutingTool>();
+            //routingTool.CreateInitialMarkers(_routingData);
 
             //FastList<ushort> nodesList = new FastList<ushort>();
             //foreach (TPPLaneData lane in lanes)

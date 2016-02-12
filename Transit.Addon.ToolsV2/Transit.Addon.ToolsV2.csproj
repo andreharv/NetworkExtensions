@@ -63,6 +63,7 @@
     <Compile Include="Tools\LaneRouting\Data\NodeRoutingData.cs" />
     <Compile Include="Tools\LaneRouting\DataLegacy\TPP\TPPLaneDataSerializer.cs" />
     <Compile Include="Tools\LaneRouting\Data\NodeRoutingDataSerializationBinder.cs" />
+    <Compile Include="Tools\LaneRouting\Data\_Extensions\NodeRoutingDataExtensions.cs" />
     <Compile Include="Tools\LaneRouting\RoutingToolBuilder.cs" />
     <Compile Include="Tools\LaneRouting\Markers\LaneAnchorMarker.cs" />
     <Compile Include="Tools\LaneRouting\Markers\NodeRoutingMarker.cs" />

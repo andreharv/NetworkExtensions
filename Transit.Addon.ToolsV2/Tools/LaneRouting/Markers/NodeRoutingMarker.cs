@@ -37,12 +37,6 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Markers
             Init();
         }
 
-        public static bool IsDataRelevant(NodeRoutingData data)
-        {
-            var node = NetManager.instance.GetNode(data.NodeId);
-            return node != null && node.Value.CountSegments() > 1;
-        }
-
         private void Init()
         {
             var node = NetManager.instance.GetNode(_data.NodeId);

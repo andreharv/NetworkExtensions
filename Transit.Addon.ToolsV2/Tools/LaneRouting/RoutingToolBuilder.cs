@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Transit.Addon.ToolsV2.Common;
+using Transit.Addon.ToolsV2.LaneRouting.Core;
 using Transit.Addon.ToolsV2.LaneRouting.Data;
 using Transit.Addon.ToolsV2.LaneRouting.Markers;
 using Transit.Framework;
@@ -27,27 +28,31 @@ namespace Transit.Addon.ToolsV2.LaneRouting
 
     public class RoutingTool : TAMToolBase
     {
-        private readonly IDictionary<ushort, NodeRoutingMarker> Markers = new Dictionary<ushort, NodeRoutingMarker>();
+        private readonly IDictionary<ushort, NodeRoutingMarker> _markers = new Dictionary<ushort, NodeRoutingMarker>();
         private NodeRoutingMarker _selectedMarker;
         private NodeRoutingMarker _hoveredMarker = null;
 
-        private NodeRoutingMarker GetOrCreateMarker(ushort nodeId)
+        public RoutingTool()
         {
-            if (!Markers.ContainsKey(nodeId))
-            {
-                // TODO: Notify the RoutingDataManager when creating a NodeRoutingData
-                Markers[nodeId] = new NodeRoutingMarker(new NodeRoutingData { NodeId = nodeId });
-            }
-
-            return Markers[nodeId];
+            OnInit();
         }
 
-        public void CreateInitialMarkers(IEnumerable<NodeRoutingData> routingData)
+        private void OnInit()
         {
-            foreach (var d in routingData)
+            foreach (var d in RoutingDataManager.GetAllData())
             {
-                Markers[d.NodeId] = new NodeRoutingMarker(d);
+                _markers[d.NodeId] = new NodeRoutingMarker(d);
             }
+        }
+
+        private NodeRoutingMarker GetOrCreateMarker(ushort nodeId)
+        {
+            if (!_markers.ContainsKey(nodeId))
+            {
+                _markers[nodeId] = new NodeRoutingMarker(RoutingDataManager.GetOrCreateData(nodeId));
+            }
+
+            return _markers[nodeId];
         }
 
         protected override void OnToolUpdate()
