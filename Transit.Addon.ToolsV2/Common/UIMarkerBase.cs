@@ -4,93 +4,151 @@ namespace Transit.Addon.ToolsV2.Common
 {
     public abstract class UIMarkerBase
     {
-        private UIState _state;
+        protected UIState UIState { get; private set; }
 
         protected UIMarkerBase()
         {
-            _state = UIState.Default;
-        }
-
-        protected UIState GetState()
-        {
-            return _state;
-        }
-
-        private void SetState(UIState state)
-        {
-            _state = state;
+            UIState = UIState.Default;
         }
 
         public bool IsEnabled
         {
-            get { return !_state.IsFlagSet(UIState.Disabled); }
-            set
+            get { return !UIState.IsFlagSet(UIState.Disabled); }
+            //set
+            //{
+            //    if (value)
+            //    {
+            //        if (UIState.IsFlagSet(UIState.Disabled))
+            //        {
+            //            UIState = UIState & ~UIState.Disabled;
+            //        }
+            //    }
+            //    else
+            //    {
+            //        UIState = UIState.Disabled;
+            //    }
+            //}
+        }
+
+        public void SetEnable(bool isEnable)
+        {
+            if (isEnable)
             {
-                if (value)
-                {
-                    if (_state.IsFlagSet(UIState.Disabled))
-                    {
-                        SetState(_state & ~UIState.Disabled);
-                    }
-                }
-                else
-                {
-                    SetState(UIState.Disabled);
-                }
+                Enable();
             }
+            else
+            {
+                Disable();
+            }
+        }
+
+        public void Enable()
+        {
+            if (UIState.IsFlagSet(UIState.Disabled))
+            {
+                UIState = UIState & ~UIState.Disabled;
+            }
+        }
+
+        public void Disable()
+        {
+            UIState = UIState.Disabled;
         }
 
         public bool IsHovered
         {
-            get { return _state.IsFlagSet(UIState.Hovered); }
+            get { return UIState.IsFlagSet(UIState.Hovered); }
         }
 
-        public virtual void SetHoveringStarted()
+        public void HoveringStarted()
         {
-            switch (_state)
+            if (!IsEnabled)
+            {
+                return;
+            }
+
+            switch (UIState)
             {
                 case UIState.Default:
-                    SetState(UIState.Hovered);
+                    UIState = UIState.Hovered;
                     break;
                 case UIState.Selected:
-                    SetState(UIState.Selected | UIState.Hovered);
+                    UIState = UIState.Selected | UIState.Hovered;
                     break;
             }
         }
 
-        public virtual void SetHoveringEnded()
+        public void HoveringEnded()
         {
-            if (_state.IsFlagSet(UIState.Hovered))
+            if (!IsEnabled)
             {
-                SetState(_state & ~UIState.Hovered);
+                return;
+            }
+
+            if (UIState.IsFlagSet(UIState.Hovered))
+            {
+                UIState = UIState & ~UIState.Hovered;
             }
         }
 
-        public bool IsSelected { get { return _state.IsFlagSet(UIState.Selected); } }
-
-        public virtual void SetSelected()
+        public void Hovering()
         {
-            switch (_state)
+            if (!IsEnabled)
+            {
+                return;
+            }
+
+            OnHovering();
+        }
+
+        protected virtual void OnHovering() { }
+
+        public bool IsSelected { get { return UIState.IsFlagSet(UIState.Selected); } }
+
+        public void Select()
+        {
+            if (!IsEnabled)
+            {
+                return;
+            }
+
+            switch (UIState)
             {
                 case UIState.Default:
-                    SetState(UIState.Selected);
+                    UIState = UIState.Selected;
                     break;
                 case UIState.Hovered:
-                    SetState(UIState.Selected | UIState.Hovered);
+                    UIState = UIState.Selected | UIState.Hovered;
                     break;
             }
+
+            OnSelected();
         }
 
-        public virtual void SetUnSelected()
+        protected virtual void OnSelected() { }
+
+        public void Unselect()
         {
-            if (_state.IsFlagSet(UIState.Selected))
+            if (!IsEnabled)
             {
-                SetState(_state & ~UIState.Selected);
+                return;
+            }
+
+            if (UIState.IsFlagSet(UIState.Selected))
+            {
+                UIState = UIState & ~UIState.Selected;
+
+                OnUnselected();
             }
         }
 
-        public virtual void OnHovering() { }
+        protected virtual void OnUnselected() { }
 
-        public abstract void OnRendered(RenderManager.CameraInfo camera);
+        public void Render(RenderManager.CameraInfo camera)
+        {
+            OnRendered(camera);
+        }
+
+        protected abstract void OnRendered(RenderManager.CameraInfo camera);
     }
 }

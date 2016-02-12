@@ -39,7 +39,10 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Markers
         private void Init()
         {
             var node = NetManager.instance.GetNode(_data.NodeId);
-            IsEnabled = node != null && node.Value.CountSegments() > 1;
+            if (node == null || node.Value.CountSegments() <= 1)
+            {
+                Disable();
+            }
         }
 
         private bool _isContentInitialized;
@@ -168,41 +171,35 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Markers
             return null;
         }
 
-        public override void OnHovering()
+        protected override void OnHovering()
         {
-            if (!IsEnabled)
-            {
-                return;
-            }
-
             if (IsSelected)
             {
                 var laneMarker = GetCursorLaneMarker();
 
                 if (_hoveredAnchor != laneMarker)
                 {
-                    if (_hoveredAnchor != null &&
-                        _hoveredAnchor.IsHovered)
+                    if (_hoveredAnchor != null)
                     {
-                        _hoveredAnchor.SetHoveringEnded();
+                        _hoveredAnchor.HoveringEnded();
                     }
 
                     _hoveredAnchor = laneMarker;
 
                     if (_hoveredAnchor != null)
                     {
-                        _hoveredAnchor.SetHoveringStarted();
+                        _hoveredAnchor.HoveringStarted();
                     }
                 }
 
                 if (_hoveredAnchor != null)
                 {
-                    _hoveredAnchor.OnHovering();
+                    _hoveredAnchor.Hovering();
                 }
             }
         }
 
-        public void OnLeftClicked()
+        public void LeftClick()
         {
             if (!IsEnabled)
             {
@@ -211,62 +208,62 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Markers
 
             if (!IsSelected)
             {
-                SetSelected();
+                Select();
+                return;
             }
-            else
+
+            var laneMarker = GetCursorLaneMarker();
+            if (laneMarker == null)
             {
-                var laneMarker = GetCursorLaneMarker();
-
-                if (laneMarker == null)
-                {
-                    return;
-                }
-
-                if (_editedOriginAnchor == laneMarker)
-                {
-                    return;
-                }
-
-                if (!laneMarker.IsEnabled)
-                {
-                    return;
-                }
-
-                if (IsEditingRoute)
-                {
-                    ToggleRoute(laneMarker);
-                    return;
-                }
-
-                StopEditCurrentLaneMarker();
-
-                EditLaneMarker(laneMarker);
+                return;
             }
+
+            if (_editedOriginAnchor == laneMarker)
+            {
+                return;
+            }
+
+            if (!laneMarker.IsEnabled)
+            {
+                return;
+            }
+
+            if (IsEditingRoute)
+            {
+                ToggleRoute(laneMarker);
+                return;
+            }
+
+            StopEditCurrentLaneMarker();
+
+            EditLaneMarker(laneMarker);
         }
 
-        public void OnRightClicked()
+        public void RightClick()
         {
             if (!IsEnabled)
             {
                 return;
             }
 
-            if (IsSelected)
+            if (!IsSelected)
             {
-                if (IsEditingRoute)
-                {
-                    StopEditCurrentLaneMarker();
-                }
-                else
-                {
-                    UnSelect();
-                }
+                return;
+            }
+
+            if (IsEditingRoute)
+            {
+                StopEditCurrentLaneMarker();
+            }
+            else
+            {
+                Unselect();
             }
         }
 
-        public override void SetSelected()
+        protected override void OnSelected()
         {
-            base.SetSelected();
+            base.OnSelected();
 
             InitContentIfNeeded();
         }
@@ -312,7 +309,7 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Markers
         private void EditLaneMarker(LaneAnchorMarker laneMarkerToEdit)
         {
             _editedOriginAnchor = laneMarkerToEdit;
-            _editedOriginAnchor.SetSelected();
+            _editedOriginAnchor.Select();
 
             foreach (var laneMarker in Anchors)
             {
@@ -321,7 +318,7 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Markers
                     continue;
                 }
 
-                laneMarker.IsEnabled = !laneMarker.IsOrigin && laneMarker.SegmentId != _editedOriginAnchor.SegmentId;
+                laneMarker.SetEnable(!laneMarker.IsOrigin && laneMarker.SegmentId != _editedOriginAnchor.SegmentId);
             }
         }
 
@@ -330,45 +327,34 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Markers
             if (_editedOriginAnchor != null &&
                 _editedOriginAnchor.IsSelected)
             {
-                _editedOriginAnchor.SetUnSelected();
+                _editedOriginAnchor.Unselect();
                 _editedOriginAnchor = null;
 
                 foreach (var laneMarker in Anchors)
                 {
-                    laneMarker.IsEnabled = laneMarker.IsOrigin;
+                    laneMarker.SetEnable(laneMarker.IsOrigin);
                 }
             }
         }
 
-        public void UnSelect()
+        protected override void OnUnselected()
         {
-            if (!IsEnabled)
-            {
-                return;
-            }
+            base.OnUnselected();
 
-            if (IsSelected)
-            {
-                StopEditCurrentLaneMarker();
+            StopEditCurrentLaneMarker();
 
-                _hoveredAnchor = null;
-                ClearAnchorHoverings();
+            _hoveredAnchor = null;
+            ClearAnchorHoverings();
 
-                _editedOriginAnchor = null;
-                ClearAnchorSelections();
-
-                SetUnSelected();
-            }
+            _editedOriginAnchor = null;
+            ClearAnchorSelections();
         }
 
         private void ClearAnchorHoverings()
         {
             foreach (var laneMarker in Anchors)
             {
-                if (laneMarker.IsHovered)
-                {
-                    laneMarker.SetHoveringEnded();
-                }
+                laneMarker.HoveringEnded();
             }
         }
 
@@ -378,12 +364,12 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Markers
             {
                 if (laneMarker.IsSelected)
                 {
-                    laneMarker.SetUnSelected();
+                    laneMarker.Unselect();
                 }
             }
         }
 
-        public override void OnRendered(RenderManager.CameraInfo camera)
+        protected override void OnRendered(RenderManager.CameraInfo camera)
         {
             var node = NetManager.instance.GetNode(_data.NodeId);
 
@@ -406,7 +392,7 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Markers
 
                     foreach (var marker in Anchors)
                     {
-                        marker.OnRendered(camera);
+                        marker.Render(camera);
                     }
                 }
                 else

@@ -128,17 +128,17 @@ namespace Transit.Addon.ToolsV2.LaneRouting
 
         private void OnMarkerHoveringStarted(NodeRoutingMarker marker)
         {
-            marker.SetHoveringStarted();
+            marker.HoveringStarted();
         }
 
         private void OnMarkerHoveringEnded(NodeRoutingMarker marker)
         {
-            marker.SetHoveringEnded();
+            marker.HoveringEnded();
         }
 
         private void OnMarkerHovering(NodeRoutingMarker marker)
         {
-            marker.OnHovering();
+            marker.Hovering();
         }
 
         private void OnMarkerClicked(NodeRoutingMarker marker, MouseKeyCode code)
@@ -150,7 +150,7 @@ namespace Transit.Addon.ToolsV2.LaneRouting
                     {
                         if (_selectedMarker != null)
                         {
-                            _selectedMarker.UnSelect();
+                            _selectedMarker.Unselect();
                             _selectedMarker = null;
                         }
                     }
@@ -158,7 +158,7 @@ namespace Transit.Addon.ToolsV2.LaneRouting
                     if (marker.IsEnabled)
                     {
                         _selectedMarker = marker;
-                        _selectedMarker.OnLeftClicked();
+                        _selectedMarker.LeftClick();
                     }
                     break;
 
@@ -167,7 +167,7 @@ namespace Transit.Addon.ToolsV2.LaneRouting
                     {
                         if (_selectedMarker != null)
                         {
-                            _selectedMarker.UnSelect();
+                            _selectedMarker.Unselect();
                             _selectedMarker = null;
                         }
                     }
@@ -175,7 +175,7 @@ namespace Transit.Addon.ToolsV2.LaneRouting
                     {
                         if (_selectedMarker != null)
                         {
-                            _selectedMarker.OnRightClicked();
+                            _selectedMarker.RightClick();
                         }
                     }
                     break;
@@ -186,7 +186,7 @@ namespace Transit.Addon.ToolsV2.LaneRouting
         {
             if (_selectedMarker != null)
             {
-                _selectedMarker.UnSelect();
+                _selectedMarker.Unselect();
                 _selectedMarker = null;
             }
         }
@@ -197,13 +197,13 @@ namespace Transit.Addon.ToolsV2.LaneRouting
 
             if (_hoveredMarker != null)
             {
-                _hoveredMarker.OnRendered(camera);
+                _hoveredMarker.Render(camera);
             }
 
             if (_selectedMarker != null && 
                 _selectedMarker != _hoveredMarker)
             {
-                _selectedMarker.OnRendered(camera);
+                _selectedMarker.Render(camera);
             }
         }
     }

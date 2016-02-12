@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using ColossalFramework.Math;
-using Transit.Addon.ToolsV2.Common;
+﻿using Transit.Addon.ToolsV2.Common;
 using UnityEngine;
 
 namespace Transit.Addon.ToolsV2.LaneRouting.Markers
@@ -19,11 +17,15 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Markers
             SegmentId = segmentId;
             Position = position;
             IsOrigin = isOrigin;
-            IsEnabled = isOrigin;
+
+            if (!isOrigin)
+            {
+                Disable();
+            }
 
             if (colorId != null)
             {
-                Color = colors[colorId.Value];
+                Color = s_colors[colorId.Value];
             }
             else
             {
@@ -31,11 +33,11 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Markers
             }
         }
 
-        public override void OnRendered(RenderManager.CameraInfo camera)
+        protected override void OnRendered(RenderManager.CameraInfo camera)
         {
             if (IsOrigin)
             {
-                switch (GetState())
+                switch (UIState)
                 {
                     case UIState.Default:
                         RenderManager.instance.OverlayEffect.DrawCircle(camera, Color, Position, 1f, Position.y - 1f, Position.y + 1f, true, true);
@@ -53,7 +55,7 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Markers
             }
             else
             {
-                switch (GetState())
+                switch (UIState)
                 {
                     case UIState.Default:
                         RenderManager.instance.OverlayEffect.DrawCircle(camera, Color, Position, 0.3f, Position.y - 1f, Position.y + 1f, true, true);
@@ -69,7 +71,7 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Markers
             }
         }
 
-        private static readonly Color32[] colors =
+        private static readonly Color32[] s_colors =
         {
             new Color32(0,   0,   220, 255),
             new Color32(200, 100, 0,   255),
