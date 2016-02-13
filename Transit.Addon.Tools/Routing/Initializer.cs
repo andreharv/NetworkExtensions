@@ -82,17 +82,6 @@ namespace Transit.Addon.Tools
                 return;
             else if (m_gameStartedTime == 0f)
                 m_gameStartedTime = Time.realtimeSinceStartup;
-
-            // contributed by Japa
-            TransportTool transportTool = ToolsModifierControl.GetCurrentTool<TransportTool>();
-            if (transportTool != null)
-            {
-                CustomTransportTool customTransportTool = ToolsModifierControl.SetTool<CustomTransportTool>();
-                if (customTransportTool != null)
-                {
-                    customTransportTool.m_prefab = transportTool.m_prefab;
-                }
-            }
         }
 
         #region Initialization
@@ -195,14 +184,6 @@ namespace Transit.Addon.Tools
             {
                 try
                 {
-                    if (this.m_level == 6)
-                    {
-                        AddTool<CustomTransportTool>(toolController);
-
-                        if ((ToolModule.ActiveOptions & ToolModule.ModOptions.RoadCustomizerTool) == ToolModule.ModOptions.RoadCustomizerTool)
-                            AddTool<RoadCustomizerTool>(toolController);
-                    }
-
                     // Localization
                     UpdateLocalization();
 

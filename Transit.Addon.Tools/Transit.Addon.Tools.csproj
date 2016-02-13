@@ -67,7 +67,6 @@
     <Compile Include="ToolModule.cs" />
     <Compile Include="ToolModule.Install.cs" />
     <Compile Include="ToolModule.Settings.cs" />
-    <Compile Include="Routing\CustomTransportTool.cs" />
     <Compile Include="Routing\Markers\LaneRoutingMarker.cs" />
     <Compile Include="Routing\Markers\SegmentLaneMarker.cs" />
     <Compile Include="Routing\RoadCustomizerTool.cs" />

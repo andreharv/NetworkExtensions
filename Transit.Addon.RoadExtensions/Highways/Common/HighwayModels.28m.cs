@@ -4,7 +4,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways
 {
     public static partial class HighwayModels
     {
-        public static void Setup32mMesh(this NetInfo info, NetInfoVersion version)
+        public static void Setup28mMesh(this NetInfo info, NetInfoVersion version)
         {
             ///////////////////////////
             // Template              //
@@ -32,16 +32,16 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways
                 nodes1.m_flagsRequired = NetNode.Flags.Transition;
 
                 segments0.SetMeshes
-                    (@"Roads\Highways\Common\Meshes\32m\Ground.obj",
-                     @"Roads\Highways\Common\Meshes\32m\Ground_LOD.obj");
+                    (@"Roads\Highways\Common\Meshes\28m\Ground.obj",
+                     @"Roads\Highways\Common\Meshes\28m\Ground_LOD.obj");
 
                 nodes0.SetMeshes
-                    (@"Roads\Highways\Common\Meshes\32m\Ground_Node.obj",
-                     @"Roads\Highways\Common\Meshes\32m\Ground_Node_LOD.obj");
+                    (@"Roads\Highways\Common\Meshes\28m\Ground_Node.obj",
+                     @"Roads\Highways\Common\Meshes\28m\Ground_Node_LOD.obj");
 
                 nodes1.SetMeshes
-                    (@"Roads\Highways\Common\Meshes\32m\Ground_Trans.obj",
-                     @"Roads\Highways\Common\Meshes\32m\Ground_Trans_LOD.obj");
+                    (@"Roads\Highways\Common\Meshes\28m\Ground_Trans.obj",
+                     @"Roads\Highways\Common\Meshes\28m\Ground_Trans_LOD.obj");
 
                 info.m_segments = new[] { segments0 };
                 info.m_nodes = new[] { nodes0, nodes1 };
@@ -156,14 +156,15 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways
                 //nodes3.m_flagsRequired = NetNode.Flags.Transition;
 
                 segments0.SetMeshes
-                    (@"Roads\Highways\Common\Meshes\32m\Tunnel_Node_Gray.obj");
+                    (@"Roads\Highways\Common\Meshes\32m\Tunnel_Gray.obj",
+                     @"Roads\Highways\Common\Meshes\32m\Ground_LOD.obj");
                 segments2.SetMeshes
                     (@"Roads\Highways\Common\Meshes\32m\Tunnel_Node_Gray.obj",
                      @"Roads\Highways\Common\Meshes\32m\Slope_LOD.obj");
 
                 nodes0.SetMeshes
                     (@"Roads\Highways\Common\Meshes\32m\Tunnel_Node_Gray.obj",
-                     @"Roads\Highways\Common\Meshes\32m\Ground_LOD.obj");
+                     @"Roads\Highways\Common\Meshes\32m\Ground_Node_LOD.obj");
                 nodes1.SetMeshes
                     (@"Roads\Highways\Common\Meshes\32m\Ground_Node.obj",
                     @"Roads\Highways\Common\Meshes\32m\Ground_Node_LOD.obj");
@@ -202,23 +203,28 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways
                 // nodes2.m_flagsRequired = NetNode.Flags.UndergroundTransition;
 
                 segments0.SetMeshes
-                    (@"Roads\Highways\Common\Meshes\32m\Tunnel_Gray.obj",
-                    @"Roads\Highways\Common\Meshes\32m\Ground_LOD.obj");
+                    (@"Roads\Highways\Common\Meshes\28m\Tunnel_Gray.obj",
+                    @"Roads\Highways\Common\Meshes\28m\Ground_LOD.obj");
                 segments1.SetMeshes
-                    (@"Roads\Highways\Common\Meshes\32m\Tunnel.obj",
-                    @"Roads\Highways\Common\Meshes\32m\Tunnel_LOD.obj");
+                    (@"Roads\Highways\Common\Meshes\28m\Tunnel.obj",
+                    @"Roads\Highways\Common\Meshes\28m\Tunnel_LOD.obj");
                 nodes0.SetMeshes
-                     (@"Roads\Highways\Common\Meshes\32m\Tunnel_Node_Gray.obj",
-                     @"Roads\Highways\Common\Meshes\32m\Ground_LOD.obj");
+                     (@"Roads\Highways\Common\Meshes\28m\Tunnel_Node_Gray.obj",
+                    @"Roads\Highways\Common\Meshes\28m\Ground_Node_LOD.obj");
                 nodes1.SetMeshes
-                    (@"Roads\Highways\Common\Meshes\32m\Tunnel_Node.obj");
+                    (@"Roads\Highways\Common\Meshes\28m\Tunnel_Node.obj",
+                     @"Roads\Highways\Common\Meshes\28m\Tunnel_Node_LOD.obj");
                 // nodes2.SetMeshes
-                //    (@"Roads\Highways\Common\Meshes\32m\Tunnel.obj",
-                //    @"Roads\Highways\Common\Meshes\32m\Ground_LOD.obj");
+                //    (@"Roads\Highways\Common\Meshes\28m\Tunnel.obj",
+                //    @"Roads\Highways\Common\Meshes\28m\Ground_LOD.obj");
 
                 segments1.m_material = defaultMaterial;
                 nodes1.m_material = defaultMaterial;
                 //nodes2.m_material = defaultMaterial;
+
+                //segments1.m_surfaceMapping = new UnityEngine.Vector4(0, 0, 0, 0);
+                //nodes1.m_surfaceMapping = new UnityEngine.Vector4(0, 0, 0, 0);
+                //nodes2.m_surfaceMapping = new UnityEngine.Vector4(0, 0, 0, 0);
 
                 info.m_segments = new[] { segments0, segments1 };
                 info.m_nodes = new[] { nodes0, nodes1 };
