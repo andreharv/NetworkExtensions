@@ -220,8 +220,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways
                 nodes1.m_material = defaultMaterial;
                 //nodes2.m_material = defaultMaterial;
 
-                segments1.m_surfaceMapping = new UnityEngine.Vector4(0, 0, 0, 0);
-                nodes1.m_surfaceMapping = new UnityEngine.Vector4(0, 0, 0, 0);
+                //segments1.m_surfaceMapping = new UnityEngine.Vector4(0, 0, 0, 0);
+                //nodes1.m_surfaceMapping = new UnityEngine.Vector4(0, 0, 0, 0);
                 //nodes2.m_surfaceMapping = new UnityEngine.Vector4(0, 0, 0, 0);
 
                 info.m_segments = new[] { segments0, segments1 };

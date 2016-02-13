@@ -40,7 +40,6 @@ namespace Transit.Addon.Tools
             this.m_laneType = lane.m_laneType;
             this.m_vehicleType = lane.m_vehicleType;
             this.m_laneProps = lane.m_laneProps;
-            this.m_allowStop = lane.m_allowStop;
             this.m_useTerrainHeight = lane.m_useTerrainHeight;
             this.m_finalDirection = lane.m_finalDirection;
             this.m_similarLaneIndex = lane.m_similarLaneIndex;

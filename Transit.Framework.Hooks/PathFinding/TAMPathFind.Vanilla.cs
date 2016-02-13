@@ -440,7 +440,7 @@ namespace Transit.Framework.Hooks.PathFinding
                     uint num2;
                     uint num3;
                     instance.m_segments.m_buffer[(int) segment2].GetLeftAndRightLanes(nodeID,
-                        NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, lane2, out laneIndex,
+                        NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, lane2, isMiddle, out laneIndex,
                         out laneIndex2, out num2, out num3);
                     ushort num4 = segment2;
                     ushort num5 = segment2;
@@ -458,7 +458,7 @@ namespace Transit.Framework.Hooks.PathFinding
                             uint num9;
                             uint num10;
                             instance.m_segments.m_buffer[(int) leftSegment].GetLeftAndRightLanes(nodeID,
-                                NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, -1, out num7, out num8,
+                                NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, -1, isMiddle, out num7, out num8,
                                 out num9, out num10);
                             if (num10 != 0u)
                             {
@@ -483,7 +483,7 @@ namespace Transit.Framework.Hooks.PathFinding
                             uint num13;
                             uint num14;
                             instance.m_segments.m_buffer[(int) rightSegment].GetLeftAndRightLanes(nodeID,
-                                NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, -1, out num11, out num12,
+                                NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, -1, isMiddle, out num11, out num12,
                                 out num13, out num14);
                             if (num13 != 0u)
                             {

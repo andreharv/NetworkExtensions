@@ -145,7 +145,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Common
             for (var i = 0; i < vehicleLanes.Length; i++)
             {
                 var l = vehicleLanes[i];
-                l.m_allowStop = false;
+                //l.m_allowStop = false;
                 l.m_speedLimit = 2f;
                 l.m_verticalOffset = 0f;
                 l.m_width = laneWidth;

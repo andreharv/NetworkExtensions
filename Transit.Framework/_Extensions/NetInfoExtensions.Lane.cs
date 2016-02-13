@@ -12,7 +12,6 @@ namespace Transit.Framework
             newLane.m_direction = templateLane.m_direction;
             newLane.m_finalDirection = templateLane.m_finalDirection;
             newLane.m_allowConnect = templateLane.m_allowConnect;
-            newLane.m_allowStop = false;
             newLane.m_stopOffset = 0;
             newLane.m_laneType = templateLane.m_laneType;
             newLane.m_speedLimit = templateLane.m_speedLimit;

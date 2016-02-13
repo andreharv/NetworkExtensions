@@ -445,115 +445,112 @@ namespace Transit.Addon.Tools
         }
 
         private bool GetStopPosition(TransportInfo info, ushort segment, ushort building, ushort firstStop, ref Vector3 hitPos, out bool fixedPlatform)
-        {
-            NetManager instance = Singleton<NetManager>.instance;
-            bool toggleSnapTarget = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-            fixedPlatform = false;
-            if (segment != 0)
-            {
-                if (!toggleSnapTarget && (instance.m_segments.m_buffer[(int)segment].m_flags & NetSegment.Flags.Untouchable) != NetSegment.Flags.None)
-                {
-                    building = NetSegment.FindOwnerBuilding(segment, 363f);
-                    if (building != 0)
-                    {
-                        BuildingManager instance2 = Singleton<BuildingManager>.instance;
-					    BuildingInfo info2 = instance2.m_buildings.m_buffer[(int)building].Info;
-					    TransportInfo transportLineInfo = info2.m_buildingAI.GetTransportLineInfo();
-                        if (transportLineInfo != null && transportLineInfo.m_transportType == info.m_transportType)
-                        {
-                            segment = 0;
-                        }
-                        else
-                        {
-                            building = 0;
-                        }
-                    }
-                }
-                Vector3 point;
-                int num;
-                float num2;
-                Vector3 vector;
-                int num3;
-                float num4;
-                if (segment != 0 && instance.m_segments.m_buffer[(int)segment].GetClosestLanePosition(hitPos, NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, out point, out num, out num2) && instance.m_segments.m_buffer[(int)segment].GetClosestLanePosition(point, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, out vector, out num3, out num4))
-                {
-                    PathUnit.Position pathPos;
-                    pathPos.m_segment = segment;
-                    pathPos.m_lane = (byte)num3;
-                    pathPos.m_offset = 128;
-                    NetInfo.Lane lane = instance.m_segments.m_buffer[(int)segment].Info.m_lanes[num3];
-                    if (!lane.m_allowStop)
-                    {
-                        return false;
-                    }
-                    float num5 = lane.m_stopOffset;
-                    if ((instance.m_segments.m_buffer[(int)segment].m_flags & NetSegment.Flags.Invert) != NetSegment.Flags.None)
-                    {
-                        num5 = -num5;
-                    }
-                    uint laneID = PathManager.GetLaneID(pathPos);
-                    Vector3 vector2;
-                    instance.m_lanes.m_buffer[(int)((UIntPtr)laneID)].CalculateStopPositionAndDirection((float)pathPos.m_offset * 0.003921569f, num5, out hitPos, out vector2);
-                    fixedPlatform = true;
-                    return true;
-                }
-            }
-            if (!toggleSnapTarget && building != 0)
-            {
-                VehicleInfo randomVehicleInfo = Singleton<VehicleManager>.instance.GetRandomVehicleInfo(ref Singleton<SimulationManager>.instance.m_randomizer, info.m_class.m_service, info.m_class.m_subService, info.m_class.m_level);
-                if (randomVehicleInfo != null)
-                {
-                    BuildingManager instance3 = Singleton<BuildingManager>.instance;
-                    BuildingInfo info3 = instance3.m_buildings.m_buffer[(int)building].Info;
-                    if (info3.m_buildingAI.GetTransportLineInfo() != null)
-                    {
-                        Vector3 vector3 = Vector3.zero;
-                        int num6 = 1000000;
-                        for (int i = 0; i < 12; i++)
-                        {
-                            Randomizer randomizer = new Randomizer(i);
-                            Vector3 vector4;
-                            Vector3 a;
-                            info3.m_buildingAI.CalculateSpawnPosition(building, ref instance3.m_buildings.m_buffer[(int)building], ref randomizer, randomVehicleInfo, out vector4, out a);
-                            int lineCount = this.GetLineCount(vector4, a - vector4, info.m_transportType);
-                            if (lineCount < num6)
-                            {
-                                vector3 = vector4;
-                                num6 = lineCount;
-                            }
-                            else if (lineCount == num6 && Vector3.SqrMagnitude(vector4 - hitPos) < Vector3.SqrMagnitude(vector3 - hitPos))
-                            {
-                                vector3 = vector4;
-                            }
-                        }
-                        if (firstStop != 0)
-                        {
-                            Vector3 position = instance.m_nodes.m_buffer[(int)firstStop].m_position;
-                            if (Vector3.SqrMagnitude(position - vector3) < 16384f)
-                            {
-                                uint lane2 = instance.m_nodes.m_buffer[(int)firstStop].m_lane;
-                                if (lane2 != 0u)
-                                {
-                                    ushort segment2 = instance.m_lanes.m_buffer[(int)((UIntPtr)lane2)].m_segment;
-                                    if (segment2 != 0 && (instance.m_segments.m_buffer[(int)segment2].m_flags & NetSegment.Flags.Untouchable) != NetSegment.Flags.None)
-                                    {
-                                        ushort num7 = NetSegment.FindOwnerBuilding(segment2, 363f);
-                                        if (building == num7)
-                                        {
-                                            hitPos = position;
-                                            return true;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        hitPos = vector3;
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
+{
+	NetManager instance = Singleton<NetManager>.instance;
+	fixedPlatform = false;
+	if (segment != 0)
+	{
+		if ((instance.m_segments.m_buffer[(int)segment].m_flags & NetSegment.Flags.Untouchable) != NetSegment.Flags.None)
+		{
+			building = NetSegment.FindOwnerBuilding(segment, 363f);
+			if (building != 0)
+			{
+				BuildingManager instance2 = Singleton<BuildingManager>.instance;
+				BuildingInfo info2 = instance2.m_buildings.m_buffer[(int)building].Info;
+				TransportInfo transportLineInfo = info2.m_buildingAI.GetTransportLineInfo();
+				if (transportLineInfo != null && transportLineInfo.m_transportType == info.m_transportType)
+				{
+					segment = 0;
+				}
+				else
+				{
+					building = 0;
+				}
+			}
+		}
+		Vector3 point;
+		uint num;
+		int num2;
+		float num3;
+		Vector3 vector;
+		uint num4;
+		int num5;
+		float num6;
+		if (segment != 0 && instance.m_segments.m_buffer[(int)segment].GetClosestLanePosition(hitPos, NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, info.m_vehicleType, out point, out num, out num2, out num3) && instance.m_segments.m_buffer[(int)segment].GetClosestLanePosition(point, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, out vector, out num4, out num5, out num6))
+		{
+			NetLane.Flags flags = (NetLane.Flags)instance.m_lanes.m_buffer[(int)((UIntPtr)num)].m_flags;
+			if ((flags & NetLane.Flags.Stops & ~(info.m_stopFlag & ~NetLane.Flags.None)) != NetLane.Flags.None)
+			{
+				return false;
+			}
+			NetInfo.Lane lane = instance.m_segments.m_buffer[(int)segment].Info.m_lanes[num5];
+			float num7 = lane.m_stopOffset;
+			if ((instance.m_segments.m_buffer[(int)segment].m_flags & NetSegment.Flags.Invert) != NetSegment.Flags.None)
+			{
+				num7 = -num7;
+			}
+			Vector3 vector2;
+			instance.m_lanes.m_buffer[(int)((UIntPtr)num4)].CalculateStopPositionAndDirection(0.5019608f, num7, out hitPos, out vector2);
+			fixedPlatform = true;
+			return true;
+		}
+	}
+	if (building != 0)
+	{
+		VehicleInfo randomVehicleInfo = Singleton<VehicleManager>.instance.GetRandomVehicleInfo(ref Singleton<SimulationManager>.instance.m_randomizer, info.m_class.m_service, info.m_class.m_subService, info.m_class.m_level);
+		if (randomVehicleInfo != null)
+		{
+			BuildingManager instance3 = Singleton<BuildingManager>.instance;
+			BuildingInfo info3 = instance3.m_buildings.m_buffer[(int)building].Info;
+			if (info3.m_buildingAI.GetTransportLineInfo() != null)
+			{
+				Vector3 vector3 = Vector3.zero;
+				int num8 = 1000000;
+				for (int i = 0; i < 12; i++)
+				{
+					Randomizer randomizer = new Randomizer((ulong)((long)i));
+					Vector3 vector4;
+					Vector3 a;
+					info3.m_buildingAI.CalculateSpawnPosition(building, ref instance3.m_buildings.m_buffer[(int)building], ref randomizer, randomVehicleInfo, out vector4, out a);
+					int lineCount = this.GetLineCount(vector4, a - vector4, info.m_transportType);
+					if (lineCount < num8)
+					{
+						vector3 = vector4;
+						num8 = lineCount;
+					}
+					else if (lineCount == num8 && Vector3.SqrMagnitude(vector4 - hitPos) < Vector3.SqrMagnitude(vector3 - hitPos))
+					{
+						vector3 = vector4;
+					}
+				}
+				if (firstStop != 0)
+				{
+					Vector3 position = instance.m_nodes.m_buffer[(int)firstStop].m_position;
+					if (Vector3.SqrMagnitude(position - vector3) < 16384f)
+					{
+						uint lane2 = instance.m_nodes.m_buffer[(int)firstStop].m_lane;
+						if (lane2 != 0u)
+						{
+							ushort segment2 = instance.m_lanes.m_buffer[(int)((UIntPtr)lane2)].m_segment;
+							if (segment2 != 0 && (instance.m_segments.m_buffer[(int)segment2].m_flags & NetSegment.Flags.Untouchable) != NetSegment.Flags.None)
+							{
+								ushort num9 = NetSegment.FindOwnerBuilding(segment2, 363f);
+								if (building == num9)
+								{
+									hitPos = position;
+									return true;
+								}
+							}
+						}
+					}
+				}
+				hitPos = vector3;
+				return true;
+			}
+		}
+	}
+	return false;
+}
 
         private int GetLineCount(Vector3 stopPosition, Vector3 stopDirection, TransportInfo.TransportType transportType)
         {
