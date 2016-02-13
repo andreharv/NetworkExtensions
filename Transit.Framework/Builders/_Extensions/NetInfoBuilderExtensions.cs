@@ -78,12 +78,23 @@ namespace Transit.Framework.Builders
             // Setup AI
             foreach (var mainInfo in groundInfos)
             {
-                var ai = mainInfo.GetComponent<RoadAI>();
+                var tai = mainInfo.GetComponent<TrainTrackAI>();
+                var rai = mainInfo.GetComponent<RoadAI>();
 
-                ai.m_elevatedInfo = elevatedInfo;
-                ai.m_bridgeInfo = bridgeInfo;
-                ai.m_tunnelInfo = tunnelInfo;
-                ai.m_slopeInfo = slopeInfo;
+                if (tai != null)
+                {
+                    tai.m_elevatedInfo = elevatedInfo;
+                    tai.m_bridgeInfo = bridgeInfo;
+                    tai.m_tunnelInfo = tunnelInfo;
+                    tai.m_slopeInfo = slopeInfo;
+                }
+                else
+                {
+                    rai.m_elevatedInfo = elevatedInfo;
+                    rai.m_bridgeInfo = bridgeInfo;
+                    rai.m_tunnelInfo = tunnelInfo;
+                    rai.m_slopeInfo = slopeInfo;
+                }
             }
 
             // Returning
