@@ -137,7 +137,7 @@ namespace Transit.Addon.Tools.Core
 
         #endregion
 
-        public bool CanLanesConnect(uint laneId1, uint laneId2)
+        public bool CanLanesConnect(ushort nodeId, uint laneId1, uint laneId2)
         {
             return CheckLaneConnection(laneId1, laneId2);
             //&& 

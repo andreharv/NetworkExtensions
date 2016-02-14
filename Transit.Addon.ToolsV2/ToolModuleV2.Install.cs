@@ -30,14 +30,14 @@ namespace Transit.Addon.ToolsV2
                 GameMainToolbarItemsManager.AddBigSeparator(12);
             }
 
-            //PathFindingManager.instance.DefineCustomLaneRouting(LanesManager.instance);
+            PathFindingManager.instance.DefineCustomLaneRouting(RoutingManager.instance);
         }
 
         public override void OnReleased()
         {
             base.OnReleased();
 
-            //PathFindingManager.instance.DisableCustomLaneRouting();
+            PathFindingManager.instance.DisableCustomLaneRouting();
 
             // Not required
             //ToolsModifierControl.toolController.RemoveTool<LaneRoutingTool>();

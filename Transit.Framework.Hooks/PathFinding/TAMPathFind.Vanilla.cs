@@ -893,7 +893,7 @@ namespace Transit.Framework.Hooks.PathFinding
             {
                 NetInfo.Lane lane2 = info.m_lanes[num12];
                 if ((byte) (lane2.m_finalDirection & direction2) != 0 &&
-                    CanLanesConnect(num2, item.m_laneID))
+                    CanLanesConnect(targetNode, num2, item.m_laneID))
                 {
                     if (lane2.CheckType(laneType2, vehicleType2) &&
                         (segmentID != item.m_position.m_segment || num12 != (int) item.m_position.m_lane) &&
@@ -1257,7 +1257,7 @@ namespace Transit.Framework.Hooks.PathFinding
             return lane.m_speedLimit;
         }
 
-        private bool CanLanesConnect(uint laneId1, uint laneId2)
+        private bool CanLanesConnect(ushort nodeId, uint laneId1, uint laneId2)
         {
             //return LanesManager.CheckLaneConnection(laneId1, laneId2);
             ////&& 
@@ -1268,7 +1268,7 @@ namespace Transit.Framework.Hooks.PathFinding
                 return PathFindingManager
                     .instance
                     .GetCustomLaneRouting()
-                    .CanLanesConnect(laneId1, laneId2);
+                    .CanLanesConnect(nodeId, laneId1, laneId2);
             }
 
             return true;

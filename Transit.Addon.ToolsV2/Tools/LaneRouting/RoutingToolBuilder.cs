@@ -39,7 +39,7 @@ namespace Transit.Addon.ToolsV2.LaneRouting
 
         private void OnInit()
         {
-            foreach (var d in RoutingDataManager.GetAllData())
+            foreach (var d in RoutingManager.GetAllData())
             {
                 _markers[d.NodeId] = new NodeRoutingMarker(d);
             }
@@ -49,7 +49,7 @@ namespace Transit.Addon.ToolsV2.LaneRouting
         {
             if (!_markers.ContainsKey(nodeId))
             {
-                _markers[nodeId] = new NodeRoutingMarker(RoutingDataManager.GetOrCreateData(nodeId));
+                _markers[nodeId] = new NodeRoutingMarker(RoutingManager.GetOrCreateData(nodeId));
             }
 
             return _markers[nodeId];
