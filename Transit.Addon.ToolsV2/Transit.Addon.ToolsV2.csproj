@@ -57,12 +57,14 @@
     <Compile Include="Common\MouseKeyCode.cs" />
     <Compile Include="Common\UIMarkerBase.cs" />
     <Compile Include="Common\UIState.cs" />
+    <Compile Include="Tools\LaneRouting\Core\RoutingDataManager.Serialization.cs" />
     <Compile Include="Tools\LaneRouting\DataLegacy\TPP\_Extensions\TPPLaneDataExtensions.cs" />
     <Compile Include="Tools\LaneRouting\Data\LaneRoutingData.cs" />
     <Compile Include="Tools\LaneRouting\Data\NodeRoutingDataSerializer.cs" />
     <Compile Include="Tools\LaneRouting\Data\NodeRoutingData.cs" />
     <Compile Include="Tools\LaneRouting\DataLegacy\TPP\TPPLaneDataSerializer.cs" />
     <Compile Include="Tools\LaneRouting\Data\NodeRoutingDataSerializationBinder.cs" />
+    <Compile Include="Tools\LaneRouting\Data\_Extensions\LaneRoutingDataExtensions.cs" />
     <Compile Include="Tools\LaneRouting\Data\_Extensions\NodeRoutingDataExtensions.cs" />
     <Compile Include="Tools\LaneRouting\RoutingToolBuilder.cs" />
     <Compile Include="Tools\LaneRouting\Markers\LaneAnchorMarker.cs" />
@@ -81,6 +83,7 @@
     <Compile Include="Tools\LaneRouting\Core\NetInfoLane.cs" />
     <Compile Include="_Extensions\Color32Extensions.cs" />
     <Compile Include="_Extensions\NetManagerExtensions.cs" />
+    <Compile Include="_Extensions\NetNodeExtensions.cs" />
     <Compile Include="_Extensions\OverlayEffectExtensions.cs" />
     <Compile Include="ToolModuleV2.cs" />
     <Compile Include="ToolModuleV2.Install.cs" />

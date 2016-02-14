@@ -24,8 +24,6 @@ namespace Transit.Addon.ToolsV2.Menus.RoadEditor
 
             foreach (var builder in toolBuilders)
             {
-                toolController.AddTool<RoutingTool>();
-
                 var toolName = builder.GetCodeName();
                 UITextureAtlas atlas = null;
 

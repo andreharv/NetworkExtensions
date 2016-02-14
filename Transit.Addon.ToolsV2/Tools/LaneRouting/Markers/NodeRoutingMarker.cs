@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Transit.Addon.ToolsV2.Common;
+using Transit.Addon.ToolsV2.LaneRouting.Core;
 using Transit.Addon.ToolsV2.LaneRouting.Data;
 using UnityEngine;
 
@@ -136,7 +137,7 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Markers
                     var anchors = FindAnchors(r);
                     if (anchors != null)
                     {
-                        ToggleRoute(anchors.Value.Key, anchors.Value.Value);
+                        ToggleRoute(anchors.Value.Key, anchors.Value.Value, true);
                     }
                 }
             }
@@ -273,7 +274,7 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Markers
             ToggleRoute(_editedOriginAnchor, destination);
         }
 
-        private void ToggleRoute(LaneAnchorMarker origin, LaneAnchorMarker destination)
+        private void ToggleRoute(LaneAnchorMarker origin, LaneAnchorMarker destination, bool isInitializing = false)
         {
             if (!_routes.ContainsKey(origin))
             {
@@ -283,11 +284,41 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Markers
             if (_routes[origin].Contains(destination))
             {
                 _routes[origin].Remove(destination);
+                if (!isInitializing)
+                {
+                    OnRouteRemoving(origin, destination);
+                }
             }
             else
             {
                 _routes[origin].Add(destination);
+                if (!isInitializing)
+                {
+                    OnRouteAdding(origin, destination);
+                }
             }
+        }
+
+        private void OnRouteAdding(LaneAnchorMarker origin, LaneAnchorMarker destination)
+        {
+            RoutingDataManager.AddRoute(_data, new LaneRoutingData
+            {
+                OriginSegmentId = origin.SegmentId,
+                OriginLaneId = origin.LaneId,
+                DestinationSegmentId = destination.SegmentId,
+                DestinationLaneId = destination.LaneId,
+            });
+        }
+
+        private void OnRouteRemoving(LaneAnchorMarker origin, LaneAnchorMarker destination)
+        {
+            RoutingDataManager.RemoveRoute(_data, new LaneRoutingData
+            {
+                OriginSegmentId = origin.SegmentId,
+                OriginLaneId = origin.LaneId,
+                DestinationSegmentId = destination.SegmentId,
+                DestinationLaneId = destination.LaneId,
+            });
         }
 
         private LaneAnchorMarker GetCursorLaneMarker()

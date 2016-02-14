@@ -1,4 +1,5 @@
 ﻿using ICities;
+using Transit.Addon.ToolsV2.LaneRouting;
 using Transit.Addon.ToolsV2.LaneRouting.Core;
 using Transit.Addon.ToolsV2.Menus.RoadEditor;
 using Transit.Addon.ToolsV2.Menus.RoadEditor.Textures;
@@ -6,7 +7,6 @@ using Transit.Framework;
 using Transit.Framework.ExtensionPoints.PathFinding;
 using Transit.Framework.ExtensionPoints.UI;
 using Transit.Framework.Modularity;
-using Transit.Framework.Redirection;
 
 namespace Transit.Addon.ToolsV2
 {
@@ -30,14 +30,14 @@ namespace Transit.Addon.ToolsV2
                 GameMainToolbarItemsManager.AddBigSeparator(12);
             }
 
-            PathFindingManager.instance.DefineCustomLaneRouting(LanesManager.instance);
+            //PathFindingManager.instance.DefineCustomLaneRouting(LanesManager.instance);
         }
 
         public override void OnReleased()
         {
             base.OnReleased();
 
-            PathFindingManager.instance.DisableCustomLaneRouting();
+            //PathFindingManager.instance.DisableCustomLaneRouting();
 
             // Not required
             //ToolsModifierControl.toolController.RemoveTool<LaneRoutingTool>();
@@ -47,12 +47,11 @@ namespace Transit.Addon.ToolsV2
 
         public override void OnLevelLoaded(LoadMode mode)
         {
-            Redirector.PerformRedirections();
+            ToolsModifierControl.toolController.AddTool<RoutingTool>();
         }
 
         public override void OnLevelUnloading()
         {
-            Redirector.RevertRedirections();
         }
     }
 }
