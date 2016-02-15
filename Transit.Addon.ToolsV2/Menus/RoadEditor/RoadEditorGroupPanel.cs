@@ -1,7 +1,7 @@
 ﻿using System;
 using ColossalFramework;
-using Transit.Framework.UI;
-using Transit.Framework.UI.Toolbar.Items;
+using Transit.Framework.UI.Menus;
+using Transit.Framework.UI.Menus.Toolbar.Items;
 
 namespace Transit.Addon.ToolsV2.Menus.RoadEditor
 {

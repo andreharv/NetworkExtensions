@@ -1,5 +1,4 @@
-﻿using ICities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -8,11 +7,11 @@ using Transit.Addon.ToolsV2.LaneRouting.Data;
 using Transit.Framework.ExtensionPoints.PathFinding;
 using UnityEngine;
 
-namespace Transit.Addon.ToolsV2.LaneRouting.Core
+namespace Transit.Addon.ToolsV2.LaneRouting
 {
-    public class RoutingManager : Singleton<RoutingManager>, ILaneRoutingManager
+    public class LaneRoutingManager : Singleton<LaneRoutingManager>, ILaneRoutingManager
     {
-        private const ushort LANE_CONTROL_BIT = 2048;
+        private const ushort LANEROUTING_CONTROL_BIT = 2048;
 
         private static IDictionary<uint, NodeRoutingData> _routingData;
 
@@ -64,7 +63,7 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Core
         {
             if (!nodeRouting.Routes.Contains(route))
             {
-                NetManager.instance.AddLaneFlag(LANE_CONTROL_BIT, route.OriginLaneId);
+                NetManager.instance.AddLaneFlag(LANEROUTING_CONTROL_BIT, route.OriginLaneId);
                 Monitor.Enter(nodeRouting.Routes);
                 try
                 {
@@ -95,7 +94,7 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Core
 
                 if (nodeRouting.Routes.Count == 0)
                 {
-                    NetManager.instance.RemoveLaneFlag(LANE_CONTROL_BIT, route.OriginLaneId);
+                    NetManager.instance.RemoveLaneFlag(LANEROUTING_CONTROL_BIT, route.OriginLaneId);
                 }
             }
 
@@ -108,7 +107,7 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Core
 
             foreach (var route in nodeRouting.Routes)
             {
-                var originLane = NetManager.instance.GetLane(LANE_CONTROL_BIT, route.OriginLaneId);
+                var originLane = NetManager.instance.GetLane(LANEROUTING_CONTROL_BIT, route.OriginLaneId);
                 if (originLane == null)
                 {
                     if (obsoleteRoutes == null)
@@ -119,7 +118,7 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Core
                     continue;
                 }
 
-                var destinationLane = NetManager.instance.GetLane(LANE_CONTROL_BIT, route.DestinationLaneId);
+                var destinationLane = NetManager.instance.GetLane(LANEROUTING_CONTROL_BIT, route.DestinationLaneId);
                 if (destinationLane == null)
                 {
                     if (obsoleteRoutes == null)
@@ -200,7 +199,7 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Core
                 }
 
                 var originLaneId = group.First().OriginLaneId;
-                var originLane = NetManager.instance.GetLane(LANE_CONTROL_BIT, originLaneId);
+                var originLane = NetManager.instance.GetLane(LANEROUTING_CONTROL_BIT, originLaneId);
                 if (originLane == null)
                 {
                     continue;
@@ -245,37 +244,6 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Core
                             originLaneArrowFlags);
                 }
             }
-
-            //if (ConnectionCount() == 0)
-            //{
-            //    SetDefaultArrows(lane.m_segment, ref NetManager.instance.m_segments.m_buffer[lane.m_segment]);
-            //    return;
-            //}
-
-            //NetLane.Flags flags = (NetLane.Flags)lane.m_flags;
-            //flags &= ~(NetLane.Flags.LeftForwardRight);
-
-            //Vector3 segDir = segment.GetDirection(m_nodeId);
-            //uint[] connections = GetConnectionsAsArray();
-            //foreach (uint connection in connections)
-            //{
-            //    ushort seg = NetManager.instance.m_lanes.m_buffer[connection].m_segment;
-            //    Vector3 dir = NetManager.instance.m_segments.m_buffer[seg].GetDirection(m_nodeId);
-            //    if (Vector3.Angle(segDir, dir) > 150f)
-            //    {
-            //        flags |= NetLane.Flags.Forward;
-            //    }
-            //    else
-            //    {
-
-            //        if (Vector3.Dot(Vector3.Cross(segDir, -dir), Vector3.up) > 0f)
-            //            flags |= NetLane.Flags.Right;
-            //        else
-            //            flags |= NetLane.Flags.Left;
-            //    }
-            //}
-
-            //NetManager.instance.m_lanes.m_buffer[m_laneId].m_flags = (ushort)flags;
         }
 
         public bool CanLanesConnect(ushort nodeId, uint laneId1, uint laneId2)
@@ -327,76 +295,6 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Core
                 return laneRoutes.Any(r => r.DestinationLaneId == laneId2);
             }
         }
-
-        //public static uint[] GetConnectionsAsArray()
-        //{
-        //    uint[] connections = null;
-        //    while (!Monitor.TryEnter(this.m_laneConnections, SimulationManager.SYNCHRONIZE_TIMEOUT))
-        //    {
-        //    }
-        //    try
-        //    {
-        //        connections = m_laneConnections.ToArray();
-        //    }
-        //    finally
-        //    {
-        //        Monitor.Exit(this.m_laneConnections);
-        //    }
-        //    return connections;
-        //}
-
-        //public static int ConnectionCount()
-        //{
-        //    int count = 0;
-        //    while (!Monitor.TryEnter(this.m_laneConnections, SimulationManager.SYNCHRONIZE_TIMEOUT))
-        //    {
-        //    }
-        //    try
-        //    {
-        //        count = m_laneConnections.Count();
-        //    }
-        //    finally
-        //    {
-        //        Monitor.Exit(this.m_laneConnections);
-        //    }
-        //    return count;
-        //}
-
-        //public static bool ConnectsTo(uint laneId)
-        //{
-        //    while (!Monitor.TryEnter(this.m_laneConnections, SimulationManager.SYNCHRONIZE_TIMEOUT))
-        //    {
-        //    }
-        //    try
-        //    {
-        //        if (m_laneConnections.Count == 0)
-        //        {
-        //            return true;
-        //        }
-
-        //        if (m_laneConnections.Contains(laneId))
-        //        {
-        //            NetLane lane = NetManager.instance.m_lanes.m_buffer[laneId];
-
-        //            if ((lane.m_flags & CONTROL_BIT) != CONTROL_BIT)
-        //            {
-        //                m_laneConnections.Remove(laneId);
-        //                return false;
-        //            }
-        //            else
-        //            {
-        //                return true;
-        //            }
-
-        //        }
-
-        //        return false;
-        //    }
-        //    finally
-        //    {
-        //        Monitor.Exit(this.m_laneConnections);
-        //    }
-        //}
 
         //bool static FindNode(NetSegment segment)
         //{

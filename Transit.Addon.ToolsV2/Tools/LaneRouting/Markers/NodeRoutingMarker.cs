@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using Transit.Addon.ToolsV2.Common;
-using Transit.Addon.ToolsV2.LaneRouting.Core;
 using Transit.Addon.ToolsV2.LaneRouting.Data;
+using Transit.Framework.UI.Ingame;
 using UnityEngine;
 
 namespace Transit.Addon.ToolsV2.LaneRouting.Markers
 {
-    public class NodeRoutingMarker : UIMarkerBase
+    public class NodeRoutingMarker : UIMarker
     {
         private readonly NodeRoutingData _data;
 
@@ -298,7 +298,7 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Markers
 
         private void OnRouteAdding(LaneAnchorMarker origin, LaneAnchorMarker destination)
         {
-            RoutingManager.AddRoute(_data, new LaneRoutingData
+            LaneRoutingManager.AddRoute(_data, new LaneRoutingData
             {
                 OriginSegmentId = origin.SegmentId,
                 OriginLaneId = origin.LaneId,
@@ -309,7 +309,7 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Markers
 
         private void OnRouteRemoving(LaneAnchorMarker origin, LaneAnchorMarker destination)
         {
-            RoutingManager.RemoveRoute(_data, new LaneRoutingData
+            LaneRoutingManager.RemoveRoute(_data, new LaneRoutingData
             {
                 OriginSegmentId = origin.SegmentId,
                 OriginLaneId = origin.LaneId,

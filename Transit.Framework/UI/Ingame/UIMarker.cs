@@ -1,12 +1,12 @@
 ﻿using ColossalFramework;
 
-namespace Transit.Addon.ToolsV2.Common
+namespace Transit.Framework.UI.Ingame
 {
-    public abstract class UIMarkerBase
+    public abstract class UIMarker
     {
         protected UIState UIState { get; private set; }
 
-        protected UIMarkerBase()
+        protected UIMarker()
         {
             UIState = UIState.Default;
         }
@@ -14,20 +14,6 @@ namespace Transit.Addon.ToolsV2.Common
         public bool IsEnabled
         {
             get { return !UIState.IsFlagSet(UIState.Disabled); }
-            //set
-            //{
-            //    if (value)
-            //    {
-            //        if (UIState.IsFlagSet(UIState.Disabled))
-            //        {
-            //            UIState = UIState & ~UIState.Disabled;
-            //        }
-            //    }
-            //    else
-            //    {
-            //        UIState = UIState.Disabled;
-            //    }
-            //}
         }
 
         public void SetEnable(bool isEnable)

@@ -1,5 +1,5 @@
 ﻿using ColossalFramework.UI;
-using Transit.Framework.UI;
+using Transit.Framework.UI.Menus;
 
 namespace Transit.Addon.ToolsV2.Menus.RoadEditor
 {

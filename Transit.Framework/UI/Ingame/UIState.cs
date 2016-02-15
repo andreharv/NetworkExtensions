@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Transit.Addon.ToolsV2.Common
+namespace Transit.Framework.UI.Ingame
 {
     [Flags]
     public enum UIState

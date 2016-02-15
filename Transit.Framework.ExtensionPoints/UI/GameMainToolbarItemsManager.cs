@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Transit.Framework.UI.Toolbar.Items;
+using Transit.Framework.UI.Menus.Toolbar.Items;
 
 namespace Transit.Framework.ExtensionPoints.UI
 {

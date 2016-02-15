@@ -1,45 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Transit.Addon.ToolsV2.Common;
-using Transit.Addon.ToolsV2.LaneRouting.Core;
-using Transit.Addon.ToolsV2.LaneRouting.Data;
 using Transit.Addon.ToolsV2.LaneRouting.Markers;
-using Transit.Framework;
+using Transit.Framework.UI;
 using UnityEngine;
 
 namespace Transit.Addon.ToolsV2.LaneRouting
 {
-    public class RoutingToolBuilder : Activable, IToolBuilder
-    {
-        public int Order { get { return 10; } }
-        public int UIOrder { get { return 10; } }
-
-        public string Name { get { return "Intersection Routing"; } }
-        public string DisplayName { get { return Name; } }
-        public string Description { get { return "Allows you to customize entry and exit points in junctions."; } }
-        public string UICategory { get { return "IntersectionEditors"; } }
-
-        public string ThumbnailsPath { get { return @"Tools\LaneRouting\thumbnails.png"; } }
-        public string InfoTooltipPath { get { return @"Tools\LaneRouting\infotooltip.png"; } }
-
-        public Type ToolType { get { return typeof (RoutingTool); } }
-    }
-
-    public class RoutingTool : TAMToolBase
+    public class LaneRoutingTool : TAMToolBase
     {
         private readonly IDictionary<ushort, NodeRoutingMarker> _markers = new Dictionary<ushort, NodeRoutingMarker>();
         private NodeRoutingMarker _selectedMarker;
         private NodeRoutingMarker _hoveredMarker = null;
 
-        public RoutingTool()
+        public LaneRoutingTool()
         {
             OnInit();
         }
 
         private void OnInit()
         {
-            foreach (var d in RoutingManager.GetAllData())
+            foreach (var d in LaneRoutingManager.GetAllData())
             {
                 _markers[d.NodeId] = new NodeRoutingMarker(d);
             }
@@ -49,7 +29,7 @@ namespace Transit.Addon.ToolsV2.LaneRouting
         {
             if (!_markers.ContainsKey(nodeId))
             {
-                _markers[nodeId] = new NodeRoutingMarker(RoutingManager.GetOrCreateData(nodeId));
+                _markers[nodeId] = new NodeRoutingMarker(LaneRoutingManager.GetOrCreateData(nodeId));
             }
 
             return _markers[nodeId];
@@ -200,7 +180,7 @@ namespace Transit.Addon.ToolsV2.LaneRouting
                 _hoveredMarker.Render(camera);
             }
 
-            if (_selectedMarker != null && 
+            if (_selectedMarker != null &&
                 _selectedMarker != _hoveredMarker)
             {
                 _selectedMarker.Render(camera);
@@ -208,4 +188,3 @@ namespace Transit.Addon.ToolsV2.LaneRouting
         }
     }
 }
-

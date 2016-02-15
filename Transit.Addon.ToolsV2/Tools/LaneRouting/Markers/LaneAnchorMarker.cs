@@ -1,9 +1,10 @@
 ﻿using Transit.Addon.ToolsV2.Common;
+using Transit.Framework.UI.Ingame;
 using UnityEngine;
 
 namespace Transit.Addon.ToolsV2.LaneRouting.Markers
 {
-    public class LaneAnchorMarker : UIMarkerBase
+    public class LaneAnchorMarker : UIMarker
     {
         public uint LaneId { get; private set; }
         public ushort SegmentId { get; private set; }

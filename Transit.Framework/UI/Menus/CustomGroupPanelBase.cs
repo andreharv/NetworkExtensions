@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
-namespace Transit.Framework.UI
+namespace Transit.Framework.UI.Menus
 {
     public abstract class CustomGroupPanelBase : GeneratedGroupPanel
     {

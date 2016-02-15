@@ -7,26 +7,46 @@ namespace Transit.Framework
 {
     public static class ToolControllerExtensions
     {
+        public static T GetTool<T>(this ToolController toolController) where T : ToolBase
+        {
+            return (T)GetTool(toolController, typeof(T));
+        }
+
+        public static ToolBase GetTool(this ToolController toolController, Type toolType)
+        {
+            return (ToolBase) toolController.GetComponent(toolType);
+        }
+
         public static T AddTool<T>(this ToolController toolController) where T : ToolBase
         {
-            var toolInstance = toolController.GetComponent<T>();
-            if (toolInstance != null)
-                return toolInstance;
+            return (T) AddTool(toolController, typeof (T));
+        }
 
-            toolInstance = toolController.gameObject.AddComponent<T>();
+        public static ToolBase AddTool(this ToolController toolController, Type toolType)
+        {
+            var toolInstance = toolController.GetComponent(toolType);
+            if (toolInstance != null)
+                return (ToolBase)toolInstance;
+
+            toolInstance = toolController.gameObject.AddComponent(toolType);
 
             UpdateTools(toolController);
 
-            return toolInstance;
+            return (ToolBase)toolInstance;
         }
 
         public static void RemoveTool<T>(this ToolController toolController) where T : ToolBase
         {
-            T tool = toolController.GetComponent<T>();
-            if (tool == null)
+            RemoveTool(toolController, typeof(T));
+        }
+
+        public static void RemoveTool(this ToolController toolController, Type toolType)
+        {
+            var toolInstance = toolController.GetComponent(toolType);
+            if (toolInstance == null)
                 return;
 
-            GameObject.Destroy(tool);
+            GameObject.Destroy(toolInstance);
 
             UpdateTools(toolController);
         }

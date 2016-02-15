@@ -55,10 +55,14 @@
     <Compile Include="Activable.cs" />
     <Compile Include="AtlasManager.cs" />
     <Compile Include="Builders\IAtlasBuilder.cs" />
+    <Compile Include="Builders\IToolBuilder.cs" />
+    <Compile Include="Builders\ToolBuilder.cs" />
     <Compile Include="Modularity\ModuleBase.Install.cs" />
     <Compile Include="Mod\TransitModBase.Install.Assets.cs" />
     <Compile Include="Mod\TransitModBase.Install.cs" />
     <Compile Include="Mod\TransitModBase.Install.Localization.cs" />
+    <Compile Include="Serialization\DataSerializer.cs" />
+    <Compile Include="Serialization\IDataSerializer.cs" />
     <Compile Include="Texturing\ITextureBlenderComponent.cs" />
     <Compile Include="Texturing\PathTextureProvider.cs" />
     <Compile Include="Texturing\Point.cs" />
@@ -96,16 +100,19 @@
     <Compile Include="Assets.cs" />
     <Compile Include="Builders\MenuItemBuilder.cs" />
     <Compile Include="Interfaces\IShortDescriptor.cs" />
-    <Compile Include="UI\CustomGroupPanelBase.cs" />
-    <Compile Include="UI\MultiModeGroupPanel.cs">
+    <Compile Include="UI\Ingame\UIMarker.cs" />
+    <Compile Include="UI\Ingame\UIState.cs" />
+    <Compile Include="UI\Menus\CustomGroupPanelBase.cs" />
+    <Compile Include="UI\Menus\MultiModeGroupPanel.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\CustomScrollPanelBase.cs">
+    <Compile Include="UI\Menus\CustomScrollPanelBase.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\Toolbar\Items\IToolbarItemInfo.cs" />
-    <Compile Include="UI\Toolbar\Items\IToolbarMenuItemInfo.cs" />
-    <Compile Include="UI\Toolbar\Items\ToolbarSeparatorItemInfo.cs" />
+    <Compile Include="UI\Menus\Toolbar\Items\IToolbarItemInfo.cs" />
+    <Compile Include="UI\Menus\Toolbar\Items\IToolbarMenuItemInfo.cs" />
+    <Compile Include="UI\Menus\Toolbar\Items\ToolbarSeparatorItemInfo.cs" />
+    <Compile Include="UI\MouseKeyCode.cs" />
     <Compile Include="_Extensions\AppDomainExtensions.cs" />
     <Compile Include="_Extensions\AssetManagerExtensions.cs" />
     <Compile Include="_Extensions\CloningExtensions.cs" />

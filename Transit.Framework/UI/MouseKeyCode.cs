@@ -1,4 +1,4 @@
-﻿namespace Transit.Addon.ToolsV2.Common
+﻿namespace Transit.Framework.UI
 {
     public enum MouseKeyCode : int
     {

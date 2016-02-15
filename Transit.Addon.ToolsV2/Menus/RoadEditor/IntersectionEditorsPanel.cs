@@ -5,8 +5,9 @@ using Transit.Addon.ToolsV2.Common;
 using Transit.Addon.ToolsV2.LaneRouting;
 //using Transit.Addon.ToolsV2.TrafficLights;
 using Transit.Framework;
+using Transit.Framework.Builders;
 using Transit.Framework.Interfaces;
-using Transit.Framework.UI;
+using Transit.Framework.UI.Menus;
 
 namespace Transit.Addon.ToolsV2.Menus.RoadEditor
 {
@@ -18,7 +19,7 @@ namespace Transit.Addon.ToolsV2.Menus.RoadEditor
 
             IEnumerable<IToolBuilder> toolBuilders = new IToolBuilder[]
             {
-                new RoutingToolBuilder(),
+                new LaneRoutingToolBuilder(),
                 //new TrafficLightsToolBuilder(),
             };
 

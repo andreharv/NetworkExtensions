@@ -1,18 +1,15 @@
-﻿using ICities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using ICities;
 using Transit.Addon.ToolsV2.LaneRouting.Data;
 using Transit.Addon.ToolsV2.LaneRouting.DataLegacy.TPP;
 
-namespace Transit.Addon.ToolsV2.LaneRouting.Core
+namespace Transit.Addon.ToolsV2.LaneRouting
 {
-    public class RoutingDataManager : SerializableDataExtensionBase
+    public class LaneRoutingSerializationHandler : SerializableDataExtensionBase
     {
         public override void OnLoadData()
         {
-            //if ((ToolModule.ActiveOptions & ToolModule.ModOptions.RoadCustomizerTool) == ToolModule.ModOptions.None)
-            //    return;
-
             var loadedData = new List<NodeRoutingData>();
 
             var tppData = new TPPLaneSerializer().DeserializeData(serializableDataManager);
@@ -27,15 +24,12 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Core
                 loadedData.AddRange(tamData);
             }
 
-            RoutingManager.SetLoadedData(loadedData);
+            LaneRoutingManager.SetLoadedData(loadedData);
         }
 
         public override void OnSaveData()
         {
-            //if ((ToolModule.ActiveOptions & ToolModule.ModOptions.RoadCustomizerTool) == ToolModule.ModOptions.None)
-            //    return;
-
-            var savedData = RoutingManager
+            var savedData = LaneRoutingManager
                 .GetAllData()
                 .Where(r => r.Routes.Count > 0)
                 .ToArray();

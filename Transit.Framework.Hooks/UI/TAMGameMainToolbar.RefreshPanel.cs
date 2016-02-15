@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Transit.Framework.ExtensionPoints.UI;
 using Transit.Framework.Redirection;
-using Transit.Framework.UI.Toolbar.Items;
+using Transit.Framework.UI.Menus.Toolbar.Items;
 
 namespace Transit.Framework.Hooks.UI
 {
