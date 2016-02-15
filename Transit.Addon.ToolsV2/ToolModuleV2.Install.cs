@@ -1,6 +1,6 @@
 ﻿using ICities;
-using Transit.Addon.ToolsV2.Menus.RoadEditor;
-using Transit.Addon.ToolsV2.Menus.RoadEditor.Textures;
+using Transit.Addon.ToolsV2.UI.Toolbar.RoadEditor;
+using Transit.Addon.ToolsV2.UI.Toolbar.RoadEditor.Textures;
 using Transit.Framework;
 using Transit.Framework.ExtensionPoints.UI;
 using Transit.Framework.Modularity;
@@ -23,8 +23,8 @@ namespace Transit.Addon.ToolsV2
 
             if (TrafficToolsOptions != ModOptions.None)
             {
-                GameMainToolbarItemsManager.AddItem<RoadEditorToolbarItemInfo>();
-                GameMainToolbarItemsManager.AddBigSeparator(12);
+                GameMenuManager.AddToolbarItem<RoadEditorToolbarItemInfo>();
+                GameMenuManager.AddBigSeparator(12);
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using ColossalFramework;
+﻿using System;
+using ColossalFramework;
 using ColossalFramework.UI;
 using System.Collections.Generic;
 using Transit.Addon.ToolsV2.Common;
@@ -7,11 +8,20 @@ using Transit.Addon.ToolsV2.LaneRouting;
 using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.Interfaces;
-using Transit.Framework.UI.Menus;
+using Transit.Framework.UI.Toolbar.Menus;
 
-namespace Transit.Addon.ToolsV2.Menus.RoadEditor
+namespace Transit.Addon.ToolsV2.UI.Toolbar.RoadEditor
 {
-    public class IntersectionEditorsPanel : CustomScrollPanelBase
+    public class RoadEditorMainCategoryInfo
+    {
+        public const string NAME = "RoadEditorMainCategory";
+
+        public string Name { get { return NAME; } }
+        public int Order { get { return 10; } }
+        public Type PanelType { get { return typeof(RoadEditorMainPanel); } }
+    }
+
+    public class RoadEditorMainPanel : CustomScrollPanelBase
     {
         public override void RefreshPanel()
         {

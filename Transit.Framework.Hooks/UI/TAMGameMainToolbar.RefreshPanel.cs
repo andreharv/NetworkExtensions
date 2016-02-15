@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Transit.Framework.ExtensionPoints.UI;
 using Transit.Framework.Redirection;
-using Transit.Framework.UI.Menus.Toolbar.Items;
+using Transit.Framework.UI.Toolbar.Items;
 
 namespace Transit.Framework.Hooks.UI
 {
@@ -101,7 +101,7 @@ namespace Transit.Framework.Hooks.UI
             });
 
             items.Add(new ToolbarBigSeparatorItemInfo(190));
-            items.AddRange(GameMainToolbarItemsManager.CustomEntries);
+            items.AddRange(GameMenuManager.ToolbarItems);
 
             foreach (var entry in items.OrderBy(e => e.Order))
             {

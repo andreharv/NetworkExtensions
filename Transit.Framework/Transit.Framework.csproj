@@ -102,16 +102,16 @@
     <Compile Include="Interfaces\IShortDescriptor.cs" />
     <Compile Include="UI\Ingame\UIMarker.cs" />
     <Compile Include="UI\Ingame\UIState.cs" />
-    <Compile Include="UI\Menus\CustomGroupPanelBase.cs" />
-    <Compile Include="UI\Menus\MultiModeGroupPanel.cs">
+    <Compile Include="UI\Toolbar\Menus\CustomGroupPanelBase.cs" />
+    <Compile Include="UI\Toolbar\Menus\MultiModeGroupPanel.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\Menus\CustomScrollPanelBase.cs">
+    <Compile Include="UI\Toolbar\Menus\CustomScrollPanelBase.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\Menus\Toolbar\Items\IToolbarItemInfo.cs" />
-    <Compile Include="UI\Menus\Toolbar\Items\IToolbarMenuItemInfo.cs" />
-    <Compile Include="UI\Menus\Toolbar\Items\ToolbarSeparatorItemInfo.cs" />
+    <Compile Include="UI\Toolbar\Items\IToolbarItemInfo.cs" />
+    <Compile Include="UI\Toolbar\Items\IToolbarMenuItemInfo.cs" />
+    <Compile Include="UI\Toolbar\Items\ToolbarSeparatorItemInfo.cs" />
     <Compile Include="UI\MouseKeyCode.cs" />
     <Compile Include="_Extensions\AppDomainExtensions.cs" />
     <Compile Include="_Extensions\AssetManagerExtensions.cs" />

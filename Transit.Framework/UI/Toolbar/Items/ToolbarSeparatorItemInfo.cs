@@ -1,5 +1,5 @@
 ﻿
-namespace Transit.Framework.UI.Menus.Toolbar.Items
+namespace Transit.Framework.UI.Toolbar.Items
 {
     public abstract class ToolbarSeparatorItemInfo : IToolbarItemInfo
     {

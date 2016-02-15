@@ -1,9 +1,9 @@
 ﻿using System;
 using ColossalFramework;
-using Transit.Framework.UI.Menus;
-using Transit.Framework.UI.Menus.Toolbar.Items;
+using Transit.Framework.UI.Toolbar.Menus;
+using Transit.Framework.UI.Toolbar.Items;
 
-namespace Transit.Addon.ToolsV2.Menus.RoadEditor
+namespace Transit.Addon.ToolsV2.UI.Toolbar.RoadEditor
 {
     public class RoadEditorToolbarItemInfo : IToolbarMenuItemInfo
     {
@@ -11,10 +11,10 @@ namespace Transit.Addon.ToolsV2.Menus.RoadEditor
 
         public string Name { get { return NAME; } }
         public int Order { get { return 11; } }
-        public Type PanelType { get { return typeof(RoadEditorGroupPanel); } }
+        public Type PanelType { get { return typeof(RoadEditorToolbarPanel); } }
     }
 
-    public class RoadEditorGroupPanel : CustomGroupPanelBase
+    public class RoadEditorToolbarPanel : CustomGroupPanelBase
     {
         protected override void Initialize()
         {
@@ -23,12 +23,7 @@ namespace Transit.Addon.ToolsV2.Menus.RoadEditor
             if (options.IsFlagSet(ToolModuleV2.ModOptions.LaneRoutingTool) ||
                 options.IsFlagSet(ToolModuleV2.ModOptions.TrafficLightsTool))
             {
-                SpawnCategory<IntersectionEditorsPanel>("IntersectionEditors", null, "SubBar", null, true);
-            }
-
-            if (options.IsFlagSet(ToolModuleV2.ModOptions.LaneRestrictorTool))
-            {
-                SpawnCategory<SegmentEditorsPanel>("SegmentEditors", null, "SubBar", null, true);
+                SpawnCategory<RoadEditorMainPanel>("IntersectionEditors", null, "SubBar", null, true);
             }
         }
     }

@@ -4,7 +4,7 @@ using Transit.Framework;
 using Transit.Framework.Builders;
 using UnityEngine;
 
-namespace Transit.Addon.ToolsV2.Menus.RoadEditor.Textures
+namespace Transit.Addon.ToolsV2.UI.Toolbar.RoadEditor.Textures
 {
     public class ToolsAtlasBuilder : IAtlasBuilder
     {
@@ -27,7 +27,7 @@ namespace Transit.Addon.ToolsV2.Menus.RoadEditor.Textures
             var shader = Shader.Find("UI/Default UI Shader");
             if (shader != null) thumbnailAtlas.material = new Material(shader);
 
-            const string PATH = @"Menus\RoadEditor\Textures\Tools.png";
+            const string PATH = @"UI\Toolbar\RoadEditor\Textures\Tools.png";
 
             const string BG = "OptionBase";
             var versions = new[] { "", "Focused", "Hovered", "Pressed", "Disabled" };

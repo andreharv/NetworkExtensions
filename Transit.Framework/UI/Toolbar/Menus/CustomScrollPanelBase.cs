@@ -1,6 +1,6 @@
 ﻿using ColossalFramework.UI;
 
-namespace Transit.Framework.UI.Menus
+namespace Transit.Framework.UI.Toolbar.Menus
 {
     public abstract class CustomScrollPanelBase : GeneratedScrollPanel
     {

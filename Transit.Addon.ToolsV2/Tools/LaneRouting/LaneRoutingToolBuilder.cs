@@ -1,4 +1,5 @@
-﻿using Transit.Framework.Builders;
+﻿using Transit.Addon.ToolsV2.UI.Toolbar.RoadEditor;
+using Transit.Framework.Builders;
 using Transit.Framework.ExtensionPoints.PathFinding;
 
 namespace Transit.Addon.ToolsV2.LaneRouting
@@ -11,7 +12,7 @@ namespace Transit.Addon.ToolsV2.LaneRouting
         public string Name { get { return "Lane Routing"; } }
         public string DisplayName { get { return Name; } }
         public string Description { get { return "Allows you to customize entry and exit points in intersections and junctions."; } }
-        public string UICategory { get { return "IntersectionEditors"; } }
+        public string UICategory { get { return RoadEditorMainCategoryInfo.NAME; } }
 
         public string ThumbnailsPath { get { return @"Tools\LaneRouting\thumbnails.png"; } }
         public string InfoTooltipPath { get { return @"Tools\LaneRouting\infotooltip.png"; } }

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
-namespace Transit.Framework.UI.Menus
+namespace Transit.Framework.UI.Toolbar.Menus
 {
     public abstract class MultiModeGroupPanel : GeneratedGroupPanel
     {
