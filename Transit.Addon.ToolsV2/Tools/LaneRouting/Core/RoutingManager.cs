@@ -45,9 +45,15 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Core
 
             if (!_routingData.ContainsKey(nodeId))
             {
-                lock (_routingData)
+                var newData = new NodeRoutingData {NodeId = nodeId};
+                Monitor.Enter(_routingData);
+                try
                 {
-                    _routingData[nodeId] = new NodeRoutingData { NodeId = nodeId };
+                    _routingData[nodeId] = newData;
+                }
+                finally
+                {
+                    Monitor.Exit(_routingData);
                 }
             }
 
@@ -58,11 +64,15 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Core
         {
             if (!nodeRouting.Routes.Contains(route))
             {
-                lock (nodeRouting.Routes)
+                NetManager.instance.AddLaneFlag(LANE_CONTROL_BIT, route.OriginLaneId);
+                Monitor.Enter(nodeRouting.Routes);
+                try
                 {
-                    Debug.Log(">>>>>>>>>>>>>>>>>> Node " + nodeRouting.NodeId + " Connecting lane " + route.OriginLaneId + " to " + route.DestinationLaneId);
                     nodeRouting.Routes.Add(route);
-                    NetManager.instance.AddLaneFlag(LANE_CONTROL_BIT, route.OriginLaneId);
+                }
+                finally
+                {
+                    Monitor.Exit(nodeRouting.Routes);
                 }
             }
 
@@ -73,14 +83,19 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Core
         {
             if (nodeRouting.Routes.Contains(route))
             {
-                lock (nodeRouting.Routes)
+                Monitor.Enter(nodeRouting.Routes);
+                try
                 {
                     nodeRouting.Routes.Remove(route);
+                }
+                finally
+                {
+                    Monitor.Exit(nodeRouting.Routes);
+                }
 
-                    if (nodeRouting.Routes.Count == 0)
-                    {
-                        NetManager.instance.RemoveLaneFlag(LANE_CONTROL_BIT, route.OriginLaneId);
-                    }
+                if (nodeRouting.Routes.Count == 0)
+                {
+                    NetManager.instance.RemoveLaneFlag(LANE_CONTROL_BIT, route.OriginLaneId);
                 }
             }
 
@@ -89,41 +104,46 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Core
 
         public static void VerifyRoutes(NodeRoutingData nodeRouting)
         {
-            lock (nodeRouting.Routes)
+            ICollection<LaneRoutingData> obsoleteRoutes = null;
+
+            foreach (var route in nodeRouting.Routes)
             {
-                ICollection<LaneRoutingData> obsoleteRoutes = null;
-
-                foreach (var route in nodeRouting.Routes)
+                var originLane = NetManager.instance.GetLane(LANE_CONTROL_BIT, route.OriginLaneId);
+                if (originLane == null)
                 {
-                    var originLane = NetManager.instance.GetLane(LANE_CONTROL_BIT, route.OriginLaneId);
-                    if (originLane == null)
+                    if (obsoleteRoutes == null)
                     {
-                        if (obsoleteRoutes == null)
-                        {
-                            obsoleteRoutes = new HashSet<LaneRoutingData>();
-                        }
-                        obsoleteRoutes.Add(route);
-                        continue;
+                        obsoleteRoutes = new HashSet<LaneRoutingData>();
                     }
-
-                    var destinationLane = NetManager.instance.GetLane(LANE_CONTROL_BIT, route.DestinationLaneId);
-                    if (destinationLane == null)
-                    {
-                        if (obsoleteRoutes == null)
-                        {
-                            obsoleteRoutes = new HashSet<LaneRoutingData>();
-                        }
-                        obsoleteRoutes.Add(route);
-                        continue;
-                    }
+                    obsoleteRoutes.Add(route);
+                    continue;
                 }
 
-                if (obsoleteRoutes != null)
+                var destinationLane = NetManager.instance.GetLane(LANE_CONTROL_BIT, route.DestinationLaneId);
+                if (destinationLane == null)
+                {
+                    if (obsoleteRoutes == null)
+                    {
+                        obsoleteRoutes = new HashSet<LaneRoutingData>();
+                    }
+                    obsoleteRoutes.Add(route);
+                    continue;
+                }
+            }
+
+            if (obsoleteRoutes != null)
+            {
+                Monitor.Enter(nodeRouting.Routes);
+                try
                 {
                     foreach (var route in obsoleteRoutes)
                     {
                         nodeRouting.Routes.Remove(route);
                     }
+                }
+                finally
+                {
+                    Monitor.Exit(nodeRouting.Routes);
                 }
             }
         }
@@ -270,26 +290,36 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Core
                 return true;
             }
 
+
             NodeRoutingData nodeRouting;
-            lock (_routingData)
+            Monitor.Enter(_routingData);
+            try
             {
                 nodeRouting = _routingData[nodeId];
             }
+            finally
+            {
+                Monitor.Exit(_routingData);
+            }
+
 
             LaneRoutingData[] laneRoutes;
-            Debug.Log(">>>>>>>>>>>>>>>>>> Trying to connect lane " + laneId1);
-
-            lock (nodeRouting.Routes)
+            Monitor.Enter(nodeRouting.Routes);
+            try
             {
                 laneRoutes = nodeRouting
                     .Routes
                     .Where(r => r.OriginLaneId == laneId1)
                     .ToArray();
             }
+            finally
+            {
+                Monitor.Exit(nodeRouting.Routes);
+            }
+
 
             if (!laneRoutes.Any())
             {
-                Debug.Log(">>>>>>>>>>>>>>>>>> No connection found for " + laneId1);
                 return true;
             }
             else

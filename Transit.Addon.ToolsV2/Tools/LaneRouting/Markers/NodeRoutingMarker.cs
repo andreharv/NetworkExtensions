@@ -130,15 +130,12 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Markers
 
         private void InitRoutes()
         {
-            if (_data != null)
+            foreach (var r in _data.Routes)
             {
-                foreach (var r in _data.Routes)
+                var anchors = FindAnchors(r);
+                if (anchors != null)
                 {
-                    var anchors = FindAnchors(r);
-                    if (anchors != null)
-                    {
-                        ToggleRoute(anchors.Value.Key, anchors.Value.Value, true);
-                    }
+                    ToggleRoute(anchors.Value.Key, anchors.Value.Value, true);
                 }
             }
         }

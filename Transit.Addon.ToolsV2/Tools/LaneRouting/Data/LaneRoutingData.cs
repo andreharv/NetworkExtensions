@@ -43,5 +43,10 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Data
         {
             return OriginLaneId + "." + OriginSegmentId;
         }
+
+        public override string ToString()
+        {
+            return GetOriginUniqueId() + " -> " + GetDestinationUniqueId();
+        }
     }
 }
