@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Transit.Addon.ToolsV2.Common;
+using Transit.Addon.ToolsV2.LaneRouting.Data;
 using Transit.Addon.ToolsV2.LaneRouting.Markers;
 using Transit.Framework.UI;
 using UnityEngine;
@@ -21,6 +22,7 @@ namespace Transit.Addon.ToolsV2.LaneRouting
         {
             foreach (var d in LaneRoutingManager.GetAllData())
             {
+                d.UpdateArrows(); // Lets force an arrow update on load
                 _markers[d.NodeId] = new NodeRoutingMarker(d);
             }
         }

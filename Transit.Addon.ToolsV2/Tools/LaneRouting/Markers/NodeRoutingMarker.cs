@@ -298,7 +298,7 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Markers
 
         private void OnRouteAdding(LaneAnchorMarker origin, LaneAnchorMarker destination)
         {
-            LaneRoutingManager.AddRoute(_data, new LaneRoutingData
+            _data.AddRoute(new LaneRoutingData
             {
                 OriginSegmentId = origin.SegmentId,
                 OriginLaneId = origin.LaneId,
@@ -309,7 +309,7 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Markers
 
         private void OnRouteRemoving(LaneAnchorMarker origin, LaneAnchorMarker destination)
         {
-            LaneRoutingManager.RemoveRoute(_data, new LaneRoutingData
+            _data.RemoveRoute(new LaneRoutingData
             {
                 OriginSegmentId = origin.SegmentId,
                 OriginLaneId = origin.LaneId,

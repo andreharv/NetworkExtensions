@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\TAMToolBase.cs" />
+    <Compile Include="Tools\LaneRouting\Data\_Extensions\NodeRoutingDataExtensions.Arrows.cs" />
     <Compile Include="UI\Toolbar\RoadEditor\RoadEditorMainCategoryInfo.cs" />
     <Compile Include="ToolModuleV2.Install.Tools.cs" />
     <Compile Include="Tools\LaneRouting\LaneRoutingManager.cs" />

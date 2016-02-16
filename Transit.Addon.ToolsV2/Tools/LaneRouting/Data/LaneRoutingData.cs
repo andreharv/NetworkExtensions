@@ -6,6 +6,8 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Data
     [Serializable]
     public class LaneRoutingData
     {
+        public const ushort LANEROUTING_CONTROL_BIT = 2048;
+
         public ushort OriginSegmentId { get; set; }
         public uint OriginLaneId { get; set; }
 

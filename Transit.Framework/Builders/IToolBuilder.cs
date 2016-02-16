@@ -1,11 +1,11 @@
 ﻿using System;
+using Transit.Framework.Interfaces;
 using Transit.Framework.Modularity;
 
 namespace Transit.Framework.Builders
 {
-    public interface IToolBuilder : IMenuItemBuilder, IModulePart
+    public interface IToolBuilder : IMenuItemBuilder, IActivablePart, IOrderable
     {
-        int Order { get; }
         Type ToolType { get; }
         bool IsInstalled { get; set; }
 

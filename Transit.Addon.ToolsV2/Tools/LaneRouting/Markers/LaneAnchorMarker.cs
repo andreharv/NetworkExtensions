@@ -44,12 +44,12 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Markers
                         RenderManager.instance.OverlayEffect.DrawCircle(camera, Color, Position, 1f, Position.y - 1f, Position.y + 1f, true, true);
                         break;
                     case UIState.Hovered:
-                        RenderManager.instance.OverlayEffect.DrawCircle(camera, new Color32(255, 255, 255, 40), Position, 1.5f, Position.y - 1f, Position.y + 1f, true, true);
+                        RenderManager.instance.OverlayEffect.DrawCircle(camera, new Color32(255, 255, 255, 150), Position, 1.5f, Position.y - 1f, Position.y + 1f, true, true);
                         RenderManager.instance.OverlayEffect.DrawCircle(camera, Color, Position, 1f, Position.y - 1f, Position.y + 1f, true, true);
                         break;
                     case UIState.Selected:
                     case UIState.Selected | UIState.Hovered:
-                        RenderManager.instance.OverlayEffect.DrawCircle(camera, new Color32(0, 255, 0, 40), Position, 1.5f, Position.y - 1f, Position.y + 1f, true, true);
+                        RenderManager.instance.OverlayEffect.DrawCircle(camera, new Color32(0, 255, 0, 150), Position, 1.5f, Position.y - 1f, Position.y + 1f, true, true);
                         RenderManager.instance.OverlayEffect.DrawCircle(camera, Color, Position, 1f, Position.y - 1f, Position.y + 1f, true, true);
                         break;
                 }
@@ -65,8 +65,8 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Markers
                     case UIState.Hovered:
                         RenderManager.instance.OverlayEffect.DrawCircle(camera, Color, Position, 0.3f, Position.y - 1f, Position.y + 1f, true, true);
                         RenderManager.instance.OverlayEffect.DrawCircle(camera, Color, Position, 0.5f, Position.y - 1f, Position.y + 1f, true, true);
-                        RenderManager.instance.OverlayEffect.DrawCircle(camera, new Color32(0, 255, 0, 40), Position, 1.0f, Position.y - 1f, Position.y + 1f, true, true);
-                        RenderManager.instance.OverlayEffect.DrawCircle(camera, new Color32(0, 255, 0, 40), Position, 1.5f, Position.y - 1f, Position.y + 1f, true, true);
+                        RenderManager.instance.OverlayEffect.DrawCircle(camera, new Color32(0, 255, 0, 150), Position, 1.0f, Position.y - 1f, Position.y + 1f, true, true);
+                        RenderManager.instance.OverlayEffect.DrawCircle(camera, new Color32(0, 255, 0, 150), Position, 1.5f, Position.y - 1f, Position.y + 1f, true, true);
                         break;
                 }
             }
