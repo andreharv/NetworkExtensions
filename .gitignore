@@ -214,3 +214,4 @@ pip-log.txt
 #Mr Developer
 .mr.developer.cfg
 /Transit.Addon.RoadExtensions/Roads/TinyRoads/OneWay1L2
+*.dll
