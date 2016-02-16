@@ -1,9 +1,10 @@
-﻿using Transit.Framework;
+﻿using Transit.Addon.RoadExtensions.Compatibility;
+using Transit.Framework;
 using Transit.Framework.Builders;
 
 namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
 {
-    public class ZonablePedestrianPavementBuilder : ZonablePedestrianBuilderBase, INetInfoBuilderPart
+    public class ZonablePedestrianPavementBuilder : ZonablePedestrianBuilderBase, INetInfoBuilderPart, ITrafficPlusPlusPart
     {
         public int Order { get { return 310; } }
         public int UIOrder { get { return 20; } }
