@@ -9,7 +9,7 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Data
     {
         public static bool IsRelevant(this NodeRoutingData data)
         {
-            if (data.Routes == null || data.Routes.Count == 0)
+            if (!data.HasRoutes)
             {
                 return false;
             }
@@ -108,6 +108,33 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Data
                 {
                     Monitor.Exit(nodeRouting.Routes);
                 }
+            }
+        }
+
+        public static bool HasRouteFor(this NodeRoutingData nodeRouting, uint originLaneId, uint destinationLaneId)
+        {
+            LaneRoutingData[] laneRoutes;
+            Monitor.Enter(nodeRouting.Routes);
+            try
+            {
+                laneRoutes = nodeRouting
+                    .Routes
+                    .Where(r => r.OriginLaneId == originLaneId)
+                    .ToArray();
+            }
+            finally
+            {
+                Monitor.Exit(nodeRouting.Routes);
+            }
+
+
+            if (!laneRoutes.Any())
+            {
+                return true;
+            }
+            else
+            {
+                return laneRoutes.Any(r => r.DestinationLaneId == destinationLaneId);
             }
         }
     }

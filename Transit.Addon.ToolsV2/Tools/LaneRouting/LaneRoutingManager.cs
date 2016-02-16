@@ -81,29 +81,7 @@ namespace Transit.Addon.ToolsV2.LaneRouting
             }
 
 
-            LaneRoutingData[] laneRoutes;
-            Monitor.Enter(nodeRouting.Routes);
-            try
-            {
-                laneRoutes = nodeRouting
-                    .Routes
-                    .Where(r => r.OriginLaneId == laneId1)
-                    .ToArray();
-            }
-            finally
-            {
-                Monitor.Exit(nodeRouting.Routes);
-            }
-
-
-            if (!laneRoutes.Any())
-            {
-                return true;
-            }
-            else
-            {
-                return laneRoutes.Any(r => r.DestinationLaneId == laneId2);
-            }
+            return nodeRouting.HasRouteFor(laneId1, laneId2);
         }
 
         //bool static FindNode(NetSegment segment)
