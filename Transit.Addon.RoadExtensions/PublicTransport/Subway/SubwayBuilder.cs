@@ -77,16 +77,13 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.Subway
             info.m_lanes = remainingLanes.ToArray();
             info.m_class.m_layer = ItemClass.Layer.PublicTransport;
             info.m_connectGroup = NetInfo.ConnectGroup.CenterTram;
-            info.m_nodeConnectGroups = (NetInfo.ConnectGroup)9;
-            info.m_nodes[1].m_connectGroup = (NetInfo.ConnectGroup)9; 
+            info.m_nodeConnectGroups = NetInfo.ConnectGroup.CenterTram | NetInfo.ConnectGroup.NarrowTram;
+            //info.m_nodes[1].m_connectGroup = (NetInfo.ConnectGroup)9; 
             var info2 = Prefabs.Find<NetInfo>("Train Track", false);
             info2.m_connectGroup = NetInfo.ConnectGroup.NarrowTram;
             info2.m_nodeConnectGroups = NetInfo.ConnectGroup.NarrowTram;
             info2.m_nodes[1].m_connectGroup = NetInfo.ConnectGroup.NarrowTram;
             info.m_class = info2.m_class.Clone("NExtSingleTrack");
-            info.m_class.m_level = (ItemClass.Level)7;
-            info2.m_nodes[1].m_flagsForbidden = NetNode.Flags.OneWayIn;
-            info2.m_class.m_level = ItemClass.Level.Level1;
             var owPlayerNetAI = roadInfo.GetComponent<PlayerNetAI>();
             var playerNetAI = info.GetComponent<PlayerNetAI>();
 

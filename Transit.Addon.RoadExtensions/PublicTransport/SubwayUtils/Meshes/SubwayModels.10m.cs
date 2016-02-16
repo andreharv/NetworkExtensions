@@ -18,9 +18,17 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.SubwayUtils
                     {
                         var segments0 = info.m_segments[0].ShallowClone();
                         var segments1 = info.m_segments[1].ShallowClone();
-                        var nodes0 = info.m_nodes[0].ShallowClone();
-                        var nodes1 = info.m_nodes[1].ShallowClone();
-                        var nodes2 = info.m_nodes[2].ShallowClone();
+                        var nodes0 = info.m_nodes[0];
+                        var nodes1 = info.m_nodes[1];
+                        var nodes2 = info.m_nodes[2];
+                        var nodes3 = info.m_nodes[3];
+                        var nodes4 = info.m_nodes[1].ShallowClone();
+                        var nodes5 = info.m_nodes[1].ShallowClone();
+
+                        nodes1.m_connectGroup = NetInfo.ConnectGroup.CenterTram;
+                        nodes4.m_connectGroup = NetInfo.ConnectGroup.NarrowTram | NetInfo.ConnectGroup.OnewayStart;
+                        nodes5.m_connectGroup = NetInfo.ConnectGroup.NarrowTram | NetInfo.ConnectGroup.OnewayEnd;
+
                         segments0
                             .SetFlagsDefault()
                             .SetMeshes
@@ -36,17 +44,17 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.SubwayUtils
                             (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Pavement_Node.obj");
 
                         nodes1
-                            .SetFlags(NetNode.Flags.None, NetNode.Flags.Transition)
                             .SetMeshes
                             (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail.obj");
 
-                        nodes2
-                            .SetFlags(NetNode.Flags.Transition, NetNode.Flags.None)
+                        nodes4
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail_Node.obj");
-
+                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail_Start.obj");
+                        nodes5
+                            .SetMeshes
+                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail_End.obj");
                         info.m_segments = new[] { segments0, segments1 };
-                        info.m_nodes = new[] { nodes0, nodes1, nodes2 };
+                        info.m_nodes = new[] { nodes0, nodes1, nodes2, nodes3, nodes4, nodes5 };
 
                         break;
                     }
