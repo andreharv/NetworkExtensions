@@ -44,7 +44,7 @@ namespace Transit.Addon.ToolsV2.LaneRouting.Markers
                         RenderManager.instance.OverlayEffect.DrawCircle(camera, Color, Position, 1f, Position.y - 1f, Position.y + 1f, true, true);
                         break;
                     case UIState.Hovered:
-                        RenderManager.instance.OverlayEffect.DrawCircle(camera, new Color32(255, 255, 255, 150), Position, 1.5f, Position.y - 1f, Position.y + 1f, true, true);
+                        RenderManager.instance.OverlayEffect.DrawCircle(camera, new Color32(255, 255, 255, 100), Position, 1.5f, Position.y - 1f, Position.y + 1f, true, true);
                         RenderManager.instance.OverlayEffect.DrawCircle(camera, Color, Position, 1f, Position.y - 1f, Position.y + 1f, true, true);
                         break;
                     case UIState.Selected:
