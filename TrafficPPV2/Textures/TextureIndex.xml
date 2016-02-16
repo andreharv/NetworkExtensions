@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfTextureInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+		<!-->Large Roads</-->
+  <TextureInfo name="Large Road With Bus Lanes">
+    <mainTex>RoadLargeBusLanes</mainTex>
+	<aprTex>RoadLargeBusLanes-apr</aprTex>
+	<!--lodMainTex>RoadLargeBusLanes-LOD</lodMainTex>
+	<lodAprTex>RoadLargeBusLanes-LOD-apr</lodAprTex-->
+	<mainTexBus>RoadLargeBusLanes-bus</mainTexBus>
+	<aprTexBus>RoadLargeBusLanes-bus-apr</aprTexBus>
+	<!--lodMainTexBus>RoadLargeBusLanes-bus-LOD</lodMainTexBus>
+	<lodAprTexBus>RoadLargeBusLanes-bus-LOD-apr</lodAprTexBus-->
+	<mainTexBusBoth>RoadLargeBusLanes-busBoth</mainTexBusBoth>
+	<aprTexBusBoth>RoadLargeBusLanes-busBoth-apr</aprTexBusBoth>
+	<!--lodMainTexBusBoth>RoadLargeBusLanes-busBoth-LOD</lodMainTexBusBoth>
+	<lodAprTexBusBoth>RoadLargeBusLanes-busBoth-LOD-apr</lodAprTexBusBoth-->
+  </TextureInfo>
+  <TextureInfo name="Large Road Decoration Grass With Bus Lanes">
+    <mainTex>RoadLargeBusLanesGrass</mainTex>
+	<aprTex>RoadLargeBusLanesGrass-apr</aprTex>
+	<!--lodMainTex>RoadLargeBusLanes-LOD</lodMainTex>
+	<lodAprTex>RoadLargeBusLanes-LOD-apr</lodAprTex-->
+	<mainTexBus>RoadLargeBusLanesGrass-bus</mainTexBus>
+	<aprTexBus>RoadLargeBusLanesGrass-bus-apr</aprTexBus>
+	<!--lodMainTexBus>RoadLargeBusLanes-bus-LOD</lodMainTex>
+	<lodAprTexBus>RoadLargeBusLanes-bus-LOD-apr</lodAprTex-->
+	<mainTexBusBoth>RoadLargeBusLanesGrass-busBoth</mainTexBusBoth>
+	<aprTexBusBoth>RoadLargeBusLanesGrass-busBoth-apr</aprTexBusBoth>
+	<!--lodMainTexBusBoth>RoadLargeBusLanes-busBoth-LOD</lodMainTex>
+	<lodAprTexBusBoth>RoadLargeBusLanes-busBoth-LOD-apr</lodAprTex-->
+  </TextureInfo>
+  <TextureInfo name="Large Road Decoration Trees With Bus Lanes">
+    <mainTex>RoadLargeBusLanesGrass</mainTex>
+	<aprTex>RoadLargeBusLanesGrass-apr</aprTex>
+	<!--lodMainTex>RoadLargeBusLanes-LOD</lodMainTex>
+	<lodAprTex>RoadLargeBusLanes-LOD-apr</lodAprTex-->
+	<mainTexBus>RoadLargeBusLanesGrass-bus</mainTexBus>
+	<aprTexBus>RoadLargeBusLanesGrass-bus-apr</aprTexBus>
+	<!--lodMainTexBus>RoadLargeBusLanes-bus-LOD</lodMainTex>
+	<lodAprTexBus>RoadLargeBusLanes-bus-LOD-apr</lodAprTex-->
+	<mainTexBusBoth>RoadLargeBusLanesGrass-busBoth</mainTexBusBoth>
+	<aprTexBusBoth>RoadLargeBusLanesGrass-busBoth-apr</aprTexBusBoth>
+	<!--lodMainTexBusBoth>RoadLargeBusLanes-busBoth-LOD</lodMainTex>
+	<lodAprTexBusBoth>RoadLargeBusLanes-busBoth-LOD-apr</lodAprTex-->
+  </TextureInfo>
+  <TextureInfo name="Large Road Bridge With Bus Lanes">
+    <mainTex>RoadLargeBusLanesBridge</mainTex>
+	<aprTex>RoadLargeBusLanesBridge-apr</aprTex>
+	<!--lodMainTex>RoadLargeBusLanesBridge-LOD</lodMainTex>
+	<lodAprTex>RoadLargeBusLanesBridge-LOD-apr</lodAprTex-->
+  </TextureInfo>
+  <TextureInfo name="Large Road Elevated With Bus Lanes">
+    <mainTex>RoadLargeBusLanesBridge</mainTex>
+	<aprTex>RoadLargeBusLanesBridge-apr</aprTex>
+	<!--lodMainTex>RoadLargeBusLanesBridge-LOD</lodMainTex>
+	<lodAprTex>RoadLargeBusLanesBridge-LOD-apr</lodAprTex-->
+  </TextureInfo>
+  <TextureInfo name="Large Road Slope With Bus Lanes">
+    <mainTex>RoadLargeBusLanesSlope</mainTex>
+	<aprTex>RoadLargeBusLanesSlope-apr</aprTex>
+	<!--lodMainTex>RoadLargeBusLanesSlope-LOD</lodMainTex>
+	<lodAprTex>RoadLargeBusLanesSlope-LOD-apr</lodAprTex-->
+  </TextureInfo>
+  		<!-->Small Roads</-->
+  <TextureInfo name="Small Busway">
+    <mainTex>RoadSmallBusway</mainTex>
+	<aprTex>RoadSmallBusway-apr</aprTex>
+	<!--lodMainTex>RoadSmallBusway-LOD</lodMainTex>
+	<lodAprTex>RoadSmallBusway-LOD-apr</lodAprTex-->
+	<mainTexBus>RoadSmallBusway</mainTexBus>
+	<aprTexBus>RoadSmallBusway-apr</aprTexBus>
+	<!--lodMainTexBus>RoadSmallBusway-bus-LOD</lodMainTexBus>
+	<lodAprTexBus>RoadSmallBusway-bus-LOD-apr</lodAprTexBus-->
+	<mainTexBusBoth>RoadSmallBusway</mainTexBusBoth>
+	<aprTexBusBoth>RoadSmallBusway-apr</aprTexBusBoth>
+	<!--lodMainTexBusBoth>RoadSmallBusway-busBoth-LOD</lodMainTexBusBoth>
+	<lodAprTexBusBoth>RoadSmallBusway-busBoth-LOD-apr</lodAprTexBusBoth-->
+  </TextureInfo>
+  <TextureInfo name="Small Busway OneWay">
+    <mainTex>RoadSmallBuswayOneWay</mainTex>
+	<aprTex>RoadSmallBusway-apr</aprTex>
+	<!--lodMainTex>RoadSmallBusway-LOD</lodMainTex>
+	<lodAprTex>RoadSmallBusway-LOD-apr</lodAprTex-->
+	<mainTexBus>RoadSmallBuswayOneWay</mainTexBus>
+	<aprTexBus>RoadSmallBusway-apr</aprTexBus>
+	<!--lodMainTexBus>RoadSmallBusway-bus-LOD</lodMainTexBus>
+	<lodAprTexBus>RoadSmallBusway-bus-LOD-apr</lodAprTexBus-->
+	<mainTexBusBoth>RoadSmallBuswayOneWay</mainTexBusBoth>
+	<aprTexBusBoth>RoadSmallBusway-apr</aprTexBusBoth>
+	<!--lodMainTexBusBoth>RoadSmallBusway-busBoth-LOD</lodMainTexBusBoth>
+	<lodAprTexBusBoth>RoadSmallBusway-busBoth-LOD-apr</lodAprTexBusBoth-->
+  </TextureInfo>
+  <TextureInfo name="Small Busway Decoration Grass">
+    <mainTex>RoadSmallBuswayGrass</mainTex>
+	<aprTex>RoadSmallBuswayGrass-apr</aprTex>
+	<mainTexBus>RoadSmallBuswayGrass</mainTexBus>
+	<aprTexBus>RoadSmallBuswayGrass-bus-apr</aprTexBus>
+	<mainTexBusBoth>RoadSmallBuswayGrass</mainTexBusBoth>
+	<aprTexBusBoth>RoadSmallBuswayGrass-busBoth-apr</aprTexBusBoth>
+	<!--lodMainTex>RoadSmallBusway-LOD</lodMainTex>
+	<lodAprTex>RoadSmallBusway-LOD-apr</lodAprTex>
+	<lodMainTexBus>RoadSmallBusway-bus-LOD</lodMainTex>
+	<lodAprTexBus>RoadSmallBusway-bus-LOD-apr</lodAprTex>
+	<lodMainTexBusBoth>RoadSmallBusway-busBoth-LOD</lodMainTex>
+	<lodAprTexBusBoth>RoadSmallBusway-busBoth-LOD-apr</lodAprTex-->
+  </TextureInfo>
+  <TextureInfo name="Small Busway OneWay Decoration Grass">
+    <mainTex>RoadSmallBuswayOneWayGrass</mainTex>
+	<aprTex>RoadSmallBuswayGrass-apr</aprTex>
+	<mainTexBus>RoadSmallBuswayOneWayGrass</mainTexBus>
+	<aprTexBus>RoadSmallBuswayGrass-bus-apr</aprTexBus>
+	<mainTexBusBoth>RoadSmallBuswayOneWayGrass</mainTexBusBoth>
+	<aprTexBusBoth>RoadSmallBuswayGrass-busBoth-apr</aprTexBusBoth>
+	<!--lodMainTex>RoadSmallBusway-LOD</lodMainTex>
+	<lodAprTex>RoadSmallBusway-LOD-apr</lodAprTex>
+	<lodMainTexBus>RoadSmallBusway-bus-LOD</lodMainTex>
+	<lodAprTexBus>RoadSmallBusway-bus-LOD-apr</lodAprTex>
+	<lodMainTexBusBoth>RoadSmallBusway-busBoth-LOD</lodMainTex>
+	<lodAprTexBusBoth>RoadSmallBusway-busBoth-LOD-apr</lodAprTex-->
+  </TextureInfo>
+  <TextureInfo name="Small Busway Decoration Trees">
+    <mainTex>RoadSmallBuswayGrass</mainTex>
+	<aprTex>RoadSmallBuswayGrass-apr</aprTex>
+	<mainTexBus>RoadSmallBuswayGrass</mainTexBus>
+	<aprTexBus>RoadSmallBuswayGrass-bus-apr</aprTexBus>
+	<mainTexBusBoth>RoadSmallBuswayGrass</mainTexBusBoth>
+	<aprTexBusBoth>RoadSmallBuswayGrass-busBoth-apr</aprTexBusBoth>
+	<!--lodMainTex>RoadSmallBusway-LOD</lodMainTex>
+	<lodAprTex>RoadSmallBusway-LOD-apr</lodAprTex>
+	<lodMainTexBus>RoadSmallBusway-bus-LOD</lodMainTex>
+	<lodAprTexBus>RoadSmallBusway-bus-LOD-apr</lodAprTex>
+	<lodMainTexBusBoth>RoadSmallBusway-busBoth-LOD</lodMainTex>
+	<lodAprTexBusBoth>RoadSmallBusway-busBoth-LOD-apr</lodAprTex-->
+  </TextureInfo>
+  <TextureInfo name="Small Busway OneWay Decoration Trees">
+    <mainTex>RoadSmallBuswayOneWayGrass</mainTex>
+	<aprTex>RoadSmallBuswayGrass-apr</aprTex>
+	<mainTexBus>RoadSmallBuswayOneWayGrass</mainTexBus>
+	<aprTexBus>RoadSmallBuswayGrass-bus-apr</aprTexBus>
+	<mainTexBusBoth>RoadSmallBuswayOneWayGrass</mainTexBusBoth>
+	<aprTexBusBoth>RoadSmallBuswayGrass-busBoth-apr</aprTexBusBoth>
+	<!--lodMainTex>RoadSmallBusway-LOD</lodMainTex>
+	<lodAprTex>RoadSmallBusway-LOD-apr</lodAprTex>
+	<lodMainTexBus>RoadSmallBusway-bus-LOD</lodMainTex>
+	<lodAprTexBus>RoadSmallBusway-bus-LOD-apr</lodAprTex>
+	<lodMainTexBusBoth>RoadSmallBusway-busBoth-LOD</lodMainTex>
+	<lodAprTexBusBoth>RoadSmallBusway-busBoth-LOD-apr</lodAprTex-->
+  </TextureInfo>
+  <TextureInfo name="Small Busway Bridge">
+    <mainTex>RoadSmallBuswayBridge</mainTex>
+	<aprTex>RoadSmallBuswayBridge-apr</aprTex>
+	<!--lodMainTex>RoadSmallBuswayBridge-LOD</lodMainTex>
+	<lodAprTex>RoadSmallBuswayBridge-LOD-apr</lodAprTex-->
+  </TextureInfo>
+  <TextureInfo name="Small Busway OneWay Bridge">
+    <mainTex>RoadSmallBuswayOneWayBridge</mainTex>
+	<aprTex>RoadSmallBuswayBridge-apr</aprTex>
+	<!--lodMainTex>RoadSmallBuswayBridge-LOD</lodMainTex>
+	<lodAprTex>RoadSmallBuswayBridge-LOD-apr</lodAprTex-->
+  </TextureInfo>
+  <TextureInfo name="Small Busway Elevated">
+    <mainTex>RoadSmallBuswayBridge</mainTex>
+	<aprTex>RoadSmallBuswayBridge-apr</aprTex>
+	<!--lodMainTex>RoadSmallBuswayBridge-LOD</lodMainTex>
+	<lodAprTex>RoadSmallBuswayBridge-LOD-apr</lodAprTex-->
+  </TextureInfo>
+  <TextureInfo name="Small Busway OneWay Elevated">
+    <mainTex>RoadSmallBuswayOneWayBridge</mainTex>
+	<aprTex>RoadSmallBuswayBridge-apr</aprTex>
+	<!--lodMainTex>RoadSmallBuswayBridge-LOD</lodMainTex>
+	<lodAprTex>RoadSmallBuswayBridge-LOD-apr</lodAprTex-->
+  </TextureInfo>
+  <TextureInfo name="Small Busway Slope">
+    <mainTex>RoadSmallBuswaySlope</mainTex>
+	<aprTex>RoadSmallBuswaySlope-apr</aprTex>
+	<!--lodMainTex>RoadSmallBuswaySlope-LOD</lodMainTex>
+	<lodAprTex>RoadSmallBuswaySlope-LOD-apr</lodAprTex-->
+  </TextureInfo>
+  <TextureInfo name="Small Busway OneWay Slope">
+    <mainTex>RoadSmallBuswayOneWaySlope</mainTex>
+	<aprTex>RoadSmallBuswaySlope-apr</aprTex>
+	<!--lodMainTex>RoadSmallBuswaySlope-LOD</lodMainTex>
+	<lodAprTex>RoadSmallBuswaySlope-LOD-apr</lodAprTex-->
+  </TextureInfo>
+		<!-->Pedestrian Roads</-->
+  <TextureInfo name="Zonable Pedestrian Pavement">
+	<aprTex>PedestrianRoad-apr</aprTex>
+	<!--lodAprTex>PedestrianRoad-apr</lodAprTex-->
+	<aprTexNode>PedestrianRoad-apr</aprTexNode>
+	<!--lodAprTexNode>PedestrianRoad-apr</lodAprTexNode-->
+  </TextureInfo>
+  <TextureInfo name="Zonable Pedestrian Gravel">
+	<aprTex>PedestrianRoad-apr</aprTex>
+	<!--lodAprTex>PedestrianRoad-apr</lodAprTex-->
+	<aprTexNode>PedestrianRoad-apr</aprTexNode>
+	<!--lodAprTexNode>PedestrianRoad-apr</lodAprTexNode-->
+  </TextureInfo>
+		<!-->Props</-->
+  <TextureInfo name="BusLaneText">
+    <mainTex>BusLaneText</mainTex>
+	<xysTex>BusLaneText-xys</xysTex>
+	<aciTex>BusLaneText-aci</aciTex>
+  </TextureInfo>
+</ArrayOfTextureInfo>
