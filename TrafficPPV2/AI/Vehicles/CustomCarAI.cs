@@ -363,7 +363,7 @@ namespace CSL_Traffic
             }
         }
 
-        public static bool StartPathFind(CarAI carAI, ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, RoadManager.VehicleType vehicleType)
+        public static bool StartPathFind(CarAI carAI, ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, Transit.Framework.Light.VehicleType vehicleType)
         {
             VehicleInfo info = carAI.m_info;
             bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != Vehicle.Flags.None;

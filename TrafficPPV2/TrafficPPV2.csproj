@@ -66,7 +66,6 @@
     <Compile Include="AI\Vehicles\CustomVehicleAI.cs" />
     <Compile Include="AI\Vehicles\IVehicle.cs" />
     <Compile Include="CSLTraffic.cs" />
-    <Compile Include="DataExtensions\NetInfoLane.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="FileManager.cs" />
     <Compile Include="Initializer.cs" />
@@ -75,6 +74,7 @@
     <Compile Include="PathFinding\CustomPathFind.cs" />
     <Compile Include="PathFinding\CustomPathManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoadManager.Data.cs" />
     <Compile Include="RoadManager.cs" />
     <Compile Include="Tools\CustomTransportTool.cs" />
     <Compile Include="Tools\RoadCustomizerTool.cs" />
@@ -84,7 +84,12 @@
     <Compile Include="UI\RoadCustomizerPanel.cs" />
     <Compile Include="UI\UIUtils.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Transit.Framework.Light\Transit.Framework.Light.csproj">
+      <Project>{fc275c26-1012-474c-b77b-09e366dbc684}</Project>
+      <Name>Transit.Framework.Light</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Textures\Props\BusLaneText-aci.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

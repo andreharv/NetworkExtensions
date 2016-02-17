@@ -65,9 +65,9 @@ namespace CSL_Traffic
 
 		protected override bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays)
 		{
-			RoadManager.VehicleType vehicleType = RoadManager.VehicleType.PoliceCar;
+			Transit.Framework.Light.VehicleType vehicleType = Transit.Framework.Light.VehicleType.PoliceCar;
 			if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) != Vehicle.Flags.None)
-				vehicleType |= RoadManager.VehicleType.Emergency;
+				vehicleType |= Transit.Framework.Light.VehicleType.Emergency;
 
             VehicleInfo info = this.m_info;
             bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != Vehicle.Flags.None;

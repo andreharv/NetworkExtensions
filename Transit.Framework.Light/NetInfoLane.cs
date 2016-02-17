@@ -1,31 +1,7 @@
-﻿// Lagacy from T++
-
-using System;
-
-namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
+﻿// Legacy from T++
+namespace Transit.Framework.Light
 {
-    [Flags]
-    public enum VehicleType
-    {
-        None = 0,
-
-        Ambulance = 1,
-        Bus = 2,
-        CargoTruck = 4,
-        FireTruck = 8,
-        GarbageTruck = 16,
-        Hearse = 32,
-        PassengerCar = 64,
-        PoliceCar = 128,
-
-        Emergency = 32768,
-        EmergencyVehicles = Emergency | Ambulance | FireTruck | PoliceCar,
-        ServiceVehicles = EmergencyVehicles | Bus | GarbageTruck | Hearse,
-
-        All = ServiceVehicles | PassengerCar | CargoTruck
-    }
-
-    class NetInfoLane : NetInfo.Lane
+    public class NetInfoLane : NetInfo.Lane
     {
         public enum SpecialLaneType
         {
@@ -44,14 +20,9 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
             this.m_specialLaneType = specialLaneType;
         }
 
-        public NetInfoLane(NetInfo.Lane lane, SpecialLaneType specialLaneType = SpecialLaneType.None)
-            : this(lane, VehicleType.All, specialLaneType)
-        {
-            
-        }
+        public NetInfoLane(NetInfo.Lane lane, SpecialLaneType specialLaneType = SpecialLaneType.None) : this(lane, VehicleType.All, specialLaneType) { }
 
-        public NetInfoLane(NetInfo.Lane lane, VehicleType vehicleTypes, SpecialLaneType specialLaneType = SpecialLaneType.None) 
-            : this(vehicleTypes, specialLaneType)
+        public NetInfoLane(NetInfo.Lane lane, VehicleType vehicleTypes, SpecialLaneType specialLaneType = SpecialLaneType.None) : this(vehicleTypes, specialLaneType)
         {
             CopyAttributes(lane);
         }

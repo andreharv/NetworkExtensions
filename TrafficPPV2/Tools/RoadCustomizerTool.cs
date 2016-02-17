@@ -685,20 +685,20 @@ namespace CSL_Traffic
 
 		bool AnyLaneSelected { get { return m_selectedLaneMarkers.Count > 0; } }
 
-		public RoadManager.VehicleType GetCurrentVehicleRestrictions()
+		public Transit.Framework.Light.VehicleType GetCurrentVehicleRestrictions()
 		{
 			if (!AnyLaneSelected)
-				return RoadManager.VehicleType.None;
+				return Transit.Framework.Light.VehicleType.None;
 
 			return RoadManager.GetVehicleRestrictions(m_selectedLaneMarkers[0].m_lane);
 		}
 
-		public RoadManager.VehicleType ToggleRestriction(RoadManager.VehicleType vehicleType)
+		public Transit.Framework.Light.VehicleType ToggleRestriction(Transit.Framework.Light.VehicleType vehicleType)
 		{
 			if (!AnyLaneSelected)
-				return RoadManager.VehicleType.None;
+				return Transit.Framework.Light.VehicleType.None;
 
-			RoadManager.VehicleType vehicleRestrictions = RoadManager.GetVehicleRestrictions(m_selectedLaneMarkers[0].m_lane);
+			Transit.Framework.Light.VehicleType vehicleRestrictions = RoadManager.GetVehicleRestrictions(m_selectedLaneMarkers[0].m_lane);
 			vehicleRestrictions ^= vehicleType;
 
 			foreach (SegmentLaneMarker lane in m_selectedLaneMarkers)
@@ -831,52 +831,52 @@ namespace CSL_Traffic
 			//	laneButtonsSpacing = (5 * screenHeight) / 1080;
 			//}
 
-			//RoadManager.VehicleType vehicleRestrictions = RoadManager.GetVehicleRestrictions(m_selectedLaneMarkers[0].m_lane);
+			//Transit.Framework.Light.VehicleType vehicleRestrictions = RoadManager.GetVehicleRestrictions(m_selectedLaneMarkers[0].m_lane);
 			//bool apply = false;
 			//int i = 1;
-			//if (GUI.Button(new Rect(10, laneButtonsStart, laneButtonsWidth, laneButtonsHeight), "Ambulances: " + ((vehicleRestrictions & RoadManager.VehicleType.Ambulance) == RoadManager.VehicleType.Ambulance ? "On" : "Off")))
+			//if (GUI.Button(new Rect(10, laneButtonsStart, laneButtonsWidth, laneButtonsHeight), "Ambulances: " + ((vehicleRestrictions & Transit.Framework.Light.VehicleType.Ambulance) == Transit.Framework.Light.VehicleType.Ambulance ? "On" : "Off")))
 			//{
-			//	vehicleRestrictions ^= RoadManager.VehicleType.Ambulance;
+			//	vehicleRestrictions ^= Transit.Framework.Light.VehicleType.Ambulance;
 			//	apply = true;
 			//}
-			//if (GUI.Button(new Rect(10, laneButtonsStart + (laneButtonsHeight + laneButtonsSpacing) * i++, laneButtonsWidth, laneButtonsHeight), "Bus: " + ((vehicleRestrictions & RoadManager.VehicleType.Bus) == RoadManager.VehicleType.Bus ? "On" : "Off")))
+			//if (GUI.Button(new Rect(10, laneButtonsStart + (laneButtonsHeight + laneButtonsSpacing) * i++, laneButtonsWidth, laneButtonsHeight), "Bus: " + ((vehicleRestrictions & Transit.Framework.Light.VehicleType.Bus) == Transit.Framework.Light.VehicleType.Bus ? "On" : "Off")))
 			//{
-			//	vehicleRestrictions ^= RoadManager.VehicleType.Bus;
+			//	vehicleRestrictions ^= Transit.Framework.Light.VehicleType.Bus;
 			//	apply = true;
 			//}
-			//if (GUI.Button(new Rect(10, laneButtonsStart + (laneButtonsHeight + laneButtonsSpacing) * i++, laneButtonsWidth, laneButtonsHeight), "Cargo Trucks: " + ((vehicleRestrictions & RoadManager.VehicleType.CargoTruck) == RoadManager.VehicleType.CargoTruck ? "On" : "Off")))
+			//if (GUI.Button(new Rect(10, laneButtonsStart + (laneButtonsHeight + laneButtonsSpacing) * i++, laneButtonsWidth, laneButtonsHeight), "Cargo Trucks: " + ((vehicleRestrictions & Transit.Framework.Light.VehicleType.CargoTruck) == Transit.Framework.Light.VehicleType.CargoTruck ? "On" : "Off")))
 			//{
-			//	vehicleRestrictions ^= RoadManager.VehicleType.CargoTruck;
+			//	vehicleRestrictions ^= Transit.Framework.Light.VehicleType.CargoTruck;
 			//	apply = true;
 			//}
-			//if (GUI.Button(new Rect(10, laneButtonsStart + (laneButtonsHeight + laneButtonsSpacing) * i++, laneButtonsWidth, laneButtonsHeight), "Fire Trucks: " + ((vehicleRestrictions & RoadManager.VehicleType.FireTruck) == RoadManager.VehicleType.FireTruck ? "On" : "Off")))
+			//if (GUI.Button(new Rect(10, laneButtonsStart + (laneButtonsHeight + laneButtonsSpacing) * i++, laneButtonsWidth, laneButtonsHeight), "Fire Trucks: " + ((vehicleRestrictions & Transit.Framework.Light.VehicleType.FireTruck) == Transit.Framework.Light.VehicleType.FireTruck ? "On" : "Off")))
 			//{
-			//	vehicleRestrictions ^= RoadManager.VehicleType.FireTruck;
+			//	vehicleRestrictions ^= Transit.Framework.Light.VehicleType.FireTruck;
 			//	apply = true;
 			//}
-			//if (GUI.Button(new Rect(10, laneButtonsStart + (laneButtonsHeight + laneButtonsSpacing) * i++, laneButtonsWidth, laneButtonsHeight), "Garbage Trucks: " + ((vehicleRestrictions & RoadManager.VehicleType.GarbageTruck) == RoadManager.VehicleType.GarbageTruck ? "On" : "Off")))
+			//if (GUI.Button(new Rect(10, laneButtonsStart + (laneButtonsHeight + laneButtonsSpacing) * i++, laneButtonsWidth, laneButtonsHeight), "Garbage Trucks: " + ((vehicleRestrictions & Transit.Framework.Light.VehicleType.GarbageTruck) == Transit.Framework.Light.VehicleType.GarbageTruck ? "On" : "Off")))
 			//{
-			//	vehicleRestrictions ^= RoadManager.VehicleType.GarbageTruck;
+			//	vehicleRestrictions ^= Transit.Framework.Light.VehicleType.GarbageTruck;
 			//	apply = true;
 			//}
-			//if (GUI.Button(new Rect(10, laneButtonsStart + (laneButtonsHeight + laneButtonsSpacing) * i++, laneButtonsWidth, laneButtonsHeight), "Hearses: " + ((vehicleRestrictions & RoadManager.VehicleType.Hearse) == RoadManager.VehicleType.Hearse ? "On" : "Off")))
+			//if (GUI.Button(new Rect(10, laneButtonsStart + (laneButtonsHeight + laneButtonsSpacing) * i++, laneButtonsWidth, laneButtonsHeight), "Hearses: " + ((vehicleRestrictions & Transit.Framework.Light.VehicleType.Hearse) == Transit.Framework.Light.VehicleType.Hearse ? "On" : "Off")))
 			//{
-			//	vehicleRestrictions ^= RoadManager.VehicleType.Hearse;
+			//	vehicleRestrictions ^= Transit.Framework.Light.VehicleType.Hearse;
 			//	apply = true;
 			//}
-			//if (GUI.Button(new Rect(10, laneButtonsStart + (laneButtonsHeight + laneButtonsSpacing) * i++, laneButtonsWidth, laneButtonsHeight), "Citizens: " + ((vehicleRestrictions & RoadManager.VehicleType.PassengerCar) == RoadManager.VehicleType.PassengerCar ? "On" : "Off")))
+			//if (GUI.Button(new Rect(10, laneButtonsStart + (laneButtonsHeight + laneButtonsSpacing) * i++, laneButtonsWidth, laneButtonsHeight), "Citizens: " + ((vehicleRestrictions & Transit.Framework.Light.VehicleType.PassengerCar) == Transit.Framework.Light.VehicleType.PassengerCar ? "On" : "Off")))
 			//{
-			//	vehicleRestrictions ^= RoadManager.VehicleType.PassengerCar;
+			//	vehicleRestrictions ^= Transit.Framework.Light.VehicleType.PassengerCar;
 			//	apply = true;
 			//}
-			//if (GUI.Button(new Rect(10, laneButtonsStart + (laneButtonsHeight + laneButtonsSpacing) * i++, laneButtonsWidth, laneButtonsHeight), "Police: " + ((vehicleRestrictions & RoadManager.VehicleType.PoliceCar) == RoadManager.VehicleType.PoliceCar ? "On" : "Off")))
+			//if (GUI.Button(new Rect(10, laneButtonsStart + (laneButtonsHeight + laneButtonsSpacing) * i++, laneButtonsWidth, laneButtonsHeight), "Police: " + ((vehicleRestrictions & Transit.Framework.Light.VehicleType.PoliceCar) == Transit.Framework.Light.VehicleType.PoliceCar ? "On" : "Off")))
 			//{
-			//	vehicleRestrictions ^= RoadManager.VehicleType.PoliceCar;
+			//	vehicleRestrictions ^= Transit.Framework.Light.VehicleType.PoliceCar;
 			//	apply = true;
 			//}
-			//if (GUI.Button(new Rect(10, laneButtonsStart + (laneButtonsHeight + laneButtonsSpacing) * i++, laneButtonsWidth, laneButtonsHeight), "Emergency: " + ((vehicleRestrictions & RoadManager.VehicleType.Emergency) == RoadManager.VehicleType.Emergency ? "On" : "Off")))
+			//if (GUI.Button(new Rect(10, laneButtonsStart + (laneButtonsHeight + laneButtonsSpacing) * i++, laneButtonsWidth, laneButtonsHeight), "Emergency: " + ((vehicleRestrictions & Transit.Framework.Light.VehicleType.Emergency) == Transit.Framework.Light.VehicleType.Emergency ? "On" : "Off")))
 			//{
-			//	vehicleRestrictions ^= RoadManager.VehicleType.Emergency;
+			//	vehicleRestrictions ^= Transit.Framework.Light.VehicleType.Emergency;
 			//	apply = true;
 			//}
 
