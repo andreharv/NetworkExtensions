@@ -20,8 +20,7 @@ namespace CSL_Traffic
         static System.Object sm_queueLock = new System.Object();
         static bool sm_localizationInitialized;
         static readonly string[] sm_collectionPrefixes = new string[] { "", "Europe " };
-
-        public static Dictionary<string, TextureInfo> sm_fileIndex = new Dictionary<string, TextureInfo>();
+        
         Dictionary<string, Texture2D> m_customTextures;
         Dictionary<string, VehicleAI> m_replacedAIs;
         bool m_initialized;
@@ -36,13 +35,11 @@ namespace CSL_Traffic
             m_customTextures = new Dictionary<string, Texture2D>();
             m_replacedAIs = new Dictionary<string, VehicleAI>();
             //m_postLoadingActions = new Queue<Action>();
-
-            LoadTextureIndex();
         }
 
         void Start()
         {
-            if ((CSLTraffic.Options & OptionsManager.ModOptions.GhostMode) != OptionsManager.ModOptions.GhostMode)
+            if ((UserMod.Options & OptionsManager.ModOptions.GhostMode) != OptionsManager.ModOptions.GhostMode)
             {
                 ReplacePathManager();
                 ReplaceTransportManager();
@@ -55,7 +52,7 @@ namespace CSL_Traffic
 
             if (level == 6)
             {
-                Logger.LogInfo("Game level was loaded. Options enabled: \n\t" + CSLTraffic.Options);
+                Logger.LogInfo("Game level was loaded. Options enabled: \n\t" + UserMod.Options);
 
                 m_initialized = false;
 
@@ -76,7 +73,7 @@ namespace CSL_Traffic
 
         public void OnLevelUnloading()
         {
-            if ((CSLTraffic.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
+            if ((UserMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
             {
                 for (uint i = 0; i < PrefabCollection<CitizenInfo>.LoadedCount(); i++)
                 {
@@ -100,7 +97,7 @@ namespace CSL_Traffic
                 return;
             }
 
-            if ((CSLTraffic.Options & OptionsManager.ModOptions.GhostMode) == OptionsManager.ModOptions.GhostMode)
+            if ((UserMod.Options & OptionsManager.ModOptions.GhostMode) == OptionsManager.ModOptions.GhostMode)
                 return;
 
             if (!Singleton<LoadingManager>.instance.m_loadingComplete)
@@ -124,7 +121,7 @@ namespace CSL_Traffic
 
             // Checks if CustomPathManager have been replaced by another mod and prints a warning in the log
             // This check is only run in the first two minutes since game is loaded
-            if (!m_incompatibilityWarning && (CSLTraffic.Options & OptionsManager.ModOptions.GhostMode) == OptionsManager.ModOptions.None)
+            if (!m_incompatibilityWarning && (UserMod.Options & OptionsManager.ModOptions.GhostMode) == OptionsManager.ModOptions.None)
             {
                 if ((Time.realtimeSinceStartup - m_gameStartedTime) < 120f)
                 {
@@ -252,7 +249,7 @@ namespace CSL_Traffic
             {
                 try
                 {
-                    if ((CSLTraffic.Options & OptionsManager.ModOptions.GhostMode) != OptionsManager.ModOptions.GhostMode && this.m_level == 6)
+                    if ((UserMod.Options & OptionsManager.ModOptions.GhostMode) != OptionsManager.ModOptions.GhostMode && this.m_level == 6)
                     {
                         ReplaceVehicleAI(healthCareVehicleCollection);
                         ReplaceVehicleAI(publicTansportVehicleCollection);
@@ -272,10 +269,10 @@ namespace CSL_Traffic
 
                         AddTool<CustomTransportTool>(toolController);
 
-                        if ((CSLTraffic.Options & OptionsManager.ModOptions.BetaTestRoadCustomizerTool) == OptionsManager.ModOptions.BetaTestRoadCustomizerTool)
+                        if ((UserMod.Options & OptionsManager.ModOptions.BetaTestRoadCustomizerTool) == OptionsManager.ModOptions.BetaTestRoadCustomizerTool)
                             AddTool<RoadCustomizerTool>(toolController);
 
-                        if ((CSLTraffic.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
+                        if ((UserMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
                         {
                             for (uint i = 0; i < PrefabCollection<CitizenInfo>.LoadedCount(); i++)
                             {
@@ -583,7 +580,7 @@ namespace CSL_Traffic
             vehicle.m_vehicleAI = newAI;
             newAI.m_info = vehicle;
 
-            if ((CSLTraffic.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
+            if ((UserMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
             {
                 SetRealisitcSpeeds(vehicle, true);
             }
@@ -920,17 +917,6 @@ namespace CSL_Traffic
             }
 
             Logger.LogInfo("Localization successfully updated.");
-        }
-
-        void LoadTextureIndex()
-        {
-            TextureInfo[] textureIndex = FileManager.GetTextureIndex();
-            if (textureIndex == null)
-                return;
-
-            sm_fileIndex.Clear();
-            foreach (TextureInfo item in textureIndex)
-                sm_fileIndex.Add(item.name, item);
         }
 
         public class TextureInfo

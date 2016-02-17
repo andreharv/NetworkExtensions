@@ -14,11 +14,6 @@ namespace CSL_Traffic
         public enum Folder
         {
             Textures,
-            Roads,
-            SmallRoad,
-            LargeRoad,
-            PedestrianRoad,
-            Props,
             UI
         }
 
@@ -27,11 +22,6 @@ namespace CSL_Traffic
         static readonly Dictionary<Folder, string> sm_relativeTextureFolderPaths = new Dictionary<Folder, string>()
         {
             {Folder.Textures,       "Textures/"},
-            {Folder.Roads,          "Textures/Roads/"},
-            {Folder.SmallRoad,      "Textures/Roads/SmallRoad/"},
-            {Folder.LargeRoad,      "Textures/Roads/LargeRoad/"},
-            {Folder.PedestrianRoad, "Textures/Roads/PedestrianRoad/"},
-            {Folder.Props,          "Textures/Props/"},
             {Folder.UI,             "Textures/UI/"},
         };
 
@@ -39,7 +29,7 @@ namespace CSL_Traffic
 
         static string FindModPath()
         {
-            PluginManager.PluginInfo plugin = Singleton<PluginManager>.instance.GetPluginsInfo().FirstOrDefault(p => p.name == "Traffic++" || p.publishedFileID.AsUInt64 == CSLTraffic.WORKSHOP_ID);
+            PluginManager.PluginInfo plugin = Singleton<PluginManager>.instance.GetPluginsInfo().FirstOrDefault(p => p.name == "Traffic++" || p.publishedFileID.AsUInt64 == UserMod.WORKSHOP_ID);
             if (plugin != null)
                 return plugin.modPath;
             else
@@ -94,36 +84,6 @@ namespace CSL_Traffic
             string path = MOD_PATH;
             path = Path.Combine(path, relativeFolderPath);
             return Path.Combine(path, fileName);
-        }
-
-        public static Initializer.TextureInfo[] GetTextureIndex()
-        {
-            Initializer.TextureInfo[] textureIndex;
-            string path = GetFilePath("TextureIndex.xml", Folder.Textures);
-            if (path == null)
-                return null;
-
-            try
-            {
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof(Initializer.TextureInfo[]));
-                using (StreamReader streamReader = new StreamReader(path))
-                {
-                    textureIndex = (Initializer.TextureInfo[])xmlSerializer.Deserialize(streamReader);
-                }
-            }
-            catch (FileNotFoundException)
-            {
-                // No texture index
-                Logger.LogInfo("No texture index found.");
-                return null;
-            }
-            catch (Exception e)
-            {
-                Logger.LogInfo("Unexpected " + e.GetType().Name + " loading texture index: " + e.Message + "\n" + e.StackTrace);
-                return null;
-            }
-
-            return textureIndex;
         }
 
         public static void ClearCache()

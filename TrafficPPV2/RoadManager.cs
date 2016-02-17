@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using UnityEngine;
@@ -17,7 +18,7 @@ namespace CSL_Traffic
             
             public override void OnLoadData()
             {
-                if ((CSLTraffic.Options & OptionsManager.ModOptions.BetaTestRoadCustomizerTool) == OptionsManager.ModOptions.None || (CSLTraffic.Options & OptionsManager.ModOptions.GhostMode) == OptionsManager.ModOptions.GhostMode)
+                if ((UserMod.Options & OptionsManager.ModOptions.BetaTestRoadCustomizerTool) == OptionsManager.ModOptions.None || (UserMod.Options & OptionsManager.ModOptions.GhostMode) == OptionsManager.ModOptions.GhostMode)
                     return;
                 
 
@@ -44,7 +45,7 @@ namespace CSL_Traffic
                         if (lane == null)
                             continue;
 
-                        if ((CSLTraffic.Options & OptionsManager.ModOptions.FixCargoTrucksNotSpawning) == OptionsManager.ModOptions.FixCargoTrucksNotSpawning && lane.m_vehicleTypes == (VehicleType.ServiceVehicles | VehicleType.PassengerCar))
+                        if ((UserMod.Options & OptionsManager.ModOptions.FixCargoTrucksNotSpawning) == OptionsManager.ModOptions.FixCargoTrucksNotSpawning && lane.m_vehicleTypes == (VehicleType.ServiceVehicles | VehicleType.PassengerCar))
                             lane.m_vehicleTypes = VehicleType.All;
 
                         lane.UpdateArrows();
@@ -87,7 +88,7 @@ namespace CSL_Traffic
 
             public override void OnSaveData()
             {
-                if ((CSLTraffic.Options & OptionsManager.ModOptions.BetaTestRoadCustomizerTool) == OptionsManager.ModOptions.None || (CSLTraffic.Options & OptionsManager.ModOptions.GhostMode) == OptionsManager.ModOptions.GhostMode)
+                if ((UserMod.Options & OptionsManager.ModOptions.BetaTestRoadCustomizerTool) == OptionsManager.ModOptions.None || (UserMod.Options & OptionsManager.ModOptions.GhostMode) == OptionsManager.ModOptions.GhostMode)
                     return;
 
                 Logger.LogInfo("Saving road data!");
@@ -347,6 +348,19 @@ namespace CSL_Traffic
 
                     laneId = NetManager.instance.m_lanes.m_buffer[laneId].m_nextLane;
                 }
+            }
+        }
+
+        public class LaneSerializationBinder : SerializationBinder
+        {
+            public override Type BindToType(string assemblyName, string typeName)
+            {
+                if (typeName.Contains("Lane"))
+                    return typeof(Lane);
+                if (typeName.Contains("VehicleType"))
+                    return typeof(VehicleType);
+
+                throw new SerializationException("Error on BindToType with type '" + typeName + "' and assembly '" + assemblyName + "'.");
             }
         }
 

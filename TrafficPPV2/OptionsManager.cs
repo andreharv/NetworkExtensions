@@ -15,13 +15,9 @@ namespace CSL_Traffic
         public enum ModOptions : long
         {
             None = 0,
-            AllowTrucksInPedestrianRoads = 1,
-            AllowResidentsInPedestrianRoads = 2,
-            DisableCentralLaneOnPedestrianRoads = 4,
             UseRealisticSpeeds = 8,
             NoDespawn = 16,
             ImprovedAI = 32,
-            DisableCustomRoads = 64,
             //noStopForCrossing = 64,
 
             // bits 55 to 62 reserved for beta tests that won't have their own option
@@ -44,14 +40,9 @@ namespace CSL_Traffic
         //GameObject m_optionsList;
         //GameObject m_checkboxTemplate;
 
-
-        UICheckBox m_allowTrucksCheckBox = null;
-        UICheckBox m_allowResidentsCheckBox = null;
-        UICheckBox m_disableCentralLaneCheckBox = null;
         UICheckBox m_realisticSpeedsCheckBox = null;
         UICheckBox m_noDespawnCheckBox = null;
         UICheckBox m_improvedAICheckBox = null;
-        UICheckBox m_disableCustomRoadsCheckBox = null;
         UICheckBox m_betaTestRoadCustomizerCheckBox = null;
         UICheckBox m_ghostModeCheckBox = null;
         //UICheckBox m_noStopForCrossing = null;
@@ -65,15 +56,11 @@ namespace CSL_Traffic
 
         public void CreateSettings(UIHelperBase helper)
         {
-            UIHelperBase group = helper.AddGroup("Traffic++ Options");
-            m_disableCustomRoadsCheckBox = group.AddCheckbox("Disable Custom Roads", false, IgnoreMe) as UICheckBox;
-            m_allowTrucksCheckBox = group.AddCheckbox("Allow Trucks in Pedestrian Roads", false, IgnoreMe) as UICheckBox;
-            m_allowResidentsCheckBox = group.AddCheckbox("Allow Residents in Pedestrian Roads", false, IgnoreMe) as UICheckBox;
-            m_disableCentralLaneCheckBox = group.AddCheckbox("Disable Central Lane on Pedestrian Roads", false, IgnoreMe) as UICheckBox;
+            UIHelperBase group = helper.AddGroup("Traffic++ V2 Options");
             m_noDespawnCheckBox = group.AddCheckbox("No Despawn by CBeTHaX", false, IgnoreMe) as UICheckBox;
-            m_realisticSpeedsCheckBox = group.AddCheckbox("Beta Test: Realistic Speeds", false, IgnoreMe) as UICheckBox;
-            m_betaTestRoadCustomizerCheckBox = group.AddCheckbox("Beta Test: Road Customizer Tool", false, IgnoreMe) as UICheckBox;
-            m_improvedAICheckBox = group.AddCheckbox("Beta Test: Improved AI", false, IgnoreMe) as UICheckBox;
+            m_realisticSpeedsCheckBox = group.AddCheckbox("Realistic Speeds", false, IgnoreMe) as UICheckBox;
+            m_betaTestRoadCustomizerCheckBox = group.AddCheckbox("Road Customizer Tool", false, IgnoreMe) as UICheckBox;
+            m_improvedAICheckBox = group.AddCheckbox("Improved AI", false, IgnoreMe) as UICheckBox;
             m_ghostModeCheckBox = group.AddCheckbox("Ghost Mode (disables all mod functionality leaving only enough logic to load the map)", false, IgnoreMe) as UICheckBox;
 
             group.AddButton("Save", OnSave);
@@ -246,46 +233,26 @@ namespace CSL_Traffic
             //this.m_optionsPanel.GetComponent<UIPanel>().isVisible = false;
 
             Options options = new Options();
-            CSLTraffic.Options = ModOptions.None;
-            if (this.m_allowTrucksCheckBox.isChecked)
-            {
-                options.allowTrucks = true;
-                CSLTraffic.Options |= ModOptions.AllowTrucksInPedestrianRoads;
-            }
-            if (this.m_allowResidentsCheckBox.isChecked)
-            {
-                options.allowResidents = true;
-                CSLTraffic.Options |= ModOptions.AllowResidentsInPedestrianRoads;
-            }
-            if (this.m_disableCentralLaneCheckBox.isChecked)
-            {
-                options.disableCentralLane = true;
-                CSLTraffic.Options |= ModOptions.DisableCentralLaneOnPedestrianRoads;
-            }
+            UserMod.Options = ModOptions.None;
             if (this.m_realisticSpeedsCheckBox.isChecked)
             {
                 options.realisticSpeeds = true;
-                CSLTraffic.Options |= ModOptions.UseRealisticSpeeds;
+                UserMod.Options |= ModOptions.UseRealisticSpeeds;
             }
             if (this.m_noDespawnCheckBox.isChecked)
             {
                 options.noDespawn = true;
-                CSLTraffic.Options |= ModOptions.NoDespawn;
+                UserMod.Options |= ModOptions.NoDespawn;
             }
             if (this.m_improvedAICheckBox.isChecked)
             {
                 options.improvedAI = true;
-                CSLTraffic.Options |= ModOptions.ImprovedAI;
+                UserMod.Options |= ModOptions.ImprovedAI;
             }
             if (this.m_betaTestRoadCustomizerCheckBox.isChecked)
             {
                 options.betaTestRoadCustomizer = true;
-                CSLTraffic.Options |= ModOptions.BetaTestRoadCustomizerTool;
-            }
-            if (this.m_disableCustomRoadsCheckBox.isChecked)
-            {
-                options.disableCustomRoads = true;
-                CSLTraffic.Options |= ModOptions.DisableCustomRoads;
+                UserMod.Options |= ModOptions.BetaTestRoadCustomizerTool;
             }
             //if (this.m_noStopForCrossing.isChecked)
             //{
@@ -295,7 +262,7 @@ namespace CSL_Traffic
             if (this.m_ghostModeCheckBox.isChecked)
             {
                 options.ghostMode = true;
-                CSLTraffic.Options |= ModOptions.GhostMode;
+                UserMod.Options |= ModOptions.GhostMode;
             }
 
             try
@@ -314,7 +281,7 @@ namespace CSL_Traffic
 
         public void LoadOptions()
         {
-            CSLTraffic.Options = ModOptions.None;
+            UserMod.Options = ModOptions.None;
             Options options = new Options();
             try
             {
@@ -335,52 +302,33 @@ namespace CSL_Traffic
                 return;
             }
 
-            if (this.m_allowTrucksCheckBox != null)
-            {
-                this.m_allowTrucksCheckBox.isChecked = options.allowTrucks;
-                this.m_allowResidentsCheckBox.isChecked = options.allowResidents;
-                this.m_disableCentralLaneCheckBox.isChecked = options.disableCentralLane;
-                this.m_realisticSpeedsCheckBox.isChecked = options.realisticSpeeds;
-                this.m_noDespawnCheckBox.isChecked = options.noDespawn;
-                this.m_improvedAICheckBox.isChecked = options.improvedAI;
-                this.m_betaTestRoadCustomizerCheckBox.isChecked = options.betaTestRoadCustomizer;
-                this.m_disableCustomRoadsCheckBox.isChecked = options.disableCustomRoads;
-                this.m_ghostModeCheckBox.isChecked = options.ghostMode;
-                //this.m_noStopForCrossing.isChecked = options.noStopForCrossing;
-            }
-
-            if (options.allowTrucks)
-                CSLTraffic.Options |= ModOptions.AllowTrucksInPedestrianRoads;
-
-            if (options.allowResidents)
-                CSLTraffic.Options |= ModOptions.AllowResidentsInPedestrianRoads;
-
-            if (options.disableCentralLane)
-                CSLTraffic.Options |= ModOptions.DisableCentralLaneOnPedestrianRoads;
+            this.m_realisticSpeedsCheckBox.isChecked = options.realisticSpeeds;
+            this.m_noDespawnCheckBox.isChecked = options.noDespawn;
+            this.m_improvedAICheckBox.isChecked = options.improvedAI;
+            this.m_betaTestRoadCustomizerCheckBox.isChecked = options.betaTestRoadCustomizer;
+            this.m_ghostModeCheckBox.isChecked = options.ghostMode;
+            //this.m_noStopForCrossing.isChecked = options.noStopForCrossing;
 
             if (options.realisticSpeeds)
-                CSLTraffic.Options |= ModOptions.UseRealisticSpeeds;
+                UserMod.Options |= ModOptions.UseRealisticSpeeds;
 
             if (options.noDespawn)
-                CSLTraffic.Options |= ModOptions.NoDespawn;
+                UserMod.Options |= ModOptions.NoDespawn;
 
             if (options.improvedAI)
-                CSLTraffic.Options |= ModOptions.ImprovedAI;
-
-            if (options.disableCustomRoads)
-                CSLTraffic.Options |= ModOptions.DisableCustomRoads;
+                UserMod.Options |= ModOptions.ImprovedAI;
 
             //if (options.noStopForCrossing)
             //    CSLTraffic.Options |= ModOptions.noStopForCrossing;
 
             if (options.betaTestRoadCustomizer)
-                CSLTraffic.Options |= ModOptions.BetaTestRoadCustomizerTool;
+                UserMod.Options |= ModOptions.BetaTestRoadCustomizerTool;
 
             if (options.ghostMode)
-                CSLTraffic.Options |= ModOptions.GhostMode;
+                UserMod.Options |= ModOptions.GhostMode;
 
             if (options.fixCargoTrucksNotSpawning)
-                CSLTraffic.Options |= ModOptions.FixCargoTrucksNotSpawning;
+                UserMod.Options |= ModOptions.FixCargoTrucksNotSpawning;
         }
 
         //void OnLevelWasLoaded(int level)
