@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
+using Transit.Framework.Light;
 using UnityEngine;
 
 namespace CSL_Traffic
@@ -94,8 +95,8 @@ namespace CSL_Traffic
 		private uint m_pathFindIndex;
 		private NetInfo.LaneType m_laneTypes;
 		private VehicleInfo.VehicleType m_vehicleTypes;
-		private RoadManager.VehicleType m_vehicleType;
-		private Dictionary<uint, RoadManager.VehicleType> m_pathVehicleType;
+		private Transit.Framework.Light.VehicleType m_vehicleType;
+		private Dictionary<uint, Transit.Framework.Light.VehicleType> m_pathVehicleType;
 		private bool m_prioritizeBusLanes;
 
 		private void Awake()
@@ -116,7 +117,7 @@ namespace CSL_Traffic
 			this.m_bufferMin = new int[1024];
 			this.m_bufferMax = new int[1024];
 			this.m_queueLock = new object();
-			this.m_pathVehicleType = new Dictionary<uint, RoadManager.VehicleType>();
+			this.m_pathVehicleType = new Dictionary<uint, Transit.Framework.Light.VehicleType>();
 			this.m_bufferLock = Singleton<PathManager>.instance.m_bufferLock;
 			this.m_pathUnits = Singleton<PathManager>.instance.m_pathUnits;
 			this.m_pathFindThread = new Thread(new ThreadStart(this.PathFindThread));
@@ -144,7 +145,7 @@ namespace CSL_Traffic
 				Monitor.Exit(this.m_queueLock);
 			}
 		}
-		public bool CalculatePath(uint unit, bool skipQueue, RoadManager.VehicleType vehicleType)
+		public bool CalculatePath(uint unit, bool skipQueue, Transit.Framework.Light.VehicleType vehicleType)
 		{
 			if (Singleton<PathManager>.instance.AddPathReference(unit))
 			{
@@ -233,12 +234,13 @@ namespace CSL_Traffic
 			if (!m_pathVehicleType.TryGetValue(unit, out m_vehicleType))
 			{
 				//if ((m_laneTypes & NetInfo.LaneType.Pedestrian) == NetInfo.LaneType.Pedestrian)
-					m_vehicleType = RoadManager.VehicleType.PassengerCar;
+					m_vehicleType = Transit.Framework.Light.VehicleType.PassengerCar;
 				//else
-				//	m_vehicleType = RoadManager.VehicleType.None;
+				//	m_vehicleType = Transit.Framework.Light.VehicleType.None;
 			}
+
 			if ((UserMod.Options & OptionsManager.ModOptions.ImprovedAI) == OptionsManager.ModOptions.ImprovedAI)
-				this.m_prioritizeBusLanes = (this.m_vehicleType & (RoadManager.VehicleType.Bus | RoadManager.VehicleType.Emergency)) != RoadManager.VehicleType.None;
+				this.m_prioritizeBusLanes = (this.m_vehicleType & (Transit.Framework.Light.VehicleType.Bus | Transit.Framework.Light.VehicleType.Emergency)) != Transit.Framework.Light.VehicleType.None;
 			else
 				this.m_prioritizeBusLanes = false;
 

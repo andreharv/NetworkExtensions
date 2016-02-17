@@ -1,6 +1,7 @@
 ﻿using System;
 using Transit.Addon.RoadExtensions.Menus;
 using Transit.Framework;
+using Transit.Framework.Light;
 using Transit.Framework.Texturing;
 using UnityEngine;
 
