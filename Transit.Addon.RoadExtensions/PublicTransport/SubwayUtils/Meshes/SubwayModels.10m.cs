@@ -16,8 +16,9 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.SubwayUtils
             {
                 case NetInfoVersion.Ground:
                     {
-                        var segments0 = info.m_segments[0].ShallowClone();
-                        var segments1 = info.m_segments[1].ShallowClone();
+                        var segments0 = info.m_segments[0];
+                        var segments1 = info.m_segments[1];
+                        var segments2 = info.m_segments[2];
                         var nodes0 = info.m_nodes[0];
                         var nodes1 = info.m_nodes[1];
                         var nodes2 = info.m_nodes[2];
@@ -39,6 +40,11 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.SubwayUtils
                             .SetMeshes
                             (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail.obj");
 
+                        segments2
+                            .SetFlagsDefault()
+                            .SetMeshes
+                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power.obj");
+
                         nodes0
                             .SetMeshes
                             (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Pavement_Node.obj");
@@ -53,7 +59,7 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.SubwayUtils
                         nodes5
                             .SetMeshes
                             (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail_End.obj");
-                        info.m_segments = new[] { segments0, segments1 };
+                        info.m_segments = new[] { segments0, segments1, segments2 };
                         info.m_nodes = new[] { nodes0, nodes1, nodes2, nodes3, nodes4, nodes5 };
 
                         break;
