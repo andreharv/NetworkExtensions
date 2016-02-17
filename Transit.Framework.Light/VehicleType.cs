@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace Transit.Addon.Tools.Core
+// Legacy from T++
+namespace Transit.Framework.Light
 {
-    // Legacy
     [Flags]
-    public enum TAMVehicleType
+    public enum VehicleType
     {
         None = 0,
 

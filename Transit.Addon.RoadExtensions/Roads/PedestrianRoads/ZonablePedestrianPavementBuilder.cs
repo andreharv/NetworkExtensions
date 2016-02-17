@@ -12,7 +12,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
         public string Name { get { return NetInfos.New.ZONEABLE_PED_PAVEMENT; } }
         public string DisplayName { get { return "Zonable Pedestrian Concrete"; } }
         public string Description { get { return "Paved roads are nicer to walk on than gravel."; } }
-        public string ShortDescription { get { return "Parking, zoneable, restricted traffic"; } }
+        public string ShortDescription { get { return "Parking, zoneable, restricted traffic [Traffic++ V2 required]"; } }
 
         public string ThumbnailsPath { get { return @"Roads\PedestrianRoads\thumbnails_pavement.png"; } }
         public string InfoTooltipPath { get { return @"Roads\PedestrianRoads\infotooltip_pavement.png"; } }

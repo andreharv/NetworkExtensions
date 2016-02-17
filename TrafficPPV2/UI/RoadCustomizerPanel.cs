@@ -2,11 +2,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Transit.Addon.Tools.Core;
-using Transit.Addon.Tools.Tools;
 using UnityEngine;
 
-namespace Transit.Addon.Tools.UI
+namespace CSL_Traffic.UI
 {
     class RoadCustomizerPanel : MonoBehaviour
     {
@@ -108,7 +106,7 @@ namespace Transit.Addon.Tools.UI
             RoadCustomizerTool rct = ToolsModifierControl.GetCurrentTool<RoadCustomizerTool>();
             if (rct != null)
             {
-                TAMVehicleType restrictions = rct.GetCurrentVehicleRestrictions();
+                Transit.Framework.Light.VehicleType restrictions = rct.GetCurrentVehicleRestrictions();
                 float speed = rct.GetCurrentSpeedRestrictions()*50f;
                 
                 for (int i = 0; i < this.m_scrollablePanel.components.Count; i++)
@@ -117,7 +115,7 @@ namespace Transit.Addon.Tools.UI
 
                     if (this.m_panelType == Panel.VehicleRestrictions)
                     {
-                        TAMVehicleType vehicleType = (TAMVehicleType)btn.objectUserData;
+                        Transit.Framework.Light.VehicleType vehicleType = (Transit.Framework.Light.VehicleType)btn.objectUserData;
 
                         if ((vehicleType & restrictions) == vehicleType)
                         {
@@ -127,7 +125,7 @@ namespace Transit.Addon.Tools.UI
                             btn.hoveredFgSprite = btn.name + "90%";
                             btn.pressedFgSprite = btn.name + "80%";
                         }
-                        else if (vehicleType == TAMVehicleType.EmergencyVehicles && (restrictions & TAMVehicleType.Emergency) == TAMVehicleType.Emergency)
+                        else if (vehicleType == Transit.Framework.Light.VehicleType.EmergencyVehicles && (restrictions & Transit.Framework.Light.VehicleType.Emergency) == Transit.Framework.Light.VehicleType.Emergency)
                         {
                             btn.stringUserData = "Emergency";
                             btn.hoveredFgSprite = btn.name + "90%";
@@ -179,12 +177,12 @@ namespace Transit.Addon.Tools.UI
             if (m_panelIndex == 0)
             {
                 this.m_panelType = Panel.VehicleRestrictions;
-                this.SpawnEntry("PassengerCar", "PassengerCar", null, null, false, false).objectUserData = TAMVehicleType.PassengerCar;
-                this.SpawnEntry("Bus", "Bus", null, null, false, false).objectUserData = TAMVehicleType.Bus;
-                this.SpawnEntry("CargoTruck", "CargoTruck", null, null, false, false).objectUserData = TAMVehicleType.CargoTruck;
-                this.SpawnEntry("GarbageTruck", "GarbageTruck", null, null, false, false).objectUserData = TAMVehicleType.GarbageTruck;
-                this.SpawnEntry("Hearse", "Hearse", null, null, false, false).objectUserData = TAMVehicleType.Hearse;
-                this.SpawnEntry("Emergency", "Emergency", null, null, false, false).objectUserData = TAMVehicleType.EmergencyVehicles;
+                this.SpawnEntry("PassengerCar", "PassengerCar", null, null, false, false).objectUserData = Transit.Framework.Light.VehicleType.PassengerCar;
+                this.SpawnEntry("Bus", "Bus", null, null, false, false).objectUserData = Transit.Framework.Light.VehicleType.Bus;
+                this.SpawnEntry("CargoTruck", "CargoTruck", null, null, false, false).objectUserData = Transit.Framework.Light.VehicleType.CargoTruck;
+                this.SpawnEntry("GarbageTruck", "GarbageTruck", null, null, false, false).objectUserData = Transit.Framework.Light.VehicleType.GarbageTruck;
+                this.SpawnEntry("Hearse", "Hearse", null, null, false, false).objectUserData = Transit.Framework.Light.VehicleType.Hearse;
+                this.SpawnEntry("Emergency", "Emergency", null, null, false, false).objectUserData = Transit.Framework.Light.VehicleType.EmergencyVehicles;
             }
             //else if (this.m_panelType == Panel.SpeedRestrictions)
             else if (m_panelIndex == 1)
@@ -345,8 +343,8 @@ namespace Transit.Addon.Tools.UI
         {
             if (m_panelType == Panel.VehicleRestrictions)
             {
-                TAMVehicleType vehicleType = (TAMVehicleType)btn.objectUserData;
-                if (vehicleType != TAMVehicleType.None)
+                Transit.Framework.Light.VehicleType vehicleType = (Transit.Framework.Light.VehicleType)btn.objectUserData;
+                if (vehicleType != Transit.Framework.Light.VehicleType.None)
                 {
                     if (String.IsNullOrEmpty(btn.stringUserData))
                     {
@@ -356,14 +354,14 @@ namespace Transit.Addon.Tools.UI
                         btn.hoveredFgSprite = btn.name + "90%";
                         btn.pressedFgSprite = btn.name + "80%";
                     }
-                    else if (vehicleType == TAMVehicleType.EmergencyVehicles && btn.stringUserData != "Emergency")
+                    else if (vehicleType == Transit.Framework.Light.VehicleType.EmergencyVehicles && btn.stringUserData != "Emergency")
                     {
                         btn.stringUserData = "Emergency";
                         StartCoroutine("EmergencyLights", btn);
                     }
                     else
                     {
-                        if (vehicleType == TAMVehicleType.EmergencyVehicles)
+                        if (vehicleType == Transit.Framework.Light.VehicleType.EmergencyVehicles)
                             StopCoroutine("EmergencyLights");
 
                         btn.stringUserData = null;
@@ -377,9 +375,9 @@ namespace Transit.Addon.Tools.UI
                     if (rct != null)
                     {
                         if (btn.stringUserData == "Emergency")
-                            rct.ToggleRestriction(vehicleType ^ TAMVehicleType.Emergency);
-                        else if (vehicleType == TAMVehicleType.EmergencyVehicles && btn.stringUserData == null)
-                            rct.ToggleRestriction(TAMVehicleType.Emergency);
+                            rct.ToggleRestriction(vehicleType ^ Transit.Framework.Light.VehicleType.Emergency);
+                        else if (vehicleType == Transit.Framework.Light.VehicleType.EmergencyVehicles && btn.stringUserData == null)
+                            rct.ToggleRestriction(Transit.Framework.Light.VehicleType.Emergency);
                         else
                             rct.ToggleRestriction(vehicleType);		
                     }

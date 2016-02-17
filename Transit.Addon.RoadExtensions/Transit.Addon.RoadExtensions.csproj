@@ -109,7 +109,6 @@
     <Compile Include="RExModule.Settings.cs" />
     <Compile Include="RExModule.Install.cs" />
     <Compile Include="Roads\Highways\Highway1L\Highway1LBuilder.cs" />
-    <Compile Include="Roads\PedestrianRoads\NetInfoLane.cs" />
     <Compile Include="Roads\PedestrianRoads\ZonablePedestrianBuilderBase.cs" />
     <Compile Include="Roads\PedestrianRoads\ZonablePedestrianGravelBuilder.cs" />
     <Compile Include="Roads\PedestrianRoads\ZonablePedestrianPavementBuilder.cs" />
@@ -1831,7 +1830,6 @@
     <Content Include="SomeRoads\Textures\planning_road_2_lanes.png" />
     <Content Include="SomeRoads\thumbnail_atlas.png" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <None Include="Buildings\BridgePillar.CableStay32m.crp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -2316,6 +2314,10 @@
     <ProjectReference Include="..\Transit.Framework.Extenders\Transit.Framework.Extenders.csproj">
       <Project>{2E44ECA3-D750-4115-B16B-FCA94C49BBA0}</Project>
       <Name>Transit.Framework.Extenders</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Transit.Framework.Light\Transit.Framework.Light.csproj">
+      <Project>{fc275c26-1012-474c-b77b-09e366dbc684}</Project>
+      <Name>Transit.Framework.Light</Name>
     </ProjectReference>
     <ProjectReference Include="..\Transit.Framework.Unsafe\Transit.Framework.Unsafe.csproj">
       <Project>{7DCC08EF-DC85-47A4-BD6F-79FC52C7EF13}</Project>

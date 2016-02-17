@@ -3,7 +3,7 @@ using ColossalFramework.UI;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Transit.Addon.Tools.UI
+namespace CSL_Traffic.UI
 {
     class RoadCustomizerGroupPanel : MonoBehaviour
     {

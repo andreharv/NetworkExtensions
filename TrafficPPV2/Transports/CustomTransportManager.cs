@@ -1,11 +1,11 @@
-﻿using System;
-using System.Reflection;
-using ColossalFramework;
+﻿using ColossalFramework;
 using ColossalFramework.Math;
-using Transit.Framework;
+using CSL_Traffic.Extensions;
+using System;
+using System.Reflection;
 using UnityEngine;
 
-namespace Transit.Addon.Tools
+namespace CSL_Traffic
 {
     class CustomTransportManager : TransportManager
     {
@@ -115,7 +115,8 @@ namespace Transit.Addon.Tools
                                 ushort num3 = (ushort)(i << 6 | j);
                                 if (this.m_lines.m_buffer[(int)num3].m_flags != TransportLine.Flags.None)
                                 {
-                                    if (this.m_lines.m_buffer[(int)num3].UpdatePaths(num3) && this.m_lines.m_buffer[(int)num3].UpdateMeshData(num3))
+                                    if (BusTransportLineAI.UpdatePaths(ref this.m_lines.m_buffer[(int)num3], num3) && BusTransportLineAI.UpdateMeshData(ref this.m_lines.m_buffer[(int)num3], num3))
+                                    //if (this.m_lines.m_buffer[(int)num3].UpdatePaths(num3) && this.m_lines.m_buffer[(int)num3].UpdateMeshData(num3))
                                     {
                                         num2 &= ~(1uL << j);
                                     }

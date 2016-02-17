@@ -1,18 +1,86 @@
-﻿using System.Collections;
+﻿using ColossalFramework.Math;
+using ColossalFramework.UI;
+using CSL_Traffic.UI;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using ColossalFramework.Math;
-using ColossalFramework.UI;
-using Transit.Addon.Tools.Core;
-using Transit.Addon.Tools.Tools.Markers;
-using Transit.Addon.Tools.UI;
 using UnityEngine;
 
-namespace Transit.Addon.Tools.Tools
+namespace CSL_Traffic
 {
 	class RoadCustomizerTool : ToolBase
 	{
-		private const NetNode.Flags CUSTOMIZED_NODE_FLAG = (NetNode.Flags)(1 << 28);
+		const NetNode.Flags CUSTOMIZED_NODE_FLAG = (NetNode.Flags)(1 << 28);
+
+		class NodeLaneMarker
+		{
+			public ushort m_node;
+			public Vector3 m_position;
+			public bool m_isSource;
+			public uint m_lane;
+			public float m_size = 1f;
+			public Color m_color;
+			public FastList<NodeLaneMarker> m_connections = new FastList<NodeLaneMarker>();
+		}
+
+		class SegmentLaneMarker
+		{
+			public uint m_lane;
+			public int m_laneIndex;
+			public float m_size = 1f;
+			public Bezier3 m_bezier;
+			public Bounds[] m_bounds;
+
+			public bool IntersectRay(Ray ray)
+			{
+				if (m_bounds == null)
+					CalculateBounds();
+
+				foreach (Bounds bounds in m_bounds)
+				{
+					if (bounds.IntersectRay(ray))
+						return true;
+				}
+
+				return false;
+			}
+
+			void CalculateBounds()
+			{
+				float angle = Vector3.Angle(m_bezier.a, m_bezier.b);
+				if (Mathf.Approximately(angle, 0f) || Mathf.Approximately(angle, 180f))
+				{
+					angle = Vector3.Angle(m_bezier.b, m_bezier.c);
+					if (Mathf.Approximately(angle, 0f) || Mathf.Approximately(angle, 180f))
+					{
+						angle = Vector3.Angle(m_bezier.c, m_bezier.d);
+						if (Mathf.Approximately(angle, 0f) || Mathf.Approximately(angle, 180f))
+						{
+							// linear bezier
+							Bounds bounds = m_bezier.GetBounds();
+							bounds.Expand(1f);
+							m_bounds = new Bounds[] { bounds };
+							return;
+						}
+					}
+				}                
+				
+				// split bezier in 10 parts to correctly raycast curves
+				Bezier3 bezier;
+				int amount = 10;
+				m_bounds = new Bounds[amount];
+				float size = 1f / amount;
+				for (int i = 0; i < amount; i++)
+				{
+					bezier = m_bezier.Cut(i * size, (i+1) * size);
+					
+					Bounds bounds = bezier.GetBounds();
+					bounds.Expand(1f);
+					m_bounds[i] = bounds;
+				}
+				
+			}
+		}
 
 		struct Segment
 		{
@@ -20,16 +88,16 @@ namespace Transit.Addon.Tools.Tools
 			public ushort m_targetNode;
 		}
 
-		private ushort m_hoveredSegment;
-        private ushort m_hoveredNode;
-        private ushort m_selectedNode;
-        private LaneRoutingMarker m_selectedMarker;
-        private readonly Dictionary<ushort, FastList<LaneRoutingMarker>> m_nodeMarkers = new Dictionary<ushort, FastList<LaneRoutingMarker>>();
-        private readonly Dictionary<ushort, Segment> m_segments = new Dictionary<ushort, Segment>();
-        private readonly Dictionary<int, FastList<SegmentLaneMarker>> m_hoveredLaneMarkers = new Dictionary<int, FastList<SegmentLaneMarker>>();
-        private readonly List<SegmentLaneMarker> m_selectedLaneMarkers = new List<SegmentLaneMarker>();
-        private int m_hoveredLanes;
-        private UIButton m_toolButton;
+		ushort m_hoveredSegment;
+		ushort m_hoveredNode;
+		ushort m_selectedNode;        
+		NodeLaneMarker m_selectedMarker;
+		Dictionary<ushort, FastList<NodeLaneMarker>> m_nodeMarkers = new Dictionary<ushort, FastList<NodeLaneMarker>>();
+		Dictionary<ushort, Segment> m_segments = new Dictionary<ushort, Segment>();
+		Dictionary<int, FastList<SegmentLaneMarker>> m_hoveredLaneMarkers = new Dictionary<int, FastList<SegmentLaneMarker>>();
+		List<SegmentLaneMarker> m_selectedLaneMarkers = new List<SegmentLaneMarker>();
+		int m_hoveredLanes;
+		UIButton m_toolButton;
 
 		protected override void OnToolUpdate()
 		{
@@ -143,27 +211,27 @@ namespace Transit.Addon.Tools.Tools
 
 		void HandleIntersectionRouting()
 		{
-			FastList<LaneRoutingMarker> nodeMarkers;
+			FastList<NodeLaneMarker> nodeMarkers;
 			if (m_nodeMarkers.TryGetValue(m_selectedNode, out nodeMarkers))
 			{
 				Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-				LaneRoutingMarker hoveredMarker = null;
+				NodeLaneMarker hoveredMarker = null;
 				Bounds bounds = new Bounds(Vector3.zero, Vector3.one);
 				for (int i = 0; i < nodeMarkers.m_size; i++)
 				{
-					LaneRoutingMarker marker = nodeMarkers.m_buffer[i];
+					NodeLaneMarker marker = nodeMarkers.m_buffer[i];
 
 					if (!IsActive(marker))
 						continue;
 
-					bounds.center = marker.Position;
+					bounds.center = marker.m_position;
 					if (bounds.IntersectRay(mouseRay))
 					{
 						hoveredMarker = marker;
-                        marker.Select();
+						marker.m_size = 2f;
 					}
 					else
-                        marker.Unselect();
+						marker.m_size = 1f;
 				}
 
 				if (hoveredMarker != null && Input.GetMouseButtonUp(0))
@@ -172,13 +240,13 @@ namespace Transit.Addon.Tools.Tools
 					{
 						m_selectedMarker = hoveredMarker;
 					}
-					else if (LanesManager.instance.RemoveLaneConnection(m_selectedMarker.LaneId, hoveredMarker.LaneId))
+					else if (RoadManager.RemoveLaneConnection(m_selectedMarker.m_lane, hoveredMarker.m_lane))
 					{
-						m_selectedMarker.Connections.Remove(hoveredMarker);
+						m_selectedMarker.m_connections.Remove(hoveredMarker);
 					}
-					else if (LanesManager.instance.AddLaneConnection(m_selectedMarker.LaneId, hoveredMarker.LaneId))
+					else if (RoadManager.AddLaneConnection(m_selectedMarker.m_lane, hoveredMarker.m_lane))
 					{
-						m_selectedMarker.Connections.Add(hoveredMarker);
+						m_selectedMarker.m_connections.Add(hoveredMarker);
 					}
 				}
 			}
@@ -277,11 +345,11 @@ namespace Transit.Addon.Tools.Tools
 			//	OnEndLaneCustomization();
 		}
 
-		bool IsActive(LaneRoutingMarker marker)
+		bool IsActive(NodeLaneMarker marker)
 		{
-			if (m_selectedMarker != null && (marker.IsSource || NetManager.instance.m_lanes.m_buffer[m_selectedMarker.LaneId].m_segment == NetManager.instance.m_lanes.m_buffer[marker.LaneId].m_segment))
+			if (m_selectedMarker != null && (marker.m_isSource || NetManager.instance.m_lanes.m_buffer[m_selectedMarker.m_lane].m_segment == NetManager.instance.m_lanes.m_buffer[marker.m_lane].m_segment))
 				return false;
-			else if (m_selectedMarker == null && !marker.IsSource)
+			else if (m_selectedMarker == null && !marker.m_isSource)
 				return false;
 
 			return true;
@@ -294,67 +362,59 @@ namespace Transit.Addon.Tools.Tools
 
 			if (!m_nodeMarkers.ContainsKey(nodeId) || (NetManager.instance.m_nodes.m_buffer[nodeId].m_flags & CUSTOMIZED_NODE_FLAG) != CUSTOMIZED_NODE_FLAG || overwrite)
 			{
-                m_nodeMarkers[nodeId] = CreateNodeMarkers(nodeId);
+				FastList<NodeLaneMarker> nodeMarkers = new FastList<NodeLaneMarker>();
+				SetNodeMarkers(nodeId, nodeMarkers);
+				m_nodeMarkers[nodeId] = nodeMarkers;
 
 				NetManager.instance.m_nodes.m_buffer[nodeId].m_flags |= CUSTOMIZED_NODE_FLAG;
 			}
 		}
 
-        private static FastList<LaneRoutingMarker> CreateNodeMarkers(ushort nodeId)
+		void SetNodeMarkers(ushort nodeId, FastList<NodeLaneMarker> nodeMarkers)
 		{
-            var markers = new FastList<LaneRoutingMarker>();
-
-            var allNodes = NetManager.instance.m_nodes;
-            var allSegments = NetManager.instance.m_segments;
-            var allLanes = NetManager.instance.m_lanes;
-
-            var node = allNodes.m_buffer[nodeId];
-			var nodeOffsetMultiplier = node.CountSegments() <= 2 ? 3 : 1;
-			var segmentId = node.m_segment0;
-
-			for (var i = 0; i < 8 && segmentId != 0; i++)
+			NetNode node = NetManager.instance.m_nodes.m_buffer[nodeId];
+			int offsetMultiplier = node.CountSegments() <= 2 ? 3 : 1;
+			ushort segmentId = node.m_segment0;
+			for (int i = 0; i < 8 && segmentId != 0; i++)
 			{
-                var segment = allSegments.m_buffer[segmentId];
-                var segmentOffset = segment.FindDirection(segmentId, nodeId) * nodeOffsetMultiplier;
-				var isEndNode = segment.m_endNode == nodeId;
-			    var netInfo = segment.Info;
-                var netInfoLanes = netInfo.m_lanes;
-				var laneId = segment.m_lanes;
-
-				for (var j = 0; j < netInfoLanes.Length && laneId != 0; j++)
+				NetSegment segment = NetManager.instance.m_segments.m_buffer[segmentId];
+				bool isEndNode = segment.m_endNode == nodeId;
+				Vector3 offset = segment.FindDirection(segmentId, nodeId) * offsetMultiplier;
+				NetInfo.Lane[] lanes = segment.Info.m_lanes;
+				uint laneId = segment.m_lanes;
+				for (int j = 0; j < lanes.Length && laneId != 0; j++)
 				{
-				    var lane = netInfoLanes[j];
-
-                    if ((lane.m_laneType & NetInfo.LaneType.Vehicle) == NetInfo.LaneType.Vehicle)
+                    //if ((lanes[j].m_laneType & (NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle)) != NetInfo.LaneType.None)
+                    if ((lanes[j].m_laneType & NetInfo.LaneType.Vehicle) == NetInfo.LaneType.Vehicle)
                     {
-                        var lanePos = Vector3.zero;
-                        var laneDir = 
-                            ((segment.m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None) ? 
-                            lane.m_finalDirection : 
-                            NetInfo.InvertDirection(lane.m_finalDirection);
+						Vector3 pos = Vector3.zero;
+						NetInfo.Direction laneDir = ((segment.m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None) ? lanes[j].m_finalDirection : NetInfo.InvertDirection(lanes[j].m_finalDirection);
 
-						var isSource = false;
+						bool isSource = false;
 						if (isEndNode)
 						{
 							if ((laneDir & (NetInfo.Direction.Forward | NetInfo.Direction.Avoid)) == NetInfo.Direction.Forward)
 								isSource = true;
-                            lanePos = allLanes.m_buffer[laneId].m_bezier.d;
+							pos = NetManager.instance.m_lanes.m_buffer[laneId].m_bezier.d;
 						}
 						else
 						{
 							if ((laneDir & (NetInfo.Direction.Backward | NetInfo.Direction.Avoid)) == NetInfo.Direction.Backward)
 								isSource = true;
-                            lanePos = allLanes.m_buffer[laneId].m_bezier.a;
+							pos = NetManager.instance.m_lanes.m_buffer[laneId].m_bezier.a;
 						}
 
-                        markers.Add(new LaneRoutingMarker(
-                            laneId,
-                            lanePos + segmentOffset, 
-                            isSource, 
-                            colors[markers.m_size]));
+						nodeMarkers.Add(new NodeLaneMarker()
+						{
+							m_lane = laneId,
+							m_node = nodeId,
+							m_position = pos + offset,
+							m_color = colors[nodeMarkers.m_size],
+							m_isSource = isSource,
+						});
 					}
 
-                    laneId = allLanes.m_buffer[laneId].m_nextLane;   
+					laneId = NetManager.instance.m_lanes.m_buffer[laneId].m_nextLane;   
 				}
 
 				segmentId = segment.GetRightSegment(nodeId);
@@ -362,26 +422,24 @@ namespace Transit.Addon.Tools.Tools
 					segmentId = 0;
 			}
 
-			for (int i = 0; i < markers.m_size; i++)
+			for (int i = 0; i < nodeMarkers.m_size; i++)
 			{
-				if (!markers.m_buffer[i].IsSource)
+				if (!nodeMarkers.m_buffer[i].m_isSource)
 					continue;
 
-				uint[] connections = LanesManager.instance.GetLaneConnections(markers.m_buffer[i].LaneId);
+				uint[] connections = RoadManager.GetLaneConnections(nodeMarkers.m_buffer[i].m_lane);
 				if (connections == null || connections.Length == 0)
 					continue;
 
-				for (int j = 0; j < markers.m_size; j++)
+				for (int j = 0; j < nodeMarkers.m_size; j++)
 				{
-					if (markers.m_buffer[j].IsSource)
+					if (nodeMarkers.m_buffer[j].m_isSource)
 						continue;
 
-					if (connections.Contains(markers.m_buffer[j].LaneId))
-						markers.m_buffer[i].Connections.Add(markers.m_buffer[j]);
+					if (connections.Contains(nodeMarkers.m_buffer[j].m_lane))
+						nodeMarkers.m_buffer[i].m_connections.Add(nodeMarkers.m_buffer[j]);
 				}
 			}
-
-            return markers;
 		}
 
 		void SetLaneMarkers()
@@ -495,16 +553,16 @@ namespace Transit.Addon.Tools.Tools
 
 			if (m_selectedNode != 0)
 			{
-				FastList<LaneRoutingMarker> nodeMarkers;
+				FastList<NodeLaneMarker> nodeMarkers;
 				if (m_nodeMarkers.TryGetValue(m_selectedNode, out nodeMarkers))
 				{
 					Vector3 nodePos = NetManager.instance.m_nodes.m_buffer[m_selectedNode].m_position;
 					for (int i = 0; i < nodeMarkers.m_size; i++)
 					{
-						LaneRoutingMarker laneMarker = nodeMarkers.m_buffer[i];
+						NodeLaneMarker laneMarker = nodeMarkers.m_buffer[i];
 
-						for (int j = 0; j < laneMarker.Connections.m_size; j++)
-							RenderLane(cameraInfo, laneMarker.Position, laneMarker.Connections.m_buffer[j].Position, nodePos, laneMarker.Color);
+						for (int j = 0; j < laneMarker.m_connections.m_size; j++)
+							RenderLane(cameraInfo, laneMarker.m_position, laneMarker.m_connections.m_buffer[j].m_position, nodePos, laneMarker.m_color);
 
 						if (m_selectedMarker != laneMarker && !IsActive(laneMarker))
 							continue;
@@ -514,12 +572,12 @@ namespace Transit.Addon.Tools.Tools
 							RaycastOutput output;
 							if (RayCastSegmentAndNode(out output))
 							{
-								RenderLane(cameraInfo, m_selectedMarker.Position, output.m_hitPos, nodePos, m_selectedMarker.Color);
-								m_selectedMarker.Select();
+								RenderLane(cameraInfo, m_selectedMarker.m_position, output.m_hitPos, nodePos, m_selectedMarker.m_color);
+								m_selectedMarker.m_size = 2f;
 							}
 						}
 
-						RenderManager.instance.OverlayEffect.DrawCircle(cameraInfo, laneMarker.Color, laneMarker.Position, laneMarker.Size, laneMarker.Position.y - 1f, laneMarker.Position.y + 1f, true, true);
+						RenderManager.instance.OverlayEffect.DrawCircle(cameraInfo, laneMarker.m_color, laneMarker.m_position, laneMarker.m_size, laneMarker.m_position.y - 1f, laneMarker.m_position.y + 1f, true, true);
 					}
 				}
 			}
@@ -549,18 +607,18 @@ namespace Transit.Addon.Tools.Tools
 				if (node == m_selectedNode || (NetManager.instance.m_nodes.m_buffer[node].m_flags & CUSTOMIZED_NODE_FLAG) != CUSTOMIZED_NODE_FLAG)
 					continue;
 
-				FastList<LaneRoutingMarker> list = m_nodeMarkers[node];
+				FastList<NodeLaneMarker> list = m_nodeMarkers[node];
 				Vector3 nodePos = NetManager.instance.m_nodes.m_buffer[node].m_position;
 				for (int i = 0; i < list.m_size; i++)
 				{
-					LaneRoutingMarker laneMarker = list.m_buffer[i];
-					Color color = laneMarker.Color;
+					NodeLaneMarker laneMarker = list.m_buffer[i];
+					Color color = laneMarker.m_color;
 					color.a = 0.75f;
 
-					for (int j = 0; j < laneMarker.Connections.m_size; j++)
+					for (int j = 0; j < laneMarker.m_connections.m_size; j++)
 					{
-						if (((NetLane.Flags)NetManager.instance.m_lanes.m_buffer[laneMarker.Connections.m_buffer[j].LaneId].m_flags & NetLane.Flags.Created) == NetLane.Flags.Created)
-							RenderLane(cameraInfo, laneMarker.Position, laneMarker.Connections.m_buffer[j].Position, nodePos, color);                            
+						if (((NetLane.Flags)NetManager.instance.m_lanes.m_buffer[laneMarker.m_connections.m_buffer[j].m_lane].m_flags & NetLane.Flags.Created) == NetLane.Flags.Created)
+							RenderLane(cameraInfo, laneMarker.m_position, laneMarker.m_connections.m_buffer[j].m_position, nodePos, color);                            
 					}
 						
 				}
@@ -579,15 +637,15 @@ namespace Transit.Addon.Tools.Tools
 			RenderLane(cameraInfo, start, end, middlePoint, color, size);
 		}
 
-        void RenderLane(RenderManager.CameraInfo cameraInfo, Vector3 start, Vector3 end, Vector3 middlePoint, Color color, float size = 0.1f)
-        {
-            Bezier3 bezier;
-            bezier.a = start;
-            bezier.d = end;
-            NetSegment.CalculateMiddlePoints(bezier.a, (middlePoint - bezier.a).normalized, bezier.d, (middlePoint - bezier.d).normalized, false, false, out bezier.b, out bezier.c);
+		void RenderLane(RenderManager.CameraInfo cameraInfo, Vector3 start, Vector3 end, Vector3 middlePoint, Color color, float size = 0.1f)
+		{
+			Bezier3 bezier;
+			bezier.a = start;
+			bezier.d = end;
+			NetSegment.CalculateMiddlePoints(bezier.a, (middlePoint - bezier.a).normalized, bezier.d, (middlePoint - bezier.d).normalized, false, false, out bezier.b, out bezier.c);
 
-            RenderManager.instance.OverlayEffect.DrawBezier(cameraInfo, color, bezier, size, 0, 0, Mathf.Min(bezier.a.y, bezier.d.y) - 1f, Mathf.Max(bezier.a.y, bezier.d.y) + 1f, true, true);
-        }
+			RenderManager.instance.OverlayEffect.DrawBezier(cameraInfo, color, bezier, size, 0, 0, Mathf.Min(bezier.a.y, bezier.d.y) - 1f, Mathf.Max(bezier.a.y, bezier.d.y) + 1f, true, true);
+		}
 
 		bool RayCastSegmentAndNode(out RaycastOutput output)
 		{
@@ -627,24 +685,24 @@ namespace Transit.Addon.Tools.Tools
 
 		bool AnyLaneSelected { get { return m_selectedLaneMarkers.Count > 0; } }
 
-		public TAMVehicleType GetCurrentVehicleRestrictions()
+		public Transit.Framework.Light.VehicleType GetCurrentVehicleRestrictions()
 		{
 			if (!AnyLaneSelected)
-				return TAMVehicleType.None;
+				return Transit.Framework.Light.VehicleType.None;
 
-			return LanesManager.instance.GetVehicleRestrictions(m_selectedLaneMarkers[0].m_lane);
+			return RoadManager.GetVehicleRestrictions(m_selectedLaneMarkers[0].m_lane);
 		}
 
-		public TAMVehicleType ToggleRestriction(TAMVehicleType vehicleType)
+		public Transit.Framework.Light.VehicleType ToggleRestriction(Transit.Framework.Light.VehicleType vehicleType)
 		{
 			if (!AnyLaneSelected)
-				return TAMVehicleType.None;
+				return Transit.Framework.Light.VehicleType.None;
 
-			TAMVehicleType vehicleRestrictions = LanesManager.instance.GetVehicleRestrictions(m_selectedLaneMarkers[0].m_lane);
+			Transit.Framework.Light.VehicleType vehicleRestrictions = RoadManager.GetVehicleRestrictions(m_selectedLaneMarkers[0].m_lane);
 			vehicleRestrictions ^= vehicleType;
 
 			foreach (SegmentLaneMarker lane in m_selectedLaneMarkers)
-				LanesManager.instance.SetVehicleRestrictions(lane.m_lane, vehicleRestrictions);
+				RoadManager.SetVehicleRestrictions(lane.m_lane, vehicleRestrictions);
 
 			return vehicleRestrictions;
 		}
@@ -654,7 +712,7 @@ namespace Transit.Addon.Tools.Tools
 			if (!AnyLaneSelected)
 				return -1f;
 
-			return LanesManager.instance.GetLaneSpeed(m_selectedLaneMarkers[0].m_lane);
+			return RoadManager.GetLaneSpeed(m_selectedLaneMarkers[0].m_lane);
 		}
 
 		public void SetSpeedRestrictions(int speed)
@@ -663,7 +721,7 @@ namespace Transit.Addon.Tools.Tools
 				return;
 
 			foreach (SegmentLaneMarker lane in m_selectedLaneMarkers)
-				LanesManager.instance.SetLaneSpeed(lane.m_lane, speed);
+				RoadManager.SetLaneSpeed(lane.m_lane, speed);
 		}
 
 		#endregion
@@ -773,52 +831,52 @@ namespace Transit.Addon.Tools.Tools
 			//	laneButtonsSpacing = (5 * screenHeight) / 1080;
 			//}
 
-			//RoadManager.VehicleType vehicleRestrictions = RoadManager.GetVehicleRestrictions(m_selectedLaneMarkers[0].m_lane);
+			//Transit.Framework.Light.VehicleType vehicleRestrictions = RoadManager.GetVehicleRestrictions(m_selectedLaneMarkers[0].m_lane);
 			//bool apply = false;
 			//int i = 1;
-			//if (GUI.Button(new Rect(10, laneButtonsStart, laneButtonsWidth, laneButtonsHeight), "Ambulances: " + ((vehicleRestrictions & RoadManager.VehicleType.Ambulance) == RoadManager.VehicleType.Ambulance ? "On" : "Off")))
+			//if (GUI.Button(new Rect(10, laneButtonsStart, laneButtonsWidth, laneButtonsHeight), "Ambulances: " + ((vehicleRestrictions & Transit.Framework.Light.VehicleType.Ambulance) == Transit.Framework.Light.VehicleType.Ambulance ? "On" : "Off")))
 			//{
-			//	vehicleRestrictions ^= RoadManager.VehicleType.Ambulance;
+			//	vehicleRestrictions ^= Transit.Framework.Light.VehicleType.Ambulance;
 			//	apply = true;
 			//}
-			//if (GUI.Button(new Rect(10, laneButtonsStart + (laneButtonsHeight + laneButtonsSpacing) * i++, laneButtonsWidth, laneButtonsHeight), "Bus: " + ((vehicleRestrictions & RoadManager.VehicleType.Bus) == RoadManager.VehicleType.Bus ? "On" : "Off")))
+			//if (GUI.Button(new Rect(10, laneButtonsStart + (laneButtonsHeight + laneButtonsSpacing) * i++, laneButtonsWidth, laneButtonsHeight), "Bus: " + ((vehicleRestrictions & Transit.Framework.Light.VehicleType.Bus) == Transit.Framework.Light.VehicleType.Bus ? "On" : "Off")))
 			//{
-			//	vehicleRestrictions ^= RoadManager.VehicleType.Bus;
+			//	vehicleRestrictions ^= Transit.Framework.Light.VehicleType.Bus;
 			//	apply = true;
 			//}
-			//if (GUI.Button(new Rect(10, laneButtonsStart + (laneButtonsHeight + laneButtonsSpacing) * i++, laneButtonsWidth, laneButtonsHeight), "Cargo Trucks: " + ((vehicleRestrictions & RoadManager.VehicleType.CargoTruck) == RoadManager.VehicleType.CargoTruck ? "On" : "Off")))
+			//if (GUI.Button(new Rect(10, laneButtonsStart + (laneButtonsHeight + laneButtonsSpacing) * i++, laneButtonsWidth, laneButtonsHeight), "Cargo Trucks: " + ((vehicleRestrictions & Transit.Framework.Light.VehicleType.CargoTruck) == Transit.Framework.Light.VehicleType.CargoTruck ? "On" : "Off")))
 			//{
-			//	vehicleRestrictions ^= RoadManager.VehicleType.CargoTruck;
+			//	vehicleRestrictions ^= Transit.Framework.Light.VehicleType.CargoTruck;
 			//	apply = true;
 			//}
-			//if (GUI.Button(new Rect(10, laneButtonsStart + (laneButtonsHeight + laneButtonsSpacing) * i++, laneButtonsWidth, laneButtonsHeight), "Fire Trucks: " + ((vehicleRestrictions & RoadManager.VehicleType.FireTruck) == RoadManager.VehicleType.FireTruck ? "On" : "Off")))
+			//if (GUI.Button(new Rect(10, laneButtonsStart + (laneButtonsHeight + laneButtonsSpacing) * i++, laneButtonsWidth, laneButtonsHeight), "Fire Trucks: " + ((vehicleRestrictions & Transit.Framework.Light.VehicleType.FireTruck) == Transit.Framework.Light.VehicleType.FireTruck ? "On" : "Off")))
 			//{
-			//	vehicleRestrictions ^= RoadManager.VehicleType.FireTruck;
+			//	vehicleRestrictions ^= Transit.Framework.Light.VehicleType.FireTruck;
 			//	apply = true;
 			//}
-			//if (GUI.Button(new Rect(10, laneButtonsStart + (laneButtonsHeight + laneButtonsSpacing) * i++, laneButtonsWidth, laneButtonsHeight), "Garbage Trucks: " + ((vehicleRestrictions & RoadManager.VehicleType.GarbageTruck) == RoadManager.VehicleType.GarbageTruck ? "On" : "Off")))
+			//if (GUI.Button(new Rect(10, laneButtonsStart + (laneButtonsHeight + laneButtonsSpacing) * i++, laneButtonsWidth, laneButtonsHeight), "Garbage Trucks: " + ((vehicleRestrictions & Transit.Framework.Light.VehicleType.GarbageTruck) == Transit.Framework.Light.VehicleType.GarbageTruck ? "On" : "Off")))
 			//{
-			//	vehicleRestrictions ^= RoadManager.VehicleType.GarbageTruck;
+			//	vehicleRestrictions ^= Transit.Framework.Light.VehicleType.GarbageTruck;
 			//	apply = true;
 			//}
-			//if (GUI.Button(new Rect(10, laneButtonsStart + (laneButtonsHeight + laneButtonsSpacing) * i++, laneButtonsWidth, laneButtonsHeight), "Hearses: " + ((vehicleRestrictions & RoadManager.VehicleType.Hearse) == RoadManager.VehicleType.Hearse ? "On" : "Off")))
+			//if (GUI.Button(new Rect(10, laneButtonsStart + (laneButtonsHeight + laneButtonsSpacing) * i++, laneButtonsWidth, laneButtonsHeight), "Hearses: " + ((vehicleRestrictions & Transit.Framework.Light.VehicleType.Hearse) == Transit.Framework.Light.VehicleType.Hearse ? "On" : "Off")))
 			//{
-			//	vehicleRestrictions ^= RoadManager.VehicleType.Hearse;
+			//	vehicleRestrictions ^= Transit.Framework.Light.VehicleType.Hearse;
 			//	apply = true;
 			//}
-			//if (GUI.Button(new Rect(10, laneButtonsStart + (laneButtonsHeight + laneButtonsSpacing) * i++, laneButtonsWidth, laneButtonsHeight), "Citizens: " + ((vehicleRestrictions & RoadManager.VehicleType.PassengerCar) == RoadManager.VehicleType.PassengerCar ? "On" : "Off")))
+			//if (GUI.Button(new Rect(10, laneButtonsStart + (laneButtonsHeight + laneButtonsSpacing) * i++, laneButtonsWidth, laneButtonsHeight), "Citizens: " + ((vehicleRestrictions & Transit.Framework.Light.VehicleType.PassengerCar) == Transit.Framework.Light.VehicleType.PassengerCar ? "On" : "Off")))
 			//{
-			//	vehicleRestrictions ^= RoadManager.VehicleType.PassengerCar;
+			//	vehicleRestrictions ^= Transit.Framework.Light.VehicleType.PassengerCar;
 			//	apply = true;
 			//}
-			//if (GUI.Button(new Rect(10, laneButtonsStart + (laneButtonsHeight + laneButtonsSpacing) * i++, laneButtonsWidth, laneButtonsHeight), "Police: " + ((vehicleRestrictions & RoadManager.VehicleType.PoliceCar) == RoadManager.VehicleType.PoliceCar ? "On" : "Off")))
+			//if (GUI.Button(new Rect(10, laneButtonsStart + (laneButtonsHeight + laneButtonsSpacing) * i++, laneButtonsWidth, laneButtonsHeight), "Police: " + ((vehicleRestrictions & Transit.Framework.Light.VehicleType.PoliceCar) == Transit.Framework.Light.VehicleType.PoliceCar ? "On" : "Off")))
 			//{
-			//	vehicleRestrictions ^= RoadManager.VehicleType.PoliceCar;
+			//	vehicleRestrictions ^= Transit.Framework.Light.VehicleType.PoliceCar;
 			//	apply = true;
 			//}
-			//if (GUI.Button(new Rect(10, laneButtonsStart + (laneButtonsHeight + laneButtonsSpacing) * i++, laneButtonsWidth, laneButtonsHeight), "Emergency: " + ((vehicleRestrictions & RoadManager.VehicleType.Emergency) == RoadManager.VehicleType.Emergency ? "On" : "Off")))
+			//if (GUI.Button(new Rect(10, laneButtonsStart + (laneButtonsHeight + laneButtonsSpacing) * i++, laneButtonsWidth, laneButtonsHeight), "Emergency: " + ((vehicleRestrictions & Transit.Framework.Light.VehicleType.Emergency) == Transit.Framework.Light.VehicleType.Emergency ? "On" : "Off")))
 			//{
-			//	vehicleRestrictions ^= RoadManager.VehicleType.Emergency;
+			//	vehicleRestrictions ^= Transit.Framework.Light.VehicleType.Emergency;
 			//	apply = true;
 			//}
 

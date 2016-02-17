@@ -1,29 +1,42 @@
-﻿using System;
+﻿using ColossalFramework;
+using ColossalFramework.Plugins;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using Transit.Framework;
+using System.Linq;
+using System.Xml.Serialization;
+using UnityEngine;
 
-namespace Transit.Addon.Tools
+namespace CSL_Traffic
 {
     static class FileManager
     {
         public enum Folder
         {
             Textures,
-            Roads,
-            SmallRoad,
-            LargeRoad,
-            PedestrianRoad,
-            Props,
             UI
         }
 
+        static readonly string MOD_PATH = FindModPath(); 
+
         static readonly Dictionary<Folder, string> sm_relativeTextureFolderPaths = new Dictionary<Folder, string>()
         {
-            {Folder.UI, "Textures/UI/"},
+            {Folder.Textures,       "Textures/"},
+            {Folder.UI,             "Textures/UI/"},
         };
 
         static Dictionary<string, byte[]> sm_cachedFiles = new Dictionary<string, byte[]>();
+
+        static string FindModPath()
+        {
+            PluginManager.PluginInfo plugin = Singleton<PluginManager>.instance.GetPluginsInfo().FirstOrDefault(p => p.name == "Traffic++" || p.publishedFileID.AsUInt64 == UserMod.WORKSHOP_ID);
+            if (plugin != null)
+                return plugin.modPath;
+            else
+                Logger.LogInfo("Cannot find plugin path.");
+
+            return null;
+        }
 
         public static bool GetTextureBytes(string fileName, Folder folder, out byte[] bytes)
         {
@@ -61,15 +74,14 @@ namespace Transit.Addon.Tools
 
         public static string GetFilePath(string fileName, Folder folder)
         {
-            var assetPath = ToolModule.InternalAssetPath;
-            if (assetPath == null || assetPath == Assets.PATH_NOT_FOUND)
+            if (MOD_PATH == null)
                 return null;
             
             string relativeFolderPath;
             if (!sm_relativeTextureFolderPaths.TryGetValue(folder, out relativeFolderPath))
                 return null;
 
-            string path = assetPath;
+            string path = MOD_PATH;
             path = Path.Combine(path, relativeFolderPath);
             return Path.Combine(path, fileName);
         }

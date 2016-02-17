@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4499042E-DCD1-4F9F-A3C8-4830108169CD}</ProjectGuid>
+    <ProjectGuid>{FC275C26-1012-474C-B77B-09E366DBC684}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Transit.Addon.Tools</RootNamespace>
-    <AssemblyName>Transit.Addon.Tools</AssemblyName>
+    <RootNamespace>Transit.Framework.Light</RootNamespace>
+    <AssemblyName>Transit.Framework.Light</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -34,43 +34,17 @@
       <HintPath>..\References\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="ColossalManaged">
-      <HintPath>..\References\ColossalManaged.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="ICities">
-      <HintPath>..\References\ICities.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
       <HintPath>..\References\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NetInfoLane.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ToolModule.cs" />
-    <Compile Include="ToolModule.Install.cs" />
-    <Compile Include="ToolModule.Settings.cs" />
-    <Compile Include="Zoning\RoadZoneModifierTool.cs" />
+    <Compile Include="VehicleType.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Transit.Addon\Transit.Addon.csproj">
-      <Project>{80c47696-4d41-4bb6-9cae-c477fe528adf}</Project>
-      <Name>Transit.Addon</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Transit.Framework.Extenders\Transit.Framework.Extenders.csproj">
-      <Project>{2E44ECA3-D750-4115-B16B-FCA94C49BBA0}</Project>
-      <Name>Transit.Framework.Extenders</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Transit.Framework\Transit.Framework.csproj">
-      <Project>{8891467E-C88E-46B0-96F9-4413DF6DC205}</Project>
-      <Name>Transit.Framework</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

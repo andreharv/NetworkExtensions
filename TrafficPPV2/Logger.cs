@@ -2,11 +2,11 @@
 using ColossalFramework.Plugins;
 using UnityEngine;
 
-namespace Transit.Addon.Tools
+namespace CSL_Traffic
 {
     static class Logger
     {
-        private static readonly string Prefix = "Traffic++: ";
+        private static readonly string Prefix = "Traffic++ V2: ";
         //private static readonly bool inGameDebug = Environment.OSVersion.Platform != PlatformID.Unix;
 
         public static void LogInfo(string message, params object[] args)
