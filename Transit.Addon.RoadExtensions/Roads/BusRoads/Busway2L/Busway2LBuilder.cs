@@ -4,6 +4,7 @@ using Transit.Addon.RoadExtensions.Compatibility;
 using Transit.Addon.RoadExtensions.Menus;
 using Transit.Framework;
 using Transit.Framework.Builders;
+using Transit.Framework.Light;
 using Transit.Framework.Texturing;
 
 namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L
@@ -14,7 +15,7 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L
         public string DisplayName { get { return "Busway"; } }
         public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_2L; } }
         public int Order { get { return 110; } }
-        public string ShortDescription { get { return "No parking, not zoneable, buses only"; } }
+        public string ShortDescription { get { return "No parking, not zoneable, buses only [Traffic++ V2 required]"; } }
         public NetInfoVersion SupportedVersions { get { return NetInfoVersion.AllWithDecoration; } }
 
         public IEnumerable<IMenuItemBuilder> MenuItemBuilders
@@ -197,8 +198,10 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L
             info.m_UnlockMilestone = highwayInfo.m_UnlockMilestone;
 
             info.m_lanes = info.m_lanes.Where(l => l.m_laneType != NetInfo.LaneType.Parking).ToArray();
-            foreach (var lane in info.m_lanes)
+            for (int i = 0; i < info.m_lanes.Count(); i++)
             {
+                var lane = info.m_lanes[i];
+
                 if (lane.m_laneType == NetInfo.LaneType.Vehicle)
                 {
                     if (version == NetInfoVersion.Ground)
@@ -212,12 +215,14 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L
                         {
                             lane.m_position += 1f;
                             lane.m_stopOffset -= 1f;
-                        } 
+                        }
                     }
 
                     lane.m_speedLimit = 1.6f;
                     lane.m_laneType = NetInfo.LaneType.TransportVehicle;
                     lane.SetBusLaneProps();
+
+                    info.m_lanes[i] = new NetInfoLane(lane, VehicleType.Bus | VehicleType.EmergencyVehicles, NetInfoLane.SpecialLaneType.BusLane);
                 }
             }
 

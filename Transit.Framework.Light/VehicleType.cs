@@ -19,7 +19,7 @@ namespace Transit.Framework.Light
 
         Emergency = 32768,
         EmergencyVehicles = Emergency | Ambulance | FireTruck | PoliceCar,
-        ServiceVehicles = EmergencyVehicles | Bus | GarbageTruck | Hearse,
+        ServiceVehicles = EmergencyVehicles | GarbageTruck | Hearse,
 
         All = ServiceVehicles | PassengerCar | CargoTruck
     }
