@@ -67,92 +67,93 @@ namespace CSL_Traffic
 			}
 		}
 
-		protected override bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays)
-		{
-			if ((vehicleData.m_flags & (Vehicle.Flags.TransferToSource | Vehicle.Flags.GoingBack)) != Vehicle.Flags.None)
-			{
-				return CustomCarAI.StartPathFind(this, vehicleID, ref vehicleData, startPos, endPos, startBothWays, endBothWays, Transit.Framework.Light.VehicleType.CargoTruck);
-			}
-			bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != Vehicle.Flags.None;
-			PathUnit.Position startPosA;
-			PathUnit.Position startPosB;
-			float num;
-			float num2;
+        protected override bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget)
+        {
+            if ((vehicleData.m_flags & (Vehicle.Flags.TransferToSource | Vehicle.Flags.GoingBack)) != Vehicle.Flags.None)
+            {
+                return CustomCarAI.StartPathFind(this, vehicleID, ref vehicleData, startPos, endPos, startBothWays, endBothWays, undergroundTarget, Transit.Framework.Light.VehicleType.CargoTruck);
+            }
+            bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != Vehicle.Flags.None;
+            PathUnit.Position startPosA;
+            PathUnit.Position startPosB;
+            float num;
+            float num2;
             bool flag = CustomPathManager.FindPathPosition(startPos, ItemClass.Service.Road, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, VehicleInfo.VehicleType.Car, allowUnderground, false, 32f, out startPosA, out startPosB, out num, out num2, Transit.Framework.Light.VehicleType.CargoTruck);
-			PathUnit.Position position;
-			PathUnit.Position position2;
-			float num3;
-			float num4;
-			if (CustomPathManager.FindPathPosition(startPos, ItemClass.Service.PublicTransport, NetInfo.LaneType.Vehicle, VehicleInfo.VehicleType.Train | VehicleInfo.VehicleType.Ship, allowUnderground, false, 32f, out position, out position2, out num3, out num4, Transit.Framework.Light.VehicleType.CargoTruck))
-			{
-				if (!flag || num3 < num)
-				{
-					startPosA = position;
-					startPosB = position2;
-					num = num3;
-					num2 = num4;
-				}
-				flag = true;
-			}
-			PathUnit.Position endPosA;
-			PathUnit.Position endPosB;
-			float num5;
-			float num6;
-            bool flag2 = CustomPathManager.FindPathPosition(endPos, ItemClass.Service.Road, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, VehicleInfo.VehicleType.Car, false, false, 32f, out endPosA, out endPosB, out num5, out num6, Transit.Framework.Light.VehicleType.CargoTruck);
-			PathUnit.Position position3;
-			PathUnit.Position position4;
-			float num7;
-			float num8;
-			if (CustomPathManager.FindPathPosition(endPos, ItemClass.Service.PublicTransport, NetInfo.LaneType.Vehicle, VehicleInfo.VehicleType.Train | VehicleInfo.VehicleType.Ship, false, false, 32f, out position3, out position4, out num7, out num8, Transit.Framework.Light.VehicleType.CargoTruck))
-			{
-				if (!flag2 || num7 < num5)
-				{
-					endPosA = position3;
-					endPosB = position4;
-					num5 = num7;
-					num6 = num8;
-				}
-				flag2 = true;
-			}
-			if (flag && flag2)
-			{
-				if (!startBothWays || num < 10f)
-				{
-					startPosB = default(PathUnit.Position);
-				}
-				if (!endBothWays || num5 < 10f)
-				{
-					endPosB = default(PathUnit.Position);
-				}
+            PathUnit.Position position;
+            PathUnit.Position position2;
+            float num3;
+            float num4;
+            if (CustomPathManager.FindPathPosition(startPos, ItemClass.Service.PublicTransport, NetInfo.LaneType.Vehicle, VehicleInfo.VehicleType.Train | VehicleInfo.VehicleType.Ship, allowUnderground, false, 32f, out position, out position2, out num3, out num4, Transit.Framework.Light.VehicleType.CargoTruck))
+            {
+                if (!flag || num3 < num)
+                {
+                    startPosA = position;
+                    startPosB = position2;
+                    num = num3;
+                    num2 = num4;
+                }
+                flag = true;
+            }
+            PathUnit.Position endPosA;
+            PathUnit.Position endPosB;
+            float num5;
+            float num6;
+            bool flag2 = CustomPathManager.FindPathPosition(endPos, ItemClass.Service.Road, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, VehicleInfo.VehicleType.Car, undergroundTarget, false, 32f, out endPosA, out endPosB, out num5, out num6, Transit.Framework.Light.VehicleType.CargoTruck);
+            PathUnit.Position position3;
+            PathUnit.Position position4;
+            float num7;
+            float num8;
+            if (CustomPathManager.FindPathPosition(endPos, ItemClass.Service.PublicTransport, NetInfo.LaneType.Vehicle, VehicleInfo.VehicleType.Train | VehicleInfo.VehicleType.Ship, undergroundTarget, false, 32f, out position3, out position4, out num7, out num8, Transit.Framework.Light.VehicleType.CargoTruck))
+            {
+                if (!flag2 || num7 < num5)
+                {
+                    endPosA = position3;
+                    endPosB = position4;
+                    num5 = num7;
+                    num6 = num8;
+                }
+                flag2 = true;
+            }
+            if (flag && flag2)
+            {
+                PathManager instance = Singleton<PathManager>.instance;
+                if (!startBothWays || num < 10f)
+                {
+                    startPosB = default(PathUnit.Position);
+                }
+                if (!endBothWays || num5 < 10f)
+                {
+                    endPosB = default(PathUnit.Position);
+                }
                 NetInfo.LaneType laneTypes = NetInfo.LaneType.Vehicle | NetInfo.LaneType.CargoVehicle;
-				VehicleInfo.VehicleType vehicleTypes = VehicleInfo.VehicleType.Car | VehicleInfo.VehicleType.Train | VehicleInfo.VehicleType.Ship;
-				uint path;
-				bool createPathResult;
-				CustomPathManager customPathManager = Singleton<PathManager>.instance as CustomPathManager;
-				if (customPathManager != null)
-					createPathResult = customPathManager.CreatePath(out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, laneTypes, vehicleTypes, 20000f, this.IsHeavyVehicle(), this.IgnoreBlocked(vehicleID, ref vehicleData), false, false, Transit.Framework.Light.VehicleType.CargoTruck);
-				else
-					createPathResult = Singleton<PathManager>.instance.CreatePath(out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, laneTypes, vehicleTypes, 20000f, this.IsHeavyVehicle(), this.IgnoreBlocked(vehicleID, ref vehicleData), false, false);
-				if (createPathResult)
-				{
-					if (vehicleData.m_path != 0u)
-					{
-						Singleton<PathManager>.instance.ReleasePath(vehicleData.m_path);
-					}
-					vehicleData.m_path = path;
-					vehicleData.m_flags |= Vehicle.Flags.WaitingPath;
-					return true;
-				}
-			}
-			return false;
-		}
+                VehicleInfo.VehicleType vehicleTypes = VehicleInfo.VehicleType.Car | VehicleInfo.VehicleType.Train | VehicleInfo.VehicleType.Ship;
+                uint path;
+                bool createPathResult;
+                CustomPathManager customPathManager = Singleton<PathManager>.instance as CustomPathManager;
+                if (customPathManager != null)
+                    createPathResult = customPathManager.CreatePath(out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, laneTypes, vehicleTypes, 20000f, this.IsHeavyVehicle(), this.IgnoreBlocked(vehicleID, ref vehicleData), false, false, Transit.Framework.Light.VehicleType.CargoTruck);
+                else
+                    createPathResult = Singleton<PathManager>.instance.CreatePath(out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, laneTypes, vehicleTypes, 20000f, this.IsHeavyVehicle(), this.IgnoreBlocked(vehicleID, ref vehicleData), false, false);
+                if (createPathResult)
+                {
+                    if (vehicleData.m_path != 0u)
+                    {
+                        instance.ReleasePath(vehicleData.m_path);
+                    }
+                    vehicleData.m_path = path;
+                    vehicleData.m_flags |= Vehicle.Flags.WaitingPath;
+                    return true;
+                }
+            }
+            return false;
+        }
 
 
-		/*
+        /*
 		 * Interface Proxy Methods
 		 */
 
-		public new bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData)
+        public new bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData)
 		{
 			return base.StartPathFind(vehicleID, ref vehicleData);
 		}
@@ -160,14 +161,14 @@ namespace CSL_Traffic
 		public new void CalculateSegmentPosition(ushort vehicleID, ref Vehicle vehicleData, PathUnit.Position position, uint laneID, byte offset, out Vector3 pos, out Vector3 dir, out float maxSpeed)
 		{
 			base.CalculateSegmentPosition(vehicleID, ref vehicleData, position, laneID, offset, out pos, out dir, out maxSpeed);
-		}
+        }
 
-		public new void CalculateSegmentPosition(ushort vehicleID, ref Vehicle vehicleData, PathUnit.Position nextPosition, PathUnit.Position position, uint laneID, byte offset, PathUnit.Position prevPos, uint prevLaneID, byte prevOffset, out Vector3 pos, out Vector3 dir, out float maxSpeed)
-		{
-			base.CalculateSegmentPosition(vehicleID, ref vehicleData, nextPosition, position, laneID, offset, prevPos, prevLaneID, prevOffset, out pos, out dir, out maxSpeed);
-		}
+        public new void CalculateSegmentPosition(ushort vehicleID, ref Vehicle vehicleData, PathUnit.Position nextPosition, PathUnit.Position position, uint laneID, byte offset, PathUnit.Position prevPos, uint prevLaneID, byte prevOffset, int index, out Vector3 pos, out Vector3 dir, out float maxSpeed)
+        {
+            base.CalculateSegmentPosition(vehicleID, ref vehicleData, nextPosition, position, laneID, offset, prevPos, prevLaneID, prevOffset, index, out pos, out dir, out maxSpeed);
+        }
 
-		public new bool ParkVehicle(ushort vehicleID, ref Vehicle vehicleData, PathUnit.Position pathPos, uint nextPath, int nextPositionIndex, out byte segmentOffset)
+        public new bool ParkVehicle(ushort vehicleID, ref Vehicle vehicleData, PathUnit.Position pathPos, uint nextPath, int nextPositionIndex, out byte segmentOffset)
 		{
 			return base.ParkVehicle(vehicleID, ref vehicleData, pathPos, nextPath, nextPositionIndex, out segmentOffset);
 		}

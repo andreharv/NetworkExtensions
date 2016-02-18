@@ -43,56 +43,56 @@ namespace CSL_Traffic
 			}
 		}
 
-		protected override bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays)
-		{
-			VehicleInfo info = this.m_info;
-			ushort driverInstance = this.GetDriverInstance(vehicleID, ref vehicleData);
-			if (driverInstance == 0)
-			{
-				return false;
-			}
-			CitizenManager instance = Singleton<CitizenManager>.instance;
-			CitizenInfo info2 = instance.m_instances.m_buffer[(int)driverInstance].Info;
-			NetInfo.LaneType laneTypes = NetInfo.LaneType.Vehicle | NetInfo.LaneType.Pedestrian;
-			VehicleInfo.VehicleType vehicleType = this.m_info.m_vehicleType;
-			bool allowUnderground = (vehicleData.m_flags & Vehicle.Flags.Underground) != Vehicle.Flags.None;
-			PathUnit.Position startPosA;
-			PathUnit.Position startPosB;
-			float num;
-			float num2;
-			PathUnit.Position endPosA;
+        protected override bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget)
+        {
+            VehicleInfo info = this.m_info;
+            ushort driverInstance = this.GetDriverInstance(vehicleID, ref vehicleData);
+            if (driverInstance == 0)
+            {
+                return false;
+            }
+            CitizenManager instance = Singleton<CitizenManager>.instance;
+            CitizenInfo info2 = instance.m_instances.m_buffer[(int)driverInstance].Info;
+            NetInfo.LaneType laneTypes = NetInfo.LaneType.Vehicle | NetInfo.LaneType.Pedestrian;
+            VehicleInfo.VehicleType vehicleType = this.m_info.m_vehicleType;
+            bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != Vehicle.Flags.None;
+            PathUnit.Position startPosA;
+            PathUnit.Position startPosB;
+            float num;
+            float num2;
+            PathUnit.Position endPosA;
             //    if (PathManager.FindPathPosition(startPos, ItemClass.Service.Road, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, allowUnderground, false, 32f, out startPosA, out startPosB, out num, out num2)                     && info2.m_citizenAI.FindPathPosition(driverInstance, ref instance.m_instances.m_buffer[(int)driverInstance], endPos, laneTypes, vehicleType, false, out endPosA))
-            if (CustomPathManager.FindPathPosition(startPos, ItemClass.Service.Road, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, allowUnderground, false, 32f, out startPosA, out startPosB, out num, out num2, Transit.Framework.Light.VehicleType.PassengerCar) && FindPathPosition(driverInstance, ref instance.m_instances.m_buffer[(int)driverInstance], endPos, laneTypes, vehicleType, false, out endPosA))
-			{
-				if (!startBothWays || num < 10f)
-				{
-					startPosB = default(PathUnit.Position);
-				}
-				PathUnit.Position endPosB = default(PathUnit.Position);
-				SimulationManager instance2 = Singleton<SimulationManager>.instance;
-				uint path;
-				bool createPathResult;
-				CustomPathManager customPathManager = Singleton<PathManager>.instance as CustomPathManager;
-				if (customPathManager != null)
-					createPathResult = customPathManager.CreatePath(out path, ref instance2.m_randomizer, instance2.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, laneTypes, vehicleType, 20000f, Transit.Framework.Light.VehicleType.PassengerCar);
-				else
-					createPathResult = Singleton<PathManager>.instance.CreatePath(out path, ref instance2.m_randomizer, instance2.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, laneTypes, vehicleType, 20000f);
-				if (createPathResult)
-				{
-					if (vehicleData.m_path != 0u)
-					{
-						Singleton<PathManager>.instance.ReleasePath(vehicleData.m_path);
-					}
-					vehicleData.m_path = path;
-					vehicleData.m_flags |= Vehicle.Flags.WaitingPath;
-					return true;
-				}
-			}
-			return false;
-		}
+            if (CustomPathManager.FindPathPosition(startPos, ItemClass.Service.Road, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, allowUnderground, false, 32f, out startPosA, out startPosB, out num, out num2, Transit.Framework.Light.VehicleType.PassengerCar) && info2.m_citizenAI.FindPathPosition(driverInstance, ref instance.m_instances.m_buffer[(int)driverInstance], endPos, laneTypes, vehicleType, undergroundTarget, out endPosA))
+            {
+                if (!startBothWays || num < 10f)
+                {
+                    startPosB = default(PathUnit.Position);
+                }
+                PathUnit.Position endPosB = default(PathUnit.Position);
+                SimulationManager instance2 = Singleton<SimulationManager>.instance;
+                uint path;
+                bool createPathResult;
+                CustomPathManager customPathManager = Singleton<PathManager>.instance as CustomPathManager;
+                if (customPathManager != null)
+                    createPathResult = customPathManager.CreatePath(out path, ref instance2.m_randomizer, instance2.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, laneTypes, vehicleType, 20000f, Transit.Framework.Light.VehicleType.PassengerCar);
+                else
+                    createPathResult = Singleton<PathManager>.instance.CreatePath(out path, ref instance2.m_randomizer, instance2.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, laneTypes, vehicleType, 20000f);
+                if (createPathResult)
+                {
+                    if (vehicleData.m_path != 0u)
+                    {
+                        Singleton<PathManager>.instance.ReleasePath(vehicleData.m_path);
+                    }
+                    vehicleData.m_path = path;
+                    vehicleData.m_flags |= Vehicle.Flags.WaitingPath;
+                    return true;
+                }
+            }
+            return false;
+        }
 
-		// from CitizenAI
-		public static bool FindPathPosition(ushort instanceID, ref CitizenInstance citizenData, Vector3 pos, NetInfo.LaneType laneTypes, VehicleInfo.VehicleType vehicleTypes, bool allowUnderground, out PathUnit.Position position)
+        // from CitizenAI
+        public static bool FindPathPosition(ushort instanceID, ref CitizenInstance citizenData, Vector3 pos, NetInfo.LaneType laneTypes, VehicleInfo.VehicleType vehicleTypes, bool allowUnderground, out PathUnit.Position position)
 		{
 			position = default(PathUnit.Position);
 			float num = 1E+10f;
@@ -171,14 +171,14 @@ namespace CSL_Traffic
 		public new void CalculateSegmentPosition(ushort vehicleID, ref Vehicle vehicleData, PathUnit.Position position, uint laneID, byte offset, out Vector3 pos, out Vector3 dir, out float maxSpeed)
 		{
 			base.CalculateSegmentPosition(vehicleID, ref vehicleData, position, laneID, offset, out pos, out dir, out maxSpeed);
-		}
+        }
 
-		public new void CalculateSegmentPosition(ushort vehicleID, ref Vehicle vehicleData, PathUnit.Position nextPosition, PathUnit.Position position, uint laneID, byte offset, PathUnit.Position prevPos, uint prevLaneID, byte prevOffset, out Vector3 pos, out Vector3 dir, out float maxSpeed)
-		{
-			base.CalculateSegmentPosition(vehicleID, ref vehicleData, nextPosition, position, laneID, offset, prevPos, prevLaneID, prevOffset, out pos, out dir, out maxSpeed);
-		}
+        public new void CalculateSegmentPosition(ushort vehicleID, ref Vehicle vehicleData, PathUnit.Position nextPosition, PathUnit.Position position, uint laneID, byte offset, PathUnit.Position prevPos, uint prevLaneID, byte prevOffset, int index, out Vector3 pos, out Vector3 dir, out float maxSpeed)
+        {
+            base.CalculateSegmentPosition(vehicleID, ref vehicleData, nextPosition, position, laneID, offset, prevPos, prevLaneID, prevOffset, index, out pos, out dir, out maxSpeed);
+        }
 
-		public new bool ParkVehicle(ushort vehicleID, ref Vehicle vehicleData, PathUnit.Position pathPos, uint nextPath, int nextPositionIndex, out byte segmentOffset)
+        public new bool ParkVehicle(ushort vehicleID, ref Vehicle vehicleData, PathUnit.Position pathPos, uint nextPath, int nextPositionIndex, out byte segmentOffset)
 		{
 			return base.ParkVehicle(vehicleID, ref vehicleData, pathPos, nextPath, nextPositionIndex, out segmentOffset);
 		}

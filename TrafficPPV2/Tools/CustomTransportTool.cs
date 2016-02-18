@@ -457,8 +457,8 @@ namespace CSL_Traffic
                     if (building != 0)
                     {
                         BuildingManager instance2 = Singleton<BuildingManager>.instance;
-					    BuildingInfo info2 = instance2.m_buildings.m_buffer[(int)building].Info;
-					    TransportInfo transportLineInfo = info2.m_buildingAI.GetTransportLineInfo();
+                        BuildingInfo info2 = instance2.m_buildings.m_buffer[(int)building].Info;
+                        TransportInfo transportLineInfo = info2.m_buildingAI.GetTransportLineInfo();
                         if (transportLineInfo != null && transportLineInfo.m_transportType == info.m_transportType)
                         {
                             segment = 0;
@@ -470,30 +470,28 @@ namespace CSL_Traffic
                     }
                 }
                 Vector3 point;
-                int num;
-                float num2;
+                uint num;
+                int num2;
+                float num3;
                 Vector3 vector;
-                int num3;
-                float num4;
-                if (segment != 0 && instance.m_segments.m_buffer[(int)segment].GetClosestLanePosition(hitPos, NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, out point, out num, out num2) && instance.m_segments.m_buffer[(int)segment].GetClosestLanePosition(point, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, out vector, out num3, out num4))
+                uint num4;
+                int num5;
+                float num6;
+                if (segment != 0 && instance.m_segments.m_buffer[(int)segment].GetClosestLanePosition(hitPos, NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, info.m_vehicleType, out point, out num, out num2, out num3) && instance.m_segments.m_buffer[(int)segment].GetClosestLanePosition(point, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, out vector, out num4, out num5, out num6))
                 {
-                    PathUnit.Position pathPos;
-                    pathPos.m_segment = segment;
-                    pathPos.m_lane = (byte)num3;
-                    pathPos.m_offset = 128;
-                    NetInfo.Lane lane = instance.m_segments.m_buffer[(int)segment].Info.m_lanes[num3];
-                    if (!lane.m_allowStop)
+                    NetLane.Flags flags = (NetLane.Flags)instance.m_lanes.m_buffer[(int)((UIntPtr)num)].m_flags;
+                    if ((flags & NetLane.Flags.Stops & info.m_stopFlag) /*& ~(info.m_stopFlag != NetLane.Flags.None))*/ == NetLane.Flags.None)
                     {
                         return false;
                     }
-                    float num5 = lane.m_stopOffset;
+                    NetInfo.Lane lane = instance.m_segments.m_buffer[(int)segment].Info.m_lanes[num5];
+                    float num7 = lane.m_stopOffset;
                     if ((instance.m_segments.m_buffer[(int)segment].m_flags & NetSegment.Flags.Invert) != NetSegment.Flags.None)
                     {
-                        num5 = -num5;
+                        num7 = -num7;
                     }
-                    uint laneID = PathManager.GetLaneID(pathPos);
                     Vector3 vector2;
-                    instance.m_lanes.m_buffer[(int)((UIntPtr)laneID)].CalculateStopPositionAndDirection((float)pathPos.m_offset * 0.003921569f, num5, out hitPos, out vector2);
+                    instance.m_lanes.m_buffer[(int)((UIntPtr)num4)].CalculateStopPositionAndDirection(0.5019608f, num7, out hitPos, out vector2);
                     fixedPlatform = true;
                     return true;
                 }
@@ -508,20 +506,20 @@ namespace CSL_Traffic
                     if (info3.m_buildingAI.GetTransportLineInfo() != null)
                     {
                         Vector3 vector3 = Vector3.zero;
-                        int num6 = 1000000;
+                        int num8 = 1000000;
                         for (int i = 0; i < 12; i++)
                         {
-                            Randomizer randomizer = new Randomizer(i);
+                            Randomizer randomizer = new Randomizer((ulong)((long)i));
                             Vector3 vector4;
                             Vector3 a;
                             info3.m_buildingAI.CalculateSpawnPosition(building, ref instance3.m_buildings.m_buffer[(int)building], ref randomizer, randomVehicleInfo, out vector4, out a);
                             int lineCount = this.GetLineCount(vector4, a - vector4, info.m_transportType);
-                            if (lineCount < num6)
+                            if (lineCount < num8)
                             {
                                 vector3 = vector4;
-                                num6 = lineCount;
+                                num8 = lineCount;
                             }
-                            else if (lineCount == num6 && Vector3.SqrMagnitude(vector4 - hitPos) < Vector3.SqrMagnitude(vector3 - hitPos))
+                            else if (lineCount == num8 && Vector3.SqrMagnitude(vector4 - hitPos) < Vector3.SqrMagnitude(vector3 - hitPos))
                             {
                                 vector3 = vector4;
                             }
@@ -537,8 +535,8 @@ namespace CSL_Traffic
                                     ushort segment2 = instance.m_lanes.m_buffer[(int)((UIntPtr)lane2)].m_segment;
                                     if (segment2 != 0 && (instance.m_segments.m_buffer[(int)segment2].m_flags & NetSegment.Flags.Untouchable) != NetSegment.Flags.None)
                                     {
-                                        ushort num7 = NetSegment.FindOwnerBuilding(segment2, 363f);
-                                        if (building == num7)
+                                        ushort num9 = NetSegment.FindOwnerBuilding(segment2, 363f);
+                                        if (building == num9)
                                         {
                                             hitPos = position;
                                             return true;

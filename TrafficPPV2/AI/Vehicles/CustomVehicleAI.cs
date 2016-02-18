@@ -74,12 +74,9 @@ namespace CSL_Traffic
                                 {
                                     b2 = (byte)Mathf.Max((int)b2 - num5, (int)position.m_offset);
                                 }
-                                else
+                                else if (b2 < position.m_offset)
                                 {
-                                    if (b2 < position.m_offset)
-                                    {
-                                        b2 = (byte)Mathf.Min((int)b2 + num5, (int)position.m_offset);
-                                    }
+                                    b2 = (byte)Mathf.Min((int)b2 + num5, (int)position.m_offset);
                                 }
                             }
                             Vector3 a;
@@ -218,136 +215,130 @@ namespace CSL_Traffic
                 {
                     b4 = (byte)((position2.m_offset < 128) ? 255 : 0);
                 }
-                else
+                else if (num3 != laneID && lane.m_laneType != NetInfo.LaneType.CargoVehicle)
                 {
-                    if (num3 != laneID && lane.m_laneType != NetInfo.LaneType.CargoVehicle)
+                    PathUnit.CalculatePathPositionOffset(laneID, vector, out b4);
+                    bezier = default(Bezier3);
+                    Vector3 vector3;
+                    float num8;
+                    (vehicleAI as IVehicle).CalculateSegmentPosition(vehicleID, ref vehicleData, position, num3, position.m_offset, out bezier.a, out vector3, out num8);
+                    num8 = RestrictSpeed(num8, num3, vehicleData.Info);
+                    bool flag2 = b2 == 0;
+                    if (flag2)
                     {
-                        PathUnit.CalculatePathPositionOffset(laneID, vector, out b4);
-                        bezier = default(Bezier3);
-                        Vector3 vector3;
-                        float num8;
-                        (vehicleAI as IVehicle).CalculateSegmentPosition(vehicleID, ref vehicleData, position, num3, position.m_offset, out bezier.a, out vector3, out num8);
-                        num8 = RestrictSpeed(num8, num3, vehicleData.Info);
-                        bool flag2 = b2 == 0;
-                        if (flag2)
+                        if ((vehicleData.m_flags & Vehicle.Flags.Reversed) != Vehicle.Flags.None)
                         {
-                            if ((vehicleData.m_flags & Vehicle.Flags.Reversed) != Vehicle.Flags.None)
-                            {
-                                flag2 = (vehicleData.m_trailingVehicle == 0);
-                            }
-                            else
-                            {
-                                flag2 = (vehicleData.m_leadingVehicle == 0);
-                            }
-                        }
-                        Vector3 vector4;
-                        float num9;
-                        if (flag2)
-                        {
-                            PathUnit.Position nextPosition;
-                            if (!instance.m_pathUnits.m_buffer[(int)((UIntPtr)num7)].GetNextPosition(num6, out nextPosition))
-                            {
-                                nextPosition = default(PathUnit.Position);
-                            }
-                            (vehicleAI as IVehicle).CalculateSegmentPosition(vehicleID, ref vehicleData, nextPosition, position2, laneID, b4, position, num3, position.m_offset, out bezier.d, out vector4, out num9);
-                            num9 = RestrictSpeed(num9, laneID, vehicleData.Info);
+                            flag2 = (vehicleData.m_trailingVehicle == 0);
                         }
                         else
                         {
-                            (vehicleAI as IVehicle).CalculateSegmentPosition(vehicleID, ref vehicleData, position2, laneID, b4, out bezier.d, out vector4, out num9);
-                            num9 = RestrictSpeed(num9, laneID, vehicleData.Info);
+                            flag2 = (vehicleData.m_leadingVehicle == 0);
                         }
-                        if (num9 < 0.01f || (instance2.m_segments.m_buffer[(int)position2.m_segment].m_flags & NetSegment.Flags.Flooded) != NetSegment.Flags.None)
+                    }
+                    Vector3 vector4;
+                    float num9;
+                    if (flag2)
+                    {
+                        PathUnit.Position nextPosition;
+                        if (!instance.m_pathUnits.m_buffer[(int)((UIntPtr)num7)].GetNextPosition(num6, out nextPosition))
                         {
-                            if (index <= 0)
-                            {
-                                vehicleData.m_lastPathOffset = b2;
-                            }
-                            vector = bezier.a;
-                            vector.w = 0f;
-                            while (index < max)
-                            {
-                                vehicleData.SetTargetPos(index++, vector);
-                            }
+                            nextPosition = default(PathUnit.Position);
                         }
-                        if (position.m_offset == 0)
-                        {
-                            vector3 = -vector3;
-                        }
-                        if (b4 < position2.m_offset)
-                        {
-                            vector4 = -vector4;
-                        }
-                        vector3.Normalize();
-                        vector4.Normalize();
-                        float num10;
-                        NetSegment.CalculateMiddlePoints(bezier.a, vector3, bezier.d, vector4, true, true, out bezier.b, out bezier.c, out num10);
-                        if (num10 > 1f)
-                        {
-                            ushort num11;
-                            if (b4 == 0)
-                            {
-                                num11 = instance2.m_segments.m_buffer[(int)position2.m_segment].m_startNode;
-                            }
-                            else
-                            {
-                                if (b4 == 255)
-                                {
-                                    num11 = instance2.m_segments.m_buffer[(int)position2.m_segment].m_endNode;
-                                }
-                                else
-                                {
-                                    num11 = 0;
-                                }
-                            }
-                            float num12 = 1.57079637f * (1f + Vector3.Dot(vector3, vector4));
-                            if (num10 > 1f)
-                            {
-                                num12 /= num10;
-                            }
-                            num9 = Mathf.Min(num9, (vehicleAI as IVehicle).CalculateTargetSpeed(vehicleID, ref vehicleData, 1000f, num12));
-                            while (b2 < 255)
-                            {
-                                float num13 = Mathf.Sqrt(num) - Vector3.Distance(vector, refPos);
-                                int num14;
-                                if (num13 < 0f)
-                                {
-                                    num14 = 8;
-                                }
-                                else
-                                {
-                                    num14 = 8 + Mathf.Max(0, Mathf.CeilToInt(num13 * 256f / (num10 + 1f)));
-                                }
-                                b2 = (byte)Mathf.Min((int)b2 + num14, 255);
-                                Vector3 a2 = bezier.Position((float)b2 * 0.003921569f);
-                                vector.Set(a2.x, a2.y, a2.z, Mathf.Min(vector.w, num9));
-                                float sqrMagnitude2 = (a2 - refPos).sqrMagnitude;
-                                if (sqrMagnitude2 >= num)
-                                {
-                                    if (index <= 0)
-                                    {
-                                        vehicleData.m_lastPathOffset = b2;
-                                    }
-                                    if (num11 != 0)
-                                    {
-                                        (vehicleAI as IVehicle).UpdateNodeTargetPos(vehicleID, ref vehicleData, num11, ref instance2.m_nodes.m_buffer[(int)num11], ref vector, index);
-                                    }
-                                    vehicleData.SetTargetPos(index++, vector);
-                                    num = minSqrDistanceB;
-                                    refPos = vector;
-                                    vector.w = 1000f;
-                                    if (index == max)
-                                    {
-                                        return;
-                                    }
-                                }
-                            }
-                        }
+                        (vehicleAI as IVehicle).CalculateSegmentPosition(vehicleID, ref vehicleData, nextPosition, position2, laneID, b4, position, num3, position.m_offset, index, out bezier.d, out vector4, out num9);
+                        num9 = RestrictSpeed(num9, laneID, vehicleData.Info);
                     }
                     else
                     {
-                        PathUnit.CalculatePathPositionOffset(laneID, vector, out b4);
+                        (vehicleAI as IVehicle).CalculateSegmentPosition(vehicleID, ref vehicleData, position2, laneID, b4, out bezier.d, out vector4, out num9);
+                        num9 = RestrictSpeed(num9, laneID, vehicleData.Info);
                     }
+                    if (num9 < 0.01f || (instance2.m_segments.m_buffer[(int)position2.m_segment].m_flags & NetSegment.Flags.Flooded) != NetSegment.Flags.None)
+                    {
+                        if (index <= 0)
+                        {
+                            vehicleData.m_lastPathOffset = b2;
+                        }
+                        vector = bezier.a;
+                        vector.w = 0f;
+                        while (index < max)
+                        {
+                            vehicleData.SetTargetPos(index++, vector);
+                        }
+                    }
+                    if (position.m_offset == 0)
+                    {
+                        vector3 = -vector3;
+                    }
+                    if (b4 < position2.m_offset)
+                    {
+                        vector4 = -vector4;
+                    }
+                    vector3.Normalize();
+                    vector4.Normalize();
+                    float num10;
+                    NetSegment.CalculateMiddlePoints(bezier.a, vector3, bezier.d, vector4, true, true, out bezier.b, out bezier.c, out num10);
+                    if (num10 > 1f)
+                    {
+                        ushort num11;
+                        if (b4 == 0)
+                        {
+                            num11 = instance2.m_segments.m_buffer[(int)position2.m_segment].m_startNode;
+                        }
+                        else if (b4 == 255)
+                        {
+                            num11 = instance2.m_segments.m_buffer[(int)position2.m_segment].m_endNode;
+                        }
+                        else
+                        {
+                            num11 = 0;
+                        }
+                        float num12 = 1.57079637f * (1f + Vector3.Dot(vector3, vector4));
+                        if (num10 > 1f)
+                        {
+                            num12 /= num10;
+                        }
+                        num9 = Mathf.Min(num9, (vehicleAI as IVehicle).CalculateTargetSpeed(vehicleID, ref vehicleData, 1000f, num12));
+                        while (b2 < 255)
+                        {
+                            float num13 = Mathf.Sqrt(num) - Vector3.Distance(vector, refPos);
+                            int num14;
+                            if (num13 < 0f)
+                            {
+                                num14 = 8;
+                            }
+                            else
+                            {
+                                num14 = 8 + Mathf.Max(0, Mathf.CeilToInt(num13 * 256f / (num10 + 1f)));
+                            }
+                            b2 = (byte)Mathf.Min((int)b2 + num14, 255);
+                            Vector3 a2 = bezier.Position((float)b2 * 0.003921569f);
+                            vector.Set(a2.x, a2.y, a2.z, Mathf.Min(vector.w, num9));
+                            float sqrMagnitude2 = (a2 - refPos).sqrMagnitude;
+                            if (sqrMagnitude2 >= num)
+                            {
+                                if (index <= 0)
+                                {
+                                    vehicleData.m_lastPathOffset = b2;
+                                }
+                                if (num11 != 0)
+                                {
+                                    (vehicleAI as IVehicle).UpdateNodeTargetPos(vehicleID, ref vehicleData, num11, ref instance2.m_nodes.m_buffer[(int)num11], ref vector, index);
+                                }
+                                vehicleData.SetTargetPos(index++, vector);
+                                num = minSqrDistanceB;
+                                refPos = vector;
+                                vector.w = 1000f;
+                                if (index == max)
+                                {
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    PathUnit.CalculatePathPositionOffset(laneID, vector, out b4);
                 }
                 if (index <= 0)
                 {
