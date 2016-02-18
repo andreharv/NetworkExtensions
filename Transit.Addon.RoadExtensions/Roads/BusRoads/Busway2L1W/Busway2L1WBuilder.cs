@@ -12,7 +12,7 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L1W
     public class Busway2L1WBuilder : Activable, IMultiNetInfoBuilderPart, ITrafficPlusPlusPart
     {
         public string Name { get { return "Small Busway OneWay"; } }
-        public string DisplayName { get { return "Busway OneWay"; } }
+        public string DisplayName { get { return "[BETA] Busway OneWay"; } }
         public string BasedPrefabName { get { return NetInfos.Vanilla.ONEWAY_2L; } }
         public int Order { get { return 120; } }
         public string ShortDescription { get { return "No parking, not zoneable, buses only [Traffic++ V2 required]"; } }
@@ -27,7 +27,7 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L1W
                     UICategory = RExExtendedMenus.ROADS_BUSWAYS,
                     UIOrder = 20,
                     Name = "Small Busway OneWay",
-                    DisplayName = "OneWay Busway",
+                    DisplayName = "[BETA] OneWay Busway",
                     Description = "A two-lane, one-way road suitable for buses only. Busway does not allow zoning next to it!",
                     ThumbnailsPath = @"Roads\BusRoads\Busway2L1W\thumbnails.png",
                     InfoTooltipPath = @"Roads\BusRoads\Busway2L1W\infotooltip.png"
@@ -37,7 +37,7 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L1W
                     UICategory = RExExtendedMenus.ROADS_BUSWAYS,
                     UIOrder = 21,
                     Name = "Small Busway OneWay Decoration Grass",
-                    DisplayName = "OneWay Busway with Grass",
+                    DisplayName = "[BETA] OneWay Busway with Grass",
                     Description = "A two-lane, one-way road with decorative grass suitable for buses only. Busway does not allow zoning next to it!",
                     ThumbnailsPath = @"Roads\BusRoads\Busway2L1W\thumbnails_grass.png",
                     InfoTooltipPath = @"Roads\BusRoads\Busway2L1W\infotooltip_grass.png"
@@ -47,7 +47,7 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L1W
                     UICategory = RExExtendedMenus.ROADS_BUSWAYS,
                     UIOrder = 22,
                     Name = "Small Busway OneWay Decoration Trees",
-                    DisplayName = "OneWay Busway with Trees",
+                    DisplayName = "[BETA] OneWay Busway with Trees",
                     Description = "A two-lane, one-way road with decorative trees suitable for buses only. Busway does not allow zoning next to it!",
                     ThumbnailsPath = @"Roads\BusRoads\Busway2L1W\thumbnails_trees.png",
                     InfoTooltipPath = @"Roads\BusRoads\Busway2L1W\infotooltip_trees.png"
@@ -200,6 +200,8 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L1W
             for (int i = 0; i < info.m_lanes.Count(); i++)
             {
                 var lane = info.m_lanes[i];
+
+                if (lane.m_laneType == NetInfo.LaneType.Vehicle)
                 {
                     if (version == NetInfoVersion.Ground)
                     {
