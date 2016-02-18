@@ -76,10 +76,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoadManager.Data.cs" />
     <Compile Include="RoadManager.cs" />
-    <Compile Include="Tools\CustomTransportTool.cs" />
     <Compile Include="Tools\RoadCustomizerTool.cs" />
-    <Compile Include="Transports\BusTransportLineAI.cs" />
-    <Compile Include="Transports\CustomTransportManager.cs" />
     <Compile Include="UI\RoadCustomizerGroupPanel.cs" />
     <Compile Include="UI\RoadCustomizerPanel.cs" />
     <Compile Include="UI\UIUtils.cs" />

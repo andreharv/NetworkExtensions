@@ -42,7 +42,7 @@ namespace CSL_Traffic
             if ((UserMod.Options & OptionsManager.ModOptions.GhostMode) != OptionsManager.ModOptions.GhostMode)
             {
                 ReplacePathManager();
-                ReplaceTransportManager();
+                //ReplaceTransportManager();
             }
         }
 
@@ -109,15 +109,15 @@ namespace CSL_Traffic
             //	m_postLoadingActions.Dequeue().Invoke();
 
             // contributed by Japa
-            TransportTool transportTool = ToolsModifierControl.GetCurrentTool<TransportTool>();
-            if (transportTool != null)
-            {
-                CustomTransportTool customTransportTool = ToolsModifierControl.SetTool<CustomTransportTool>();
-                if (customTransportTool != null)
-                {
-                    customTransportTool.m_prefab = transportTool.m_prefab;
-                }
-            }
+            //TransportTool transportTool = ToolsModifierControl.GetCurrentTool<TransportTool>();
+            //if (transportTool != null)
+            //{
+            //    CustomTransportTool customTransportTool = ToolsModifierControl.SetTool<CustomTransportTool>();
+            //    if (customTransportTool != null)
+            //    {
+            //        customTransportTool.m_prefab = transportTool.m_prefab;
+            //    }
+            //}
 
             // Checks if CustomPathManager have been replaced by another mod and prints a warning in the log
             // This check is only run in the first two minutes since game is loaded
@@ -265,9 +265,9 @@ namespace CSL_Traffic
 
                         StartCoroutine(HandleCustomVehicles());
 
-                        ReplaceTransportLineAI<BusTransportLineAI>("Bus Line", publicTansportNetCollection, "Bus", publicTransportTransportCollection);
+                        //ReplaceTransportLineAI<BusTransportLineAI>("Bus Line", publicTansportNetCollection, "Bus", publicTransportTransportCollection);
 
-                        AddTool<CustomTransportTool>(toolController);
+                        //AddTool<CustomTransportTool>(toolController);
 
                         if ((UserMod.Options & OptionsManager.ModOptions.BetaTestRoadCustomizerTool) == OptionsManager.ModOptions.BetaTestRoadCustomizerTool)
                             AddTool<RoadCustomizerTool>(toolController);
@@ -333,53 +333,53 @@ namespace CSL_Traffic
             Logger.LogInfo("Path Manager successfully replaced.");
         }
 
-        void ReplaceTransportManager()
-        {
-            if (Singleton<TransportManager>.instance as CustomTransportManager != null)
-                return;
+        //void ReplaceTransportManager()
+        //{
+        //    if (Singleton<TransportManager>.instance as CustomTransportManager != null)
+        //        return;
 
-            Logger.LogInfo("Replacing Transport Manager");
+        //    Logger.LogInfo("Replacing Transport Manager");
 
-            // Change TransportManager to CustomTransportManager
-            FieldInfo sInstance = typeof(ColossalFramework.Singleton<TransportManager>).GetFieldByName("sInstance");
-            TransportManager originalTransportManager = ColossalFramework.Singleton<TransportManager>.instance;
-            CustomTransportManager customTransportManager = originalTransportManager.gameObject.AddComponent<CustomTransportManager>();
-            customTransportManager.SetOriginalValues(originalTransportManager);
+        //    // Change TransportManager to CustomTransportManager
+        //    FieldInfo sInstance = typeof(ColossalFramework.Singleton<TransportManager>).GetFieldByName("sInstance");
+        //    TransportManager originalTransportManager = ColossalFramework.Singleton<TransportManager>.instance;
+        //    CustomTransportManager customTransportManager = originalTransportManager.gameObject.AddComponent<CustomTransportManager>();
+        //    customTransportManager.SetOriginalValues(originalTransportManager);
 
-            // change the new instance in the singleton
-            sInstance.SetValue(null, customTransportManager);
+        //    // change the new instance in the singleton
+        //    sInstance.SetValue(null, customTransportManager);
 
-            // change the manager in the SimulationManager
-            FastList<ISimulationManager> managers = (FastList<ISimulationManager>)typeof(SimulationManager).GetFieldByName("m_managers").GetValue(null);
-            managers.Remove(originalTransportManager);
-            managers.Add(customTransportManager);
+        //    // change the manager in the SimulationManager
+        //    FastList<ISimulationManager> managers = (FastList<ISimulationManager>)typeof(SimulationManager).GetFieldByName("m_managers").GetValue(null);
+        //    managers.Remove(originalTransportManager);
+        //    managers.Add(customTransportManager);
 
-            // add to renderable managers
-            IRenderableManager[] renderables;
-            int count;
-            RenderManager.GetManagers(out renderables, out count);
-            if (renderables != null && count != 0)
-            {
-                for (int i = 0; i < count; i++)
-                {
-                    TransportManager temp = renderables[i] as TransportManager;
-                    if (temp != null && temp == originalTransportManager)
-                    {
-                        renderables[i] = customTransportManager;
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                RenderManager.RegisterRenderableManager(customTransportManager);
-            }
+        //    // add to renderable managers
+        //    IRenderableManager[] renderables;
+        //    int count;
+        //    RenderManager.GetManagers(out renderables, out count);
+        //    if (renderables != null && count != 0)
+        //    {
+        //        for (int i = 0; i < count; i++)
+        //        {
+        //            TransportManager temp = renderables[i] as TransportManager;
+        //            if (temp != null && temp == originalTransportManager)
+        //            {
+        //                renderables[i] = customTransportManager;
+        //                break;
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        RenderManager.RegisterRenderableManager(customTransportManager);
+        //    }
 
-            // Destroy in 10 seconds to give time to all references to update to the new manager without crashing
-            GameObject.Destroy(originalTransportManager, 10f);
+        //    // Destroy in 10 seconds to give time to all references to update to the new manager without crashing
+        //    GameObject.Destroy(originalTransportManager, 10f);
 
-            Logger.LogInfo("Transport Manager successfully replaced.");
-        }
+        //    Logger.LogInfo("Transport Manager successfully replaced.");
+        //}
 
         T TryGetComponent<T>(string name)
         {
@@ -682,25 +682,25 @@ namespace CSL_Traffic
 
         #region Transports
 
-        void ReplaceTransportLineAI<T>(string prefabName, NetCollection collection, string transportName, TransportCollection transportCollection)
-        {
-            if (transform.FindChild(prefabName) != null)
-                return;
+        //void ReplaceTransportLineAI<T>(string prefabName, NetCollection collection, string transportName, TransportCollection transportCollection)
+        //{
+        //    if (transform.FindChild(prefabName) != null)
+        //        return;
 
-            NetInfo transportLine = ClonePrefab<NetInfo>(prefabName, collection.m_prefabs, prefabName, transform, true);
-            if (transportLine == null)
-                return;
+        //    NetInfo transportLine = ClonePrefab<NetInfo>(prefabName, collection.m_prefabs, prefabName, transform, true);
+        //    if (transportLine == null)
+        //        return;
 
-            Destroy(transportLine.GetComponent<TransportLineAI>());
-            transportLine.gameObject.AddComponent<BusTransportLineAI>();
+        //    Destroy(transportLine.GetComponent<TransportLineAI>());
+        //    transportLine.gameObject.AddComponent<BusTransportLineAI>();
 
-            TransportInfo transportInfo = transportCollection.m_prefabs.FirstOrDefault(p => p.name == transportName);
-            if (transportInfo == null)
-                return;
-            //throw new KeyNotFoundException(transportName + " Transport Info not found on " + transportCollection.name);
+        //    TransportInfo transportInfo = transportCollection.m_prefabs.FirstOrDefault(p => p.name == transportName);
+        //    if (transportInfo == null)
+        //        return;
+        //    //throw new KeyNotFoundException(transportName + " Transport Info not found on " + transportCollection.name);
 
-            transportInfo.m_netInfo = transportLine;
-        }
+        //    transportInfo.m_netInfo = transportLine;
+        //}
 
         #endregion
 

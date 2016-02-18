@@ -480,10 +480,10 @@ namespace CSL_Traffic
                 if (segment != 0 && instance.m_segments.m_buffer[(int)segment].GetClosestLanePosition(hitPos, NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, info.m_vehicleType, out point, out num, out num2, out num3) && instance.m_segments.m_buffer[(int)segment].GetClosestLanePosition(point, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, out vector, out num4, out num5, out num6))
                 {
                     NetLane.Flags flags = (NetLane.Flags)instance.m_lanes.m_buffer[(int)((UIntPtr)num)].m_flags;
-                    if ((flags & NetLane.Flags.Stops & info.m_stopFlag) /*& ~(info.m_stopFlag != NetLane.Flags.None))*/ == NetLane.Flags.None)
-                    {
-                        return false;
-                    }
+                    //if ((flags & NetLane.Flags.Stops & info.m_stopFlag) /*& ~(info.m_stopFlag != NetLane.Flags.None))*/ == NetLane.Flags.None)
+                    //{
+                    //    return false;
+                    //}
                     NetInfo.Lane lane = instance.m_segments.m_buffer[(int)segment].Info.m_lanes[num5];
                     float num7 = lane.m_stopOffset;
                     if ((instance.m_segments.m_buffer[(int)segment].m_flags & NetSegment.Flags.Invert) != NetSegment.Flags.None)
