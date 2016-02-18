@@ -10,7 +10,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
         public int UIOrder { get { return 10; } }
 
         public string Name { get { return "Zonable Pedestrian Gravel"; } }
-        public string DisplayName { get { return "Zonable Pedestrian Gravel"; } }
+        public string DisplayName { get { return "[BETA] Zonable Pedestrian Gravel"; } }
         public string Description { get { return "Gravel roads allow pedestrians to walk fast and easy."; } }
         public string ShortDescription { get { return "Parking, zoneable, restricted traffic [Traffic++ V2 required]"; } }
 

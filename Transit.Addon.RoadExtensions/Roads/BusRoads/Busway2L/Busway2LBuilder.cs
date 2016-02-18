@@ -12,7 +12,7 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L
     public class Busway2LBuilder : Activable, IMultiNetInfoBuilderPart, ITrafficPlusPlusPart
     {
         public string Name { get { return "Small Busway"; } }
-        public string DisplayName { get { return "Busway"; } }
+        public string DisplayName { get { return "[BETA] Busway"; } }
         public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_2L; } }
         public int Order { get { return 110; } }
         public string ShortDescription { get { return "No parking, not zoneable, buses only [Traffic++ V2 required]"; } }
@@ -27,7 +27,7 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L
                     UICategory = RExExtendedMenus.ROADS_BUSWAYS,
                     UIOrder = 10,
                     Name = "Small Busway",
-                    DisplayName = "Busway",
+                    DisplayName = "[BETA] Busway",
                     Description = "A two-lane, two-way road suitable for buses only. Busway does not allow zoning next to it!",
                     ThumbnailsPath = @"Roads\BusRoads\Busway2L\thumbnails.png",
                     InfoTooltipPath = @"Roads\BusRoads\Busway2L\infotooltip.png"
@@ -37,7 +37,7 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L
                     UICategory = RExExtendedMenus.ROADS_BUSWAYS,
                     UIOrder = 11,
                     Name = "Small Busway Decoration Grass",
-                    DisplayName = "Busway with Grass",
+                    DisplayName = "[BETA] Busway with Grass",
                     Description = "A two-lane, two-way road with decorative grass suitable for buses only. Busway does not allow zoning next to it!",
                     ThumbnailsPath = @"Roads\BusRoads\Busway2L\thumbnails_grass.png",
                     InfoTooltipPath = @"Roads\BusRoads\Busway2L\infotooltip_grass.png"
@@ -47,7 +47,7 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L
                     UICategory = RExExtendedMenus.ROADS_BUSWAYS,
                     UIOrder = 12,
                     Name = "Small Busway Decoration Trees",
-                    DisplayName = "Busway with Trees",
+                    DisplayName = "[BETA] Busway with Trees",
                     Description = "A two-lane, two-way road with decorative trees suitable for buses only. Busway does not allow zoning next to it!",
                     ThumbnailsPath = @"Roads\BusRoads\Busway2L\thumbnails_trees.png",
                     InfoTooltipPath = @"Roads\BusRoads\Busway2L\infotooltip_trees.png"
