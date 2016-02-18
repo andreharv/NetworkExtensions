@@ -1,6 +1,7 @@
 ﻿using System;
 using Transit.Addon.RoadExtensions.Menus;
 using Transit.Framework;
+using Transit.Framework.Light;
 using Transit.Framework.Texturing;
 using UnityEngine;
 
@@ -66,14 +67,12 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
                         pedestrianBridge.m_lanes[1].m_position = 4f;
                         pedestrianBridge.m_lanes[1].m_width = 2f;
 
-                        const VehicleType vehiclesAllowed = VehicleType.ServiceVehicles;
-
-                        pedestrianBridge.m_lanes[2] = new NetInfoLane(pedestrianBridge.m_lanes[2], vehiclesAllowed, NetInfoLane.SpecialLaneType.PedestrianLane);
+                        pedestrianBridge.m_lanes[2] = new NetInfoLane(pedestrianBridge.m_lanes[2], VehicleType.ServiceVehicles, NetInfoLane.SpecialLaneType.PedestrianLane);
                         pedestrianBridge.m_lanes[2].m_position = -1.25f;
                         pedestrianBridge.m_lanes[2].m_speedLimit = 0.3f;
                         pedestrianBridge.m_lanes[2].m_laneType = NetInfo.LaneType.Vehicle;
 
-                        pedestrianBridge.m_lanes[3] = new NetInfoLane(pedestrianBridge.m_lanes[3], vehiclesAllowed, NetInfoLane.SpecialLaneType.PedestrianLane);
+                        pedestrianBridge.m_lanes[3] = new NetInfoLane(pedestrianBridge.m_lanes[3], VehicleType.ServiceVehicles, NetInfoLane.SpecialLaneType.PedestrianLane);
                         pedestrianBridge.m_lanes[3].m_position = 1.25f;
                         pedestrianBridge.m_lanes[3].m_speedLimit = 0.3f;
                         pedestrianBridge.m_lanes[3].m_laneType = NetInfo.LaneType.Vehicle;

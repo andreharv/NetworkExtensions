@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Transit.Addon.RoadExtensions.Compatibility;
 using Transit.Addon.RoadExtensions.Menus;
 using Transit.Framework;
 using Transit.Framework.Builders;
@@ -7,7 +8,7 @@ using Transit.Framework.Texturing;
 
 namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway6L
 {
-    public class Busway6LBuilder : Activable, IMultiNetInfoBuilderPart
+    public class Busway6LBuilder : Activable, IMultiNetInfoBuilderPart, ITrafficPlusPlusPart
     {
         public string Name { get { return NetInfos.New.BUSWAY_6L; } }
         public string DisplayName { get { return "Bus Lanes for Six-Lane Road"; } }

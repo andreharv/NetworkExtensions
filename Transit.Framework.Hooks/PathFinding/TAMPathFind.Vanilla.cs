@@ -59,12 +59,13 @@ namespace Transit.Framework.Hooks.PathFinding
             this.m_pathUnits = PathManager.instance.m_pathUnits;
         }
 
+
+
         public void ProcessPathUnit(uint unit, ref PathUnit data)
         {
             NetManager instance = Singleton<NetManager>.instance;
-            this.m_laneTypes = (NetInfo.LaneType) this.m_pathUnits.m_buffer[(int) ((UIntPtr) unit)].m_laneTypes;
-            this.m_vehicleTypes =
-                (VehicleInfo.VehicleType) this.m_pathUnits.m_buffer[(int) ((UIntPtr) unit)].m_vehicleTypes;
+            this.m_laneTypes = (NetInfo.LaneType)this.m_pathUnits.m_buffer[(int) ((UIntPtr) unit)].m_laneTypes;
+            this.m_vehicleTypes = (VehicleInfo.VehicleType)this.m_pathUnits.m_buffer[(int) ((UIntPtr) unit)].m_vehicleTypes;
             this.m_maxLength = this.m_pathUnits.m_buffer[(int) ((UIntPtr) unit)].m_length;
             this.m_pathFindIndex = (this.m_pathFindIndex + 1u & 32767u);
             this.m_pathRandomizer = new Randomizer(unit);
@@ -190,10 +191,10 @@ namespace Transit.Framework.Hooks.PathFinding
                 {
                     this.m_bufferMin[this.m_bufferMinPos] = num4 + 1;
                     BufferItem bufferItem6 = this.m_buffer[(this.m_bufferMinPos << 6) + num4];
-                    if (bufferItem6.m_position.m_segment == bufferItem.m_position.m_segment &&
+                    if (bufferItem6.m_position.m_segment == bufferItem.m_position.m_segment && 
                         bufferItem6.m_position.m_lane == bufferItem.m_position.m_lane)
                     {
-                        if ((byte) (bufferItem6.m_direction & NetInfo.Direction.Forward) != 0 &&
+                        if ((byte) (bufferItem6.m_direction & NetInfo.Direction.Forward) != 0 && 
                             bufferItem6.m_position.m_offset >= this.m_startOffsetA)
                         {
                             bufferItem5 = bufferItem6;
@@ -201,7 +202,7 @@ namespace Transit.Framework.Hooks.PathFinding
                             flag = true;
                             break;
                         }
-                        if ((byte) (bufferItem6.m_direction & NetInfo.Direction.Backward) != 0 &&
+                        if ((byte) (bufferItem6.m_direction & NetInfo.Direction.Backward) != 0 && 
                             bufferItem6.m_position.m_offset <= this.m_startOffsetA)
                         {
                             bufferItem5 = bufferItem6;
@@ -210,7 +211,7 @@ namespace Transit.Framework.Hooks.PathFinding
                             break;
                         }
                     }
-                    if (bufferItem6.m_position.m_segment == bufferItem2.m_position.m_segment &&
+                    if (bufferItem6.m_position.m_segment == bufferItem2.m_position.m_segment && 
                         bufferItem6.m_position.m_lane == bufferItem2.m_position.m_lane)
                     {
                         if ((byte) (bufferItem6.m_direction & NetInfo.Direction.Forward) != 0 &&
@@ -232,29 +233,21 @@ namespace Transit.Framework.Hooks.PathFinding
                     }
                     if ((byte) (bufferItem6.m_direction & NetInfo.Direction.Forward) != 0)
                     {
-                        ushort startNode =
-                            instance.m_segments.m_buffer[(int) bufferItem6.m_position.m_segment].m_startNode;
-                        this.ProcessItem(bufferItem6, startNode, ref instance.m_nodes.m_buffer[(int) startNode], 0,
-                            false);
+                        ushort startNode = instance.m_segments.m_buffer[(int) bufferItem6.m_position.m_segment].m_startNode;
+                        this.ProcessItem(bufferItem6, startNode, ref instance.m_nodes.m_buffer[(int) startNode], 0, false);
                     }
                     if ((byte) (bufferItem6.m_direction & NetInfo.Direction.Backward) != 0)
                     {
-                        ushort endNode =
-                            instance.m_segments.m_buffer[(int) bufferItem6.m_position.m_segment].m_endNode;
-                        this.ProcessItem(bufferItem6, endNode, ref instance.m_nodes.m_buffer[(int) endNode], 255,
-                            false);
+                        ushort endNode = instance.m_segments.m_buffer[(int) bufferItem6.m_position.m_segment].m_endNode;
+                        this.ProcessItem(bufferItem6, endNode, ref instance.m_nodes.m_buffer[(int) endNode], 255, false);
                     }
                     int num6 = 0;
                     ushort num7 = instance.m_lanes.m_buffer[(int) ((UIntPtr) bufferItem6.m_laneID)].m_nodes;
                     if (num7 != 0)
                     {
-                        ushort startNode2 =
-                            instance.m_segments.m_buffer[(int) bufferItem6.m_position.m_segment].m_startNode;
-                        ushort endNode2 =
-                            instance.m_segments.m_buffer[(int) bufferItem6.m_position.m_segment].m_endNode;
-                        bool flag2 = ((instance.m_nodes.m_buffer[(int) startNode2].m_flags |
-                                        instance.m_nodes.m_buffer[(int) endNode2].m_flags) & NetNode.Flags.Disabled) !=
-                                        NetNode.Flags.None;
+                        ushort startNode2 = instance.m_segments.m_buffer[(int) bufferItem6.m_position.m_segment].m_startNode;
+                        ushort endNode2 = instance.m_segments.m_buffer[(int) bufferItem6.m_position.m_segment].m_endNode;
+                        bool flag2 = ((instance.m_nodes.m_buffer[(int) startNode2].m_flags | instance.m_nodes.m_buffer[(int) endNode2].m_flags) & NetNode.Flags.Disabled) != NetNode.Flags.None;
                         while (num7 != 0)
                         {
                             NetInfo.Direction direction = NetInfo.Direction.None;
@@ -267,13 +260,9 @@ namespace Transit.Framework.Hooks.PathFinding
                             {
                                 direction |= NetInfo.Direction.Backward;
                             }
-                            if ((byte) (bufferItem6.m_direction & direction) != 0 &&
-                                (!flag2 ||
-                                    (instance.m_nodes.m_buffer[(int) num7].m_flags & NetNode.Flags.Disabled) !=
-                                    NetNode.Flags.None))
+                            if ((byte) (bufferItem6.m_direction & direction) != 0 && (!flag2 || (instance.m_nodes.m_buffer[(int) num7].m_flags & NetNode.Flags.Disabled) != NetNode.Flags.None))
                             {
-                                this.ProcessItem(bufferItem6, num7, ref instance.m_nodes.m_buffer[(int) num7],
-                                    laneOffset, true);
+                                this.ProcessItem(bufferItem6, num7, ref instance.m_nodes.m_buffer[(int) num7], laneOffset, true);
                             }
                             num7 = instance.m_nodes.m_buffer[(int) num7].m_nextLaneNode;
                             if (++num6 == 32768)
@@ -292,18 +281,18 @@ namespace Transit.Framework.Hooks.PathFinding
                     (byte) (expr_909_cp_0[(int) expr_909_cp_1].m_pathFindFlags | 8);
                 return;
             }
-            float num8 = bufferItem5.m_comparisonValue*this.m_maxLength;
+            float num8 = bufferItem5.m_comparisonValue * this.m_maxLength;
             this.m_pathUnits.m_buffer[(int) ((UIntPtr) unit)].m_length = num8;
             uint num9 = unit;
             int num10 = 0;
             int num11 = 0;
             PathUnit.Position position = bufferItem5.m_position;
-            if ((position.m_segment != bufferItem3.m_position.m_segment ||
-                    position.m_lane != bufferItem3.m_position.m_lane ||
-                    position.m_offset != bufferItem3.m_position.m_offset) &&
-                (position.m_segment != bufferItem4.m_position.m_segment ||
-                    position.m_lane != bufferItem4.m_position.m_lane ||
-                    position.m_offset != bufferItem4.m_position.m_offset))
+            if ((position.m_segment != bufferItem3.m_position.m_segment || 
+                 position.m_lane != bufferItem3.m_position.m_lane || 
+                 position.m_offset != bufferItem3.m_position.m_offset) && 
+                (position.m_segment != bufferItem4.m_position.m_segment || 
+                 position.m_lane != bufferItem4.m_position.m_lane || 
+                 position.m_offset != bufferItem4.m_position.m_offset))
             {
                 if (b != position.m_offset)
                 {
@@ -317,12 +306,12 @@ namespace Transit.Framework.Hooks.PathFinding
             for (int k = 0; k < 262144; k++)
             {
                 this.m_pathUnits.m_buffer[(int) ((UIntPtr) num9)].SetPosition(num10++, position);
-                if ((position.m_segment == bufferItem3.m_position.m_segment &&
-                        position.m_lane == bufferItem3.m_position.m_lane &&
-                        position.m_offset == bufferItem3.m_position.m_offset) ||
+                if ((position.m_segment == bufferItem3.m_position.m_segment && 
+                     position.m_lane == bufferItem3.m_position.m_lane && 
+                     position.m_offset == bufferItem3.m_position.m_offset) ||
                     (position.m_segment == bufferItem4.m_position.m_segment &&
-                        position.m_lane == bufferItem4.m_position.m_lane &&
-                        position.m_offset == bufferItem4.m_position.m_offset))
+                     position.m_lane == bufferItem4.m_position.m_lane &&
+                     position.m_offset == bufferItem4.m_position.m_offset))
                 {
                     this.m_pathUnits.m_buffer[(int) ((UIntPtr) num9)].m_positionCount = (byte) num10;
                     num11 += num10;
@@ -333,15 +322,12 @@ namespace Transit.Framework.Hooks.PathFinding
                         int num12 = 0;
                         while (num9 != 0u)
                         {
-                            this.m_pathUnits.m_buffer[(int) ((UIntPtr) num9)].m_length = num8*
-                                                                                            (float) (num11 - num10)/
-                                                                                            (float) num11;
+                            this.m_pathUnits.m_buffer[(int) ((UIntPtr) num9)].m_length = num8 * (float) (num11 - num10) / (float)num11;
                             num10 += (int) this.m_pathUnits.m_buffer[(int) ((UIntPtr) num9)].m_positionCount;
                             num9 = this.m_pathUnits.m_buffer[(int) ((UIntPtr) num9)].m_nextPathUnit;
                             if (++num12 >= 262144)
                             {
-                                CODebugBase<LogChannel>.Error(LogChannel.Core,
-                                    "Invalid list detected!\n" + Environment.StackTrace);
+                                CODebugBase<LogChannel>.Error(LogChannel.Core, "Invalid list detected!\n" + Environment.StackTrace);
                                 break;
                             }
                         }
@@ -368,8 +354,7 @@ namespace Transit.Framework.Hooks.PathFinding
                                 (byte) (expr_D15_cp_0[(int) expr_D15_cp_1].m_pathFindFlags | 8);
                             return;
                         }
-                        this.m_pathUnits.m_buffer[(int) ((UIntPtr) num13)] =
-                            this.m_pathUnits.m_buffer[(int) ((UIntPtr) num9)];
+                        this.m_pathUnits.m_buffer[(int) ((UIntPtr) num13)] = this.m_pathUnits.m_buffer[(int) ((UIntPtr) num9)];
                         this.m_pathUnits.m_buffer[(int) ((UIntPtr) num13)].m_referenceCount = 1;
                         this.m_pathUnits.m_buffer[(int) ((UIntPtr) num13)].m_pathFindFlags = 4;
                         this.m_pathUnits.m_buffer[(int) ((UIntPtr) num9)].m_nextPathUnit = num13;
@@ -398,14 +383,15 @@ namespace Transit.Framework.Hooks.PathFinding
             NetManager instance = Singleton<NetManager>.instance;
             bool flag = false;
             bool flag2 = false;
+            bool flag3 = false;
             int num = 0;
             NetInfo info = instance.m_segments.m_buffer[(int) item.m_position.m_segment].Info;
             if ((int) item.m_position.m_lane < info.m_lanes.Length)
             {
                 NetInfo.Lane lane = info.m_lanes[(int) item.m_position.m_lane];
                 flag = (lane.m_laneType == NetInfo.LaneType.Pedestrian);
-                flag2 = (lane.m_laneType == NetInfo.LaneType.Vehicle &&
-                            lane.m_vehicleType == VehicleInfo.VehicleType.Bicycle);
+                flag2 = (lane.m_laneType == NetInfo.LaneType.Vehicle && (lane.m_vehicleType & this.m_vehicleTypes) == VehicleInfo.VehicleType.Bicycle);
+                flag3 = lane.m_centerPlatform;
                 if ((byte) (lane.m_finalDirection & NetInfo.Direction.Forward) != 0)
                 {
                     num = lane.m_similarLaneIndex;
@@ -422,8 +408,7 @@ namespace Transit.Framework.Hooks.PathFinding
                     ushort segment = node.GetSegment(i);
                     if (segment != 0)
                     {
-                        this.ProcessItem(item, nodeID, segment, ref instance.m_segments.m_buffer[(int) segment],
-                            ref num, connectOffset, !flag, flag);
+                        this.ProcessItem(item, nodeID, segment, ref instance.m_segments.m_buffer[(int) segment], ref num, connectOffset, !flag, flag);
                     }
                 }
             }
@@ -433,38 +418,33 @@ namespace Transit.Framework.Hooks.PathFinding
                 int lane2 = (int) item.m_position.m_lane;
                 if (node.Info.m_class.m_service != ItemClass.Service.Beautification)
                 {
-                    bool flag3 = (node.m_flags & (NetNode.Flags.End | NetNode.Flags.Bend | NetNode.Flags.Junction)) !=
-                                    NetNode.Flags.None;
+                    bool flag4 = (node.m_flags & (NetNode.Flags.End | NetNode.Flags.Bend | NetNode.Flags.Junction)) != NetNode.Flags.None;
+                    bool flag5 = flag3 && (node.m_flags & (NetNode.Flags.End | NetNode.Flags.Junction)) == NetNode.Flags.None;
+                    ushort num2 = segment2;
+                    ushort num3 = segment2;
                     int laneIndex;
                     int laneIndex2;
-                    uint num2;
-                    uint num3;
-                    instance.m_segments.m_buffer[(int) segment2].GetLeftAndRightLanes(nodeID,
-                        NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, lane2, out laneIndex,
-                        out laneIndex2, out num2, out num3);
-                    ushort num4 = segment2;
-                    ushort num5 = segment2;
-                    if (num2 == 0u || num3 == 0u)
+                    uint num4;
+                    uint num5;
+                    instance.m_segments.m_buffer[(int) segment2].GetLeftAndRightLanes(nodeID, NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, lane2, flag5, out laneIndex, out laneIndex2, out num4, out num5);
+                    if (num4 == 0u || num5 == 0u)
                     {
                         ushort leftSegment;
                         ushort rightSegment;
-                        instance.m_segments.m_buffer[(int) segment2].GetLeftAndRightSegments(nodeID, out leftSegment,
-                            out rightSegment);
+                        instance.m_segments.m_buffer[(int) segment2].GetLeftAndRightSegments(nodeID, out leftSegment, out rightSegment);
                         int num6 = 0;
-                        while (leftSegment != 0 && leftSegment != segment2 && num2 == 0u)
+                        while (leftSegment != 0 && leftSegment != segment2 && num4 == 0u)
                         {
                             int num7;
                             int num8;
                             uint num9;
                             uint num10;
-                            instance.m_segments.m_buffer[(int) leftSegment].GetLeftAndRightLanes(nodeID,
-                                NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, -1, out num7, out num8,
-                                out num9, out num10);
+                            instance.m_segments.m_buffer[(int) leftSegment].GetLeftAndRightLanes(nodeID, NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, -1, flag5, out num7, out num8, out num9, out num10);
                             if (num10 != 0u)
                             {
-                                num4 = leftSegment;
+                                num2 = leftSegment;
                                 laneIndex = num8;
-                                num2 = num10;
+                                num4 = num10;
                             }
                             else
                             {
@@ -476,25 +456,22 @@ namespace Transit.Framework.Hooks.PathFinding
                             }
                         }
                         num6 = 0;
-                        while (rightSegment != 0 && rightSegment != segment2 && num3 == 0u)
+                        while (rightSegment != 0 && rightSegment != segment2 && num5 == 0u)
                         {
                             int num11;
                             int num12;
                             uint num13;
                             uint num14;
-                            instance.m_segments.m_buffer[(int) rightSegment].GetLeftAndRightLanes(nodeID,
-                                NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, -1, out num11, out num12,
-                                out num13, out num14);
+                            instance.m_segments.m_buffer[(int) rightSegment].GetLeftAndRightLanes(nodeID, NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, -1, flag5, out num11, out num12, out num13, out num14);
                             if (num13 != 0u)
                             {
-                                num5 = rightSegment;
+                                num3 = rightSegment;
                                 laneIndex2 = num11;
-                                num3 = num13;
+                                num5 = num13;
                             }
                             else
                             {
-                                rightSegment =
-                                    instance.m_segments.m_buffer[(int) rightSegment].GetRightSegment(nodeID);
+                                rightSegment = instance.m_segments.m_buffer[(int) rightSegment].GetRightSegment(nodeID);
                             }
                             if (++num6 == 8)
                             {
@@ -502,24 +479,19 @@ namespace Transit.Framework.Hooks.PathFinding
                             }
                         }
                     }
-                    if (num2 != 0u && (num4 != segment2 || flag3))
+                    if (num4 != 0u && (num2 != segment2 || flag4 || flag5))
                     {
-                        this.ProcessItem(item, nodeID, num4, ref instance.m_segments.m_buffer[(int) num4],
-                            connectOffset, laneIndex, num2);
+                        this.ProcessItem(item, nodeID, num2, ref instance.m_segments.m_buffer[(int) num2], connectOffset, laneIndex, num4);
                     }
-                    if (num3 != 0u && num3 != num2 && (num5 != segment2 || flag3))
+                    if (num5 != 0u && num5 != num4 && (num3 != segment2 || flag4 || flag5))
                     {
-                        this.ProcessItem(item, nodeID, num5, ref instance.m_segments.m_buffer[(int) num5],
-                            connectOffset, laneIndex2, num3);
+                        this.ProcessItem(item, nodeID, num3, ref instance.m_segments.m_buffer[(int) num3], connectOffset, laneIndex2, num5);
                     }
                     int laneIndex3;
                     uint lane3;
-                    if ((this.m_vehicleTypes & VehicleInfo.VehicleType.Bicycle) != VehicleInfo.VehicleType.None &&
-                        instance.m_segments.m_buffer[(int) segment2].GetClosestLane((int) item.m_position.m_lane,
-                            NetInfo.LaneType.Vehicle, VehicleInfo.VehicleType.Bicycle, out laneIndex3, out lane3))
+                    if ((this.m_vehicleTypes & VehicleInfo.VehicleType.Bicycle) != VehicleInfo.VehicleType.None && instance.m_segments.m_buffer[(int) segment2].GetClosestLane((int) item.m_position.m_lane, NetInfo.LaneType.Vehicle, VehicleInfo.VehicleType.Bicycle, out laneIndex3, out lane3))
                     {
-                        this.ProcessItem(item, nodeID, segment2, ref instance.m_segments.m_buffer[(int) segment2],
-                            connectOffset, laneIndex3, lane3);
+                        this.ProcessItem(item, nodeID, segment2, ref instance.m_segments.m_buffer[(int) segment2], connectOffset, laneIndex3, lane3);
                     }
                 }
                 else
@@ -529,9 +501,7 @@ namespace Transit.Framework.Hooks.PathFinding
                         ushort segment3 = node.GetSegment(j);
                         if (segment3 != 0 && segment3 != segment2)
                         {
-                            this.ProcessItem(item, nodeID, segment3,
-                                ref instance.m_segments.m_buffer[(int) segment3], ref num, connectOffset, false,
-                                true);
+                            this.ProcessItem(item, nodeID, segment3, ref instance.m_segments.m_buffer[(int) segment3], ref num, connectOffset, false, true);
                         }
                     }
                 }
@@ -543,14 +513,11 @@ namespace Transit.Framework.Hooks.PathFinding
                 }
                 int num15;
                 uint lane4;
-                if (laneType != NetInfo.LaneType.None && vehicleType != VehicleInfo.VehicleType.None &&
-                    instance.m_segments.m_buffer[(int) segment2].GetClosestLane(lane2, laneType, vehicleType,
-                        out num15, out lane4))
+                if (laneType != NetInfo.LaneType.None && vehicleType != VehicleInfo.VehicleType.None && instance.m_segments.m_buffer[(int) segment2].GetClosestLane(lane2, laneType, vehicleType, out num15, out lane4))
                 {
                     NetInfo.Lane lane5 = info.m_lanes[num15];
                     byte connectOffset2;
-                    if ((instance.m_segments.m_buffer[(int) segment2].m_flags & NetSegment.Flags.Invert) !=
-                        NetSegment.Flags.None == ((byte) (lane5.m_finalDirection & NetInfo.Direction.Backward) != 0))
+                    if ((instance.m_segments.m_buffer[(int) segment2].m_flags & NetSegment.Flags.Invert) != NetSegment.Flags.None == ((byte) (lane5.m_finalDirection & NetInfo.Direction.Backward) != 0))
                     {
                         connectOffset2 = 1;
                     }
@@ -558,17 +525,16 @@ namespace Transit.Framework.Hooks.PathFinding
                     {
                         connectOffset2 = 254;
                     }
-                    this.ProcessItem(item, nodeID, segment2, ref instance.m_segments.m_buffer[(int) segment2],
-                        connectOffset2, num15, lane4);
+                    this.ProcessItem(item, nodeID, segment2, ref instance.m_segments.m_buffer[(int) segment2], connectOffset2, num15, lane4);
                 }
             }
             else
             {
-                bool flag4 = (node.m_flags & (NetNode.Flags.End | NetNode.Flags.OneWayOut)) != NetNode.Flags.None;
-                bool flag5 = (byte) (this.m_laneTypes & NetInfo.LaneType.Pedestrian) != 0;
+                bool flag6 = (node.m_flags & (NetNode.Flags.End | NetNode.Flags.OneWayOut)) != NetNode.Flags.None;
+                bool flag7 = (byte) (this.m_laneTypes & NetInfo.LaneType.Pedestrian) != 0;
                 bool enablePedestrian = false;
                 byte connectOffset3 = 0;
-                if (flag5)
+                if (flag7)
                 {
                     if (flag2)
                     {
@@ -579,7 +545,7 @@ namespace Transit.Framework.Hooks.PathFinding
                     {
                         if (this.m_vehicleLane != item.m_laneID)
                         {
-                            flag5 = false;
+                            flag7 = false;
                         }
                         else
                         {
@@ -602,29 +568,25 @@ namespace Transit.Framework.Hooks.PathFinding
                     {
                         break;
                     }
-                    if (this.ProcessItem(item, nodeID, num16, ref instance.m_segments.m_buffer[(int) num16], ref num,
-                        connectOffset, true, enablePedestrian))
+                    if (this.ProcessItem(item, nodeID, num16, ref instance.m_segments.m_buffer[(int) num16], ref num, connectOffset, true, enablePedestrian))
                     {
-                        flag4 = true;
+                        flag6 = true;
                     }
                     num16 = instance.m_segments.m_buffer[(int) num16].GetRightSegment(nodeID);
                 }
-                if (flag4)
+                if (flag6 && (this.m_vehicleTypes & VehicleInfo.VehicleType.Tram) == VehicleInfo.VehicleType.None)
                 {
                     num16 = item.m_position.m_segment;
-                    this.ProcessItem(item, nodeID, num16, ref instance.m_segments.m_buffer[(int) num16], ref num,
-                        connectOffset, true, false);
+                    this.ProcessItem(item, nodeID, num16, ref instance.m_segments.m_buffer[(int) num16], ref num, connectOffset, true, false);
                 }
-                if (flag5)
+                if (flag7)
                 {
                     num16 = item.m_position.m_segment;
                     int laneIndex4;
                     uint lane6;
-                    if (instance.m_segments.m_buffer[(int) num16].GetClosestLane((int) item.m_position.m_lane,
-                        NetInfo.LaneType.Pedestrian, this.m_vehicleTypes, out laneIndex4, out lane6))
+                    if (instance.m_segments.m_buffer[(int) num16].GetClosestLane((int) item.m_position.m_lane, NetInfo.LaneType.Pedestrian, this.m_vehicleTypes, out laneIndex4, out lane6))
                     {
-                        this.ProcessItem(item, nodeID, num16, ref instance.m_segments.m_buffer[(int) num16],
-                            connectOffset3, laneIndex4, lane6);
+                        this.ProcessItem(item, nodeID, num16, ref instance.m_segments.m_buffer[(int) num16], connectOffset3, laneIndex4, lane6);
                     }
                 }
             }
@@ -634,9 +596,7 @@ namespace Transit.Framework.Hooks.PathFinding
                 ushort segment4 = instance.m_lanes.m_buffer[(int) ((UIntPtr) node.m_lane)].m_segment;
                 if (segment4 != 0 && segment4 != item.m_position.m_segment)
                 {
-                    this.ProcessItem(item, nodeID, targetDisabled, segment4,
-                        ref instance.m_segments.m_buffer[(int) segment4], node.m_lane, node.m_laneOffset,
-                        connectOffset);
+                    this.ProcessItem(item, nodeID, targetDisabled, segment4, ref instance.m_segments.m_buffer[(int) segment4], node.m_lane, node.m_laneOffset, connectOffset);
                 }
             }
         }
@@ -701,7 +661,7 @@ namespace Transit.Framework.Hooks.PathFinding
                             instance.m_lanes.m_buffer[(int) ((UIntPtr) lane)].CalculatePosition((float) offset*
                                                                                                 0.003921569f);
                         float num9 = Vector3.Distance(a, b);
-                        BufferItem item2;
+                        BufferItem item2 = new BufferItem();
                         item2.m_position.m_segment = segmentID;
                         item2.m_position.m_lane = (byte) num8;
                         item2.m_position.m_offset = offset;
@@ -841,7 +801,7 @@ namespace Transit.Framework.Hooks.PathFinding
                     (float)
                         (randomizer.Int32(900,
                             1000 +
-                            (int)
+                            (int) 
                                 (instance.m_segments.m_buffer[(int) item.m_position.m_segment].m_trafficDensity*10)) +
                             this.m_pathRandomizer.Int32(20u))*0.001f;
             }
@@ -969,7 +929,7 @@ namespace Transit.Framework.Hooks.PathFinding
                             }
                             if (!this.m_ignoreBlocked &&
                                 (segment.m_flags & NetSegment.Flags.Blocked) != NetSegment.Flags.None &&
-                                (byte)
+                                (byte) 
                                     (lane2.m_laneType &
                                         (NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle)) != 0)
                             {
