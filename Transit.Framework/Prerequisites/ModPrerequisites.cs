@@ -47,7 +47,20 @@ namespace Transit.Framework.Prerequisites
             return AppDomain
                 .CurrentDomain
                 .GetAssemblies()
-                .SelectMany(a => a.GetTypes())
+                .SelectMany(a =>
+                {
+                    try
+                    {
+                        return a.GetTypes();
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.Log("TFW: Crashed-Prerequisites looking into assembly " + a.FullName);
+                        Debug.Log("TFW: " + ex.Message);
+                        Debug.Log("TFW: " + ex.ToString());
+                        return new Type[] {};
+                    }
+                })
                 .Where(t => !t.IsAbstract && !t.IsInterface)
                 .Where(t => prereqType.IsAssignableFrom(t))
                 .Select(t =>
