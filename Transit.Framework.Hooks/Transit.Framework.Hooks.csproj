@@ -55,8 +55,6 @@
     <Compile Include="AI\TAMNetAI.CheckBuildPosition.cs" />
     <Compile Include="AI\TAMRoadAI.Snapping.cs" />
     <Compile Include="HooksInstaller.cs" />
-    <Compile Include="PathFinding\TAMPathFind.cs" />
-    <Compile Include="PathFinding\TAMPathFind.Vanilla.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\TAMGeneratedGroupPanel.cs" />
     <Compile Include="UI\TAMRoadsGroupPanel.cs" />
