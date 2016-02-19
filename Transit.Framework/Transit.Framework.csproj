@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activable.cs" />
+    <Compile Include="AssetInfo.cs" />
     <Compile Include="Texturing\ITextureBlenderComponent.cs" />
     <Compile Include="Texturing\PathTextureProvider.cs" />
     <Compile Include="Texturing\Point.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="_Extensions\NetInfoExtensions.Node.cs" />
     <Compile Include="_Extensions\EnumerableExtensions.cs" />
     <Compile Include="_Extensions\PrefabInfoExtensions.cs" />
+    <Compile Include="_Extensions\StringExtensions.cs" />
     <Compile Include="_Extensions\TextureExtensions.cs" />
     <Compile Include="AssetManager.cs" />
     <Compile Include="Debug.cs" />

@@ -66,6 +66,33 @@ namespace Transit.Framework
             }
         }
 
+        public IEnumerable<AssetInfo> LoadAllAssets(string modPath)
+        {
+            var modDirectory = new DirectoryInfo(modPath);
+
+            var files = new List<FileInfo>();
+            files.AddRange(modDirectory.GetFiles("*.png", SearchOption.AllDirectories));
+            files.AddRange(modDirectory.GetFiles("*.obj", SearchOption.AllDirectories));
+
+            foreach (var assetFile in files)
+            {
+                var assetFullPath = assetFile.FullName;
+                var assetRelativePath = assetFile.FullName.Replace(modPath, "").TrimStart(new[] { '\\', '/' });
+                var assetName = assetFile.Name;
+
+                switch (assetFile.Extension.ToLower())
+                {
+                    case ".png":
+                        yield return new AssetInfo(assetRelativePath, AssetType.Texture, LoadTextureData(assetFullPath));
+                        break;
+
+                    case ".obj":
+                        yield return new AssetInfo(assetRelativePath, AssetType.Mesh, LoadMesh(assetFullPath, assetName));
+                        break;
+                }
+            }
+        }
+
         private static byte[] LoadTextureData(string fullPath)
         {
             return File.ReadAllBytes(fullPath);
