@@ -1,20 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Transit.Addon.RoadExtensions.Compatibility;
 using Transit.Addon.RoadExtensions.Menus;
 using Transit.Addon.RoadExtensions.Menus.Roads;
 using Transit.Framework;
 using Transit.Framework.Builders;
+using Transit.Framework.Light;
 using Transit.Framework.Texturing;
 
 namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L
 {
-    public class Busway2LBuilder : Activable, IMultiNetInfoBuilderPart
+    public class Busway2LBuilder : Activable, IMultiNetInfoBuilderPart, ITrafficPlusPlusPart
     {
         public string Name { get { return "Small Busway"; } }
-        public string DisplayName { get { return "Busway"; } }
+        public string DisplayName { get { return "[BETA] Busway"; } }
         public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_2L; } }
         public int Order { get { return 110; } }
-        public string ShortDescription { get { return "No parking, not zoneable, buses only"; } }
+        public string ShortDescription { get { return "No parking, not zoneable, buses only [Traffic++ V2 required]"; } }
         public NetInfoVersion SupportedVersions { get { return NetInfoVersion.AllWithDecoration; } }
 
         public IEnumerable<IMenuItemBuilder> MenuItemBuilders
@@ -26,7 +28,7 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L
                     UICategory = RExExtendedMenus.ROADS_BUSWAYS,
                     UIOrder = 10,
                     Name = "Small Busway",
-                    DisplayName = "Busway",
+                    DisplayName = "[BETA] Busway",
                     Description = "A two-lane, two-way road suitable for buses only. Busway does not allow zoning next to it!",
                     ThumbnailsPath = @"Roads\BusRoads\Busway2L\thumbnails.png",
                     InfoTooltipPath = @"Roads\BusRoads\Busway2L\infotooltip.png"
@@ -36,7 +38,7 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L
                     UICategory = RExExtendedMenus.ROADS_BUSWAYS,
                     UIOrder = 11,
                     Name = "Small Busway Decoration Grass",
-                    DisplayName = "Busway with Grass",
+                    DisplayName = "[BETA] Busway with Grass",
                     Description = "A two-lane, two-way road with decorative grass suitable for buses only. Busway does not allow zoning next to it!",
                     ThumbnailsPath = @"Roads\BusRoads\Busway2L\thumbnails_grass.png",
                     InfoTooltipPath = @"Roads\BusRoads\Busway2L\infotooltip_grass.png"
@@ -46,7 +48,7 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L
                     UICategory = RExExtendedMenus.ROADS_BUSWAYS,
                     UIOrder = 12,
                     Name = "Small Busway Decoration Trees",
-                    DisplayName = "Busway with Trees",
+                    DisplayName = "[BETA] Busway with Trees",
                     Description = "A two-lane, two-way road with decorative trees suitable for buses only. Busway does not allow zoning next to it!",
                     ThumbnailsPath = @"Roads\BusRoads\Busway2L\thumbnails_trees.png",
                     InfoTooltipPath = @"Roads\BusRoads\Busway2L\infotooltip_trees.png"
@@ -197,8 +199,10 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L
             info.m_UnlockMilestone = highwayInfo.m_UnlockMilestone;
 
             info.m_lanes = info.m_lanes.Where(l => l.m_laneType != NetInfo.LaneType.Parking).ToArray();
-            foreach (var lane in info.m_lanes)
+            for (int i = 0; i < info.m_lanes.Count(); i++)
             {
+                var lane = info.m_lanes[i];
+
                 if (lane.m_laneType == NetInfo.LaneType.Vehicle)
                 {
                     if (version == NetInfoVersion.Ground)
@@ -212,12 +216,14 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L
                         {
                             lane.m_position += 1f;
                             lane.m_stopOffset -= 1f;
-                        } 
+                        }
                     }
 
                     lane.m_speedLimit = 1.6f;
                     lane.m_laneType = NetInfo.LaneType.TransportVehicle;
                     lane.SetBusLaneProps();
+
+                    info.m_lanes[i] = new NetInfoLane(lane, VehicleType.Bus | VehicleType.EmergencyVehicles, NetInfoLane.SpecialLaneType.BusLane);
                 }
             }
 

@@ -31,7 +31,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
 
                 for (var i = 0; i < config.LanesToAdd; i++)
                 {
-                    var newLane = sourceLane.Clone();
+                    var newLane = sourceLane.CloneWithoutStops();
                     tempLanes.Add(newLane);
                 }
 
@@ -141,8 +141,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                 }
 
                 //Debug.Log(">>>> Lane Id : " + i + " Position : " + l.m_position);
-
-                l.m_allowStop = false;
+                l.m_stopType = VehicleInfo.VehicleType.None;
                 l.m_width = config.LaneWidth;
 
                 l.m_laneProps = l.m_laneProps.Clone();
@@ -201,18 +200,25 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                 {
                     if (i == 0)
                     {
-                        l.m_allowStop = config.IsTwoWay;
+                        if (config.IsTwoWay)
+                        {
+                            l.m_stopType = VehicleInfo.VehicleType.Car;
+                        }
+                        else
+                        {
+                            l.m_stopType = VehicleInfo.VehicleType.None;
+                        }
                     }
                     else if (i == vehicleLanes.Length - 1)
                     {
-                        l.m_allowStop = true;
+                        l.m_stopType = VehicleInfo.VehicleType.Car;
                     }
                     else
                     {
-                        l.m_allowStop = false;
+                        l.m_stopType = VehicleInfo.VehicleType.None;
                     }
 
-                    if (l.m_allowStop)
+                    if (l.m_stopType == VehicleInfo.VehicleType.Car)
                     {
                         if (l.m_position < 0)
                         {
@@ -226,7 +232,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                 }
                 else
                 {
-                    l.m_allowStop = false;
+                    l.m_stopType = VehicleInfo.VehicleType.None;
                 }
             }
 

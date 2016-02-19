@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using UnityEngine;
 
 namespace Transit.Framework
 {
@@ -9,7 +10,20 @@ namespace Transit.Framework
         {
             return appDomain
                 .GetAssemblies()
-                .SelectMany(a => a.GetTypes())
+                .SelectMany(a =>
+                {
+                    try
+                    {
+                        return a.GetTypes();
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.Log("TFW: GetTypeFromName looking into assembly " + a.FullName);
+                        Debug.Log("TFW: " + ex.Message);
+                        Debug.Log("TFW: " + ex.ToString());
+                        return new Type[] { };
+                    }
+                })
                 .FirstOrDefault(t => string.Equals(t.Name, name, StringComparison.InvariantCultureIgnoreCase));
         }
     }
