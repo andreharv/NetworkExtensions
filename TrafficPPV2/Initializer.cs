@@ -19,8 +19,8 @@ namespace CSL_Traffic
         static Queue<IEnumerator> sm_actionQueue = new Queue<IEnumerator>();
         static System.Object sm_queueLock = new System.Object();
         static bool sm_localizationInitialized;
-        static readonly string[] sm_collectionPrefixes = new string[] { "", "Europe " };
-        
+        static readonly string[] sm_collectionPrefixes = new string[] { "", "Europe ", "Winter " };
+
         Dictionary<string, Texture2D> m_customTextures;
         Dictionary<string, VehicleAI> m_replacedAIs;
         bool m_initialized;
