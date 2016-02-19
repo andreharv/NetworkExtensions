@@ -39,7 +39,7 @@ namespace CSL_Traffic
 
         void Start()
         {
-            if ((UserMod.Options & OptionsManager.ModOptions.GhostMode) != OptionsManager.ModOptions.GhostMode)
+            if ((TrafficMod.Options & OptionsManager.ModOptions.GhostMode) != OptionsManager.ModOptions.GhostMode)
             {
                 ReplacePathManager();
                 //ReplaceTransportManager();
@@ -52,7 +52,7 @@ namespace CSL_Traffic
 
             if (level == 6)
             {
-                Logger.LogInfo("Game level was loaded. Options enabled: \n\t" + UserMod.Options);
+                Logger.LogInfo("Game level was loaded. Options enabled: \n\t" + TrafficMod.Options);
 
                 m_initialized = false;
 
@@ -73,7 +73,7 @@ namespace CSL_Traffic
 
         public void OnLevelUnloading()
         {
-            if ((UserMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
+            if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
             {
                 for (uint i = 0; i < PrefabCollection<CitizenInfo>.LoadedCount(); i++)
                 {
@@ -97,7 +97,7 @@ namespace CSL_Traffic
                 return;
             }
 
-            if ((UserMod.Options & OptionsManager.ModOptions.GhostMode) == OptionsManager.ModOptions.GhostMode)
+            if ((TrafficMod.Options & OptionsManager.ModOptions.GhostMode) == OptionsManager.ModOptions.GhostMode)
                 return;
 
             if (!Singleton<LoadingManager>.instance.m_loadingComplete)
@@ -121,7 +121,7 @@ namespace CSL_Traffic
 
             // Checks if CustomPathManager have been replaced by another mod and prints a warning in the log
             // This check is only run in the first two minutes since game is loaded
-            if (!m_incompatibilityWarning && (UserMod.Options & OptionsManager.ModOptions.GhostMode) == OptionsManager.ModOptions.None)
+            if (!m_incompatibilityWarning && (TrafficMod.Options & OptionsManager.ModOptions.GhostMode) == OptionsManager.ModOptions.None)
             {
                 if ((Time.realtimeSinceStartup - m_gameStartedTime) < 120f)
                 {
@@ -249,7 +249,7 @@ namespace CSL_Traffic
             {
                 try
                 {
-                    if ((UserMod.Options & OptionsManager.ModOptions.GhostMode) != OptionsManager.ModOptions.GhostMode && this.m_level == 6)
+                    if ((TrafficMod.Options & OptionsManager.ModOptions.GhostMode) != OptionsManager.ModOptions.GhostMode && this.m_level == 6)
                     {
                         ReplaceVehicleAI(healthCareVehicleCollection);
                         ReplaceVehicleAI(publicTansportVehicleCollection);
@@ -269,10 +269,10 @@ namespace CSL_Traffic
 
                         //AddTool<CustomTransportTool>(toolController);
 
-                        if ((UserMod.Options & OptionsManager.ModOptions.BetaTestRoadCustomizerTool) == OptionsManager.ModOptions.BetaTestRoadCustomizerTool)
+                        if ((TrafficMod.Options & OptionsManager.ModOptions.BetaTestRoadCustomizerTool) == OptionsManager.ModOptions.BetaTestRoadCustomizerTool)
                             AddTool<RoadCustomizerTool>(toolController);
 
-                        if ((UserMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
+                        if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
                         {
                             for (uint i = 0; i < PrefabCollection<CitizenInfo>.LoadedCount(); i++)
                             {
@@ -580,7 +580,7 @@ namespace CSL_Traffic
             vehicle.m_vehicleAI = newAI;
             newAI.m_info = vehicle;
 
-            if ((UserMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
+            if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
             {
                 SetRealisitcSpeeds(vehicle, true);
             }

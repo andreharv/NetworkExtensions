@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace CSL_Traffic
 {
-    public class CSLTraffic : LoadingExtensionBase, IUserMod
+    public class TrafficMod : LoadingExtensionBase, IUserMod
     {
-        public const ulong WORKSHOP_ID = 409184143ul;
+        public const ulong WORKSHOP_ID = 626024868ul;
 
         public static OptionsManager.ModOptions Options = OptionsManager.ModOptions.None;
         static OptionsManager sm_optionsManager;
@@ -14,12 +14,12 @@ namespace CSL_Traffic
 
         public string Name
         {
-            get { return "Traffic++"; }
+            get { return "Traffic++ V2"; }
         }
 
         public string Description
         {
-            get { return "Adds zonable pedestrian paths and other traffic improvements."; }
+            get { return "Adds transit routing and restriction features."; }
         }
 
         public void OnSettingsUI(UIHelperBase helper)

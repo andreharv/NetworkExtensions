@@ -233,26 +233,26 @@ namespace CSL_Traffic
             //this.m_optionsPanel.GetComponent<UIPanel>().isVisible = false;
 
             Options options = new Options();
-            UserMod.Options = ModOptions.None;
+            TrafficMod.Options = ModOptions.None;
             if (this.m_realisticSpeedsCheckBox.isChecked)
             {
                 options.realisticSpeeds = true;
-                UserMod.Options |= ModOptions.UseRealisticSpeeds;
+                TrafficMod.Options |= ModOptions.UseRealisticSpeeds;
             }
             if (this.m_noDespawnCheckBox.isChecked)
             {
                 options.noDespawn = true;
-                UserMod.Options |= ModOptions.NoDespawn;
+                TrafficMod.Options |= ModOptions.NoDespawn;
             }
             if (this.m_improvedAICheckBox.isChecked)
             {
                 options.improvedAI = true;
-                UserMod.Options |= ModOptions.ImprovedAI;
+                TrafficMod.Options |= ModOptions.ImprovedAI;
             }
             if (this.m_betaTestRoadCustomizerCheckBox.isChecked)
             {
                 options.betaTestRoadCustomizer = true;
-                UserMod.Options |= ModOptions.BetaTestRoadCustomizerTool;
+                TrafficMod.Options |= ModOptions.BetaTestRoadCustomizerTool;
             }
             //if (this.m_noStopForCrossing.isChecked)
             //{
@@ -262,7 +262,7 @@ namespace CSL_Traffic
             if (this.m_ghostModeCheckBox.isChecked)
             {
                 options.ghostMode = true;
-                UserMod.Options |= ModOptions.GhostMode;
+                TrafficMod.Options |= ModOptions.GhostMode;
             }
 
             try
@@ -281,7 +281,7 @@ namespace CSL_Traffic
 
         public void LoadOptions()
         {
-            UserMod.Options = ModOptions.None;
+            TrafficMod.Options = ModOptions.None;
             Options options = new Options();
             try
             {
@@ -310,25 +310,25 @@ namespace CSL_Traffic
             //this.m_noStopForCrossing.isChecked = options.noStopForCrossing;
 
             if (options.realisticSpeeds)
-                UserMod.Options |= ModOptions.UseRealisticSpeeds;
+                TrafficMod.Options |= ModOptions.UseRealisticSpeeds;
 
             if (options.noDespawn)
-                UserMod.Options |= ModOptions.NoDespawn;
+                TrafficMod.Options |= ModOptions.NoDespawn;
 
             if (options.improvedAI)
-                UserMod.Options |= ModOptions.ImprovedAI;
+                TrafficMod.Options |= ModOptions.ImprovedAI;
 
             //if (options.noStopForCrossing)
             //    CSLTraffic.Options |= ModOptions.noStopForCrossing;
 
             if (options.betaTestRoadCustomizer)
-                UserMod.Options |= ModOptions.BetaTestRoadCustomizerTool;
+                TrafficMod.Options |= ModOptions.BetaTestRoadCustomizerTool;
 
             if (options.ghostMode)
-                UserMod.Options |= ModOptions.GhostMode;
+                TrafficMod.Options |= ModOptions.GhostMode;
 
             if (options.fixCargoTrucksNotSpawning)
-                UserMod.Options |= ModOptions.FixCargoTrucksNotSpawning;
+                TrafficMod.Options |= ModOptions.FixCargoTrucksNotSpawning;
         }
 
         //void OnLevelWasLoaded(int level)
