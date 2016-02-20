@@ -76,7 +76,7 @@
     <Compile Include="PathFinding\CustomPathFind.cs" />
     <Compile Include="PathFinding\CustomPathManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RoadManager.Data.cs" />
+    <Compile Include="RoadManager.LaneSerializer.cs" />
     <Compile Include="RoadManager.cs" />
     <Compile Include="Tools\RoadCustomizerTool.cs" />
     <Compile Include="UI\RoadCustomizerGroupPanel.cs" />

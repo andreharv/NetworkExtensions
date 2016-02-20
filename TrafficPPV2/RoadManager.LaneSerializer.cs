@@ -9,7 +9,7 @@ namespace CSL_Traffic
 {
     public static partial class RoadManager
     {
-        public class Data : SerializableDataExtensionBase
+        public class LaneSerializer : SerializableDataExtensionBase
         {
             const string LANE_DATA_ID = "Traffic++_RoadManager_Lanes";
             
