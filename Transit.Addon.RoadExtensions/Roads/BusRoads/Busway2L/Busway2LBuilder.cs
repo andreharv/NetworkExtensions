@@ -198,6 +198,8 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L
             info.m_UnlockMilestone = highwayInfo.m_UnlockMilestone;
 
             info.m_lanes = info.m_lanes.Where(l => l.m_laneType != NetInfo.LaneType.Parking).ToArray();
+            info.m_laneTypes = NetInfo.LaneType.Pedestrian | NetInfo.LaneType.PublicTransport | NetInfo.LaneType.TransportVehicle;
+
             for (int i = 0; i < info.m_lanes.Count(); i++)
             {
                 var lane = info.m_lanes[i];
@@ -222,7 +224,7 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L
                     lane.m_laneType = NetInfo.LaneType.TransportVehicle;
                     lane.SetBusLaneProps();
 
-                    info.m_lanes[i] = new NetInfoLane(lane, VehicleType.Bus | VehicleType.EmergencyVehicles, NetInfoLane.SpecialLaneType.BusLane);
+                    info.m_lanes[i] = new NetInfoLane(lane, ExtendedVehicleType.Bus | ExtendedVehicleType.EmergencyVehicles);
                 }
             }
 

@@ -49,9 +49,11 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
             {
                 case NetInfoVersion.Ground:
                     {
-                        var lanes = new NetInfo.Lane[4];
-                        Array.Copy(info.m_lanes, lanes, 2);
-                        Array.Copy(info.m_lanes, 4, lanes, 2, 2);
+                        info.m_lanes = info
+                            .m_lanes
+                            .Where(l => l.m_laneType != NetInfo.LaneType.Parking)
+                            .OrderBy(l => l.m_position)
+                            .ToArray();
 
                         info.m_lanes[0].m_position = -4f;
                         info.m_lanes[0].m_width = 2f;
@@ -61,24 +63,25 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
                             info.m_lanes[0].m_laneProps = ScriptableObject.CreateInstance<NetLaneProps>();
                             info.m_lanes[0].m_laneProps.m_props = new NetLaneProps.Prop[1];
                             Array.Copy(pedestrianVanilla.m_lanes[0].m_laneProps.m_props, info.m_lanes[0].m_laneProps.m_props, 1);
-                            info.m_lanes[0].m_laneProps.m_props[0].m_position.x = 0.0f;
                         }
+                        info.m_lanes[0].m_laneProps.m_props[0].m_position.x = 0.0f;
+                        info.m_lanes[0].m_stopType = VehicleInfo.VehicleType.None;
 
-                        info.m_lanes[1].m_position = 4f;
-                        info.m_lanes[1].m_width = 2f;
+                        info.m_lanes[3].m_position = 4f;
+                        info.m_lanes[3].m_width = 2f;
+                        info.m_lanes[3].m_stopType = VehicleInfo.VehicleType.None;
+
+                        info.m_lanes[1] = new NetInfoLane(info.m_lanes[1], ExtendedVehicleType.ServiceVehicles);
+                        info.m_lanes[1].m_position = -1.25f;
+                        info.m_lanes[1].m_speedLimit = 0.3f;
                         info.m_lanes[1].m_stopType = VehicleInfo.VehicleType.None;
+                        info.m_lanes[1].m_laneType = NetInfo.LaneType.Vehicle;
 
-                        info.m_lanes[2] = new NetInfoLane(info.m_lanes[2], VehicleType.ServiceVehicles, NetInfoLane.SpecialLaneType.PedestrianLane);
-                        info.m_lanes[2].m_position = -1.25f;
+                        info.m_lanes[2] = new NetInfoLane(info.m_lanes[2], ExtendedVehicleType.ServiceVehicles);
+                        info.m_lanes[2].m_position = 1.25f;
                         info.m_lanes[2].m_speedLimit = 0.3f;
                         info.m_lanes[2].m_stopType = VehicleInfo.VehicleType.None;
                         info.m_lanes[2].m_laneType = NetInfo.LaneType.Vehicle;
-
-                        info.m_lanes[3] = new NetInfoLane(info.m_lanes[3], VehicleType.ServiceVehicles, NetInfoLane.SpecialLaneType.PedestrianLane);
-                        info.m_lanes[3].m_position = 1.25f;
-                        info.m_lanes[3].m_speedLimit = 0.3f;
-                        info.m_lanes[3].m_stopType = VehicleInfo.VehicleType.None;
-                        info.m_lanes[3].m_laneType = NetInfo.LaneType.Vehicle;
                     }
                     break;
 
@@ -90,10 +93,8 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
                         lanes[0].m_stopType = VehicleInfo.VehicleType.None;
                         lanes[0].m_laneProps = null;
 
-                        const VehicleType vehiclesAllowed = VehicleType.ServiceVehicles;
-
                         // Backward Lane
-                        lanes[1] = new NetInfoLane(vehiclesAllowed, NetInfoLane.SpecialLaneType.PedestrianLane);
+                        lanes[1] = new NetInfoLane(ExtendedVehicleType.ServiceVehicles);
                         lanes[1].m_position = -1.5f;
                         lanes[1].m_width = 2f;
                         lanes[1].m_speedLimit = 0.3f;
@@ -103,7 +104,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
                         lanes[1].m_vehicleType = VehicleInfo.VehicleType.Car;
 
                         // Forward Lane
-                        lanes[2] = new NetInfoLane(vehiclesAllowed, NetInfoLane.SpecialLaneType.PedestrianLane);
+                        lanes[2] = new NetInfoLane(ExtendedVehicleType.ServiceVehicles);
                         lanes[2].m_position = 1.5f;
                         lanes[2].m_width = 2f;
                         lanes[2].m_speedLimit = 0.3f;

@@ -4,6 +4,8 @@ using ColossalFramework.Math;
 using CSL_Traffic.Extensions;
 using System;
 using System.Reflection;
+using System.Runtime.CompilerServices;
+using Transit.Framework.Unsafe;
 using UnityEngine;
 
 namespace CSL_Traffic
@@ -232,62 +234,73 @@ namespace CSL_Traffic
             {
                 case CustomTransportTool.Mode.NewLine:
                     {
-                        Vector3 vector;
-                        ushort num;
-                        int hoverStopIndex;
-                        int hoverSegmentIndex;
-                        if ((Singleton<TransportManager>.instance as CustomTransportManager).RayCast(this.m_mouseRay, this.m_mouseRayLength, out vector, out num, out hoverStopIndex, out hoverSegmentIndex))
+                        Vector3 zero = Vector3.zero;
+                        ushort num = 0;
+                        int hoverStopIndex = -1;
+                        int hoverSegmentIndex = -1;
+                        bool flag = false;
+                        if (this.m_mouseRayValid)
+                        {
+                            flag = Singleton<TransportManager>.instance.RayCast(this.m_mouseRay, this.m_mouseRayLength, out zero, out num, out hoverStopIndex, out hoverSegmentIndex);
+                        }
+                        if (flag)
                         {
                             TransportInfo info = Singleton<TransportManager>.instance.m_lines.m_buffer[(int)num].Info;
-                            bool flag = info == prefab;
-                            if (flag)
+                            if (info == prefab)
                             {
-                                flag = this.EnsureTempLine(prefab, num, -2, -2, vector, false);
-                            }
-                            if (flag)
-                            {
-                                this.m_hitPosition = vector;
-                                this.m_fixedPlatform = false;
-                                this.m_hoverStopIndex = hoverStopIndex;
-                                this.m_hoverSegmentIndex = hoverSegmentIndex;
-                                if (this.m_hoverSegmentIndex != -1 && !Singleton<NetManager>.instance.CheckLimits())
+                                bool flag2 = this.EnsureTempLine(prefab, num, -2, -2, zero, false);
+                                if (flag2)
                                 {
-                                    toolErrors |= ToolBase.ToolErrors.TooManyObjects;
+                                    this.m_hitPosition = zero;
+                                    this.m_fixedPlatform = false;
+                                    this.m_hoverStopIndex = hoverStopIndex;
+                                    this.m_hoverSegmentIndex = hoverSegmentIndex;
+                                    if (this.m_hoverSegmentIndex != -1 && !Singleton<NetManager>.instance.CheckLimits())
+                                    {
+                                        toolErrors |= ToolBase.ToolErrors.TooManyObjects;
+                                    }
+                                }
+                                else
+                                {
+                                    this.EnsureTempLine(prefab, 0, -2, -2, Vector3.zero, false);
+                                    this.m_hoverStopIndex = -1;
+                                    this.m_hoverSegmentIndex = -1;
+                                    toolErrors |= ToolBase.ToolErrors.RaycastFailed;
                                 }
                             }
                             else
                             {
-                                this.EnsureTempLine(prefab, 0, -2, -2, Vector3.zero, false);
-                                this.m_hoverStopIndex = -1;
-                                this.m_hoverSegmentIndex = -1;
-                                toolErrors |= ToolBase.ToolErrors.RaycastFailed;
+                                flag = false;
                             }
                         }
-                        else
+                        if (!flag)
                         {
-                            ToolBase.RaycastOutput raycastOutput;
-                            bool flag2 = ToolBase.RayCast(new ToolBase.RaycastInput(this.m_mouseRay, this.m_mouseRayLength)
+                            ToolBase.RaycastInput input = new ToolBase.RaycastInput(this.m_mouseRay, this.m_mouseRayLength);
+                            input.m_buildingService = new ToolBase.RaycastService(prefab.m_stationService, prefab.m_stationSubService, prefab.m_stationLayer);
+                            input.m_netService = new ToolBase.RaycastService(prefab.m_netService, prefab.m_netSubService, prefab.m_netLayer);
+                            input.m_ignoreTerrain = true;
+                            input.m_ignoreSegmentFlags = ((prefab.m_netService == ItemClass.Service.None) ? NetSegment.Flags.All : NetSegment.Flags.None);
+                            input.m_ignoreBuildingFlags = ((prefab.m_stationService == ItemClass.Service.None) ? Building.Flags.All : Building.Flags.None);
+                            ToolBase.RaycastOutput raycastOutput = default(ToolBase.RaycastOutput);
+                            bool flag3 = false;
+                            if (this.m_mouseRayValid)
                             {
-                                m_buildingService = new ToolBase.RaycastService(prefab.m_stationService, prefab.m_stationSubService, prefab.m_stationLayer),
-                                m_netService = new ToolBase.RaycastService(prefab.m_netService, prefab.m_netSubService, prefab.m_netLayer),
-                                m_ignoreTerrain = true,
-                                m_ignoreSegmentFlags = (prefab.m_netService == ItemClass.Service.None) ? NetSegment.Flags.All : NetSegment.Flags.None,
-                                m_ignoreBuildingFlags = (prefab.m_stationService == ItemClass.Service.None) ? Building.Flags.All : Building.Flags.None
-                            }, out raycastOutput);
+                                flag3 = ToolBase.RayCast(input, out raycastOutput);
+                            }
                             bool fixedPlatform = false;
-                            if (flag2)
+                            if (flag3)
                             {
-                                flag2 = this.GetStopPosition(prefab, raycastOutput.m_netSegment, raycastOutput.m_building, 0, ref raycastOutput.m_hitPos, out fixedPlatform);
+                                flag3 = this.GetStopPosition(prefab, raycastOutput.m_netSegment, raycastOutput.m_building, 0, ref raycastOutput.m_hitPos, out fixedPlatform);
                             }
-                            if (flag2)
+                            if (flag3)
                             {
-                                flag2 = this.CanAddStop(prefab, 0, -1, raycastOutput.m_hitPos);
+                                flag3 = this.CanAddStop(prefab, 0, -1, raycastOutput.m_hitPos);
                             }
-                            if (flag2)
+                            if (flag3)
                             {
-                                flag2 = this.EnsureTempLine(prefab, 0, -2, -1, raycastOutput.m_hitPos, fixedPlatform);
+                                flag3 = this.EnsureTempLine(prefab, 0, -2, -1, raycastOutput.m_hitPos, fixedPlatform);
                             }
-                            if (flag2)
+                            if (flag3)
                             {
                                 this.m_hitPosition = raycastOutput.m_hitPos;
                                 this.m_fixedPlatform = fixedPlatform;
@@ -320,44 +333,50 @@ namespace CSL_Traffic
                     }
                     else
                     {
-                        ToolBase.RaycastOutput raycastOutput2;
-                        bool flag3 = ToolBase.RayCast(new ToolBase.RaycastInput(this.m_mouseRay, this.m_mouseRayLength)
+                        TransportManager instance = Singleton<TransportManager>.instance;
+                        ToolBase.RaycastInput input2 = new ToolBase.RaycastInput(this.m_mouseRay, this.m_mouseRayLength);
+                        input2.m_buildingService = new ToolBase.RaycastService(prefab.m_stationService, prefab.m_stationSubService, prefab.m_stationLayer);
+                        input2.m_netService = new ToolBase.RaycastService(prefab.m_netService, prefab.m_netSubService, prefab.m_netLayer);
+                        input2.m_ignoreTerrain = true;
+                        input2.m_ignoreSegmentFlags = ((prefab.m_netService == ItemClass.Service.None) ? NetSegment.Flags.All : NetSegment.Flags.None);
+                        input2.m_ignoreBuildingFlags = ((prefab.m_stationService == ItemClass.Service.None) ? Building.Flags.All : Building.Flags.None);
+                        ToolBase.RaycastOutput raycastOutput2 = default(ToolBase.RaycastOutput);
+                        bool flag4 = false;
+                        if (this.m_mouseRayValid)
                         {
-                            m_buildingService = new ToolBase.RaycastService(prefab.m_stationService, prefab.m_stationSubService, prefab.m_stationLayer),
-                            m_netService = new ToolBase.RaycastService(prefab.m_netService, prefab.m_netSubService, prefab.m_netLayer),
-                            m_ignoreTerrain = true,
-                            m_ignoreSegmentFlags = (prefab.m_netService == ItemClass.Service.None) ? NetSegment.Flags.All : NetSegment.Flags.None,
-                            m_ignoreBuildingFlags = (prefab.m_stationService == ItemClass.Service.None) ? Building.Flags.All : Building.Flags.None
-                        }, out raycastOutput2);
+                            flag4 = ToolBase.RayCast(input2, out raycastOutput2);
+                        }
                         bool fixedPlatform2 = false;
-                        if (flag3)
+                        if (flag4)
                         {
                             ushort firstStop = 0;
-                            if (this.m_line != 0)
+                            if (this.m_line != 0 && !instance.m_lines.m_buffer[(int)this.m_line].Complete)
                             {
-                                TransportManager instance = Singleton<TransportManager>.instance;
-                                if (!instance.m_lines.m_buffer[(int)this.m_line].Complete)
-                                {
-                                    firstStop = instance.m_lines.m_buffer[(int)this.m_line].m_stops;
-                                }
+                                firstStop = instance.m_lines.m_buffer[(int)this.m_line].m_stops;
                             }
-                            flag3 = this.GetStopPosition(prefab, raycastOutput2.m_netSegment, raycastOutput2.m_building, firstStop, ref raycastOutput2.m_hitPos, out fixedPlatform2);
+                            flag4 = this.GetStopPosition(prefab, raycastOutput2.m_netSegment, raycastOutput2.m_building, firstStop, ref raycastOutput2.m_hitPos, out fixedPlatform2);
                         }
-                        if (flag3)
+                        if (flag4)
                         {
-                            flag3 = this.CanAddStop(prefab, this.m_line, -1, raycastOutput2.m_hitPos);
+                            flag4 = this.CanAddStop(prefab, this.m_line, -1, raycastOutput2.m_hitPos);
                         }
-                        if (flag3)
+                        if (flag4)
                         {
-                            flag3 = this.EnsureTempLine(prefab, this.m_line, -2, -1, raycastOutput2.m_hitPos, fixedPlatform2);
+                            flag4 = this.EnsureTempLine(prefab, this.m_line, -2, -1, raycastOutput2.m_hitPos, fixedPlatform2);
                         }
-                        if (flag3)
+                        if (flag4)
                         {
                             this.m_hitPosition = raycastOutput2.m_hitPos;
                             this.m_fixedPlatform = fixedPlatform2;
                             if (!Singleton<NetManager>.instance.CheckLimits())
                             {
                                 toolErrors |= ToolBase.ToolErrors.TooManyObjects;
+                            }
+                            instance.UpdateLinesNow();
+                            bool flag5;
+                            if (this.m_tempLine != 0 && !instance.m_lines.m_buffer[(int)this.m_tempLine].CheckPrevPath(-1, out flag5) && flag5)
+                            {
+                                toolErrors |= ToolBase.ToolErrors.PathNotFound;
                             }
                         }
                         else
@@ -375,49 +394,81 @@ namespace CSL_Traffic
                     }
                     else
                     {
-                        ToolBase.RaycastOutput raycastOutput3;
-                        bool flag4 = ToolBase.RayCast(new ToolBase.RaycastInput(this.m_mouseRay, this.m_mouseRayLength)
+                        ToolBase.RaycastInput input3 = new ToolBase.RaycastInput(this.m_mouseRay, this.m_mouseRayLength);
+                        input3.m_buildingService = new ToolBase.RaycastService(prefab.m_stationService, prefab.m_stationSubService, prefab.m_stationLayer);
+                        input3.m_netService = new ToolBase.RaycastService(prefab.m_netService, prefab.m_netSubService, prefab.m_netLayer);
+                        input3.m_ignoreTerrain = true;
+                        input3.m_ignoreSegmentFlags = ((prefab.m_netService == ItemClass.Service.None) ? NetSegment.Flags.All : NetSegment.Flags.None);
+                        input3.m_ignoreBuildingFlags = ((prefab.m_stationService == ItemClass.Service.None) ? Building.Flags.All : Building.Flags.None);
+                        ToolBase.RaycastOutput raycastOutput3 = default(ToolBase.RaycastOutput);
+                        bool flag6 = false;
+                        if (this.m_mouseRayValid)
                         {
-                            m_buildingService = new ToolBase.RaycastService(prefab.m_stationService, prefab.m_stationSubService, prefab.m_stationLayer),
-                            m_netService = new ToolBase.RaycastService(prefab.m_netService, prefab.m_netSubService, prefab.m_netLayer),
-                            m_ignoreTerrain = true,
-                            m_ignoreSegmentFlags = (prefab.m_netService == ItemClass.Service.None) ? NetSegment.Flags.All : NetSegment.Flags.None,
-                            m_ignoreBuildingFlags = (prefab.m_stationService == ItemClass.Service.None) ? Building.Flags.All : Building.Flags.None
-                        }, out raycastOutput3);
+                            flag6 = ToolBase.RayCast(input3, out raycastOutput3);
+                        }
                         bool fixedPlatform3 = false;
-                        if (flag4)
+                        if (flag6)
                         {
-                            flag4 = this.GetStopPosition(prefab, raycastOutput3.m_netSegment, raycastOutput3.m_building, 0, ref raycastOutput3.m_hitPos, out fixedPlatform3);
+                            flag6 = this.GetStopPosition(prefab, raycastOutput3.m_netSegment, raycastOutput3.m_building, 0, ref raycastOutput3.m_hitPos, out fixedPlatform3);
                         }
                         if (this.m_hoverStopIndex != -1)
                         {
-                            if (flag4)
+                            if (flag6)
                             {
-                                flag4 = this.CanMoveStop(prefab, this.m_line, this.m_hoverStopIndex, raycastOutput3.m_hitPos);
+                                flag6 = this.CanMoveStop(prefab, this.m_line, this.m_hoverStopIndex, raycastOutput3.m_hitPos);
                             }
-                            if (flag4)
+                            if (flag6)
                             {
-                                flag4 = this.EnsureTempLine(prefab, this.m_line, this.m_hoverStopIndex, -2, raycastOutput3.m_hitPos, fixedPlatform3);
+                                flag6 = this.EnsureTempLine(prefab, this.m_line, this.m_hoverStopIndex, -2, raycastOutput3.m_hitPos, fixedPlatform3);
                             }
                         }
                         else if (this.m_hoverSegmentIndex != -1)
                         {
-                            if (flag4)
+                            if (flag6)
                             {
-                                flag4 = this.CanAddStop(prefab, this.m_line, this.m_hoverSegmentIndex + 1, raycastOutput3.m_hitPos);
+                                flag6 = this.CanAddStop(prefab, this.m_line, this.m_hoverSegmentIndex + 1, raycastOutput3.m_hitPos);
                             }
-                            if (flag4)
+                            if (flag6)
                             {
-                                flag4 = this.EnsureTempLine(prefab, this.m_line, -2, this.m_hoverSegmentIndex + 1, raycastOutput3.m_hitPos, fixedPlatform3);
+                                flag6 = this.EnsureTempLine(prefab, this.m_line, -2, this.m_hoverSegmentIndex + 1, raycastOutput3.m_hitPos, fixedPlatform3);
                             }
                         }
-                        if (flag4)
+                        if (flag6)
                         {
                             this.m_hitPosition = raycastOutput3.m_hitPos;
                             this.m_fixedPlatform = fixedPlatform3;
                             if (this.m_hoverSegmentIndex != -1 && !Singleton<NetManager>.instance.CheckLimits())
                             {
                                 toolErrors |= ToolBase.ToolErrors.TooManyObjects;
+                            }
+                            TransportManager instance2 = Singleton<TransportManager>.instance;
+                            instance2.UpdateLinesNow();
+                            if (this.m_tempLine != 0)
+                            {
+                                if (this.m_hoverStopIndex != -1)
+                                {
+                                    bool flag7;
+                                    if (!instance2.m_lines.m_buffer[(int)this.m_tempLine].CheckPrevPath(this.m_hoverStopIndex, out flag7) && flag7 && instance2.m_lines.m_buffer[(int)this.m_line].CheckPrevPath(this.m_hoverStopIndex, out flag7))
+                                    {
+                                        toolErrors |= ToolBase.ToolErrors.PathNotFound;
+                                    }
+                                    if (!instance2.m_lines.m_buffer[(int)this.m_tempLine].CheckNextPath(this.m_hoverStopIndex, out flag7) && flag7 && instance2.m_lines.m_buffer[(int)this.m_line].CheckNextPath(this.m_hoverStopIndex, out flag7))
+                                    {
+                                        toolErrors |= ToolBase.ToolErrors.PathNotFound;
+                                    }
+                                }
+                                else if (this.m_hoverSegmentIndex != -1)
+                                {
+                                    bool flag7;
+                                    if (!instance2.m_lines.m_buffer[(int)this.m_tempLine].CheckPrevPath(this.m_hoverSegmentIndex + 1, out flag7) && flag7)
+                                    {
+                                        toolErrors |= ToolBase.ToolErrors.PathNotFound;
+                                    }
+                                    if (!instance2.m_lines.m_buffer[(int)this.m_tempLine].CheckNextPath(this.m_hoverSegmentIndex + 1, out flag7) && flag7)
+                                    {
+                                        toolErrors |= ToolBase.ToolErrors.PathNotFound;
+                                    }
+                                }
                             }
                         }
                         else
@@ -444,113 +495,11 @@ namespace CSL_Traffic
             return sourceLine == 0 || Singleton<TransportManager>.instance.m_lines.m_buffer[(int)sourceLine].CanAddStop(sourceLine, addIndex, addPos);
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        [RedirectTo(typeof(TransportTool))]
         private bool GetStopPosition(TransportInfo info, ushort segment, ushort building, ushort firstStop, ref Vector3 hitPos, out bool fixedPlatform)
         {
-            NetManager instance = Singleton<NetManager>.instance;
-            bool toggleSnapTarget = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-            fixedPlatform = false;
-            if (segment != 0)
-            {
-                if (!toggleSnapTarget && (instance.m_segments.m_buffer[(int)segment].m_flags & NetSegment.Flags.Untouchable) != NetSegment.Flags.None)
-                {
-                    building = NetSegment.FindOwnerBuilding(segment, 363f);
-                    if (building != 0)
-                    {
-                        BuildingManager instance2 = Singleton<BuildingManager>.instance;
-                        BuildingInfo info2 = instance2.m_buildings.m_buffer[(int)building].Info;
-                        TransportInfo transportLineInfo = info2.m_buildingAI.GetTransportLineInfo();
-                        if (transportLineInfo != null && transportLineInfo.m_transportType == info.m_transportType)
-                        {
-                            segment = 0;
-                        }
-                        else
-                        {
-                            building = 0;
-                        }
-                    }
-                }
-                Vector3 point;
-                uint num;
-                int num2;
-                float num3;
-                Vector3 vector;
-                uint num4;
-                int num5;
-                float num6;
-                if (segment != 0 && instance.m_segments.m_buffer[(int)segment].GetClosestLanePosition(hitPos, NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, info.m_vehicleType, out point, out num, out num2, out num3) && instance.m_segments.m_buffer[(int)segment].GetClosestLanePosition(point, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, out vector, out num4, out num5, out num6))
-                {
-                    NetLane.Flags flags = (NetLane.Flags)instance.m_lanes.m_buffer[(int)((UIntPtr)num)].m_flags;
-                    //if ((flags & NetLane.Flags.Stops & info.m_stopFlag) /*& ~(info.m_stopFlag != NetLane.Flags.None))*/ == NetLane.Flags.None)
-                    //{
-                    //    return false;
-                    //}
-                    NetInfo.Lane lane = instance.m_segments.m_buffer[(int)segment].Info.m_lanes[num5];
-                    float num7 = lane.m_stopOffset;
-                    if ((instance.m_segments.m_buffer[(int)segment].m_flags & NetSegment.Flags.Invert) != NetSegment.Flags.None)
-                    {
-                        num7 = -num7;
-                    }
-                    Vector3 vector2;
-                    instance.m_lanes.m_buffer[(int)((UIntPtr)num4)].CalculateStopPositionAndDirection(0.5019608f, num7, out hitPos, out vector2);
-                    fixedPlatform = true;
-                    return true;
-                }
-            }
-            if (!toggleSnapTarget && building != 0)
-            {
-                VehicleInfo randomVehicleInfo = Singleton<VehicleManager>.instance.GetRandomVehicleInfo(ref Singleton<SimulationManager>.instance.m_randomizer, info.m_class.m_service, info.m_class.m_subService, info.m_class.m_level);
-                if (randomVehicleInfo != null)
-                {
-                    BuildingManager instance3 = Singleton<BuildingManager>.instance;
-                    BuildingInfo info3 = instance3.m_buildings.m_buffer[(int)building].Info;
-                    if (info3.m_buildingAI.GetTransportLineInfo() != null)
-                    {
-                        Vector3 vector3 = Vector3.zero;
-                        int num8 = 1000000;
-                        for (int i = 0; i < 12; i++)
-                        {
-                            Randomizer randomizer = new Randomizer((ulong)((long)i));
-                            Vector3 vector4;
-                            Vector3 a;
-                            info3.m_buildingAI.CalculateSpawnPosition(building, ref instance3.m_buildings.m_buffer[(int)building], ref randomizer, randomVehicleInfo, out vector4, out a);
-                            int lineCount = this.GetLineCount(vector4, a - vector4, info.m_transportType);
-                            if (lineCount < num8)
-                            {
-                                vector3 = vector4;
-                                num8 = lineCount;
-                            }
-                            else if (lineCount == num8 && Vector3.SqrMagnitude(vector4 - hitPos) < Vector3.SqrMagnitude(vector3 - hitPos))
-                            {
-                                vector3 = vector4;
-                            }
-                        }
-                        if (firstStop != 0)
-                        {
-                            Vector3 position = instance.m_nodes.m_buffer[(int)firstStop].m_position;
-                            if (Vector3.SqrMagnitude(position - vector3) < 16384f)
-                            {
-                                uint lane2 = instance.m_nodes.m_buffer[(int)firstStop].m_lane;
-                                if (lane2 != 0u)
-                                {
-                                    ushort segment2 = instance.m_lanes.m_buffer[(int)((UIntPtr)lane2)].m_segment;
-                                    if (segment2 != 0 && (instance.m_segments.m_buffer[(int)segment2].m_flags & NetSegment.Flags.Untouchable) != NetSegment.Flags.None)
-                                    {
-                                        ushort num9 = NetSegment.FindOwnerBuilding(segment2, 363f);
-                                        if (building == num9)
-                                        {
-                                            hitPos = position;
-                                            return true;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        hitPos = vector3;
-                        return true;
-                    }
-                }
-            }
-            return false;
+            throw new NotImplementedException("GetStopPosition is target of redirection and is not implemented.");
         }
 
         private int GetLineCount(Vector3 stopPosition, Vector3 stopDirection, TransportInfo.TransportType transportType)
@@ -669,22 +618,23 @@ namespace CSL_Traffic
                         this.m_lastAddIndex = addIndex;
                         this.m_lastAddPos = addPos;
                     }
+                    instance.UpdateLine(this.m_tempLine);
                 }
                 instance.m_lines.m_buffer[(int)this.m_tempLine].m_color = instance.m_lines.m_buffer[(int)sourceLine].m_color;
-                TransportLine[] expr_327_cp_0 = instance.m_lines.m_buffer;
-                ushort expr_327_cp_1 = this.m_tempLine;
-                expr_327_cp_0[(int)expr_327_cp_1].m_flags = (expr_327_cp_0[(int)expr_327_cp_1].m_flags & ~TransportLine.Flags.Hidden);
+                TransportLine[] expr_333_cp_0 = instance.m_lines.m_buffer;
+                ushort expr_333_cp_1 = this.m_tempLine;
+                expr_333_cp_0[(int)expr_333_cp_1].m_flags = (expr_333_cp_0[(int)expr_333_cp_1].m_flags & ~TransportLine.Flags.Hidden);
                 if ((instance.m_lines.m_buffer[(int)sourceLine].m_flags & TransportLine.Flags.CustomColor) != TransportLine.Flags.None)
                 {
-                    TransportLine[] expr_36C_cp_0 = instance.m_lines.m_buffer;
-                    ushort expr_36C_cp_1 = this.m_tempLine;
-                    expr_36C_cp_0[(int)expr_36C_cp_1].m_flags = (expr_36C_cp_0[(int)expr_36C_cp_1].m_flags | TransportLine.Flags.CustomColor);
+                    TransportLine[] expr_378_cp_0 = instance.m_lines.m_buffer;
+                    ushort expr_378_cp_1 = this.m_tempLine;
+                    expr_378_cp_0[(int)expr_378_cp_1].m_flags = (expr_378_cp_0[(int)expr_378_cp_1].m_flags | TransportLine.Flags.CustomColor);
                 }
                 else
                 {
-                    TransportLine[] expr_398_cp_0 = instance.m_lines.m_buffer;
-                    ushort expr_398_cp_1 = this.m_tempLine;
-                    expr_398_cp_0[(int)expr_398_cp_1].m_flags = (expr_398_cp_0[(int)expr_398_cp_1].m_flags & ~TransportLine.Flags.CustomColor);
+                    TransportLine[] expr_3A4_cp_0 = instance.m_lines.m_buffer;
+                    ushort expr_3A4_cp_1 = this.m_tempLine;
+                    expr_3A4_cp_0[(int)expr_3A4_cp_1].m_flags = (expr_3A4_cp_0[(int)expr_3A4_cp_1].m_flags & ~TransportLine.Flags.CustomColor);
                 }
                 return true;
             }
@@ -717,7 +667,7 @@ namespace CSL_Traffic
                 if (this.m_tempLine != 0)
                 {
                     instance.m_lines.m_buffer[(int)this.m_tempLine].CloneLine(this.m_tempLine, this.m_lastEditLine);
-                    BusTransportLineAI.UpdateMeshData(ref instance.m_lines.m_buffer[(int)this.m_tempLine], this.m_tempLine);
+                    instance.m_lines.m_buffer[(int)this.m_tempLine].UpdateMeshData(this.m_tempLine);
                 }
             }
         }

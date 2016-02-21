@@ -109,15 +109,15 @@ namespace CSL_Traffic
             //	m_postLoadingActions.Dequeue().Invoke();
 
             // contributed by Japa
-            //TransportTool transportTool = ToolsModifierControl.GetCurrentTool<TransportTool>();
-            //if (transportTool != null)
-            //{
-            //    CustomTransportTool customTransportTool = ToolsModifierControl.SetTool<CustomTransportTool>();
-            //    if (customTransportTool != null)
-            //    {
-            //        customTransportTool.m_prefab = transportTool.m_prefab;
-            //    }
-            //}
+            TransportTool transportTool = ToolsModifierControl.GetCurrentTool<TransportTool>();
+            if (transportTool != null)
+            {
+                CustomTransportTool customTransportTool = ToolsModifierControl.SetTool<CustomTransportTool>();
+                if (customTransportTool != null)
+                {
+                    customTransportTool.m_prefab = transportTool.m_prefab;
+                }
+            }
 
             // Checks if CustomPathManager have been replaced by another mod and prints a warning in the log
             // This check is only run in the first two minutes since game is loaded
@@ -267,7 +267,7 @@ namespace CSL_Traffic
 
                         //ReplaceTransportLineAI<BusTransportLineAI>("Bus Line", publicTansportNetCollection, "Bus", publicTransportTransportCollection);
 
-                        //AddTool<CustomTransportTool>(toolController);
+                        AddTool<CustomTransportTool>(toolController);
 
                         if ((TrafficMod.Options & OptionsManager.ModOptions.BetaTestRoadCustomizerTool) == OptionsManager.ModOptions.BetaTestRoadCustomizerTool)
                             AddTool<RoadCustomizerTool>(toolController);

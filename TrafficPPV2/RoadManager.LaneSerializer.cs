@@ -45,8 +45,8 @@ namespace CSL_Traffic
                         if (lane == null)
                             continue;
 
-                        if ((TrafficMod.Options & OptionsManager.ModOptions.FixCargoTrucksNotSpawning) == OptionsManager.ModOptions.FixCargoTrucksNotSpawning && lane.m_vehicleTypes == (VehicleType.ServiceVehicles | VehicleType.PassengerCar))
-                            lane.m_vehicleTypes = VehicleType.All;
+                        if ((TrafficMod.Options & OptionsManager.ModOptions.FixCargoTrucksNotSpawning) == OptionsManager.ModOptions.FixCargoTrucksNotSpawning && lane.m_vehicleTypes == (ExtendedVehicleType.ServiceVehicles | ExtendedVehicleType.PassengerCar))
+                            lane.m_vehicleTypes = ExtendedVehicleType.All;
 
                         lane.UpdateArrows();
                         if (lane.ConnectionCount() > 0)

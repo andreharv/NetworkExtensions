@@ -1,4 +1,5 @@
 using ICities;
+using Transit.Framework.Unsafe;
 using UnityEngine;
 
 namespace CSL_Traffic
@@ -41,6 +42,7 @@ namespace CSL_Traffic
 
             if (m_initializer == null)
             {
+                Redirector.PerformRedirections();
                 m_initializer = new GameObject("CSL-Traffic Custom Prefabs");
                 m_initializer.AddComponent<Initializer>();
             }
@@ -58,7 +60,11 @@ namespace CSL_Traffic
         {
             base.OnReleased();
 
-            GameObject.Destroy(m_initializer);
+            if (m_initializer != null)
+            {
+                GameObject.Destroy(m_initializer);
+                Redirector.RevertRedirections();
+            }
         }
     }
 }

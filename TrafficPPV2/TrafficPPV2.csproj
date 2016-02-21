@@ -67,6 +67,7 @@
     <Compile Include="AI\Vehicles\IVehicle.cs" />
     <Compile Include="RoadManager.LaneSerializationBinder.cs" />
     <Compile Include="RoadManager.Lane.cs" />
+    <Compile Include="Tools\CustomTransportTool.cs" />
     <Compile Include="TrafficMod.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="FileManager.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="RoadManager.LaneSerializer.cs" />
     <Compile Include="RoadManager.cs" />
     <Compile Include="Tools\RoadCustomizerTool.cs" />
+    <Compile Include="Transports\CustomTransportLineAI.cs" />
     <Compile Include="UI\RoadCustomizerGroupPanel.cs" />
     <Compile Include="UI\RoadCustomizerPanel.cs" />
     <Compile Include="UI\UIUtils.cs" />
@@ -88,12 +90,17 @@
       <Project>{fc275c26-1012-474c-b77b-09e366dbc684}</Project>
       <Name>Transit.Framework.Light</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Transit.Framework.Unsafe\Transit.Framework.Unsafe.csproj">
+      <Project>{7dcc08ef-dc85-47a4-bd6f-79fc52c7ef13}</Project>
+      <Name>Transit.Framework.Unsafe</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Textures\UI\UIThumbnails.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>del "$(TargetDir)*.pdb"

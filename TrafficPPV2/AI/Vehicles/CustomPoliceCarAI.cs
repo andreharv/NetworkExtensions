@@ -1,6 +1,7 @@
 using ColossalFramework;
 using System;
 using UnityEngine;
+using Transit.Framework.Light;
 
 namespace CSL_Traffic
 {
@@ -65,9 +66,9 @@ namespace CSL_Traffic
 
         protected override bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget)
         {
-            Transit.Framework.Light.VehicleType vehicleType = Transit.Framework.Light.VehicleType.PoliceCar;
+            ExtendedVehicleType vehicleType = ExtendedVehicleType.PoliceCar;
             if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) != Vehicle.Flags.None)
-                vehicleType |= Transit.Framework.Light.VehicleType.Emergency;
+                vehicleType |= ExtendedVehicleType.Emergency;
 
             VehicleInfo info = this.m_info;
             bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != Vehicle.Flags.None;

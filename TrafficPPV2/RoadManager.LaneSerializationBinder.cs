@@ -13,7 +13,7 @@ namespace CSL_Traffic
                 if (typeName.Contains("Lane"))
                     return typeof(Lane);
                 if (typeName.Contains("VehicleType"))
-                    return typeof(VehicleType);
+                    return typeof(ExtendedVehicleType);
 
                 throw new SerializationException("Error on BindToType with type '" + typeName + "' and assembly '" + assemblyName + "'.");
             }
