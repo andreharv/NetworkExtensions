@@ -67,7 +67,6 @@
     <Compile Include="AI\Vehicles\IVehicle.cs" />
     <Compile Include="RoadManager.LaneSerializationBinder.cs" />
     <Compile Include="RoadManager.Lane.cs" />
-    <Compile Include="Tools\CustomTransportTool.cs" />
     <Compile Include="TrafficMod.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="FileManager.cs" />
@@ -80,7 +79,7 @@
     <Compile Include="RoadManager.LaneSerializer.cs" />
     <Compile Include="RoadManager.cs" />
     <Compile Include="Tools\RoadCustomizerTool.cs" />
-    <Compile Include="Transports\CustomTransportLineAI.cs" />
+    <Compile Include="AI\Vehicles\CustomTransportLineAI.cs" />
     <Compile Include="UI\RoadCustomizerGroupPanel.cs" />
     <Compile Include="UI\RoadCustomizerPanel.cs" />
     <Compile Include="UI\UIUtils.cs" />
