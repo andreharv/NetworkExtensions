@@ -149,60 +149,54 @@ namespace CSL_Traffic
             VehicleCollection industrialOilVehicleCollection = null;
             VehicleCollection industrialOreVehicleCollection = null;
             VehicleCollection residentialVehicleCollection = null;
-            ToolController toolController = null;
 
             try
             {
+                // TODO: Replace that by redirections
                 // VehicleCollections
                 garbageVehicleCollection = TryGetComponent<VehicleCollection>("Garbage");
                 if (garbageVehicleCollection == null)
                     return;
-
+                
                 policeVehicleCollection = TryGetComponent<VehicleCollection>("Police Department");
                 if (policeVehicleCollection == null)
                     return;
-
+                
                 publicTansportVehicleCollection = TryGetComponent<VehicleCollection>("Public Transport");
                 if (publicTansportVehicleCollection == null)
                     return;
-
+                
                 healthCareVehicleCollection = TryGetComponent<VehicleCollection>("Health Care");
                 if (healthCareVehicleCollection == null)
                     return;
-
+                
                 fireDepartmentVehicleCollection = TryGetComponent<VehicleCollection>("Fire Department");
                 if (fireDepartmentVehicleCollection == null)
                     return;
-
+                
                 industrialVehicleCollection = TryGetComponent<VehicleCollection>("Industrial");
                 if (industrialVehicleCollection == null)
                     return;
-
+                
                 industrialFarmingVehicleCollection = TryGetComponent<VehicleCollection>("Industrial Farming");
                 if (industrialFarmingVehicleCollection == null)
                     return;
-
+                
                 industrialForestryVehicleCollection = TryGetComponent<VehicleCollection>("Industrial Forestry");
                 if (industrialForestryVehicleCollection == null)
                     return;
-
+                
                 industrialOilVehicleCollection = TryGetComponent<VehicleCollection>("Industrial Oil");
                 if (industrialOilVehicleCollection == null)
                     return;
-
+                
                 industrialOreVehicleCollection = TryGetComponent<VehicleCollection>("Industrial Ore");
                 if (industrialOreVehicleCollection == null)
                     return;
-
+                
                 residentialVehicleCollection = TryGetComponent<VehicleCollection>("Residential Low");
                 if (residentialVehicleCollection == null)
                     return;
-
-                // Tools
-                toolController = TryGetComponent<ToolController>("Tool Controller");
-                if (toolController == null)
-                    return;
-
             }
             catch (Exception e)
             {
@@ -233,7 +227,7 @@ namespace CSL_Traffic
                         StartCoroutine(HandleCustomVehicles());
 
                         if ((TrafficMod.Options & OptionsManager.ModOptions.BetaTestRoadCustomizerTool) == OptionsManager.ModOptions.BetaTestRoadCustomizerTool)
-                            AddTool<RoadCustomizerTool>(toolController);
+                            AddTool<RoadCustomizerTool>(ToolsModifierControl.toolController);
 
                         if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
                         {
@@ -296,15 +290,20 @@ namespace CSL_Traffic
             Logger.LogInfo("Path Manager successfully replaced.");
         }
 
-        T TryGetComponent<T>(string name)
+        T TryGetComponent<T>(string name) where T : MonoBehaviour
         {
             foreach (string prefix in sm_collectionPrefixes)
             {
-                GameObject go = GameObject.Find(prefix + name);
-                if (go != null)
-                    return go.GetComponent<T>();
+                T[] objects = GameObject.FindObjectsOfType<T>();
+                foreach (T o in objects)
+                {
+                    if (o.gameObject.name == prefix + name)
+                    {
+                        return o;
+                    }
+                }
             }
-
+            Logger.LogError("Failed to find component: {0}", name);
             return default(T);
         }
 
