@@ -46,8 +46,7 @@ namespace CSL_Traffic
             PathUnit.Position startPosB;
             float num;
             float num2;
-
-            Debug.Log(">>>>>>>>>>>>>> vehicleType" + vehicleType);
+            
             if (vehicleType == VehicleInfo.VehicleType.Car)
             {
                 if (!CustomPathManager.FindPathPosition(position, netService, NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, true, false, 32f, out startPosA, out startPosB, out num, out num2, ExtendedVehicleType.Bus))

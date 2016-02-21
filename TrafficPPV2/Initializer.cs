@@ -138,9 +138,6 @@ namespace CSL_Traffic
          */
         void TryReplacePrefabs()
         {
-            NetCollection beautificationNetCollection = null;
-            NetCollection roadsNetCollection = null;
-            NetCollection publicTansportNetCollection = null;
             VehicleCollection garbageVehicleCollection = null;
             VehicleCollection policeVehicleCollection = null;
             VehicleCollection publicTansportVehicleCollection = null;
@@ -152,24 +149,10 @@ namespace CSL_Traffic
             VehicleCollection industrialOilVehicleCollection = null;
             VehicleCollection industrialOreVehicleCollection = null;
             VehicleCollection residentialVehicleCollection = null;
-            TransportCollection publicTransportTransportCollection = null;
             ToolController toolController = null;
 
             try
             {
-                // NetCollections
-                beautificationNetCollection = TryGetComponent<NetCollection>("Beautification");
-                if (beautificationNetCollection == null)
-                    return;
-
-                roadsNetCollection = TryGetComponent<NetCollection>("Road");
-                if (roadsNetCollection == null)
-                    return;
-
-                publicTansportNetCollection = TryGetComponent<NetCollection>("Public Transport");
-                if (publicTansportNetCollection == null)
-                    return;
-
                 // VehicleCollections
                 garbageVehicleCollection = TryGetComponent<VehicleCollection>("Garbage");
                 if (garbageVehicleCollection == null)
@@ -215,11 +198,6 @@ namespace CSL_Traffic
                 if (residentialVehicleCollection == null)
                     return;
 
-                // Transports
-                publicTransportTransportCollection = TryGetComponent<TransportCollection>("Public Transport");
-                if (publicTransportTransportCollection == null)
-                    return;
-
                 // Tools
                 toolController = TryGetComponent<ToolController>("Tool Controller");
                 if (toolController == null)
@@ -253,8 +231,6 @@ namespace CSL_Traffic
                         ReplaceVehicleAI(policeVehicleCollection);
 
                         StartCoroutine(HandleCustomVehicles());
-
-                        //ReplaceTransportLineAI<BusTransportLineAI>("Bus Line", publicTansportNetCollection, "Bus", publicTransportTransportCollection);
 
                         if ((TrafficMod.Options & OptionsManager.ModOptions.BetaTestRoadCustomizerTool) == OptionsManager.ModOptions.BetaTestRoadCustomizerTool)
                             AddTool<RoadCustomizerTool>(toolController);
@@ -319,54 +295,6 @@ namespace CSL_Traffic
 
             Logger.LogInfo("Path Manager successfully replaced.");
         }
-
-        //void ReplaceTransportManager()
-        //{
-        //    if (Singleton<TransportManager>.instance as CustomTransportManager != null)
-        //        return;
-
-        //    Logger.LogInfo("Replacing Transport Manager");
-
-        //    // Change TransportManager to CustomTransportManager
-        //    FieldInfo sInstance = typeof(ColossalFramework.Singleton<TransportManager>).GetFieldByName("sInstance");
-        //    TransportManager originalTransportManager = ColossalFramework.Singleton<TransportManager>.instance;
-        //    CustomTransportManager customTransportManager = originalTransportManager.gameObject.AddComponent<CustomTransportManager>();
-        //    customTransportManager.SetOriginalValues(originalTransportManager);
-
-        //    // change the new instance in the singleton
-        //    sInstance.SetValue(null, customTransportManager);
-
-        //    // change the manager in the SimulationManager
-        //    FastList<ISimulationManager> managers = (FastList<ISimulationManager>)typeof(SimulationManager).GetFieldByName("m_managers").GetValue(null);
-        //    managers.Remove(originalTransportManager);
-        //    managers.Add(customTransportManager);
-
-        //    // add to renderable managers
-        //    IRenderableManager[] renderables;
-        //    int count;
-        //    RenderManager.GetManagers(out renderables, out count);
-        //    if (renderables != null && count != 0)
-        //    {
-        //        for (int i = 0; i < count; i++)
-        //        {
-        //            TransportManager temp = renderables[i] as TransportManager;
-        //            if (temp != null && temp == originalTransportManager)
-        //            {
-        //                renderables[i] = customTransportManager;
-        //                break;
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        RenderManager.RegisterRenderableManager(customTransportManager);
-        //    }
-
-        //    // Destroy in 10 seconds to give time to all references to update to the new manager without crashing
-        //    GameObject.Destroy(originalTransportManager, 10f);
-
-        //    Logger.LogInfo("Transport Manager successfully replaced.");
-        //}
 
         T TryGetComponent<T>(string name)
         {
@@ -448,68 +376,6 @@ namespace CSL_Traffic
         public static void QueueLoadingAction(IEnumerator action)
         {
             Singleton<LoadingManager>.instance.QueueLoadingAction(action);
-        }
-
-        #endregion
-
-        #region Clone Methods
-
-        T ClonePrefab<T>(string prefabName, T[] prefabs, string newName, Transform customPrefabsHolder, bool replace = false, bool ghostMode = false) where T : PrefabInfo
-        {
-            T originalPrefab = prefabs.FirstOrDefault(p => p.name == prefabName);
-            if (originalPrefab == null)
-                return null;
-
-            GameObject instance = GameObject.Instantiate<GameObject>(originalPrefab.gameObject);
-            instance.name = newName;
-            instance.transform.SetParent(customPrefabsHolder);
-            instance.transform.localPosition = new Vector3(-7500, -7500, -7500);
-            T newPrefab = instance.GetComponent<T>();
-            //instance.SetActive(false);
-
-            MethodInfo initMethod = GetCollectionType(typeof(T).Name).GetMethod("InitializePrefabs", BindingFlags.Static | BindingFlags.NonPublic);
-            Initializer.QueuePrioritizedLoadingAction((IEnumerator)initMethod.Invoke(null, new object[] { newName, new[] { newPrefab }, new string[] { replace ? prefabName : null } }));
-
-            if (ghostMode)
-            {
-                if (newPrefab.GetType() == typeof(NetInfo))
-                    (newPrefab as NetInfo).m_availableIn = ItemClass.Availability.None;
-                return null;
-            }
-
-            newPrefab.m_prefabInitialized = false;
-
-            return newPrefab;
-        }
-
-        static NetLaneProps CloneNetLaneProps(string prefabName, int deltaSpace = 0)
-        {
-            NetLaneProps prefab = Resources.FindObjectsOfTypeAll<NetLaneProps>().FirstOrDefault(p => p.name == prefabName);
-            if (prefab == null)
-                return null;
-
-            NetLaneProps newLaneProps = ScriptableObject.CreateInstance<NetLaneProps>();
-            newLaneProps.m_props = new NetLaneProps.Prop[Mathf.Max(0, prefab.m_props.Length + deltaSpace)];
-            Array.Copy(prefab.m_props, newLaneProps.m_props, Mathf.Min(newLaneProps.m_props.Length, prefab.m_props.Length));
-
-            return newLaneProps;
-        }
-
-        static Type GetCollectionType(string prefabType)
-        {
-            switch (prefabType)
-            {
-                case "NetInfo":
-                    return typeof(NetCollection);
-                case "VehicleInfo":
-                    return typeof(VehicleCollection);
-                case "PropInfo":
-                    return typeof(PropCollection);
-                case "CitizenInfo":
-                    return typeof(CitizenCollection);
-                default:
-                    return null;
-            }
         }
 
         #endregion
@@ -665,30 +531,6 @@ namespace CSL_Traffic
                 yield return new WaitForEndOfFrame();
             }
         }
-        #endregion
-
-        #region Transports
-
-        //void ReplaceTransportLineAI<T>(string prefabName, NetCollection collection, string transportName, TransportCollection transportCollection)
-        //{
-        //    if (transform.FindChild(prefabName) != null)
-        //        return;
-
-        //    NetInfo transportLine = ClonePrefab<NetInfo>(prefabName, collection.m_prefabs, prefabName, transform, true);
-        //    if (transportLine == null)
-        //        return;
-
-        //    Destroy(transportLine.GetComponent<TransportLineAI>());
-        //    transportLine.gameObject.AddComponent<BusTransportLineAI>();
-
-        //    TransportInfo transportInfo = transportCollection.m_prefabs.FirstOrDefault(p => p.name == transportName);
-        //    if (transportInfo == null)
-        //        return;
-        //    //throw new KeyNotFoundException(transportName + " Transport Info not found on " + transportCollection.name);
-
-        //    transportInfo.m_netInfo = transportLine;
-        //}
-
         #endregion
 
         #region Tools
