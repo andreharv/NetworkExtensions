@@ -9,13 +9,13 @@ namespace CSL_Traffic
 {
     public static partial class RoadManager
     {
-        public class Data : SerializableDataExtensionBase
+        public class LaneSerializer : SerializableDataExtensionBase
         {
             const string LANE_DATA_ID = "Traffic++_RoadManager_Lanes";
             
             public override void OnLoadData()
             {
-                if ((UserMod.Options & OptionsManager.ModOptions.BetaTestRoadCustomizerTool) == OptionsManager.ModOptions.None || (UserMod.Options & OptionsManager.ModOptions.GhostMode) == OptionsManager.ModOptions.GhostMode)
+                if ((TrafficMod.Options & OptionsManager.ModOptions.BetaTestRoadCustomizerTool) == OptionsManager.ModOptions.None || (TrafficMod.Options & OptionsManager.ModOptions.GhostMode) == OptionsManager.ModOptions.GhostMode)
                     return;
                 
 
@@ -45,8 +45,8 @@ namespace CSL_Traffic
                         if (lane == null)
                             continue;
 
-                        if ((UserMod.Options & OptionsManager.ModOptions.FixCargoTrucksNotSpawning) == OptionsManager.ModOptions.FixCargoTrucksNotSpawning && lane.m_vehicleTypes == (VehicleType.ServiceVehicles | VehicleType.PassengerCar))
-                            lane.m_vehicleTypes = VehicleType.All;
+                        if ((TrafficMod.Options & OptionsManager.ModOptions.FixCargoTrucksNotSpawning) == OptionsManager.ModOptions.FixCargoTrucksNotSpawning && lane.m_vehicleTypes == (ExtendedVehicleType.ServiceVehicles | ExtendedVehicleType.PassengerCar))
+                            lane.m_vehicleTypes = ExtendedVehicleType.All;
 
                         lane.UpdateArrows();
                         if (lane.ConnectionCount() > 0)
@@ -88,8 +88,8 @@ namespace CSL_Traffic
 
             public override void OnSaveData()
             {
-                if ((UserMod.Options & OptionsManager.ModOptions.BetaTestRoadCustomizerTool) == OptionsManager.ModOptions.None || 
-                    (UserMod.Options & OptionsManager.ModOptions.GhostMode) == OptionsManager.ModOptions.GhostMode)
+                if ((TrafficMod.Options & OptionsManager.ModOptions.BetaTestRoadCustomizerTool) == OptionsManager.ModOptions.None || 
+                    (TrafficMod.Options & OptionsManager.ModOptions.GhostMode) == OptionsManager.ModOptions.GhostMode)
                     return;
 
                 Logger.LogInfo("Saving road data!");

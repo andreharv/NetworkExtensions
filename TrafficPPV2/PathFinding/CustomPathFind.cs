@@ -90,14 +90,15 @@ namespace CSL_Traffic
 		private bool m_isHeavyVehicle;
 		private bool m_ignoreBlocked;
 		private bool m_stablePath;
-        private bool m_transportVehicle;
-		private Randomizer m_pathRandomizer;
+        private bool m_isTransportVehicle;
+	    private bool m_isServiceVehicles;
+        private bool m_isPriorityVehicle;
+        private Randomizer m_pathRandomizer;
 		private uint m_pathFindIndex;
 		private NetInfo.LaneType m_laneTypes;
 		private VehicleInfo.VehicleType m_vehicleTypes;
-		private Transit.Framework.Light.VehicleType m_vehicleType;
-		private Dictionary<uint, Transit.Framework.Light.VehicleType> m_pathVehicleType;
-		private bool m_prioritizeBusLanes;
+		private ExtendedVehicleType m_vehicleTypeExtended;
+		private Dictionary<uint, ExtendedVehicleType> m_pathVehicleType;
 
 		private void Awake()
 		{
@@ -117,7 +118,7 @@ namespace CSL_Traffic
 			this.m_bufferMin = new int[1024];
 			this.m_bufferMax = new int[1024];
 			this.m_queueLock = new object();
-			this.m_pathVehicleType = new Dictionary<uint, Transit.Framework.Light.VehicleType>();
+			this.m_pathVehicleType = new Dictionary<uint, ExtendedVehicleType>();
 			this.m_bufferLock = Singleton<PathManager>.instance.m_bufferLock;
 			this.m_pathUnits = Singleton<PathManager>.instance.m_pathUnits;
 			this.m_pathFindThread = new Thread(new ThreadStart(this.PathFindThread));
@@ -145,7 +146,7 @@ namespace CSL_Traffic
 				Monitor.Exit(this.m_queueLock);
 			}
 		}
-		public bool CalculatePath(uint unit, bool skipQueue, Transit.Framework.Light.VehicleType vehicleType)
+		public bool CalculatePath(uint unit, bool skipQueue, ExtendedVehicleType vehicleType)
 		{
 			if (Singleton<PathManager>.instance.AddPathReference(unit))
 			{
@@ -225,24 +226,22 @@ namespace CSL_Traffic
 			this.m_isHeavyVehicle = ((this.m_pathUnits.m_buffer[(int)((UIntPtr)unit)].m_simulationFlags & 16) != 0);
 			this.m_ignoreBlocked = ((this.m_pathUnits.m_buffer[(int)((UIntPtr)unit)].m_simulationFlags & 32) != 0);
 			this.m_stablePath = ((this.m_pathUnits.m_buffer[(int)((UIntPtr)unit)].m_simulationFlags & 64) != 0);
-            this.m_transportVehicle = ((byte)(this.m_laneTypes & NetInfo.LaneType.TransportVehicle) != 0);
+            this.m_isTransportVehicle = ((byte)(this.m_laneTypes & NetInfo.LaneType.TransportVehicle) != 0);
             if ((byte)(this.m_laneTypes & NetInfo.LaneType.Vehicle) != 0)
             {
                 this.m_laneTypes |= NetInfo.LaneType.TransportVehicle;
             }
 
-			if (!m_pathVehicleType.TryGetValue(unit, out m_vehicleType))
+			if (!m_pathVehicleType.TryGetValue(unit, out m_vehicleTypeExtended))
 			{
 				//if ((m_laneTypes & NetInfo.LaneType.Pedestrian) == NetInfo.LaneType.Pedestrian)
-					m_vehicleType = Transit.Framework.Light.VehicleType.PassengerCar;
+					m_vehicleTypeExtended = ExtendedVehicleType.PassengerCar;
 				//else
-				//	m_vehicleType = Transit.Framework.Light.VehicleType.None;
+				//	m_vehicleTypeExtended = ExtendedVehicleType.None;
 			}
 
-			if ((UserMod.Options & OptionsManager.ModOptions.ImprovedAI) == OptionsManager.ModOptions.ImprovedAI)
-				this.m_prioritizeBusLanes = (this.m_vehicleType & (Transit.Framework.Light.VehicleType.Bus | Transit.Framework.Light.VehicleType.Emergency)) != Transit.Framework.Light.VehicleType.None;
-			else
-				this.m_prioritizeBusLanes = false;
+            this.m_isServiceVehicles = (this.m_vehicleTypeExtended & (ExtendedVehicleType.ServiceVehicles)) != ExtendedVehicleType.None;
+            this.m_isPriorityVehicle = (this.m_vehicleTypeExtended & (ExtendedVehicleType.Bus | ExtendedVehicleType.EmergencyVehicles)) != ExtendedVehicleType.None;
 
 			int num = (int)(this.m_pathUnits.m_buffer[(int)((UIntPtr)unit)].m_positionCount & 15);
 			int num2 = this.m_pathUnits.m_buffer[(int)((UIntPtr)unit)].m_positionCount >> 4;
@@ -774,7 +773,7 @@ namespace CSL_Traffic
 
         private float CalculateLaneSpeed(byte startOffset, byte endOffset, ref NetSegment segment, NetInfo.Lane laneInfo, uint laneId)
 		{
-			float speedLimit = (UserMod.Options & OptionsManager.ModOptions.BetaTestRoadCustomizerTool) == OptionsManager.ModOptions.BetaTestRoadCustomizerTool ? RoadManager.GetLaneSpeed(laneId) : laneInfo.m_speedLimit;
+			float speedLimit = (TrafficMod.Options & OptionsManager.ModOptions.BetaTestRoadCustomizerTool) == OptionsManager.ModOptions.BetaTestRoadCustomizerTool ? RoadManager.GetLaneSpeed(laneId) : laneInfo.m_speedLimit;
 			//float speedLimit = laneInfo.m_speedLimit;
 
 			NetInfo.Direction direction = ((segment.m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None) ? laneInfo.m_finalDirection : NetInfo.InvertDirection(laneInfo.m_finalDirection);
@@ -972,10 +971,23 @@ namespace CSL_Traffic
             {
                 num7 *= 5f;
             }
-            if (this.m_transportVehicle && laneType == NetInfo.LaneType.TransportVehicle)
+            /* --------- TAM - Fix -------- */
+            //if (this.m_isTransportVehicle && (laneType & NetInfo.LaneType.TransportVehicle) != 0)
+            //{
+            //    num7 *= 0.95f;
+            //}
+            if ((laneType & NetInfo.LaneType.TransportVehicle) != 0)
             {
-                num7 *= 0.95f;
+                if (this.m_isPriorityVehicle || this.m_isTransportVehicle)
+                {
+                    num7 *= 0.90f;
+                }
+                else
+                {
+                    num7 *= 1.5f;
+                }
             }
+            /* ------------ */
             if ((byte)(laneType & (NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle)) != 0)
             {
                 laneType = (NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle);
@@ -1004,7 +1016,10 @@ namespace CSL_Traffic
 			while (num12 < num && num2 != 0u)
 			{
 				NetInfo.Lane lane2 = info.m_lanes[num12];
-				if ((byte)(lane2.m_finalDirection & direction2) != 0 && RoadManager.CheckLaneConnection(num2, item.m_laneID) && RoadManager.CanUseLane(this.m_vehicleType, num2) && RoadManager.CanUseLane(this.m_vehicleType, item.m_laneID))
+				if ((byte)(lane2.m_finalDirection & direction2) != 0 && 
+                    RoadManager.CheckLaneConnection(num2, item.m_laneID) && 
+                    RoadManager.CanUseLane(this.m_vehicleTypeExtended, num2) && 
+                    RoadManager.CanUseLane(this.m_vehicleTypeExtended, item.m_laneID))
 				{
 					if (lane2.CheckType(laneType2, vehicleType2) && (segmentID != item.m_position.m_segment || num12 != (int)item.m_position.m_lane) && (byte)(lane2.m_finalDirection & direction2) != 0)
 					{
@@ -1017,30 +1032,27 @@ namespace CSL_Traffic
 						{
 							a = instance.m_lanes.m_buffer[(int)((UIntPtr)num2)].m_bezier.a;
 						}
-						float num13 = Vector3.Distance(a, b);
+
+
+						float lane2Distance = Vector3.Distance(a, b);
 						if (flag)
 						{
-							num13 *= 2f;
-						}
-                        if ((UserMod.Options & OptionsManager.ModOptions.ImprovedAI) == OptionsManager.ModOptions.ImprovedAI)
+							lane2Distance *= 2f;
+                        }
+
+                        ///* ---- TAM - Custom routing -------- */
+                        if ((TrafficMod.Options & OptionsManager.ModOptions.ImprovedAI) == OptionsManager.ModOptions.ImprovedAI)
                         {
                             /* ----- Congestion Changes ----- */
                             // Checks if the lane has space for a vehicle of length 5. If not, increase its cost to avoid it. 
                             if (!instance.m_lanes.m_buffer[num2].CheckSpace(5)) // the length used here can be tweaked for different results. Haven't had time to test it yet
                             {
-                                num13 *= 3f; // the factor of cost increase can also be tweaked to achieve different results
+                                lane2Distance *= 3f; // the factor of cost increase can also be tweaked to achieve different results
                             }
+                            /* ------------------------------ */
                         }
-                        /* ------------------------------ */
-                        if (this.m_prioritizeBusLanes)
-						{
-							NetInfoLane customLane2 = lane2 as NetInfoLane;
-							if (customLane2 != null && customLane2.m_specialLaneType == NetInfoLane.SpecialLaneType.BusLane)
-							{
-								num13 /= 10f;
-							}
-						}
-						float num14 = num13 / ((num5 + RoadManager.GetLaneSpeed(num2) /*lane2.m_speedLimit*/) * 0.5f * this.m_maxLength);
+
+                        float num14 = lane2Distance / ((num5 + RoadManager.GetLaneSpeed(num2) /*lane2.m_speedLimit*/) * 0.5f * this.m_maxLength);
 						CustomPathFind.BufferItem item2;
 						item2.m_position.m_segment = segmentID;
 						item2.m_position.m_lane = (byte)num12;
@@ -1051,7 +1063,7 @@ namespace CSL_Traffic
 						}
 						else
 						{
-							item2.m_methodDistance = num9 + num13;
+							item2.m_methodDistance = num9 + lane2Distance;
 						}
 						if (lane2.m_laneType != NetInfo.LaneType.Pedestrian || item2.m_methodDistance < 1000f)
 						{
@@ -1094,9 +1106,9 @@ namespace CSL_Traffic
 								int lastTarget = (int)instance.m_lanes.m_buffer[(int)((UIntPtr)num2)].m_lastTarget;
 								if (currentTargetIndex < firstTarget || currentTargetIndex >= lastTarget)
 								{
-									item2.m_comparisonValue += Mathf.Max(1f, num13 * 3f - 3f) / ((num5 + RoadManager.GetLaneSpeed(num2)/* lane2.m_speedLimit*/) * 0.5f * this.m_maxLength);
+									item2.m_comparisonValue += Mathf.Max(1f, lane2Distance * 3f - 3f) / ((num5 + RoadManager.GetLaneSpeed(num2)/* lane2.m_speedLimit*/) * 0.5f * this.m_maxLength);
 								}
-                                if (!this.m_transportVehicle && lane2.m_laneType == NetInfo.LaneType.TransportVehicle)
+                                if (!this.m_isTransportVehicle && lane2.m_laneType == NetInfo.LaneType.TransportVehicle)
                                 {
                                     item2.m_comparisonValue += 20f / ((num5 + lane2.m_speedLimit) * 0.5f * this.m_maxLength);
                                 }
@@ -1362,7 +1374,7 @@ namespace CSL_Traffic
 				catch (Exception ex)
 				{
 					UIView.ForwardException(ex);
-					CODebugBase<LogChannel>.Error(LogChannel.Core, "Path find error: " + ex.Message/* + " - " + m_vehicleType + " - " + m_vehicleTypes*/ + "\n" + ex.StackTrace);
+					CODebugBase<LogChannel>.Error(LogChannel.Core, "Path find error: " + ex.Message/* + " - " + m_vehicleTypeExtended + " - " + m_vehicleTypes*/ + "\n" + ex.StackTrace);
 					PathUnit[] expr_1A0_cp_0 = this.m_pathUnits.m_buffer;
 					UIntPtr expr_1A0_cp_1 = (UIntPtr)this.m_calculating;
 					expr_1A0_cp_0[(int)expr_1A0_cp_1].m_pathFindFlags = (byte)(expr_1A0_cp_0[(int)expr_1A0_cp_1].m_pathFindFlags | 8);

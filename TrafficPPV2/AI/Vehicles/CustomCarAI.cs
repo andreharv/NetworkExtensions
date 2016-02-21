@@ -2,6 +2,7 @@ using ColossalFramework;
 using ColossalFramework.Math;
 using System;
 using UnityEngine;
+using Transit.Framework.Light;
 
 namespace CSL_Traffic
 {
@@ -142,7 +143,7 @@ namespace CSL_Traffic
                             (carAI as IVehicle).InvalidPath(vehicleID, ref vehicleData, leaderID, ref leaderData);
                             // flag it as not congested and set count to -1 so that it is neither congested nor completely clear
                             // this is needed here because, contrary to the default code, it does not leave the cycle below
-                            if ((UserMod.Options & OptionsManager.ModOptions.ImprovedAI) == OptionsManager.ModOptions.ImprovedAI)
+                            if ((TrafficMod.Options & OptionsManager.ModOptions.ImprovedAI) == OptionsManager.ModOptions.ImprovedAI)
                             {
                                 flag3 = true;
                                 count = -1;
@@ -151,7 +152,7 @@ namespace CSL_Traffic
                         }
                         flag3 = true;
                         ++j;
-                        if ((UserMod.Options & OptionsManager.ModOptions.ImprovedAI) != OptionsManager.ModOptions.ImprovedAI)
+                        if ((TrafficMod.Options & OptionsManager.ModOptions.ImprovedAI) != OptionsManager.ModOptions.ImprovedAI)
                         {
                             break;
                         }
@@ -160,7 +161,7 @@ namespace CSL_Traffic
                         // I am yet to test the performance impact this particular "feature" has.
                     }
 
-                    if ((UserMod.Options & OptionsManager.ModOptions.ImprovedAI) == OptionsManager.ModOptions.ImprovedAI)
+                    if ((TrafficMod.Options & OptionsManager.ModOptions.ImprovedAI) == OptionsManager.ModOptions.ImprovedAI)
                     {
                         // if at least 2 out of the next 5 lanes are congested and it hasn't tried to find a new path yet, then calculates a new path and flags it as such
                         // the amounf of congested lanes necessary to calculate a new path can be tweaked to reduce the amount of new paths being calculated, if performance in bigger cities is severely affected
@@ -303,7 +304,7 @@ namespace CSL_Traffic
             if (flag5)
             {
                 vehicleData.m_blockCounter = (byte)Mathf.Min((int)(vehicleData.m_blockCounter + 1), 255);
-                if ((vehicleData.m_blockCounter == 100 || vehicleData.m_blockCounter == 150) && (UserMod.Options & OptionsManager.ModOptions.NoDespawn) == OptionsManager.ModOptions.NoDespawn)
+                if ((vehicleData.m_blockCounter == 100 || vehicleData.m_blockCounter == 150) && (TrafficMod.Options & OptionsManager.ModOptions.NoDespawn) == OptionsManager.ModOptions.NoDespawn)
                     vehicleData.m_blockCounter++;
             }
             else
@@ -363,7 +364,7 @@ namespace CSL_Traffic
             }
         }
 
-        public static bool StartPathFind(CarAI carAI, ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget, Transit.Framework.Light.VehicleType vehicleType)
+        public static bool StartPathFind(CarAI carAI, ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget, ExtendedVehicleType vehicleType)
         {
             VehicleInfo info = carAI.m_info;
             bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != Vehicle.Flags.None;

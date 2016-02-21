@@ -29,7 +29,7 @@ namespace CSL_Traffic
 
         static string FindModPath()
         {
-            PluginManager.PluginInfo plugin = Singleton<PluginManager>.instance.GetPluginsInfo().FirstOrDefault(p => p.name == "Traffic++" || p.publishedFileID.AsUInt64 == UserMod.WORKSHOP_ID);
+            PluginManager.PluginInfo plugin = Singleton<PluginManager>.instance.GetPluginsInfo().FirstOrDefault(p => p.name == "Traffic++" || p.publishedFileID.AsUInt64 == TrafficMod.WORKSHOP_ID);
             if (plugin != null)
                 return plugin.modPath;
             else
