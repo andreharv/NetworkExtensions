@@ -17,7 +17,7 @@ namespace CSL_Traffic
             public uint m_laneId;
             public ushort m_nodeId;
             private List<uint> m_laneConnections = new List<uint>();
-            public VehicleType m_vehicleTypes = VehicleType.All;
+            public ExtendedVehicleType m_vehicleTypes = ExtendedVehicleType.All;
             public float m_speed = 1f;            
 
             public bool AddConnection(uint laneId)

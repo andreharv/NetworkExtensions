@@ -4,7 +4,7 @@
 namespace Transit.Framework.Light
 {
     [Flags]
-    public enum VehicleType
+    public enum ExtendedVehicleType
     {
         None = 0,
 

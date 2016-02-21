@@ -83,22 +83,22 @@ namespace CSL_Traffic
         #endregion
 
         #region Vehicle Restrictions
-        public static bool CanUseLane(VehicleType vehicleType, uint laneId)
+        public static bool CanUseLane(ExtendedVehicleType vehicleType, uint laneId)
         {            
-            return (GetLane(laneId).m_vehicleTypes & vehicleType) != VehicleType.None;
+            return (GetLane(laneId).m_vehicleTypes & vehicleType) != ExtendedVehicleType.None;
         }
 
-        public static VehicleType GetVehicleRestrictions(uint laneId)
+        public static ExtendedVehicleType GetVehicleRestrictions(uint laneId)
         {
             return GetLane(laneId).m_vehicleTypes;
         }
 
-        public static void SetVehicleRestrictions(uint laneId, VehicleType vehicleRestrictions)
+        public static void SetVehicleRestrictions(uint laneId, ExtendedVehicleType vehicleRestrictions)
         {
             GetLane(laneId).m_vehicleTypes = vehicleRestrictions;
         }
 
-        public static void ToggleVehicleRestriction(uint laneId, VehicleType vehicleType)
+        public static void ToggleVehicleRestriction(uint laneId, ExtendedVehicleType vehicleType)
         {
             GetLane(laneId).m_vehicleTypes ^= vehicleType;
         }
