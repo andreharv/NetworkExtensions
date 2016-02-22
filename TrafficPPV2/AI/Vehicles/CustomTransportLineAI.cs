@@ -50,7 +50,7 @@ namespace CSL_Traffic
 		{
             if (data.m_path != 0u)
             {
-                Singleton<CustomPathManager>.instance.ReleasePath(data.m_path);
+                Singleton<PathManager>.instance.ReleasePath(data.m_path);
                 data.m_path = 0u;
             }
             NetManager instance = Singleton<NetManager>.instance;
@@ -83,16 +83,7 @@ namespace CSL_Traffic
             float num;
             float num2;
             
-            if (vehicleType == VehicleInfo.VehicleType.Car)
-            {
-                if (!CustomPathManager.FindPathPosition(position, netService, NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, true, false, 32f, out startPosA, out startPosB, out num, out num2, ExtendedVehicleType.Bus))
-                {
-                    CustomTransportLineAI.CheckSegmentProblems(segmentID, ref data);
-                    return true;
-                }
-            }
-
-            if (!PathManager.FindPathPosition(position, netService, NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, vehicleType, true, false, 32f, out startPosA, out startPosB, out num, out num2))
+            if (!CustomPathManager.FindPathPosition(position, netService, NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, true, false, 32f, out startPosA, out startPosB, out num, out num2, ExtendedVehicleType.Bus))
             {
                 CustomTransportLineAI.CheckSegmentProblems(segmentID, ref data);
                 return true;
@@ -104,16 +95,7 @@ namespace CSL_Traffic
             float num3;
             float num4;
 
-            if (vehicleType == VehicleInfo.VehicleType.Car)
-            {
-                if (!CustomPathManager.FindPathPosition(position2, netService, NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, true, false, 32f, out endPosA, out endPosB, out num3, out num4, ExtendedVehicleType.Bus))
-                {
-                    CustomTransportLineAI.CheckSegmentProblems(segmentID, ref data);
-                    return true;
-                }
-            }
-            
-            if (!PathManager.FindPathPosition(position2, netService, NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, vehicleType, true, false, 32f, out endPosA, out endPosB, out num3, out num4))
+            if (!CustomPathManager.FindPathPosition(position2, netService, NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, true, false, 32f, out endPosA, out endPosB, out num3, out num4, ExtendedVehicleType.Bus))
             {
                 CustomTransportLineAI.CheckSegmentProblems(segmentID, ref data);
                 return true;
@@ -141,12 +123,7 @@ namespace CSL_Traffic
                 return true;
             }
             uint path;
-            bool createPathResult;
-            CustomPathManager customPathManager = Singleton<PathManager>.instance as CustomPathManager;
-            if (customPathManager != null)
-                createPathResult = customPathManager.CreatePath(out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, vehicleType, 20000f, false, true, true, skipQueue, ExtendedVehicleType.Bus);
-            else
-                createPathResult = Singleton<PathManager>.instance.CreatePath(out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, vehicleType, 20000f, false, true, true, skipQueue);
+            bool createPathResult = Singleton<PathManager>.instance.CreatePath(out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, vehicleType, 20000f, false, true, true, skipQueue, ExtendedVehicleType.Bus);
             if (createPathResult)
             {
                 if (startPosA.m_segment != 0 && startPosB.m_segment != 0)

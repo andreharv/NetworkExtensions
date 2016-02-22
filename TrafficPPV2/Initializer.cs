@@ -24,7 +24,6 @@ namespace CSL_Traffic
         Dictionary<string, Texture2D> m_customTextures;
         Dictionary<string, VehicleAI> m_replacedAIs;
         bool m_initialized;
-        bool m_incompatibilityWarning;
         float m_gameStartedTime;
         int m_level;
 
@@ -39,11 +38,11 @@ namespace CSL_Traffic
 
         void Start()
         {
-            if ((TrafficMod.Options & OptionsManager.ModOptions.GhostMode) != OptionsManager.ModOptions.GhostMode)
-            {
-                ReplacePathManager();
-                //ReplaceTransportManager();
-            }
+            //if ((TrafficMod.Options & OptionsManager.ModOptions.GhostMode) != OptionsManager.ModOptions.GhostMode)
+            //{
+            //    //ReplacePathManager();
+            //    //ReplaceTransportManager();
+            //}
         }
 
         void OnLevelWasLoaded(int level)
@@ -110,27 +109,6 @@ namespace CSL_Traffic
                 return;
             else if (m_gameStartedTime == 0f)
                 m_gameStartedTime = Time.realtimeSinceStartup;
-
-            //while (m_postLoadingActions.Count > 0)
-            //	m_postLoadingActions.Dequeue().Invoke();
-
-            // Checks if CustomPathManager have been replaced by another mod and prints a warning in the log
-            // This check is only run in the first two minutes since game is loaded
-            if (!m_incompatibilityWarning && (TrafficMod.Options & OptionsManager.ModOptions.GhostMode) == OptionsManager.ModOptions.None)
-            {
-                if ((Time.realtimeSinceStartup - m_gameStartedTime) < 120f)
-                {
-                    CustomPathManager customPathManager = Singleton<PathManager>.instance as CustomPathManager;
-                    if (customPathManager == null)
-                    {
-                        Logger.LogInfo("CustomPathManager not found! There's an incompatibility with another mod.");
-                        UIView.library.ShowModal<ExceptionPanel>("ExceptionPanel").SetMessage("Incompatibility Issue", "Traffic++ detected an incompatibility with another mod! You can continue playing but it's NOT recommended.", false);
-                        m_incompatibilityWarning = true;
-                    }
-                }
-                else
-                    m_incompatibilityWarning = true;
-            }
         }
 
         #region Initialization
@@ -269,32 +247,32 @@ namespace CSL_Traffic
         }
 
         // Replace the pathfinding system for mine
-        void ReplacePathManager()
-        {
-            if (Singleton<PathManager>.instance as CustomPathManager != null)
-                return;
+        //void ReplacePathManager()
+        //{
+        //    if (Singleton<PathManager>.instance as CustomPathManager != null)
+        //        return;
 
-            Logger.LogInfo("Replacing Path Manager");
+        //    Logger.LogInfo("Replacing Path Manager");
 
-            // Change PathManager to CustomPathManager
-            FieldInfo sInstance = typeof(ColossalFramework.Singleton<PathManager>).GetFieldByName("sInstance");
-            PathManager originalPathManager = ColossalFramework.Singleton<PathManager>.instance;
-            CustomPathManager customPathManager = originalPathManager.gameObject.AddComponent<CustomPathManager>();
-            customPathManager.SetOriginalValues(originalPathManager);
+        //    // Change PathManager to CustomPathManager
+        //    FieldInfo sInstance = typeof(ColossalFramework.Singleton<PathManager>).GetFieldByName("sInstance");
+        //    PathManager originalPathManager = ColossalFramework.Singleton<PathManager>.instance;
+        //    CustomPathManager customPathManager = originalPathManager.gameObject.AddComponent<CustomPathManager>();
+        //    customPathManager.SetOriginalValues(originalPathManager);
 
-            // change the new instance in the singleton
-            sInstance.SetValue(null, customPathManager);
+        //    // change the new instance in the singleton
+        //    sInstance.SetValue(null, customPathManager);
 
-            // change the manager in the SimulationManager
-            FastList<ISimulationManager> managers = (FastList<ISimulationManager>)typeof(SimulationManager).GetFieldByName("m_managers").GetValue(null);
-            managers.Remove(originalPathManager);
-            managers.Add(customPathManager);
+        //    // change the manager in the SimulationManager
+        //    FastList<ISimulationManager> managers = (FastList<ISimulationManager>)typeof(SimulationManager).GetFieldByName("m_managers").GetValue(null);
+        //    managers.Remove(originalPathManager);
+        //    managers.Add(customPathManager);
 
-            // Destroy in 10 seconds to give time to all references to update to the new manager without crashing
-            GameObject.Destroy(originalPathManager, 10f);
+        //    // Destroy in 10 seconds to give time to all references to update to the new manager without crashing
+        //    GameObject.Destroy(originalPathManager, 10f);
 
-            Logger.LogInfo("Path Manager successfully replaced.");
-        }
+        //    Logger.LogInfo("Path Manager successfully replaced.");
+        //}
 
         T TryGetComponent<T>(string name) where T : MonoBehaviour
         {

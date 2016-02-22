@@ -81,7 +81,6 @@
     <Compile Include="RoadManager.LaneSerializer.cs" />
     <Compile Include="RoadManager.cs" />
     <Compile Include="Tools\RoadCustomizerTool.cs" />
-    <Compile Include="AI\Vehicles\CustomTransportLineAI.cs" />
     <Compile Include="UI\RoadCustomizerGroupPanel.cs" />
     <Compile Include="UI\RoadCustomizerPanel.cs" />
     <Compile Include="UI\UIUtils.cs" />
