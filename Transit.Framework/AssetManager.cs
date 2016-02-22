@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using ColossalFramework;
+using ColossalFramework.Packaging;
 using ObjUnity3D;
 using Transit.Framework.Texturing;
 using UnityEngine;
@@ -56,12 +58,14 @@ namespace Transit.Framework
                         };
                         break;
 
+#if DEBUG
                     case ".obj":
                         yield return () =>
                         {
                             _allMeshes[assetRelativePath] = LoadMesh(assetFullPath, assetName);
                         };
                         break;
+#endif
                 }
             }
         }
@@ -166,6 +170,7 @@ namespace Transit.Framework
                 return null;
             }
 
+#if DEBUG
             var trimmedPath = path
                 .Replace('\\', Path.DirectorySeparatorChar)
                 .Replace('/', Path.DirectorySeparatorChar);
@@ -174,8 +179,40 @@ namespace Transit.Framework
             {
                 throw new Exception(String.Format("TFW: Mesh {0} not found", trimmedPath));
             }
+#else
+            var assetName = "TAM/" + path
+                .ToLowerInvariant()
+                .TrimEnd(".obj")
+                .Replace('\\', '/');
 
-            return _allMeshes[trimmedPath];
+            if (!_allMeshes.ContainsKey(assetName))
+            {
+                var packageName = "TAM.Meshes";
+
+                var package = PackageManager.GetPackage(packageName);
+                if (package == null)
+                {
+                    throw new Exception(String.Format("TFW: Package {0} not found", packageName));
+                }
+
+                var asset = package.Find(assetName);
+                if (asset == null)
+                {
+                    throw new Exception(String.Format("TFW: Asset {0} not found", assetName));
+                }
+
+                var mesh = asset.Instantiate<Mesh>();
+                //var mesh = Resources.Load<Mesh>(assetName);
+                if (mesh == null)
+                {
+                    throw new Exception(String.Format("TFW: Mesh {0} could not be created", assetName));
+                }
+
+                _allMeshes[assetName] = mesh;
+            }
+#endif
+
+            return _allMeshes[assetName];
         }
     }
 }

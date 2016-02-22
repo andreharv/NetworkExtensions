@@ -1831,6 +1831,9 @@
     <Content Include="SomeRoads\thumbnail_atlas.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Meshes.crp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Buildings\BridgePillar.CableStay32m.crp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
