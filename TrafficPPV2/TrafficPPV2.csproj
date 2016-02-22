@@ -63,6 +63,7 @@
     <Compile Include="AI\Vehicles\CustomHearseAI.cs" />
     <Compile Include="AI\Vehicles\CustomPassengerCarAI.cs" />
     <Compile Include="AI\Vehicles\CustomPoliceCarAI.cs" />
+    <Compile Include="AI\Vehicles\CustomTransportLineAI.cs" />
     <Compile Include="AI\Vehicles\CustomVehicleAI.cs" />
     <Compile Include="AI\Vehicles\IVehicle.cs" />
     <Compile Include="Extensions\NetSegmentExtensions.cs" />

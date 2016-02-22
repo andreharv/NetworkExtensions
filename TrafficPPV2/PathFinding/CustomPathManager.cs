@@ -14,36 +14,50 @@ namespace CSL_Traffic
 	 * There's some work to do here as I have some old code that isn't used anymore.
 	 */
 	public class CustomPathManager : PathManager
-	{
-		public static CustomPathFind[] m_pathfinds;
+    {
+        public static CustomPathFind[] m_pathfinds;
 
-        [RedirectFrom(typeof(PathManager))]
         protected override void Awake()
         {
-            base.Awake();
-            this.m_pathUnits = new Array32<PathUnit>(262144u);
-            this.m_bufferLock = new object();
-            uint num;
-            this.m_pathUnits.CreateItem(out num);
-            int num2 = Mathf.Clamp(SystemInfo.processorCount / 2, 1, 4);
-            m_pathfinds = new CustomPathFind[num2];
-            for (int i = 0; i < num2; i++)
+            PathFind[] originalPathFinds = GetComponents<PathFind>();
+            m_pathfinds = new CustomPathFind[originalPathFinds.Length];
+            for (int i = 0; i < originalPathFinds.Length; i++)
             {
-                m_pathfinds[i] = base.gameObject.AddComponent<CustomPathFind>();
+                Destroy(originalPathFinds[i]);
+                m_pathfinds[i] = gameObject.AddComponent<CustomPathFind>();
             }
-            
-			typeof(PathManager).GetFieldByName("m_pathfinds").SetValue(this, m_pathfinds);
-		}
+            typeof(PathManager).GetFieldByName("m_pathfinds").SetValue(this, m_pathfinds);
+        }
 
-        public static bool FindPathPosition(Vector3 position, ItemClass.Service service, NetInfo.LaneType laneType, VehicleInfo.VehicleType vehicleTypes, bool allowUnderground, bool requireConnect, float maxDistance, out PathUnit.Position pathPos, ExtendedVehicleType vehicleType)
+        // copy values from original to new path manager
+        public void SetOriginalValues(PathManager originalPathManager)
+        {
+            // members of SimulationManagerBase
+            this.m_simulationProfiler = originalPathManager.m_simulationProfiler;
+            this.m_drawCallData = originalPathManager.m_drawCallData;
+            this.m_properties = originalPathManager.m_properties;
+
+            // members of PathManager
+            this.m_pathUnitCount = originalPathManager.m_pathUnitCount;
+            this.m_renderPathGizmo = originalPathManager.m_renderPathGizmo;
+            this.m_pathUnits = originalPathManager.m_pathUnits;
+            this.m_bufferLock = originalPathManager.m_bufferLock;
+        }
+
+        public static bool FindPathPosition(Vector3 position, ItemClass.Service service, NetInfo.LaneType laneType, VehicleInfo.VehicleType vehicleType, bool allowUnderground, bool requireConnect, float maxDistance, out PathUnit.Position pathPos, ExtendedVehicleType vehicleTypeExtended)
         {
             PathUnit.Position position2;
             float num;
             float num2;
-            return CustomPathManager.FindPathPosition(position, service, laneType, vehicleTypes, allowUnderground, requireConnect, maxDistance, out pathPos, out position2, out num, out num2, vehicleType);
+            return FindPathPosition(position, service, laneType, vehicleType, VehicleInfo.VehicleType.None, allowUnderground, requireConnect, maxDistance, out pathPos, out position2, out num, out num2, vehicleTypeExtended);
         }
 
-        public static bool FindPathPosition(Vector3 position, ItemClass.Service service, NetInfo.LaneType laneType, VehicleInfo.VehicleType vehicleTypes, bool allowUnderground, bool requireConnect, float maxDistance, out PathUnit.Position pathPosA, out PathUnit.Position pathPosB, out float distanceSqrA, out float distanceSqrB, ExtendedVehicleType vehicleType)
+        public static bool FindPathPosition(Vector3 position, ItemClass.Service service, NetInfo.LaneType laneType, VehicleInfo.VehicleType vehicleType, bool allowUnderground, bool requireConnect, float maxDistance, out PathUnit.Position pathPosA, out PathUnit.Position pathPosB, out float distanceSqrA, out float distanceSqrB, ExtendedVehicleType vehicleTypeExtended)
+        {
+            return FindPathPosition(position, service, laneType, vehicleType, VehicleInfo.VehicleType.None, allowUnderground, requireConnect, maxDistance, out pathPosA, out pathPosB, out distanceSqrA, out distanceSqrB, vehicleTypeExtended);
+        }
+
+        public static bool FindPathPosition(Vector3 position, ItemClass.Service service, NetInfo.LaneType laneType, VehicleInfo.VehicleType vehicleType, VehicleInfo.VehicleType stopType, bool allowUnderground, bool requireConnect, float maxDistance, out PathUnit.Position pathPosA, out PathUnit.Position pathPosB, out float distanceSqrA, out float distanceSqrB, ExtendedVehicleType vehicleTypeExtended)
         {
             Bounds bounds = new Bounds(position, new Vector3(maxDistance * 2f, maxDistance * 2f, maxDistance * 2f));
             int num = Mathf.Max((int)((bounds.min.x - 64f) / 64f + 135f), 0);
@@ -83,7 +97,7 @@ namespace CSL_Traffic
                             Vector3 b2;
                             int num12;
                             float num13;
-                            if ((num8 < 0f || num9 < 0f) && instance.m_segments.m_buffer[(int)num6].m_bounds.Intersects(bounds) && instance.m_segments.m_buffer[(int)num6].GetClosestLanePosition(position, laneType, vehicleTypes, requireConnect, out b, out num10, out num11, out b2, out num12, out num13, vehicleType))
+                            if ((num8 < 0f || num9 < 0f) && instance.m_segments.m_buffer[(int)num6].m_bounds.Intersects(bounds) && instance.m_segments.m_buffer[(int)num6].GetClosestLanePosition(position, laneType, vehicleType, stopType, requireConnect, out b, out num10, out num11, out b2, out num12, out num13, vehicleTypeExtended))
                             {
                                 float num14 = Vector3.SqrMagnitude(position - b);
                                 if (num14 < num5)
@@ -112,7 +126,7 @@ namespace CSL_Traffic
                             }
                         }
                         num6 = instance.m_segments.m_buffer[(int)num6].m_nextGridSegment;
-                        if (++num7 >= 32768)
+                        if (++num7 >= 36864)
                         {
                             CODebugBase<LogChannel>.Error(LogChannel.Core, "Invalid list detected!\n" + Environment.StackTrace);
                             break;
