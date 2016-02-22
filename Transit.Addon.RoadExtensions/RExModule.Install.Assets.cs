@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 using Transit.Framework;
 using UnityEngine;
@@ -29,7 +30,11 @@ namespace Transit.Addon.RoadExtensions
                     return;
                 }
 
-                foreach (var action in AssetManager.instance.CreateLoadingSequence(host.AssetPath))
+                var sequence = new List<Action>();
+                sequence.AddRange(AssetManager.instance.CreatePackageLoadingSequence("TAM.Meshes", "TAM/"));
+                sequence.AddRange(AssetManager.instance.CreateLoadingSequence(host.AssetPath));
+
+                foreach (var action in sequence)
                 {
                     var localAction = action;
 

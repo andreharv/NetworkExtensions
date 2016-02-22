@@ -19,13 +19,6 @@ namespace Transit.Framework
 
     public class AssetManager : Singleton<AssetManager>
     {
-        // TODO: Resources.Load("Textures/myTexture") might be usefull here
-
-#if DEBUG
-        private readonly ICollection<Texture2D> _specialTextures = new List<Texture2D>();
-        public ICollection<Texture2D> SpecialTextures { get { return _specialTextures; } }
-#endif
-
         private readonly IDictionary<string, byte[]> _allTexturesRaw = new Dictionary<string, byte[]>(StringComparer.InvariantCultureIgnoreCase);
         private readonly IDictionary<string, Texture2D> _allTextures = new Dictionary<string, Texture2D>(StringComparer.InvariantCultureIgnoreCase);
         private readonly IDictionary<string, Mesh> _allMeshes = new Dictionary<string, Mesh>(StringComparer.InvariantCultureIgnoreCase);
@@ -40,32 +33,76 @@ namespace Transit.Framework
 
             foreach (var assetFile in files)
             {
-                var assetFullPath = assetFile.FullName;
-                var assetRelativePath = assetFile.FullName.Replace(modPath, "").TrimStart(new[] { '\\', '/' });
-                var assetName = assetFile.Name;
+                var assetFullPath = assetFile
+                    .FullName;
 
-                if (_allTexturesRaw.ContainsKey(assetRelativePath))
-                {
-                    continue;
-                }
+                var assetName = assetFile
+                    .FullName
+                    .ToLowerInvariant()
+                    .Replace(modPath.ToLowerInvariant(), "")
+                    .Replace("\\", "/")
+                    .TrimStart("/")
+                    .TrimEnd(assetFile.Extension);
 
-                switch (assetFile.Extension.ToLower())
+                switch (assetFile.Extension.ToLowerInvariant())
                 {
                     case ".png":
                         yield return () =>
                         {
-                            _allTexturesRaw[assetRelativePath] = LoadTextureData(assetFullPath);
+                            _allTexturesRaw[assetName] = LoadTextureData(assetFullPath);
                         };
                         break;
 
-#if DEBUG
                     case ".obj":
                         yield return () =>
                         {
-                            _allMeshes[assetRelativePath] = LoadMesh(assetFullPath, assetName);
+                            _allMeshes[assetName] = LoadMesh(assetFullPath, assetName);
                         };
                         break;
-#endif
+                }
+            }
+        }
+
+        public IEnumerable<Action> CreatePackageLoadingSequence(string packageName, string assetprefix, bool isOptional = true)
+        {
+            var package = PackageManager.GetPackage(packageName);
+            if (package == null)
+            {
+                if (isOptional)
+                {
+                    yield break;
+                }
+                else
+                {
+                    throw new Exception(String.Format("TFW: Package {0} not found", packageName));
+                }
+            }
+
+            foreach (var filteredAsset in package.FilterAssets(Package.AssetType.StaticMesh, Package.AssetType.Texture))
+            {
+                var asset = filteredAsset;
+                var assetName = asset
+                    .name
+                    .TrimStart(assetprefix);
+
+                if (asset.type == Package.AssetType.Texture)
+                {
+                    yield return () =>
+                    {
+                        _allTextures[assetName] = asset.Instantiate<Texture2D>();
+                    };
+
+                    continue;
+                }
+
+                if (asset.type == Package.AssetType.StaticMesh)
+                {
+                    yield return () =>
+                    {
+                        _allMeshes[assetName] = asset.Instantiate<Mesh>();
+                    };
+
+                    continue;
                 }
             }
         }
@@ -110,7 +147,7 @@ namespace Transit.Framework
                 mesh.LoadOBJ(OBJLoader.LoadOBJ(fileStream));
             }
             mesh.Optimize();
-            mesh.name = Path.GetFileNameWithoutExtension(meshName);
+            mesh.name = meshName;
 
             return mesh;
         }
@@ -123,8 +160,9 @@ namespace Transit.Framework
             }
 
             var trimmedPath = path
-                .Replace('\\', Path.DirectorySeparatorChar)
-                .Replace('/', Path.DirectorySeparatorChar);
+                .Replace("\\", "/")
+                .ToLowerInvariant()
+                .TrimEnd(".png");
 
             if (!_allTexturesRaw.ContainsKey(trimmedPath))
             {
@@ -152,8 +190,9 @@ namespace Transit.Framework
             }
 
             var trimmedPath = path
-                .Replace('\\', Path.DirectorySeparatorChar)
-                .Replace('/', Path.DirectorySeparatorChar);
+                .Replace("\\", "/")
+                .ToLowerInvariant()
+                .TrimEnd(".png");
 
             if (!_allTexturesRaw.ContainsKey(trimmedPath))
             {
@@ -170,47 +209,15 @@ namespace Transit.Framework
                 return null;
             }
 
-#if DEBUG
-            var trimmedPath = path
-                .Replace('\\', Path.DirectorySeparatorChar)
-                .Replace('/', Path.DirectorySeparatorChar);
-
-            if (!_allMeshes.ContainsKey(trimmedPath))
-            {
-                throw new Exception(String.Format("TFW: Mesh {0} not found", trimmedPath));
-            }
-#else
-            var assetName = "TAM/" + path
+            var assetName = path
+                .Replace("\\", "/")
                 .ToLowerInvariant()
-                .TrimEnd(".obj")
-                .Replace('\\', '/');
+                .TrimEnd(".obj");
 
             if (!_allMeshes.ContainsKey(assetName))
             {
-                var packageName = "TAM.Meshes";
-
-                var package = PackageManager.GetPackage(packageName);
-                if (package == null)
-                {
-                    throw new Exception(String.Format("TFW: Package {0} not found", packageName));
-                }
-
-                var asset = package.Find(assetName);
-                if (asset == null)
-                {
-                    throw new Exception(String.Format("TFW: Asset {0} not found", assetName));
-                }
-
-                var mesh = asset.Instantiate<Mesh>();
-                //var mesh = Resources.Load<Mesh>(assetName);
-                if (mesh == null)
-                {
-                    throw new Exception(String.Format("TFW: Mesh {0} could not be created", assetName));
-                }
-
-                _allMeshes[assetName] = mesh;
+                throw new Exception(String.Format("TFW: Mesh {0} not found", assetName));
             }
-#endif
 
             return _allMeshes[assetName];
         }
