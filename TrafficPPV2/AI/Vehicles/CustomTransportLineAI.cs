@@ -7,10 +7,46 @@ using UnityEngine;
 
 namespace CSL_Traffic
 {
-	class CustomTransportLineAI
-	{
+	class CustomTransportLineAI : TransportLineAI
+    {
+        //public override void UpdateLaneConnection(ushort nodeID, ref NetNode data)
+        //{
+        //    if ((data.m_flags & NetNode.Flags.Temporary) == NetNode.Flags.None)
+        //    {
+        //        uint num = 0u;
+        //        byte offset = 0;
+        //        float num2 = 1E+10f;
+        //        PathUnit.Position pathPos;
+        //        PathUnit.Position position;
+        //        float num3;
+        //        float num4;
+        //        if ((data.m_flags & NetNode.Flags.ForbidLaneConnection) == NetNode.Flags.None && PathManager.FindPathPosition(data.m_position, this.m_netService, NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, this.m_vehicleType, true, false, 32f, out pathPos, out position, out num3, out num4) && num3 < num2)
+        //        {
+        //            NetManager instance = Singleton<NetManager>.instance;
+        //            int num5;
+        //            uint num6;
+        //            if (instance.m_segments.m_buffer[(int)pathPos.m_segment].GetClosestLane((int)pathPos.m_lane, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, this.m_vehicleType, out num5, out num6))
+        //            {
+        //                num = PathManager.GetLaneID(pathPos);
+        //                offset = pathPos.m_offset;
+        //            }
+        //        }
+        //        if (num != data.m_lane)
+        //        {
+        //            if (data.m_lane != 0u)
+        //            {
+        //                this.RemoveLaneConnection(nodeID, ref data);
+        //            }
+        //            if (num != 0u)
+        //            {
+        //                this.AddLaneConnection(nodeID, ref data, num, offset);
+        //            }
+        //        }
+        //    }
+        //}
+
         [RedirectFrom(typeof(TransportLineAI))]
-        public static bool StartPathFind(ushort segmentID, ref NetSegment data, ItemClass.Service netService, VehicleInfo.VehicleType vehicleType, bool skipQueue)
+        public static new bool StartPathFind(ushort segmentID, ref NetSegment data, ItemClass.Service netService, VehicleInfo.VehicleType vehicleType, bool skipQueue)
 		{
             if (data.m_path != 0u)
             {
@@ -146,17 +182,17 @@ namespace CSL_Traffic
         }
 
         [RedirectFrom(typeof(TransportLineAI))]
-        public static bool UpdatePath(ushort segmentID, ref NetSegment data, ItemClass.Service netService, VehicleInfo.VehicleType vehicleType, bool skipQueue)
+        public static new bool UpdatePath(ushort segmentID, ref NetSegment data, ItemClass.Service netService, VehicleInfo.VehicleType vehicleType, bool skipQueue)
         {
             if (data.m_path == 0u)
             {
-                return CustomTransportLineAI.StartPathFind(segmentID, ref data, netService, vehicleType, skipQueue);
+                return StartPathFind(segmentID, ref data, netService, vehicleType, skipQueue);
             }
             if ((data.m_flags & NetSegment.Flags.WaitingPath) == NetSegment.Flags.None)
             {
                 return true;
             }
-            CustomPathManager instance = Singleton<CustomPathManager>.instance;
+            PathManager instance = Singleton<PathManager>.instance;
             NetManager instance2 = Singleton<NetManager>.instance;
             byte pathFindFlags = instance.m_pathUnits.m_buffer[(int)((UIntPtr)data.m_path)].m_pathFindFlags;
             if ((pathFindFlags & 4) != 0)

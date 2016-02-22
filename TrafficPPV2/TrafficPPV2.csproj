@@ -65,6 +65,8 @@
     <Compile Include="AI\Vehicles\CustomPoliceCarAI.cs" />
     <Compile Include="AI\Vehicles\CustomVehicleAI.cs" />
     <Compile Include="AI\Vehicles\IVehicle.cs" />
+    <Compile Include="Extensions\NetSegmentExtensions.cs" />
+    <Compile Include="Extensions\PathManagerExtensions.cs" />
     <Compile Include="RoadManager.LaneSerializationBinder.cs" />
     <Compile Include="RoadManager.Lane.cs" />
     <Compile Include="TrafficMod.cs" />

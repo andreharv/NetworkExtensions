@@ -93,8 +93,14 @@ namespace CSL_Traffic
         {
             if (!m_initialized)
             {
-                TryReplacePrefabs();
-                return;
+                if (TryReplacePrefabs())
+                {
+                    m_initialized = true;
+                }
+                else
+                {
+                    return;
+                }
             }
 
             if ((TrafficMod.Options & OptionsManager.ModOptions.GhostMode) == OptionsManager.ModOptions.GhostMode)
@@ -136,7 +142,7 @@ namespace CSL_Traffic
          * run it on update. I want to make sure I make the switch as soon as they exist to prevent the game
          * from instantianting objects without my code.
          */
-        void TryReplacePrefabs()
+        private bool TryReplacePrefabs()
         {
             VehicleCollection garbageVehicleCollection = null;
             VehicleCollection policeVehicleCollection = null;
@@ -156,52 +162,52 @@ namespace CSL_Traffic
                 // VehicleCollections
                 garbageVehicleCollection = TryGetComponent<VehicleCollection>("Garbage");
                 if (garbageVehicleCollection == null)
-                    return;
+                    return false;
                 
                 policeVehicleCollection = TryGetComponent<VehicleCollection>("Police Department");
                 if (policeVehicleCollection == null)
-                    return;
-                
+                    return false;
+
                 publicTansportVehicleCollection = TryGetComponent<VehicleCollection>("Public Transport");
                 if (publicTansportVehicleCollection == null)
-                    return;
-                
+                    return false;
+
                 healthCareVehicleCollection = TryGetComponent<VehicleCollection>("Health Care");
                 if (healthCareVehicleCollection == null)
-                    return;
-                
+                    return false;
+
                 fireDepartmentVehicleCollection = TryGetComponent<VehicleCollection>("Fire Department");
                 if (fireDepartmentVehicleCollection == null)
-                    return;
-                
+                    return false;
+
                 industrialVehicleCollection = TryGetComponent<VehicleCollection>("Industrial");
                 if (industrialVehicleCollection == null)
-                    return;
-                
+                    return false;
+
                 industrialFarmingVehicleCollection = TryGetComponent<VehicleCollection>("Industrial Farming");
                 if (industrialFarmingVehicleCollection == null)
-                    return;
-                
+                    return false;
+
                 industrialForestryVehicleCollection = TryGetComponent<VehicleCollection>("Industrial Forestry");
                 if (industrialForestryVehicleCollection == null)
-                    return;
-                
+                    return false;
+
                 industrialOilVehicleCollection = TryGetComponent<VehicleCollection>("Industrial Oil");
                 if (industrialOilVehicleCollection == null)
-                    return;
-                
+                    return false;
+
                 industrialOreVehicleCollection = TryGetComponent<VehicleCollection>("Industrial Ore");
                 if (industrialOreVehicleCollection == null)
-                    return;
-                
+                    return false;
+
                 residentialVehicleCollection = TryGetComponent<VehicleCollection>("Residential Low");
                 if (residentialVehicleCollection == null)
-                    return;
+                    return false;
             }
             catch (Exception e)
             {
                 Logger.LogInfo("Unexpected " + e.GetType().Name + " getting required components: " + e.Message + "\n" + e.StackTrace + "\n");
-                return;
+                return false;
             }
 
             Logger.LogInfo("Queueing prefabs for loading...");
@@ -257,9 +263,9 @@ namespace CSL_Traffic
                 }
             }));
 
-            m_initialized = true;
-
             Logger.LogInfo("Prefabs queued for loading.");
+
+            return true;
         }
 
         // Replace the pathfinding system for mine
