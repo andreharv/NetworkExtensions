@@ -198,7 +198,7 @@ namespace CSL_Traffic
 
                         StartCoroutine(HandleCustomVehicles());
 
-                        if ((TrafficMod.Options & OptionsManager.ModOptions.BetaTestRoadCustomizerTool) == OptionsManager.ModOptions.BetaTestRoadCustomizerTool)
+                        if ((TrafficMod.Options & OptionsManager.ModOptions.RoadCustomizerTool) == OptionsManager.ModOptions.RoadCustomizerTool)
                             AddTool<RoadCustomizerTool>(ToolsModifierControl.toolController);
 
                         if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)

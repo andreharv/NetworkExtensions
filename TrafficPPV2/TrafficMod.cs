@@ -8,10 +8,9 @@ namespace CSL_Traffic
     {
         public const ulong WORKSHOP_ID = 626024868ul;
 
-        public static OptionsManager.ModOptions Options = OptionsManager.ModOptions.None;
-        static OptionsManager sm_optionsManager;
-        
-        GameObject m_initializer;
+        public static OptionsManager.ModOptions Options = OptionsManager.ModOptions.RoadCustomizerTool | OptionsManager.ModOptions.NoDespawn;
+        private static OptionsManager sm_optionsManager;
+        private GameObject m_initializer;
 
         public string Name
         {
@@ -26,7 +25,7 @@ namespace CSL_Traffic
         public void OnSettingsUI(UIHelperBase helper)
         {
             if (sm_optionsManager == null)
-                sm_optionsManager = new GameObject("OptionsManager").AddComponent<OptionsManager>();
+                sm_optionsManager = new OptionsManager();
 
             sm_optionsManager.CreateSettings(helper);
         }

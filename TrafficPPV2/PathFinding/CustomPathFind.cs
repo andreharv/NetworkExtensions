@@ -772,7 +772,7 @@ namespace CSL_Traffic
 
         private float CalculateLaneSpeed(byte startOffset, byte endOffset, ref NetSegment segment, NetInfo.Lane laneInfo, uint laneId)
 		{
-			float speedLimit = (TrafficMod.Options & OptionsManager.ModOptions.BetaTestRoadCustomizerTool) == OptionsManager.ModOptions.BetaTestRoadCustomizerTool ? RoadManager.GetLaneSpeed(laneId) : laneInfo.m_speedLimit;
+			float speedLimit = (TrafficMod.Options & OptionsManager.ModOptions.RoadCustomizerTool) == OptionsManager.ModOptions.RoadCustomizerTool ? RoadManager.GetLaneSpeed(laneId) : laneInfo.m_speedLimit;
 			//float speedLimit = laneInfo.m_speedLimit;
 
 			NetInfo.Direction direction = ((segment.m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None) ? laneInfo.m_finalDirection : NetInfo.InvertDirection(laneInfo.m_finalDirection);
