@@ -36,15 +36,6 @@ namespace CSL_Traffic
             //m_postLoadingActions = new Queue<Action>();
         }
 
-        void Start()
-        {
-            if ((TrafficMod.Options & OptionsManager.ModOptions.GhostMode) != OptionsManager.ModOptions.GhostMode)
-            {
-                ReplacePathManager();
-                //ReplaceTransportManager();
-            }
-        }
-
         void OnLevelWasLoaded(int level)
         {
             this.m_level = level;
@@ -101,9 +92,6 @@ namespace CSL_Traffic
                     return;
                 }
             }
-
-            if ((TrafficMod.Options & OptionsManager.ModOptions.GhostMode) == OptionsManager.ModOptions.GhostMode)
-                return;
 
             if (!Singleton<LoadingManager>.instance.m_loadingComplete)
                 return;
@@ -194,7 +182,7 @@ namespace CSL_Traffic
             {
                 try
                 {
-                    if ((TrafficMod.Options & OptionsManager.ModOptions.GhostMode) != OptionsManager.ModOptions.GhostMode && this.m_level == 6)
+                    if (this.m_level == 6)
                     {
                         ReplaceVehicleAI(healthCareVehicleCollection);
                         ReplaceVehicleAI(publicTansportVehicleCollection);
