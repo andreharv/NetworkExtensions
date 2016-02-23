@@ -35,7 +35,7 @@ namespace CSL_Traffic
                     this.SetTarget(vehicleID, ref vehicleData, 0);
                 }
             }
-            CustomCarAI.SimulationStep(this, vehicleID, ref vehicleData, ref frameData, leaderID, ref leaderData, lodPhysics);
+            CarAIExtensions.SimulationStep(this, vehicleID, ref vehicleData, ref frameData, leaderID, ref leaderData, lodPhysics);
             if ((vehicleData.m_flags & Vehicle.Flags.Arriving) != Vehicle.Flags.None && vehicleData.m_targetBuilding != 0 && (vehicleData.m_flags & (Vehicle.Flags.WaitingPath | Vehicle.Flags.GoingBack | Vehicle.Flags.WaitingTarget)) == Vehicle.Flags.None)
             {
                 this.ArriveAtTarget(vehicleID, ref vehicleData);
@@ -53,7 +53,7 @@ namespace CSL_Traffic
 
         protected override bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget)
         {
-            return CustomCarAI.StartPathFind(this, vehicleID, ref vehicleData, startPos, endPos, startBothWays, endBothWays, undergroundTarget, ExtendedVehicleType.GarbageTruck);
+            return this.StartPathFind(vehicleID, ref vehicleData, startPos, endPos, startBothWays, endBothWays, undergroundTarget, ExtendedVehicleType.GarbageTruck);
         }
 
         /*

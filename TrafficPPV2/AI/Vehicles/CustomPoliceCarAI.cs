@@ -24,7 +24,7 @@ namespace CSL_Traffic
 
             if (this.m_info.m_class.m_level >= ItemClass.Level.Level4)
             {
-                CustomCarAI.SimulationStep(this, vehicleID, ref vehicleData, ref frameData, leaderID, ref leaderData, lodPhysics);
+                CarAIExtensions.SimulationStep(this, vehicleID, ref vehicleData, ref frameData, leaderID, ref leaderData, lodPhysics);
                 if ((vehicleData.m_flags & Vehicle.Flags.Stopped) != Vehicle.Flags.None && this.CanLeave(vehicleID, ref vehicleData))
                 {
                     vehicleData.m_flags &= ~Vehicle.Flags.Stopped;
@@ -39,7 +39,7 @@ namespace CSL_Traffic
             {
                 frameData.m_blinkState = (((vehicleData.m_flags & Vehicle.Flags.Emergency2) == Vehicle.Flags.None) ? 0f : 10f);
                 this.TryCollectCrime(vehicleID, ref vehicleData, ref frameData);
-                CustomCarAI.SimulationStep(this, vehicleID, ref vehicleData, ref frameData, leaderID, ref leaderData, lodPhysics);
+                CarAIExtensions.SimulationStep(this, vehicleID, ref vehicleData, ref frameData, leaderID, ref leaderData, lodPhysics);
                 if ((vehicleData.m_flags & Vehicle.Flags.Stopped) != Vehicle.Flags.None)
                 {
                     if (this.CanLeave(vehicleID, ref vehicleData))

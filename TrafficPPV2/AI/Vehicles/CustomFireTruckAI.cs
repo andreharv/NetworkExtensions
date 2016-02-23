@@ -24,7 +24,7 @@ namespace CSL_Traffic
             
 
             frameData.m_blinkState = (((vehicleData.m_flags & (Vehicle.Flags.Emergency1 | Vehicle.Flags.Emergency2)) == Vehicle.Flags.None) ? 0f : 10f);
-            CustomCarAI.SimulationStep(this, vehicleID, ref vehicleData, ref frameData, leaderID, ref leaderData, lodPhysics);
+            CarAIExtensions.SimulationStep(this, vehicleID, ref vehicleData, ref frameData, leaderID, ref leaderData, lodPhysics);
             bool flag = false;
             if (vehicleData.m_targetBuilding != 0)
             {

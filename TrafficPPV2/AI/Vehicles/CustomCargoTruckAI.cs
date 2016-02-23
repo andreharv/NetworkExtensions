@@ -34,7 +34,7 @@ namespace CSL_Traffic
 				{
 					int num = Mathf.Clamp((int)(lastFrameData.m_position.x / 320f + 27f), 0, 53);
 					int num2 = Mathf.Clamp((int)(lastFrameData.m_position.z / 320f + 27f), 0, 53);
-					CustomCarAI.SimulationStep(this, vehicleID, ref vehicleData, ref lastFrameData, leaderID, ref leaderData, lodPhysics);
+                    CarAIExtensions.SimulationStep(this, vehicleID, ref vehicleData, ref lastFrameData, leaderID, ref leaderData, lodPhysics);
 					int num3 = Mathf.Clamp((int)(lastFrameData.m_position.x / 320f + 27f), 0, 53);
 					int num4 = Mathf.Clamp((int)(lastFrameData.m_position.z / 320f + 27f), 0, 53);
 					if ((num3 != num || num4 != num2) && (vehicleData.m_flags & Vehicle.Flags.Spawned) != Vehicle.Flags.None)
@@ -47,7 +47,7 @@ namespace CSL_Traffic
 				{
 					int num5 = Mathf.Clamp((int)(lastFrameData.m_position.x / 32f + 270f), 0, 539);
 					int num6 = Mathf.Clamp((int)(lastFrameData.m_position.z / 32f + 270f), 0, 539);
-					CustomCarAI.SimulationStep(this, vehicleID, ref vehicleData, ref lastFrameData, leaderID, ref leaderData, lodPhysics);
+                    CarAIExtensions.SimulationStep(this, vehicleID, ref vehicleData, ref lastFrameData, leaderID, ref leaderData, lodPhysics);
 					int num7 = Mathf.Clamp((int)(lastFrameData.m_position.x / 32f + 270f), 0, 539);
 					int num8 = Mathf.Clamp((int)(lastFrameData.m_position.z / 32f + 270f), 0, 539);
 					if ((num7 != num5 || num8 != num6) && (vehicleData.m_flags & Vehicle.Flags.Spawned) != Vehicle.Flags.None)
@@ -73,7 +73,7 @@ namespace CSL_Traffic
         {
             if ((vehicleData.m_flags & (Vehicle.Flags.TransferToSource | Vehicle.Flags.GoingBack)) != Vehicle.Flags.None)
             {
-                return CustomCarAI.StartPathFind(this, vehicleID, ref vehicleData, startPos, endPos, startBothWays, endBothWays, undergroundTarget, ExtendedVehicleType.CargoTruck);
+                return this.StartPathFind(vehicleID, ref vehicleData, startPos, endPos, startBothWays, endBothWays, undergroundTarget, ExtendedVehicleType.CargoTruck);
             }
             bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != Vehicle.Flags.None;
             PathUnit.Position startPosA;

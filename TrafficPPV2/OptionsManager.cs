@@ -120,18 +120,9 @@ namespace CSL_Traffic
 
         public struct Options
         {
-            public bool allowTrucks;
-            public bool allowResidents;
-            public bool disableCentralLane;
             public bool realisticSpeeds;
             public bool noDespawn;
-            public bool improvedAI;
-            public bool disableCustomRoads;
-            public bool noStopForCrossing;
-
             public bool betaTestRoadCustomizer;
-
-            public bool fixCargoTrucksNotSpawning;
         }
     }
 }

@@ -64,8 +64,9 @@
     <Compile Include="AI\Vehicles\CustomPassengerCarAI.cs" />
     <Compile Include="AI\Vehicles\CustomPoliceCarAI.cs" />
     <Compile Include="AI\Vehicles\CustomTransportLineAI.cs" />
-    <Compile Include="AI\Vehicles\CustomVehicleAI.cs" />
-    <Compile Include="AI\Vehicles\IVehicle.cs" />
+    <Compile Include="AI\Vehicles\_Extensions\VehicleAIExtensions.cs" />
+    <Compile Include="AI\Vehicles\IVehicleAI.cs" />
+    <Compile Include="AI\Vehicles\_Extensions\CarAIExtensions.cs" />
     <Compile Include="PathFinding\Extensions\NetSegmentExtensions.cs" />
     <Compile Include="PathFinding\CustomPathManager.cs" />
     <Compile Include="PathFinding\CustomPathManager.FindPathPosition.cs" />

@@ -17,8 +17,8 @@ namespace CSL_Traffic
                 }
                 CustomCarAI.sm_speedData[vehicleID].ApplySpeedMultiplier(this.m_info);
             }
-            
-            CustomCarAI.SimulationStep(this, vehicleID, ref vehicleData, ref frameData, leaderID, ref leaderData, lodPhysics);
+
+            CarAIExtensions.SimulationStep(this, vehicleID, ref vehicleData, ref frameData, leaderID, ref leaderData, lodPhysics);
             if ((vehicleData.m_flags & Vehicle.Flags.Stopped) != Vehicle.Flags.None && this.CanLeave(vehicleID, ref vehicleData))
             {
                 vehicleData.m_flags &= ~Vehicle.Flags.Stopped;
@@ -37,7 +37,7 @@ namespace CSL_Traffic
 
         protected override bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget)
         {
-            return CustomCarAI.StartPathFind(this, vehicleID, ref vehicleData, startPos, endPos, startBothWays, endBothWays, undergroundTarget, ExtendedVehicleType.Hearse);
+            return this.StartPathFind(vehicleID, ref vehicleData, startPos, endPos, startBothWays, endBothWays, undergroundTarget, ExtendedVehicleType.Hearse);
         }
 
 
