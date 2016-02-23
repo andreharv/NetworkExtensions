@@ -9,9 +9,10 @@ namespace CSL_Traffic
         public const ulong WORKSHOP_ID = 626024868ul;
 
         public static OptionsManager.ModOptions Options = OptionsManager.ModOptions.None;
-        static OptionsManager sm_optionsManager;
-        
-        GameObject m_initializer;
+        private static OptionsManager sm_optionsManager;
+
+        private GameObject m_initializer;
+        private bool m_redirectionInstalled = false;
 
         public string Name
         {
@@ -42,7 +43,6 @@ namespace CSL_Traffic
 
             if (m_initializer == null)
             {
-                Redirector.PerformRedirections();
                 m_initializer = new GameObject("CSL-Traffic Custom Prefabs");
                 m_initializer.AddComponent<Initializer>();
             }
@@ -63,7 +63,24 @@ namespace CSL_Traffic
             if (m_initializer != null)
             {
                 GameObject.Destroy(m_initializer);
+            }
+        }
+
+        public void OnEnabled()
+        {
+            if (!m_redirectionInstalled)
+            {
+                Redirector.PerformRedirections();
+                m_redirectionInstalled = true;
+            }
+        }
+
+        public void OnDisabled()
+        {
+            if (m_redirectionInstalled)
+            {
                 Redirector.RevertRedirections();
+                m_redirectionInstalled = false;
             }
         }
     }
