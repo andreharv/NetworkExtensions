@@ -11,15 +11,17 @@ namespace CSL_Traffic
         {
             if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
             {
-                if (CustomCarAI.sm_speedData[vehicleID].speedMultiplier == 0 || CustomCarAI.sm_speedData[vehicleID].currentPath != vehicleData.m_path)
+                var speedData = CarSpeedData.Of(vehicleID);
+
+                if (speedData.SpeedMultiplier == 0 || speedData.CurrentPath != vehicleData.m_path)
                 {
-                    CustomCarAI.sm_speedData[vehicleID].currentPath = vehicleData.m_path;
+                    speedData.CurrentPath = vehicleData.m_path;
                     if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) == Vehicle.Flags.Emergency2)
-                        CustomCarAI.sm_speedData[vehicleID].SetRandomSpeedMultiplier(1f, 1.75f);
+                        speedData.SetRandomSpeedMultiplier(1f, 1.75f);
                     else
-                        CustomCarAI.sm_speedData[vehicleID].SetRandomSpeedMultiplier(0.65f, 1f);
+                        speedData.SetRandomSpeedMultiplier(0.65f, 1f);
                 }
-                CustomCarAI.sm_speedData[vehicleID].ApplySpeedMultiplier(this.m_info);
+                m_info.ApplySpeedMultiplier(CarSpeedData.Of(vehicleID));
             }
             
 
@@ -87,7 +89,7 @@ namespace CSL_Traffic
 
             if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
             {
-                CustomCarAI.sm_speedData[vehicleID].RestoreVehicleSpeed(this.m_info);
+                m_info.RestoreVehicleSpeed(CarSpeedData.Of(vehicleID));
             }
         }
 

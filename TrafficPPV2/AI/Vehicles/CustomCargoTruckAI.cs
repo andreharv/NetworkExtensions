@@ -17,13 +17,15 @@ namespace CSL_Traffic
 		public override void SimulationStep(ushort vehicleID, ref Vehicle vehicleData, ushort leaderID, ref Vehicle leaderData, int lodPhysics)
 		{
 			if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
-			{
-				if (CustomCarAI.sm_speedData[vehicleID].speedMultiplier == 0 || CustomCarAI.sm_speedData[vehicleID].currentPath != vehicleData.m_path)
+            {
+                var speedData = CarSpeedData.Of(vehicleID);
+
+				if (speedData.SpeedMultiplier == 0 || speedData.CurrentPath != vehicleData.m_path)
 				{
-					CustomCarAI.sm_speedData[vehicleID].currentPath = vehicleData.m_path;
-					CustomCarAI.sm_speedData[vehicleID].SetRandomSpeedMultiplier(0.7f, 1.1f);
+					speedData.CurrentPath = vehicleData.m_path;
+					speedData.SetRandomSpeedMultiplier(0.7f, 1.1f);
 				}
-				CustomCarAI.sm_speedData[vehicleID].ApplySpeedMultiplier(this.m_info);
+				m_info.ApplySpeedMultiplier(CarSpeedData.Of(vehicleID));
 			}
 
 
@@ -65,7 +67,7 @@ namespace CSL_Traffic
 
 			if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
 			{
-				CustomCarAI.sm_speedData[vehicleID].RestoreVehicleSpeed(this.m_info);
+				m_info.RestoreVehicleSpeed(CarSpeedData.Of(vehicleID));
 			}
 		}
 

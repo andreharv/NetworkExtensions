@@ -56,7 +56,7 @@
   <ItemGroup>
     <Compile Include="AI\Vehicles\CustomAmbulanceAI.cs" />
     <Compile Include="AI\Vehicles\CustomBusAI.cs" />
-    <Compile Include="AI\Vehicles\CustomCarAI.cs" />
+    <Compile Include="AI\CarSpeedData.cs" />
     <Compile Include="AI\Vehicles\CustomCargoTruckAI.cs" />
     <Compile Include="AI\Vehicles\CustomFireTruckAI.cs" />
     <Compile Include="AI\Vehicles\CustomGarbageTruckAI.cs" />
@@ -67,6 +67,7 @@
     <Compile Include="AI\Vehicles\_Extensions\VehicleAIExtensions.cs" />
     <Compile Include="AI\Vehicles\IVehicleAI.cs" />
     <Compile Include="AI\Vehicles\_Extensions\CarAIExtensions.cs" />
+    <Compile Include="AI\Vehicles\_Extensions\VehicleInfoExtensions.cs" />
     <Compile Include="PathFinding\Extensions\NetSegmentExtensions.cs" />
     <Compile Include="PathFinding\CustomPathManager.cs" />
     <Compile Include="PathFinding\CustomPathManager.FindPathPosition.cs" />
