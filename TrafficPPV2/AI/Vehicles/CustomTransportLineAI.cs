@@ -7,14 +7,50 @@ using UnityEngine;
 
 namespace CSL_Traffic
 {
-	class CustomTransportLineAI
-	{
+	class CustomTransportLineAI : TransportLineAI
+    {
+        public override void UpdateLaneConnection(ushort nodeID, ref NetNode data)
+        {
+            if ((data.m_flags & NetNode.Flags.Temporary) == NetNode.Flags.None)
+            {
+                uint num = 0u;
+                byte offset = 0;
+                float num2 = 1E+10f;
+                PathUnit.Position pathPos;
+                PathUnit.Position position;
+                float num3;
+                float num4;
+                if ((data.m_flags & NetNode.Flags.ForbidLaneConnection) == NetNode.Flags.None && CustomPathManager.FindPathPosition(data.m_position, this.m_netService, NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, this.m_vehicleType, true, false, 32f, out pathPos, out position, out num3, out num4, ExtendedVehicleType.Bus | ExtendedVehicleType.Tram) && num3 < num2)
+                {
+                    NetManager instance = Singleton<NetManager>.instance;
+                    int num5;
+                    uint num6;
+                    if (instance.m_segments.m_buffer[(int)pathPos.m_segment].GetClosestLane((int)pathPos.m_lane, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, this.m_vehicleType, out num5, out num6))
+                    {
+                        num = PathManager.GetLaneID(pathPos);
+                        offset = pathPos.m_offset;
+                    }
+                }
+                if (num != data.m_lane)
+                {
+                    if (data.m_lane != 0u)
+                    {
+                        this.RemoveLaneConnection(nodeID, ref data);
+                    }
+                    if (num != 0u)
+                    {
+                        this.AddLaneConnection(nodeID, ref data, num, offset);
+                    }
+                }
+            }
+        }
+
         [RedirectFrom(typeof(TransportLineAI))]
-        public static bool StartPathFind(ushort segmentID, ref NetSegment data, ItemClass.Service netService, VehicleInfo.VehicleType vehicleType, bool skipQueue)
+        public static new bool StartPathFind(ushort segmentID, ref NetSegment data, ItemClass.Service netService, VehicleInfo.VehicleType vehicleType, bool skipQueue)
 		{
             if (data.m_path != 0u)
             {
-                Singleton<CustomPathManager>.instance.ReleasePath(data.m_path);
+                Singleton<PathManager>.instance.ReleasePath(data.m_path);
                 data.m_path = 0u;
             }
             NetManager instance = Singleton<NetManager>.instance;
@@ -47,37 +83,18 @@ namespace CSL_Traffic
             float num;
             float num2;
             
-            if (vehicleType == VehicleInfo.VehicleType.Car)
-            {
-                if (!CustomPathManager.FindPathPosition(position, netService, NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, true, false, 32f, out startPosA, out startPosB, out num, out num2, ExtendedVehicleType.Bus))
-                {
-                    CustomTransportLineAI.CheckSegmentProblems(segmentID, ref data);
-                    return true;
-                }
-            }
-
-            if (!PathManager.FindPathPosition(position, netService, NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, vehicleType, true, false, 32f, out startPosA, out startPosB, out num, out num2))
+            if (!CustomPathManager.FindPathPosition(position, netService, NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, true, false, 32f, out startPosA, out startPosB, out num, out num2, ExtendedVehicleType.Bus | ExtendedVehicleType.Tram))
             {
                 CustomTransportLineAI.CheckSegmentProblems(segmentID, ref data);
                 return true;
             }
-
 
             PathUnit.Position endPosA;
             PathUnit.Position endPosB;
             float num3;
             float num4;
 
-            if (vehicleType == VehicleInfo.VehicleType.Car)
-            {
-                if (!CustomPathManager.FindPathPosition(position2, netService, NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, true, false, 32f, out endPosA, out endPosB, out num3, out num4, ExtendedVehicleType.Bus))
-                {
-                    CustomTransportLineAI.CheckSegmentProblems(segmentID, ref data);
-                    return true;
-                }
-            }
-            
-            if (!PathManager.FindPathPosition(position2, netService, NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, vehicleType, true, false, 32f, out endPosA, out endPosB, out num3, out num4))
+            if (!CustomPathManager.FindPathPosition(position2, netService, NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, true, false, 32f, out endPosA, out endPosB, out num3, out num4, ExtendedVehicleType.Bus | ExtendedVehicleType.Tram))
             {
                 CustomTransportLineAI.CheckSegmentProblems(segmentID, ref data);
                 return true;
@@ -105,12 +122,7 @@ namespace CSL_Traffic
                 return true;
             }
             uint path;
-            bool createPathResult;
-            CustomPathManager customPathManager = Singleton<PathManager>.instance as CustomPathManager;
-            if (customPathManager != null)
-                createPathResult = customPathManager.CreatePath(out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, vehicleType, 20000f, false, true, true, skipQueue, ExtendedVehicleType.Bus);
-            else
-                createPathResult = Singleton<PathManager>.instance.CreatePath(out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, vehicleType, 20000f, false, true, true, skipQueue);
+            bool createPathResult = Singleton<PathManager>.instance.CreatePath(out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, vehicleType, 20000f, false, true, true, skipQueue, ExtendedVehicleType.Bus | ExtendedVehicleType.Tram);
             if (createPathResult)
             {
                 if (startPosA.m_segment != 0 && startPosB.m_segment != 0)
@@ -146,17 +158,17 @@ namespace CSL_Traffic
         }
 
         [RedirectFrom(typeof(TransportLineAI))]
-        public static bool UpdatePath(ushort segmentID, ref NetSegment data, ItemClass.Service netService, VehicleInfo.VehicleType vehicleType, bool skipQueue)
+        public static new bool UpdatePath(ushort segmentID, ref NetSegment data, ItemClass.Service netService, VehicleInfo.VehicleType vehicleType, bool skipQueue)
         {
             if (data.m_path == 0u)
             {
-                return CustomTransportLineAI.StartPathFind(segmentID, ref data, netService, vehicleType, skipQueue);
+                return StartPathFind(segmentID, ref data, netService, vehicleType, skipQueue);
             }
             if ((data.m_flags & NetSegment.Flags.WaitingPath) == NetSegment.Flags.None)
             {
                 return true;
             }
-            CustomPathManager instance = Singleton<CustomPathManager>.instance;
+            PathManager instance = Singleton<PathManager>.instance;
             NetManager instance2 = Singleton<NetManager>.instance;
             byte pathFindFlags = instance.m_pathUnits.m_buffer[(int)((UIntPtr)data.m_path)].m_pathFindFlags;
             if ((pathFindFlags & 4) != 0)
@@ -219,6 +231,20 @@ namespace CSL_Traffic
         private static bool GetStopLane(ref PathUnit.Position pos, VehicleInfo.VehicleType vehicleType)
         {
             throw new NotImplementedException("GetStopLane is target of redirection and is not implemented.");
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        [RedirectTo(typeof(TransportLineAI))]
+        private void RemoveLaneConnection(ushort nodeID, ref NetNode data)
+        {
+            throw new NotImplementedException("RemoveLaneConnection is target of redirection and is not implemented.");
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        [RedirectTo(typeof(TransportLineAI))]
+        private void AddLaneConnection(ushort nodeID, ref NetNode data, uint laneID, byte offset)
+        {
+            throw new NotImplementedException("AddLaneConnection is target of redirection and is not implemented.");
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]

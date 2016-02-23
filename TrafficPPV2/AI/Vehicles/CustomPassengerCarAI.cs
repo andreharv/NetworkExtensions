@@ -72,12 +72,7 @@ namespace CSL_Traffic
                 PathUnit.Position endPosB = default(PathUnit.Position);
                 SimulationManager instance2 = Singleton<SimulationManager>.instance;
                 uint path;
-                bool createPathResult;
-                CustomPathManager customPathManager = Singleton<PathManager>.instance as CustomPathManager;
-                if (customPathManager != null)
-                    createPathResult = customPathManager.CreatePath(out path, ref instance2.m_randomizer, instance2.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, laneTypes, vehicleType, 20000f, ExtendedVehicleType.PassengerCar);
-                else
-                    createPathResult = Singleton<PathManager>.instance.CreatePath(out path, ref instance2.m_randomizer, instance2.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, laneTypes, vehicleType, 20000f);
+                bool createPathResult = Singleton<PathManager>.instance.CreatePath(out path, ref instance2.m_randomizer, instance2.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, laneTypes, vehicleType, 20000f, ExtendedVehicleType.PassengerCar);
                 if (createPathResult)
                 {
                     if (vehicleData.m_path != 0u)
