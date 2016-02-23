@@ -9,9 +9,15 @@ namespace Transit.Framework.Light
             PedestrianLane
         }
 
-        public VehicleType m_allowedVehicleTypes;
-        public SpecialLaneType m_specialLaneType;
+        public VehicleType m_allowedVehicleTypes {get; set; }
+        public SpecialLaneType m_specialLaneType { get; set; }
 
+        public NetInfoLane(NetInfo.Lane lane)
+        {
+            m_allowedVehicleTypes = VehicleType.All;
+            m_specialLaneType = SpecialLaneType.None;
+            CopyAttributes(lane);
+        }
 
         public NetInfoLane(VehicleType vehicleTypes, SpecialLaneType specialLaneType = SpecialLaneType.None)
         {

@@ -10,6 +10,7 @@ namespace Transit.Framework
             public const string ROAD_2L = "Basic Road";
             public const string ROAD_2L_GRASS = "Basic Road Decoration Grass";
             public const string ROAD_2L_TREES = "Basic Road Decoration Trees";
+            public const string ROAD_2L_BIKE = "Basic Road Bicycle";
             public const string ROAD_4L = "Medium Road";
             public const string ROAD_4L_BRIDGE = "Medium Road Bridge";
             public const string ROAD_4L_SLOPE = "Medium Road Slope";
@@ -24,7 +25,6 @@ namespace Transit.Framework
             public const string ONEWAY_2L_TREES = "Oneway Road Decoration Trees";
             public const string ONEWAY_2L_TUNNEL = "Oneway Road Tunnel";
             public const string ONEWAY_6L = "Large Oneway";
-
             public const string HIGHWAY_RAMP = "HighwayRamp";
             public const string HIGHWAY_3L = "Highway";
             public const string HIGHWAY_3L_SLOPE = "Highway Slope";
@@ -109,6 +109,19 @@ namespace Transit.Framework
                                 throw new NotImplementedException();
                         }
 
+                    case ROAD_2L_BIKE:
+                        var template = "Basic Road {0} Bike";
+                        switch (version)
+                        {
+                            case NetInfoVersion.Ground:
+                                return groundName;
+                            case NetInfoVersion.Elevated:
+                                return string.Format(template, "Elevated");
+                            case NetInfoVersion.Bridge:
+                                return string.Format(template, "Bridge");
+                            default:
+                                throw new NotImplementedException();
+                        }
                     default:
                         throw new NotImplementedException();
                 }
