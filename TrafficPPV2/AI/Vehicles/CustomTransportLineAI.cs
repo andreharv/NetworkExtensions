@@ -9,6 +9,7 @@ namespace CSL_Traffic
 {
 	class CustomTransportLineAI : TransportLineAI
     {
+        [RedirectFrom(typeof(TransportLineAI))]
         public override void UpdateLaneConnection(ushort nodeID, ref NetNode data)
         {
             if ((data.m_flags & NetNode.Flags.Temporary) == NetNode.Flags.None)

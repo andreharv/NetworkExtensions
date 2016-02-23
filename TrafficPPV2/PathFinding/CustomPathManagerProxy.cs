@@ -10,7 +10,7 @@ namespace CSL_Traffic
         [RedirectFrom(typeof(PathManager))]
         protected override void Awake()
         {
-            Debug.Log(">>>>>>>>>>> We are hooked!");
+            Logger.LogInfo("CustomPathManager hooked");
 
             this.m_simulationProfiler = new ThreadProfiler();
             typeof(PathManager)
