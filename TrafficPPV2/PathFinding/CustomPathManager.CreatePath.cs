@@ -2,11 +2,33 @@
 using System.Threading;
 using ColossalFramework.Math;
 using Transit.Framework.Light;
+using Transit.Framework.Unsafe;
 
 namespace CSL_Traffic
 {
-    public static class PathManagerExtensions
+    public static partial class CustomPathManager
     {
+        [RedirectFrom(typeof(PathManager))]
+        public static bool CreatePath(
+            out uint unit,
+            ref Randomizer randomizer,
+            uint buildIndex,
+            PathUnit.Position startPosA,
+            PathUnit.Position startPosB,
+            PathUnit.Position endPosA,
+            PathUnit.Position endPosB,
+            PathUnit.Position vehiclePosition,
+            NetInfo.LaneType laneTypes,
+            VehicleInfo.VehicleType vehicleTypes,
+            float maxLength,
+            bool isHeavyVehicle,
+            bool ignoreBlocked,
+            bool stablePath,
+            bool skipQueue)
+        {
+            throw new Exception("CreatePath has been called, please implement redirection to custom method");
+        }
+        
         public static bool CreatePath(this PathManager pm, out uint unit, ref Randomizer randomizer, uint buildIndex, PathUnit.Position startPos, PathUnit.Position endPos, NetInfo.LaneType laneTypes, VehicleInfo.VehicleType vehicleTypes, float maxLength, ExtendedVehicleType vehicleType)
         {
             PathUnit.Position position = default(PathUnit.Position);
@@ -78,11 +100,11 @@ namespace CSL_Traffic
             pm.m_pathUnits.m_buffer[(int)((UIntPtr)unit)].m_referenceCount = 1;
             int num2 = 10000000;
             CustomPathFind pathFind = null;
-            if (CustomPathManager.m_pathfinds != null)
+            if (m_pathfinds != null)
             {
-                for (int i = 0; i < CustomPathManager.m_pathfinds.Length; i++)
+                for (int i = 0; i < m_pathfinds.Length; i++)
                 {
-                    CustomPathFind pathFind2 = CustomPathManager.m_pathfinds[i];
+                    CustomPathFind pathFind2 = m_pathfinds[i];
                     if (pathFind2.IsAvailable && pathFind2.m_queuedPathFindCount < num2)
                     {
                         num2 = pathFind2.m_queuedPathFindCount;

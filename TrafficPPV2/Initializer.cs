@@ -249,7 +249,7 @@ namespace CSL_Traffic
         // Replace the pathfinding system for mine
         void ReplacePathManager()
         {
-            if (Singleton<PathManager>.instance as CustomPathManager != null)
+            if (Singleton<PathManager>.instance as CustomPathManagerProxy != null)
                 return;
 
             Logger.LogInfo("Replacing Path Manager");
@@ -257,7 +257,7 @@ namespace CSL_Traffic
             // Change PathManager to CustomPathManager
             FieldInfo sInstance = typeof(Singleton<PathManager>).GetFieldByName("sInstance");
             PathManager originalPathManager = Singleton<PathManager>.instance;
-            CustomPathManager customPathManager = originalPathManager.gameObject.AddComponent<CustomPathManager>();
+            CustomPathManagerProxy customPathManager = originalPathManager.gameObject.AddComponent<CustomPathManagerProxy>();
             customPathManager.SetOriginalValues(originalPathManager);
 
             // change the new instance in the singleton
