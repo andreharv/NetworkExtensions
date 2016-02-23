@@ -63,8 +63,11 @@
     <Compile Include="AI\Vehicles\CustomHearseAI.cs" />
     <Compile Include="AI\Vehicles\CustomPassengerCarAI.cs" />
     <Compile Include="AI\Vehicles\CustomPoliceCarAI.cs" />
+    <Compile Include="AI\Vehicles\CustomTransportLineAI.cs" />
     <Compile Include="AI\Vehicles\CustomVehicleAI.cs" />
     <Compile Include="AI\Vehicles\IVehicle.cs" />
+    <Compile Include="Extensions\NetSegmentExtensions.cs" />
+    <Compile Include="Extensions\PathManagerExtensions.cs" />
     <Compile Include="RoadManager.LaneSerializationBinder.cs" />
     <Compile Include="RoadManager.Lane.cs" />
     <Compile Include="TrafficMod.cs" />
@@ -79,7 +82,6 @@
     <Compile Include="RoadManager.LaneSerializer.cs" />
     <Compile Include="RoadManager.cs" />
     <Compile Include="Tools\RoadCustomizerTool.cs" />
-    <Compile Include="AI\Vehicles\CustomTransportLineAI.cs" />
     <Compile Include="UI\RoadCustomizerGroupPanel.cs" />
     <Compile Include="UI\RoadCustomizerPanel.cs" />
     <Compile Include="UI\UIUtils.cs" />

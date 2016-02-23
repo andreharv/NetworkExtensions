@@ -15,7 +15,7 @@ namespace CSL_Traffic
 	 * This is the class responsible for pathfinding. It's all in here since none of the methods can be overwritten.
 	 * There's a lot of small changes here and there to make it generate a correct path for the service vehicles using pedestrian paths.
 	 */
-	class CustomPathFind : PathFind
+	public class CustomPathFind : PathFind
 	{
 		private struct BufferItem
 		{
@@ -75,7 +75,7 @@ namespace CSL_Traffic
 		private int m_bufferMaxPos;
 		private uint[] m_laneLocation;
 		private PathUnit.Position[] m_laneTarget;
-		private CustomPathFind.BufferItem[] m_buffer;
+		private BufferItem[] m_buffer;
 		private int[] m_bufferMin;
 		private int[] m_bufferMax;
 		private float m_maxLength;
@@ -114,7 +114,7 @@ namespace CSL_Traffic
 			this.m_pathfindProfiler = new ThreadProfiler();
 			this.m_laneLocation = new uint[262144];
 			this.m_laneTarget = new PathUnit.Position[262144];
-			this.m_buffer = new CustomPathFind.BufferItem[65536];
+			this.m_buffer = new BufferItem[65536];
 			this.m_bufferMin = new int[1024];
 			this.m_bufferMax = new int[1024];
 			this.m_queueLock = new object();
@@ -245,7 +245,7 @@ namespace CSL_Traffic
 
 			int num = (int)(this.m_pathUnits.m_buffer[(int)((UIntPtr)unit)].m_positionCount & 15);
 			int num2 = this.m_pathUnits.m_buffer[(int)((UIntPtr)unit)].m_positionCount >> 4;
-			CustomPathFind.BufferItem bufferItem;
+			BufferItem bufferItem;
 			if (data.m_position00.m_segment != 0 && num >= 1)
 			{
 				//if (NetManager.instance.m_segments.m_buffer[data.m_position00.m_segment].Info == null)
@@ -266,9 +266,9 @@ namespace CSL_Traffic
 			{
 				this.m_startLaneA = 0u;
 				this.m_startOffsetA = 0;
-				bufferItem = default(CustomPathFind.BufferItem);
+				bufferItem = default(BufferItem);
 			}
-			CustomPathFind.BufferItem bufferItem2;
+			BufferItem bufferItem2;
 			if (data.m_position02.m_segment != 0 && num >= 3)
 			{
 				//if (NetManager.instance.m_segments.m_buffer[data.m_position02.m_segment].Info == null)
@@ -288,9 +288,9 @@ namespace CSL_Traffic
 			{
 				this.m_startLaneB = 0u;
 				this.m_startOffsetB = 0;
-				bufferItem2 = default(CustomPathFind.BufferItem);
+				bufferItem2 = default(BufferItem);
 			}
-			CustomPathFind.BufferItem bufferItem3;
+			BufferItem bufferItem3;
 			if (data.m_position01.m_segment != 0 && num >= 2)
 			{
 				//if (NetManager.instance.m_segments.m_buffer[data.m_position01.m_segment].Info == null)
@@ -309,9 +309,9 @@ namespace CSL_Traffic
 			else
 			{
 				this.m_endLaneA = 0u;
-				bufferItem3 = default(CustomPathFind.BufferItem);
+				bufferItem3 = default(BufferItem);
 			}
-			CustomPathFind.BufferItem bufferItem4;
+			BufferItem bufferItem4;
 			if (data.m_position03.m_segment != 0 && num >= 4)
 			{
 				//if (NetManager.instance.m_segments.m_buffer[data.m_position03.m_segment].Info == null)
@@ -330,7 +330,7 @@ namespace CSL_Traffic
 			else
 			{
 				this.m_endLaneB = 0u;
-				bufferItem4 = default(CustomPathFind.BufferItem);
+				bufferItem4 = default(BufferItem);
 			}
 			if (data.m_position11.m_segment != 0 && num2 >= 1)
 			{
@@ -342,7 +342,7 @@ namespace CSL_Traffic
 				this.m_vehicleLane = 0u;
 				this.m_vehicleOffset = 0;
 			}
-			CustomPathFind.BufferItem bufferItem5 = default(CustomPathFind.BufferItem);
+			BufferItem bufferItem5 = default(BufferItem);
 			byte b = 0;
 			this.m_bufferMinPos = 0;
 			this.m_bufferMaxPos = -1;
@@ -381,7 +381,7 @@ namespace CSL_Traffic
 				else
 				{
 					this.m_bufferMin[this.m_bufferMinPos] = num4 + 1;
-					CustomPathFind.BufferItem bufferItem6 = this.m_buffer[(this.m_bufferMinPos << 6) + num4];
+					BufferItem bufferItem6 = this.m_buffer[(this.m_bufferMinPos << 6) + num4];
 					if (bufferItem6.m_position.m_segment == bufferItem.m_position.m_segment && bufferItem6.m_position.m_lane == bufferItem.m_position.m_lane)
 					{
 						if ((byte)(bufferItem6.m_direction & NetInfo.Direction.Forward) != 0 && bufferItem6.m_position.m_offset >= this.m_startOffsetA)
@@ -548,7 +548,7 @@ namespace CSL_Traffic
 			UIntPtr expr_D65_cp_1 = (UIntPtr)unit;
 			expr_D65_cp_0[(int)expr_D65_cp_1].m_pathFindFlags = (byte)(expr_D65_cp_0[(int)expr_D65_cp_1].m_pathFindFlags | 8);
 		}
-        private void ProcessItem(CustomPathFind.BufferItem item, ushort nodeID, ref NetNode node, byte connectOffset, bool isMiddle)
+        private void ProcessItem(BufferItem item, ushort nodeID, ref NetNode node, byte connectOffset, bool isMiddle)
         {
             NetManager instance = Singleton<NetManager>.instance;
             bool flag = false;
@@ -795,7 +795,7 @@ namespace CSL_Traffic
 			//return laneInfo.m_speedLimit * 0.2f;
 			return speedLimit * 0.2f;
 		}
-        private void ProcessItem(CustomPathFind.BufferItem item, ushort targetNode, bool targetDisabled, ushort segmentID, ref NetSegment segment, uint lane, byte offset, byte connectOffset)
+        private void ProcessItem(BufferItem item, ushort targetNode, bool targetDisabled, ushort segmentID, ref NetSegment segment, uint lane, byte offset, byte connectOffset)
         {
             if ((segment.m_flags & (NetSegment.Flags.PathFailed | NetSegment.Flags.Flooded)) != NetSegment.Flags.None)
             {
@@ -844,7 +844,7 @@ namespace CSL_Traffic
                     {
                         Vector3 a = instance.m_lanes.m_buffer[(int)((UIntPtr)lane)].CalculatePosition((float)offset * 0.003921569f);
                         float num9 = Vector3.Distance(a, b);
-                        CustomPathFind.BufferItem item2;
+                        BufferItem item2;
                         item2.m_position.m_segment = segmentID;
                         item2.m_position.m_lane = (byte)num8;
                         item2.m_position.m_offset = offset;
@@ -898,7 +898,7 @@ namespace CSL_Traffic
                 num8++;
             }
         }
-        private bool ProcessItem(CustomPathFind.BufferItem item, ushort targetNode, ushort segmentID, ref NetSegment segment, ref int currentTargetIndex, byte connectOffset, bool enableVehicle, bool enablePedestrian)
+        private bool ProcessItem(BufferItem item, ushort targetNode, ushort segmentID, ref NetSegment segment, ref int currentTargetIndex, byte connectOffset, bool enableVehicle, bool enablePedestrian)
 		{
 			bool result = false;
 			if ((segment.m_flags & (NetSegment.Flags.PathFailed | NetSegment.Flags.Flooded)) != NetSegment.Flags.None)
@@ -1053,7 +1053,7 @@ namespace CSL_Traffic
                         }
 
                         float num14 = lane2Distance / ((num5 + RoadManager.GetLaneSpeed(num2) /*lane2.m_speedLimit*/) * 0.5f * this.m_maxLength);
-						CustomPathFind.BufferItem item2;
+						BufferItem item2;
 						item2.m_position.m_segment = segmentID;
 						item2.m_position.m_lane = (byte)num12;
 						item2.m_position.m_offset = (byte)(((direction & NetInfo.Direction.Forward) == 0) ? 0 : 255);
@@ -1130,7 +1130,7 @@ namespace CSL_Traffic
 			currentTargetIndex = num11;
 			return result;
 		}
-		private void ProcessItem(CustomPathFind.BufferItem item, ushort targetNode, ushort segmentID, ref NetSegment segment, byte connectOffset, int laneIndex, uint lane)
+		private void ProcessItem(BufferItem item, ushort targetNode, ushort segmentID, ref NetSegment segment, byte connectOffset, int laneIndex, uint lane)
 		{
 			if ((segment.m_flags & (NetSegment.Flags.PathFailed | NetSegment.Flags.Flooded)) != NetSegment.Flags.None)
 			{
@@ -1191,7 +1191,7 @@ namespace CSL_Traffic
 			if (laneIndex < num)
 			{
 				NetInfo.Lane lane3 = info.m_lanes[laneIndex];
-				CustomPathFind.BufferItem item2;
+				BufferItem item2;
 				item2.m_position.m_segment = segmentID;
 				item2.m_position.m_lane = (byte)laneIndex;
 				item2.m_position.m_offset = offset;
@@ -1244,7 +1244,7 @@ namespace CSL_Traffic
 				}
 			}
 		}
-		private void AddBufferItem(CustomPathFind.BufferItem item, PathUnit.Position target)
+		private void AddBufferItem(BufferItem item, PathUnit.Position target)
 		{
 			uint num = this.m_laneLocation[(int)((UIntPtr)item.m_laneID)];
 			uint num2 = num >> 16;
@@ -1270,7 +1270,7 @@ namespace CSL_Traffic
 					return;
 				}
 				int num7 = num4 << 6 | this.m_bufferMax[num4]--;
-				CustomPathFind.BufferItem bufferItem = this.m_buffer[num7];
+				BufferItem bufferItem = this.m_buffer[num7];
 				this.m_laneLocation[(int)((UIntPtr)bufferItem.m_laneID)] = num;
 				this.m_buffer[num3] = bufferItem;
 			}
