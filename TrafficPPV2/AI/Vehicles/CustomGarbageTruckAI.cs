@@ -1,6 +1,7 @@
 using ColossalFramework;
 using System;
 using UnityEngine;
+using Transit.Framework.Light;
 
 namespace CSL_Traffic
 {
@@ -12,7 +13,7 @@ namespace CSL_Traffic
     {
         public override void SimulationStep(ushort vehicleID, ref Vehicle vehicleData, ref Vehicle.Frame frameData, ushort leaderID, ref Vehicle leaderData, int lodPhysics)
         {
-            if ((UserMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
+            if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
             {
                 if (CustomCarAI.sm_speedData[vehicleID].speedMultiplier == 0 || CustomCarAI.sm_speedData[vehicleID].currentPath != vehicleData.m_path)
                 {
@@ -44,7 +45,7 @@ namespace CSL_Traffic
                 this.SetTarget(vehicleID, ref vehicleData, 0);
             }
 
-            if ((UserMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
+            if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
             {
                 CustomCarAI.sm_speedData[vehicleID].RestoreVehicleSpeed(this.m_info);
             }
@@ -52,7 +53,7 @@ namespace CSL_Traffic
 
         protected override bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget)
         {
-            return CustomCarAI.StartPathFind(this, vehicleID, ref vehicleData, startPos, endPos, startBothWays, endBothWays, undergroundTarget, Transit.Framework.Light.VehicleType.GarbageTruck);
+            return CustomCarAI.StartPathFind(this, vehicleID, ref vehicleData, startPos, endPos, startBothWays, endBothWays, undergroundTarget, ExtendedVehicleType.GarbageTruck);
         }
 
         /*

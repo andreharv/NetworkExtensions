@@ -54,8 +54,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.MediumAvenue4L
 
             if (version == NetInfoVersion.Tunnel)
             {
-                info.m_setVehicleFlags = Vehicle.Flags.Transition;
-                info.m_setCitizenFlags = CitizenInstance.Flags.Transition;
                 info.m_class = roadTunnelInfo.m_class.Clone(NetInfoClasses.NEXT_MEDIUM_ROAD_TUNNEL);
             }
             else if (version == NetInfoVersion.Bridge)

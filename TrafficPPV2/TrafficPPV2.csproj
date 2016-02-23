@@ -63,9 +63,14 @@
     <Compile Include="AI\Vehicles\CustomHearseAI.cs" />
     <Compile Include="AI\Vehicles\CustomPassengerCarAI.cs" />
     <Compile Include="AI\Vehicles\CustomPoliceCarAI.cs" />
+    <Compile Include="AI\Vehicles\CustomTransportLineAI.cs" />
     <Compile Include="AI\Vehicles\CustomVehicleAI.cs" />
     <Compile Include="AI\Vehicles\IVehicle.cs" />
-    <Compile Include="UserMod.cs" />
+    <Compile Include="Extensions\NetSegmentExtensions.cs" />
+    <Compile Include="Extensions\PathManagerExtensions.cs" />
+    <Compile Include="RoadManager.LaneSerializationBinder.cs" />
+    <Compile Include="RoadManager.Lane.cs" />
+    <Compile Include="TrafficMod.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="FileManager.cs" />
     <Compile Include="Initializer.cs" />
@@ -74,7 +79,7 @@
     <Compile Include="PathFinding\CustomPathFind.cs" />
     <Compile Include="PathFinding\CustomPathManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RoadManager.Data.cs" />
+    <Compile Include="RoadManager.LaneSerializer.cs" />
     <Compile Include="RoadManager.cs" />
     <Compile Include="Tools\RoadCustomizerTool.cs" />
     <Compile Include="UI\RoadCustomizerGroupPanel.cs" />
@@ -86,12 +91,17 @@
       <Project>{fc275c26-1012-474c-b77b-09e366dbc684}</Project>
       <Name>Transit.Framework.Light</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Transit.Framework.Unsafe\Transit.Framework.Unsafe.csproj">
+      <Project>{7dcc08ef-dc85-47a4-bd6f-79fc52c7ef13}</Project>
+      <Name>Transit.Framework.Unsafe</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Textures\UI\UIThumbnails.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>del "$(TargetDir)*.pdb"

@@ -1,6 +1,7 @@
 ﻿using ColossalFramework;
 using System;
 using UnityEngine;
+using Transit.Framework.Light;
 
 namespace CSL_Traffic
 {
@@ -8,7 +9,7 @@ namespace CSL_Traffic
 	{
 		public override void SimulationStep(ushort vehicleID, ref Vehicle data, Vector3 physicsLodRefPos)
 		{
-			if ((UserMod.Options & OptionsManager.ModOptions.NoDespawn) == OptionsManager.ModOptions.NoDespawn)
+			if ((TrafficMod.Options & OptionsManager.ModOptions.NoDespawn) == OptionsManager.ModOptions.NoDespawn)
 				data.m_flags &= ~Vehicle.Flags.Congestion;
 
 			base.SimulationStep(vehicleID, ref data, physicsLodRefPos);
@@ -16,7 +17,7 @@ namespace CSL_Traffic
 
 		public override void SimulationStep(ushort vehicleID, ref Vehicle vehicleData, ref Vehicle.Frame frameData, ushort leaderID, ref Vehicle leaderData, int lodPhysics)
 		{
-			if ((UserMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
+			if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
 			{
 				if (CustomCarAI.sm_speedData[vehicleID].speedMultiplier == 0 || CustomCarAI.sm_speedData[vehicleID].currentPath != vehicleData.m_path)
 				{
@@ -37,7 +38,7 @@ namespace CSL_Traffic
 			}
 			CustomCarAI.SimulationStep(this, vehicleID, ref vehicleData, ref frameData, leaderID, ref leaderData, lodPhysics);
 
-			if ((UserMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
+			if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
 			{
 				CustomCarAI.sm_speedData[vehicleID].RestoreVehicleSpeed(this.m_info);
 			}
@@ -62,7 +63,7 @@ namespace CSL_Traffic
             float num2;
             PathUnit.Position endPosA;
             //    if (PathManager.FindPathPosition(startPos, ItemClass.Service.Road, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, allowUnderground, false, 32f, out startPosA, out startPosB, out num, out num2)                     && info2.m_citizenAI.FindPathPosition(driverInstance, ref instance.m_instances.m_buffer[(int)driverInstance], endPos, laneTypes, vehicleType, false, out endPosA))
-            if (CustomPathManager.FindPathPosition(startPos, ItemClass.Service.Road, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, allowUnderground, false, 32f, out startPosA, out startPosB, out num, out num2, Transit.Framework.Light.VehicleType.PassengerCar) && info2.m_citizenAI.FindPathPosition(driverInstance, ref instance.m_instances.m_buffer[(int)driverInstance], endPos, laneTypes, vehicleType, undergroundTarget, out endPosA))
+            if (CustomPathManager.FindPathPosition(startPos, ItemClass.Service.Road, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, allowUnderground, false, 32f, out startPosA, out startPosB, out num, out num2, ExtendedVehicleType.PassengerCar) && info2.m_citizenAI.FindPathPosition(driverInstance, ref instance.m_instances.m_buffer[(int)driverInstance], endPos, laneTypes, vehicleType, undergroundTarget, out endPosA))
             {
                 if (!startBothWays || num < 10f)
                 {
@@ -71,12 +72,7 @@ namespace CSL_Traffic
                 PathUnit.Position endPosB = default(PathUnit.Position);
                 SimulationManager instance2 = Singleton<SimulationManager>.instance;
                 uint path;
-                bool createPathResult;
-                CustomPathManager customPathManager = Singleton<PathManager>.instance as CustomPathManager;
-                if (customPathManager != null)
-                    createPathResult = customPathManager.CreatePath(out path, ref instance2.m_randomizer, instance2.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, laneTypes, vehicleType, 20000f, Transit.Framework.Light.VehicleType.PassengerCar);
-                else
-                    createPathResult = Singleton<PathManager>.instance.CreatePath(out path, ref instance2.m_randomizer, instance2.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, laneTypes, vehicleType, 20000f);
+                bool createPathResult = Singleton<PathManager>.instance.CreatePath(out path, ref instance2.m_randomizer, instance2.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, laneTypes, vehicleType, 20000f, ExtendedVehicleType.PassengerCar);
                 if (createPathResult)
                 {
                     if (vehicleData.m_path != 0u)
@@ -100,7 +96,7 @@ namespace CSL_Traffic
 			PathUnit.Position position3;
 			float num2;
 			float num3;
-			if (CustomPathManager.FindPathPosition(pos, ItemClass.Service.Road, laneTypes, vehicleTypes, allowUnderground, false, 32f, out position2, out position3, out num2, out num3, Transit.Framework.Light.VehicleType.PassengerCar) && num2 < num)
+			if (CustomPathManager.FindPathPosition(pos, ItemClass.Service.Road, laneTypes, vehicleTypes, allowUnderground, false, 32f, out position2, out position3, out num2, out num3, ExtendedVehicleType.PassengerCar) && num2 < num)
 			{
 				num = num2;
 				position = position2;
@@ -109,7 +105,7 @@ namespace CSL_Traffic
 			PathUnit.Position position5;
 			float num4;
 			float num5;
-            if (CustomPathManager.FindPathPosition(pos, ItemClass.Service.Beautification, laneTypes, vehicleTypes, allowUnderground, false, 32f, out position4, out position5, out num4, out num5, Transit.Framework.Light.VehicleType.PassengerCar) && num4 < num)
+            if (CustomPathManager.FindPathPosition(pos, ItemClass.Service.Beautification, laneTypes, vehicleTypes, allowUnderground, false, 32f, out position4, out position5, out num4, out num5, ExtendedVehicleType.PassengerCar) && num4 < num)
 			{
 				num = num4;
 				position = position4;
@@ -118,7 +114,7 @@ namespace CSL_Traffic
 			PathUnit.Position position7;
 			float num6;
 			float num7;
-            if ((citizenData.m_flags & CitizenInstance.Flags.CannotUseTransport) == CitizenInstance.Flags.None && CustomPathManager.FindPathPosition(pos, ItemClass.Service.PublicTransport, laneTypes, vehicleTypes, allowUnderground, false, 32f, out position6, out position7, out num6, out num7, Transit.Framework.Light.VehicleType.PassengerCar) && num6 < num)
+            if ((citizenData.m_flags & CitizenInstance.Flags.CannotUseTransport) == CitizenInstance.Flags.None && CustomPathManager.FindPathPosition(pos, ItemClass.Service.PublicTransport, laneTypes, vehicleTypes, allowUnderground, false, 32f, out position6, out position7, out num6, out num7, ExtendedVehicleType.PassengerCar) && num6 < num)
 			{
 				position = position6;
 			}

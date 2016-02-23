@@ -1,6 +1,7 @@
 using ColossalFramework;
 using System;
 using UnityEngine;
+using Transit.Framework.Light;
 
 namespace CSL_Traffic
 {
@@ -8,7 +9,7 @@ namespace CSL_Traffic
     {
         public override void SimulationStep(ushort vehicleID, ref Vehicle vehicleData, ref Vehicle.Frame frameData, ushort leaderID, ref Vehicle leaderData, int lodPhysics)
         {
-            if ((UserMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
+            if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
             {
                 if (CustomCarAI.sm_speedData[vehicleID].speedMultiplier == 0 || CustomCarAI.sm_speedData[vehicleID].currentPath != vehicleData.m_path)
                 {
@@ -84,7 +85,7 @@ namespace CSL_Traffic
                 }
             }
 
-            if ((UserMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
+            if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
             {
                 CustomCarAI.sm_speedData[vehicleID].RestoreVehicleSpeed(this.m_info);
             }
@@ -92,9 +93,9 @@ namespace CSL_Traffic
 
         protected override bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget)
         {
-            Transit.Framework.Light.VehicleType vehicleType = Transit.Framework.Light.VehicleType.FireTruck;
+            ExtendedVehicleType vehicleType = ExtendedVehicleType.FireTruck;
             if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) != Vehicle.Flags.None)
-                vehicleType |= Transit.Framework.Light.VehicleType.Emergency;
+                vehicleType |= ExtendedVehicleType.Emergency;
 
             VehicleInfo info = this.m_info;
             bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != Vehicle.Flags.None;
@@ -117,12 +118,7 @@ namespace CSL_Traffic
                     endPosB = default(PathUnit.Position);
                 }
                 uint path;
-                bool createPathResult;
-                CustomPathManager customPathManager = Singleton<PathManager>.instance as CustomPathManager;
-                if (customPathManager != null)
-                    createPathResult = customPathManager.CreatePath(out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, 20000f, this.IsHeavyVehicle(), this.IgnoreBlocked(vehicleID, ref vehicleData), false, false, vehicleType);
-                else
-                    createPathResult = Singleton<PathManager>.instance.CreatePath(out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, 20000f, this.IsHeavyVehicle(), this.IgnoreBlocked(vehicleID, ref vehicleData), false, false);
+                bool createPathResult = Singleton<PathManager>.instance.CreatePath(out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, 20000f, this.IsHeavyVehicle(), this.IgnoreBlocked(vehicleID, ref vehicleData), false, false, vehicleType);
                 if (createPathResult)
                 {
                     if (vehicleData.m_path != 0u)
