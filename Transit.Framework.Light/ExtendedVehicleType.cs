@@ -33,58 +33,58 @@ namespace Transit.Framework.Light
         Bicycle        = 1 << 23,
     }
 
-    //public static class VehicleTypeExtensions
-    //{
-    //    public static ExtendedVehicleType ToExtendedVehicleType(this VehicleInfo.VehicleType vehicleType, NetInfo.LaneType laneType, bool isHeavyVehicle)
-    //    {
-    //        if (vehicleType.HasFlag(VehicleInfo.VehicleType.Car))
-    //        {
-    //            if (laneType.HasFlag(NetInfo.LaneType.CargoVehicle) || isHeavyVehicle)
-    //            {
-    //                return ExtendedVehicleType.CargoTruck;
-    //            }
-    //            if (laneType.HasFlag(NetInfo.LaneType.PublicTransport))
-    //            {
-    //                return ExtendedVehicleType.Bus;
-    //            }
-    //            if (laneType.HasFlag(NetInfo.LaneType.TransportVehicle))
-    //            {
-    //                return ExtendedVehicleType.EmergencyVehicles;
-    //            }
-    //            return ExtendedVehicleType.PassengerCar;
-    //        }
+    public static class VehicleTypeExtensions
+    {
+        public static ExtendedVehicleType ToExtendedVehicleType(this VehicleInfo.VehicleType vehicleType, NetInfo.LaneType laneType, bool isHeavyVehicle)
+        {
+            if (vehicleType.HasFlag(VehicleInfo.VehicleType.Car))
+            {
+                if (laneType.HasFlag(NetInfo.LaneType.CargoVehicle) || isHeavyVehicle)
+                {
+                    return ExtendedVehicleType.CargoTruck;
+                }
+                if (laneType.HasFlag(NetInfo.LaneType.PublicTransport))
+                {
+                    return ExtendedVehicleType.Bus;
+                }
+                if (laneType.HasFlag(NetInfo.LaneType.TransportVehicle))
+                {
+                    return ExtendedVehicleType.EmergencyVehicles;
+                }
+                return ExtendedVehicleType.PassengerCar;
+            }
 
-    //        if (vehicleType.HasFlag(VehicleInfo.VehicleType.Metro))
-    //        {
-    //            return ExtendedVehicleType.Metro;
-    //        }
+            if (vehicleType.HasFlag(VehicleInfo.VehicleType.Metro))
+            {
+                return ExtendedVehicleType.Metro;
+            }
 
-    //        if (vehicleType.HasFlag(VehicleInfo.VehicleType.Train))
-    //        {
-    //            return ExtendedVehicleType.PassengerTrain | ExtendedVehicleType.CargoTrain;
-    //        }
+            if (vehicleType.HasFlag(VehicleInfo.VehicleType.Train))
+            {
+                return ExtendedVehicleType.PassengerTrain | ExtendedVehicleType.CargoTrain;
+            }
 
-    //        if (vehicleType.HasFlag(VehicleInfo.VehicleType.Ship))
-    //        {
-    //            return ExtendedVehicleType.PassengerShip | ExtendedVehicleType.CargoShip;
-    //        }
+            if (vehicleType.HasFlag(VehicleInfo.VehicleType.Ship))
+            {
+                return ExtendedVehicleType.PassengerShip | ExtendedVehicleType.CargoShip;
+            }
 
-    //        if (vehicleType.HasFlag(VehicleInfo.VehicleType.Plane))
-    //        {
-    //            return ExtendedVehicleType.Plane;
-    //        }
+            if (vehicleType.HasFlag(VehicleInfo.VehicleType.Plane))
+            {
+                return ExtendedVehicleType.Plane;
+            }
 
-    //        if (vehicleType.HasFlag(VehicleInfo.VehicleType.Bicycle))
-    //        {
-    //            return ExtendedVehicleType.Bicycle;
-    //        }
+            if (vehicleType.HasFlag(VehicleInfo.VehicleType.Bicycle))
+            {
+                return ExtendedVehicleType.Bicycle;
+            }
 
-    //        if (vehicleType.HasFlag(VehicleInfo.VehicleType.Tram))
-    //        {
-    //            return ExtendedVehicleType.Tram;
-    //        }
+            if (vehicleType.HasFlag(VehicleInfo.VehicleType.Tram))
+            {
+                return ExtendedVehicleType.Tram;
+            }
 
-    //        return ExtendedVehicleType.None;
-    //    }
-    //}
+            return ExtendedVehicleType.None;
+        }
+    }
 }

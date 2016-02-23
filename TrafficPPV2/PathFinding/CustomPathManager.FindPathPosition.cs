@@ -1,18 +1,15 @@
 using ColossalFramework;
-using ColossalFramework.Math;
-using CSL_Traffic.Extensions;
 using System;
-using System.Threading;
-using UnityEngine;
 using Transit.Framework.Light;
 using Transit.Framework.Unsafe;
+using UnityEngine;
 
 namespace CSL_Traffic
 {
 	public static partial class CustomPathManager
     {
         [RedirectFrom(typeof(PathManager))]
-        public new static bool FindPathPosition(
+        public static bool FindPathPosition(
             Vector3 position,
             ItemClass.Service service,
             NetInfo.LaneType laneType,

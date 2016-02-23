@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace CSL_Traffic.Extensions
+namespace Transit.Framework.Light
 {
     public static class TypeExtensions
     {
