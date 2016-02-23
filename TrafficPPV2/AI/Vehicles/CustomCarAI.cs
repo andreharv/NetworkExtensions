@@ -9,7 +9,8 @@ namespace CSL_Traffic
     static class CustomCarAI
     {
         public static SpeedData[] sm_speedData = new SpeedData[VehicleManager.MAX_VEHICLE_COUNT];
-        public static void SimulationStep(CarAI carAI, ushort vehicleID, ref Vehicle vehicleData, ref Vehicle.Frame frameData, ushort leaderID, ref Vehicle leaderData, int lodPhysics)
+        public static void SimulationStep<T>(this T carAI, ushort vehicleID, ref Vehicle vehicleData, ref Vehicle.Frame frameData, ushort leaderID, ref Vehicle leaderData, int lodPhysics)
+            where T : CarAI, IVehicleAI
         {
             uint currentFrameIndex = Singleton<SimulationManager>.instance.m_currentFrameIndex;
             frameData.m_position += frameData.m_velocity * 0.5f;
@@ -116,75 +117,36 @@ namespace CSL_Traffic
                         }
                     }
                 }
-                /* -------------------- Congestion Changes ------------------------- */
-                // Not everything is new. Changes are commented
                 if ((ulong)(currentFrameIndex >> 4 & 15u) == (ulong)((long)(leaderID & 15)))
                 {
                     bool flag3 = false;
                     uint path = leaderData.m_path;
                     int num9 = b >> 1;
-                    int j = 0, count = 0; // the count variable is used to keep track of how many of the next 5 lanes are congested
-                    //int j = 0;
+                    int j = 0;
                     while (j < 5)
                     {
                         bool flag4;
                         if (PathUnit.GetNextPosition(ref path, ref num9, out pathPos, out flag4))
                         {
                             uint laneID3 = PathManager.GetLaneID(pathPos);
-                            if (laneID3 != 0 && !instance.m_lanes.m_buffer[(int)((UIntPtr)laneID3)].CheckSpace(num7))
+                            if (laneID3 != 0u && !instance.m_lanes.m_buffer[(int)((UIntPtr)laneID3)].CheckSpace(num7))
                             {
                                 j++;
-                                ++count; // this lane is congested so increase count
                                 continue;
                             }
                         }
                         if (flag4)
                         {
-                            (carAI as IVehicle).InvalidPath(vehicleID, ref vehicleData, leaderID, ref leaderData);
-                            // flag it as not congested and set count to -1 so that it is neither congested nor completely clear
-                            // this is needed here because, contrary to the default code, it does not leave the cycle below
-                            if ((TrafficMod.Options & OptionsManager.ModOptions.ImprovedAI) == OptionsManager.ModOptions.ImprovedAI)
-                            {
-                                flag3 = true;
-                                count = -1;
-                                break;
-                            }
+                            (carAI as IVehicleAI).InvalidPath(vehicleID, ref vehicleData, leaderID, ref leaderData);
                         }
                         flag3 = true;
-                        ++j;
-                        if ((TrafficMod.Options & OptionsManager.ModOptions.ImprovedAI) != OptionsManager.ModOptions.ImprovedAI)
-                        {
-                            break;
-                        }
-                        // the default code would leave the cycle at this point since it found a non congested lane.
-                        // this has been changed so that vehicles detect congestions a few lanes in advance.
-                        // I am yet to test the performance impact this particular "feature" has.
+                        break;
                     }
-
-                    if ((TrafficMod.Options & OptionsManager.ModOptions.ImprovedAI) == OptionsManager.ModOptions.ImprovedAI)
-                    {
-                        // if at least 2 out of the next 5 lanes are congested and it hasn't tried to find a new path yet, then calculates a new path and flags it as such
-                        // the amounf of congested lanes necessary to calculate a new path can be tweaked to reduce the amount of new paths being calculated, if performance in bigger cities is severely affected
-                        if (count >= 2 && (leaderData.m_flags & (Vehicle.Flags)1073741824) == 0)
-                        {
-                            leaderData.m_flags |= (Vehicle.Flags)1073741824;
-                            (carAI as IVehicle).InvalidPath(vehicleID, ref vehicleData, leaderID, ref leaderData);
-                        }
-                        // if none of the next 5 lanes is congested and the vehicle has already searched for a new path, then it successfully avoided a congestion and the flag is cleared
-                        else if (count == 0 && (leaderData.m_flags & (Vehicle.Flags)1073741824) != 0)
-                        {
-                            leaderData.m_flags &= ~((Vehicle.Flags)1073741824);
-                        }
-                        // default congestion behavior
-                        else if (!flag3)
-                            leaderData.m_flags |= Vehicle.Flags.Congestion;
-                    }
-                    else if (!flag3)
+                    if (!flag3)
                     {
                         leaderData.m_flags |= Vehicle.Flags.Congestion;
                     }
                 }
-                /* ----------------------------------------------------------------- */
             }
             float num10;
             if ((leaderData.m_flags & Vehicle.Flags.Stopped) != Vehicle.Flags.None)
@@ -247,12 +209,12 @@ namespace CSL_Traffic
                     float num16 = num13;
                     if (vehicleData.m_targetPos0.w < 0.1f)
                     {
-                        num10 = (carAI as IVehicle).CalculateTargetSpeed(vehicleID, ref vehicleData, 1000f, num15);
+                        num10 = (carAI as IVehicleAI).CalculateTargetSpeed(vehicleID, ref vehicleData, 1000f, num15);
                         num10 = Mathf.Min(num10, CalculateMaxSpeed(num16, Mathf.Min(vehicleData.m_targetPos0.w, vehicleData.m_targetPos1.w), braking * 0.9f));
                     }
                     else
                     {
-                        num10 = Mathf.Min(num10, (carAI as IVehicle).CalculateTargetSpeed(vehicleID, ref vehicleData, 1000f, num15));
+                        num10 = Mathf.Min(num10, (carAI as IVehicleAI).CalculateTargetSpeed(vehicleID, ref vehicleData, 1000f, num15));
                         num10 = Mathf.Min(num10, CalculateMaxSpeed(num16, vehicleData.m_targetPos1.w, braking * 0.9f));
                     }
                     num16 += VectorUtils.LengthXZ(vehicleData.m_targetPos1 - vehicleData.m_targetPos0);
@@ -267,7 +229,7 @@ namespace CSL_Traffic
                     num10 = Mathf.Min(num10, CalculateMaxSpeed(num16, 0f, braking * 0.9f));
                     if (!DisableCollisionCheck(leaderID, ref leaderData))
                     {
-                        CustomCarAI.CheckOtherVehicles(carAI, vehicleID, ref vehicleData, ref frameData, ref num10, ref flag5, ref zero, num, braking * 0.9f, lodPhysics);
+                        CheckOtherVehicles(carAI, vehicleID, ref vehicleData, ref frameData, ref num10, ref flag5, ref zero, num, braking * 0.9f, lodPhysics);
                     }
                     if (flag6)
                     {
@@ -285,17 +247,14 @@ namespace CSL_Traffic
                     }
                 }
             }
-            else
+            else if (magnitude < 0.1f && flag && carAI.ArriveAtDestination(leaderID, ref leaderData))
             {
-                if (magnitude < 0.1f && flag && carAI.ArriveAtDestination(leaderID, ref leaderData))
+                leaderData.Unspawn(leaderID);
+                if (leaderID == vehicleID)
                 {
-                    leaderData.Unspawn(leaderID);
-                    if (leaderID == vehicleID)
-                    {
-                        frameData = leaderData.m_frame0;
-                    }
-                    return;
+                    frameData = leaderData.m_frame0;
                 }
+                return;
             }
             if ((leaderData.m_flags & Vehicle.Flags.Stopped) == Vehicle.Flags.None && num10 < 0.1f)
             {
@@ -304,8 +263,6 @@ namespace CSL_Traffic
             if (flag5)
             {
                 vehicleData.m_blockCounter = (byte)Mathf.Min((int)(vehicleData.m_blockCounter + 1), 255);
-                if ((vehicleData.m_blockCounter == 100 || vehicleData.m_blockCounter == 150) && (TrafficMod.Options & OptionsManager.ModOptions.NoDespawn) == OptionsManager.ModOptions.NoDespawn)
-                    vehicleData.m_blockCounter++;
             }
             else
             {
@@ -345,26 +302,21 @@ namespace CSL_Traffic
                     frameData.m_rotation = Quaternion.LookRotation(forward);
                 }
             }
-            else
+            else if (num11 > 0.1f)
             {
-                if (num11 > 0.1f)
+                if (vector5.sqrMagnitude > 0.01f)
                 {
-                    if (vector5.sqrMagnitude > 0.01f)
-                    {
-                        frameData.m_rotation = Quaternion.LookRotation(vector5);
-                    }
+                    frameData.m_rotation = Quaternion.LookRotation(vector5);
                 }
-                else
-                {
-                    if (num11 < -0.1f && vector5.sqrMagnitude > 0.01f)
-                    {
-                        frameData.m_rotation = Quaternion.LookRotation(-vector5);
-                    }
-                }
+            }
+            else if (num11 < -0.1f && vector5.sqrMagnitude > 0.01f)
+            {
+                frameData.m_rotation = Quaternion.LookRotation(-vector5);
             }
         }
 
-        public static bool StartPathFind(CarAI carAI, ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget, ExtendedVehicleType vehicleType)
+        public static bool StartPathFind<T>(this T carAI, ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget, ExtendedVehicleType vehicleType)            
+            where T : CarAI, IVehicleAI
         {
             VehicleInfo info = carAI.m_info;
             bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != Vehicle.Flags.None;
@@ -387,8 +339,7 @@ namespace CSL_Traffic
                     endPosB = default(PathUnit.Position);
                 }
                 uint path;
-                bool createPathResult = Singleton<PathManager>.instance.CreatePath(out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, NetInfo.LaneType.Vehicle, info.m_vehicleType, 20000f, (carAI as IVehicle).IsHeavyVehicle(), (carAI as IVehicle).IgnoreBlocked(vehicleID, ref vehicleData), false, false, vehicleType);
-                if (createPathResult)
+                if (Singleton<PathManager>.instance.CreatePath(out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, NetInfo.LaneType.Vehicle, info.m_vehicleType, 20000f, carAI.IsHeavyVehicle(), carAI.IgnoreBlocked(vehicleID, ref vehicleData), false, false))
                 {
                     if (vehicleData.m_path != 0u)
                     {

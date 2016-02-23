@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace CSL_Traffic
 {
-    interface IVehicle
+    interface IVehicleAI
     {
         bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData);
         void CalculateSegmentPosition(ushort vehicleID, ref Vehicle vehicleData, PathUnit.Position position, uint laneID, byte offset, out Vector3 pos, out Vector3 dir, out float maxSpeed);

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CSL_Traffic
 {
-    class CustomAmbulanceAI : AmbulanceAI, IVehicle
+    class CustomAmbulanceAI : AmbulanceAI, IVehicleAI
     {
         public override void SimulationStep(ushort vehicleID, ref Vehicle vehicleData, ref Vehicle.Frame frameData, ushort leaderID, ref Vehicle leaderData, int lodPhysics)
         {

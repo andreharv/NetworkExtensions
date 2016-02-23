@@ -1039,18 +1039,6 @@ namespace CSL_Traffic
 							lane2Distance *= 2f;
                         }
 
-                        ///* ---- TAM - Custom routing -------- */
-                        if ((TrafficMod.Options & OptionsManager.ModOptions.ImprovedAI) == OptionsManager.ModOptions.ImprovedAI)
-                        {
-                            /* ----- Congestion Changes ----- */
-                            // Checks if the lane has space for a vehicle of length 5. If not, increase its cost to avoid it. 
-                            if (!instance.m_lanes.m_buffer[num2].CheckSpace(5)) // the length used here can be tweaked for different results. Haven't had time to test it yet
-                            {
-                                lane2Distance *= 3f; // the factor of cost increase can also be tweaked to achieve different results
-                            }
-                            /* ------------------------------ */
-                        }
-
                         float num14 = lane2Distance / ((num5 + RoadManager.GetLaneSpeed(num2) /*lane2.m_speedLimit*/) * 0.5f * this.m_maxLength);
 						BufferItem item2;
 						item2.m_position.m_segment = segmentID;

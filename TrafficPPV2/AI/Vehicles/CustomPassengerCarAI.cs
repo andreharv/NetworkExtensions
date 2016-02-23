@@ -5,7 +5,7 @@ using Transit.Framework.Light;
 
 namespace CSL_Traffic
 {
-	class CustomPassengerCarAI : PassengerCarAI, IVehicle
+	class CustomPassengerCarAI : PassengerCarAI, IVehicleAI
 	{
 		public override void SimulationStep(ushort vehicleID, ref Vehicle data, Vector3 physicsLodRefPos)
 		{

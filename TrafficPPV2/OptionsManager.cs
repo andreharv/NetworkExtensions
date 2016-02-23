@@ -15,13 +15,11 @@ namespace CSL_Traffic
             None = 0,
             UseRealisticSpeeds = 8,
             NoDespawn = 16,
-            ImprovedAI = 32,
             BetaTestRoadCustomizerTool = 1L << 55,
         }
 
         UICheckBox m_realisticSpeedsCheckBox = null;
         UICheckBox m_noDespawnCheckBox = null;
-        UICheckBox m_improvedAICheckBox = null;
         UICheckBox m_betaTestRoadCustomizerCheckBox = null;
 
         void Awake()
@@ -35,7 +33,6 @@ namespace CSL_Traffic
             m_noDespawnCheckBox = group.AddCheckbox("No Despawn by CBeTHaX", false, IgnoreMe) as UICheckBox;
             m_realisticSpeedsCheckBox = group.AddCheckbox("Realistic Speeds", false, IgnoreMe) as UICheckBox;
             m_betaTestRoadCustomizerCheckBox = group.AddCheckbox("Road Customizer Tool", false, IgnoreMe) as UICheckBox;
-            m_improvedAICheckBox = group.AddCheckbox("Improved AI", false, IgnoreMe) as UICheckBox;
 
             group.AddButton("Save", OnSave);
 
@@ -63,11 +60,6 @@ namespace CSL_Traffic
             {
                 options.noDespawn = true;
                 TrafficMod.Options |= ModOptions.NoDespawn;
-            }
-            if (this.m_improvedAICheckBox.isChecked)
-            {
-                options.improvedAI = true;
-                TrafficMod.Options |= ModOptions.ImprovedAI;
             }
             if (this.m_betaTestRoadCustomizerCheckBox.isChecked)
             {
@@ -114,7 +106,6 @@ namespace CSL_Traffic
 
             this.m_realisticSpeedsCheckBox.isChecked = options.realisticSpeeds;
             this.m_noDespawnCheckBox.isChecked = options.noDespawn;
-            this.m_improvedAICheckBox.isChecked = options.improvedAI;
             this.m_betaTestRoadCustomizerCheckBox.isChecked = options.betaTestRoadCustomizer;
 
             if (options.realisticSpeeds)
@@ -122,9 +113,6 @@ namespace CSL_Traffic
 
             if (options.noDespawn)
                 TrafficMod.Options |= ModOptions.NoDespawn;
-
-            if (options.improvedAI)
-                TrafficMod.Options |= ModOptions.ImprovedAI;
 
             if (options.betaTestRoadCustomizer)
                 TrafficMod.Options |= ModOptions.BetaTestRoadCustomizerTool;

@@ -4,7 +4,7 @@ using Transit.Framework.Light;
 
 namespace CSL_Traffic
 {
-    class CustomHearseAI : HearseAI, IVehicle
+    class CustomHearseAI : HearseAI, IVehicleAI
     {
         public override void SimulationStep(ushort vehicleID, ref Vehicle vehicleData, ref Vehicle.Frame frameData, ushort leaderID, ref Vehicle leaderData, int lodPhysics)
         {
