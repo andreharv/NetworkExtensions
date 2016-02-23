@@ -1,10 +1,8 @@
 using ColossalFramework;
 using ColossalFramework.Globalization;
-using ColossalFramework.UI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Xml.Serialization;
@@ -232,34 +230,6 @@ namespace CSL_Traffic
             Logger.LogInfo("Prefabs queued for loading.");
 
             return true;
-        }
-
-        // Replace the pathfinding system for mine
-        void ReplacePathManager()
-        {
-            if (Singleton<PathManager>.instance as CustomPathManagerProxy != null)
-                return;
-
-            Logger.LogInfo("Replacing Path Manager");
-
-            // Change PathManager to CustomPathManager
-            FieldInfo sInstance = typeof(Singleton<PathManager>).GetFieldByName("sInstance");
-            PathManager originalPathManager = Singleton<PathManager>.instance;
-            CustomPathManagerProxy customPathManager = originalPathManager.gameObject.AddComponent<CustomPathManagerProxy>();
-            customPathManager.SetOriginalValues(originalPathManager);
-
-            // change the new instance in the singleton
-            sInstance.SetValue(null, customPathManager);
-
-            // change the manager in the SimulationManager
-            FastList<ISimulationManager> managers = (FastList<ISimulationManager>)typeof(SimulationManager).GetFieldByName("m_managers").GetValue(null);
-            managers.Remove(originalPathManager);
-            managers.Add(customPathManager);
-
-            // Destroy in 10 seconds to give time to all references to update to the new manager without crashing
-            GameObject.Destroy(originalPathManager, 10f);
-
-            Logger.LogInfo("Path Manager successfully replaced.");
         }
 
         T TryGetComponent<T>(string name) where T : MonoBehaviour

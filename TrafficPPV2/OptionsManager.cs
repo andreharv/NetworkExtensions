@@ -19,8 +19,6 @@ namespace CSL_Traffic
 
         public void CreateSettings(UIHelperBase helper)
         {
-            LoadOptions();
-
             UIHelperBase group = helper.AddGroup("Traffic++ V2 Options");
 
             group.AddCheckbox(
