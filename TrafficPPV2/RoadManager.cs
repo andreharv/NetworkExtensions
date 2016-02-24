@@ -1,4 +1,5 @@
 ﻿using System;
+using ColossalFramework;
 using Transit.Framework.Light;
 
 namespace CSL_Traffic
@@ -85,7 +86,7 @@ namespace CSL_Traffic
         #region Vehicle Restrictions
         public static bool CanUseLane(ExtendedVehicleType vehicleType, uint laneId)
         {
-            if (vehicleType.HasFlag(ExtendedVehicleType.Tram))
+            if ((vehicleType & (ExtendedVehicleType.Unknown | ExtendedVehicleType.Tram)) != 0)
             {
                 return true;
             }

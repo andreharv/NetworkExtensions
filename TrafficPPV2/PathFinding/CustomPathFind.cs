@@ -6,11 +6,21 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
 using Transit.Framework.Light;
+using Transit.Framework.Unsafe;
 using UnityEngine;
 
 namespace CSL_Traffic
 {
-	/*
+    public class CustomPathFindProxy : PathFind
+    {
+        [RedirectFrom(typeof(PathFind))]
+        private void Awake()
+        {
+            // Disabling the Awake method
+        }
+    }
+
+    /*
 	 * This is the class responsible for pathfinding. It's all in here since none of the methods can be overwritten.
 	 * There's a lot of small changes here and there to make it generate a correct path for the service vehicles using pedestrian paths.
 	 */
@@ -90,7 +100,6 @@ namespace CSL_Traffic
 		private bool m_ignoreBlocked;
 		private bool m_stablePath;
         private bool m_isTransportVehicle;
-	    private bool m_isServiceVehicles;
         private bool m_isPriorityVehicle;
         private Randomizer m_pathRandomizer;
 		private uint m_pathFindIndex;
@@ -233,13 +242,9 @@ namespace CSL_Traffic
 
 			if (!m_pathVehicleType.TryGetValue(unit, out m_vehicleTypeExtended))
 			{
-				//if ((m_laneTypes & NetInfo.LaneType.Pedestrian) == NetInfo.LaneType.Pedestrian)
-					m_vehicleTypeExtended = ExtendedVehicleType.PassengerCar;
-				//else
-				//	m_vehicleTypeExtended = ExtendedVehicleType.None;
+                this.m_vehicleTypeExtended = ExtendedVehicleType.Unknown;
 			}
 
-            this.m_isServiceVehicles = (this.m_vehicleTypeExtended & (ExtendedVehicleType.ServiceVehicles)) != ExtendedVehicleType.None;
             this.m_isPriorityVehicle = (this.m_vehicleTypeExtended & (ExtendedVehicleType.Bus | ExtendedVehicleType.EmergencyVehicles)) != ExtendedVehicleType.None;
 
 			int num = (int)(this.m_pathUnits.m_buffer[(int)((UIntPtr)unit)].m_positionCount & 15);
