@@ -5,8 +5,10 @@ using ColossalFramework.UI;
 using TrafficManager.Traffic;
 using TrafficManager.TrafficLight;
 using UnityEngine;
+using TrafficManager.State;
 
 namespace TrafficManager.UI {
+#if !TAM
 	public class UITrafficManager : UIPanel {
 		//private static UIState _uiState = UIState.None;
 
@@ -15,7 +17,7 @@ namespace TrafficManager.UI {
 		private static UIButton _buttonManualControl;
 		private static UIButton _buttonTimedMain;
 		private static UIButton _buttonLaneChange;
-		//private static UIButton _buttonLaneRestrictions;
+		private static UIButton _buttonVehicleRestrictions;
 		private static UIButton _buttonSpeedLimits;
 		private static UIButton _buttonClearTraffic;
 		private static UIButton _buttonToggleDespawn;
@@ -38,14 +40,14 @@ namespace TrafficManager.UI {
 			backgroundSprite = "GenericPanel";
 			color = new Color32(75, 75, 135, 255);
 			width = Translation.getMenuWidth();
-			height = LoadingExtension.IsPathManagerCompatible ? 350 : 270;
+			height = LoadingExtension.IsPathManagerCompatible ? 390 : 230;
 #if DEBUG
 			height += 160;		
 #endif
 			relativePosition = new Vector3(85f, 80f);
 
 			UILabel title = AddUIComponent<UILabel>();
-			title.text = "Version 1.5.2";
+			title.text = "Version 1.6.5";
 			title.relativePosition = new Vector3(50.0f, 5.0f);
 
 			int y = 30;
@@ -61,17 +63,19 @@ namespace TrafficManager.UI {
 			if (LoadingExtension.IsPathManagerCompatible) {
 				_buttonLaneChange = _createButton(Translation.GetString("Change_lane_arrows"), y, clickChangeLanes);
 				y += 40;
-				//buttonLaneRestrictions = _createButton("Road Restrictions", new Vector3(15f, 230f), clickLaneRestrictions);
-			}
 
-			_buttonSpeedLimits = _createButton(Translation.GetString("Speed_limits"), y, clickSpeedLimits);
-			y += 40;
+				_buttonSpeedLimits = _createButton(Translation.GetString("Speed_limits"), y, clickSpeedLimits);
+				y += 40;
+
+				_buttonVehicleRestrictions = _createButton(Translation.GetString("Vehicle_restrictions"), y, clickVehicleRestrictions);
+				y += 40;
+			}
 
 			_buttonClearTraffic = _createButton(Translation.GetString("Clear_Traffic"), y, clickClearTraffic);
 			y += 40;
 
 			if (LoadingExtension.IsPathManagerCompatible) {
-				_buttonToggleDespawn = _createButton(LoadingExtension.Instance.DespawnEnabled ? Translation.GetString("Disable_despawning") : Translation.GetString("Enable_despawning"), y, ClickToggleDespawn);
+				_buttonToggleDespawn = _createButton(Options.enableDespawning ? Translation.GetString("Disable_despawning") : Translation.GetString("Enable_despawning"), y, ClickToggleDespawn);
 				y += 40;
 			}
 
@@ -204,6 +208,16 @@ namespace TrafficManager.UI {
 			}
 		}
 
+		private void clickVehicleRestrictions(UIComponent component, UIMouseEventParameter eventParam) {
+			if (TrafficLightTool.getToolMode() != ToolMode.VehicleRestrictions) {
+				_buttonVehicleRestrictions.focusedBgSprite = "ButtonMenuFocused";
+				TrafficLightTool.SetToolMode(ToolMode.VehicleRestrictions);
+			} else {
+				_buttonVehicleRestrictions.focusedBgSprite = "ButtonMenu";
+				TrafficLightTool.SetToolMode(ToolMode.None);
+			}
+		}
+
 		/// <summary>
 		/// Removes the focused sprite from all menu buttons
 		/// </summary>
@@ -223,6 +237,8 @@ namespace TrafficManager.UI {
 				_buttonClearTraffic.focusedBgSprite = "ButtonMenu";
 			if (_buttonSpeedLimits != null)
 				_buttonSpeedLimits.focusedBgSprite = "ButtonMenu";
+			if (_buttonVehicleRestrictions != null)
+				_buttonVehicleRestrictions.focusedBgSprite = "ButtonMenu";
 			if (_buttonToggleDespawn != null)
 				_buttonToggleDespawn.focusedBgSprite = "ButtonMenu";
 		}
@@ -230,16 +246,16 @@ namespace TrafficManager.UI {
 		private void clickClearTraffic(UIComponent component, UIMouseEventParameter eventParam) {
 			TrafficLightTool.SetToolMode(ToolMode.None);
 
-			TrafficPriority.ClearTraffic();
+			TrafficPriority.RequestClearTraffic();
 		}
 
 		private static void ClickToggleDespawn(UIComponent component, UIMouseEventParameter eventParam) {
 			TrafficLightTool.SetToolMode(ToolMode.None);
 
-			LoadingExtension.Instance.DespawnEnabled = !LoadingExtension.Instance.DespawnEnabled;
+			Options.setEnableDespawning(!Options.enableDespawning);
 
 			if (LoadingExtension.IsPathManagerCompatible) {
-				_buttonToggleDespawn.text = LoadingExtension.Instance.DespawnEnabled
+				_buttonToggleDespawn.text = Options.enableDespawning
 					? Translation.GetString("Disable_despawning")
 					: Translation.GetString("Enable_despawning");
 			}
@@ -247,16 +263,10 @@ namespace TrafficManager.UI {
 
 		private void clickChangeLanes(UIComponent component, UIMouseEventParameter eventParam) {
 			if (TrafficLightTool.getToolMode() != ToolMode.LaneChange) {
-				if (LoadingExtension.IsPathManagerCompatible) {
-					_buttonLaneChange.focusedBgSprite = "ButtonMenuFocused";
-				}
-
+				_buttonLaneChange.focusedBgSprite = "ButtonMenuFocused";
 				TrafficLightTool.SetToolMode(ToolMode.LaneChange);
 			} else {
-				if (LoadingExtension.IsPathManagerCompatible) {
-					_buttonLaneChange.focusedBgSprite = "ButtonMenu";
-				}
-
+				_buttonLaneChange.focusedBgSprite = "ButtonMenu";
 				TrafficLightTool.SetToolMode(ToolMode.None);
 			}
 		}
@@ -351,4 +361,5 @@ namespace TrafficManager.UI {
 			}
 		}
 	}
+#endif
 }
