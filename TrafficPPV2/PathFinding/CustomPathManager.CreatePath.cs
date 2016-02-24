@@ -8,27 +8,28 @@ namespace CSL_Traffic
 {
     public static partial class CustomPathManager
     {
-        [RedirectFrom(typeof(PathManager))]
-        public static bool CreatePath(
-            out uint unit,
-            ref Randomizer randomizer,
-            uint buildIndex,
-            PathUnit.Position startPosA,
-            PathUnit.Position startPosB,
-            PathUnit.Position endPosA,
-            PathUnit.Position endPosB,
-            PathUnit.Position vehiclePosition,
-            NetInfo.LaneType laneTypes,
-            VehicleInfo.VehicleType vehicleTypes,
-            float maxLength,
-            bool isHeavyVehicle,
-            bool ignoreBlocked,
-            bool stablePath,
-            bool skipQueue)
-        {
-            throw new Exception("CreatePath has been called, please implement redirection to custom method");
-        }
-        
+        //// TO DEBUG
+        //[RedirectFrom(typeof(PathManager))]
+        //public static bool CreatePath(
+        //    out uint unit,
+        //    ref Randomizer randomizer,
+        //    uint buildIndex,
+        //    PathUnit.Position startPosA,
+        //    PathUnit.Position startPosB,
+        //    PathUnit.Position endPosA,
+        //    PathUnit.Position endPosB,
+        //    PathUnit.Position vehiclePosition,
+        //    NetInfo.LaneType laneTypes,
+        //    VehicleInfo.VehicleType vehicleTypes,
+        //    float maxLength,
+        //    bool isHeavyVehicle,
+        //    bool ignoreBlocked,
+        //    bool stablePath,
+        //    bool skipQueue)
+        //{
+        //    throw new Exception("CreatePath has been called, please implement redirection to custom method");
+        //}
+
         public static bool CreatePath(this PathManager pm, out uint unit, ref Randomizer randomizer, uint buildIndex, PathUnit.Position startPos, PathUnit.Position endPos, NetInfo.LaneType laneTypes, VehicleInfo.VehicleType vehicleTypes, float maxLength, ExtendedVehicleType vehicleType)
         {
             PathUnit.Position position = default(PathUnit.Position);

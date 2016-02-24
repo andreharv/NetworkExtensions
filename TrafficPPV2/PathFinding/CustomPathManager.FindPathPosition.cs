@@ -8,23 +8,24 @@ namespace CSL_Traffic
 {
 	public static partial class CustomPathManager
     {
-        [RedirectFrom(typeof(PathManager))]
-        public static bool FindPathPosition(
-            Vector3 position,
-            ItemClass.Service service,
-            NetInfo.LaneType laneType,
-            VehicleInfo.VehicleType vehicleType,
-            VehicleInfo.VehicleType stopType,
-            bool allowUnderground,
-            bool requireConnect,
-            float maxDistance,
-            out PathUnit.Position pathPosA,
-            out PathUnit.Position pathPosB,
-            out float distanceSqrA,
-            out float distanceSqrB)
-        {
-            throw new Exception("FindPathPosition has been called, please implement redirection to custom method");
-        }
+        //// TO DEBUG
+        //[RedirectFrom(typeof(PathManager))]
+        //public static bool FindPathPosition(
+        //    Vector3 position,
+        //    ItemClass.Service service,
+        //    NetInfo.LaneType laneType,
+        //    VehicleInfo.VehicleType vehicleType,
+        //    VehicleInfo.VehicleType stopType,
+        //    bool allowUnderground,
+        //    bool requireConnect,
+        //    float maxDistance,
+        //    out PathUnit.Position pathPosA,
+        //    out PathUnit.Position pathPosB,
+        //    out float distanceSqrA,
+        //    out float distanceSqrB)
+        //{
+        //    throw new Exception("FindPathPosition has been called, please implement redirection to custom method");
+        //}
 
 	    public static bool FindPathPosition(Vector3 position, ItemClass.Service service, NetInfo.LaneType laneType, VehicleInfo.VehicleType vehicleType, bool allowUnderground, bool requireConnect, float maxDistance, out PathUnit.Position pathPos, ExtendedVehicleType vehicleTypeExtended)
         {
