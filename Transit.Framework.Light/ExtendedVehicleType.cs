@@ -1,6 +1,5 @@
 ﻿using System;
 
-// Legacy from T++
 namespace Transit.Framework.Light
 {
     [Flags]

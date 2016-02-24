@@ -7,7 +7,7 @@ namespace CSL_Traffic
 {
     public static class NetSegmentExtensions
     {
-        public static bool GetClosestLanePosition(this NetSegment seg, Vector3 point, NetInfo.LaneType laneTypes, VehicleInfo.VehicleType vehicleTypes, out Vector3 position, out uint laneID, out int laneIndex, out float laneOffset, ExtendedVehicleType vehicleTypeExtended)
+        public static bool GetClosestLanePosition(this NetSegment seg, ExtendedVehicleType vehicleTypeExtended, Vector3 point, NetInfo.LaneType laneTypes, VehicleInfo.VehicleType vehicleTypes, out Vector3 position, out uint laneID, out int laneIndex, out float laneOffset)
         {
             position = point;
             laneID = 0u;
@@ -47,7 +47,7 @@ namespace CSL_Traffic
             return laneIndex != -1;
         }
 
-        public static bool GetClosestLanePosition(this NetSegment seg, Vector3 point, NetInfo.LaneType laneTypes, VehicleInfo.VehicleType vehicleTypes, VehicleInfo.VehicleType stopTypes, out Vector3 position, out uint laneID, out int laneIndex, out float laneOffset, ExtendedVehicleType vehicleTypeExtended)
+        public static bool GetClosestLanePosition(this NetSegment seg, ExtendedVehicleType vehicleTypeExtended, Vector3 point, NetInfo.LaneType laneTypes, VehicleInfo.VehicleType vehicleTypes, VehicleInfo.VehicleType stopTypes, out Vector3 position, out uint laneID, out int laneIndex, out float laneOffset)
         {
             position = point;
             laneID = 0u;
@@ -87,7 +87,7 @@ namespace CSL_Traffic
             return laneIndex != -1;
         }
 
-        public static bool GetClosestLanePosition(this NetSegment seg, Vector3 point, NetInfo.LaneType laneTypes, VehicleInfo.VehicleType vehicleTypes, VehicleInfo.VehicleType stopTypes, bool requireConnect, out Vector3 positionA, out int laneIndexA, out float laneOffsetA, out Vector3 positionB, out int laneIndexB, out float laneOffsetB, ExtendedVehicleType vehicleTypeExtended)
+        public static bool GetClosestLanePosition(this NetSegment seg, ExtendedVehicleType vehicleTypeExtended, Vector3 point, NetInfo.LaneType laneTypes, VehicleInfo.VehicleType vehicleTypes, VehicleInfo.VehicleType stopTypes, bool requireConnect, out Vector3 positionA, out int laneIndexA, out float laneOffsetA, out Vector3 positionB, out int laneIndexB, out float laneOffsetB)
         {
             positionA = point;
             laneIndexA = -1;
