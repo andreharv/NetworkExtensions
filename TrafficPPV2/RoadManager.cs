@@ -75,8 +75,13 @@ namespace CSL_Traffic
             return lane.GetConnectionsAsArray();
         }
 
-        public static bool CheckLaneConnection(uint from, uint to)
-        {   
+        public static bool CheckLaneConnection(ExtendedVehicleType vehicleType, uint from, uint to)
+        {
+            if ((vehicleType & (ExtendedVehicleType.Unknown | ExtendedVehicleType.Tram)) != 0)
+            {
+                return true;
+            }
+
             Lane lane = GetLane(from);
 
             return lane.ConnectsTo(to);

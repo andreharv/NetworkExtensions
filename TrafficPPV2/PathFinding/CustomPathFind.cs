@@ -889,11 +889,19 @@ namespace CSL_Traffic
 
         private bool ProcessItem(BufferItem item, ushort targetNode, ushort segmentID, ref NetSegment segment, ref int currentTargetIndex, byte connectOffset, bool enableVehicle, bool enablePedestrian)
         {
-            bool result = false;
             if ((segment.m_flags & (NetSegment.Flags.PathFailed | NetSegment.Flags.Flooded)) != NetSegment.Flags.None)
             {
-                return result;
+                return false;
             }
+
+            // TAM Restrictions
+            if (!RoadManager.CanUseLane(this.m_vehicleTypeExtended, item.m_laneID))
+            {
+                return false;
+            }
+            // TAM Restrictions
+
+            bool result = false;
             NetManager instance = Singleton<NetManager>.instance;
             NetInfo info = segment.Info;
             NetInfo info2 = instance.m_segments.m_buffer[(int)item.m_position.m_segment].Info;
@@ -1003,10 +1011,12 @@ namespace CSL_Traffic
             while (num12 < num && num2 != 0u)
             {
                 NetInfo.Lane lane2 = info.m_lanes[num12];
-                if ((byte)(lane2.m_finalDirection & direction2) != 0 && 
-                    RoadManager.CheckLaneConnection(num2, item.m_laneID) && 
-                    RoadManager.CanUseLane(this.m_vehicleTypeExtended, num2) && 
-                    RoadManager.CanUseLane(this.m_vehicleTypeExtended, item.m_laneID))
+
+                if ((byte)(lane2.m_finalDirection & direction2) != 0 &&
+                // TAM Restrictions
+                    RoadManager.CheckLaneConnection(this.m_vehicleTypeExtended, num2, item.m_laneID) &&
+                    RoadManager.CanUseLane(this.m_vehicleTypeExtended, num2))
+                // TAM Restrictions
                 {
                     if (lane2.CheckType(laneType2, vehicleType2) && (segmentID != item.m_position.m_segment || num12 != (int)item.m_position.m_lane) && (byte)(lane2.m_finalDirection & direction2) != 0)
                     {
