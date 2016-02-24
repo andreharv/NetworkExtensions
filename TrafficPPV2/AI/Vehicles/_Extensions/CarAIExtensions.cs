@@ -136,7 +136,7 @@ namespace CSL_Traffic
                         }
                         if (flag4)
                         {
-                            (carAI as IVehicleAI).InvalidPath(vehicleID, ref vehicleData, leaderID, ref leaderData);
+                            carAI.InvalidPath(vehicleID, ref vehicleData, leaderID, ref leaderData);
                         }
                         flag3 = true;
                         break;
@@ -208,12 +208,12 @@ namespace CSL_Traffic
                     float num16 = num13;
                     if (vehicleData.m_targetPos0.w < 0.1f)
                     {
-                        num10 = (carAI as IVehicleAI).CalculateTargetSpeed(vehicleID, ref vehicleData, 1000f, num15);
+                        num10 = carAI.CalculateTargetSpeed(vehicleID, ref vehicleData, 1000f, num15);
                         num10 = Mathf.Min(num10, CalculateMaxSpeed(num16, Mathf.Min(vehicleData.m_targetPos0.w, vehicleData.m_targetPos1.w), braking * 0.9f));
                     }
                     else
                     {
-                        num10 = Mathf.Min(num10, (carAI as IVehicleAI).CalculateTargetSpeed(vehicleID, ref vehicleData, 1000f, num15));
+                        num10 = Mathf.Min(num10, carAI.CalculateTargetSpeed(vehicleID, ref vehicleData, 1000f, num15));
                         num10 = Mathf.Min(num10, CalculateMaxSpeed(num16, vehicleData.m_targetPos1.w, braking * 0.9f));
                     }
                     num16 += VectorUtils.LengthXZ(vehicleData.m_targetPos1 - vehicleData.m_targetPos0);
@@ -314,7 +314,7 @@ namespace CSL_Traffic
             }
         }
 
-        public static bool StartPathFind<T>(this T carAI, ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget, ExtendedVehicleType vehicleType)            
+        public static bool StartPathFind<T>(this T carAI, ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget, ExtendedVehicleType vehicleTypeExtended)            
             where T : CarAI, IVehicleAI
         {
             VehicleInfo info = carAI.m_info;
@@ -327,7 +327,7 @@ namespace CSL_Traffic
             PathUnit.Position endPosB;
             float num3;
             float num4;
-            if (CustomPathManager.FindPathPosition(startPos, ItemClass.Service.Road, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, allowUnderground, false, 32f, out startPosA, out startPosB, out num, out num2, vehicleType) && CustomPathManager.FindPathPosition(endPos, ItemClass.Service.Road, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, undergroundTarget, false, 32f, out endPosA, out endPosB, out num3, out num4, vehicleType))
+            if (CustomPathManager.FindPathPosition(startPos, ItemClass.Service.Road, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, allowUnderground, false, 32f, out startPosA, out startPosB, out num, out num2, vehicleTypeExtended) && CustomPathManager.FindPathPosition(endPos, ItemClass.Service.Road, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, undergroundTarget, false, 32f, out endPosA, out endPosB, out num3, out num4, vehicleTypeExtended))
             {
                 if (!startBothWays || num < 10f)
                 {
@@ -338,7 +338,7 @@ namespace CSL_Traffic
                     endPosB = default(PathUnit.Position);
                 }
                 uint path;
-                if (Singleton<PathManager>.instance.CreatePath(out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, NetInfo.LaneType.Vehicle, info.m_vehicleType, 20000f, carAI.IsHeavyVehicle(), carAI.IgnoreBlocked(vehicleID, ref vehicleData), false, false))
+                if (Singleton<PathManager>.instance.CreatePath(out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, NetInfo.LaneType.Vehicle, info.m_vehicleType, 20000f, carAI.IsHeavyVehicle(), carAI.IgnoreBlocked(vehicleID, ref vehicleData), false, false, vehicleTypeExtended))
                 {
                     if (vehicleData.m_path != 0u)
                     {
@@ -665,33 +665,6 @@ namespace CSL_Traffic
                 }
             }
             return otherData.m_nextGridInstance;
-        }
-
-        public struct SpeedData
-        {
-            public uint currentPath;
-            public float speedMultiplier;
-
-            public void SetRandomSpeedMultiplier(float rangeMin = 0.75f, float rangeMax = 1.25f)
-            {
-                speedMultiplier = UnityEngine.Random.Range(rangeMin, rangeMax);
-            }
-
-            public void ApplySpeedMultiplier(VehicleInfo vehicle)
-            {
-                vehicle.m_acceleration *= speedMultiplier;
-                //vehicle.m_braking *= speedMultiplier;
-                //vehicle.m_turning *= speedMultiplier;
-                vehicle.m_maxSpeed *= speedMultiplier;
-            }
-
-            public void RestoreVehicleSpeed(VehicleInfo vehicle)
-            {
-                vehicle.m_acceleration /= speedMultiplier;
-                //vehicle.m_braking /= speedMultiplier;
-                //vehicle.m_turning /= speedMultiplier;
-                vehicle.m_maxSpeed /= speedMultiplier;
-            }
         }
     }
 }
