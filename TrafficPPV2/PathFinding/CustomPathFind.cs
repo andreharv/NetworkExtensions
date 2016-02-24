@@ -131,10 +131,6 @@ namespace CSL_Traffic
             }
 
             typeof(PathFind)
-                .GetFieldByName("m_pathfindProfiler")
-                .SetValue(this, this.m_pathfindProfiler);
-
-            typeof(PathFind)
                 .GetFieldByName("m_pathFindThread")
                 .SetValue(this, this.m_pathFindThread);
 		}
