@@ -6,10 +6,10 @@ using Transit.Framework.Light;
 
 namespace CSL_Traffic
 {
-    static class CustomCarAI
+    public static class CarAIExtensions
     {
-        public static SpeedData[] sm_speedData = new SpeedData[VehicleManager.MAX_VEHICLE_COUNT];
-        public static void SimulationStep(CarAI carAI, ushort vehicleID, ref Vehicle vehicleData, ref Vehicle.Frame frameData, ushort leaderID, ref Vehicle leaderData, int lodPhysics)
+        public static void SimulationStep<T>(this T carAI, ushort vehicleID, ref Vehicle vehicleData, ref Vehicle.Frame frameData, ushort leaderID, ref Vehicle leaderData, int lodPhysics)
+            where T : CarAI, IVehicleAI
         {
             uint currentFrameIndex = Singleton<SimulationManager>.instance.m_currentFrameIndex;
             frameData.m_position += frameData.m_velocity * 0.5f;
@@ -34,7 +34,7 @@ namespace CSL_Traffic
             {
                 if (leaderData.m_path != 0u)
                 {
-                    CustomVehicleAI.UpdatePathTargetPositions(carAI, vehicleID, ref vehicleData, frameData.m_position, ref i, 4, num4, num5);
+                    carAI.UpdatePathTargetPositions(vehicleID, ref vehicleData, frameData.m_position, ref i, 4, num4, num5);
                     if ((leaderData.m_flags & Vehicle.Flags.Spawned) == Vehicle.Flags.None)
                     {
                         frameData = vehicleData.m_frame0;
@@ -116,75 +116,36 @@ namespace CSL_Traffic
                         }
                     }
                 }
-                /* -------------------- Congestion Changes ------------------------- */
-                // Not everything is new. Changes are commented
                 if ((ulong)(currentFrameIndex >> 4 & 15u) == (ulong)((long)(leaderID & 15)))
                 {
                     bool flag3 = false;
                     uint path = leaderData.m_path;
                     int num9 = b >> 1;
-                    int j = 0, count = 0; // the count variable is used to keep track of how many of the next 5 lanes are congested
-                    //int j = 0;
+                    int j = 0;
                     while (j < 5)
                     {
                         bool flag4;
                         if (PathUnit.GetNextPosition(ref path, ref num9, out pathPos, out flag4))
                         {
                             uint laneID3 = PathManager.GetLaneID(pathPos);
-                            if (laneID3 != 0 && !instance.m_lanes.m_buffer[(int)((UIntPtr)laneID3)].CheckSpace(num7))
+                            if (laneID3 != 0u && !instance.m_lanes.m_buffer[(int)((UIntPtr)laneID3)].CheckSpace(num7))
                             {
                                 j++;
-                                ++count; // this lane is congested so increase count
                                 continue;
                             }
                         }
                         if (flag4)
                         {
-                            (carAI as IVehicle).InvalidPath(vehicleID, ref vehicleData, leaderID, ref leaderData);
-                            // flag it as not congested and set count to -1 so that it is neither congested nor completely clear
-                            // this is needed here because, contrary to the default code, it does not leave the cycle below
-                            if ((TrafficMod.Options & OptionsManager.ModOptions.ImprovedAI) == OptionsManager.ModOptions.ImprovedAI)
-                            {
-                                flag3 = true;
-                                count = -1;
-                                break;
-                            }
+                            carAI.InvalidPath(vehicleID, ref vehicleData, leaderID, ref leaderData);
                         }
                         flag3 = true;
-                        ++j;
-                        if ((TrafficMod.Options & OptionsManager.ModOptions.ImprovedAI) != OptionsManager.ModOptions.ImprovedAI)
-                        {
-                            break;
-                        }
-                        // the default code would leave the cycle at this point since it found a non congested lane.
-                        // this has been changed so that vehicles detect congestions a few lanes in advance.
-                        // I am yet to test the performance impact this particular "feature" has.
+                        break;
                     }
-
-                    if ((TrafficMod.Options & OptionsManager.ModOptions.ImprovedAI) == OptionsManager.ModOptions.ImprovedAI)
-                    {
-                        // if at least 2 out of the next 5 lanes are congested and it hasn't tried to find a new path yet, then calculates a new path and flags it as such
-                        // the amounf of congested lanes necessary to calculate a new path can be tweaked to reduce the amount of new paths being calculated, if performance in bigger cities is severely affected
-                        if (count >= 2 && (leaderData.m_flags & (Vehicle.Flags)1073741824) == 0)
-                        {
-                            leaderData.m_flags |= (Vehicle.Flags)1073741824;
-                            (carAI as IVehicle).InvalidPath(vehicleID, ref vehicleData, leaderID, ref leaderData);
-                        }
-                        // if none of the next 5 lanes is congested and the vehicle has already searched for a new path, then it successfully avoided a congestion and the flag is cleared
-                        else if (count == 0 && (leaderData.m_flags & (Vehicle.Flags)1073741824) != 0)
-                        {
-                            leaderData.m_flags &= ~((Vehicle.Flags)1073741824);
-                        }
-                        // default congestion behavior
-                        else if (!flag3)
-                            leaderData.m_flags |= Vehicle.Flags.Congestion;
-                    }
-                    else if (!flag3)
+                    if (!flag3)
                     {
                         leaderData.m_flags |= Vehicle.Flags.Congestion;
                     }
                 }
-                /* ----------------------------------------------------------------- */
             }
             float num10;
             if ((leaderData.m_flags & Vehicle.Flags.Stopped) != Vehicle.Flags.None)
@@ -247,12 +208,12 @@ namespace CSL_Traffic
                     float num16 = num13;
                     if (vehicleData.m_targetPos0.w < 0.1f)
                     {
-                        num10 = (carAI as IVehicle).CalculateTargetSpeed(vehicleID, ref vehicleData, 1000f, num15);
+                        num10 = carAI.CalculateTargetSpeed(vehicleID, ref vehicleData, 1000f, num15);
                         num10 = Mathf.Min(num10, CalculateMaxSpeed(num16, Mathf.Min(vehicleData.m_targetPos0.w, vehicleData.m_targetPos1.w), braking * 0.9f));
                     }
                     else
                     {
-                        num10 = Mathf.Min(num10, (carAI as IVehicle).CalculateTargetSpeed(vehicleID, ref vehicleData, 1000f, num15));
+                        num10 = Mathf.Min(num10, carAI.CalculateTargetSpeed(vehicleID, ref vehicleData, 1000f, num15));
                         num10 = Mathf.Min(num10, CalculateMaxSpeed(num16, vehicleData.m_targetPos1.w, braking * 0.9f));
                     }
                     num16 += VectorUtils.LengthXZ(vehicleData.m_targetPos1 - vehicleData.m_targetPos0);
@@ -267,7 +228,7 @@ namespace CSL_Traffic
                     num10 = Mathf.Min(num10, CalculateMaxSpeed(num16, 0f, braking * 0.9f));
                     if (!DisableCollisionCheck(leaderID, ref leaderData))
                     {
-                        CustomCarAI.CheckOtherVehicles(carAI, vehicleID, ref vehicleData, ref frameData, ref num10, ref flag5, ref zero, num, braking * 0.9f, lodPhysics);
+                        CheckOtherVehicles(vehicleID, ref vehicleData, ref frameData, ref num10, ref flag5, ref zero, num, braking * 0.9f, lodPhysics);
                     }
                     if (flag6)
                     {
@@ -285,17 +246,14 @@ namespace CSL_Traffic
                     }
                 }
             }
-            else
+            else if (magnitude < 0.1f && flag && carAI.ArriveAtDestination(leaderID, ref leaderData))
             {
-                if (magnitude < 0.1f && flag && carAI.ArriveAtDestination(leaderID, ref leaderData))
+                leaderData.Unspawn(leaderID);
+                if (leaderID == vehicleID)
                 {
-                    leaderData.Unspawn(leaderID);
-                    if (leaderID == vehicleID)
-                    {
-                        frameData = leaderData.m_frame0;
-                    }
-                    return;
+                    frameData = leaderData.m_frame0;
                 }
+                return;
             }
             if ((leaderData.m_flags & Vehicle.Flags.Stopped) == Vehicle.Flags.None && num10 < 0.1f)
             {
@@ -304,8 +262,6 @@ namespace CSL_Traffic
             if (flag5)
             {
                 vehicleData.m_blockCounter = (byte)Mathf.Min((int)(vehicleData.m_blockCounter + 1), 255);
-                if ((vehicleData.m_blockCounter == 100 || vehicleData.m_blockCounter == 150) && (TrafficMod.Options & OptionsManager.ModOptions.NoDespawn) == OptionsManager.ModOptions.NoDespawn)
-                    vehicleData.m_blockCounter++;
             }
             else
             {
@@ -345,26 +301,21 @@ namespace CSL_Traffic
                     frameData.m_rotation = Quaternion.LookRotation(forward);
                 }
             }
-            else
+            else if (num11 > 0.1f)
             {
-                if (num11 > 0.1f)
+                if (vector5.sqrMagnitude > 0.01f)
                 {
-                    if (vector5.sqrMagnitude > 0.01f)
-                    {
-                        frameData.m_rotation = Quaternion.LookRotation(vector5);
-                    }
+                    frameData.m_rotation = Quaternion.LookRotation(vector5);
                 }
-                else
-                {
-                    if (num11 < -0.1f && vector5.sqrMagnitude > 0.01f)
-                    {
-                        frameData.m_rotation = Quaternion.LookRotation(-vector5);
-                    }
-                }
+            }
+            else if (num11 < -0.1f && vector5.sqrMagnitude > 0.01f)
+            {
+                frameData.m_rotation = Quaternion.LookRotation(-vector5);
             }
         }
 
-        public static bool StartPathFind(CarAI carAI, ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget, ExtendedVehicleType vehicleType)
+        public static bool StartPathFind<T>(this T carAI, ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget, ExtendedVehicleType vehicleTypeExtended)            
+            where T : CarAI, IVehicleAI
         {
             VehicleInfo info = carAI.m_info;
             bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != Vehicle.Flags.None;
@@ -376,7 +327,7 @@ namespace CSL_Traffic
             PathUnit.Position endPosB;
             float num3;
             float num4;
-            if (CustomPathManager.FindPathPosition(startPos, ItemClass.Service.Road, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, allowUnderground, false, 32f, out startPosA, out startPosB, out num, out num2, vehicleType) && CustomPathManager.FindPathPosition(endPos, ItemClass.Service.Road, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, undergroundTarget, false, 32f, out endPosA, out endPosB, out num3, out num4, vehicleType))
+            if (CustomPathManager.FindPathPosition(startPos, ItemClass.Service.Road, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, allowUnderground, false, 32f, out startPosA, out startPosB, out num, out num2, vehicleTypeExtended) && CustomPathManager.FindPathPosition(endPos, ItemClass.Service.Road, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, undergroundTarget, false, 32f, out endPosA, out endPosB, out num3, out num4, vehicleTypeExtended))
             {
                 if (!startBothWays || num < 10f)
                 {
@@ -387,8 +338,7 @@ namespace CSL_Traffic
                     endPosB = default(PathUnit.Position);
                 }
                 uint path;
-                bool createPathResult = Singleton<PathManager>.instance.CreatePath(out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, NetInfo.LaneType.Vehicle, info.m_vehicleType, 20000f, (carAI as IVehicle).IsHeavyVehicle(), (carAI as IVehicle).IgnoreBlocked(vehicleID, ref vehicleData), false, false, vehicleType);
-                if (createPathResult)
+                if (Singleton<PathManager>.instance.CreatePath(out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, NetInfo.LaneType.Vehicle, info.m_vehicleType, 20000f, carAI.IsHeavyVehicle(), carAI.IgnoreBlocked(vehicleID, ref vehicleData), false, false, vehicleTypeExtended))
                 {
                     if (vehicleData.m_path != 0u)
                     {
@@ -423,7 +373,7 @@ namespace CSL_Traffic
             return false;
         }
 
-        private static void CheckOtherVehicles(CarAI carAI, ushort vehicleID, ref Vehicle vehicleData, ref Vehicle.Frame frameData, ref float maxSpeed, ref bool blocked, ref Vector3 collisionPush, float maxDistance, float maxBraking, int lodPhysics)
+        private static void CheckOtherVehicles(ushort vehicleID, ref Vehicle vehicleData, ref Vehicle.Frame frameData, ref float maxSpeed, ref bool blocked, ref Vector3 collisionPush, float maxDistance, float maxBraking, int lodPhysics)
         {
             Vector3 vector = vehicleData.m_targetPos3 - (Vector4)frameData.m_position;
             Vector3 rhs = frameData.m_position + Vector3.ClampMagnitude(vector, maxDistance);
@@ -442,7 +392,7 @@ namespace CSL_Traffic
                     int num6 = 0;
                     while (num5 != 0)
                     {
-                        num5 = CustomCarAI.CheckOtherVehicle(vehicleID, ref vehicleData, ref frameData, ref maxSpeed, ref blocked, ref collisionPush, maxBraking, num5, ref instance.m_vehicles.m_buffer[(int)num5], min, max, lodPhysics);
+                        num5 = CheckOtherVehicle(vehicleID, ref vehicleData, ref frameData, ref maxSpeed, ref blocked, ref collisionPush, maxBraking, num5, ref instance.m_vehicles.m_buffer[(int)num5], min, max, lodPhysics);
                         if (++num6 > 16384)
                         {
                             CODebugBase<LogChannel>.Error(LogChannel.Core, "Invalid list detected!\n" + Environment.StackTrace);
@@ -451,7 +401,7 @@ namespace CSL_Traffic
                     }
                 }
             }
-            if (lodPhysics == 0/* && (CSLTraffic.Options & OptionsManager.ModOptions.noStopForCrossing) != OptionsManager.ModOptions.noStopForCrossing*/)
+            if (lodPhysics == 0)
             {
                 CitizenManager instance2 = Singleton<CitizenManager>.instance;
                 float num7 = 0f;
@@ -481,7 +431,7 @@ namespace CSL_Traffic
                                     int num13 = 0;
                                     while (num12 != 0)
                                     {
-                                        num12 = CustomCarAI.CheckCitizen(vehicleID, ref vehicleData, segment, num7, magnitude, ref maxSpeed, ref blocked, maxBraking, num12, ref instance2.m_instances.m_buffer[(int)num12], min, max);
+                                        num12 = CheckCitizen(vehicleID, ref vehicleData, segment, num7, magnitude, ref maxSpeed, ref blocked, maxBraking, num12, ref instance2.m_instances.m_buffer[(int)num12], min, max);
                                         if (++num13 > 65536)
                                         {
                                             CODebugBase<LogChannel>.Error(LogChannel.Core, "Invalid list detected!\n" + Environment.StackTrace);
@@ -555,7 +505,8 @@ namespace CSL_Traffic
                     float num7 = 0f;
                     Vector3 vector3 = vehicleData.m_segment.b;
                     Vector3 lhs2 = vehicleData.m_segment.b - vehicleData.m_segment.a;
-                    for (int i = 0; i < 4; i++)
+                    int num8 = (vehicleData.Info.m_vehicleType != VehicleInfo.VehicleType.Tram) ? 0 : 1;
+                    for (int i = num8; i < 4; i++)
                     {
                         Vector3 vector4 = vehicleData.GetTargetPos(i);
                         Vector3 vector5 = vector4 - vector3;
@@ -571,77 +522,90 @@ namespace CSL_Traffic
                             {
                                 Vector3 a2 = otherData.m_segment.a;
                                 a2.y *= 0.5f;
-                                float num8;
-                                if (segment.DistanceSqr(a2, out num8) < 4f)
+                                float num9;
+                                if (segment.DistanceSqr(a2, out num9) < 4f)
                                 {
-                                    float num9 = Vector3.Dot(lastFrameData.m_velocity, vector5) / magnitude;
-                                    float num10 = num7 + magnitude * num8;
-                                    if (num10 >= 0.01f)
+                                    float num10 = Vector3.Dot(lastFrameData.m_velocity, vector5) / magnitude;
+                                    float num11 = num7 + magnitude * num9;
+                                    if (num11 >= 0.01f)
                                     {
-                                        num10 -= num9 + 3f;
-                                        float num11 = Mathf.Max(0f, CalculateMaxSpeed(num10, num9, maxBraking));
-                                        if (num11 < 0.01f)
+                                        num11 -= num10 + 3f;
+                                        float num12 = Mathf.Max(0f, CalculateMaxSpeed(num11, num10, maxBraking));
+                                        if (num12 < 0.01f)
                                         {
                                             blocked = true;
                                         }
                                         Vector3 rhs = Vector3.Normalize(otherData.m_targetPos0 - (Vector4)otherData.m_segment.a);
-                                        float num12 = 1.2f - 1f / ((float)vehicleData.m_blockCounter * 0.02f + 0.5f);
-                                        if (Vector3.Dot(vector5, rhs) > num12 * magnitude)
+                                        float num13 = 1.2f - 1f / ((float)vehicleData.m_blockCounter * 0.02f + 0.5f);
+                                        if (Vector3.Dot(vector5, rhs) > num13 * magnitude)
                                         {
-                                            maxSpeed = Mathf.Min(maxSpeed, num11);
+                                            maxSpeed = Mathf.Min(maxSpeed, num12);
                                         }
                                     }
                                     break;
                                 }
                                 if (lodPhysics < 2)
                                 {
-                                    float num13 = 0f;
-                                    float num14 = num6;
+                                    float num14 = 0f;
+                                    float num15 = num6;
                                     Vector3 vector6 = otherData.m_segment.b;
                                     Vector3 lhs3 = otherData.m_segment.b - otherData.m_segment.a;
+                                    int num16 = (info.m_vehicleType != VehicleInfo.VehicleType.Tram) ? 0 : 1;
                                     bool flag = false;
-                                    int num15 = 0;
-                                    while (num15 < 4 && num14 > 0.1f)
+                                    int num17 = num16;
+                                    while (num17 < 4 && num15 > 0.1f)
                                     {
-                                        Vector3 vector7 = otherData.GetTargetPos(num15);
-                                        Vector3 vector8 = Vector3.ClampMagnitude(vector7 - vector6, num14);
+                                        Vector3 vector7;
+                                        if (otherData.m_leadingVehicle != 0)
+                                        {
+                                            if (num17 != num16)
+                                            {
+                                                break;
+                                            }
+                                            vector7 = Singleton<VehicleManager>.instance.m_vehicles.m_buffer[(int)otherData.m_leadingVehicle].m_segment.b;
+                                        }
+                                        else
+                                        {
+                                            vector7 = otherData.GetTargetPos(num17);
+                                        }
+                                        Vector3 vector8 = Vector3.ClampMagnitude(vector7 - vector6, num15);
                                         if (Vector3.Dot(lhs3, vector8) > 0f)
                                         {
                                             vector7 = vector6 + vector8;
                                             float magnitude2 = vector8.magnitude;
-                                            num14 -= magnitude2;
+                                            num15 -= magnitude2;
                                             Segment3 segment2 = new Segment3(vector6, vector7);
                                             segment2.a.y = segment2.a.y * 0.5f;
                                             segment2.b.y = segment2.b.y * 0.5f;
                                             if (magnitude2 > 0.01f)
                                             {
-                                                float num17;
+                                                float num19;
+                                                float num20;
                                                 float num18;
-                                                float num16;
                                                 if (otherID < vehicleID)
                                                 {
-                                                    num16 = segment2.DistanceSqr(segment, out num17, out num18);
+                                                    num18 = segment2.DistanceSqr(segment, out num19, out num20);
                                                 }
                                                 else
                                                 {
-                                                    num16 = segment.DistanceSqr(segment2, out num18, out num17);
+                                                    num18 = segment.DistanceSqr(segment2, out num20, out num19);
                                                 }
-                                                if (num16 < 4f)
+                                                if (num18 < 4f)
                                                 {
-                                                    float num19 = num7 + magnitude * num18;
-                                                    float num20 = num13 + magnitude2 * num17 + 0.1f;
-                                                    if (num19 >= 0.01f && num19 * num5 > num20 * num4)
+                                                    float num21 = num7 + magnitude * num20;
+                                                    float num22 = num14 + magnitude2 * num19 + 0.1f;
+                                                    if (num21 >= 0.01f && num21 * num5 > num22 * num4)
                                                     {
-                                                        float num21 = Vector3.Dot(lastFrameData.m_velocity, vector5) / magnitude;
-                                                        if (num19 >= 0.01f)
+                                                        float num23 = Vector3.Dot(lastFrameData.m_velocity, vector5) / magnitude;
+                                                        if (num21 >= 0.01f)
                                                         {
-                                                            num19 -= num21 + 1f + otherData.Info.m_generatedInfo.m_size.z;
-                                                            float num22 = Mathf.Max(0f, CalculateMaxSpeed(num19, num21, maxBraking));
-                                                            if (num22 < 0.01f)
+                                                            num21 -= num23 + 1f + otherData.Info.m_generatedInfo.m_size.z;
+                                                            float num24 = Mathf.Max(0f, CalculateMaxSpeed(num21, num23, maxBraking));
+                                                            if (num24 < 0.01f)
                                                             {
                                                                 blocked = true;
                                                             }
-                                                            maxSpeed = Mathf.Min(maxSpeed, num22);
+                                                            maxSpeed = Mathf.Min(maxSpeed, num24);
                                                         }
                                                     }
                                                     flag = true;
@@ -649,10 +613,10 @@ namespace CSL_Traffic
                                                 }
                                             }
                                             lhs3 = vector8;
-                                            num13 += magnitude2;
+                                            num14 += magnitude2;
                                             vector6 = vector7;
                                         }
-                                        num15++;
+                                        num17++;
                                     }
                                     if (flag)
                                     {
@@ -670,14 +634,12 @@ namespace CSL_Traffic
             return otherData.m_nextGridVehicle;
         }
 
-        // CHECKME: check if this method allows to make people get away from traffic
         private static ushort CheckCitizen(ushort vehicleID, ref Vehicle vehicleData, Segment3 segment, float lastLen, float nextLen, ref float maxSpeed, ref bool blocked, float maxBraking, ushort otherID, ref CitizenInstance otherData, Vector3 min, Vector3 max)
         {
             if ((vehicleData.m_flags & Vehicle.Flags.Transition) == Vehicle.Flags.None && (otherData.m_flags & CitizenInstance.Flags.Transition) == CitizenInstance.Flags.None && (vehicleData.m_flags & Vehicle.Flags.Underground) != Vehicle.Flags.None != ((otherData.m_flags & CitizenInstance.Flags.Underground) != CitizenInstance.Flags.None))
             {
                 return otherData.m_nextGridInstance;
             }
-
             CitizenInfo info = otherData.Info;
             CitizenInstance.Frame lastFrameData = otherData.GetLastFrameData();
             Vector3 position = lastFrameData.m_position;
@@ -703,33 +665,6 @@ namespace CSL_Traffic
                 }
             }
             return otherData.m_nextGridInstance;
-        }
-
-        public struct SpeedData
-        {
-            public uint currentPath;
-            public float speedMultiplier;
-
-            public void SetRandomSpeedMultiplier(float rangeMin = 0.75f, float rangeMax = 1.25f)
-            {
-                speedMultiplier = UnityEngine.Random.Range(rangeMin, rangeMax);
-            }
-
-            public void ApplySpeedMultiplier(VehicleInfo vehicle)
-            {
-                vehicle.m_acceleration *= speedMultiplier;
-                //vehicle.m_braking *= speedMultiplier;
-                //vehicle.m_turning *= speedMultiplier;
-                vehicle.m_maxSpeed *= speedMultiplier;
-            }
-
-            public void RestoreVehicleSpeed(VehicleInfo vehicle)
-            {
-                vehicle.m_acceleration /= speedMultiplier;
-                //vehicle.m_braking /= speedMultiplier;
-                //vehicle.m_turning /= speedMultiplier;
-                vehicle.m_maxSpeed /= speedMultiplier;
-            }
         }
     }
 }

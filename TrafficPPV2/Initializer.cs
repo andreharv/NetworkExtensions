@@ -1,14 +1,12 @@
 using ColossalFramework;
 using ColossalFramework.Globalization;
-using ColossalFramework.UI;
-using CSL_Traffic.Extensions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Xml.Serialization;
+using Transit.Framework.Light;
 using UnityEngine;
 
 namespace CSL_Traffic
@@ -34,15 +32,6 @@ namespace CSL_Traffic
             m_customTextures = new Dictionary<string, Texture2D>();
             m_replacedAIs = new Dictionary<string, VehicleAI>();
             //m_postLoadingActions = new Queue<Action>();
-        }
-
-        void Start()
-        {
-            if ((TrafficMod.Options & OptionsManager.ModOptions.GhostMode) != OptionsManager.ModOptions.GhostMode)
-            {
-                ReplacePathManager();
-                //ReplaceTransportManager();
-            }
         }
 
         void OnLevelWasLoaded(int level)
@@ -102,9 +91,6 @@ namespace CSL_Traffic
                 }
             }
 
-            if ((TrafficMod.Options & OptionsManager.ModOptions.GhostMode) == OptionsManager.ModOptions.GhostMode)
-                return;
-
             if (!Singleton<LoadingManager>.instance.m_loadingComplete)
                 return;
             else if (m_gameStartedTime == 0f)
@@ -124,7 +110,6 @@ namespace CSL_Traffic
         {
             VehicleCollection garbageVehicleCollection = null;
             VehicleCollection policeVehicleCollection = null;
-            VehicleCollection publicTansportVehicleCollection = null;
             VehicleCollection healthCareVehicleCollection = null;
             VehicleCollection fireDepartmentVehicleCollection = null;
             VehicleCollection industrialVehicleCollection = null;
@@ -144,10 +129,6 @@ namespace CSL_Traffic
                 
                 policeVehicleCollection = TryGetComponent<VehicleCollection>("Police Department");
                 if (policeVehicleCollection == null)
-                    return false;
-
-                publicTansportVehicleCollection = TryGetComponent<VehicleCollection>("Public Transport");
-                if (publicTansportVehicleCollection == null)
                     return false;
 
                 healthCareVehicleCollection = TryGetComponent<VehicleCollection>("Health Care");
@@ -194,10 +175,9 @@ namespace CSL_Traffic
             {
                 try
                 {
-                    if ((TrafficMod.Options & OptionsManager.ModOptions.GhostMode) != OptionsManager.ModOptions.GhostMode && this.m_level == 6)
+                    if (this.m_level == 6)
                     {
                         ReplaceVehicleAI(healthCareVehicleCollection);
-                        ReplaceVehicleAI(publicTansportVehicleCollection);
                         ReplaceVehicleAI(industrialVehicleCollection);
                         ReplaceVehicleAI(industrialFarmingVehicleCollection);
                         ReplaceVehicleAI(industrialForestryVehicleCollection);
@@ -210,7 +190,7 @@ namespace CSL_Traffic
 
                         StartCoroutine(HandleCustomVehicles());
 
-                        if ((TrafficMod.Options & OptionsManager.ModOptions.BetaTestRoadCustomizerTool) == OptionsManager.ModOptions.BetaTestRoadCustomizerTool)
+                        if ((TrafficMod.Options & OptionsManager.ModOptions.RoadCustomizerTool) == OptionsManager.ModOptions.RoadCustomizerTool)
                             AddTool<RoadCustomizerTool>(ToolsModifierControl.toolController);
 
                         if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
@@ -244,34 +224,6 @@ namespace CSL_Traffic
             Logger.LogInfo("Prefabs queued for loading.");
 
             return true;
-        }
-
-        // Replace the pathfinding system for mine
-        void ReplacePathManager()
-        {
-            if (Singleton<PathManager>.instance as CustomPathManager != null)
-                return;
-
-            Logger.LogInfo("Replacing Path Manager");
-
-            // Change PathManager to CustomPathManager
-            FieldInfo sInstance = typeof(Singleton<PathManager>).GetFieldByName("sInstance");
-            PathManager originalPathManager = Singleton<PathManager>.instance;
-            CustomPathManager customPathManager = originalPathManager.gameObject.AddComponent<CustomPathManager>();
-            customPathManager.SetOriginalValues(originalPathManager);
-
-            // change the new instance in the singleton
-            sInstance.SetValue(null, customPathManager);
-
-            // change the manager in the SimulationManager
-            FastList<ISimulationManager> managers = (FastList<ISimulationManager>)typeof(SimulationManager).GetFieldByName("m_managers").GetValue(null);
-            managers.Remove(originalPathManager);
-            managers.Add(customPathManager);
-
-            // Destroy in 10 seconds to give time to all references to update to the new manager without crashing
-            GameObject.Destroy(originalPathManager, 10f);
-
-            Logger.LogInfo("Path Manager successfully replaced.");
         }
 
         T TryGetComponent<T>(string name) where T : MonoBehaviour
@@ -382,8 +334,6 @@ namespace CSL_Traffic
 
             if (type == typeof(AmbulanceAI))
                 ReplaceVehicleAI<CustomAmbulanceAI>(info);
-            else if (type == typeof(BusAI))
-                ReplaceVehicleAI<CustomBusAI>(info);
             else if (type == typeof(CargoTruckAI))
                 ReplaceVehicleAI<CustomCargoTruckAI>(info);
             else if (type == typeof(FireTruckAI))
@@ -416,59 +366,59 @@ namespace CSL_Traffic
             vehicle.m_vehicleAI = newAI;
             newAI.m_info = vehicle;
 
-            if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
-            {
-                SetRealisitcSpeeds(vehicle, true);
-            }
+            //if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
+            //{
+            //    SetRealisitcSpeeds(vehicle, true);
+            //}
 
             Logger.LogInfo("Successfully replaced " + vehicle.name + "'s AI.");
         }
 
-        // TODO: set correct values on vehicles for realistic speeds
-        void SetRealisitcSpeeds(VehicleInfo vehicle, bool activate)
-        {
-            float accelerationMultiplier;
-            float maxSpeedMultiplier;
-            switch (vehicle.name)
-            {
-                case "Ambulance":
-                    accelerationMultiplier = 0.2f;
-                    //vehicle.m_braking *= 0.3f;
-                    //vehicle.m_turning *= 0.25f;
-                    maxSpeedMultiplier = 0.5f;
-                    break;
-                case "Bus":
-                case "Fire Truck":
-                case "Garbage Truck":
-                    accelerationMultiplier = 0.15f;
-                    //vehicle.m_braking *= 0.25f;
-                    //vehicle.m_turning *= 0.2f;
-                    maxSpeedMultiplier = 0.5f;
-                    break;
-                case "Hearse":
-                case "Police Car":
-                    accelerationMultiplier = 0.25f;
-                    //vehicle.m_braking *= 0.35f;
-                    //vehicle.m_turning *= 0.3f;
-                    maxSpeedMultiplier = 0.5f;
-                    break;
-                default:
-                    accelerationMultiplier = 0.25f;
-                    //vehicle.m_braking *= 0.35f;
-                    //vehicle.m_turning *= 0.3f;
-                    maxSpeedMultiplier = 0.5f;
-                    break;
-            }
+        //// TODO: set correct values on vehicles for realistic speeds
+        //void SetRealisitcSpeeds(VehicleInfo vehicle, bool activate)
+        //{
+        //    float accelerationMultiplier;
+        //    float maxSpeedMultiplier;
+        //    switch (vehicle.name)
+        //    {
+        //        case "Ambulance":
+        //            accelerationMultiplier = 0.2f;
+        //            //vehicle.m_braking *= 0.3f;
+        //            //vehicle.m_turning *= 0.25f;
+        //            maxSpeedMultiplier = 0.5f;
+        //            break;
+        //        case "Bus":
+        //        case "Fire Truck":
+        //        case "Garbage Truck":
+        //            accelerationMultiplier = 0.15f;
+        //            //vehicle.m_braking *= 0.25f;
+        //            //vehicle.m_turning *= 0.2f;
+        //            maxSpeedMultiplier = 0.5f;
+        //            break;
+        //        case "Hearse":
+        //        case "Police Car":
+        //            accelerationMultiplier = 0.25f;
+        //            //vehicle.m_braking *= 0.35f;
+        //            //vehicle.m_turning *= 0.3f;
+        //            maxSpeedMultiplier = 0.5f;
+        //            break;
+        //        default:
+        //            accelerationMultiplier = 0.25f;
+        //            //vehicle.m_braking *= 0.35f;
+        //            //vehicle.m_turning *= 0.3f;
+        //            maxSpeedMultiplier = 0.5f;
+        //            break;
+        //    }
 
-            if (!activate)
-            {
-                accelerationMultiplier = 1f / accelerationMultiplier;
-                maxSpeedMultiplier = 1f / maxSpeedMultiplier;
-            }
+        //    if (!activate)
+        //    {
+        //        accelerationMultiplier = 1f / accelerationMultiplier;
+        //        maxSpeedMultiplier = 1f / maxSpeedMultiplier;
+        //    }
 
-            vehicle.m_acceleration *= accelerationMultiplier;
-            vehicle.m_maxSpeed *= maxSpeedMultiplier;
-        }
+        //    vehicle.m_acceleration *= accelerationMultiplier;
+        //    vehicle.m_maxSpeed *= maxSpeedMultiplier;
+        //}
 
         void SetOriginalAI(VehicleInfo vehicle)
         {

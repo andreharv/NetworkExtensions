@@ -1,7 +1,6 @@
 ﻿using ColossalFramework;
 using ColossalFramework.Math;
 using ColossalFramework.UI;
-using CSL_Traffic.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -773,7 +772,7 @@ namespace CSL_Traffic
 
         private float CalculateLaneSpeed(byte startOffset, byte endOffset, ref NetSegment segment, NetInfo.Lane laneInfo, uint laneId)
 		{
-			float speedLimit = (TrafficMod.Options & OptionsManager.ModOptions.BetaTestRoadCustomizerTool) == OptionsManager.ModOptions.BetaTestRoadCustomizerTool ? RoadManager.GetLaneSpeed(laneId) : laneInfo.m_speedLimit;
+			float speedLimit = (TrafficMod.Options & OptionsManager.ModOptions.RoadCustomizerTool) == OptionsManager.ModOptions.RoadCustomizerTool ? RoadManager.GetLaneSpeed(laneId) : laneInfo.m_speedLimit;
 			//float speedLimit = laneInfo.m_speedLimit;
 
 			NetInfo.Direction direction = ((segment.m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None) ? laneInfo.m_finalDirection : NetInfo.InvertDirection(laneInfo.m_finalDirection);
@@ -1038,18 +1037,6 @@ namespace CSL_Traffic
 						if (flag)
 						{
 							lane2Distance *= 2f;
-                        }
-
-                        ///* ---- TAM - Custom routing -------- */
-                        if ((TrafficMod.Options & OptionsManager.ModOptions.ImprovedAI) == OptionsManager.ModOptions.ImprovedAI)
-                        {
-                            /* ----- Congestion Changes ----- */
-                            // Checks if the lane has space for a vehicle of length 5. If not, increase its cost to avoid it. 
-                            if (!instance.m_lanes.m_buffer[num2].CheckSpace(5)) // the length used here can be tweaked for different results. Haven't had time to test it yet
-                            {
-                                lane2Distance *= 3f; // the factor of cost increase can also be tweaked to achieve different results
-                            }
-                            /* ------------------------------ */
                         }
 
                         float num14 = lane2Distance / ((num5 + RoadManager.GetLaneSpeed(num2) /*lane2.m_speedLimit*/) * 0.5f * this.m_maxLength);

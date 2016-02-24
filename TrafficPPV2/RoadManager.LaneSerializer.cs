@@ -15,7 +15,7 @@ namespace CSL_Traffic
             
             public override void OnLoadData()
             {
-                if ((TrafficMod.Options & OptionsManager.ModOptions.BetaTestRoadCustomizerTool) == OptionsManager.ModOptions.None || (TrafficMod.Options & OptionsManager.ModOptions.GhostMode) == OptionsManager.ModOptions.GhostMode)
+                if ((TrafficMod.Options & OptionsManager.ModOptions.RoadCustomizerTool) == OptionsManager.ModOptions.None)
                     return;
                 
 
@@ -44,9 +44,6 @@ namespace CSL_Traffic
                     {
                         if (lane == null)
                             continue;
-
-                        if ((TrafficMod.Options & OptionsManager.ModOptions.FixCargoTrucksNotSpawning) == OptionsManager.ModOptions.FixCargoTrucksNotSpawning && lane.m_vehicleTypes == (ExtendedVehicleType.ServiceVehicles | ExtendedVehicleType.PassengerCar))
-                            lane.m_vehicleTypes = ExtendedVehicleType.All;
 
                         lane.UpdateArrows();
                         if (lane.ConnectionCount() > 0)
@@ -88,8 +85,7 @@ namespace CSL_Traffic
 
             public override void OnSaveData()
             {
-                if ((TrafficMod.Options & OptionsManager.ModOptions.BetaTestRoadCustomizerTool) == OptionsManager.ModOptions.None || 
-                    (TrafficMod.Options & OptionsManager.ModOptions.GhostMode) == OptionsManager.ModOptions.GhostMode)
+                if ((TrafficMod.Options & OptionsManager.ModOptions.RoadCustomizerTool) == OptionsManager.ModOptions.None)
                     return;
 
                 Logger.LogInfo("Saving road data!");
