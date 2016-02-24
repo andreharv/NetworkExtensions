@@ -373,7 +373,7 @@ namespace CSL_Traffic
             return false;
         }
 
-        public static void CheckOtherVehicles(ushort vehicleID, ref Vehicle vehicleData, ref Vehicle.Frame frameData, ref float maxSpeed, ref bool blocked, ref Vector3 collisionPush, float maxDistance, float maxBraking, int lodPhysics)
+        private static void CheckOtherVehicles(ushort vehicleID, ref Vehicle vehicleData, ref Vehicle.Frame frameData, ref float maxSpeed, ref bool blocked, ref Vector3 collisionPush, float maxDistance, float maxBraking, int lodPhysics)
         {
             Vector3 vector = vehicleData.m_targetPos3 - (Vector4)frameData.m_position;
             Vector3 rhs = frameData.m_position + Vector3.ClampMagnitude(vector, maxDistance);
