@@ -4,6 +4,7 @@ using Transit.Addon.RoadExtensions.Menus;
 using Transit.Addon.RoadExtensions.Roads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
+using Transit.Framework.Texturing;
 
 namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.OneWay1L
 {
@@ -49,19 +50,19 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.OneWay1L
             {
                 case NetInfoVersion.Ground:
                     info.SetAllSegmentsTexture(
-                        new TexturesSet
+                        new TextureSet
                            (@"Roads\TinyRoads\OneWay1L\Textures\Ground_Segment__MainTex.png",
                             @"Roads\TinyRoads\OneWay1L\Textures\Ground_Segment__APRMap.png"),
-                        new LODTexturesSet
+                        new LODTextureSet
                            (@"Roads\TinyRoads\OneWay1L\Textures\Ground_Segment_LOD__MainTex.png",
                             @"Roads\TinyRoads\OneWay1L\Textures\Ground_Segment_LOD__APRMap.png",
                             @"Roads\TinyRoads\OneWay1L\Textures\Ground_LOD__XYSMap.png"));
 
                     info.SetAllNodesTexture(
-                        new TexturesSet
+                        new TextureSet
                             (@"Roads\TinyRoads\OneWay1L\Textures\Ground_Node__MainTex.png",
                              @"Roads\TinyRoads\OneWay1L\Textures\Ground_Node__APRMap.png"),
-                        new LODTexturesSet
+                        new LODTextureSet
                            (@"Roads\TinyRoads\OneWay1L\Textures\Ground_Node_LOD__MainTex.png",
                             @"Roads\TinyRoads\OneWay1L\Textures\Ground_Node_LOD__APRMap.png",
                             @"Roads\TinyRoads\OneWay1L\Textures\Ground_LOD__XYSMap.png"));

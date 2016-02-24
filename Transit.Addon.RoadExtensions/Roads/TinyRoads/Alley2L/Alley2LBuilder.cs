@@ -4,6 +4,7 @@ using Transit.Addon.RoadExtensions.Menus;
 using Transit.Addon.RoadExtensions.Roads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
+using Transit.Framework.Texturing;
 
 namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.Alley2L
 {
@@ -49,10 +50,10 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.Alley2L
             {
                 case NetInfoVersion.Ground:
                     info.SetAllSegmentsTexture(
-                        new TexturesSet
+                        new TextureSet
                            (@"Roads\TinyRoads\Alley2L\Textures\Ground_Segment__MainTex.png",
                             @"Roads\TinyRoads\Alley2L\Textures\Ground_Segment__APRMap.png"),
-                        new LODTexturesSet(
+                        new LODTextureSet(
                             @"Roads\TinyRoads\Alley2L\Textures\Ground_Segment_LOD__MainTex.png",
                             @"Roads\TinyRoads\Alley2L\Textures\Ground_Segment_LOD__APRMap.png",
                             @"Roads\TinyRoads\Alley2L\Textures\Ground_LOD__XYSMap.png"));
@@ -62,10 +63,10 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.Alley2L
                         if (info.m_nodes[i].m_flagsForbidden == NetNode.Flags.Transition)
                         {
                             info.m_nodes[i].SetTextures(
-                                new TexturesSet
+                                new TextureSet
                                     (@"Roads\TinyRoads\Alley2L\Textures\Ground_Node__MainTex.png",
                                      @"Roads\TinyRoads\Alley2L\Textures\Ground_Node__APRMap.png"),
-                                new LODTexturesSet(
+                                new LODTextureSet(
                                     @"Roads\TinyRoads\Alley2L\Textures\Ground_Node_LOD__MainTex.png",
                                     @"Roads\TinyRoads\Alley2L\Textures\Ground_Node_LOD__APRMap.png",
                                     @"Roads\TinyRoads\Alley2L\Textures\Ground_LOD__XYSMap.png"));
@@ -73,10 +74,10 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.Alley2L
                         else if (info.m_nodes[i].m_flagsRequired == NetNode.Flags.Transition)
                         {
                             info.m_nodes[i].SetTextures(
-                                new TexturesSet
+                                new TextureSet
                                     (@"Roads\TinyRoads\Alley2L\Textures\Ground_Trans__MainTex.png",
                                      @"Roads\TinyRoads\Alley2L\Textures\Ground_Trans__APRMap.png"),
-                                new LODTexturesSet(
+                                new LODTextureSet(
                                     @"Roads\TinyRoads\Alley2L\Textures\Ground_Trans_LOD__MainTex.png",
                                     @"Roads\TinyRoads\Alley2L\Textures\Ground_Trans_LOD__APRMap.png",
                                     @"Roads\TinyRoads\Alley2L\Textures\Ground_LOD__XYSMap.png"));

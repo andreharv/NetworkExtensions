@@ -13,8 +13,7 @@ namespace Transit.Addon.Tools
         public enum ModOptions : long
         {
             None = 0,
-            RoadZoneModifier = 1L << 0,
-            RoadCustomizerTool = 1L << 1
+            RoadZoneModifier = 1L << 0
         }
 
         private static ModOptions s_activeOptions = ModOptions.None;
@@ -35,24 +34,6 @@ namespace Transit.Addon.Tools
                     else
                     {
                         s_activeOptions = s_activeOptions & ~ModOptions.RoadZoneModifier;
-                    }
-                    FireSaveSettingsNeeded();
-                },
-                true);
-
-            helper.AddCheckbox(
-                "Road Customizer Tool",
-                "Road Customizer Tool",
-                s_activeOptions.IsFlagSet(ModOptions.RoadCustomizerTool),
-                isChecked =>
-                {
-                    if (isChecked)
-                    {
-                        s_activeOptions = s_activeOptions | ModOptions.RoadCustomizerTool;
-                    }
-                    else
-                    {
-                        s_activeOptions = s_activeOptions & ~ModOptions.RoadCustomizerTool;
                     }
                     FireSaveSettingsNeeded();
                 },

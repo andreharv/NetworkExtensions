@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Transit.Addon.RoadExtensions.Props;
 using Transit.Addon.RoadExtensions.Roads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
@@ -53,8 +54,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.MediumAvenue4L
 
             if (version == NetInfoVersion.Tunnel)
             {
-                info.m_setVehicleFlags = Vehicle.Flags.Transition;
-                info.m_setCitizenFlags = CitizenInstance.Flags.Transition;
                 info.m_class = roadTunnelInfo.m_class.Clone(NetInfoClasses.NEXT_MEDIUM_ROAD_TUNNEL);
             }
             else if (version == NetInfoVersion.Bridge)
@@ -76,11 +75,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.MediumAvenue4L
                 CenterLane = CenterLaneType.Median,
                 CenterLaneWidth = 3.8f
             });
-            var leftPedLane = info.GetLeftRoadShoulder(roadInfo, version);
-            var rightPedLane = info.GetRightRoadShoulder(roadInfo, version);
-            //Setting Up Props
-            var leftRoadProps = leftPedLane.m_laneProps.m_props.ToList();
-            var rightRoadProps = rightPedLane.m_laneProps.m_props.ToList();
+            var leftPedLane = info.GetLeftRoadShoulder();
+            var rightPedLane = info.GetRightRoadShoulder();
 
             // Fix for T++ legacy support
             if (version == NetInfoVersion.Ground)
@@ -101,6 +97,27 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.MediumAvenue4L
                 info.m_lanes = lanesLegacyOrder;
             }
 
+            //Setting Up Props
+            var leftRoadProps = leftPedLane.m_laneProps.m_props.ToList();
+            var rightRoadProps = rightPedLane.m_laneProps.m_props.ToList();
+
+            if (version != NetInfoVersion.Tunnel)
+            {
+                var leftStreetLight = leftRoadProps.FirstOrDefault(p => p.m_prop.name.ToLower().Contains("new street light"));
+                if (leftStreetLight != null)
+                {
+                    leftStreetLight.m_finalProp =
+                    leftStreetLight.m_prop = Prefabs.Find<PropInfo>(MediumAvenueSideLightBuilder.NAME);
+                }
+
+                var rightStreetLight = rightRoadProps.FirstOrDefault(p => p.m_prop.name.ToLower().Contains("new street light"));
+                if (rightStreetLight != null)
+                {
+                    rightStreetLight.m_finalProp =
+                    rightStreetLight.m_prop = Prefabs.Find<PropInfo>(MediumAvenueSideLightBuilder.NAME);
+                }
+            }
+
             if (version == NetInfoVersion.Slope)
             {
                 leftRoadProps.AddLeftWallLights(info.m_pavementWidth);
@@ -114,7 +131,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.MediumAvenue4L
             info.SetupNewSpeedLimitProps(50, 60);
 
 
-            //var propLanes = info.m_lanes.Where(l => l.m_laneProps != null && (l.m_laneProps.name.ToLower().Contains("left") || l.m_laneProps.name.ToLower().Contains("right"))).ToList();
+            // AI
             var owPlayerNetAI = roadInfo.GetComponent<PlayerNetAI>();
             var playerNetAI = info.GetComponent<PlayerNetAI>();
 

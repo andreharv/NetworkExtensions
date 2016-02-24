@@ -2,7 +2,7 @@
 
 namespace Transit.Addon.Tools
 {
-    [Module(typeof(Mod))]
+    [Module("Transit.Addon.Mod", "NetworkExtensions.Mod")]
     public partial class ToolModule : ModuleBase
     {
         public override string Name

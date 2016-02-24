@@ -54,8 +54,6 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.BasicRoadTL
 
             if (version == NetInfoVersion.Tunnel)
             {
-                info.m_setVehicleFlags = Vehicle.Flags.Transition;
-                info.m_setCitizenFlags = CitizenInstance.Flags.Transition;
                 info.m_class = owRoadTunnelInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL3L_ROAD_TUNNEL);
             }
             else
@@ -71,8 +69,9 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.BasicRoadTL
                 SpeedLimit = 1.2f,
                 CenterLane = CenterLaneType.TurningLane
             });
-            var leftPedLane = info.GetLeftRoadShoulder(roadInfo, version);
-            var rightPedLane = info.GetRightRoadShoulder(roadInfo, version);
+            var leftPedLane = info.GetLeftRoadShoulder();
+            var rightPedLane = info.GetRightRoadShoulder();
+
             //Setting Up Props
             var leftRoadProps = leftPedLane.m_laneProps.m_props.ToList();
             var rightRoadProps = rightPedLane.m_laneProps.m_props.ToList();
@@ -90,8 +89,7 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.BasicRoadTL
             info.SetupNewSpeedLimitProps(50, 40);
 
             
-            //var propLanes = info.m_lanes.Where(l => l.m_laneProps != null && (l.m_laneProps.name.ToLower().Contains("left") || l.m_laneProps.name.ToLower().Contains("right"))).ToList();
-
+            // AI
             var owPlayerNetAI = roadInfo.GetComponent<PlayerNetAI>();
             var playerNetAI = info.GetComponent<PlayerNetAI>();
 

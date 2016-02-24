@@ -27,7 +27,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG_TEXBLEND</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -53,6 +53,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activable.cs" />
+    <Compile Include="Texturing\ITextureBlenderComponent.cs" />
+    <Compile Include="Texturing\PathTextureProvider.cs" />
+    <Compile Include="Texturing\Point.cs" />
+    <Compile Include="Texturing\TextureBlender.Component.XOffset.cs" />
+    <Compile Include="Texturing\TextureBlender.cs" />
+    <Compile Include="Texturing\TextureBlender.Component.Color.cs" />
+    <Compile Include="Texturing\TextureBlender.Component.Alpha.cs" />
+    <Compile Include="Texturing\TextureBlender.Component.cs" />
+    <Compile Include="Texturing\TextureBlender.Component.Texture.cs" />
+    <Compile Include="Texturing\ITextureProvider.cs" />
+    <Compile Include="Texturing\TextureHelper.cs" />
     <Compile Include="Builders\INetInfoLateBuilder.cs" />
     <Compile Include="Installer.cs" />
     <Compile Include="Interfaces\IDescriptor.cs" />
@@ -113,7 +124,7 @@
     <Compile Include="Builders\INetInfoModifier.cs" />
     <Compile Include="Loading.cs" />
     <Compile Include="Selector.cs" />
-    <Compile Include="TexturesSet.cs" />
+    <Compile Include="Texturing\TextureSet.cs" />
     <Compile Include="Prefabs.cs" />
     <Compile Include="Tools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

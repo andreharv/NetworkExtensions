@@ -26,7 +26,7 @@ namespace Transit.Framework
             return clone;
         }
 
-        public static T CloneMembersFrom<T>(this T destination, T source, params string[] omitMembers)
+        public static T ShallowCloneFrom<T>(this T destination, T source, params string[] omitMembers)
             where T : new()
         {
             foreach (FieldInfo f in destination.GetType().GetAllFields(true))

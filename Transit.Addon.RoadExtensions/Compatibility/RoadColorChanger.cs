@@ -9,9 +9,22 @@ using UnityEngine;
 
 namespace Transit.Addon.RoadExtensions.Compatibility
 {
-    public class RoadColorChanger : ICompatibilityPart
+    public static class RoadColorChanger
     {
-        private const string COLOR_CHANGER_MOD_ID = "417585852";
+        private const string MOD_ID = "417585852";
+        public static bool IsPluginActive
+        {
+            get { return Singleton<PluginManager>.instance.IsPluginActive(MOD_ID); }
+        }
+
+        public static string GetTexturePrefix()
+        {
+            return @"Compatibility\RoadColorChanger\";
+        }
+    }
+
+    public class RoadColorChangerCompatibility : ICompatibilityPart
+    {
         private const string CONFIG_PATH = "RoadColorConfig.xml";
 
         public string Name
@@ -21,7 +34,7 @@ namespace Transit.Addon.RoadExtensions.Compatibility
 
         public bool IsPluginActive
         {
-            get { return Singleton<PluginManager>.instance.IsPluginActive(COLOR_CHANGER_MOD_ID); }
+            get { return RoadColorChanger.IsPluginActive; }
         }
 
         public void Setup(IEnumerable<NetInfo> newRoads)

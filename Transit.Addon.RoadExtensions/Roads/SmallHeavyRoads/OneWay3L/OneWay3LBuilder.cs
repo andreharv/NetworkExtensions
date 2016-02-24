@@ -48,14 +48,11 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.OneWay3L
             // Set up                //
             ///////////////////////////
             info.m_hasParkingSpaces = false;
-            info.m_class = owRoadInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL3L_ROAD);
             info.m_pavementWidth = (version != NetInfoVersion.Slope && version != NetInfoVersion.Tunnel ? 3 : 6);
             info.m_halfWidth = (version != NetInfoVersion.Slope && version != NetInfoVersion.Tunnel ? 8 : 11);
 
             if (version == NetInfoVersion.Tunnel)
             {
-                info.m_setVehicleFlags = Vehicle.Flags.Transition;
-                info.m_setCitizenFlags = CitizenInstance.Flags.Transition;
                 info.m_class = owRoadTunnelInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL3L_ROAD_TUNNEL);
             }
             else
@@ -70,8 +67,9 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.OneWay3L
                 LanesToAdd = 1,
                 SpeedLimit = 1.2f
             });
-            var leftPedLane = info.GetLeftRoadShoulder(owRoadInfo, version);
-            var rightPedLane = info.GetRightRoadShoulder(owRoadInfo, version);
+            var leftPedLane = info.GetLeftRoadShoulder();
+            var rightPedLane = info.GetRightRoadShoulder();
+
             //Setting Up Props
             var leftRoadProps = leftPedLane.m_laneProps.m_props.ToList();
             var rightRoadProps = rightPedLane.m_laneProps.m_props.ToList();
@@ -89,8 +87,7 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.OneWay3L
             info.SetupNewSpeedLimitProps(60, 40);
 
             
-            //var propLanes = info.m_lanes.Where(l => l.m_laneProps != null && (l.m_laneProps.name.ToLower().Contains("left") || l.m_laneProps.name.ToLower().Contains("right"))).ToList();
-
+            // AI
             var owPlayerNetAI = owRoadInfo.GetComponent<PlayerNetAI>();
             var playerNetAI = info.GetComponent<PlayerNetAI>();
 

@@ -11,7 +11,9 @@ namespace Transit.Framework.Hooks.AI
     public partial class TAMNetAI : NetAI
     {
         [RedirectFrom(typeof(NetAI))]
+#pragma warning disable 108,114
         public virtual ToolBase.ToolErrors CheckBuildPosition(bool test, bool visualize, bool overlay, bool autofix,
+#pragma warning restore 108,114
             ref NetTool.ControlPoint startPoint, ref NetTool.ControlPoint middlePoint, ref NetTool.ControlPoint endPoint,
             out BuildingInfo ownerBuilding, out Vector3 ownerPosition, out Vector3 ownerDirection,
             out int productionRate)

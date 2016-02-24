@@ -1,4 +1,5 @@
 ﻿using Transit.Framework;
+using Transit.Framework.Texturing;
 
 namespace Transit.Addon.RoadExtensions.Roads.Avenues.MediumAvenue4L
 {
@@ -10,10 +11,10 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.MediumAvenue4L
             {
                 case NetInfoVersion.Ground:
                     info.SetAllSegmentsTexture(
-                        new TexturesSet
+                        new TextureSet
                             (@"Roads\Avenues\MediumAvenue4L\Textures\Ground_Segment__MainTex.png",
                             @"Roads\Avenues\MediumAvenue4L\Textures\Ground_Segment__APRMap.png"),
-                        new LODTexturesSet
+                        new LODTextureSet
                             (@"Roads\Avenues\MediumAvenue4L\Textures\Ground_SegmentLOD__MainTex.png",
                             @"Roads\Avenues\MediumAvenue4L\Textures\Ground_SegmentLOD__APRMap.png",
                             @"Roads\Avenues\MediumAvenue4L\Textures\Ground_SegmentLOD__XYSMap.png"));
@@ -21,29 +22,29 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.MediumAvenue4L
                 case NetInfoVersion.Elevated:
                 case NetInfoVersion.Bridge:
                     info.SetAllSegmentsTexture(
-                        new TexturesSet
+                        new TextureSet
                             (@"Roads\Avenues\MediumAvenue4L\Textures\Elevated_Segment__MainTex.png",
                             @"Roads\Avenues\MediumAvenue4L\Textures\Elevated_Segment__APRMap.png"),
-                        new LODTexturesSet
+                        new LODTextureSet
                             (@"Roads\Avenues\MediumAvenue4L\Textures\Elevated_SegmentLOD__MainTex.png",
                             @"Roads\Avenues\MediumAvenue4L\Textures\Elevated_SegmentLOD__APRMap.png",
                             @"Roads\Avenues\MediumAvenue4L\Textures\Elevated_SegmentLOD__XYSMap.png"));
                     break;
                     //info.SetAllNodesTexture(
-                    //    new TexturesSet
+                    //    new TextureSet
                     //        (@"Roads\Avenues\MediumAvenue4L\Textures\Elevated_Segment__MainTex.png",
                     //        @"Roads\Avenues\MediumAvenue4L\Textures\Elevated_Node__APRMap.png"),
-                    //    new LODTexturesSet
+                    //    new LODTextureSet
                     //        (@"Roads\Avenues\MediumAvenue4L\Textures\Elevated_SegmentLOD__MainTex.png",
                     //        @"Roads\Avenues\MediumAvenue4L\Textures\Elevated_NodeLOD__APRMap.png",
                     //        @"Roads\Avenues\MediumAvenue4L\Textures\Elevated_SegmentLOD__XYSMap.png"));
 
                 case NetInfoVersion.Slope:
                     info.SetAllSegmentsTexture(
-                        new TexturesSet
+                        new TextureSet
                             (@"Roads\Avenues\MediumAvenue4L\Textures\Slope_Segment__MainTex.png",
                             @"Roads\Avenues\MediumAvenue4L\Textures\Slope_Segment__APRMap.png"),
-                        new LODTexturesSet
+                        new LODTextureSet
                             (@"Roads\Avenues\MediumAvenue4L\Textures\Slope_SegmentLOD__MainTex.png",
                             @"Roads\Avenues\MediumAvenue4L\Textures\Slope_SegmentLOD__APRMap.png",
                             @"Roads\Avenues\MediumAvenue4L\Textures\Slope_SegmentLOD__XYSMap.png"));
@@ -52,20 +53,20 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.MediumAvenue4L
                         if (node.m_mesh.name == "Slope_U_Node")
                         {
                             node.SetTextures(
-                                new TexturesSet
+                                new TextureSet
                                     (@"Roads\Avenues\MediumAvenue4L\Textures\Tunnel_Segment__MainTex.png",
                                     @"Roads\Avenues\MediumAvenue4L\Textures\Tunnel_Node__APRMap.png"),
-                                new LODTexturesSet
+                                new LODTextureSet
                                     (@"Roads\Avenues\MediumAvenue4L\Textures\Tunnel_SegmentLOD__MainTex.png",
                                     @"Roads\Avenues\MediumAvenue4L\Textures\Tunnel_SegmentLOD__APRMap.png",
                                     @"Roads\Avenues\MediumAvenue4L\Textures\Tunnel_SegmentLOD__XYSMap.png"));
                         }
                     }
                     //info.SetAllNodesTexture(
-                    //new TexturesSet
+                    //new TextureSet
                     //    (@"Roads\Highways\Highway4L\Textures\Slope_Node__MainTex.png",
                     //    @"Roads\Highways\Highway4L\Textures\Ground_Node__APRMap.png"),
-                    //new LODTexturesSet
+                    //new LODTextureSet
                     //    (@"Roads\Highways\Highway4L\Textures\Ground_NodeLOD__MainTex.png",
                     //    @"Roads\Highways\Highway4L\Textures\Ground_NodeLOD__APRMap.png",
                     //    @"Roads\Highways\Highway4L\Textures\Ground_LOD__XYSMap.png"));
@@ -73,18 +74,18 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.MediumAvenue4L
                 case NetInfoVersion.Tunnel:
                     {
                         info.SetAllSegmentsTexture(
-                            new TexturesSet
+                            new TextureSet
                                 (@"Roads\Avenues\MediumAvenue4L\Textures\Tunnel_Segment__MainTex.png",
                                 @"Roads\Avenues\MediumAvenue4L\Textures\Tunnel_Segment__APRMap.png"),
-                            new LODTexturesSet
+                            new LODTextureSet
                                 (@"Roads\Avenues\MediumAvenue4L\Textures\Tunnel_SegmentLOD__MainTex.png",
                                 @"Roads\Avenues\MediumAvenue4L\Textures\Tunnel_SegmentLOD__APRMap.png",
                                 @"Roads\Avenues\MediumAvenue4L\Textures\Tunnel_SegmentLOD__XYSMap.png"));
                         info.SetAllNodesTexture(
-                            new TexturesSet
+                            new TextureSet
                                 (@"Roads\Avenues\MediumAvenue4L\Textures\Tunnel_Segment__MainTex.png",
                                 @"Roads\Avenues\MediumAvenue4L\Textures\Tunnel_Node__APRMap.png"),
-                            new LODTexturesSet
+                            new LODTextureSet
                                 (@"Roads\Avenues\MediumAvenue4L\Textures\Tunnel_SegmentLOD__MainTex.png",
                                 @"Roads\Avenues\MediumAvenue4L\Textures\Tunnel_SegmentLOD__APRMap.png",
                                 @"Roads\Avenues\MediumAvenue4L\Textures\Tunnel_SegmentLOD__XYSMap.png"));

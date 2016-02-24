@@ -2,7 +2,7 @@
 
 namespace Transit.Addon.PathFinding
 {
-    [Module(typeof(Mod))]
+    [Module("Transit.Addon.Mod")]
     public partial class PathfindingModule : ModuleBase
     {
         public override string Name

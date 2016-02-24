@@ -213,3 +213,4 @@ pip-log.txt
 /Transit.Addon.RoadExtensions/Roads/TinyRoads/OneWay1L2
 /packages/
 /.vs/
+*.dll
