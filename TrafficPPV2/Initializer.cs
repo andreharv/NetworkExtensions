@@ -110,7 +110,6 @@ namespace CSL_Traffic
         {
             VehicleCollection garbageVehicleCollection = null;
             VehicleCollection policeVehicleCollection = null;
-            VehicleCollection publicTansportVehicleCollection = null;
             VehicleCollection healthCareVehicleCollection = null;
             VehicleCollection fireDepartmentVehicleCollection = null;
             VehicleCollection industrialVehicleCollection = null;
@@ -130,10 +129,6 @@ namespace CSL_Traffic
                 
                 policeVehicleCollection = TryGetComponent<VehicleCollection>("Police Department");
                 if (policeVehicleCollection == null)
-                    return false;
-
-                publicTansportVehicleCollection = TryGetComponent<VehicleCollection>("Public Transport");
-                if (publicTansportVehicleCollection == null)
                     return false;
 
                 healthCareVehicleCollection = TryGetComponent<VehicleCollection>("Health Care");
@@ -183,7 +178,6 @@ namespace CSL_Traffic
                     if (this.m_level == 6)
                     {
                         ReplaceVehicleAI(healthCareVehicleCollection);
-                        ReplaceVehicleAI(publicTansportVehicleCollection);
                         ReplaceVehicleAI(industrialVehicleCollection);
                         ReplaceVehicleAI(industrialFarmingVehicleCollection);
                         ReplaceVehicleAI(industrialForestryVehicleCollection);
@@ -340,8 +334,6 @@ namespace CSL_Traffic
 
             if (type == typeof(AmbulanceAI))
                 ReplaceVehicleAI<CustomAmbulanceAI>(info);
-            else if (type == typeof(BusAI))
-                ReplaceVehicleAI<CustomBusAI>(info);
             else if (type == typeof(CargoTruckAI))
                 ReplaceVehicleAI<CustomCargoTruckAI>(info);
             else if (type == typeof(FireTruckAI))
@@ -374,59 +366,59 @@ namespace CSL_Traffic
             vehicle.m_vehicleAI = newAI;
             newAI.m_info = vehicle;
 
-            if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
-            {
-                SetRealisitcSpeeds(vehicle, true);
-            }
+            //if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
+            //{
+            //    SetRealisitcSpeeds(vehicle, true);
+            //}
 
             Logger.LogInfo("Successfully replaced " + vehicle.name + "'s AI.");
         }
 
-        // TODO: set correct values on vehicles for realistic speeds
-        void SetRealisitcSpeeds(VehicleInfo vehicle, bool activate)
-        {
-            float accelerationMultiplier;
-            float maxSpeedMultiplier;
-            switch (vehicle.name)
-            {
-                case "Ambulance":
-                    accelerationMultiplier = 0.2f;
-                    //vehicle.m_braking *= 0.3f;
-                    //vehicle.m_turning *= 0.25f;
-                    maxSpeedMultiplier = 0.5f;
-                    break;
-                case "Bus":
-                case "Fire Truck":
-                case "Garbage Truck":
-                    accelerationMultiplier = 0.15f;
-                    //vehicle.m_braking *= 0.25f;
-                    //vehicle.m_turning *= 0.2f;
-                    maxSpeedMultiplier = 0.5f;
-                    break;
-                case "Hearse":
-                case "Police Car":
-                    accelerationMultiplier = 0.25f;
-                    //vehicle.m_braking *= 0.35f;
-                    //vehicle.m_turning *= 0.3f;
-                    maxSpeedMultiplier = 0.5f;
-                    break;
-                default:
-                    accelerationMultiplier = 0.25f;
-                    //vehicle.m_braking *= 0.35f;
-                    //vehicle.m_turning *= 0.3f;
-                    maxSpeedMultiplier = 0.5f;
-                    break;
-            }
+        //// TODO: set correct values on vehicles for realistic speeds
+        //void SetRealisitcSpeeds(VehicleInfo vehicle, bool activate)
+        //{
+        //    float accelerationMultiplier;
+        //    float maxSpeedMultiplier;
+        //    switch (vehicle.name)
+        //    {
+        //        case "Ambulance":
+        //            accelerationMultiplier = 0.2f;
+        //            //vehicle.m_braking *= 0.3f;
+        //            //vehicle.m_turning *= 0.25f;
+        //            maxSpeedMultiplier = 0.5f;
+        //            break;
+        //        case "Bus":
+        //        case "Fire Truck":
+        //        case "Garbage Truck":
+        //            accelerationMultiplier = 0.15f;
+        //            //vehicle.m_braking *= 0.25f;
+        //            //vehicle.m_turning *= 0.2f;
+        //            maxSpeedMultiplier = 0.5f;
+        //            break;
+        //        case "Hearse":
+        //        case "Police Car":
+        //            accelerationMultiplier = 0.25f;
+        //            //vehicle.m_braking *= 0.35f;
+        //            //vehicle.m_turning *= 0.3f;
+        //            maxSpeedMultiplier = 0.5f;
+        //            break;
+        //        default:
+        //            accelerationMultiplier = 0.25f;
+        //            //vehicle.m_braking *= 0.35f;
+        //            //vehicle.m_turning *= 0.3f;
+        //            maxSpeedMultiplier = 0.5f;
+        //            break;
+        //    }
 
-            if (!activate)
-            {
-                accelerationMultiplier = 1f / accelerationMultiplier;
-                maxSpeedMultiplier = 1f / maxSpeedMultiplier;
-            }
+        //    if (!activate)
+        //    {
+        //        accelerationMultiplier = 1f / accelerationMultiplier;
+        //        maxSpeedMultiplier = 1f / maxSpeedMultiplier;
+        //    }
 
-            vehicle.m_acceleration *= accelerationMultiplier;
-            vehicle.m_maxSpeed *= maxSpeedMultiplier;
-        }
+        //    vehicle.m_acceleration *= accelerationMultiplier;
+        //    vehicle.m_maxSpeed *= maxSpeedMultiplier;
+        //}
 
         void SetOriginalAI(VehicleInfo vehicle)
         {
