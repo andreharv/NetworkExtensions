@@ -9,18 +9,20 @@ namespace CSL_Traffic
      * The AI for garbage truck using pedestrian paths. Again, there's a few small changes to make it use them (having them in the path is not enough).
      * The movement happens on SimulationStep.
      */
-    public class CustomGarbageTruckAI : GarbageTruckAI, IVehicle
+    public class CustomGarbageTruckAI : GarbageTruckAI, IVehicleAI
     {
         public override void SimulationStep(ushort vehicleID, ref Vehicle vehicleData, ref Vehicle.Frame frameData, ushort leaderID, ref Vehicle leaderData, int lodPhysics)
         {
             if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
             {
-                if (CustomCarAI.sm_speedData[vehicleID].speedMultiplier == 0 || CustomCarAI.sm_speedData[vehicleID].currentPath != vehicleData.m_path)
+                var speedData = CarSpeedData.Of(vehicleID);
+
+                if (speedData.SpeedMultiplier == 0 || speedData.CurrentPath != vehicleData.m_path)
                 {
-                    CustomCarAI.sm_speedData[vehicleID].currentPath = vehicleData.m_path;
-                    CustomCarAI.sm_speedData[vehicleID].SetRandomSpeedMultiplier(0.75f, 0.95f);
+                    speedData.CurrentPath = vehicleData.m_path;
+                    speedData.SetRandomSpeedMultiplier(0.75f, 0.95f);
                 }
-                CustomCarAI.sm_speedData[vehicleID].ApplySpeedMultiplier(this.m_info);
+                m_info.ApplySpeedMultiplier(CarSpeedData.Of(vehicleID));
             }
             
 
@@ -35,7 +37,7 @@ namespace CSL_Traffic
                     this.SetTarget(vehicleID, ref vehicleData, 0);
                 }
             }
-            CustomCarAI.SimulationStep(this, vehicleID, ref vehicleData, ref frameData, leaderID, ref leaderData, lodPhysics);
+            CarAIExtensions.SimulationStep(this, vehicleID, ref vehicleData, ref frameData, leaderID, ref leaderData, lodPhysics);
             if ((vehicleData.m_flags & Vehicle.Flags.Arriving) != Vehicle.Flags.None && vehicleData.m_targetBuilding != 0 && (vehicleData.m_flags & (Vehicle.Flags.WaitingPath | Vehicle.Flags.GoingBack | Vehicle.Flags.WaitingTarget)) == Vehicle.Flags.None)
             {
                 this.ArriveAtTarget(vehicleID, ref vehicleData);
@@ -47,13 +49,13 @@ namespace CSL_Traffic
 
             if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
             {
-                CustomCarAI.sm_speedData[vehicleID].RestoreVehicleSpeed(this.m_info);
+                m_info.RestoreVehicleSpeed(CarSpeedData.Of(vehicleID));
             }
         }
 
         protected override bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget)
         {
-            return CustomCarAI.StartPathFind(this, vehicleID, ref vehicleData, startPos, endPos, startBothWays, endBothWays, undergroundTarget, ExtendedVehicleType.GarbageTruck);
+            return this.StartPathFind(vehicleID, ref vehicleData, startPos, endPos, startBothWays, endBothWays, undergroundTarget, ExtendedVehicleType.GarbageTruck);
         }
 
         /*

@@ -8,10 +8,10 @@ namespace CSL_Traffic
     {
         public const ulong WORKSHOP_ID = 626024868ul;
 
-        public static OptionsManager.ModOptions Options = OptionsManager.ModOptions.None;
-        static OptionsManager sm_optionsManager;
-        
-        GameObject m_initializer;
+        public static OptionsManager.ModOptions Options = OptionsManager.ModOptions.RoadCustomizerTool | OptionsManager.ModOptions.NoDespawn;
+        private static readonly OptionsManager sm_optionsManager = new OptionsManager();
+        private GameObject m_initializer;
+        private bool m_redirectionInstalled = false;
 
         public string Name
         {
@@ -25,9 +25,6 @@ namespace CSL_Traffic
 
         public void OnSettingsUI(UIHelperBase helper)
         {
-            if (sm_optionsManager == null)
-                sm_optionsManager = new GameObject("OptionsManager").AddComponent<OptionsManager>();
-
             sm_optionsManager.CreateSettings(helper);
         }
 
@@ -35,14 +32,8 @@ namespace CSL_Traffic
         {
             base.OnCreated(loading);
 
-            if (sm_optionsManager != null)
-            {
-                sm_optionsManager.LoadOptions();
-            }
-
             if (m_initializer == null)
             {
-                Redirector.PerformRedirections();
                 m_initializer = new GameObject("CSL-Traffic Custom Prefabs");
                 m_initializer.AddComponent<Initializer>();
             }
@@ -63,7 +54,25 @@ namespace CSL_Traffic
             if (m_initializer != null)
             {
                 GameObject.Destroy(m_initializer);
+            }
+        }
+
+        public void OnEnabled()
+        {
+            sm_optionsManager.LoadOptions();
+            if (!m_redirectionInstalled)
+            {
+                Redirector.PerformRedirections();
+                m_redirectionInstalled = true;
+            }
+        }
+
+        public void OnDisabled()
+        {
+            if (m_redirectionInstalled)
+            {
                 Redirector.RevertRedirections();
+                m_redirectionInstalled = false;
             }
         }
     }

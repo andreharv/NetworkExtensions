@@ -4,7 +4,7 @@ using Transit.Framework.Light;
 
 namespace CSL_Traffic
 {
-	class CustomCargoTruckAI : CargoTruckAI, IVehicle
+	class CustomCargoTruckAI : CargoTruckAI, IVehicleAI
 	{
 		public override void SimulationStep(ushort vehicleID, ref Vehicle data, Vector3 physicsLodRefPos)
 		{
@@ -17,13 +17,15 @@ namespace CSL_Traffic
 		public override void SimulationStep(ushort vehicleID, ref Vehicle vehicleData, ushort leaderID, ref Vehicle leaderData, int lodPhysics)
 		{
 			if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
-			{
-				if (CustomCarAI.sm_speedData[vehicleID].speedMultiplier == 0 || CustomCarAI.sm_speedData[vehicleID].currentPath != vehicleData.m_path)
+            {
+                var speedData = CarSpeedData.Of(vehicleID);
+
+				if (speedData.SpeedMultiplier == 0 || speedData.CurrentPath != vehicleData.m_path)
 				{
-					CustomCarAI.sm_speedData[vehicleID].currentPath = vehicleData.m_path;
-					CustomCarAI.sm_speedData[vehicleID].SetRandomSpeedMultiplier(0.7f, 1.1f);
+					speedData.CurrentPath = vehicleData.m_path;
+					speedData.SetRandomSpeedMultiplier(0.7f, 1.1f);
 				}
-				CustomCarAI.sm_speedData[vehicleID].ApplySpeedMultiplier(this.m_info);
+				m_info.ApplySpeedMultiplier(CarSpeedData.Of(vehicleID));
 			}
 
 
@@ -34,7 +36,7 @@ namespace CSL_Traffic
 				{
 					int num = Mathf.Clamp((int)(lastFrameData.m_position.x / 320f + 27f), 0, 53);
 					int num2 = Mathf.Clamp((int)(lastFrameData.m_position.z / 320f + 27f), 0, 53);
-					CustomCarAI.SimulationStep(this, vehicleID, ref vehicleData, ref lastFrameData, leaderID, ref leaderData, lodPhysics);
+                    CarAIExtensions.SimulationStep(this, vehicleID, ref vehicleData, ref lastFrameData, leaderID, ref leaderData, lodPhysics);
 					int num3 = Mathf.Clamp((int)(lastFrameData.m_position.x / 320f + 27f), 0, 53);
 					int num4 = Mathf.Clamp((int)(lastFrameData.m_position.z / 320f + 27f), 0, 53);
 					if ((num3 != num || num4 != num2) && (vehicleData.m_flags & Vehicle.Flags.Spawned) != Vehicle.Flags.None)
@@ -47,7 +49,7 @@ namespace CSL_Traffic
 				{
 					int num5 = Mathf.Clamp((int)(lastFrameData.m_position.x / 32f + 270f), 0, 539);
 					int num6 = Mathf.Clamp((int)(lastFrameData.m_position.z / 32f + 270f), 0, 539);
-					CustomCarAI.SimulationStep(this, vehicleID, ref vehicleData, ref lastFrameData, leaderID, ref leaderData, lodPhysics);
+                    CarAIExtensions.SimulationStep(this, vehicleID, ref vehicleData, ref lastFrameData, leaderID, ref leaderData, lodPhysics);
 					int num7 = Mathf.Clamp((int)(lastFrameData.m_position.x / 32f + 270f), 0, 539);
 					int num8 = Mathf.Clamp((int)(lastFrameData.m_position.z / 32f + 270f), 0, 539);
 					if ((num7 != num5 || num8 != num6) && (vehicleData.m_flags & Vehicle.Flags.Spawned) != Vehicle.Flags.None)
@@ -65,7 +67,7 @@ namespace CSL_Traffic
 
 			if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
 			{
-				CustomCarAI.sm_speedData[vehicleID].RestoreVehicleSpeed(this.m_info);
+				m_info.RestoreVehicleSpeed(CarSpeedData.Of(vehicleID));
 			}
 		}
 
@@ -73,7 +75,7 @@ namespace CSL_Traffic
         {
             if ((vehicleData.m_flags & (Vehicle.Flags.TransferToSource | Vehicle.Flags.GoingBack)) != Vehicle.Flags.None)
             {
-                return CustomCarAI.StartPathFind(this, vehicleID, ref vehicleData, startPos, endPos, startBothWays, endBothWays, undergroundTarget, ExtendedVehicleType.CargoTruck);
+                return this.StartPathFind(vehicleID, ref vehicleData, startPos, endPos, startBothWays, endBothWays, undergroundTarget, ExtendedVehicleType.CargoTruck);
             }
             bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != Vehicle.Flags.None;
             PathUnit.Position startPosA;

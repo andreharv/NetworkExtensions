@@ -4,21 +4,23 @@ using Transit.Framework.Light;
 
 namespace CSL_Traffic
 {
-    class CustomHearseAI : HearseAI, IVehicle
+    class CustomHearseAI : HearseAI, IVehicleAI
     {
         public override void SimulationStep(ushort vehicleID, ref Vehicle vehicleData, ref Vehicle.Frame frameData, ushort leaderID, ref Vehicle leaderData, int lodPhysics)
         {
             if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
             {
-                if (CustomCarAI.sm_speedData[vehicleID].speedMultiplier == 0 || CustomCarAI.sm_speedData[vehicleID].currentPath != vehicleData.m_path)
+                var speedData = CarSpeedData.Of(vehicleID);
+
+                if (speedData.SpeedMultiplier == 0 || speedData.CurrentPath != vehicleData.m_path)
                 {
-                    CustomCarAI.sm_speedData[vehicleID].currentPath = vehicleData.m_path;
-                    CustomCarAI.sm_speedData[vehicleID].SetRandomSpeedMultiplier(0.7f, 1.15f);
+                    speedData.CurrentPath = vehicleData.m_path;
+                    speedData.SetRandomSpeedMultiplier(0.7f, 1.15f);
                 }
-                CustomCarAI.sm_speedData[vehicleID].ApplySpeedMultiplier(this.m_info);
+                m_info.ApplySpeedMultiplier(CarSpeedData.Of(vehicleID));
             }
-            
-            CustomCarAI.SimulationStep(this, vehicleID, ref vehicleData, ref frameData, leaderID, ref leaderData, lodPhysics);
+
+            CarAIExtensions.SimulationStep(this, vehicleID, ref vehicleData, ref frameData, leaderID, ref leaderData, lodPhysics);
             if ((vehicleData.m_flags & Vehicle.Flags.Stopped) != Vehicle.Flags.None && this.CanLeave(vehicleID, ref vehicleData))
             {
                 vehicleData.m_flags &= ~Vehicle.Flags.Stopped;
@@ -31,13 +33,13 @@ namespace CSL_Traffic
 
             if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
             {
-                CustomCarAI.sm_speedData[vehicleID].RestoreVehicleSpeed(this.m_info);
+                m_info.RestoreVehicleSpeed(CarSpeedData.Of(vehicleID));
             }
         }
 
         protected override bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget)
         {
-            return CustomCarAI.StartPathFind(this, vehicleID, ref vehicleData, startPos, endPos, startBothWays, endBothWays, undergroundTarget, ExtendedVehicleType.Hearse);
+            return this.StartPathFind(vehicleID, ref vehicleData, startPos, endPos, startBothWays, endBothWays, undergroundTarget, ExtendedVehicleType.Hearse);
         }
 
 

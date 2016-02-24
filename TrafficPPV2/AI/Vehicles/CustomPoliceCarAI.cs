@@ -5,26 +5,28 @@ using Transit.Framework.Light;
 
 namespace CSL_Traffic
 {
-	class CustomPoliceCarAI : PoliceCarAI, IVehicle
+	class CustomPoliceCarAI : PoliceCarAI, IVehicleAI
 	{
 		public override void SimulationStep(ushort vehicleID, ref Vehicle vehicleData, ref Vehicle.Frame frameData, ushort leaderID, ref Vehicle leaderData, int lodPhysics)
 		{
 			if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
-			{
-				if (CustomCarAI.sm_speedData[vehicleID].speedMultiplier == 0 || CustomCarAI.sm_speedData[vehicleID].currentPath != vehicleData.m_path)
+            {
+                var speedData = CarSpeedData.Of(vehicleID);
+
+				if (speedData.SpeedMultiplier == 0 || speedData.CurrentPath != vehicleData.m_path)
 				{
-					CustomCarAI.sm_speedData[vehicleID].currentPath = vehicleData.m_path;
+					speedData.CurrentPath = vehicleData.m_path;
 					if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) == Vehicle.Flags.Emergency2)
-						CustomCarAI.sm_speedData[vehicleID].SetRandomSpeedMultiplier(1f, 1.75f);
+						speedData.SetRandomSpeedMultiplier(1f, 1.75f);
 					else
-						CustomCarAI.sm_speedData[vehicleID].SetRandomSpeedMultiplier(0.7f, 1.1f);
+						speedData.SetRandomSpeedMultiplier(0.7f, 1.1f);
 				}
-				CustomCarAI.sm_speedData[vehicleID].ApplySpeedMultiplier(this.m_info);
+				m_info.ApplySpeedMultiplier(CarSpeedData.Of(vehicleID));
 			}
 
             if (this.m_info.m_class.m_level >= ItemClass.Level.Level4)
             {
-                CustomCarAI.SimulationStep(this, vehicleID, ref vehicleData, ref frameData, leaderID, ref leaderData, lodPhysics);
+                CarAIExtensions.SimulationStep(this, vehicleID, ref vehicleData, ref frameData, leaderID, ref leaderData, lodPhysics);
                 if ((vehicleData.m_flags & Vehicle.Flags.Stopped) != Vehicle.Flags.None && this.CanLeave(vehicleID, ref vehicleData))
                 {
                     vehicleData.m_flags &= ~Vehicle.Flags.Stopped;
@@ -39,7 +41,7 @@ namespace CSL_Traffic
             {
                 frameData.m_blinkState = (((vehicleData.m_flags & Vehicle.Flags.Emergency2) == Vehicle.Flags.None) ? 0f : 10f);
                 this.TryCollectCrime(vehicleID, ref vehicleData, ref frameData);
-                CustomCarAI.SimulationStep(this, vehicleID, ref vehicleData, ref frameData, leaderID, ref leaderData, lodPhysics);
+                CarAIExtensions.SimulationStep(this, vehicleID, ref vehicleData, ref frameData, leaderID, ref leaderData, lodPhysics);
                 if ((vehicleData.m_flags & Vehicle.Flags.Stopped) != Vehicle.Flags.None)
                 {
                     if (this.CanLeave(vehicleID, ref vehicleData))
@@ -60,7 +62,7 @@ namespace CSL_Traffic
 
             if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
 			{
-				CustomCarAI.sm_speedData[vehicleID].RestoreVehicleSpeed(this.m_info);
+				m_info.RestoreVehicleSpeed(CarSpeedData.Of(vehicleID));
 			}
 		}
 
