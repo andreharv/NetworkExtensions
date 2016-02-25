@@ -55,6 +55,8 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.OneWay3L
 
             if (version == NetInfoVersion.Tunnel)
             {
+                info.m_setVehicleFlags = Vehicle.Flags.Transition;
+                info.m_setCitizenFlags = CitizenInstance.Flags.Transition;
                 info.m_class = owRoadTunnelInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL3L_ROAD_TUNNEL);
             }
             else

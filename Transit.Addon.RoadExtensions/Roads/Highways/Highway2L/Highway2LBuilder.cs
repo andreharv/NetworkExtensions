@@ -65,6 +65,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway2L
             info.m_pavementWidth = 2;
             if (version == NetInfoVersion.Tunnel)
             {
+                info.m_setVehicleFlags = Vehicle.Flags.Transition;
                 info.m_class = highwayTunnelInfo.m_class.Clone(NetInfoClasses.NEXT_HIGHWAY2L_TUNNEL);
             }
             else
