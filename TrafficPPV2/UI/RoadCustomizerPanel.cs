@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Transit.Framework.Light;
 
 namespace CSL_Traffic.UI
 {
@@ -106,7 +107,7 @@ namespace CSL_Traffic.UI
             RoadCustomizerTool rct = ToolsModifierControl.GetCurrentTool<RoadCustomizerTool>();
             if (rct != null)
             {
-                Transit.Framework.Light.VehicleType restrictions = rct.GetCurrentVehicleRestrictions();
+                ExtendedVehicleType restrictions = rct.GetCurrentVehicleRestrictions();
                 float speed = rct.GetCurrentSpeedRestrictions()*50f;
                 
                 for (int i = 0; i < this.m_scrollablePanel.components.Count; i++)
@@ -115,7 +116,7 @@ namespace CSL_Traffic.UI
 
                     if (this.m_panelType == Panel.VehicleRestrictions)
                     {
-                        Transit.Framework.Light.VehicleType vehicleType = (Transit.Framework.Light.VehicleType)btn.objectUserData;
+                        ExtendedVehicleType vehicleType = (ExtendedVehicleType)btn.objectUserData;
 
                         if ((vehicleType & restrictions) == vehicleType)
                         {
@@ -125,7 +126,7 @@ namespace CSL_Traffic.UI
                             btn.hoveredFgSprite = btn.name + "90%";
                             btn.pressedFgSprite = btn.name + "80%";
                         }
-                        else if (vehicleType == Transit.Framework.Light.VehicleType.EmergencyVehicles && (restrictions & Transit.Framework.Light.VehicleType.Emergency) == Transit.Framework.Light.VehicleType.Emergency)
+                        else if (vehicleType == ExtendedVehicleType.EmergencyVehicles && (restrictions & ExtendedVehicleType.Emergency) == ExtendedVehicleType.Emergency)
                         {
                             btn.stringUserData = "Emergency";
                             btn.hoveredFgSprite = btn.name + "90%";
@@ -177,12 +178,12 @@ namespace CSL_Traffic.UI
             if (m_panelIndex == 0)
             {
                 this.m_panelType = Panel.VehicleRestrictions;
-                this.SpawnEntry("PassengerCar", "PassengerCar", null, null, false, false).objectUserData = Transit.Framework.Light.VehicleType.PassengerCar;
-                this.SpawnEntry("Bus", "Bus", null, null, false, false).objectUserData = Transit.Framework.Light.VehicleType.Bus;
-                this.SpawnEntry("CargoTruck", "CargoTruck", null, null, false, false).objectUserData = Transit.Framework.Light.VehicleType.CargoTruck;
-                this.SpawnEntry("GarbageTruck", "GarbageTruck", null, null, false, false).objectUserData = Transit.Framework.Light.VehicleType.GarbageTruck;
-                this.SpawnEntry("Hearse", "Hearse", null, null, false, false).objectUserData = Transit.Framework.Light.VehicleType.Hearse;
-                this.SpawnEntry("Emergency", "Emergency", null, null, false, false).objectUserData = Transit.Framework.Light.VehicleType.EmergencyVehicles;
+                this.SpawnEntry("PassengerCar", "PassengerCar", null, null, false, false).objectUserData = ExtendedVehicleType.PassengerCar;
+                this.SpawnEntry("Bus", "Bus", null, null, false, false).objectUserData = ExtendedVehicleType.Bus;
+                this.SpawnEntry("CargoTruck", "CargoTruck", null, null, false, false).objectUserData = ExtendedVehicleType.CargoTruck;
+                this.SpawnEntry("GarbageTruck", "GarbageTruck", null, null, false, false).objectUserData = ExtendedVehicleType.GarbageTruck;
+                this.SpawnEntry("Hearse", "Hearse", null, null, false, false).objectUserData = ExtendedVehicleType.Hearse;
+                this.SpawnEntry("Emergency", "Emergency", null, null, false, false).objectUserData = ExtendedVehicleType.EmergencyVehicles;
             }
             //else if (this.m_panelType == Panel.SpeedRestrictions)
             else if (m_panelIndex == 1)
@@ -343,8 +344,8 @@ namespace CSL_Traffic.UI
         {
             if (m_panelType == Panel.VehicleRestrictions)
             {
-                Transit.Framework.Light.VehicleType vehicleType = (Transit.Framework.Light.VehicleType)btn.objectUserData;
-                if (vehicleType != Transit.Framework.Light.VehicleType.None)
+                ExtendedVehicleType vehicleType = (ExtendedVehicleType)btn.objectUserData;
+                if (vehicleType != ExtendedVehicleType.None)
                 {
                     if (String.IsNullOrEmpty(btn.stringUserData))
                     {
@@ -354,14 +355,14 @@ namespace CSL_Traffic.UI
                         btn.hoveredFgSprite = btn.name + "90%";
                         btn.pressedFgSprite = btn.name + "80%";
                     }
-                    else if (vehicleType == Transit.Framework.Light.VehicleType.EmergencyVehicles && btn.stringUserData != "Emergency")
+                    else if (vehicleType == ExtendedVehicleType.EmergencyVehicles && btn.stringUserData != "Emergency")
                     {
                         btn.stringUserData = "Emergency";
                         StartCoroutine("EmergencyLights", btn);
                     }
                     else
                     {
-                        if (vehicleType == Transit.Framework.Light.VehicleType.EmergencyVehicles)
+                        if (vehicleType == ExtendedVehicleType.EmergencyVehicles)
                             StopCoroutine("EmergencyLights");
 
                         btn.stringUserData = null;
@@ -375,9 +376,9 @@ namespace CSL_Traffic.UI
                     if (rct != null)
                     {
                         if (btn.stringUserData == "Emergency")
-                            rct.ToggleRestriction(vehicleType ^ Transit.Framework.Light.VehicleType.Emergency);
-                        else if (vehicleType == Transit.Framework.Light.VehicleType.EmergencyVehicles && btn.stringUserData == null)
-                            rct.ToggleRestriction(Transit.Framework.Light.VehicleType.Emergency);
+                            rct.ToggleRestriction(vehicleType ^ ExtendedVehicleType.Emergency);
+                        else if (vehicleType == ExtendedVehicleType.EmergencyVehicles && btn.stringUserData == null)
+                            rct.ToggleRestriction(ExtendedVehicleType.Emergency);
                         else
                             rct.ToggleRestriction(vehicleType);		
                     }

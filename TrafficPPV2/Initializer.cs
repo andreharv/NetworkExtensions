@@ -1,14 +1,12 @@
 using ColossalFramework;
 using ColossalFramework.Globalization;
-using ColossalFramework.UI;
-using CSL_Traffic.Extensions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Xml.Serialization;
+using Transit.Framework.Light;
 using UnityEngine;
 
 namespace CSL_Traffic
@@ -19,12 +17,9 @@ namespace CSL_Traffic
         static Queue<IEnumerator> sm_actionQueue = new Queue<IEnumerator>();
         static System.Object sm_queueLock = new System.Object();
         static bool sm_localizationInitialized;
-        static readonly string[] sm_collectionPrefixes = new string[] { "", "Europe ", "Winter " };
 
         Dictionary<string, Texture2D> m_customTextures;
-        Dictionary<string, VehicleAI> m_replacedAIs;
         bool m_initialized;
-        bool m_incompatibilityWarning;
         float m_gameStartedTime;
         int m_level;
 
@@ -33,17 +28,6 @@ namespace CSL_Traffic
             DontDestroyOnLoad(this);
 
             m_customTextures = new Dictionary<string, Texture2D>();
-            m_replacedAIs = new Dictionary<string, VehicleAI>();
-            //m_postLoadingActions = new Queue<Action>();
-        }
-
-        void Start()
-        {
-            if ((UserMod.Options & OptionsManager.ModOptions.GhostMode) != OptionsManager.ModOptions.GhostMode)
-            {
-                ReplacePathManager();
-                //ReplaceTransportManager();
-            }
         }
 
         void OnLevelWasLoaded(int level)
@@ -52,7 +36,7 @@ namespace CSL_Traffic
 
             if (level == 6)
             {
-                Logger.LogInfo("Game level was loaded. Options enabled: \n\t" + UserMod.Options);
+                Logger.LogInfo("Game level was loaded. Options enabled: \n\t" + TrafficMod.Options);
 
                 m_initialized = false;
 
@@ -65,15 +49,12 @@ namespace CSL_Traffic
                 {
                     Monitor.Exit(sm_queueLock);
                 }
-
-                m_replacedAIs.Clear();
-                //m_postLoadingActions.Clear();
             }
         }
 
         public void OnLevelUnloading()
         {
-            if ((UserMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
+            if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
             {
                 for (uint i = 0; i < PrefabCollection<CitizenInfo>.LoadedCount(); i++)
                 {
@@ -81,61 +62,26 @@ namespace CSL_Traffic
                     cit.m_walkSpeed /= 0.25f;
                 }
             }
-
-            for (uint i = 0; i < PrefabCollection<VehicleInfo>.LoadedCount(); i++)
-            {
-                //SetRealisitcSpeeds(PrefabCollection<VehicleInfo>.GetLoaded(i), false);
-                SetOriginalAI(PrefabCollection<VehicleInfo>.GetLoaded(i));
-            }
         }
 
         void Update()
         {
             if (!m_initialized)
             {
-                TryReplacePrefabs();
-                return;
+                if (TryReplacePrefabs())
+                {
+                    m_initialized = true;
+                }
+                else
+                {
+                    return;
+                }
             }
-
-            if ((UserMod.Options & OptionsManager.ModOptions.GhostMode) == OptionsManager.ModOptions.GhostMode)
-                return;
 
             if (!Singleton<LoadingManager>.instance.m_loadingComplete)
                 return;
             else if (m_gameStartedTime == 0f)
                 m_gameStartedTime = Time.realtimeSinceStartup;
-
-            //while (m_postLoadingActions.Count > 0)
-            //	m_postLoadingActions.Dequeue().Invoke();
-
-            // contributed by Japa
-            //TransportTool transportTool = ToolsModifierControl.GetCurrentTool<TransportTool>();
-            //if (transportTool != null)
-            //{
-            //    CustomTransportTool customTransportTool = ToolsModifierControl.SetTool<CustomTransportTool>();
-            //    if (customTransportTool != null)
-            //    {
-            //        customTransportTool.m_prefab = transportTool.m_prefab;
-            //    }
-            //}
-
-            // Checks if CustomPathManager have been replaced by another mod and prints a warning in the log
-            // This check is only run in the first two minutes since game is loaded
-            if (!m_incompatibilityWarning && (UserMod.Options & OptionsManager.ModOptions.GhostMode) == OptionsManager.ModOptions.None)
-            {
-                if ((Time.realtimeSinceStartup - m_gameStartedTime) < 120f)
-                {
-                    CustomPathManager customPathManager = Singleton<PathManager>.instance as CustomPathManager;
-                    if (customPathManager == null)
-                    {
-                        Logger.LogInfo("CustomPathManager not found! There's an incompatibility with another mod.");
-                        UIView.library.ShowModal<ExceptionPanel>("ExceptionPanel").SetMessage("Incompatibility Issue", "Traffic++ detected an incompatibility with another mod! You can continue playing but it's NOT recommended.", false);
-                        m_incompatibilityWarning = true;
-                    }
-                }
-                else
-                    m_incompatibilityWarning = true;
-            }
         }
 
         #region Initialization
@@ -147,132 +93,20 @@ namespace CSL_Traffic
          * run it on update. I want to make sure I make the switch as soon as they exist to prevent the game
          * from instantianting objects without my code.
          */
-        void TryReplacePrefabs()
+        private bool TryReplacePrefabs()
         {
-            NetCollection beautificationNetCollection = null;
-            NetCollection roadsNetCollection = null;
-            NetCollection publicTansportNetCollection = null;
-            VehicleCollection garbageVehicleCollection = null;
-            VehicleCollection policeVehicleCollection = null;
-            VehicleCollection publicTansportVehicleCollection = null;
-            VehicleCollection healthCareVehicleCollection = null;
-            VehicleCollection fireDepartmentVehicleCollection = null;
-            VehicleCollection industrialVehicleCollection = null;
-            VehicleCollection industrialFarmingVehicleCollection = null;
-            VehicleCollection industrialForestryVehicleCollection = null;
-            VehicleCollection industrialOilVehicleCollection = null;
-            VehicleCollection industrialOreVehicleCollection = null;
-            VehicleCollection residentialVehicleCollection = null;
-            TransportCollection publicTransportTransportCollection = null;
-            ToolController toolController = null;
-
-            try
-            {
-                // NetCollections
-                beautificationNetCollection = TryGetComponent<NetCollection>("Beautification");
-                if (beautificationNetCollection == null)
-                    return;
-
-                roadsNetCollection = TryGetComponent<NetCollection>("Road");
-                if (roadsNetCollection == null)
-                    return;
-
-                publicTansportNetCollection = TryGetComponent<NetCollection>("Public Transport");
-                if (publicTansportNetCollection == null)
-                    return;
-
-                // VehicleCollections
-                garbageVehicleCollection = TryGetComponent<VehicleCollection>("Garbage");
-                if (garbageVehicleCollection == null)
-                    return;
-
-                policeVehicleCollection = TryGetComponent<VehicleCollection>("Police Department");
-                if (policeVehicleCollection == null)
-                    return;
-
-                publicTansportVehicleCollection = TryGetComponent<VehicleCollection>("Public Transport");
-                if (publicTansportVehicleCollection == null)
-                    return;
-
-                healthCareVehicleCollection = TryGetComponent<VehicleCollection>("Health Care");
-                if (healthCareVehicleCollection == null)
-                    return;
-
-                fireDepartmentVehicleCollection = TryGetComponent<VehicleCollection>("Fire Department");
-                if (fireDepartmentVehicleCollection == null)
-                    return;
-
-                industrialVehicleCollection = TryGetComponent<VehicleCollection>("Industrial");
-                if (industrialVehicleCollection == null)
-                    return;
-
-                industrialFarmingVehicleCollection = TryGetComponent<VehicleCollection>("Industrial Farming");
-                if (industrialFarmingVehicleCollection == null)
-                    return;
-
-                industrialForestryVehicleCollection = TryGetComponent<VehicleCollection>("Industrial Forestry");
-                if (industrialForestryVehicleCollection == null)
-                    return;
-
-                industrialOilVehicleCollection = TryGetComponent<VehicleCollection>("Industrial Oil");
-                if (industrialOilVehicleCollection == null)
-                    return;
-
-                industrialOreVehicleCollection = TryGetComponent<VehicleCollection>("Industrial Ore");
-                if (industrialOreVehicleCollection == null)
-                    return;
-
-                residentialVehicleCollection = TryGetComponent<VehicleCollection>("Residential Low");
-                if (residentialVehicleCollection == null)
-                    return;
-
-                // Transports
-                publicTransportTransportCollection = TryGetComponent<TransportCollection>("Public Transport");
-                if (publicTransportTransportCollection == null)
-                    return;
-
-                // Tools
-                toolController = TryGetComponent<ToolController>("Tool Controller");
-                if (toolController == null)
-                    return;
-
-            }
-            catch (Exception e)
-            {
-                Logger.LogInfo("Unexpected " + e.GetType().Name + " getting required components: " + e.Message + "\n" + e.StackTrace + "\n");
-                return;
-            }
-
             Logger.LogInfo("Queueing prefabs for loading...");
 
             Singleton<LoadingManager>.instance.QueueLoadingAction(ActionWrapper(() =>
             {
                 try
                 {
-                    if ((UserMod.Options & OptionsManager.ModOptions.GhostMode) != OptionsManager.ModOptions.GhostMode && this.m_level == 6)
+                    if (this.m_level == 6)
                     {
-                        ReplaceVehicleAI(healthCareVehicleCollection);
-                        ReplaceVehicleAI(publicTansportVehicleCollection);
-                        ReplaceVehicleAI(industrialVehicleCollection);
-                        ReplaceVehicleAI(industrialFarmingVehicleCollection);
-                        ReplaceVehicleAI(industrialForestryVehicleCollection);
-                        ReplaceVehicleAI(industrialOilVehicleCollection);
-                        ReplaceVehicleAI(industrialOreVehicleCollection);
-                        ReplaceVehicleAI(fireDepartmentVehicleCollection);
-                        ReplaceVehicleAI(garbageVehicleCollection);
-                        ReplaceVehicleAI(residentialVehicleCollection);
-                        ReplaceVehicleAI(policeVehicleCollection);
+                        if ((TrafficMod.Options & OptionsManager.ModOptions.RoadCustomizerTool) == OptionsManager.ModOptions.RoadCustomizerTool)
+                            AddTool<RoadCustomizerTool>(ToolsModifierControl.toolController);
 
-                        StartCoroutine(HandleCustomVehicles());
-
-                        //ReplaceTransportLineAI<BusTransportLineAI>("Bus Line", publicTansportNetCollection, "Bus", publicTransportTransportCollection);
-
-                        //AddTool<CustomTransportTool>(toolController);
-
-                        if ((UserMod.Options & OptionsManager.ModOptions.BetaTestRoadCustomizerTool) == OptionsManager.ModOptions.BetaTestRoadCustomizerTool)
-                            AddTool<RoadCustomizerTool>(toolController);
-
-                        if ((UserMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
+                        if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
                         {
                             for (uint i = 0; i < PrefabCollection<CitizenInfo>.LoadedCount(); i++)
                             {
@@ -300,97 +134,9 @@ namespace CSL_Traffic
                 }
             }));
 
-            m_initialized = true;
-
             Logger.LogInfo("Prefabs queued for loading.");
-        }
 
-        // Replace the pathfinding system for mine
-        void ReplacePathManager()
-        {
-            if (Singleton<PathManager>.instance as CustomPathManager != null)
-                return;
-
-            Logger.LogInfo("Replacing Path Manager");
-
-            // Change PathManager to CustomPathManager
-            FieldInfo sInstance = typeof(ColossalFramework.Singleton<PathManager>).GetFieldByName("sInstance");
-            PathManager originalPathManager = ColossalFramework.Singleton<PathManager>.instance;
-            CustomPathManager customPathManager = originalPathManager.gameObject.AddComponent<CustomPathManager>();
-            customPathManager.SetOriginalValues(originalPathManager);
-
-            // change the new instance in the singleton
-            sInstance.SetValue(null, customPathManager);
-
-            // change the manager in the SimulationManager
-            FastList<ISimulationManager> managers = (FastList<ISimulationManager>)typeof(SimulationManager).GetFieldByName("m_managers").GetValue(null);
-            managers.Remove(originalPathManager);
-            managers.Add(customPathManager);
-
-            // Destroy in 10 seconds to give time to all references to update to the new manager without crashing
-            GameObject.Destroy(originalPathManager, 10f);
-
-            Logger.LogInfo("Path Manager successfully replaced.");
-        }
-
-        //void ReplaceTransportManager()
-        //{
-        //    if (Singleton<TransportManager>.instance as CustomTransportManager != null)
-        //        return;
-
-        //    Logger.LogInfo("Replacing Transport Manager");
-
-        //    // Change TransportManager to CustomTransportManager
-        //    FieldInfo sInstance = typeof(ColossalFramework.Singleton<TransportManager>).GetFieldByName("sInstance");
-        //    TransportManager originalTransportManager = ColossalFramework.Singleton<TransportManager>.instance;
-        //    CustomTransportManager customTransportManager = originalTransportManager.gameObject.AddComponent<CustomTransportManager>();
-        //    customTransportManager.SetOriginalValues(originalTransportManager);
-
-        //    // change the new instance in the singleton
-        //    sInstance.SetValue(null, customTransportManager);
-
-        //    // change the manager in the SimulationManager
-        //    FastList<ISimulationManager> managers = (FastList<ISimulationManager>)typeof(SimulationManager).GetFieldByName("m_managers").GetValue(null);
-        //    managers.Remove(originalTransportManager);
-        //    managers.Add(customTransportManager);
-
-        //    // add to renderable managers
-        //    IRenderableManager[] renderables;
-        //    int count;
-        //    RenderManager.GetManagers(out renderables, out count);
-        //    if (renderables != null && count != 0)
-        //    {
-        //        for (int i = 0; i < count; i++)
-        //        {
-        //            TransportManager temp = renderables[i] as TransportManager;
-        //            if (temp != null && temp == originalTransportManager)
-        //            {
-        //                renderables[i] = customTransportManager;
-        //                break;
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        RenderManager.RegisterRenderableManager(customTransportManager);
-        //    }
-
-        //    // Destroy in 10 seconds to give time to all references to update to the new manager without crashing
-        //    GameObject.Destroy(originalTransportManager, 10f);
-
-        //    Logger.LogInfo("Transport Manager successfully replaced.");
-        //}
-
-        T TryGetComponent<T>(string name)
-        {
-            foreach (string prefix in sm_collectionPrefixes)
-            {
-                GameObject go = GameObject.Find(prefix + name);
-                if (go != null)
-                    return go.GetComponent<T>();
-            }
-
-            return default(T);
+            return true;
         }
 
         public static void QueuePrioritizedLoadingAction(Action action)
@@ -465,189 +211,53 @@ namespace CSL_Traffic
 
         #endregion
 
-        #region Clone Methods
-
-        T ClonePrefab<T>(string prefabName, T[] prefabs, string newName, Transform customPrefabsHolder, bool replace = false, bool ghostMode = false) where T : PrefabInfo
-        {
-            T originalPrefab = prefabs.FirstOrDefault(p => p.name == prefabName);
-            if (originalPrefab == null)
-                return null;
-
-            GameObject instance = GameObject.Instantiate<GameObject>(originalPrefab.gameObject);
-            instance.name = newName;
-            instance.transform.SetParent(customPrefabsHolder);
-            instance.transform.localPosition = new Vector3(-7500, -7500, -7500);
-            T newPrefab = instance.GetComponent<T>();
-            //instance.SetActive(false);
-
-            MethodInfo initMethod = GetCollectionType(typeof(T).Name).GetMethod("InitializePrefabs", BindingFlags.Static | BindingFlags.NonPublic);
-            Initializer.QueuePrioritizedLoadingAction((IEnumerator)initMethod.Invoke(null, new object[] { newName, new[] { newPrefab }, new string[] { replace ? prefabName : null } }));
-
-            if (ghostMode)
-            {
-                if (newPrefab.GetType() == typeof(NetInfo))
-                    (newPrefab as NetInfo).m_availableIn = ItemClass.Availability.None;
-                return null;
-            }
-
-            newPrefab.m_prefabInitialized = false;
-
-            return newPrefab;
-        }
-
-        static NetLaneProps CloneNetLaneProps(string prefabName, int deltaSpace = 0)
-        {
-            NetLaneProps prefab = Resources.FindObjectsOfTypeAll<NetLaneProps>().FirstOrDefault(p => p.name == prefabName);
-            if (prefab == null)
-                return null;
-
-            NetLaneProps newLaneProps = ScriptableObject.CreateInstance<NetLaneProps>();
-            newLaneProps.m_props = new NetLaneProps.Prop[Mathf.Max(0, prefab.m_props.Length + deltaSpace)];
-            Array.Copy(prefab.m_props, newLaneProps.m_props, Mathf.Min(newLaneProps.m_props.Length, prefab.m_props.Length));
-
-            return newLaneProps;
-        }
-
-        static Type GetCollectionType(string prefabType)
-        {
-            switch (prefabType)
-            {
-                case "NetInfo":
-                    return typeof(NetCollection);
-                case "VehicleInfo":
-                    return typeof(VehicleCollection);
-                case "PropInfo":
-                    return typeof(PropCollection);
-                case "CitizenInfo":
-                    return typeof(CitizenCollection);
-                default:
-                    return null;
-            }
-        }
-
-        #endregion
-
         #region Vehicles
 
-        void ReplaceVehicleAI(VehicleCollection collection)
-        {
-            foreach (VehicleInfo vehicle in collection.m_prefabs)
-                ReplaceVehicleAI(vehicle);
-        }
+        //// TODO: set correct values on vehicles for realistic speeds
+        //void SetRealisitcSpeeds(VehicleInfo vehicle, bool activate)
+        //{
+        //    float accelerationMultiplier;
+        //    float maxSpeedMultiplier;
+        //    switch (vehicle.name)
+        //    {
+        //        case "Ambulance":
+        //            accelerationMultiplier = 0.2f;
+        //            //vehicle.m_braking *= 0.3f;
+        //            //vehicle.m_turning *= 0.25f;
+        //            maxSpeedMultiplier = 0.5f;
+        //            break;
+        //        case "Bus":
+        //        case "Fire Truck":
+        //        case "Garbage Truck":
+        //            accelerationMultiplier = 0.15f;
+        //            //vehicle.m_braking *= 0.25f;
+        //            //vehicle.m_turning *= 0.2f;
+        //            maxSpeedMultiplier = 0.5f;
+        //            break;
+        //        case "Hearse":
+        //        case "Police Car":
+        //            accelerationMultiplier = 0.25f;
+        //            //vehicle.m_braking *= 0.35f;
+        //            //vehicle.m_turning *= 0.3f;
+        //            maxSpeedMultiplier = 0.5f;
+        //            break;
+        //        default:
+        //            accelerationMultiplier = 0.25f;
+        //            //vehicle.m_braking *= 0.35f;
+        //            //vehicle.m_turning *= 0.3f;
+        //            maxSpeedMultiplier = 0.5f;
+        //            break;
+        //    }
 
-        void ReplaceVehicleAI(VehicleInfo info)
-        {
-            VehicleAI vAI = info.m_vehicleAI;
-            if (vAI == null)
-                return;
+        //    if (!activate)
+        //    {
+        //        accelerationMultiplier = 1f / accelerationMultiplier;
+        //        maxSpeedMultiplier = 1f / maxSpeedMultiplier;
+        //    }
 
-            Logger.LogInfo("Replacing " + info.name + "'s AI.");
-            Type type = vAI.GetType();
-
-            if (type == typeof(AmbulanceAI))
-                ReplaceVehicleAI<CustomAmbulanceAI>(info);
-            else if (type == typeof(BusAI))
-                ReplaceVehicleAI<CustomBusAI>(info);
-            else if (type == typeof(CargoTruckAI))
-                ReplaceVehicleAI<CustomCargoTruckAI>(info);
-            else if (type == typeof(FireTruckAI))
-                ReplaceVehicleAI<CustomFireTruckAI>(info);
-            else if (type == typeof(GarbageTruckAI))
-                ReplaceVehicleAI<CustomGarbageTruckAI>(info);
-            else if (type == typeof(HearseAI))
-                ReplaceVehicleAI<CustomHearseAI>(info);
-            else if (type == typeof(PassengerCarAI))
-                ReplaceVehicleAI<CustomPassengerCarAI>(info);
-            else if (type == typeof(PoliceCarAI))
-                ReplaceVehicleAI<CustomPoliceCarAI>(info);
-            else
-                Logger.LogInfo("Replacing " + info.name + "'s AI failed.");
-        }
-
-        void ReplaceVehicleAI<T>(VehicleInfo vehicle) where T : VehicleAI
-        {
-            if (m_replacedAIs.ContainsKey(vehicle.name))
-            {
-                Logger.LogInfo("Error replacing " + vehicle.name + "'s AI. It has been replaced before");
-                return;
-            }
-
-            VehicleAI originalAI = vehicle.GetComponent<VehicleAI>();
-            T newAI = vehicle.gameObject.AddComponent<T>();
-            CopyVehicleAIAttributes<T>(originalAI, newAI);
-            m_replacedAIs[vehicle.name] = originalAI;
-
-            vehicle.m_vehicleAI = newAI;
-            newAI.m_info = vehicle;
-
-            if ((UserMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
-            {
-                SetRealisitcSpeeds(vehicle, true);
-            }
-
-            Logger.LogInfo("Successfully replaced " + vehicle.name + "'s AI.");
-        }
-
-        // TODO: set correct values on vehicles for realistic speeds
-        void SetRealisitcSpeeds(VehicleInfo vehicle, bool activate)
-        {
-            float accelerationMultiplier;
-            float maxSpeedMultiplier;
-            switch (vehicle.name)
-            {
-                case "Ambulance":
-                    accelerationMultiplier = 0.2f;
-                    //vehicle.m_braking *= 0.3f;
-                    //vehicle.m_turning *= 0.25f;
-                    maxSpeedMultiplier = 0.5f;
-                    break;
-                case "Bus":
-                case "Fire Truck":
-                case "Garbage Truck":
-                    accelerationMultiplier = 0.15f;
-                    //vehicle.m_braking *= 0.25f;
-                    //vehicle.m_turning *= 0.2f;
-                    maxSpeedMultiplier = 0.5f;
-                    break;
-                case "Hearse":
-                case "Police Car":
-                    accelerationMultiplier = 0.25f;
-                    //vehicle.m_braking *= 0.35f;
-                    //vehicle.m_turning *= 0.3f;
-                    maxSpeedMultiplier = 0.5f;
-                    break;
-                default:
-                    accelerationMultiplier = 0.25f;
-                    //vehicle.m_braking *= 0.35f;
-                    //vehicle.m_turning *= 0.3f;
-                    maxSpeedMultiplier = 0.5f;
-                    break;
-            }
-
-            if (!activate)
-            {
-                accelerationMultiplier = 1f / accelerationMultiplier;
-                maxSpeedMultiplier = 1f / maxSpeedMultiplier;
-            }
-
-            vehicle.m_acceleration *= accelerationMultiplier;
-            vehicle.m_maxSpeed *= maxSpeedMultiplier;
-        }
-
-        void SetOriginalAI(VehicleInfo vehicle)
-        {
-            Logger.LogInfo("Resetting " + vehicle.name + "'s AI.");
-            VehicleAI vAI = vehicle.m_vehicleAI;
-            if (vAI == null || !this.m_replacedAIs.ContainsKey(vehicle.name))
-            {
-                Logger.LogInfo("Resetting " + vehicle.name + "'s AI failed.");
-                return;
-            }
-
-            vehicle.m_vehicleAI = this.m_replacedAIs[vehicle.name];
-            this.m_replacedAIs[vehicle.name].m_info = vehicle;
-            Destroy(vAI);
-        }
+        //    vehicle.m_acceleration *= accelerationMultiplier;
+        //    vehicle.m_maxSpeed *= maxSpeedMultiplier;
+        //}
 
         void CopyVehicleAIAttributes<T>(VehicleAI from, T to)
         {
@@ -656,52 +266,6 @@ namespace CSL_Traffic
                 fi.SetValue(to, fi.GetValue(from));
             }
         }
-
-        IEnumerator HandleCustomVehicles()
-        {
-            uint index = 0;
-            List<string> replacedVehicles = new List<string>();
-            while (!Singleton<LoadingManager>.instance.m_loadingComplete)
-            {
-                while (PrefabCollection<VehicleInfo>.LoadedCount() > index)
-                {
-                    VehicleInfo info = PrefabCollection<VehicleInfo>.GetLoaded(index);
-                    if (info != null && info.name.EndsWith("_Data") && !replacedVehicles.Contains(info.name))
-                    {
-                        replacedVehicles.Add(info.name);
-                        ReplaceVehicleAI(info);
-                    }
-
-                    ++index;
-                }
-
-                yield return new WaitForEndOfFrame();
-            }
-        }
-        #endregion
-
-        #region Transports
-
-        //void ReplaceTransportLineAI<T>(string prefabName, NetCollection collection, string transportName, TransportCollection transportCollection)
-        //{
-        //    if (transform.FindChild(prefabName) != null)
-        //        return;
-
-        //    NetInfo transportLine = ClonePrefab<NetInfo>(prefabName, collection.m_prefabs, prefabName, transform, true);
-        //    if (transportLine == null)
-        //        return;
-
-        //    Destroy(transportLine.GetComponent<TransportLineAI>());
-        //    transportLine.gameObject.AddComponent<BusTransportLineAI>();
-
-        //    TransportInfo transportInfo = transportCollection.m_prefabs.FirstOrDefault(p => p.name == transportName);
-        //    if (transportInfo == null)
-        //        return;
-        //    //throw new KeyNotFoundException(transportName + " Transport Info not found on " + transportCollection.name);
-
-        //    transportInfo.m_netInfo = transportLine;
-        //}
-
         #endregion
 
         #region Tools
