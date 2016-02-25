@@ -1,4 +1,5 @@
 ﻿using System;
+using ColossalFramework;
 using Transit.Framework.Light;
 
 namespace CSL_Traffic
@@ -74,8 +75,13 @@ namespace CSL_Traffic
             return lane.GetConnectionsAsArray();
         }
 
-        public static bool CheckLaneConnection(uint from, uint to)
-        {   
+        public static bool CheckLaneConnection(ExtendedVehicleType vehicleType, uint from, uint to)
+        {
+            if ((vehicleType & (ExtendedVehicleType.Unknown | ExtendedVehicleType.Tram)) != 0)
+            {
+                return true;
+            }
+
             Lane lane = GetLane(from);
 
             return lane.ConnectsTo(to);
@@ -85,7 +91,7 @@ namespace CSL_Traffic
         #region Vehicle Restrictions
         public static bool CanUseLane(ExtendedVehicleType vehicleType, uint laneId)
         {
-            if (vehicleType.HasFlag(ExtendedVehicleType.Tram))
+            if ((vehicleType & (ExtendedVehicleType.Unknown | ExtendedVehicleType.Tram)) != 0)
             {
                 return true;
             }

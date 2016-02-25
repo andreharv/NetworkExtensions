@@ -1,6 +1,5 @@
 ﻿using System;
 
-// Legacy from T++
 namespace Transit.Framework.Light
 {
     [Flags]
@@ -31,6 +30,9 @@ namespace Transit.Framework.Light
         PassengerShip  = 1 << 21,
         Plane          = 1 << 22,
         Bicycle        = 1 << 23,
+        Citizen        = 1 << 24,
+
+        Unknown        = 1 << 31,
     }
 
     //public static class VehicleTypeExtensions

@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace CSL_Traffic
 {
-	class CustomTransportLineAI : TransportLineAI
+    public class CustomTransportLineAI : TransportLineAI
     {
         [RedirectFrom(typeof(TransportLineAI))]
         public override void UpdateLaneConnection(ushort nodeID, ref NetNode data)
@@ -21,7 +21,7 @@ namespace CSL_Traffic
                 PathUnit.Position position;
                 float num3;
                 float num4;
-                if ((data.m_flags & NetNode.Flags.ForbidLaneConnection) == NetNode.Flags.None && CustomPathManager.FindPathPosition(data.m_position, this.m_netService, NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, this.m_vehicleType, true, false, 32f, out pathPos, out position, out num3, out num4, ExtendedVehicleType.Bus | ExtendedVehicleType.Tram) && num3 < num2)
+                if ((data.m_flags & NetNode.Flags.ForbidLaneConnection) == NetNode.Flags.None && CustomPathManager.FindPathPosition(ExtendedVehicleType.Bus | ExtendedVehicleType.Tram, data.m_position, this.m_netService, NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, this.m_vehicleType, true, false, 32f, out pathPos, out position, out num3, out num4) && num3 < num2)
                 {
                     NetManager instance = Singleton<NetManager>.instance;
                     int num5;
@@ -84,7 +84,7 @@ namespace CSL_Traffic
             float num;
             float num2;
             
-            if (!CustomPathManager.FindPathPosition(position, netService, NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, true, false, 32f, out startPosA, out startPosB, out num, out num2, ExtendedVehicleType.Bus | ExtendedVehicleType.Tram))
+            if (!CustomPathManager.FindPathPosition(ExtendedVehicleType.Bus | ExtendedVehicleType.Tram, position, netService, NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, true, false, 32f, out startPosA, out startPosB, out num, out num2))
             {
                 CustomTransportLineAI.CheckSegmentProblems(segmentID, ref data);
                 return true;
@@ -95,7 +95,7 @@ namespace CSL_Traffic
             float num3;
             float num4;
 
-            if (!CustomPathManager.FindPathPosition(position2, netService, NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, true, false, 32f, out endPosA, out endPosB, out num3, out num4, ExtendedVehicleType.Bus | ExtendedVehicleType.Tram))
+            if (!CustomPathManager.FindPathPosition(ExtendedVehicleType.Bus | ExtendedVehicleType.Tram, position2, netService, NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, true, false, 32f, out endPosA, out endPosB, out num3, out num4))
             {
                 CustomTransportLineAI.CheckSegmentProblems(segmentID, ref data);
                 return true;
@@ -123,7 +123,7 @@ namespace CSL_Traffic
                 return true;
             }
             uint path;
-            bool createPathResult = Singleton<PathManager>.instance.CreatePath(out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, vehicleType, 20000f, false, true, true, skipQueue, ExtendedVehicleType.Bus | ExtendedVehicleType.Tram);
+            bool createPathResult = Singleton<PathManager>.instance.CreatePath(ExtendedVehicleType.Bus | ExtendedVehicleType.Tram, out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, vehicleType, 20000f, false, true, true, skipQueue);
             if (createPathResult)
             {
                 if (startPosA.m_segment != 0 && startPosB.m_segment != 0)
