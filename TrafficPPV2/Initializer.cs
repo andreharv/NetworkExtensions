@@ -326,9 +326,7 @@ namespace CSL_Traffic
             Logger.LogInfo("Replacing " + info.name + "'s AI.");
             Type type = vAI.GetType();
 
-            if (type == typeof(GarbageTruckAI))
-                ReplaceVehicleAI<CustomGarbageTruckAI>(info);
-            else if (type == typeof(HearseAI))
+            if (type == typeof(HearseAI))
                 ReplaceVehicleAI<CustomHearseAI>(info);
             else if (type == typeof(PassengerCarAI))
                 ReplaceVehicleAI<CustomPassengerCarAI>(info);

@@ -636,6 +636,11 @@ namespace CSL_Traffic
 
     public static class CarAIExtensions2
     {
+        public static bool StartPathFind(this CarAI carAI, ExtendedVehicleType extendedVehicleType, ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool isHeavyVehicle, bool ignoreBlocked)
+        {
+            return carAI.StartPathFind(extendedVehicleType, vehicleID, ref vehicleData, startPos, endPos, true, true, false, isHeavyVehicle, ignoreBlocked);
+        }
+
         public static bool StartPathFind(this CarAI carAI, ExtendedVehicleType extendedVehicleType, ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget, bool isHeavyVehicle, bool ignoreBlocked)
         {
             VehicleInfo info = carAI.m_info;

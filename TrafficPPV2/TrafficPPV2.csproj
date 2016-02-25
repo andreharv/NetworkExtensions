@@ -60,7 +60,7 @@
     <Compile Include="AI\CarSpeedData.cs" />
     <Compile Include="AI\Redirections\CustomCargoTruckAI.cs" />
     <Compile Include="AI\Redirections\CustomFireTruckAI.cs" />
-    <Compile Include="AI\Vehicles\CustomGarbageTruckAI.cs" />
+    <Compile Include="AI\Redirections\CustomGarbageTruckAI.cs" />
     <Compile Include="AI\Vehicles\CustomHearseAI.cs" />
     <Compile Include="AI\Vehicles\CustomPassengerCarAI.cs" />
     <Compile Include="AI\Vehicles\CustomPoliceCarAI.cs" />
