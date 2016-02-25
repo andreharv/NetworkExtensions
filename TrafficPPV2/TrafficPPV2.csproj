@@ -54,9 +54,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AI\Redirections\CustomCarAI.cs" />
     <Compile Include="AI\Redirections\CustomVehicleAI.cs" />
-    <Compile Include="AI\Vehicles\CustomAmbulanceAI.cs" />
+    <Compile Include="AI\Redirections\CustomAmbulanceAI.cs" />
     <Compile Include="AI\Redirections\CustomBusAI.cs" />
     <Compile Include="AI\CarSpeedData.cs" />
     <Compile Include="AI\Vehicles\CustomCargoTruckAI.cs" />

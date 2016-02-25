@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace CSL_Traffic
 {
-	class CustomTransportLineAI : TransportLineAI
+    public class CustomTransportLineAI : TransportLineAI
     {
         [RedirectFrom(typeof(TransportLineAI))]
         public override void UpdateLaneConnection(ushort nodeID, ref NetNode data)

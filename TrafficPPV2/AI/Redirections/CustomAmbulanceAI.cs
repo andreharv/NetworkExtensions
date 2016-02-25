@@ -1,15 +1,14 @@
 using System;
 using System.Runtime.CompilerServices;
 using ColossalFramework;
-using UnityEngine;
-using Transit.Framework.Light;
 using Transit.Framework.Unsafe;
+using UnityEngine;
 
 namespace CSL_Traffic
 {
-    public class CustomBusAI : CarAI
+    public class CustomAmbulanceAI : CarAI
     {
-        [RedirectFrom(typeof(BusAI))]
+        [RedirectFrom(typeof(AmbulanceAI))]
         public override void SimulationStep(ushort vehicleID, ref Vehicle vehicleData, ref Vehicle.Frame frameData, ushort leaderID, ref Vehicle leaderData, int lodPhysics)
         {
             if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
@@ -19,26 +18,25 @@ namespace CSL_Traffic
                 if (speedData.SpeedMultiplier == 0 || speedData.CurrentPath != vehicleData.m_path)
                 {
                     speedData.CurrentPath = vehicleData.m_path;
-                    speedData.SetRandomSpeedMultiplier(0.65f, 1.05f);
+                    if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) == Vehicle.Flags.Emergency2)
+                        speedData.SetRandomSpeedMultiplier(1f, 1.5f);
+                    else
+                        speedData.SetRandomSpeedMultiplier(0.7f, 1.05f);
                 }
-                m_info.ApplySpeedMultiplier(CarSpeedData.Of(vehicleID));
+                m_info.ApplySpeedMultiplier(speedData);
             }
 
 
-            if ((vehicleData.m_flags & Vehicle.Flags.Stopped) != Vehicle.Flags.None)
-            {
-                vehicleData.m_waitCounter += 1;
-                if (this.CanLeave(vehicleID, ref vehicleData))
-                {
-                    vehicleData.m_flags &= ~Vehicle.Flags.Stopped;
-                    vehicleData.m_flags |= Vehicle.Flags.Leaving;
-                    vehicleData.m_waitCounter = 0;
-                }
-            }
+            frameData.m_blinkState = (((vehicleData.m_flags & Vehicle.Flags.Emergency2) == Vehicle.Flags.None) ? 0f : 10f);
             base.SimulationStep(vehicleID, ref vehicleData, ref frameData, leaderID, ref leaderData, lodPhysics);
+            if ((vehicleData.m_flags & Vehicle.Flags.Stopped) != Vehicle.Flags.None && this.CanLeave(vehicleID, ref vehicleData))
+            {
+                vehicleData.m_flags &= ~Vehicle.Flags.Stopped;
+                vehicleData.m_flags |= Vehicle.Flags.Leaving;
+            }
             if ((vehicleData.m_flags & Vehicle.Flags.GoingBack) == Vehicle.Flags.None && this.ShouldReturnToSource(vehicleID, ref vehicleData))
             {
-                this.SetTransportLine(vehicleID, ref vehicleData, 0);
+                this.SetTarget(vehicleID, ref vehicleData, 0);
             }
 
             if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
@@ -47,9 +45,13 @@ namespace CSL_Traffic
             }
         }
 
-        [RedirectFrom(typeof(BusAI))]
+        [RedirectFrom(typeof(AmbulanceAI))]
         protected override bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget)
         {
+            Transit.Framework.Light.ExtendedVehicleType vehicleType = Transit.Framework.Light.ExtendedVehicleType.Ambulance;
+            if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) != Vehicle.Flags.None)
+                vehicleType |= Transit.Framework.Light.ExtendedVehicleType.Emergency;
+
             VehicleInfo info = this.m_info;
             bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != Vehicle.Flags.None;
             PathUnit.Position startPosA;
@@ -60,7 +62,7 @@ namespace CSL_Traffic
             PathUnit.Position endPosB;
             float num3;
             float num4;
-            if (CustomPathManager.FindPathPosition(ExtendedVehicleType.Bus, startPos, ItemClass.Service.Road, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, allowUnderground, false, 32f, out startPosA, out startPosB, out num, out num2) && CustomPathManager.FindPathPosition(ExtendedVehicleType.Bus, endPos, ItemClass.Service.Road, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, undergroundTarget, false, 32f, out endPosA, out endPosB, out num3, out num4))
+            if (CustomPathManager.FindPathPosition(vehicleType, startPos, ItemClass.Service.Road, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, allowUnderground, false, 32f, out startPosA, out startPosB, out num, out num2) && CustomPathManager.FindPathPosition(vehicleType, endPos, ItemClass.Service.Road, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, undergroundTarget, false, 32f, out endPosA, out endPosB, out num3, out num4))
             {
                 if (!startBothWays || num < 10f)
                 {
@@ -71,7 +73,7 @@ namespace CSL_Traffic
                     endPosB = default(PathUnit.Position);
                 }
                 uint path;
-                bool createPathResult = Singleton<PathManager>.instance.CreatePath(ExtendedVehicleType.Bus, out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, 20000f, this.IsHeavyVehicle(), this.IgnoreBlocked(vehicleID, ref vehicleData), false, false);
+                bool createPathResult = Singleton<PathManager>.instance.CreatePath(vehicleType, out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, 20000f, this.IsHeavyVehicle(), this.IgnoreBlocked(vehicleID, ref vehicleData), false, false);
                 if (createPathResult)
                 {
                     if (vehicleData.m_path != 0u)
@@ -87,7 +89,7 @@ namespace CSL_Traffic
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        [RedirectTo(typeof(BusAI))]
+        [RedirectTo(typeof(AmbulanceAI))]
         private bool ShouldReturnToSource(ushort vehicleID, ref Vehicle data)
         {
             throw new NotImplementedException("ShouldReturnToSource is target of redirection and is not implemented.");

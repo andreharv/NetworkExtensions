@@ -110,7 +110,6 @@ namespace CSL_Traffic
         {
             VehicleCollection garbageVehicleCollection = null;
             VehicleCollection policeVehicleCollection = null;
-            VehicleCollection healthCareVehicleCollection = null;
             VehicleCollection fireDepartmentVehicleCollection = null;
             VehicleCollection industrialVehicleCollection = null;
             VehicleCollection industrialFarmingVehicleCollection = null;
@@ -129,10 +128,6 @@ namespace CSL_Traffic
                 
                 policeVehicleCollection = TryGetComponent<VehicleCollection>("Police Department");
                 if (policeVehicleCollection == null)
-                    return false;
-
-                healthCareVehicleCollection = TryGetComponent<VehicleCollection>("Health Care");
-                if (healthCareVehicleCollection == null)
                     return false;
 
                 fireDepartmentVehicleCollection = TryGetComponent<VehicleCollection>("Fire Department");
@@ -177,7 +172,6 @@ namespace CSL_Traffic
                 {
                     if (this.m_level == 6)
                     {
-                        ReplaceVehicleAI(healthCareVehicleCollection);
                         ReplaceVehicleAI(industrialVehicleCollection);
                         ReplaceVehicleAI(industrialFarmingVehicleCollection);
                         ReplaceVehicleAI(industrialForestryVehicleCollection);
@@ -332,9 +326,7 @@ namespace CSL_Traffic
             Logger.LogInfo("Replacing " + info.name + "'s AI.");
             Type type = vAI.GetType();
 
-            if (type == typeof(AmbulanceAI))
-                ReplaceVehicleAI<CustomAmbulanceAI>(info);
-            else if (type == typeof(CargoTruckAI))
+            if (type == typeof(CargoTruckAI))
                 ReplaceVehicleAI<CustomCargoTruckAI>(info);
             else if (type == typeof(FireTruckAI))
                 ReplaceVehicleAI<CustomFireTruckAI>(info);

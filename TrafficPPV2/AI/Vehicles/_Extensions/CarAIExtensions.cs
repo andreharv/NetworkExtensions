@@ -34,6 +34,7 @@ namespace CSL_Traffic
             {
                 if (leaderData.m_path != 0u)
                 {
+                    // >>>>> Speed restrict
                     carAI.UpdatePathTargetPositions(vehicleID, ref vehicleData, frameData.m_position, ref i, 4, num4, num5);
                     if ((leaderData.m_flags & Vehicle.Flags.Spawned) == Vehicle.Flags.None)
                     {
@@ -314,44 +315,7 @@ namespace CSL_Traffic
             }
         }
 
-        public static bool StartPathFind<T>(this T carAI, ExtendedVehicleType extendedVehicleType, ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget)            
-            where T : CarAI, IVehicleAI
-        {
-            VehicleInfo info = carAI.m_info;
-            bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != Vehicle.Flags.None;
-            PathUnit.Position startPosA;
-            PathUnit.Position startPosB;
-            float num;
-            float num2;
-            PathUnit.Position endPosA;
-            PathUnit.Position endPosB;
-            float num3;
-            float num4;
-            if (CustomPathManager.FindPathPosition(extendedVehicleType, startPos, ItemClass.Service.Road, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, allowUnderground, false, 32f, out startPosA, out startPosB, out num, out num2) && CustomPathManager.FindPathPosition(extendedVehicleType, endPos, ItemClass.Service.Road, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, undergroundTarget, false, 32f, out endPosA, out endPosB, out num3, out num4))
-            {
-                if (!startBothWays || num < 10f)
-                {
-                    startPosB = default(PathUnit.Position);
-                }
-                if (!endBothWays || num3 < 10f)
-                {
-                    endPosB = default(PathUnit.Position);
-                }
-                uint path;
-                if (Singleton<PathManager>.instance.CreatePath(extendedVehicleType, out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, NetInfo.LaneType.Vehicle, info.m_vehicleType, 20000f, carAI.IsHeavyVehicle(), carAI.IgnoreBlocked(vehicleID, ref vehicleData), false, false))
-                {
-                    if (vehicleData.m_path != 0u)
-                    {
-                        Singleton<PathManager>.instance.ReleasePath(vehicleData.m_path);
-                    }
-                    vehicleData.m_path = path;
-                    vehicleData.m_flags |= Vehicle.Flags.WaitingPath;
-                    return true;
-                }
-            }
-            return false;
-        }
-
+        // Useless
         private static float CalculateMaxSpeed(float targetDistance, float targetSpeed, float maxBraking)
         {
             float num = 0.5f * maxBraking;
@@ -359,6 +323,7 @@ namespace CSL_Traffic
             return Mathf.Sqrt(Mathf.Max(0f, num2 * num2 + 2f * targetDistance * maxBraking)) - num;
         }
 
+        // Useless
         private static bool DisableCollisionCheck(ushort vehicleID, ref Vehicle vehicleData)
         {
             if ((vehicleData.m_flags & Vehicle.Flags.Arriving) != Vehicle.Flags.None)
@@ -373,6 +338,7 @@ namespace CSL_Traffic
             return false;
         }
 
+        // Useless
         private static void CheckOtherVehicles(ushort vehicleID, ref Vehicle vehicleData, ref Vehicle.Frame frameData, ref float maxSpeed, ref bool blocked, ref Vector3 collisionPush, float maxDistance, float maxBraking, int lodPhysics)
         {
             Vector3 vector = vehicleData.m_targetPos3 - (Vector4)frameData.m_position;
@@ -665,6 +631,46 @@ namespace CSL_Traffic
                 }
             }
             return otherData.m_nextGridInstance;
+        }
+    }
+
+    public static class CarAIExtensions2
+    {
+        public static bool StartPathFind(this CarAI carAI, ExtendedVehicleType extendedVehicleType, ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget, bool isHeavyVehicle, bool ignoreBlocked)
+        {
+            VehicleInfo info = carAI.m_info;
+            bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != Vehicle.Flags.None;
+            PathUnit.Position startPosA;
+            PathUnit.Position startPosB;
+            float num;
+            float num2;
+            PathUnit.Position endPosA;
+            PathUnit.Position endPosB;
+            float num3;
+            float num4;
+            if (CustomPathManager.FindPathPosition(extendedVehicleType, startPos, ItemClass.Service.Road, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, allowUnderground, false, 32f, out startPosA, out startPosB, out num, out num2) && CustomPathManager.FindPathPosition(extendedVehicleType, endPos, ItemClass.Service.Road, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, undergroundTarget, false, 32f, out endPosA, out endPosB, out num3, out num4))
+            {
+                if (!startBothWays || num < 10f)
+                {
+                    startPosB = default(PathUnit.Position);
+                }
+                if (!endBothWays || num3 < 10f)
+                {
+                    endPosB = default(PathUnit.Position);
+                }
+                uint path;
+                if (Singleton<PathManager>.instance.CreatePath(extendedVehicleType, out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, NetInfo.LaneType.Vehicle, info.m_vehicleType, 20000f, isHeavyVehicle/*carAI.IsHeavyVehicle()*/, ignoreBlocked/*carAI.IgnoreBlocked(vehicleID, ref vehicleData)*/, false, false))
+                {
+                    if (vehicleData.m_path != 0u)
+                    {
+                        Singleton<PathManager>.instance.ReleasePath(vehicleData.m_path);
+                    }
+                    vehicleData.m_path = path;
+                    vehicleData.m_flags |= Vehicle.Flags.WaitingPath;
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
