@@ -8,7 +8,7 @@ using Transit.Framework.Unsafe;
 
 namespace CSL_Traffic
 {
-    class CustomHearseAI : CarAI
+    public class CustomHearseAI : CarAI
     {
         [RedirectFrom(typeof(HearseAI))]
         public override void SimulationStep(ushort vehicleID, ref Vehicle vehicleData, ref Vehicle.Frame frameData, ushort leaderID, ref Vehicle leaderData, int lodPhysics)
@@ -82,7 +82,7 @@ namespace CSL_Traffic
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        [RedirectTo(typeof(FireTruckAI))]
+        [RedirectTo(typeof(HearseAI))]
         private bool ShouldReturnToSource(ushort vehicleID, ref Vehicle data)
         {
             throw new NotImplementedException("ShouldReturnToSource is target of redirection and is not implemented.");

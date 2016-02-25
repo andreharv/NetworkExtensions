@@ -61,9 +61,9 @@
     <Compile Include="AI\Redirections\CustomCargoTruckAI.cs" />
     <Compile Include="AI\Redirections\CustomFireTruckAI.cs" />
     <Compile Include="AI\Redirections\CustomGarbageTruckAI.cs" />
-    <Compile Include="AI\Vehicles\CustomHearseAI.cs" />
+    <Compile Include="AI\Redirections\CustomHearseAI.cs" />
     <Compile Include="AI\Vehicles\CustomPassengerCarAI.cs" />
-    <Compile Include="AI\Vehicles\CustomPoliceCarAI.cs" />
+    <Compile Include="AI\Redirections\CustomPoliceCarAI.cs" />
     <Compile Include="AI\Redirections\CustomTransportLineAI.cs" />
     <Compile Include="AI\Vehicles\_Extensions\VehicleAIExtensions.cs" />
     <Compile Include="AI\Vehicles\IVehicleAI.cs" />
