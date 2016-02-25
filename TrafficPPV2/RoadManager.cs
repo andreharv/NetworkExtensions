@@ -77,7 +77,7 @@ namespace CSL_Traffic
 
         public static bool CheckLaneConnection(ExtendedVehicleType vehicleType, uint from, uint to)
         {
-            if ((vehicleType & (ExtendedVehicleType.Unknown | ExtendedVehicleType.Tram)) != 0)
+            if ((vehicleType & (ExtendedVehicleType.Unknown | ExtendedVehicleType.Citizen | ExtendedVehicleType.Tram)) != 0)
             {
                 return true;
             }
@@ -91,7 +91,7 @@ namespace CSL_Traffic
         #region Vehicle Restrictions
         public static bool CanUseLane(ExtendedVehicleType vehicleType, uint laneId)
         {
-            if ((vehicleType & (ExtendedVehicleType.Unknown | ExtendedVehicleType.Tram)) != 0)
+            if ((vehicleType & (ExtendedVehicleType.Unknown | ExtendedVehicleType.Citizen | ExtendedVehicleType.Tram)) != 0)
             {
                 return true;
             }
