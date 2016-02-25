@@ -4,7 +4,7 @@ using ColossalFramework;
 using ColossalFramework.Math;
 using UnityEngine;
 using Transit.Framework.Light;
-using Transit.Framework.Unsafe;
+using Transit.Framework.Redirection;
 
 namespace CSL_Traffic
 {

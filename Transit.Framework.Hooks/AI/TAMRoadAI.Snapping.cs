@@ -1,5 +1,5 @@
-﻿using Transit.Framework.Extenders.AI;
-using Transit.Framework.Unsafe;
+﻿using Transit.Framework.ExtensionPoints.AI;
+using Transit.Framework.Redirection;
 
 namespace Transit.Framework.Hooks.AI
 {
@@ -8,10 +8,9 @@ namespace Transit.Framework.Hooks.AI
         [RedirectFrom(typeof (RoadAI))]
         public override float GetLengthSnap()
         {
-            if (RoadSnappingModeProvider.instance.HasCustomSnapping(this.m_info.name))
+            if (RoadSnappingModeManager.HasCustomSnapping(this.m_info.name))
             {
-                return RoadSnappingModeProvider
-                    .instance
+                return RoadSnappingModeManager
                     .GetCustomSnapping(this.m_info.name)
                     .GetLengthSnap();
             }

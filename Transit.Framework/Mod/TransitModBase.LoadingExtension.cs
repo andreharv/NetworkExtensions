@@ -24,18 +24,6 @@ namespace Transit.Framework.Mod
             ModPrerequisites.UninstallForMod(this);
         }
 
-        public override void OnCreated(ILoading loading)
-        {
-            foreach (IModule module in Modules)
-                module.OnCreated(loading);
-        }
-
-        public override void OnReleased()
-        {
-            foreach (IModule module in Modules)
-                module.OnReleased();
-        }
-
         public override void OnLevelUnloading()
         {
             foreach (IModule module in Modules)

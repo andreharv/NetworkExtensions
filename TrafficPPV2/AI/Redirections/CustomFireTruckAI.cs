@@ -3,7 +3,7 @@ using System;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using Transit.Framework.Light;
-using Transit.Framework.Unsafe;
+using Transit.Framework.Redirection;
 
 namespace CSL_Traffic
 {

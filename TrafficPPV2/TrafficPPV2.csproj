@@ -96,9 +96,9 @@
       <Project>{fc275c26-1012-474c-b77b-09e366dbc684}</Project>
       <Name>Transit.Framework.Light</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Transit.Framework.Unsafe\Transit.Framework.Unsafe.csproj">
+    <ProjectReference Include="..\Transit.Framework.Redirection\Transit.Framework.Redirection.csproj">
       <Project>{7dcc08ef-dc85-47a4-bd6f-79fc52c7ef13}</Project>
-      <Name>Transit.Framework.Unsafe</Name>
+      <Name>Transit.Framework.Redirection</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

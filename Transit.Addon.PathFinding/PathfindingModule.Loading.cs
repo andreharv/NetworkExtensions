@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using ICities;
 using Transit.Framework.Modularity;
-using Transit.Framework.Unsafe;
+using Transit.Framework.Redirection;
 
 namespace Transit.Addon.PathFinding
 {

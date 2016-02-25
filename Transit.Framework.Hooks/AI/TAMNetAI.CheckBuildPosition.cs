@@ -2,8 +2,8 @@
 using System.Runtime.CompilerServices;
 using ColossalFramework;
 using ColossalFramework.Math;
-using Transit.Framework.Extenders.AI;
-using Transit.Framework.Unsafe;
+using Transit.Framework.ExtensionPoints.AI;
+using Transit.Framework.Redirection;
 using UnityEngine;
 
 namespace Transit.Framework.Hooks.AI
