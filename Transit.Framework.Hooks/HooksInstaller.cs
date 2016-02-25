@@ -14,9 +14,6 @@ namespace Transit.Framework.Hooks
         public void Uninstall()
         {
             Redirector.RevertRedirections();
-
-            // TODO: do this every time the mod is "Released" instead of "Disabled"
-            GameMenuManager.Reset();
         }
     }
 }
