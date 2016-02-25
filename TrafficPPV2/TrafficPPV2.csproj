@@ -92,13 +92,13 @@
     <Compile Include="UI\UIUtils.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Transit.Framework.Light\Transit.Framework.Light.csproj">
-      <Project>{fc275c26-1012-474c-b77b-09e366dbc684}</Project>
-      <Name>Transit.Framework.Light</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Transit.Framework.Redirection\Transit.Framework.Redirection.csproj">
       <Project>{7dcc08ef-dc85-47a4-bd6f-79fc52c7ef13}</Project>
       <Name>Transit.Framework.Redirection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Transit.Framework\Transit.Framework.csproj">
+      <Project>{8891467e-c88e-46b0-96f9-4413df6dc205}</Project>
+      <Name>Transit.Framework</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -55,7 +55,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AI\TAMCarAI.New.cs" />
     <Compile Include="PathfindingModule.cs" />
     <Compile Include="PathfindingModule.Loading.cs" />
     <Compile Include="PathfindingModule.Parts.cs" />

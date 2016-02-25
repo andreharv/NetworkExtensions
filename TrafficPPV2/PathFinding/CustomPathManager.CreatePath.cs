@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using ColossalFramework.Math;
-using Transit.Framework.Light;
+using Transit.Framework.Network;
 using Transit.Framework.Redirection;
 
 namespace CSL_Traffic

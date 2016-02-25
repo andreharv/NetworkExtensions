@@ -5,7 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
-using Transit.Framework.Light;
+using Transit.Framework;
+using Transit.Framework.Network;
 using Transit.Framework.Redirection;
 using UnityEngine;
 

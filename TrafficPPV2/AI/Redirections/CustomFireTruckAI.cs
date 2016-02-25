@@ -1,8 +1,8 @@
 using ColossalFramework;
 using System;
 using System.Runtime.CompilerServices;
+using Transit.Framework.Network;
 using UnityEngine;
-using Transit.Framework.Light;
 using Transit.Framework.Redirection;
 
 namespace CSL_Traffic

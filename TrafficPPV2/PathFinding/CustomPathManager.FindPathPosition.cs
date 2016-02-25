@@ -1,6 +1,6 @@
 using ColossalFramework;
 using System;
-using Transit.Framework.Light;
+using Transit.Framework.Network;
 using Transit.Framework.Redirection;
 using UnityEngine;
 

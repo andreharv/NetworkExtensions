@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Runtime.Serialization;
-using Transit.Framework.Light;
+using Transit.Framework.Network;
 
 namespace CSL_Traffic
 {

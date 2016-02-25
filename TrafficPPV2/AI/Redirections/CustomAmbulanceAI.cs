@@ -2,6 +2,7 @@ using System;
 using System.Runtime.CompilerServices;
 using ColossalFramework;
 using ColossalFramework.Math;
+using Transit.Framework.Network;
 using Transit.Framework.Redirection;
 using UnityEngine;
 
@@ -49,9 +50,9 @@ namespace CSL_Traffic
         [RedirectFrom(typeof(AmbulanceAI))]
         protected override bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData)
         {
-            Transit.Framework.Light.ExtendedVehicleType vehicleType = Transit.Framework.Light.ExtendedVehicleType.Ambulance;
+            ExtendedVehicleType vehicleType = ExtendedVehicleType.Ambulance;
             if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) != Vehicle.Flags.None)
-                vehicleType |= Transit.Framework.Light.ExtendedVehicleType.Emergency;
+                vehicleType |= ExtendedVehicleType.Emergency;
 
             if ((vehicleData.m_flags & Vehicle.Flags.WaitingTarget) != Vehicle.Flags.None)
             {
@@ -86,9 +87,9 @@ namespace CSL_Traffic
         [RedirectFrom(typeof(AmbulanceAI))]
         protected override bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget)
         {
-            Transit.Framework.Light.ExtendedVehicleType vehicleType = Transit.Framework.Light.ExtendedVehicleType.Ambulance;
+            ExtendedVehicleType vehicleType = ExtendedVehicleType.Ambulance;
             if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) != Vehicle.Flags.None)
-                vehicleType |= Transit.Framework.Light.ExtendedVehicleType.Emergency;
+                vehicleType |= ExtendedVehicleType.Emergency;
 
             VehicleInfo info = this.m_info;
             bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != Vehicle.Flags.None;

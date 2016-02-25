@@ -79,8 +79,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Framework.Extension
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrafficPPV2", "TrafficPPV2\TrafficPPV2.csproj", "{2CC6D3B7-B483-413C-9DB1-943C63B0CCE4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Framework.Light", "Transit.Framework.Light\Transit.Framework.Light.csproj", "{FC275C26-1012-474C-B77B-09E366DBC684}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -223,16 +221,6 @@ Global
 		{2CC6D3B7-B483-413C-9DB1-943C63B0CCE4}.Release|ARM.ActiveCfg = Release|Any CPU
 		{2CC6D3B7-B483-413C-9DB1-943C63B0CCE4}.Release|x64.ActiveCfg = Release|Any CPU
 		{2CC6D3B7-B483-413C-9DB1-943C63B0CCE4}.Release|x86.ActiveCfg = Release|Any CPU
-		{FC275C26-1012-474C-B77B-09E366DBC684}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FC275C26-1012-474C-B77B-09E366DBC684}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FC275C26-1012-474C-B77B-09E366DBC684}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{FC275C26-1012-474C-B77B-09E366DBC684}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{FC275C26-1012-474C-B77B-09E366DBC684}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{FC275C26-1012-474C-B77B-09E366DBC684}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FC275C26-1012-474C-B77B-09E366DBC684}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FC275C26-1012-474C-B77B-09E366DBC684}.Release|ARM.ActiveCfg = Release|Any CPU
-		{FC275C26-1012-474C-B77B-09E366DBC684}.Release|x64.ActiveCfg = Release|Any CPU
-		{FC275C26-1012-474C-B77B-09E366DBC684}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

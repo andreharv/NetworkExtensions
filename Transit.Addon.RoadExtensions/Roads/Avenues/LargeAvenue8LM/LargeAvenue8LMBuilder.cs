@@ -5,6 +5,7 @@ using Transit.Addon.RoadExtensions.Props;
 using Transit.Addon.RoadExtensions.Roads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
+using Transit.Framework.Network;
 using UnityEngine;
 
 namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM

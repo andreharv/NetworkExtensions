@@ -3,6 +3,7 @@ using Transit.Addon.RoadExtensions.Roads.Highways;
 using Transit.Addon.RoadExtensions.Roads.Highways.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
+using Transit.Framework.Network;
 
 namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway1L
 {

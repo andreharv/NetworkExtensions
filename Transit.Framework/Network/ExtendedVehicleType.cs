@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Transit.Framework.Light
+namespace Transit.Framework.Network
 {
     [Flags]
     public enum ExtendedVehicleType

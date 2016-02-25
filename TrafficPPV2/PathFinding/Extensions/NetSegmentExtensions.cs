@@ -1,6 +1,6 @@
 ﻿using System;
 using ColossalFramework;
-using Transit.Framework.Light;
+using Transit.Framework.Network;
 using UnityEngine;
 
 namespace CSL_Traffic

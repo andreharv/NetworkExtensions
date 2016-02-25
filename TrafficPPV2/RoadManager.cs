@@ -1,6 +1,6 @@
 ﻿using System;
 using ColossalFramework;
-using Transit.Framework.Light;
+using Transit.Framework.Network;
 
 namespace CSL_Traffic
 {
@@ -29,9 +29,9 @@ namespace CSL_Traffic
 
             if (laneIndex < laneCount)
             {
-                NetInfoLane netInfoLane = netInfo.m_lanes[laneIndex] as NetInfoLane;
+                ExtendedNetInfoLane netInfoLane = netInfo.m_lanes[laneIndex] as ExtendedNetInfoLane;
                 if (netInfoLane != null)
-                    lane.m_vehicleTypes = netInfoLane.m_allowedVehicleTypes;
+                    lane.m_vehicleTypes = netInfoLane.AllowedVehicleTypes;
 
                 lane.m_speed = netInfo.m_lanes[laneIndex].m_speedLimit;
             }
