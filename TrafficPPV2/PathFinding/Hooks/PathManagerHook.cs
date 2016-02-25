@@ -5,12 +5,12 @@ using UnityEngine;
 
 namespace CSL_Traffic
 {
-    public class CustomPathManagerProxy : PathManager
+    public class PathManagerHook : PathManager
     {
         [RedirectFrom(typeof(PathManager))]
         protected override void Awake()
         {
-            Logger.LogInfo("CustomPathManager hooked");
+            Logger.LogInfo("PathManager hook installed");
 
             this.m_simulationProfiler = new ThreadProfiler();
             typeof(PathManager)

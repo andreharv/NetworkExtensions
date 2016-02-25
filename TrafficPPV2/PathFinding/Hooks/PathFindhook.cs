@@ -6,7 +6,7 @@ using Transit.Framework.Redirection;
 
 namespace CSL_Traffic
 {
-    public class CustomPathFindProxy : PathFind
+    public class PathFindHook : PathFind
     {
         [RedirectFrom(typeof(PathFind))]
         private void Awake()

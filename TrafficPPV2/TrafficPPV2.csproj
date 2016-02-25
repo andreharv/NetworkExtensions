@@ -69,8 +69,8 @@
     <Compile Include="AI\_Extensions\CarAIExtensions.cs" />
     <Compile Include="AI\_Extensions\CitizenAIExtensions.cs" />
     <Compile Include="AI\_Extensions\VehicleInfoExtensions.cs" />
-    <Compile Include="PathFinding\CustomPathFindProxy.cs" />
-    <Compile Include="PathFinding\Extensions\NetSegmentExtensions.cs" />
+    <Compile Include="PathFinding\Hooks\PathFindHook.cs" />
+    <Compile Include="PathFinding\_Extensions\NetSegmentExtensions.cs" />
     <Compile Include="PathFinding\CustomPathManager.cs" />
     <Compile Include="PathFinding\CustomPathManager.FindPathPosition.cs" />
     <Compile Include="PathFinding\CustomPathManager.CreatePath.cs" />
@@ -82,7 +82,7 @@
     <Compile Include="Logger.cs" />
     <Compile Include="OptionsManager.cs" />
     <Compile Include="PathFinding\CustomPathFind.cs" />
-    <Compile Include="PathFinding\CustomPathManagerProxy.cs" />
+    <Compile Include="PathFinding\Hooks\PathManagerHook.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoadManager.LaneSerializer.cs" />
     <Compile Include="RoadManager.cs" />
