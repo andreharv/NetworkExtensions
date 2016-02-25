@@ -3,7 +3,6 @@ using ColossalFramework.Math;
 using ColossalFramework.UI;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Threading;
 using Transit.Framework;
 using Transit.Framework.Network;
@@ -16,7 +15,7 @@ namespace CSL_Traffic
 	 * This is the class responsible for pathfinding. It's all in here since none of the methods can be overwritten.
 	 * There's a lot of small changes here and there to make it generate a correct path for the service vehicles using pedestrian paths.
 	 */
-	public class ExtendedPathFind : PathFind
+    public class ExtendedPathFind : IExtendedPathFind
 	{
         protected struct BufferItem
         {
@@ -97,22 +96,13 @@ namespace CSL_Traffic
 
         protected VehicleInfo.VehicleType m_vehicleTypes;
 
-        public new bool IsAvailable
-        {
-            get
-            {
-                return this.m_pathFindThread.IsAlive;
-            }
-        }
-
         // TAM Extensions
 		protected ExtendedVehicleType m_vehicleTypeExtended = ExtendedVehicleType.Unknown;
 		protected readonly Dictionary<uint, ExtendedVehicleType> m_pathVehicleType = new Dictionary<uint, ExtendedVehicleType>();
         // TAM Extensions
 
-		protected virtual void Awake()
+        public virtual void OnAwake()
         {
-            this.m_pathfindProfiler = new ThreadProfiler();
             this.m_laneLocation = new uint[262144];
             this.m_laneTarget = new PathUnit.Position[262144];
             this.m_buffer = new BufferItem[65536];
@@ -135,7 +125,7 @@ namespace CSL_Traffic
                 .SetValue(this, this.m_pathFindThread);
 		}
 
-        protected virtual void OnDestroy()
+        public virtual void OnDestroy()
 		{
 			while (!Monitor.TryEnter(this.m_queueLock, SimulationManager.SYNCHRONIZE_TIMEOUT))
 			{
@@ -150,12 +140,6 @@ namespace CSL_Traffic
 				Monitor.Exit(this.m_queueLock);
 			}
 		}
-
-        [RedirectFrom(typeof(PathFind))]
-        public new bool CalculatePath(uint unit, bool skipQueue)
-        {
-            return CalculatePath(unit, skipQueue, ExtendedVehicleType.Unknown);
-        }
 
         public virtual bool CalculatePath(uint unit, bool skipQueue, ExtendedVehicleType vehicleType)
 		{
@@ -196,7 +180,7 @@ namespace CSL_Traffic
 					PathUnit[] expr_BD_cp_0 = this.m_pathUnits.m_buffer;
 					UIntPtr expr_BD_cp_1 = (UIntPtr)unit;
 					expr_BD_cp_0[(int)expr_BD_cp_1].m_pathFindFlags = (byte)(expr_BD_cp_0[(int)expr_BD_cp_1].m_pathFindFlags | 1);
-					this.m_queuedPathFindCount++;
+                    Facade.m_queuedPathFindCount++;
 					Monitor.Pulse(this.m_queueLock);
 				}
 				finally
@@ -1274,11 +1258,11 @@ namespace CSL_Traffic
                     if (this.m_queueFirst == 0u)
                     {
                         this.m_queueLast = 0u;
-                        this.m_queuedPathFindCount = 0;
+                        Facade.m_queuedPathFindCount = 0;
                     }
                     else
                     {
-                        this.m_queuedPathFindCount--;
+                        Facade.m_queuedPathFindCount--;
                     }
                     this.m_pathUnits.m_buffer[(int)((UIntPtr)this.m_calculating)].m_nextPathUnit = 0u;
                     this.m_pathUnits.m_buffer[(int)((UIntPtr)this.m_calculating)].m_pathFindFlags = (byte)(((int)this.m_pathUnits.m_buffer[(int)((UIntPtr)this.m_calculating)].m_pathFindFlags & -2) | 2);
@@ -1289,14 +1273,14 @@ namespace CSL_Traffic
                 }
                 try
                 {
-                    this.m_pathfindProfiler.BeginStep();
+                    Facade.m_pathfindProfiler.BeginStep();
                     try
                     {
                         this.PathFindImplementation(this.m_calculating, ref this.m_pathUnits.m_buffer[(int)((UIntPtr)this.m_calculating)]);
                     }
                     finally
                     {
-                        this.m_pathfindProfiler.EndStep();
+                        Facade.m_pathfindProfiler.EndStep();
                     }
                 }
                 catch (Exception ex)
@@ -1322,6 +1306,13 @@ namespace CSL_Traffic
                     Monitor.Exit(this.m_queueLock);
                 }
             }
+        }
+
+        public ExtendedPathFindFacade Facade { get; set; }
+
+        Thread IExtendedPathFind.PathFindThread
+        {
+            get { return m_pathFindThread; }
         }
     }   
 }
