@@ -1282,22 +1282,22 @@ namespace CSL_Traffic
 
 		private void GetLaneDirection(PathUnit.Position pathPos, out NetInfo.Direction direction, out NetInfo.LaneType type)
 		{
-		NetManager instance = Singleton<NetManager>.instance;
-		NetInfo info = instance.m_segments.m_buffer[(int)pathPos.m_segment].Info;
-		if (info.m_lanes.Length > (int)pathPos.m_lane)
-		{
-			direction = info.m_lanes[(int)pathPos.m_lane].m_finalDirection;
-			type = info.m_lanes[(int)pathPos.m_lane].m_laneType;
-			if ((instance.m_segments.m_buffer[(int)pathPos.m_segment].m_flags & NetSegment.Flags.Invert) != NetSegment.Flags.None)
-			{
-				direction = NetInfo.InvertDirection(direction);
-			}
-		}
-		else
-		{
-			direction = NetInfo.Direction.None;
-			type = NetInfo.LaneType.None;
-		}
+		    NetManager instance = Singleton<NetManager>.instance;
+		    NetInfo info = instance.m_segments.m_buffer[(int)pathPos.m_segment].Info;
+		    if (info.m_lanes.Length > (int)pathPos.m_lane)
+		    {
+			    direction = info.m_lanes[(int)pathPos.m_lane].m_finalDirection;
+			    type = info.m_lanes[(int)pathPos.m_lane].m_laneType;
+			    if ((instance.m_segments.m_buffer[(int)pathPos.m_segment].m_flags & NetSegment.Flags.Invert) != NetSegment.Flags.None)
+			    {
+				    direction = NetInfo.InvertDirection(direction);
+			    }
+		    }
+		    else
+		    {
+			    direction = NetInfo.Direction.None;
+			    type = NetInfo.LaneType.None;
+		    }
 		}
 
 		private void PathFindThread()
