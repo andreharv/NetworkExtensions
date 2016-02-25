@@ -63,7 +63,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway6L
             info.m_pavementWidth = 2;
             if (version == NetInfoVersion.Tunnel)
             {
-                info.m_setVehicleFlags = Vehicle.Flags.Transition;
+                info.m_setVehicleFlags = Vehicle.Flags.Transition | Vehicle.Flags.Underground;
                 info.m_class = highwayTunnelInfo.m_class.Clone(NetInfoClasses.NEXT_HIGHWAY6L_TUNNEL);
             }
             else
