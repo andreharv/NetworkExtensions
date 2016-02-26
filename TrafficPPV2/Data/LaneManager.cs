@@ -4,9 +4,9 @@ using Transit.Framework.Network;
 
 namespace CSL_Traffic
 {
-    public static partial class RoadManager
+    public static class LaneManager
     {
-        static Lane[] sm_lanes = new Lane[NetManager.MAX_LANE_COUNT];
+        internal static Lane[] sm_lanes = new Lane[NetManager.MAX_LANE_COUNT];
 
         public static Lane CreateLane(uint laneId)
         {

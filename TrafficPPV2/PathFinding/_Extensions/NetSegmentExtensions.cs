@@ -24,7 +24,7 @@ namespace CSL_Traffic
                     while (num3 < info.m_lanes.Length && num2 != 0u)
                     {
                         NetInfo.Lane lane = info.m_lanes[num3];
-                        if (lane.CheckType(laneTypes, vehicleTypes) && RoadManager.CanUseLane(vehicleTypeExtended, num2))
+                        if (lane.CheckType(laneTypes, vehicleTypes) && LaneManager.CanUseLane(vehicleTypeExtended, num2))
                         {
                             Vector3 vector;
                             float num4;
@@ -64,7 +64,7 @@ namespace CSL_Traffic
                     while (num3 < info.m_lanes.Length && num2 != 0u)
                     {
                         NetInfo.Lane lane = info.m_lanes[num3];
-                        if (lane.CheckType(laneTypes, vehicleTypes, stopTypes) && RoadManager.CanUseLane(vehicleTypeExtended, num2))
+                        if (lane.CheckType(laneTypes, vehicleTypes, stopTypes) && LaneManager.CanUseLane(vehicleTypeExtended, num2))
                         {
                             Vector3 vector;
                             float num4;
@@ -107,7 +107,7 @@ namespace CSL_Traffic
                     while (num4 < info.m_lanes.Length && num3 != 0u)
                     {
                         NetInfo.Lane lane = info.m_lanes[num4];
-                        if (lane.CheckType(laneTypes, vehicleTypes, stopTypes) && (lane.m_allowConnect || !requireConnect) && RoadManager.CanUseLane(vehicleTypeExtended, num3))
+                        if (lane.CheckType(laneTypes, vehicleTypes, stopTypes) && (lane.m_allowConnect || !requireConnect) && LaneManager.CanUseLane(vehicleTypeExtended, num3))
                         {
                             Vector3 vector;
                             float num5;

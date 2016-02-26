@@ -374,7 +374,7 @@ namespace CSL_Traffic
             if (calculatedSpeed == 0f || (TrafficMod.Options & OptionsManager.ModOptions.RoadCustomizerTool) == OptionsManager.ModOptions.None)
                 return calculatedSpeed;
 
-            float speedLimit = RoadManager.GetLaneSpeed(laneId);
+            float speedLimit = LaneManager.GetLaneSpeed(laneId);
             float curve = NetManager.instance.m_lanes.m_buffer[laneId].m_curve;
 
             float a = 1000f / (1f + curve * 1000f / info.m_turning) + 2f;
