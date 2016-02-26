@@ -24,11 +24,11 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
                     info.SetAllSegmentsTexture(
                         new TextureSet
                            (null,
-                            @"Roads\PedestrianRoads\Textures\Ground_Segment__AlphaMap.png"));
+                            @"Roads\PedestrianRoads\Textures\Stone16m\Ground_Segment__AlphaMap.png"));
                     info.SetAllNodesTexture(
                         new TextureSet
                            (null,
-                            @"Roads\PedestrianRoads\Textures\Ground_Segment__AlphaMap.png"));
+                            @"Roads\PedestrianRoads\Textures\Stone16m\Ground_Segment__AlphaMap.png"));
                     break;
             }
 

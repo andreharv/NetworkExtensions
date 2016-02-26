@@ -61,6 +61,7 @@
     <Compile Include="Props\MediumAvenueSideLightBuilder.cs" />
     <Compile Include="Props\LargeAvenueMedianLightBuilder.cs" />
     <Compile Include="Roads\Common\RoadHelper.LaneSetup.cs" />
+    <Compile Include="Roads\Common\RoadModels.8m.NoSW.cs" />
     <Compile Include="Roads\Common\RoadModels.16m.NoSW.cs" />
     <Compile Include="Roads\Highways\VanillaHighwayMenuModifier.cs" />
     <Compile Include="Props\BusLaneTextPropBuilder.cs" />
@@ -75,8 +76,10 @@
     <Compile Include="RExModule.Install.Assets.cs" />
     <Compile Include="RExModule.Install.Init.cs" />
     <Compile Include="Menus\RExExtendedMenus.cs" />
-    <Compile Include="Roads\PedestrianRoads\ZonablePedestrianStoneBuilder.cs" />
-    <Compile Include="Roads\PedestrianRoads\ZonablePedestrianStoneBuilder.Texturing.cs" />
+    <Compile Include="Roads\PedestrianRoads\ZonablePedestrianStone8mBuilder.Texturing.cs" />
+    <Compile Include="Roads\PedestrianRoads\ZonablePedestrianStone8mBuilder.cs" />
+    <Compile Include="Roads\PedestrianRoads\ZonablePedestrianStone16mBuilder.cs" />
+    <Compile Include="Roads\PedestrianRoads\ZonablePedestrianStone16mBuilder.Texturing.cs" />
     <Compile Include="Roads\TinyRoads\TinyRoadMenuModifier.cs" />
     <Compile Include="Roads\TinyRoads\Alley2L\Alley2LBuilder.cs" />
     <Compile Include="Roads\Common\CenterLaneType.cs" />
@@ -672,19 +675,37 @@
     <Content Include="Menus\Textures\RExExtendedSubBar.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Ground_Node__MainTex.png">
+    <Content Include="Roads\PedestrianRoads\Textures\Stone16m\Ground_Node__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Ground_Node__XYSMap.png">
+    <Content Include="Roads\PedestrianRoads\Textures\Stone16m\Ground_Node__XYSMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Ground_Segment__MainTex.png">
+    <Content Include="Roads\PedestrianRoads\Textures\Stone16m\Ground_Segment__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Ground_Segment__XYSMap.png">
+    <Content Include="Roads\PedestrianRoads\Textures\Stone16m\Ground_Segment__XYSMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Ground_Trans__AlphaMap.png">
+    <Content Include="Roads\PedestrianRoads\Textures\Stone16m\Ground_Trans__AlphaMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\PedestrianRoads\Textures\Stone8m\Ground_Trans__AlphaMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\PedestrianRoads\Textures\Stone8m\Ground_Node__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\PedestrianRoads\Textures\Stone8m\Ground_Node__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\PedestrianRoads\Textures\Stone8m\Ground_Segment__AlphaMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\PedestrianRoads\Textures\Stone8m\Ground_Segment__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\PedestrianRoads\Textures\Stone8m\Ground_Segment__XYSMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\TinyRoads\Alley2L\thumbnails.png">
@@ -1722,7 +1743,7 @@
     <Content Include="Roads\PedestrianRoads\infotooltip_pavement.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Ground_Segment__AlphaMap.png">
+    <Content Include="Roads\PedestrianRoads\Textures\Stone16m\Ground_Segment__AlphaMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\PedestrianRoads\thumbnails_gravel.png">
@@ -1946,6 +1967,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\Common\Meshes\8m\2mSW\Ground_Node_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\8m\NoSW\Ground.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\8m\NoSW\Ground_Node.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\8m\NoSW\Ground_Trans.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\Highways\Common\Meshes\16m\Elevated.obj">

@@ -9,15 +9,15 @@ using Transit.Framework.Light;
 
 namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
 {
-    public partial class ZonablePedestrianStoneBuilder : Activable, INetInfoBuilderPart
+    public partial class ZonablePedestrianStone8mBuilder : Activable, INetInfoBuilderPart
     {
         public int Order { get { return 30; } }
         public int UIOrder { get { return 10; } }
 
-        public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_2L_BIKE; } }
-        public string Name { get { return "Stone Ped Road 16m"; } }
-        public string DisplayName { get { return "Medium Stone Pedestrian Road"; } }
-        public string Description { get { return "Pedestrian Roads are only accessible to pedestrians, cyclists, and emergency vehicles"; } }
+        public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_2L; } }
+        public string Name { get { return "Stone Ped Road 8m"; } }
+        public string DisplayName { get { return "Small Stone Pedestrian Road"; } }
+        public string Description { get { return "Small paved pedestrian Roads are only accessible to pedestrians and emergency vehicles"; } }
         public string ShortDescription { get { return "No Passenger Vehicles, zoneable"; } }
         public string UICategory { get { return RExExtendedMenus.ROADS_PEDESTRIANS; } }
 
@@ -42,7 +42,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
             ///////////////////////////
             // 3DModeling            //
             ///////////////////////////
-            info.Setup16mNoSWMesh(version);
+            info.Setup8mNoSWMesh(version);
 
 
             ///////////////////////////
@@ -61,10 +61,17 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
             //info.m_averageVehicleLaneSpeed = 0.3f;
             info.m_hasParkingSpaces = false;
             info.m_hasPedestrianLanes = true;
-            info.m_halfWidth = 8;
+            info.m_halfWidth = 4;
             info.m_UnlockMilestone = basicRoadInfo.m_UnlockMilestone;
             info.m_pavementWidth = 2;
             info.m_dlcRequired = SteamHelper.DLC_BitMask.AfterDarkDLC;
+            var pedModdedLanes = info.SetupPedestrianLanes(version, new LanesConfiguration() { PedPropOffsetX = 4.5f });
+            var tempOtherLanes = info.m_lanes.Where(l => l.m_laneType != NetInfo.LaneType.Pedestrian);
+            var tempLanes = new List<NetInfo.Lane>();
+            tempLanes.AddRange(pedModdedLanes);
+            tempLanes.AddRange(tempOtherLanes);
+            info.m_lanes = tempLanes.ToArray();
+
             if (version == NetInfoVersion.Tunnel)
             {
                 info.m_setVehicleFlags = Vehicle.Flags.Transition;
@@ -77,25 +84,16 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
 
             // Setting up lanes
             var vehicleLanes = info.m_lanes.Where(l => l.m_laneType == NetInfo.LaneType.Vehicle).ToList();
-            var bikeLaneWidth = 2;
-            var bikeLanePosAbs = 1;
             var sVehicleLaneWidth = 2.5f;
-            var sVehicleLanePosAbs = 4f;
+            var sVehicleLanePosAbs = 1.25f;
             var tempVLanes = new List<NetInfo.Lane>();
             for (int i = 0; i < vehicleLanes.Count; i++)
             {
                 vehicleLanes[i].m_verticalOffset = 0f;
-                if (vehicleLanes[i].m_vehicleType == VehicleInfo.VehicleType.Bicycle)
+                if (vehicleLanes[i].m_vehicleType == VehicleInfo.VehicleType.Car)
                 {
-                    vehicleLanes[i].m_position = (Math.Abs(vehicleLanes[i].m_position) / vehicleLanes[i].m_position) * bikeLanePosAbs;
-                    vehicleLanes[i].m_width = bikeLaneWidth;
-                    tempVLanes.Add(vehicleLanes[i]);
-                }
-                else if (vehicleLanes[i].m_vehicleType == VehicleInfo.VehicleType.Car)
-                {
-                    var niLane = new NetInfoLane(vehicleLanes[i])
+                    var niLane = new NetInfoLane(vehicleLanes[i], ExtendedVehicleType.ServiceVehicles)
                     {
-                        m_allowedVehicleTypes = VehicleType.ServiceVehicles,
                         m_position = (Math.Abs(vehicleLanes[i].m_position) / vehicleLanes[i].m_position) * sVehicleLanePosAbs,
                         m_width = sVehicleLaneWidth,
                         m_speedLimit = 0.3f
@@ -104,10 +102,10 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
                 }
             }
             var pedLanes = info.m_lanes.Where(l => l.m_laneType == NetInfo.LaneType.Pedestrian).OrderBy(l => l.m_position).ToList();
-            pedLanes[0].m_position = -5;
-            pedLanes[0].m_width = -6;
-            pedLanes[1].m_position = 5;
-            pedLanes[1].m_width = 6;
+            pedLanes[0].m_position = 0;
+            pedLanes[0].m_width = 8;
+            pedLanes[1].m_position = 0;
+            pedLanes[1].m_width = 8;
 
             var roadCollection = new List<NetInfo.Lane>();
             roadCollection.AddRange(tempVLanes);

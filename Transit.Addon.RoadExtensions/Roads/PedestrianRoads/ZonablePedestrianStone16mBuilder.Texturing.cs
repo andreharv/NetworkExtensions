@@ -4,7 +4,7 @@ using Transit.Framework.Texturing;
 
 namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
 {
-    public partial class ZonablePedestrianStoneBuilder
+    public partial class ZonablePedestrianStone16mBuilder
     {
         private static void SetupTextures(NetInfo info, NetInfoVersion version)
         {
@@ -13,25 +13,25 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
                 case NetInfoVersion.Ground:
                     info.SetAllSegmentsTexture(
                         new TextureSet
-                           (@"Roads\PedestrianRoads\Textures\Ground_Segment__MainTex.png",
-                            @"Roads\PedestrianRoads\Textures\Ground_Segment__AlphaMap.png",
-                            @"Roads\PedestrianRoads\Textures\Ground_Segment__XYSMap.png"));
+                           (@"Roads\PedestrianRoads\Textures\Stone16m\Ground_Segment__MainTex.png",
+                            @"Roads\PedestrianRoads\Textures\Stone16m\Ground_Segment__AlphaMap.png",
+                            @"Roads\PedestrianRoads\Textures\Stone16m\Ground_Segment__XYSMap.png"));
                     for (int i = 0; i < info.m_nodes.Length; i++)
                     {
                         if (info.m_nodes[i].m_mesh.name.ToLower().IndexOf("trans") == -1)
                         {
                             info.m_nodes[i].SetTextures(
                                 new TextureSet
-                                   (@"Roads\PedestrianRoads\Textures\Ground_Node__MainTex.png",
-                                    @"Roads\PedestrianRoads\Textures\Ground_Segment__AlphaMap.png",
-                                    @"Roads\PedestrianRoads\Textures\Ground_Node__XYSMap.png"));
+                                   (@"Roads\PedestrianRoads\Textures\Stone16m\Ground_Node__MainTex.png",
+                                    @"Roads\PedestrianRoads\Textures\Stone16m\Ground_Segment__AlphaMap.png",
+                                    @"Roads\PedestrianRoads\Textures\Stone16m\Ground_Node__XYSMap.png"));
                         }
                         else
                         {
                             info.m_nodes[i].SetTextures(
                                 new TextureSet
-                                   (@"Roads\PedestrianRoads\Textures\Ground_Node__MainTex.png",
-                                    @"Roads\PedestrianRoads\Textures\Ground_Trans__AlphaMap.png"));
+                                   (@"Roads\PedestrianRoads\Textures\Stone16m\Ground_Node__MainTex.png",
+                                    @"Roads\PedestrianRoads\Textures\Stone16m\Ground_Trans__AlphaMap.png"));
                         }
                     }
 
