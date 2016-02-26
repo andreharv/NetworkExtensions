@@ -31,6 +31,8 @@ namespace Transit.Framework.Network
         Plane          = 1 << 22,
         Bicycle        = 1 << 23,
         Citizen        = 1 << 24,
+        SnowTruck      = 1 << 25,
+        Taxi           = 1 << 26,
 
         Unknown        = 1 << 31,
     }

@@ -893,13 +893,6 @@ namespace CSL_Traffic
                 return false;
             }
 
-            // TAM Restrictions
-            if (!RoadManager.CanUseLane(this.m_vehicleTypeExtended, item.m_laneID))
-            {
-                return false;
-            }
-            // TAM Restrictions
-
             bool result = false;
             NetManager instance = Singleton<NetManager>.instance;
             NetInfo info = segment.Info;
@@ -1014,7 +1007,8 @@ namespace CSL_Traffic
                 if ((byte)(lane2.m_finalDirection & direction2) != 0 &&
                 // TAM Restrictions
                     RoadManager.CheckLaneConnection(this.m_vehicleTypeExtended, num2, item.m_laneID) &&
-                    RoadManager.CanUseLane(this.m_vehicleTypeExtended, num2))
+                    RoadManager.CanUseLane(this.m_vehicleTypeExtended, num2) &&
+                    RoadManager.CanUseLane(this.m_vehicleTypeExtended, item.m_laneID))
                 // TAM Restrictions
                 {
                     if (lane2.CheckType(laneType2, vehicleType2) && (segmentID != item.m_position.m_segment || num12 != (int)item.m_position.m_lane) && (byte)(lane2.m_finalDirection & direction2) != 0)

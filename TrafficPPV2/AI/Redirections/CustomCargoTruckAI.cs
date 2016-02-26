@@ -25,12 +25,10 @@ namespace CSL_Traffic
                 m_info.ApplySpeedMultiplier(CarSpeedData.Of(vehicleID));
             }
 
-            if ((data.m_flags & Vehicle.Flags.Congestion) != Vehicle.Flags.None)
+            if (((data.m_flags & Vehicle.Flags.Congestion) != Vehicle.Flags.None) &&
+                ((TrafficMod.Options & OptionsManager.ModOptions.NoDespawn) != OptionsManager.ModOptions.NoDespawn))
             {
-                if ((TrafficMod.Options & OptionsManager.ModOptions.NoDespawn) != OptionsManager.ModOptions.NoDespawn)
-                {
-                    Singleton<VehicleManager>.instance.ReleaseVehicle(vehicleID);
-                }
+                Singleton<VehicleManager>.instance.ReleaseVehicle(vehicleID);
             }
             else
             {
