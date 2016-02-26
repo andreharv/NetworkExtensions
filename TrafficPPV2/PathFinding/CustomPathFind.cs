@@ -250,7 +250,7 @@ namespace CSL_Traffic
                 this.m_vehicleTypeExtended = ExtendedVehicleType.Unknown;
             }
 
-            Logger.LogInfo("PathFindImplementation of " + m_vehicleTypeExtended);
+            //Logger.LogInfo("PathFindImplementation of " + m_vehicleTypeExtended);
 
             this.m_priorityVehicle = (this.m_vehicleTypeExtended & (ExtendedVehicleType.Bus | ExtendedVehicleType.EmergencyVehicles)) != ExtendedVehicleType.None;
 
