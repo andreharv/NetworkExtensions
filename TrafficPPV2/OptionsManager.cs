@@ -123,13 +123,37 @@ namespace CSL_Traffic
 
                 TrafficMod.Options = ModOptions.None;
                 if (options.realisticSpeeds)
+                {
+                    Logger.LogInfo("Option UseRealisticSpeeds");
                     TrafficMod.Options |= ModOptions.UseRealisticSpeeds;
+                }
+                else
+                {
+                    Logger.LogInfo("Option UseRealisticSpeeds Disabled");
+                    TrafficMod.Options &= ~ModOptions.UseRealisticSpeeds;
+                }
 
                 if (options.noDespawn)
+                {
+                    Logger.LogInfo("Option NoDespawn");
                     TrafficMod.Options |= ModOptions.NoDespawn;
+                }
+                else
+                {
+                    Logger.LogInfo("Option NoDespawn Disabled");
+                    TrafficMod.Options &= ~ModOptions.NoDespawn;
+                }
 
                 if (options.betaTestRoadCustomizer)
+                {
+                    Logger.LogInfo("Option RoadCustomizerTool");
                     TrafficMod.Options |= ModOptions.RoadCustomizerTool;
+                }
+                else
+                {
+                    Logger.LogInfo("Option RoadCustomizerTool Disabled");
+                    TrafficMod.Options &= ~ModOptions.RoadCustomizerTool;
+                }
             }
             catch (Exception e)
             {
