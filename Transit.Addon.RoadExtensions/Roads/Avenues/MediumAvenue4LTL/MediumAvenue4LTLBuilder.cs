@@ -3,6 +3,7 @@ using Transit.Addon.RoadExtensions.Props;
 using Transit.Addon.RoadExtensions.Roads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
+using Transit.Framework.Network;
 
 namespace Transit.Addon.RoadExtensions.Roads.Avenues.MediumAvenue4LTL
 {
@@ -54,6 +55,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.MediumAvenue4LTL
 
             if (version == NetInfoVersion.Tunnel)
             {
+                info.m_setVehicleFlags = Vehicle.Flags.Transition | Vehicle.Flags.Underground;
+                info.m_setCitizenFlags = CitizenInstance.Flags.Transition | CitizenInstance.Flags.Underground;
                 info.m_class = roadTunnelInfo.m_class.Clone(NetInfoClasses.NEXT_MEDIUM_ROAD_TL_TUNNEL);
             }
             else if (version == NetInfoVersion.Bridge)

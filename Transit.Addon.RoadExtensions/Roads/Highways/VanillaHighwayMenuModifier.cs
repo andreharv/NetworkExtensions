@@ -1,6 +1,7 @@
 ﻿using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.Modularity;
+using Transit.Framework.Network;
 
 namespace Transit.Addon.RoadExtensions.Roads.Highways
 {

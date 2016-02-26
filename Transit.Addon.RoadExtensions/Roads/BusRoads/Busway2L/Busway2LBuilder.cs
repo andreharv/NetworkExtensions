@@ -2,9 +2,10 @@
 using System.Linq;
 using Transit.Addon.RoadExtensions.Compatibility;
 using Transit.Addon.RoadExtensions.Menus;
+using Transit.Addon.RoadExtensions.Menus.Roads;
 using Transit.Framework;
 using Transit.Framework.Builders;
-using Transit.Framework.Light;
+using Transit.Framework.Network;
 using Transit.Framework.Texturing;
 
 namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L
@@ -224,7 +225,7 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L
                     lane.m_laneType = NetInfo.LaneType.TransportVehicle;
                     lane.SetBusLaneProps();
 
-                    info.m_lanes[i] = new NetInfoLane(lane, ExtendedVehicleType.Bus | ExtendedVehicleType.EmergencyVehicles);
+                    info.m_lanes[i] = new ExtendedNetInfoLane(lane, ExtendedVehicleType.Bus | ExtendedVehicleType.EmergencyVehicles);
                 }
             }
 

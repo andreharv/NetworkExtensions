@@ -1,8 +1,8 @@
 ﻿using System;
 using ColossalFramework;
 using ColossalFramework.Math;
-using Transit.Framework.Extenders.AI;
-using Transit.Framework.Unsafe;
+using Transit.Framework.ExtensionPoints.AI;
+using Transit.Framework.Redirection;
 using UnityEngine;
 
 namespace Transit.Framework.Hooks.AI
@@ -16,10 +16,9 @@ namespace Transit.Framework.Hooks.AI
         {
             try
             {
-                if (ZoneBlocksCreatorProvider.instance.HasCustomCreator(this.m_info.name))
+                if (RoadZoneBlocksCreationManager.HasCustomCreator(this.m_info.name))
                 {
-                    ZoneBlocksCreatorProvider
-                        .instance
+                    RoadZoneBlocksCreationManager
                         .GetCustomCreator(this.m_info.name)
                         .CreateZoneBlocks(this.m_info, segment, ref data);
                 }

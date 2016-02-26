@@ -53,6 +53,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activable.cs" />
+    <Compile Include="AtlasManager.cs" />
+    <Compile Include="Builders\IAtlasBuilder.cs" />
+    <Compile Include="Builders\IToolBuilder.cs" />
+    <Compile Include="Builders\ToolBuilder.cs" />
+    <Compile Include="Modularity\ModuleBase.Install.cs" />
+    <Compile Include="Mod\TransitModBase.Install.Assets.cs" />
+    <Compile Include="Mod\TransitModBase.Install.cs" />
+    <Compile Include="Mod\TransitModBase.Install.Localization.cs" />
+    <Compile Include="Network\ExtendedNetInfoLane.cs" />
+    <Compile Include="Network\ExtendedVehicleType.cs" />
+    <Compile Include="Network\NetInfoClasses.cs" />
     <Compile Include="Texturing\ITextureBlenderComponent.cs" />
     <Compile Include="Texturing\PathTextureProvider.cs" />
     <Compile Include="Texturing\Point.cs" />
@@ -85,7 +96,7 @@
     <Compile Include="Mod\TransitModBase.LoadingExtension.cs" />
     <Compile Include="Mod\TransitModBase.Modules.cs" />
     <Compile Include="Mod\TransitModBase.Settings.cs" />
-    <Compile Include="NetInfoVersion.cs" />
+    <Compile Include="Network\NetInfoVersion.cs" />
     <Compile Include="Notification.cs" />
     <Compile Include="Assets.cs" />
     <Compile Include="Builders\MenuItemBuilder.cs" />
@@ -96,9 +107,9 @@
     <Compile Include="_Extensions\CollectionExtensions.cs" />
     <Compile Include="_Extensions\NetLanePropsExtensions.cs" />
     <Compile Include="_Extensions\ObjectExtensions.cs" />
-    <Compile Include="_Extensions\PrefabBuilderExtensions.cs" />
+    <Compile Include="Builders\_Extensions\PrefabBuilderExtensions.cs" />
     <Compile Include="_Extensions\GameObjectExtensions.cs" />
-    <Compile Include="_Extensions\NetInfoBuilderExtensions.cs" />
+    <Compile Include="Builders\_Extensions\NetInfoBuilderExtensions.cs" />
     <Compile Include="_Extensions\NetInfoExtensions.Lane.cs" />
     <Compile Include="_Extensions\NetInfoExtensions.Segment.cs" />
     <Compile Include="_Extensions\NetInfoExtensions.Node.cs" />
@@ -116,6 +127,7 @@
     <Compile Include="_Extensions\NetInfoExtensions.cs" />
     <Compile Include="_Extensions\PluginManagerExtensions.cs" />
     <Compile Include="_Extensions\TextureSetExtensions.cs" />
+    <Compile Include="_Extensions\ToolControllerExtensions.cs" />
     <Compile Include="_Extensions\TypeExtensions.cs" />
     <Compile Include="Modularity\IActivablePart.cs" />
     <Compile Include="Modularity\ICompatibilityPart.cs" />
@@ -128,8 +140,8 @@
     <Compile Include="Prefabs.cs" />
     <Compile Include="Tools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="NetInfos.cs" />
-    <Compile Include="_Extensions\UIExtensions.cs" />
+    <Compile Include="Network\NetInfos.cs" />
+    <Compile Include="_Extensions\UIHelperBaseExtensions.cs" />
     <Compile Include="_Extensions\XmlExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

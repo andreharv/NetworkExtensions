@@ -28,7 +28,6 @@ namespace Transit.Framework.Mod
 
             try
             {
-                var assetPath = this.GetAssetPath();
                 var moduleType = typeof(IModule);
                 var modType = this.GetType();
 
@@ -57,17 +56,17 @@ namespace Transit.Framework.Mod
                         try
                         {
                             var module = (IModule)Activator.CreateInstance(t);
-                            Debug.Log(string.Format("TAM: Loading module {0}", module.Name));
+                            Debug.Log(string.Format("TFW: Loading module {0}", module.Name));
 
-                            module.AssetPath = assetPath;
+                            module.AssetPath = AssetPath;
                             module.SaveSettingsNeeded += SaveSettings;
                             return module;
                         }
                         catch (Exception ex)
                         {
-                            Debug.Log("TAM: Crashed-Module " + t.Name);
-                            Debug.Log("TAM: " + ex.Message);
-                            Debug.Log("TAM: " + ex.ToString());
+                            Debug.Log("TFW: Crashed-Module " + t.Name);
+                            Debug.Log("TFW: " + ex.Message);
+                            Debug.Log("TFW: " + ex.ToString());
                             return null;
                         }
                     })
@@ -77,9 +76,9 @@ namespace Transit.Framework.Mod
             }
             catch (Exception ex)
             {
-                Debug.Log("TAM: Crashed-Modules");
-                Debug.Log("TAM: " + ex.Message);
-                Debug.Log("TAM: " + ex.ToString());
+                Debug.Log("TFW: Crashed-Modules");
+                Debug.Log("TFW: " + ex.Message);
+                Debug.Log("TFW: " + ex.ToString());
             }
             finally
             {

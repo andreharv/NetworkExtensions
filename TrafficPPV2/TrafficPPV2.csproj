@@ -54,30 +54,37 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AI\Vehicles\CustomAmbulanceAI.cs" />
-    <Compile Include="AI\Vehicles\CustomBusAI.cs" />
-    <Compile Include="AI\Vehicles\CustomCarAI.cs" />
-    <Compile Include="AI\Vehicles\CustomCargoTruckAI.cs" />
-    <Compile Include="AI\Vehicles\CustomFireTruckAI.cs" />
-    <Compile Include="AI\Vehicles\CustomGarbageTruckAI.cs" />
-    <Compile Include="AI\Vehicles\CustomHearseAI.cs" />
-    <Compile Include="AI\Vehicles\CustomPassengerCarAI.cs" />
-    <Compile Include="AI\Vehicles\CustomPoliceCarAI.cs" />
-    <Compile Include="AI\Vehicles\CustomTransportLineAI.cs" />
-    <Compile Include="AI\Vehicles\CustomVehicleAI.cs" />
-    <Compile Include="AI\Vehicles\IVehicle.cs" />
-    <Compile Include="Extensions\NetSegmentExtensions.cs" />
-    <Compile Include="Extensions\PathManagerExtensions.cs" />
+    <Compile Include="AI\Redirections\CustomCitizenAI.cs" />
+    <Compile Include="AI\Redirections\CustomPassengerCarAI.cs" />
+    <Compile Include="AI\Redirections\CustomSnowTruckAI.cs" />
+    <Compile Include="AI\Redirections\CustomTramAI.cs" />
+    <Compile Include="AI\Redirections\CustomVehicleAI.cs" />
+    <Compile Include="AI\Redirections\CustomAmbulanceAI.cs" />
+    <Compile Include="AI\Redirections\CustomBusAI.cs" />
+    <Compile Include="AI\CarSpeedData.cs" />
+    <Compile Include="AI\Redirections\CustomCargoTruckAI.cs" />
+    <Compile Include="AI\Redirections\CustomFireTruckAI.cs" />
+    <Compile Include="AI\Redirections\CustomGarbageTruckAI.cs" />
+    <Compile Include="AI\Redirections\CustomHearseAI.cs" />
+    <Compile Include="AI\Redirections\CustomPoliceCarAI.cs" />
+    <Compile Include="AI\Redirections\CustomTransportLineAI.cs" />
+    <Compile Include="AI\_Extensions\CarAIExtensions.cs" />
+    <Compile Include="AI\_Extensions\CitizenAIExtensions.cs" />
+    <Compile Include="AI\_Extensions\VehicleInfoExtensions.cs" />
+    <Compile Include="PathFinding\Hooks\PathFindHook.cs" />
+    <Compile Include="PathFinding\_Extensions\NetSegmentExtensions.cs" />
+    <Compile Include="PathFinding\CustomPathManager.cs" />
+    <Compile Include="PathFinding\CustomPathManager.FindPathPosition.cs" />
+    <Compile Include="PathFinding\CustomPathManager.CreatePath.cs" />
     <Compile Include="RoadManager.LaneSerializationBinder.cs" />
     <Compile Include="RoadManager.Lane.cs" />
     <Compile Include="TrafficMod.cs" />
-    <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="FileManager.cs" />
     <Compile Include="Initializer.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="OptionsManager.cs" />
     <Compile Include="PathFinding\CustomPathFind.cs" />
-    <Compile Include="PathFinding\CustomPathManager.cs" />
+    <Compile Include="PathFinding\Hooks\PathManagerHook.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoadManager.LaneSerializer.cs" />
     <Compile Include="RoadManager.cs" />
@@ -87,13 +94,13 @@
     <Compile Include="UI\UIUtils.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Transit.Framework.Light\Transit.Framework.Light.csproj">
-      <Project>{fc275c26-1012-474c-b77b-09e366dbc684}</Project>
-      <Name>Transit.Framework.Light</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Transit.Framework.Unsafe\Transit.Framework.Unsafe.csproj">
+    <ProjectReference Include="..\Transit.Framework.Redirection\Transit.Framework.Redirection.csproj">
       <Project>{7dcc08ef-dc85-47a4-bd6f-79fc52c7ef13}</Project>
-      <Name>Transit.Framework.Unsafe</Name>
+      <Name>Transit.Framework.Redirection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Transit.Framework\Transit.Framework.csproj">
+      <Project>{8891467e-c88e-46b0-96f9-4413df6dc205}</Project>
+      <Name>Transit.Framework</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
