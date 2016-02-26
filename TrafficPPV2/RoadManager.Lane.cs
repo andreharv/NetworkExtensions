@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Transit.Framework.Light;
+using Transit.Framework.Network;
 using UnityEngine;
 
 namespace CSL_Traffic

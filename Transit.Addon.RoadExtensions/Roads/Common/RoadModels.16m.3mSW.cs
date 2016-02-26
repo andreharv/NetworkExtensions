@@ -1,4 +1,5 @@
 ﻿using Transit.Framework;
+using Transit.Framework.Network;
 
 namespace Transit.Addon.RoadExtensions.Roads.Common
 {

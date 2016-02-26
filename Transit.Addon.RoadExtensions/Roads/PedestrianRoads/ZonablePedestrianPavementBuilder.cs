@@ -1,6 +1,7 @@
 ﻿using Transit.Addon.RoadExtensions.Compatibility;
 using Transit.Framework;
 using Transit.Framework.Builders;
+using Transit.Framework.Network;
 
 namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
 {

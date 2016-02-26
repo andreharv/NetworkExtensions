@@ -1,7 +1,7 @@
 using ColossalFramework;
 using System;
-using Transit.Framework.Light;
-using Transit.Framework.Unsafe;
+using Transit.Framework.Network;
+using Transit.Framework.Redirection;
 using UnityEngine;
 
 namespace CSL_Traffic
@@ -27,20 +27,20 @@ namespace CSL_Traffic
         //    throw new Exception("FindPathPosition has been called, please implement redirection to custom method");
         //}
 
-	    public static bool FindPathPosition(Vector3 position, ItemClass.Service service, NetInfo.LaneType laneType, VehicleInfo.VehicleType vehicleType, bool allowUnderground, bool requireConnect, float maxDistance, out PathUnit.Position pathPos, ExtendedVehicleType vehicleTypeExtended)
+	    public static bool FindPathPosition(ExtendedVehicleType extendedVehicleType, Vector3 position, ItemClass.Service service, NetInfo.LaneType laneType, VehicleInfo.VehicleType vehicleType, bool allowUnderground, bool requireConnect, float maxDistance, out PathUnit.Position pathPos)
         {
             PathUnit.Position position2;
             float num;
             float num2;
-            return FindPathPosition(position, service, laneType, vehicleType, VehicleInfo.VehicleType.None, allowUnderground, requireConnect, maxDistance, out pathPos, out position2, out num, out num2, vehicleTypeExtended);
+            return FindPathPosition(extendedVehicleType, position, service, laneType, vehicleType, VehicleInfo.VehicleType.None, allowUnderground, requireConnect, maxDistance, out pathPos, out position2, out num, out num2);
         }
 
-        public static bool FindPathPosition(Vector3 position, ItemClass.Service service, NetInfo.LaneType laneType, VehicleInfo.VehicleType vehicleType, bool allowUnderground, bool requireConnect, float maxDistance, out PathUnit.Position pathPosA, out PathUnit.Position pathPosB, out float distanceSqrA, out float distanceSqrB, ExtendedVehicleType vehicleTypeExtended)
+        public static bool FindPathPosition(ExtendedVehicleType extendedVehicleType, Vector3 position, ItemClass.Service service, NetInfo.LaneType laneType, VehicleInfo.VehicleType vehicleType, bool allowUnderground, bool requireConnect, float maxDistance, out PathUnit.Position pathPosA, out PathUnit.Position pathPosB, out float distanceSqrA, out float distanceSqrB)
         {
-            return FindPathPosition(position, service, laneType, vehicleType, VehicleInfo.VehicleType.None, allowUnderground, requireConnect, maxDistance, out pathPosA, out pathPosB, out distanceSqrA, out distanceSqrB, vehicleTypeExtended);
+            return FindPathPosition(extendedVehicleType, position, service, laneType, vehicleType, VehicleInfo.VehicleType.None, allowUnderground, requireConnect, maxDistance, out pathPosA, out pathPosB, out distanceSqrA, out distanceSqrB);
         }
 
-        public static bool FindPathPosition(Vector3 position, ItemClass.Service service, NetInfo.LaneType laneType, VehicleInfo.VehicleType vehicleType, VehicleInfo.VehicleType stopType, bool allowUnderground, bool requireConnect, float maxDistance, out PathUnit.Position pathPosA, out PathUnit.Position pathPosB, out float distanceSqrA, out float distanceSqrB, ExtendedVehicleType vehicleTypeExtended)
+        public static bool FindPathPosition(ExtendedVehicleType extendedVehicleType, Vector3 position, ItemClass.Service service, NetInfo.LaneType laneType, VehicleInfo.VehicleType vehicleType, VehicleInfo.VehicleType stopType, bool allowUnderground, bool requireConnect, float maxDistance, out PathUnit.Position pathPosA, out PathUnit.Position pathPosB, out float distanceSqrA, out float distanceSqrB)
         {
             Bounds bounds = new Bounds(position, new Vector3(maxDistance * 2f, maxDistance * 2f, maxDistance * 2f));
             int num = Mathf.Max((int)((bounds.min.x - 64f) / 64f + 135f), 0);
@@ -80,7 +80,7 @@ namespace CSL_Traffic
                             Vector3 b2;
                             int num12;
                             float num13;
-                            if ((num8 < 0f || num9 < 0f) && instance.m_segments.m_buffer[(int)num6].m_bounds.Intersects(bounds) && instance.m_segments.m_buffer[(int)num6].GetClosestLanePosition(position, laneType, vehicleType, stopType, requireConnect, out b, out num10, out num11, out b2, out num12, out num13, vehicleTypeExtended))
+                            if ((num8 < 0f || num9 < 0f) && instance.m_segments.m_buffer[(int)num6].m_bounds.Intersects(bounds) && instance.m_segments.m_buffer[(int)num6].GetClosestLanePosition(extendedVehicleType, position, laneType, vehicleType, stopType, requireConnect, out b, out num10, out num11, out b2, out num12, out num13))
                             {
                                 float num14 = Vector3.SqrMagnitude(position - b);
                                 if (num14 < num5)

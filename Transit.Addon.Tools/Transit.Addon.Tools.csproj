@@ -57,9 +57,9 @@
     <Compile Include="Zoning\RoadZoneModifierTool.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Transit.Framework.Extenders\Transit.Framework.Extenders.csproj">
-      <Project>{2E44ECA3-D750-4115-B16B-FCA94C49BBA0}</Project>
-      <Name>Transit.Framework.Extenders</Name>
+    <ProjectReference Include="..\Transit.Framework.ExtensionPoints\Transit.Framework.ExtensionPoints.csproj">
+      <Project>{2e44eca3-d750-4115-b16b-fca94c49bba0}</Project>
+      <Name>Transit.Framework.ExtensionPoints</Name>
     </ProjectReference>
     <ProjectReference Include="..\Transit.Framework\Transit.Framework.csproj">
       <Project>{8891467E-C88E-46B0-96F9-4413DF6DC205}</Project>

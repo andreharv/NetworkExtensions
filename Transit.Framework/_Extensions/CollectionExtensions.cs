@@ -17,5 +17,14 @@ namespace Transit.Framework
                 }
             }
         }
+
+        public static void RemoveIfAny<T>(this ICollection<T> collection, T item)
+            where T : class
+        {
+            if (collection.Contains(item))
+            {
+                collection.Remove(item);
+            }
+        }
     }
 }

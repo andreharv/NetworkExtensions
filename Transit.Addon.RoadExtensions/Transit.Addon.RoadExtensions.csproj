@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Compatibility\RoadColorChanger.cs" />
+    <Compile Include="Menus\Roads\RExExtendedMenus.cs" />
     <Compile Include="Compatibility\TrafficPlusPlus.cs" />
     <Compile Include="Compatibility\TrafficPlusPlus\ITrafficPlusPlusPart.cs" />
     <Compile Include="Props\MediumAvenueSideLightBuilder.cs" />
@@ -69,11 +70,8 @@
     <Compile Include="Roads\Common\RoadModels.8m.1p5mSW.cs" />
     <Compile Include="Roads\Common\RoadModels.32m.3mSW2mMdn.cs" />
     <Compile Include="RExModule.Install.Menu.cs" />
-    <Compile Include="RExModule.Install.Localization.cs" />
     <Compile Include="RExModule.Install.Roads.cs" />
-    <Compile Include="RExModule.Install.Assets.cs" />
-    <Compile Include="RExModule.Install.Init.cs" />
-    <Compile Include="Menus\RExExtendedMenus.cs" />
+    <Compile Include="Menus\Roads\Textures\RExExtendedSubBarAtlasBuilder.cs" />
     <Compile Include="Roads\TinyRoads\TinyRoadMenuModifier.cs" />
     <Compile Include="Roads\TinyRoads\Alley2L\Alley2LBuilder.cs" />
     <Compile Include="Roads\Common\CenterLaneType.cs" />
@@ -106,7 +104,6 @@
     <Compile Include="Roads\Common\RoadModels.16m.2mSW.cs" />
     <Compile Include="Roads\Common\RoadModels.16m.3mSW.cs" />
     <Compile Include="Roads\SmallHeavyRoads\OneWay3L\OneWay3LBuilder.cs" />
-    <Compile Include="RExModule.Settings.cs" />
     <Compile Include="RExModule.Install.cs" />
     <Compile Include="Roads\Highways\Highway1L\Highway1LBuilder.cs" />
     <Compile Include="Roads\PedestrianRoads\ZonablePedestrianBuilderBase.cs" />
@@ -666,7 +663,7 @@
     <Content Include="Roads\Highways\HighwayRamp\thumbnails.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Menus\Textures\RExExtendedSubBar.png">
+    <Content Include="Menus\Roads\Textures\RExExtendedSubBar.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\TinyRoads\Alley2L\thumbnails.png">
@@ -2311,25 +2308,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Transit.Framework.Extenders\Transit.Framework.Extenders.csproj">
-      <Project>{2E44ECA3-D750-4115-B16B-FCA94C49BBA0}</Project>
-      <Name>Transit.Framework.Extenders</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Transit.Framework.Light\Transit.Framework.Light.csproj">
-      <Project>{fc275c26-1012-474c-b77b-09e366dbc684}</Project>
-      <Name>Transit.Framework.Light</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Transit.Framework.Unsafe\Transit.Framework.Unsafe.csproj">
-      <Project>{7DCC08EF-DC85-47A4-BD6F-79FC52C7EF13}</Project>
-      <Name>Transit.Framework.Unsafe</Name>
+    <ProjectReference Include="..\Transit.Framework.ExtensionPoints\Transit.Framework.ExtensionPoints.csproj">
+      <Project>{2e44eca3-d750-4115-b16b-fca94c49bba0}</Project>
+      <Name>Transit.Framework.ExtensionPoints</Name>
     </ProjectReference>
     <ProjectReference Include="..\Transit.Framework\Transit.Framework.csproj">
       <Project>{8891467E-C88E-46B0-96F9-4413DF6DC205}</Project>
       <Name>Transit.Framework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ObjUnity3D\ObjUnity3D.csproj">
-      <Project>{97d70503-6567-41a1-92fc-66d813a53370}</Project>
-      <Name>ObjUnity3D</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

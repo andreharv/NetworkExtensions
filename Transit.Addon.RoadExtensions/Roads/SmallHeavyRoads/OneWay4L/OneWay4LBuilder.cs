@@ -1,8 +1,10 @@
 ﻿using System.Linq;
 using Transit.Addon.RoadExtensions.Menus;
+using Transit.Addon.RoadExtensions.Menus.Roads;
 using Transit.Addon.RoadExtensions.Roads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
+using Transit.Framework.Network;
 
 namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.OneWay4L
 {
@@ -53,6 +55,8 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.OneWay4L
 
             if (version == NetInfoVersion.Tunnel)
             {
+                info.m_setVehicleFlags = Vehicle.Flags.Transition | Vehicle.Flags.Underground;
+                info.m_setCitizenFlags = CitizenInstance.Flags.Transition | CitizenInstance.Flags.Underground;
                 info.m_class = owRoadTunnelInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL4L_ROAD_TUNNEL);
             }
             else
