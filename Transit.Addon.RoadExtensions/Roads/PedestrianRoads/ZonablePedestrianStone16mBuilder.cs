@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Transit.Addon.RoadExtensions.Menus;
+using Transit.Addon.RoadExtensions.Menus.Roads;
 using Transit.Addon.RoadExtensions.Roads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
-using Transit.Framework.Light;
+using Transit.Framework.Network;
 
 namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
 {
@@ -34,9 +34,8 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
             ///////////////////////////
             // Template              //
             ///////////////////////////
-            var highwayInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L);
-            var highwayTunnelInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L_TUNNEL);
-            var basicRoadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_2L);
+            var roadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_2L);
+            var roadTunnelInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_2L_TUNNEL);
 
 
             ///////////////////////////
@@ -54,7 +53,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
             // Set up                //
             ///////////////////////////
             info.m_availableIn = ItemClass.Availability.All;
-            info.m_class = highwayInfo.m_class.Clone(NetInfoClasses.NEXT_HIGHWAY1L);
+            info.m_class = roadInfo.m_class.Clone("NExtPedRoad16m");
             info.m_surfaceLevel = 0;
             info.m_createPavement = false;
             info.m_createGravel = false;
@@ -62,7 +61,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
             info.m_hasParkingSpaces = false;
             info.m_hasPedestrianLanes = true;
             info.m_halfWidth = 8;
-            info.m_UnlockMilestone = basicRoadInfo.m_UnlockMilestone;
+            info.m_UnlockMilestone = roadInfo.m_UnlockMilestone;
             info.m_pavementWidth = 2;
             info.m_dlcRequired = SteamHelper.DLC_BitMask.AfterDarkDLC;
             var pedModdedLanes = info.SetupPedestrianLanes(version, new LanesConfiguration() { PedPropOffsetX = 3.5f });
@@ -75,11 +74,11 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
             if (version == NetInfoVersion.Tunnel)
             {
                 info.m_setVehicleFlags = Vehicle.Flags.Transition;
-                info.m_class = highwayTunnelInfo.m_class.Clone(NetInfoClasses.NEXT_HIGHWAY1L_TUNNEL);
+                info.m_class = roadTunnelInfo.m_class.Clone("NExtPedRoad16mTunnel");
             }
             else
             {
-                info.m_class = highwayInfo.m_class.Clone(NetInfoClasses.NEXT_HIGHWAY1L);
+                info.m_class = roadInfo.m_class.Clone(NetInfoClasses.NEXT_HIGHWAY1L);
             }
 
             // Setting up lanes
@@ -100,7 +99,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
                 }
                 else if (vehicleLanes[i].m_vehicleType == VehicleInfo.VehicleType.Car)
                 {
-                    var niLane = new NetInfoLane(vehicleLanes[i], ExtendedVehicleType.ServiceVehicles)
+                    var niLane = new ExtendedNetInfoLane(vehicleLanes[i], ExtendedVehicleType.ServiceVehicles)
                     {
                         m_position = (Math.Abs(vehicleLanes[i].m_position) / vehicleLanes[i].m_position) * sVehicleLanePosAbs,
                         m_width = sVehicleLaneWidth,
@@ -122,7 +121,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
             ///////////////////////////
             // AI                    //
             ///////////////////////////
-            var hwPlayerNetAI = highwayInfo.GetComponent<PlayerNetAI>();
+            var hwPlayerNetAI = roadInfo.GetComponent<PlayerNetAI>();
             var playerNetAI = info.GetComponent<PlayerNetAI>();
 
             if (hwPlayerNetAI != null && playerNetAI != null)

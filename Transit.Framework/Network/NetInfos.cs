@@ -11,6 +11,7 @@ namespace Transit.Framework.Network
             public const string ROAD_2L_GRASS = "Basic Road Decoration Grass";
             public const string ROAD_2L_TREES = "Basic Road Decoration Trees";
             public const string ROAD_2L_BIKE = "Basic Road Bicycle";
+            public const string ROAD_2L_TUNNEL = "Basic Road Tunnel";
             public const string ROAD_4L = "Medium Road";
             public const string ROAD_4L_BRIDGE = "Medium Road Bridge";
             public const string ROAD_4L_SLOPE = "Medium Road Slope";

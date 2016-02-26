@@ -73,9 +73,7 @@
     <Compile Include="Roads\Common\RoadModels.32m.3mSW2mMdn.cs" />
     <Compile Include="RExModule.Install.Menu.cs" />
     <Compile Include="RExModule.Install.Roads.cs" />
-    <Compile Include="RExModule.Install.Assets.cs" />
     <Compile Include="RExModule.Install.Init.cs" />
-    <Compile Include="Menus\RExExtendedMenus.cs" />
     <Compile Include="Roads\PedestrianRoads\ZonablePedestrianStone8mBuilder.Texturing.cs" />
     <Compile Include="Roads\PedestrianRoads\ZonablePedestrianStone8mBuilder.cs" />
     <Compile Include="Roads\PedestrianRoads\ZonablePedestrianStone16mBuilder.cs" />
