@@ -18,7 +18,7 @@ namespace CSL_Traffic
             PathUnit.Position position3;
             float num2;
             float num3;
-            if (CustomPathManager.FindPathPosition(extendedVehicleType, pos, ItemClass.Service.Road, laneTypes, vehicleTypes, allowUnderground, false, 32f, out position2, out position3, out num2, out num3) && num2 < num)
+            if (ExtendedPathManager.FindPathPosition(extendedVehicleType, pos, ItemClass.Service.Road, laneTypes, vehicleTypes, allowUnderground, false, 32f, out position2, out position3, out num2, out num3) && num2 < num)
             {
                 num = num2;
                 position = position2;
@@ -27,7 +27,7 @@ namespace CSL_Traffic
             PathUnit.Position position5;
             float num4;
             float num5;
-            if (CustomPathManager.FindPathPosition(extendedVehicleType, pos, ItemClass.Service.Beautification, laneTypes, vehicleTypes, allowUnderground, false, 32f, out position4, out position5, out num4, out num5) && num4 < num)
+            if (ExtendedPathManager.FindPathPosition(extendedVehicleType, pos, ItemClass.Service.Beautification, laneTypes, vehicleTypes, allowUnderground, false, 32f, out position4, out position5, out num4, out num5) && num4 < num)
             {
                 num = num4;
                 position = position4;
@@ -36,7 +36,7 @@ namespace CSL_Traffic
             PathUnit.Position position7;
             float num6;
             float num7;
-            if ((citizenData.m_flags & CitizenInstance.Flags.CannotUseTransport) == CitizenInstance.Flags.None && CustomPathManager.FindPathPosition(extendedVehicleType, pos, ItemClass.Service.PublicTransport, laneTypes, vehicleTypes, allowUnderground, false, 32f, out position6, out position7, out num6, out num7) && num6 < num)
+            if ((citizenData.m_flags & CitizenInstance.Flags.CannotUseTransport) == CitizenInstance.Flags.None && ExtendedPathManager.FindPathPosition(extendedVehicleType, pos, ItemClass.Service.PublicTransport, laneTypes, vehicleTypes, allowUnderground, false, 32f, out position6, out position7, out num6, out num7) && num6 < num)
             {
                 position = position6;
             }

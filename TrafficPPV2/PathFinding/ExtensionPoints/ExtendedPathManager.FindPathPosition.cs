@@ -1,12 +1,11 @@
 using ColossalFramework;
 using System;
 using Transit.Framework.Network;
-using Transit.Framework.Redirection;
 using UnityEngine;
 
 namespace CSL_Traffic
 {
-	public static partial class CustomPathManager
+    public static partial class ExtendedPathManager
     {
         //// TO DEBUG
         //[RedirectFrom(typeof(PathManager))]

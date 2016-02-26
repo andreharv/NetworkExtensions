@@ -100,7 +100,7 @@ namespace CSL_Traffic
             float num;
             float num2;
             PathUnit.Position endPosA;
-            if (CustomPathManager.FindPathPosition(ExtendedVehicleType.PassengerCar, startPos, ItemClass.Service.Road, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, allowUnderground, false, 32f, out startPosA, out startPosB, out num, out num2) && info2.m_citizenAI.FindPathPosition(ExtendedVehicleType.PassengerCar, driverInstance, ref instance.m_instances.m_buffer[(int)driverInstance], endPos, laneTypes, vehicleType, undergroundTarget, out endPosA))
+            if (ExtendedPathManager.FindPathPosition(ExtendedVehicleType.PassengerCar, startPos, ItemClass.Service.Road, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, allowUnderground, false, 32f, out startPosA, out startPosB, out num, out num2) && info2.m_citizenAI.FindPathPosition(ExtendedVehicleType.PassengerCar, driverInstance, ref instance.m_instances.m_buffer[(int)driverInstance], endPos, laneTypes, vehicleType, undergroundTarget, out endPosA))
             {
                 if (!startBothWays || num < 10f)
                 {

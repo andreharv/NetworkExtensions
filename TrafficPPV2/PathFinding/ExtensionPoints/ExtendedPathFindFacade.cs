@@ -1,4 +1,5 @@
-﻿using Transit.Framework;
+﻿using System;
+using Transit.Framework;
 using Transit.Framework.Network;
 using Transit.Framework.Redirection;
 
@@ -6,15 +7,14 @@ namespace CSL_Traffic
 {
     public class ExtendedPathFindFacade : PathFind
     {
-        private IExtendedPathFind m_innerPathFind;
+        private static IExtendedPathFind m_innerPathFind;
 
-        public void DefinePathFindingMethod<T>()
-            where T : IExtendedPathFind, new()
+        public ExtendedPathFindFacade()
         {
-            m_innerPathFind = new T {Facade = this};
+            m_innerPathFind = ExtendedPathManager.CreatePathFinding();
         }
 
-		protected virtual void Awake()
+		protected void Awake()
         {
             this.m_pathfindProfiler = new ThreadProfiler();
 
@@ -25,7 +25,7 @@ namespace CSL_Traffic
                 .SetValue(this, m_innerPathFind.PathFindThread);
 		}
 
-        protected virtual void OnDestroy()
+        protected void OnDestroy()
         {
             m_innerPathFind.OnDestroy();
 		}
