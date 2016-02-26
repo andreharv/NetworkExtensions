@@ -75,7 +75,7 @@
     <Compile Include="Data\LaneSerializationBinder.cs" />
     <Compile Include="Data\LaneSerializer.cs" />
     <Compile Include="PathFinding\ExtensionPoints\ExtendedPathManager.cs" />
-    <Compile Include="PathFinding\ExtensionPoints\ExtendedPathFind.cs" />
+    <Compile Include="PathFinding\ExtensionPoints\DefaultPathFind.cs" />
     <Compile Include="PathFinding\ExtensionPoints\ExtendedPathFindFacade.cs" />
     <Compile Include="PathFinding\ExtensionPoints\IExtendedPathFind.cs" />
     <Compile Include="PathFinding\Hooks\PathFindHook.cs" />

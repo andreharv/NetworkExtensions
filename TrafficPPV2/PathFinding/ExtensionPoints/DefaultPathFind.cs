@@ -15,7 +15,7 @@ namespace CSL_Traffic
     ///   2. private -> protected
     ///   3. CalculatePath signature (uint unit, bool skipQueue, ExtendedVehicleType vehicleType)
     /// </summary>
-    public class ExtendedPathFind : IExtendedPathFind
+    public class DefaultPathFind : IExtendedPathFind
     {
         public ExtendedPathFindFacade Facade { get; set; }
 

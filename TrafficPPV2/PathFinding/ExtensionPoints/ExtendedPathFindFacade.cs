@@ -11,7 +11,7 @@ namespace CSL_Traffic
 
         public ExtendedPathFindFacade()
         {
-            m_innerPathFind = ExtendedPathManager.CreatePathFinding();
+            m_innerPathFind = this.CreatePathFinding();
         }
 
 		protected void Awake()

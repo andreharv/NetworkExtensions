@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using Transit.Framework.Network;
-using Transit.Framework.Redirection;
 using UnityEngine;
 
 namespace CSL_Traffic
@@ -148,8 +147,7 @@ namespace CSL_Traffic
 			}
 		}
 
-        [RedirectFrom(typeof(PathFind))]
-	    public new bool CalculatePath(uint unit, bool skipQueue)
+	    public bool CalculatePath(uint unit, bool skipQueue)
         {
             return CalculatePath(unit, skipQueue, ExtendedVehicleType.Unknown);
         }
@@ -205,8 +203,7 @@ namespace CSL_Traffic
 			return false;
 		}
 
-        [RedirectFrom(typeof(PathFind))]
-        public new void WaitForAllPaths()
+        public void WaitForAllPaths()
         {
             while (!Monitor.TryEnter(this.m_queueLock, SimulationManager.SYNCHRONIZE_TIMEOUT))
             {
