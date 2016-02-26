@@ -47,17 +47,17 @@
       <Project>{4499042e-dcd1-4f9f-a3c8-4830108169cd}</Project>
       <Name>Transit.Addon.Tools</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Transit.Framework.Extenders\Transit.Framework.Extenders.csproj">
+    <ProjectReference Include="..\Transit.Framework.ExtensionPoints\Transit.Framework.ExtensionPoints.csproj">
       <Project>{2e44eca3-d750-4115-b16b-fca94c49bba0}</Project>
-      <Name>Transit.Framework.Extenders</Name>
+      <Name>Transit.Framework.ExtensionPoints</Name>
     </ProjectReference>
     <ProjectReference Include="..\Transit.Framework.Hooks\Transit.Framework.Hooks.csproj">
       <Project>{a700f186-b123-45b5-adfe-b865df5a0f39}</Project>
       <Name>Transit.Framework.Hooks</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Transit.Framework.Unsafe\Transit.Framework.Unsafe.csproj">
+    <ProjectReference Include="..\Transit.Framework.Redirection\Transit.Framework.Redirection.csproj">
       <Project>{7dcc08ef-dc85-47a4-bd6f-79fc52c7ef13}</Project>
-      <Name>Transit.Framework.Unsafe</Name>
+      <Name>Transit.Framework.Redirection</Name>
     </ProjectReference>
     <ProjectReference Include="..\Transit.Framework\Transit.Framework.csproj">
       <Project>{8891467E-C88E-46B0-96F9-4413DF6DC205}</Project>

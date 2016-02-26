@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
 using System.Xml.Serialization;
-using Transit.Framework.Light;
+using Transit.Framework;
 using UnityEngine;
 
 namespace CSL_Traffic
@@ -17,10 +17,8 @@ namespace CSL_Traffic
         static Queue<IEnumerator> sm_actionQueue = new Queue<IEnumerator>();
         static System.Object sm_queueLock = new System.Object();
         static bool sm_localizationInitialized;
-        static readonly string[] sm_collectionPrefixes = new string[] { "", "Europe ", "Winter " };
 
         Dictionary<string, Texture2D> m_customTextures;
-        Dictionary<string, VehicleAI> m_replacedAIs;
         bool m_initialized;
         float m_gameStartedTime;
         int m_level;
@@ -30,8 +28,6 @@ namespace CSL_Traffic
             DontDestroyOnLoad(this);
 
             m_customTextures = new Dictionary<string, Texture2D>();
-            m_replacedAIs = new Dictionary<string, VehicleAI>();
-            //m_postLoadingActions = new Queue<Action>();
         }
 
         void OnLevelWasLoaded(int level)
@@ -53,9 +49,6 @@ namespace CSL_Traffic
                 {
                     Monitor.Exit(sm_queueLock);
                 }
-
-                m_replacedAIs.Clear();
-                //m_postLoadingActions.Clear();
             }
         }
 
@@ -144,23 +137,6 @@ namespace CSL_Traffic
             Logger.LogInfo("Prefabs queued for loading.");
 
             return true;
-        }
-
-        T TryGetComponent<T>(string name) where T : MonoBehaviour
-        {
-            foreach (string prefix in sm_collectionPrefixes)
-            {
-                T[] objects = GameObject.FindObjectsOfType<T>();
-                foreach (T o in objects)
-                {
-                    if (o.gameObject.name == prefix + name)
-                    {
-                        return o;
-                    }
-                }
-            }
-            Logger.LogError("Failed to find component: {0}", name);
-            return default(T);
         }
 
         public static void QueuePrioritizedLoadingAction(Action action)

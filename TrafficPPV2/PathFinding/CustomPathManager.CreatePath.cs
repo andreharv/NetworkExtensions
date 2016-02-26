@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading;
 using ColossalFramework.Math;
-using Transit.Framework.Light;
-using Transit.Framework.Unsafe;
+using Transit.Framework.Network;
+using Transit.Framework.Redirection;
 
 namespace CSL_Traffic
 {
@@ -48,6 +48,27 @@ namespace CSL_Traffic
 
         public static bool CreatePath(this PathManager pm, ExtendedVehicleType extendedVehicleType, out uint unit, ref Randomizer randomizer, uint buildIndex, PathUnit.Position startPosA, PathUnit.Position startPosB, PathUnit.Position endPosA, PathUnit.Position endPosB, PathUnit.Position vehiclePosition, NetInfo.LaneType laneTypes, VehicleInfo.VehicleType vehicleTypes, float maxLength, bool isHeavyVehicle, bool ignoreBlocked, bool stablePath, bool skipQueue)
         {
+            if (m_pathfinds == null)
+            {
+                // Redirections are not installed correctly, fallbacking on the default code
+                return pm.CreatePath(
+                    out unit, 
+                    ref randomizer, 
+                    buildIndex, 
+                    startPosA, 
+                    startPosB, 
+                    endPosA,  
+                    endPosB, 
+                    vehiclePosition, 
+                    laneTypes, 
+                    vehicleTypes, 
+                    maxLength, 
+                    isHeavyVehicle, 
+                    ignoreBlocked, 
+                    stablePath, 
+                    skipQueue);
+            }
+
             while (!Monitor.TryEnter(pm.m_bufferLock, SimulationManager.SYNCHRONIZE_TIMEOUT))
             {
             }

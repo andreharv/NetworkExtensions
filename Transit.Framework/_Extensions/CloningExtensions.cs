@@ -29,7 +29,7 @@ namespace Transit.Framework
         public static T ShallowCloneFrom<T>(this T destination, T source, params string[] omitMembers)
             where T : new()
         {
-            foreach (FieldInfo f in destination.GetType().GetAllFields(true))
+            foreach (FieldInfo f in source.GetType().GetAllFields(true))
             {
                 if (omitMembers.Contains(f.Name))
                 {

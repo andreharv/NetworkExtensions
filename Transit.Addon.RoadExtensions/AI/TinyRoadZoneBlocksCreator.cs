@@ -2,7 +2,7 @@
 using ColossalFramework.Math;
 using Transit.Framework;
 using UnityEngine;
-using Transit.Framework.Extenders.AI;
+using Transit.Framework.ExtensionPoints.AI;
 
 #if DEBUG
 using Debug = Transit.Framework.Debug;

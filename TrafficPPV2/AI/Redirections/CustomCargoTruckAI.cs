@@ -2,9 +2,9 @@ using System;
 using System.Runtime.CompilerServices;
 using ColossalFramework;
 using ColossalFramework.Math;
+using Transit.Framework.Network;
 using UnityEngine;
-using Transit.Framework.Light;
-using Transit.Framework.Unsafe;
+using Transit.Framework.Redirection;
 
 namespace CSL_Traffic
 {
@@ -25,10 +25,8 @@ namespace CSL_Traffic
                 m_info.ApplySpeedMultiplier(CarSpeedData.Of(vehicleID));
             }
 
-            if ((TrafficMod.Options & OptionsManager.ModOptions.NoDespawn) == OptionsManager.ModOptions.NoDespawn)
-				data.m_flags &= ~Vehicle.Flags.Congestion;
-
-            if ((data.m_flags & Vehicle.Flags.Congestion) != Vehicle.Flags.None)
+            if (((data.m_flags & Vehicle.Flags.Congestion) != Vehicle.Flags.None) &&
+                ((TrafficMod.Options & OptionsManager.ModOptions.NoDespawn) != OptionsManager.ModOptions.NoDespawn))
             {
                 Singleton<VehicleManager>.instance.ReleaseVehicle(vehicleID);
             }

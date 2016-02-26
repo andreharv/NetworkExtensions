@@ -5,8 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
-using Transit.Framework.Light;
-using Transit.Framework.Unsafe;
+using Transit.Framework;
+using Transit.Framework.Network;
+using Transit.Framework.Redirection;
 using UnityEngine;
 
 namespace CSL_Traffic
@@ -248,6 +249,8 @@ namespace CSL_Traffic
             {
                 this.m_vehicleTypeExtended = ExtendedVehicleType.Unknown;
             }
+
+            //Logger.LogInfo("PathFindImplementation of " + m_vehicleTypeExtended);
 
             this.m_priorityVehicle = (this.m_vehicleTypeExtended & (ExtendedVehicleType.Bus | ExtendedVehicleType.EmergencyVehicles)) != ExtendedVehicleType.None;
 
@@ -890,13 +893,6 @@ namespace CSL_Traffic
                 return false;
             }
 
-            // TAM Restrictions
-            if (!RoadManager.CanUseLane(this.m_vehicleTypeExtended, item.m_laneID))
-            {
-                return false;
-            }
-            // TAM Restrictions
-
             bool result = false;
             NetManager instance = Singleton<NetManager>.instance;
             NetInfo info = segment.Info;
@@ -1011,7 +1007,8 @@ namespace CSL_Traffic
                 if ((byte)(lane2.m_finalDirection & direction2) != 0 &&
                 // TAM Restrictions
                     RoadManager.CheckLaneConnection(this.m_vehicleTypeExtended, num2, item.m_laneID) &&
-                    RoadManager.CanUseLane(this.m_vehicleTypeExtended, num2))
+                    RoadManager.CanUseLane(this.m_vehicleTypeExtended, num2) &&
+                    RoadManager.CanUseLane(this.m_vehicleTypeExtended, item.m_laneID))
                 // TAM Restrictions
                 {
                     if (lane2.CheckType(laneType2, vehicleType2) && (segmentID != item.m_position.m_segment || num12 != (int)item.m_position.m_lane) && (byte)(lane2.m_finalDirection & direction2) != 0)
@@ -1281,22 +1278,22 @@ namespace CSL_Traffic
 
 		private void GetLaneDirection(PathUnit.Position pathPos, out NetInfo.Direction direction, out NetInfo.LaneType type)
 		{
-		NetManager instance = Singleton<NetManager>.instance;
-		NetInfo info = instance.m_segments.m_buffer[(int)pathPos.m_segment].Info;
-		if (info.m_lanes.Length > (int)pathPos.m_lane)
-		{
-			direction = info.m_lanes[(int)pathPos.m_lane].m_finalDirection;
-			type = info.m_lanes[(int)pathPos.m_lane].m_laneType;
-			if ((instance.m_segments.m_buffer[(int)pathPos.m_segment].m_flags & NetSegment.Flags.Invert) != NetSegment.Flags.None)
-			{
-				direction = NetInfo.InvertDirection(direction);
-			}
-		}
-		else
-		{
-			direction = NetInfo.Direction.None;
-			type = NetInfo.LaneType.None;
-		}
+		    NetManager instance = Singleton<NetManager>.instance;
+		    NetInfo info = instance.m_segments.m_buffer[(int)pathPos.m_segment].Info;
+		    if (info.m_lanes.Length > (int)pathPos.m_lane)
+		    {
+			    direction = info.m_lanes[(int)pathPos.m_lane].m_finalDirection;
+			    type = info.m_lanes[(int)pathPos.m_lane].m_laneType;
+			    if ((instance.m_segments.m_buffer[(int)pathPos.m_segment].m_flags & NetSegment.Flags.Invert) != NetSegment.Flags.None)
+			    {
+				    direction = NetInfo.InvertDirection(direction);
+			    }
+		    }
+		    else
+		    {
+			    direction = NetInfo.Direction.None;
+			    type = NetInfo.LaneType.None;
+		    }
 		}
 
 		private void PathFindThread()

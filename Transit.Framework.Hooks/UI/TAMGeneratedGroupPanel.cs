@@ -6,9 +6,9 @@ using System.Runtime.CompilerServices;
 using ColossalFramework;
 using ColossalFramework.Globalization;
 using ColossalFramework.UI;
-using Transit.Framework.Extenders.UI;
+using Transit.Framework.ExtensionPoints.UI;
 using Transit.Framework;
-using Transit.Framework.Unsafe;
+using Transit.Framework.Redirection;
 using UnityEngine;
 
 namespace Transit.Framework.Hooks.UI
@@ -66,9 +66,10 @@ namespace Transit.Framework.Hooks.UI
             }
 
             // TAM Edit Start
-            if (AtlasProvider.instance.HasCustomAtlas(category))
+            var customAtlas = AtlasManager.instance.GetAtlas(category);
+            if (customAtlas != null)
             {
-                uIButton.atlas = AtlasProvider.instance.GetCustomAtlas(category);
+                uIButton.atlas = customAtlas;
             }
             // TAM Edit End
 
@@ -184,7 +185,7 @@ namespace Transit.Framework.Hooks.UI
                 }
             }
 
-            foreach (var cat in ExtendedMenuProvider.instance.GetNewCategories(GroupFilter.Net, service))
+            foreach (var cat in ExtendedMenuManager.GetNewCategories(GroupFilter.Net, service))
             {
                 yield return cat;
             }

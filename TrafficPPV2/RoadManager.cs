@@ -1,6 +1,6 @@
 ﻿using System;
 using ColossalFramework;
-using Transit.Framework.Light;
+using Transit.Framework.Network;
 
 namespace CSL_Traffic
 {
@@ -29,9 +29,9 @@ namespace CSL_Traffic
 
             if (laneIndex < laneCount)
             {
-                NetInfoLane netInfoLane = netInfo.m_lanes[laneIndex] as NetInfoLane;
+                ExtendedNetInfoLane netInfoLane = netInfo.m_lanes[laneIndex] as ExtendedNetInfoLane;
                 if (netInfoLane != null)
-                    lane.m_vehicleTypes = netInfoLane.m_allowedVehicleTypes;
+                    lane.m_vehicleTypes = netInfoLane.AllowedVehicleTypes;
 
                 lane.m_speed = netInfo.m_lanes[laneIndex].m_speedLimit;
             }
@@ -75,9 +75,15 @@ namespace CSL_Traffic
             return lane.GetConnectionsAsArray();
         }
 
+        private const ExtendedVehicleType sm_unroutedUnits = 
+            ExtendedVehicleType.Unknown | 
+            ExtendedVehicleType.Citizen | 
+            ExtendedVehicleType.Tram | 
+            ExtendedVehicleType.SnowTruck;
+
         public static bool CheckLaneConnection(ExtendedVehicleType vehicleType, uint from, uint to)
         {
-            if ((vehicleType & (ExtendedVehicleType.Unknown | ExtendedVehicleType.Tram)) != 0)
+            if ((vehicleType & sm_unroutedUnits) != 0)
             {
                 return true;
             }
@@ -91,7 +97,7 @@ namespace CSL_Traffic
         #region Vehicle Restrictions
         public static bool CanUseLane(ExtendedVehicleType vehicleType, uint laneId)
         {
-            if ((vehicleType & (ExtendedVehicleType.Unknown | ExtendedVehicleType.Tram)) != 0)
+            if ((vehicleType & sm_unroutedUnits) != 0)
             {
                 return true;
             }
