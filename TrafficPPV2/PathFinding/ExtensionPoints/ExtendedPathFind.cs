@@ -191,9 +191,8 @@ namespace CSL_Traffic
 			}
 			return false;
 		}
-
-        [RedirectFrom(typeof(PathFind))]
-        public new void WaitForAllPaths()
+        
+        public virtual void WaitForAllPaths()
         {
             while (!Monitor.TryEnter(this.m_queueLock, SimulationManager.SYNCHRONIZE_TIMEOUT))
             {

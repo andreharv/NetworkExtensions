@@ -69,9 +69,6 @@
     <Compile Include="AI\_Extensions\CarAIExtensions.cs" />
     <Compile Include="AI\_Extensions\CitizenAIExtensions.cs" />
     <Compile Include="AI\_Extensions\VehicleInfoExtensions.cs" />
-    <Compile Include="PathFinding\ExtensionPoints\ExtendedPathFindFacade.cs" />
-    <Compile Include="PathFinding\ExtensionPoints\ExtendedPathFind.cs" />
-    <Compile Include="PathFinding\ExtensionPoints\IExtendedPathFind.cs" />
     <Compile Include="PathFinding\Hooks\PathFindHook.cs" />
     <Compile Include="PathFinding\_Extensions\NetSegmentExtensions.cs" />
     <Compile Include="PathFinding\CustomPathManager.cs" />

@@ -14,12 +14,12 @@ namespace CSL_Traffic
         [RedirectFrom(typeof(PassengerCarAI))]
         public override void SimulationStep(ushort vehicleID, ref Vehicle data, Vector3 physicsLodRefPos)
 		{
-			if ((TrafficMod.Options & OptionsManager.ModOptions.NoDespawn) == OptionsManager.ModOptions.NoDespawn)
-				data.m_flags &= ~Vehicle.Flags.Congestion;
-
             if ((data.m_flags & Vehicle.Flags.Congestion) != Vehicle.Flags.None)
             {
-                Singleton<VehicleManager>.instance.ReleaseVehicle(vehicleID);
+                if ((TrafficMod.Options & OptionsManager.ModOptions.NoDespawn) != OptionsManager.ModOptions.NoDespawn)
+                {
+                    Singleton<VehicleManager>.instance.ReleaseVehicle(vehicleID);
+                }
             }
             else
             {
