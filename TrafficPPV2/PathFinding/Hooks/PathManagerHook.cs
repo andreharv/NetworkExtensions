@@ -22,15 +22,16 @@ namespace CSL_Traffic
             uint num;
             this.m_pathUnits.CreateItem(out num);
             int num2 = Mathf.Clamp(SystemInfo.processorCount / 2, 1, 4);
-            CustomPathManager.m_pathfinds = new CustomPathFind[num2];
+            var facades = new ExtendedPathFindFacade[num2];
             for (int i = 0; i < num2; i++)
             {
-                CustomPathManager.m_pathfinds[i] = base.gameObject.AddComponent<CustomPathFind>();
+                facades[i] = base.gameObject.AddComponent<ExtendedPathFindFacade>();
             }
 
+            ExtendedPathManager.PathFindFacades = facades;
             typeof(PathManager)
                 .GetFieldByName("m_pathfinds")
-                .SetValue(this, CustomPathManager.m_pathfinds.OfType<PathFind>().ToArray());
+                .SetValue(this, facades.OfType<PathFind>().ToArray());
         }
     }
 }
