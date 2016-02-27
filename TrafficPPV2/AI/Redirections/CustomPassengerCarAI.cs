@@ -60,28 +60,6 @@ namespace CSL_Traffic
 
         [MethodImpl(MethodImplOptions.NoInlining)]
         [RedirectFrom(typeof(PassengerCarAI))]
-        protected override bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData)
-        {
-            ushort driverInstance = this.GetDriverInstance(vehicleID, ref vehicleData);
-            if (driverInstance != 0)
-            {
-                ushort targetBuilding = Singleton<CitizenManager>.instance.m_instances.m_buffer[(int)driverInstance].m_targetBuilding;
-                if (targetBuilding != 0)
-                {
-                    BuildingManager instance = Singleton<BuildingManager>.instance;
-                    BuildingInfo info = instance.m_buildings.m_buffer[(int)targetBuilding].Info;
-                    Randomizer randomizer = new Randomizer((int)vehicleID);
-                    Vector3 vector;
-                    Vector3 endPos;
-                    info.m_buildingAI.CalculateUnspawnPosition(targetBuilding, ref instance.m_buildings.m_buffer[(int)targetBuilding], ref randomizer, this.m_info, out vector, out endPos);
-                    return this.StartPathFind(ExtendedVehicleType.PassengerCar, vehicleID, ref vehicleData, vehicleData.m_targetPos3, endPos, IsHeavyVehicle(), IgnoreBlocked(vehicleID, ref vehicleData));
-                }
-            }
-            return false;
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        [RedirectFrom(typeof(PassengerCarAI))]
         protected override bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget)
         {
             VehicleInfo info = this.m_info;
@@ -100,7 +78,7 @@ namespace CSL_Traffic
             float num;
             float num2;
             PathUnit.Position endPosA;
-            if (ExtendedPathManager.FindPathPosition(ExtendedVehicleType.PassengerCar, startPos, ItemClass.Service.Road, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, allowUnderground, false, 32f, out startPosA, out startPosB, out num, out num2) && info2.m_citizenAI.FindPathPosition(ExtendedVehicleType.PassengerCar, driverInstance, ref instance.m_instances.m_buffer[(int)driverInstance], endPos, laneTypes, vehicleType, undergroundTarget, out endPosA))
+            if (PathManager.FindPathPosition(startPos, ItemClass.Service.Road, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, allowUnderground, false, 32f, out startPosA, out startPosB, out num, out num2) && info2.m_citizenAI.FindPathPosition(driverInstance, ref instance.m_instances.m_buffer[(int)driverInstance], endPos, laneTypes, vehicleType, undergroundTarget, out endPosA))
             {
                 if (!startBothWays || num < 10f)
                 {

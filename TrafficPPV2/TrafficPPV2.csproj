@@ -54,22 +54,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AI\Redirections\CustomCargoTruckAI.cs" />
     <Compile Include="AI\Redirections\CustomCitizenAI.cs" />
     <Compile Include="AI\Redirections\CustomPassengerCarAI.cs" />
     <Compile Include="AI\Redirections\CustomSnowTruckAI.cs" />
-    <Compile Include="AI\Redirections\CustomTramAI.cs" />
     <Compile Include="AI\Redirections\CustomVehicleAI.cs" />
     <Compile Include="AI\Redirections\CustomAmbulanceAI.cs" />
     <Compile Include="AI\Redirections\CustomBusAI.cs" />
     <Compile Include="AI\CarSpeedData.cs" />
-    <Compile Include="AI\Redirections\CustomCargoTruckAI.cs" />
     <Compile Include="AI\Redirections\CustomFireTruckAI.cs" />
     <Compile Include="AI\Redirections\CustomGarbageTruckAI.cs" />
     <Compile Include="AI\Redirections\CustomHearseAI.cs" />
     <Compile Include="AI\Redirections\CustomPoliceCarAI.cs" />
     <Compile Include="AI\Redirections\CustomTransportLineAI.cs" />
     <Compile Include="AI\_Extensions\CarAIExtensions.cs" />
-    <Compile Include="AI\_Extensions\CitizenAIExtensions.cs" />
     <Compile Include="AI\_Extensions\VehicleInfoExtensions.cs" />
     <Compile Include="Data\Lane.cs" />
     <Compile Include="Data\LaneSerializationBinder.cs" />
@@ -79,8 +77,6 @@
     <Compile Include="PathFinding\ExtensionPoints\ExtendedPathFindFacade.cs" />
     <Compile Include="PathFinding\ExtensionPoints\IExtendedPathFind.cs" />
     <Compile Include="PathFinding\Hooks\PathFindHook.cs" />
-    <Compile Include="PathFinding\_Extensions\NetSegmentExtensions.cs" />
-    <Compile Include="PathFinding\ExtensionPoints\ExtendedPathManager.FindPathPosition.cs" />
     <Compile Include="PathFinding\_Extensions\PathManagerExtensions.cs" />
     <Compile Include="TrafficMod.cs" />
     <Compile Include="FileManager.cs" />

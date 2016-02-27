@@ -21,7 +21,7 @@ namespace CSL_Traffic
                 PathUnit.Position position;
                 float num3;
                 float num4;
-                if ((data.m_flags & NetNode.Flags.ForbidLaneConnection) == NetNode.Flags.None && ExtendedPathManager.FindPathPosition(ExtendedVehicleType.Bus | ExtendedVehicleType.Tram, data.m_position, this.m_netService, NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, this.m_vehicleType, true, false, 32f, out pathPos, out position, out num3, out num4) && num3 < num2)
+                if ((data.m_flags & NetNode.Flags.ForbidLaneConnection) == NetNode.Flags.None && PathManager.FindPathPosition(data.m_position, this.m_netService, NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, this.m_vehicleType, true, false, 32f, out pathPos, out position, out num3, out num4) && num3 < num2)
                 {
                     NetManager instance = Singleton<NetManager>.instance;
                     int num5;
@@ -84,7 +84,7 @@ namespace CSL_Traffic
             float num;
             float num2;
             
-            if (!ExtendedPathManager.FindPathPosition(ExtendedVehicleType.Bus | ExtendedVehicleType.Tram, position, netService, NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, true, false, 32f, out startPosA, out startPosB, out num, out num2))
+            if (!PathManager.FindPathPosition(position, netService, NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, true, false, 32f, out startPosA, out startPosB, out num, out num2))
             {
                 CustomTransportLineAI.CheckSegmentProblems(segmentID, ref data);
                 return true;
@@ -95,7 +95,7 @@ namespace CSL_Traffic
             float num3;
             float num4;
 
-            if (!ExtendedPathManager.FindPathPosition(ExtendedVehicleType.Bus | ExtendedVehicleType.Tram, position2, netService, NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, true, false, 32f, out endPosA, out endPosB, out num3, out num4))
+            if (!PathManager.FindPathPosition(position2, netService, NetInfo.LaneType.Pedestrian, VehicleInfo.VehicleType.None, true, false, 32f, out endPosA, out endPosB, out num3, out num4))
             {
                 CustomTransportLineAI.CheckSegmentProblems(segmentID, ref data);
                 return true;

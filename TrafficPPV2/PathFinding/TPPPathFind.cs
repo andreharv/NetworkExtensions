@@ -97,14 +97,6 @@ namespace CSL_Traffic
 
         private VehicleInfo.VehicleType m_vehicleTypes;
 
-        public new bool IsAvailable
-        {
-            get
-            {
-                return this.m_pathFindThread.IsAlive;
-            }
-        }
-
         // TAM Extensions
 	    private bool m_priorityVehicle;
 		private ExtendedVehicleType m_vehicleTypeExtended = ExtendedVehicleType.Unknown;
@@ -999,9 +991,9 @@ namespace CSL_Traffic
 
                 if ((byte)(lane2.m_finalDirection & direction2) != 0 &&
                 // TAM Restrictions
-                    LaneManager.CheckLaneConnection(this.m_vehicleTypeExtended, num2, item.m_laneID) &&
-                    LaneManager.CanUseLane(this.m_vehicleTypeExtended, num2) &&
-                    LaneManager.CanUseLane(this.m_vehicleTypeExtended, item.m_laneID))
+                    lane2.CheckLaneConnection(this.m_vehicleTypeExtended, num2, item.m_laneID) &&
+                    lane2.CanUseLane(this.m_vehicleTypeExtended, num2) &&
+                    lane2.CanUseLane(this.m_vehicleTypeExtended, item.m_laneID))
                 // TAM Restrictions
                 {
                     if (lane2.CheckType(laneType2, vehicleType2) && (segmentID != item.m_position.m_segment || num12 != (int)item.m_position.m_lane) && (byte)(lane2.m_finalDirection & direction2) != 0)
