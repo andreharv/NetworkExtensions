@@ -1,12 +1,11 @@
-﻿using System;
+﻿using ColossalFramework.Math;
+using System;
 using System.Threading;
-using ColossalFramework.Math;
 using Transit.Framework.Network;
-using Transit.Framework.Redirection;
 
 namespace CSL_Traffic
 {
-    public static partial class CustomPathManager
+    public static class PathManagerExtensions
     {
         //// TO DEBUG
         //[RedirectFrom(typeof(PathManager))]
@@ -48,7 +47,7 @@ namespace CSL_Traffic
 
         public static bool CreatePath(this PathManager pm, ExtendedVehicleType extendedVehicleType, out uint unit, ref Randomizer randomizer, uint buildIndex, PathUnit.Position startPosA, PathUnit.Position startPosB, PathUnit.Position endPosA, PathUnit.Position endPosB, PathUnit.Position vehiclePosition, NetInfo.LaneType laneTypes, VehicleInfo.VehicleType vehicleTypes, float maxLength, bool isHeavyVehicle, bool ignoreBlocked, bool stablePath, bool skipQueue)
         {
-            if (m_pathfinds == null)
+            if (ExtendedPathManager.PathFindFacades == null)
             {
                 // Redirections are not installed correctly, fallbacking on the default code
                 return pm.CreatePath(
@@ -121,20 +120,17 @@ namespace CSL_Traffic
             pm.m_pathUnits.m_buffer[(int)((UIntPtr)unit)].m_positionCount = 20;
             pm.m_pathUnits.m_buffer[(int)((UIntPtr)unit)].m_referenceCount = 1;
             int num2 = 10000000;
-            CustomPathFind pathFind = null;
-            if (m_pathfinds != null)
+            ExtendedPathFindFacade pathFindFacade = null;
+            for (int i = 0; i < ExtendedPathManager.PathFindFacades.Length; i++)
             {
-                for (int i = 0; i < m_pathfinds.Length; i++)
+                ExtendedPathFindFacade pathFind2 = ExtendedPathManager.PathFindFacades[i];
+                if (pathFind2.IsAvailable && pathFind2.m_queuedPathFindCount < num2)
                 {
-                    CustomPathFind pathFind2 = m_pathfinds[i];
-                    if (pathFind2.IsAvailable && pathFind2.m_queuedPathFindCount < num2)
-                    {
-                        num2 = pathFind2.m_queuedPathFindCount;
-                        pathFind = pathFind2;
-                    }
+                    num2 = pathFind2.m_queuedPathFindCount;
+                    pathFindFacade = pathFind2;
                 }
             }
-            if (pathFind != null && pathFind.CalculatePath(unit, skipQueue, extendedVehicleType))
+            if (pathFindFacade != null && pathFindFacade.CalculatePath(unit, skipQueue, extendedVehicleType))
             {
                 return true;
             }

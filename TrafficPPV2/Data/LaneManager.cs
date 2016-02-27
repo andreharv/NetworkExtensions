@@ -4,9 +4,9 @@ using Transit.Framework.Network;
 
 namespace CSL_Traffic
 {
-    public static partial class RoadManager
+    public static class LaneManager
     {
-        static Lane[] sm_lanes = new Lane[NetManager.MAX_LANE_COUNT];
+        internal static Lane[] sm_lanes = new Lane[NetManager.MAX_LANE_COUNT];
 
         public static Lane CreateLane(uint laneId)
         {
@@ -75,15 +75,20 @@ namespace CSL_Traffic
             return lane.GetConnectionsAsArray();
         }
 
-        private const ExtendedVehicleType sm_unroutedUnits = 
-            ExtendedVehicleType.Unknown | 
-            ExtendedVehicleType.Citizen | 
-            ExtendedVehicleType.Tram | 
-            ExtendedVehicleType.SnowTruck;
+        private const ExtendedVehicleType sm_routedUnits =
+            ExtendedVehicleType.ServiceVehicles |
+            ExtendedVehicleType.PassengerCar |
+            ExtendedVehicleType.CargoTruck |
+            ExtendedVehicleType.Bus;
 
-        public static bool CheckLaneConnection(ExtendedVehicleType vehicleType, uint from, uint to)
+        public static bool CheckLaneConnection(this NetInfo.Lane laneInfo, ExtendedVehicleType vehicleType, uint from, uint to)
         {
-            if ((vehicleType & sm_unroutedUnits) != 0)
+            if ((vehicleType & sm_routedUnits) == 0)
+            {
+                return true;
+            }
+
+            if ((laneInfo.m_vehicleType & VehicleInfo.VehicleType.Car) == VehicleInfo.VehicleType.None)
             {
                 return true;
             }
@@ -95,9 +100,14 @@ namespace CSL_Traffic
         #endregion
 
         #region Vehicle Restrictions
-        public static bool CanUseLane(ExtendedVehicleType vehicleType, uint laneId)
+        public static bool CanUseLane(this NetInfo.Lane laneInfo, ExtendedVehicleType vehicleType, uint laneId)
         {
-            if ((vehicleType & sm_unroutedUnits) != 0)
+            if ((vehicleType & sm_routedUnits) == 0)
+            {
+                return true;
+            }
+
+            if ((laneInfo.m_vehicleType & VehicleInfo.VehicleType.Car) == VehicleInfo.VehicleType.None)
             {
                 return true;
             }

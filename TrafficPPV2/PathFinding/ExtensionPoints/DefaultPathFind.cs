@@ -2,21 +2,28 @@
 using ColossalFramework.Math;
 using ColossalFramework.UI;
 using System;
-using System.Collections.Generic;
 using System.Threading;
-using Transit.Framework;
 using Transit.Framework.Network;
-using Transit.Framework.Redirection;
 using UnityEngine;
 
 namespace CSL_Traffic
 {
-    /*
-	 * This is the class responsible for pathfinding. It's all in here since none of the methods can be overwritten.
-	 * There's a lot of small changes here and there to make it generate a correct path for the service vehicles using pedestrian paths.
-	 */
-    public class ExtendedPathFind : IExtendedPathFind
-	{
+    /// <summary>
+    /// This is the (almost) vanilla code found in the PathFind default class.
+    /// What is changed:
+    ///   1. IExtendedPathFind implementation
+    ///   2. private -> protected
+    ///   3. CalculatePath signature (uint unit, bool skipQueue, ExtendedVehicleType vehicleType)
+    /// </summary>
+    public class DefaultPathFind : IExtendedPathFind
+    {
+        public ExtendedPathFindFacade Facade { get; set; }
+
+        Thread IExtendedPathFind.PathFindThread
+        {
+            get { return m_pathFindThread; }
+        }
+
         protected struct BufferItem
         {
             public PathUnit.Position m_position;
@@ -96,11 +103,6 @@ namespace CSL_Traffic
 
         protected VehicleInfo.VehicleType m_vehicleTypes;
 
-        // TAM Extensions
-		protected ExtendedVehicleType m_vehicleTypeExtended = ExtendedVehicleType.Unknown;
-		protected readonly Dictionary<uint, ExtendedVehicleType> m_pathVehicleType = new Dictionary<uint, ExtendedVehicleType>();
-        // TAM Extensions
-
         public virtual void OnAwake()
         {
             this.m_laneLocation = new uint[262144];
@@ -119,10 +121,6 @@ namespace CSL_Traffic
             {
                 CODebugBase<LogChannel>.Error(LogChannel.Core, "Path find thread failed to start!");
             }
-
-            typeof(PathFind)
-                .GetFieldByName("m_pathFindThread")
-                .SetValue(this, this.m_pathFindThread);
 		}
 
         public virtual void OnDestroy()
@@ -175,8 +173,6 @@ namespace CSL_Traffic
 						this.m_queueLast = unit;
 					}
 
-					m_pathVehicleType[unit] = vehicleType;
-
 					PathUnit[] expr_BD_cp_0 = this.m_pathUnits.m_buffer;
 					UIntPtr expr_BD_cp_1 = (UIntPtr)unit;
 					expr_BD_cp_0[(int)expr_BD_cp_1].m_pathFindFlags = (byte)(expr_BD_cp_0[(int)expr_BD_cp_1].m_pathFindFlags | 1);
@@ -225,11 +221,6 @@ namespace CSL_Traffic
             if ((byte)(this.m_laneTypes & NetInfo.LaneType.Vehicle) != 0)
             {
                 this.m_laneTypes |= NetInfo.LaneType.TransportVehicle;
-            }
-
-            if (!m_pathVehicleType.TryGetValue(unit, out m_vehicleTypeExtended))
-            {
-                this.m_vehicleTypeExtended = ExtendedVehicleType.Unknown;
             }
 
             int num = (int)(this.m_pathUnits.m_buffer[(int)((UIntPtr)unit)].m_positionCount & 15);
@@ -1305,13 +1296,6 @@ namespace CSL_Traffic
                     Monitor.Exit(this.m_queueLock);
                 }
             }
-        }
-
-        public ExtendedPathFindFacade Facade { get; set; }
-
-        Thread IExtendedPathFind.PathFindThread
-        {
-            get { return m_pathFindThread; }
         }
     }   
 }

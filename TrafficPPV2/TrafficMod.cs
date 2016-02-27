@@ -65,6 +65,8 @@ namespace CSL_Traffic
                 Redirector.PerformRedirections();
                 m_redirectionInstalled = true;
             }
+
+            ExtendedPathManager.DefinePathFinding<TPPPathFind>();
         }
 
         public void OnDisabled()
@@ -74,6 +76,8 @@ namespace CSL_Traffic
                 Redirector.RevertRedirections();
                 m_redirectionInstalled = false;
             }
+
+            ExtendedPathManager.ResetPathFinding();
         }
     }
 }

@@ -1,23 +1,23 @@
-﻿using ColossalFramework;
+﻿﻿using ColossalFramework;
 using ColossalFramework.Math;
 using ColossalFramework.UI;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Threading;
-using Transit.Framework;
 using Transit.Framework.Network;
-using Transit.Framework.Redirection;
 using UnityEngine;
 
 namespace CSL_Traffic
 {
-    /*
-	 * This is the class responsible for pathfinding. It's all in here since none of the methods can be overwritten.
-	 * There's a lot of small changes here and there to make it generate a correct path for the service vehicles using pedestrian paths.
-	 */
-	public class CustomPathFind : PathFind
-	{
+    public class TPPPathFind : IExtendedPathFind
+    {
+        public ExtendedPathFindFacade Facade { get; set; }
+
+        Thread IExtendedPathFind.PathFindThread
+        {
+            get { return m_pathFindThread; }
+        }
+
         private struct BufferItem
         {
             public PathUnit.Position m_position;
@@ -97,23 +97,14 @@ namespace CSL_Traffic
 
         private VehicleInfo.VehicleType m_vehicleTypes;
 
-        public new bool IsAvailable
-        {
-            get
-            {
-                return this.m_pathFindThread.IsAlive;
-            }
-        }
-
         // TAM Extensions
 	    private bool m_priorityVehicle;
 		private ExtendedVehicleType m_vehicleTypeExtended = ExtendedVehicleType.Unknown;
 		private readonly Dictionary<uint, ExtendedVehicleType> m_pathVehicleType = new Dictionary<uint, ExtendedVehicleType>();
         // TAM Extensions
 
-		private void Awake()
+        public void OnAwake()
         {
-            this.m_pathfindProfiler = new ThreadProfiler();
             this.m_laneLocation = new uint[262144];
             this.m_laneTarget = new PathUnit.Position[262144];
             this.m_buffer = new BufferItem[65536];
@@ -130,13 +121,9 @@ namespace CSL_Traffic
             {
                 CODebugBase<LogChannel>.Error(LogChannel.Core, "Path find thread failed to start!");
             }
-
-            typeof(PathFind)
-                .GetFieldByName("m_pathFindThread")
-                .SetValue(this, this.m_pathFindThread);
 		}
 
-		private void OnDestroy()
+        public void OnDestroy()
 		{
 			while (!Monitor.TryEnter(this.m_queueLock, SimulationManager.SYNCHRONIZE_TIMEOUT))
 			{
@@ -152,8 +139,7 @@ namespace CSL_Traffic
 			}
 		}
 
-        [RedirectFrom(typeof(PathFind))]
-	    public new bool CalculatePath(uint unit, bool skipQueue)
+	    public bool CalculatePath(uint unit, bool skipQueue)
         {
             return CalculatePath(unit, skipQueue, ExtendedVehicleType.Unknown);
         }
@@ -197,7 +183,7 @@ namespace CSL_Traffic
 					PathUnit[] expr_BD_cp_0 = this.m_pathUnits.m_buffer;
 					UIntPtr expr_BD_cp_1 = (UIntPtr)unit;
 					expr_BD_cp_0[(int)expr_BD_cp_1].m_pathFindFlags = (byte)(expr_BD_cp_0[(int)expr_BD_cp_1].m_pathFindFlags | 1);
-					this.m_queuedPathFindCount++;
+					Facade.m_queuedPathFindCount++;
 					Monitor.Pulse(this.m_queueLock);
 				}
 				finally
@@ -209,8 +195,7 @@ namespace CSL_Traffic
 			return false;
 		}
 
-        [RedirectFrom(typeof(PathFind))]
-        public new void WaitForAllPaths()
+        public void WaitForAllPaths()
         {
             while (!Monitor.TryEnter(this.m_queueLock, SimulationManager.SYNCHRONIZE_TIMEOUT))
             {
@@ -760,7 +745,7 @@ namespace CSL_Traffic
 
         private float CalculateLaneSpeed(byte startOffset, byte endOffset, ref NetSegment segment, NetInfo.Lane laneInfo, uint laneId)
         {
-            float speedLimit = (TrafficMod.Options & OptionsManager.ModOptions.RoadCustomizerTool) == OptionsManager.ModOptions.RoadCustomizerTool ? RoadManager.GetLaneSpeed(laneId) : laneInfo.m_speedLimit;
+            float speedLimit = (TrafficMod.Options & OptionsManager.ModOptions.RoadCustomizerTool) == OptionsManager.ModOptions.RoadCustomizerTool ? LaneManager.GetLaneSpeed(laneId) : laneInfo.m_speedLimit;
             //float speedLimit = laneInfo.m_speedLimit;
 
             NetInfo.Direction direction = ((segment.m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None) ? laneInfo.m_finalDirection : NetInfo.InvertDirection(laneInfo.m_finalDirection);
@@ -808,7 +793,7 @@ namespace CSL_Traffic
                     l = instance.m_lanes.m_buffer[l].m_nextLane;
 
                 NetInfo.Lane lane2 = info2.m_lanes[(int)item.m_position.m_lane];
-                num3 = RoadManager.GetLaneSpeed(l);
+                num3 = LaneManager.GetLaneSpeed(l);
                 laneType = lane2.m_laneType;
                 if ((byte)(laneType & (NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle)) != 0)
                 {
@@ -845,7 +830,7 @@ namespace CSL_Traffic
                         }
                         if (lane3.m_laneType != NetInfo.LaneType.Pedestrian || item2.m_methodDistance < 1000f)
                         {
-                            item2.m_comparisonValue = num7 + num9 / ((num3 + RoadManager.GetLaneSpeed(lane)/*lane3.m_speedLimit*/) * 0.5f * this.m_maxLength);
+                            item2.m_comparisonValue = num7 + num9 / ((num3 + LaneManager.GetLaneSpeed(lane)/*lane3.m_speedLimit*/) * 0.5f * this.m_maxLength);
                             if ((segment.m_flags & NetSegment.Flags.Invert) != NetSegment.Flags.None)
                             {
                                 item2.m_direction = NetInfo.InvertDirection(lane3.m_finalDirection);
@@ -941,7 +926,7 @@ namespace CSL_Traffic
                 NetInfo.Lane lane = info2.m_lanes[(int)item.m_position.m_lane];
                 laneType = lane.m_laneType;
                 vehicleType = lane.m_vehicleType;
-				num5 = RoadManager.GetLaneSpeed(l);
+				num5 = LaneManager.GetLaneSpeed(l);
                 num6 = this.CalculateLaneSpeed(connectOffset, item.m_position.m_offset, ref instance.m_segments.m_buffer[(int)item.m_position.m_segment], lane, l);
             }
             float num7 = instance.m_segments.m_buffer[(int)item.m_position.m_segment].m_averageLength;
@@ -1006,9 +991,9 @@ namespace CSL_Traffic
 
                 if ((byte)(lane2.m_finalDirection & direction2) != 0 &&
                 // TAM Restrictions
-                    RoadManager.CheckLaneConnection(this.m_vehicleTypeExtended, num2, item.m_laneID) &&
-                    RoadManager.CanUseLane(this.m_vehicleTypeExtended, num2) &&
-                    RoadManager.CanUseLane(this.m_vehicleTypeExtended, item.m_laneID))
+                    lane2.CheckLaneConnection(this.m_vehicleTypeExtended, num2, item.m_laneID) &&
+                    lane2.CanUseLane(this.m_vehicleTypeExtended, num2) &&
+                    lane2.CanUseLane(this.m_vehicleTypeExtended, item.m_laneID))
                 // TAM Restrictions
                 {
                     if (lane2.CheckType(laneType2, vehicleType2) && (segmentID != item.m_position.m_segment || num12 != (int)item.m_position.m_lane) && (byte)(lane2.m_finalDirection & direction2) != 0)
@@ -1027,7 +1012,7 @@ namespace CSL_Traffic
                         {
                             num13 *= 2f;
                         }
-                        float num14 = num13 / ((num5 + RoadManager.GetLaneSpeed(num2) /*lane2.m_speedLimit*/) * 0.5f * this.m_maxLength);
+                        float num14 = num13 / ((num5 + LaneManager.GetLaneSpeed(num2) /*lane2.m_speedLimit*/) * 0.5f * this.m_maxLength);
                         BufferItem item2;
                         item2.m_position.m_segment = segmentID;
                         item2.m_position.m_lane = (byte)num12;
@@ -1081,7 +1066,7 @@ namespace CSL_Traffic
                                 int lastTarget = (int)instance.m_lanes.m_buffer[(int)((UIntPtr)num2)].m_lastTarget;
                                 if (currentTargetIndex < firstTarget || currentTargetIndex >= lastTarget)
                                 {
-                                    item2.m_comparisonValue += Mathf.Max(1f, num13 * 3f - 3f) / ((num5 + RoadManager.GetLaneSpeed(num2)) * 0.5f * this.m_maxLength);
+                                    item2.m_comparisonValue += Mathf.Max(1f, num13 * 3f - 3f) / ((num5 + LaneManager.GetLaneSpeed(num2)) * 0.5f * this.m_maxLength);
                                 }
                                 if (!this.m_transportVehicle && lane2.m_laneType == NetInfo.LaneType.TransportVehicle)
                                 {
@@ -1151,7 +1136,7 @@ namespace CSL_Traffic
                     l = instance.m_lanes.m_buffer[l].m_nextLane;
 
                 NetInfo.Lane lane2 = info2.m_lanes[(int)item.m_position.m_lane];
-                num3 = RoadManager.GetLaneSpeed(l);
+                num3 = LaneManager.GetLaneSpeed(l);
                 laneType = lane2.m_laneType;
                 if ((byte)(laneType & (NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle)) != 0)
                 {
@@ -1184,7 +1169,7 @@ namespace CSL_Traffic
                 }
                 if (lane3.m_laneType != NetInfo.LaneType.Pedestrian || item2.m_methodDistance < 1000f)
                 {
-                    item2.m_comparisonValue = num7 + num2 / ((num3 + RoadManager.GetLaneSpeed(lane)) * 0.25f * this.m_maxLength);
+                    item2.m_comparisonValue = num7 + num2 / ((num3 + LaneManager.GetLaneSpeed(lane)) * 0.25f * this.m_maxLength);
                     if ((segment.m_flags & NetSegment.Flags.Invert) != NetSegment.Flags.None)
                     {
                         item2.m_direction = NetInfo.InvertDirection(lane3.m_finalDirection);
@@ -1318,11 +1303,11 @@ namespace CSL_Traffic
 				    if (this.m_queueFirst == 0u)
 				    {
 					    this.m_queueLast = 0u;
-					    this.m_queuedPathFindCount = 0;
+					    Facade.m_queuedPathFindCount = 0;
 				    }
 				    else
 				    {
-					    this.m_queuedPathFindCount--;
+                        Facade.m_queuedPathFindCount--;
 				    }
 				    this.m_pathUnits.m_buffer[(int)((UIntPtr)this.m_calculating)].m_nextPathUnit = 0u;
 				    this.m_pathUnits.m_buffer[(int)((UIntPtr)this.m_calculating)].m_pathFindFlags = (byte)(((int)this.m_pathUnits.m_buffer[(int)((UIntPtr)this.m_calculating)].m_pathFindFlags & -2) | 2);
@@ -1333,14 +1318,14 @@ namespace CSL_Traffic
 			    }
 			    try
 			    {
-				    this.m_pathfindProfiler.BeginStep();
+                    Facade.m_pathfindProfiler.BeginStep();
 				    try
 				    {
 					    this.PathFindImplementation(this.m_calculating, ref this.m_pathUnits.m_buffer[(int)((UIntPtr)this.m_calculating)]);
 				    }
 				    finally
 				    {
-					    this.m_pathfindProfiler.EndStep();
+                        Facade.m_pathfindProfiler.EndStep();
 				    }
 			    }
 			    catch (Exception ex)
