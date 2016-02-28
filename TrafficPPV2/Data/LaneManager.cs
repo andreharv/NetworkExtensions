@@ -93,6 +93,12 @@ namespace CSL_Traffic
                 return true;
             }
 
+            // Quick fix for tram
+            if ((laneInfo.m_vehicleType & VehicleInfo.VehicleType.Tram) != VehicleInfo.VehicleType.None)
+            {
+                return true;
+            }
+
             Lane lane = GetLane(from);
 
             return lane.ConnectsTo(to);
@@ -108,6 +114,12 @@ namespace CSL_Traffic
             }
 
             if ((laneInfo.m_vehicleType & VehicleInfo.VehicleType.Car) == VehicleInfo.VehicleType.None)
+            {
+                return true;
+            }
+
+            // Quick fix for tram
+            if ((laneInfo.m_vehicleType & VehicleInfo.VehicleType.Tram) != VehicleInfo.VehicleType.None)
             {
                 return true;
             }
