@@ -713,7 +713,7 @@ namespace CSL_Traffic
 			if (!AnyLaneSelected)
 				return -1f;
 
-			return LaneManager.GetLaneSpeed(m_selectedLaneMarkers[0].m_lane);
+			return LaneManager.GetLaneSpeedRestriction(m_selectedLaneMarkers[0].m_lane);
 		}
 
 		public void SetSpeedRestrictions(int speed)
@@ -722,7 +722,7 @@ namespace CSL_Traffic
 				return;
 
 			foreach (SegmentLaneMarker lane in m_selectedLaneMarkers)
-				LaneManager.SetLaneSpeed(lane.m_lane, speed);
+				LaneManager.SetLaneSpeedRestriction(lane.m_lane, speed);
 		}
 
 		#endregion

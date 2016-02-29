@@ -146,12 +146,22 @@ namespace CSL_Traffic
 
         #region Lane Speeds
 
-        public static float GetLaneSpeed(uint laneId)
+        public static float GetLaneSpeed(uint laneId, NetInfo.Lane lane)
+        {
+            if ((TrafficMod.Options & OptionsManager.ModOptions.RoadCustomizerTool) != OptionsManager.ModOptions.RoadCustomizerTool)
+            {
+                return lane.m_speedLimit;
+            }
+
+            return GetLane(laneId).m_speed;
+        }
+
+        public static float GetLaneSpeedRestriction(uint laneId)
         {
             return GetLane(laneId).m_speed;
         }
 
-        public static void SetLaneSpeed(uint laneId, int speed)
+        public static void SetLaneSpeedRestriction(uint laneId, int speed)
         {
             GetLane(laneId).m_speed = (float)Math.Round(speed/50f, 2);
         }
