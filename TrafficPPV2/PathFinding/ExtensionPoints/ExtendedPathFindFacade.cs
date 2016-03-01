@@ -7,7 +7,7 @@ namespace CSL_Traffic
 {
     public class ExtendedPathFindFacade : PathFind
     {
-        private static IExtendedPathFind m_innerPathFind;
+        private readonly IExtendedPathFind m_innerPathFind;
 
         public ExtendedPathFindFacade()
         {
