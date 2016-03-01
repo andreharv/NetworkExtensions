@@ -65,6 +65,7 @@
     <Compile Include="AI\Redirections\CustomPassengerCarAI.cs" />
     <Compile Include="AI\Redirections\CustomPoliceCarAI.cs" />
     <Compile Include="AI\Redirections\CustomTransportLineAI.cs" />
+    <Compile Include="AI\Redirections\CustomCarAI.cs" />
     <Compile Include="AI\Redirections\CustomVehicleAI.cs" />
     <Compile Include="AI\_Extensions\CarAIExtensions.cs" />
     <Compile Include="AI\_Extensions\VehicleInfoExtensions.cs" />
