@@ -49,7 +49,7 @@ namespace TrafficManager.UI {
 			relativePosition = new Vector3(85f, 80f);
 
 			title = AddUIComponent<UILabel>();
-			title.text = "Version 1.6.7";
+			title.text = "Version 1.6.8";
 			title.relativePosition = new Vector3(50.0f, 5.0f);
 
 			int y = 30;
@@ -152,21 +152,20 @@ namespace TrafficManager.UI {
 		}
 
 		private void clickGoToVehicle(UIComponent component, UIMouseEventParameter eventParam) {
+#if DEBUG
+			if (title != null) {
+				if (CustomPathManager._replacementPathFinds != null && CustomPathManager._replacementPathFinds.Length >= 1)
+					title.text = CustomPathManager._replacementPathFinds[0].m_queuedPathFindCount.ToString();
+				else
+					title.text = "n/a";
+			}
+#endif
+
 			ushort vehicleId = Convert.ToUInt16(_goToField.text);
 			Vehicle vehicle = Singleton<VehicleManager>.instance.m_vehicles.m_buffer[vehicleId];
 			if ((vehicle.m_flags & Vehicle.Flags.Created) != Vehicle.Flags.None) {
 				CameraCtrl.GoToVehicle(vehicleId, new Vector3(vehicle.GetLastFramePosition().x, Camera.main.transform.position.y, vehicle.GetLastFramePosition().z));
 			}
-
-#if DEBUG
-			if (title == null)
-				return;
-
-			if (CustomPathManager._replacementPathFinds != null && CustomPathManager._replacementPathFinds.Length >= 1)
-				title.text = CustomPathManager._replacementPathFinds[0].m_queuedPathFindCount.ToString();
-			else
-				title.text = "n/a";
-#endif
 		}
 
 		private void clickSwitchTraffic(UIComponent component, UIMouseEventParameter eventParam) {

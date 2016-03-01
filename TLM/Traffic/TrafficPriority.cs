@@ -11,9 +11,7 @@ using System.Threading;
 namespace TrafficManager.Traffic {
 	class TrafficPriority {
 		private static uint[] segmentsCheckLoadBalanceMod = new uint[] { 127, 255, 511, 1023, 2047 };
-
-		public static bool leftHandDrive = false;
-
+		
 		public static float maxStopVelocity = 0.5f;
 
 		/// <summary>
@@ -285,9 +283,6 @@ namespace TrafficManager.Traffic {
 		}
 
 		public static bool HasIncomingVehiclesWithHigherPriority(ushort targetVehicleId, ushort nodeId) {
-			if (Options.disableSomething4)
-				return false;
-
 			try {
 #if DEBUG
 				//bool debug = nodeId == 30634;
@@ -1031,7 +1026,7 @@ namespace TrafficManager.Traffic {
 		/// </summary>
 		/// <returns></returns>
 		public static bool IsLeftHandDrive() {
-			return leftHandDrive;
+			return Singleton<SimulationManager>.instance.m_metaData.m_invertTraffic == SimulationMetaData.MetaBool.True;
 		}
 
 		internal static void fixJunctions() {

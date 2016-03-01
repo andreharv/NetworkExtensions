@@ -1538,7 +1538,6 @@ namespace TrafficManager.UI {
 				curLaneId = Singleton<NetManager>.instance.m_lanes.m_buffer[curLaneId].m_nextLane;
 			}
 
-
 			curLaneId = segment.m_lanes;
 			String labelStr = "";
 			for (int i = 0; i < segmentInfo.m_lanes.Length; ++i) {
@@ -1555,7 +1554,7 @@ namespace TrafficManager.UI {
 					labelStr += ", in start-up phase";
 				else
 					labelStr += ", avg. speed: " + CustomRoadAI.laneMeanSpeeds[curLaneId] + " %";
-				labelStr += ", avg. density: " + String.Format("{0:0.#}", (totalDensity > 0 ? Math.Min(100f, ((float)CustomRoadAI.currentLaneDensities[curLaneId] * 100f) / (float)totalDensity) : 0f)) + " %";
+				labelStr += ", avg. density: " + CustomRoadAI.laneMeanDensities[curLaneId] + " %";
 #if DEBUG
 				labelStr += " (" + CustomRoadAI.currentLaneDensities[curLaneId] + "/" + totalDensity + ")";
 #endif

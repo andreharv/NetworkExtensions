@@ -151,10 +151,11 @@ namespace TrafficManager.Custom.AI {
 #if DEBUGV
 			logBuffer.Add("* vehicleId " + vehicleId + ". ToNode: " + vehiclePos.ToNode + ". FromSegment: " + vehiclePos.FromSegment/* + ". FromLaneId: " + TrafficPriority.Vehicles[vehicleId].FromLaneId*/);
 #endif
-			if (addTraffic && vehicleData.m_leadingVehicle == 0 && realTimePositions.Count > 0) {
+			if (addTraffic && vehicleData.m_leadingVehicle == 0 && realTimePositions.Count > 0 && realTimePositions[0].m_segment != 0) {
 				// add traffic to lane
 				uint laneId = PathManager.GetLaneID(realTimePositions[0]);
-				CustomRoadAI.AddTraffic(laneId, Singleton<NetManager>.instance.m_segments.m_buffer[realTimePositions[0].m_segment].Info.m_lanes[realTimePositions[0].m_lane], (ushort)Mathf.RoundToInt(vehicleData.CalculateTotalLength(vehicleId)), (ushort)Mathf.RoundToInt(lastFrameData.m_velocity.magnitude), realTraffic);
+				//Log._Debug($"HandleVehicle: adding traffic to segment {realTimePositions[0].m_segment}, lane {realTimePositions[0].m_lane}");
+                CustomRoadAI.AddTraffic(laneId, Singleton<NetManager>.instance.m_segments.m_buffer[realTimePositions[0].m_segment].Info.m_lanes[realTimePositions[0].m_lane], (ushort)Mathf.RoundToInt(vehicleData.CalculateTotalLength(vehicleId)), (ushort)Mathf.RoundToInt(lastFrameData.m_velocity.magnitude), realTraffic);
 			}
 
 #if DEBUGV
@@ -286,8 +287,6 @@ namespace TrafficManager.Custom.AI {
 		}
 
 		internal static ExtVehicleType? DetermineVehicleTypeFromAIType(VehicleAI ai, bool emergencyOnDuty) {
-			if (Options.disableSomething3)
-				return null;
 			if (emergencyOnDuty)
 				return ExtVehicleType.Emergency;
 
@@ -349,7 +348,7 @@ namespace TrafficManager.Custom.AI {
 				}
 			}
 
-			float recalcDecisionValue = Math.Max(Options.someValue2, ((float)vehicleData.m_blockCounter - (float)MIN_BLOCK_RECALC_VALUE) / ((float)maxBlockCounter - (float)MIN_BLOCK_RECALC_VALUE));
+			float recalcDecisionValue = Math.Max(0.005f, ((float)vehicleData.m_blockCounter - (float)MIN_BLOCK_RECALC_VALUE) / ((float)maxBlockCounter - (float)MIN_BLOCK_RECALC_VALUE));
 			float bias = 1f;
 			switch (Options.simAccuracy) {
 				case 1:

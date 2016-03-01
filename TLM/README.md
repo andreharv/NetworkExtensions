@@ -2,6 +2,11 @@
 A work-in-progress modification for **Cities: Skylines** to add additional road traffic control
 
 # Changelog
+1.6.8, 03/01/2016
+- Path-finding: Major performance improvements
+- Updated Japanese translation (thanks to @Akira Ishizaki for translating!)
+- Added Spanish translation
+
 1.6.7, 02/27/2016
 - Tuned AI parameters
 - Improved traffic density measurements

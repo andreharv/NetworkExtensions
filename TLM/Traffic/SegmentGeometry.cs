@@ -254,7 +254,7 @@ namespace TrafficManager.Traffic {
 		/// <param name="segmentId">id of the managed segment</param>
 		public SegmentGeometry(ushort segmentId) {
 			this.segmentId = segmentId;
-			Recalculate(false, true);
+			Recalculate(true, true);
 		}
 
 		/// <summary>
@@ -1176,11 +1176,23 @@ namespace TrafficManager.Traffic {
 					isOutgoingOneWay = false;
 				}
 
+				if (info.m_lanes[laneIndex].m_laneType != NetInfo.LaneType.Pedestrian &&
+					(info.m_lanes[laneIndex].m_direction == NetInfo.Direction.Forward)) {
+					hasForward = true;
+				}
+
+				if (info.m_lanes[laneIndex].m_laneType != NetInfo.LaneType.Pedestrian &&
+					(info.m_lanes[laneIndex].m_direction == NetInfo.Direction.Backward)) {
+					hasBackward = true;
+				}
+
 				laneId = instance.m_lanes.m_buffer[laneId].m_nextLane;
 				laneIndex++;
 			}
 
 			isOneway = !(hasForward && hasBackward);
+			if (!isOneway)
+				isOutgoingOneWay = false;
 		}
 
 		/// <summary>

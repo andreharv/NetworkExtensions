@@ -808,7 +808,6 @@ namespace TrafficManager {
                 case LoadMode.NewGame:
                 case LoadMode.LoadGame:
 					gameLoaded = true;
-					TrafficPriority.leftHandDrive = Singleton<SimulationManager>.instance.m_metaData.m_invertTraffic == SimulationMetaData.MetaBool.True;
 					break;
 				default:
 					return;
