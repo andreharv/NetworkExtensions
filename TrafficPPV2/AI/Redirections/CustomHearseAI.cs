@@ -75,12 +75,6 @@ namespace CSL_Traffic
             return false;
         }
 
-        [RedirectFrom(typeof(HearseAI))]
-        protected override bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget)
-        {
-            return this.StartPathFind(ExtendedVehicleType.Hearse, vehicleID, ref vehicleData, startPos, endPos, startBothWays, endBothWays, undergroundTarget, IsHeavyVehicle(), IgnoreBlocked(vehicleID, ref vehicleData));
-        }
-
         [MethodImpl(MethodImplOptions.NoInlining)]
         [RedirectTo(typeof(HearseAI))]
         private bool ShouldReturnToSource(ushort vehicleID, ref Vehicle data)
