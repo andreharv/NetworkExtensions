@@ -64,6 +64,7 @@
     <Compile Include="AI\Redirections\CustomHearseAI.cs" />
     <Compile Include="AI\Redirections\CustomPassengerCarAI.cs" />
     <Compile Include="AI\Redirections\CustomPoliceCarAI.cs" />
+    <Compile Include="AI\Redirections\CustomTaxiAI.cs" />
     <Compile Include="AI\Redirections\CustomTransportLineAI.cs" />
     <Compile Include="AI\Redirections\CustomCarAI.cs" />
     <Compile Include="AI\Redirections\CustomVehicleAI.cs" />

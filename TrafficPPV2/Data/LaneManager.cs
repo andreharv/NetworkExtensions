@@ -79,7 +79,8 @@ namespace CSL_Traffic
             ExtendedVehicleType.ServiceVehicles |
             ExtendedVehicleType.PassengerCar |
             ExtendedVehicleType.CargoTruck |
-            ExtendedVehicleType.Bus;
+            ExtendedVehicleType.Bus |
+            ExtendedVehicleType.Taxi;
 
         public static bool CheckLaneConnection(this NetInfo.Lane laneInfo, ExtendedVehicleType vehicleType, uint from, uint to)
         {
