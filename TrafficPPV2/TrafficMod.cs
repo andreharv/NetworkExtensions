@@ -26,7 +26,7 @@ namespace CSL_Traffic
 
         public string Description
         {
-            get { return "Adds transit routing and restriction features."; }
+            get { return "Adds transit routing and restriction features.\n[GAME REBOOT REQUIRED]"; }
         }
 
         public void OnSettingsUI(UIHelperBase helper)
