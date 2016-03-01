@@ -23,6 +23,9 @@ namespace TrafficManager.Custom.AI {
 		/// <param name="vehicleId"></param>
 		/// <param name="vehicleData"></param>
 		internal static void HandleVehicle(ushort vehicleId, ref Vehicle vehicleData, bool addTraffic, bool realTraffic, byte maxUpcomingPathPositions, bool debug = false) {
+			if (Options.disableSomething2)
+				return;
+
 			if (maxUpcomingPathPositions <= 0)
 				maxUpcomingPathPositions = 1; // we need at least one upcoming path position
 
@@ -151,7 +154,7 @@ namespace TrafficManager.Custom.AI {
 			if (addTraffic && vehicleData.m_leadingVehicle == 0 && realTimePositions.Count > 0) {
 				// add traffic to lane
 				uint laneId = PathManager.GetLaneID(realTimePositions[0]);
-				CustomRoadAI.AddTraffic(laneId, (ushort)Mathf.RoundToInt(vehicleData.CalculateTotalLength(vehicleId)), (ushort)Mathf.RoundToInt(lastFrameData.m_velocity.magnitude), realTraffic);
+				CustomRoadAI.AddTraffic(laneId, Singleton<NetManager>.instance.m_segments.m_buffer[realTimePositions[0].m_segment].Info.m_lanes[realTimePositions[0].m_lane], (ushort)Mathf.RoundToInt(vehicleData.CalculateTotalLength(vehicleId)), (ushort)Mathf.RoundToInt(lastFrameData.m_velocity.magnitude), realTraffic);
 			}
 
 #if DEBUGV
@@ -283,15 +286,18 @@ namespace TrafficManager.Custom.AI {
 		}
 
 		internal static ExtVehicleType? DetermineVehicleTypeFromAIType(VehicleAI ai, bool emergencyOnDuty) {
+			if (Options.disableSomething3)
+				return null;
+			if (emergencyOnDuty)
+				return ExtVehicleType.Emergency;
+
 			switch (ai.m_info.m_vehicleType) {
 				case VehicleInfo.VehicleType.Bicycle:
 					return ExtVehicleType.Bicycle;
 				case VehicleInfo.VehicleType.Car:
 					if (ai is PassengerCarAI)
 						return ExtVehicleType.PassengerCar;
-					if (ai is AmbulanceAI || ai is FireTruckAI || ai is PoliceCarAI) {
-						if (emergencyOnDuty)
-							return ExtVehicleType.Emergency;
+					if (ai is AmbulanceAI || ai is FireTruckAI || ai is PoliceCarAI || ai is HearseAI || ai is GarbageTruckAI || ai is MaintenanceTruckAI || ai is SnowTruckAI) {
 						return ExtVehicleType.Service;
 					}
 					if (ai is CarTrailerAI)
@@ -302,8 +308,6 @@ namespace TrafficManager.Custom.AI {
 						return ExtVehicleType.Taxi;
 					if (ai is CargoTruckAI)
 						return ExtVehicleType.CargoTruck;
-					if (ai is HearseAI || ai is GarbageTruckAI || ai is MaintenanceTruckAI || ai is SnowTruckAI)
-						return ExtVehicleType.Service;
 					break;
 				case VehicleInfo.VehicleType.Metro:
 				case VehicleInfo.VehicleType.Train:

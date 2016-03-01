@@ -162,7 +162,7 @@ namespace TrafficManager.UI {
 		/// </summary>
 		/// <param name="cameraInfo"></param>
 		public override void RenderOverlay(RenderManager.CameraInfo cameraInfo) {
-			Log._Debug($"RenderOverlay");
+			//Log._Debug($"RenderOverlay");
 
 			switch (_toolMode) {
 				case ToolMode.SwitchTrafficLight:
@@ -209,7 +209,7 @@ namespace TrafficManager.UI {
 		protected override void OnToolUpdate() {
 			base.OnToolUpdate();
 
-			Log._Debug($"OnToolUpdate");
+			//Log._Debug($"OnToolUpdate");
 
 			_mouseDown = Input.GetMouseButton(0);
 
@@ -268,7 +268,7 @@ namespace TrafficManager.UI {
 		}
 
 		protected override void OnToolGUI() {
-			Log._Debug($"OnToolGUI");
+			//Log._Debug($"OnToolGUI");
 
 			try {
 				if (!Input.GetMouseButtonDown(0)) {

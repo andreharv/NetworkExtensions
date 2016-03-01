@@ -81,7 +81,8 @@ namespace TrafficManager.Custom.PathFinding {
 		public bool CreatePath(ExtVehicleType vehicleType, out uint unit, ref Randomizer randomizer, uint buildIndex, PathUnit.Position startPosA, PathUnit.Position startPosB, PathUnit.Position endPosA, PathUnit.Position endPosB, PathUnit.Position vehiclePosition, NetInfo.LaneType laneTypes, VehicleInfo.VehicleType vehicleTypes, float maxLength, bool isHeavyVehicle, bool ignoreBlocked, bool stablePath, bool skipQueue) {
 			uint num;
 			try {
-				Monitor.Enter(this.m_bufferLock);
+				while (!Monitor.TryEnter(this.m_bufferLock, SimulationManager.SYNCHRONIZE_TIMEOUT)) {
+				}
 				if (!this.m_pathUnits.CreateItem(out num, ref randomizer)) {
 					unit = 0u;
 					bool result = false;
