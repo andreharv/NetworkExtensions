@@ -85,7 +85,7 @@ namespace TrafficManager.State {
 		public static float someValue = 2f; // debug value
 		public static float someValue2 = 1.5f; // debug value
 		public static float someValue3 = 2f; // debug value
-		public static float someValue4 = 4f; // debug value
+		public static float someValue4 = 5f; // debug value
 
 		public static void makeSettings(UIHelperBase helper) {
 			mainGroup = helper.AddGroup(Translation.GetString("TMPE_Title"));

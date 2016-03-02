@@ -895,12 +895,17 @@ namespace TrafficManager.Custom.PathFinding {
 
 						// we need outgoing lanes too!
 						if (!isIncomingTurn && !isIncomingLeft && !isIncomingRight && !isIncomingStraight) {
-#if DEBUGPF
-							if (debug)
-								logBuf.Add($"(PFWARN) Segment {nextSegmentId} is neither incoming left, right or straight segment @ {nextNodeId}, going to segment {prevSegmentId}");
-#endif
+							//#if DEBUGPF
+							//if (debug)
+							//	logBuf.Add($"(PFWARN) Segment {nextSegmentId} is neither incoming left, right or straight segment @ {nextNodeId}, going to segment {prevSegmentId}");
+							//#endif
 							// recalculate geometry if segment is unknown
-							//geometry.VerifyConnectedSegment(nextSegmentId);
+							if (!CustomRoadAI.GetSegmentGeometry(nextSegmentId).IsOutgoingOneWay(nextNodeId)) {
+#if DEBUG
+								Log._Debug($"(PFWARN) Segment {nextSegmentId} is neither incoming left, right or straight segment @ {nextNodeId}, going to segment {prevSegmentId}");
+#endif
+								prevGeometry.VerifyConnectedSegment(nextSegmentId);
+							}
 
 							if (!applyHighwayRulesAtSegment) {
 								couldFindCustomPath = true; // not of interest
@@ -1934,12 +1939,12 @@ namespace TrafficManager.Custom.PathFinding {
 							}
 							if (!this._ignoreBlocked && (nextSegment.m_flags & NetSegment.Flags.Blocked) != NetSegment.Flags.None && (byte)(nextLane.m_laneType & (NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle)) != 0) {
 								if (addCustomTrafficCosts)
-									distanceOnBezier *= 100f;
+									distanceOnBezier *= 10f;
 								else
 									nextItem.m_comparisonValue += 0.1f;
 								result = true;
 							}
-							//sCurrentState = 20;
+
 							nextItem.m_lanesUsed = (item.m_lanesUsed | nextLane.m_laneType);
 							nextItem.m_laneID = curLaneId;
 							if ((byte)(nextLane.m_laneType & laneType) != 0 && nextLane.m_vehicleType == vehicleType) {
@@ -1958,7 +1963,6 @@ namespace TrafficManager.Custom.PathFinding {
 								}
 								// NON-STOCK CODE END //
 							}
-							//sCurrentState = 21;
 
 							// NON-STOCK CODE START //
 							bool addItem = true;
@@ -1973,7 +1977,7 @@ namespace TrafficManager.Custom.PathFinding {
 
 								float relLaneDist = nextRightSimilarLaneIndex - prevRightSimilarLaneIndex;
 								bool isPreferredLaneChangingDir = relLaneDist > 0 ^ TrafficPriority.IsLeftHandDrive(); // RH traffic: prefer changes to the right
-								float laneDist = !isMiddle && nextSegmentId == item.m_position.m_segment ? Options.someValue4 : (float)Math.Abs(relLaneDist);
+								float laneDist = !isMiddle && nextSegmentId == item.m_position.m_segment ? 4f : (float)Math.Abs(relLaneDist);
 
 								if (forceLaneIndex == null && prevIsHighway && nextIsHighway && laneDist > 1) {
 									goto IL_8F5;

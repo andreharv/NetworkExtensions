@@ -118,7 +118,7 @@ namespace TrafficManager.Custom.AI {
 							laneIndex++;
 							curLaneId = Singleton<NetManager>.instance.m_lanes.m_buffer[curLaneId].m_nextLane;
 						}
-						if (maxDensity > 25000)
+						if (maxDensity > 250)
 							resetDensity = true;
 
 						curLaneId = data.m_lanes;
@@ -160,7 +160,7 @@ namespace TrafficManager.Custom.AI {
 							currentLaneSpeeds[curLaneId] = 0;
 
 							if (resetDensity) {
-								currentLaneDensities[curLaneId] /= 100u;
+								currentLaneDensities[curLaneId] /= 10u;
 							}
 
 							laneIndex++;
