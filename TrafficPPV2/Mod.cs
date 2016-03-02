@@ -4,34 +4,35 @@ using ColossalFramework;
 using ColossalFramework.Globalization;
 using ICities;
 using Transit.Framework;
+using Transit.Framework.Mod;
 using Transit.Framework.Redirection;
 using UnityEngine;
 
 namespace CSL_Traffic
 {
-    public class TrafficMod : LoadingExtensionBase, IUserMod
+    public partial class Mod : TransitModBase
     {
-        public const ulong WORKSHOP_ID = 626024868ul;
-
-        public static OptionsManager.ModOptions Options = OptionsManager.ModOptions.RoadCustomizerTool | OptionsManager.ModOptions.NoDespawn;
-        private static readonly OptionsManager sm_optionsManager = new OptionsManager();
         private GameObject m_initializer;
         private static bool sm_redirectionInstalled = false;
-        private static bool sm_localizationInitialized = false;
 
-        public string Name
+        public override ulong WorkshopId
+        {
+            get { return 626024868ul; }
+        }
+
+        public override string Name
         {
             get { return "Traffic++ V2"; }
         }
 
-        public string Description
+        public override string Description
         {
             get { return "Adds transit routing and restriction features.\n[GAME REBOOT REQUIRED]"; }
         }
 
-        public void OnSettingsUI(UIHelperBase helper)
+        public override string Version
         {
-            sm_optionsManager.CreateSettings(helper);
+            get { return "1.0.0"; }
         }
 
         public override void OnCreated(ILoading loading)
@@ -53,13 +54,6 @@ namespace CSL_Traffic
                 m_initializer.GetComponent<Initializer>().OnLevelUnloading();
         }
 
-        public override void OnLevelLoaded(LoadMode mode)
-        {
-            base.OnLevelLoaded(mode);
-
-            InstallLocalization();
-        }
-
         public override void OnReleased()
         {
             base.OnReleased();
@@ -70,9 +64,10 @@ namespace CSL_Traffic
             }
         }
 
-        public void OnEnabled()
+        public override void OnEnabled()
         {
-            sm_optionsManager.LoadOptions();
+            base.OnEnabled();
+            
             if (!sm_redirectionInstalled)
             {
                 Redirector.PerformRedirections();
@@ -82,7 +77,7 @@ namespace CSL_Traffic
             ExtendedPathManager.DefinePathFinding<TPPPathFind>();
         }
 
-        public void OnDisabled()
+        public override void OnDisabled()
         {
             if (sm_redirectionInstalled)
             {
@@ -93,11 +88,8 @@ namespace CSL_Traffic
             ExtendedPathManager.ResetPathFinding();
         }
 
-        private void InstallLocalization()
+        public override void OnInstallLocalization()
         {
-            if (sm_localizationInitialized)
-                return;
-
             Logger.LogInfo("Updating Localization.");
 
             try
@@ -129,8 +121,6 @@ namespace CSL_Traffic
                                                 "2. Entry points will be shown, click one to select it (right-click goes back to step 1)\n" +
                                                 "3. Click the exit routes you wish to allow (right-click goes back to step 2)" +
                                                 "\n\nUse PageUp/PageDown to toggle Underground View.");
-
-                sm_localizationInitialized = true;
             }
             catch (ArgumentException e)
             {

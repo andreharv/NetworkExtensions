@@ -2,6 +2,7 @@
 using ColossalFramework.Globalization;
 using JetBrains.Annotations;
 using System;
+using System.Collections.Generic;
 using Transit.Framework.Modularity;
 using UnityEngine;
 
@@ -22,7 +23,7 @@ namespace Transit.Framework.Mod
         [UsedImplicitly]
         private class LocalizationInstaller : Installer<TransitModBase>
         {
-            private static bool Done { get; set; } //Only one localization throughout the application
+            private static readonly ICollection<ulong> _modLoaded = new HashSet<ulong>(); //Only one localization per mod throughout the application
 
             protected override bool ValidatePrerequisites()
             {
@@ -43,10 +44,12 @@ namespace Transit.Framework.Mod
 
             protected override void Install(TransitModBase host)
             {
-                if (Done) //Only one localization throughout the application
+                if (_modLoaded.Contains(host.WorkshopId)) //Only one localization per mod throughout the application
                 {
                     return;
                 }
+
+                _modLoaded.Add(host.WorkshopId);
 
                 Loading.QueueAction(() =>
                 {
@@ -60,8 +63,6 @@ namespace Transit.Framework.Mod
                         Debug.Log("TFW: " + ex.Message);
                         Debug.Log("TFW: " + ex.ToString());
                     }
-
-                    Done = true;
                 });
             }
         }

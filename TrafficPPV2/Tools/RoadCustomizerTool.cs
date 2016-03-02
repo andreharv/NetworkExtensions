@@ -1,9 +1,11 @@
-﻿using ColossalFramework.Math;
+﻿using System;
+using ColossalFramework.Math;
 using ColossalFramework.UI;
 using CSL_Traffic.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Transit.Framework;
 using Transit.Framework.Network;
 using UnityEngine;
 
@@ -893,6 +895,7 @@ namespace CSL_Traffic
 		protected override void Awake()
 		{
 			base.Awake();
+
 			StartCoroutine(CreateToolButton());
 		}
 
@@ -939,11 +942,9 @@ namespace CSL_Traffic
 			btn.normalBgSprite = "rctBg";// roadsButton.normalBgSprite;
 			btn.pressedBgSprite = "rctBg" + "Pressed";// roadsButton.pressedBgSprite;
 
-			btn.atlas = UI.UIUtils.LoadThumbnailsTextureAtlas("UIThumbnails");
+			btn.atlas = UI.UIUtils.GetRoadCustomizerAtlas();
 			btn.atlas.AddSprites(roadsButton.atlas.sprites);
 			btn.foregroundSpriteMode = UIForegroundSpriteMode.Fill;
-			UI.UIUtils.SetThumbnails("rct", new UI.UIUtils.SpriteTextureInfo() { startX = 796, startY = 0, width = 36, height = 36 }, btn.atlas);
-			UI.UIUtils.SetThumbnails("rctBg", new UI.UIUtils.SpriteTextureInfo() { startX = 835, startY = 0, width = 43, height = 49 }, btn.atlas, new string[] { "Hovered", "Pressed", "Focused", "" });
 
 			btn.disabledFgSprite = "rct";
 			btn.focusedFgSprite = "rct";

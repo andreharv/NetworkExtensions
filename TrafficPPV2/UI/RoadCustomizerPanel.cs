@@ -54,7 +54,7 @@ namespace CSL_Traffic.UI
 
         private void Awake()
         {
-            this.m_atlas = UIUtils.LoadThumbnailsTextureAtlas("UIThumbnails");
+            this.m_atlas = UIUtils.GetRoadCustomizerAtlas();
             this.m_scrollablePanel = GetComponentInChildren<UIScrollablePanel>();
             this.m_scrollablePanel.autoLayoutStart = LayoutStart.TopLeft;
             UIScrollbar scrollbar = this.GetComponentInChildren<UIScrollbar>();

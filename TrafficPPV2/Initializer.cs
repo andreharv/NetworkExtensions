@@ -34,7 +34,7 @@ namespace CSL_Traffic
 
             if (level == 6)
             {
-                Logger.LogInfo("Game level was loaded. Options enabled: \n\t" + TrafficMod.Options);
+                Logger.LogInfo("Game level was loaded. Options enabled: \n\t" + Mod.Options);
 
                 m_initialized = false;
 
@@ -52,7 +52,7 @@ namespace CSL_Traffic
 
         public void OnLevelUnloading()
         {
-            if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
+            if ((Mod.Options & ModOptions.UseRealisticSpeeds) == ModOptions.UseRealisticSpeeds)
             {
                 for (uint i = 0; i < PrefabCollection<CitizenInfo>.LoadedCount(); i++)
                 {
@@ -101,10 +101,10 @@ namespace CSL_Traffic
                 {
                     if (this.m_level == 6)
                     {
-                        if ((TrafficMod.Options & OptionsManager.ModOptions.RoadCustomizerTool) == OptionsManager.ModOptions.RoadCustomizerTool)
+                        if ((Mod.Options & ModOptions.RoadCustomizerTool) == ModOptions.RoadCustomizerTool)
                             AddTool<RoadCustomizerTool>(ToolsModifierControl.toolController);
 
-                        if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
+                        if ((Mod.Options & ModOptions.UseRealisticSpeeds) == ModOptions.UseRealisticSpeeds)
                         {
                             for (uint i = 0; i < PrefabCollection<CitizenInfo>.LoadedCount(); i++)
                             {
@@ -115,8 +115,6 @@ namespace CSL_Traffic
                     }
 
                     AddQueuedActionsToLoadingQueue();
-
-                    FileManager.ClearCache();
 
                 }
                 catch (KeyNotFoundException knf)
@@ -299,51 +297,51 @@ namespace CSL_Traffic
 
         static string[] sm_mapNames = new string[] { "_MainTex", "_XYSMap", "_ACIMap", "_APRMap" };
 
-        bool ReplaceTextures(TextureInfo textureInfo, TextureType textureType, FileManager.Folder textureFolder, Material mat, int anisoLevel = 8, FilterMode filterMode = FilterMode.Trilinear, bool skipCache = false)
-        {
-            bool success = false;
-            byte[] textureBytes;
-            Texture2D tex = null;
+        //bool ReplaceTextures(TextureInfo textureInfo, TextureType textureType, FileManager.Folder textureFolder, Material mat, int anisoLevel = 8, FilterMode filterMode = FilterMode.Trilinear, bool skipCache = false)
+        //{
+        //    bool success = false;
+        //    byte[] textureBytes;
+        //    Texture2D tex = null;
 
-            for (int i = 0; i < sm_mapNames.Length; i++)
-            {
-                if (mat.HasProperty(sm_mapNames[i]) && mat.GetTexture(sm_mapNames[i]) != null)
-                {
-                    string fileName = GetTextureName(sm_mapNames[i], textureInfo, textureType);
-                    if (!String.IsNullOrEmpty(fileName) && !m_customTextures.TryGetValue(fileName, out tex))
-                    {
-                        if (FileManager.GetTextureBytes(fileName + ".png", textureFolder, skipCache, out textureBytes))
-                        {
-                            tex = new Texture2D(1, 1);
-                            tex.LoadImage(textureBytes);
-                        }
-                        else if (fileName.Contains("-LOD"))
-                        {
-                            Texture2D original = mat.GetTexture(sm_mapNames[i]) as Texture2D;
-                            if (original != null)
-                            {
-                                tex = new Texture2D(original.width, original.height);
-                                tex.SetPixels(original.GetPixels());
-                                tex.Apply();
-                            }
-                        }
-                    }
+        //    for (int i = 0; i < sm_mapNames.Length; i++)
+        //    {
+        //        if (mat.HasProperty(sm_mapNames[i]) && mat.GetTexture(sm_mapNames[i]) != null)
+        //        {
+        //            string fileName = GetTextureName(sm_mapNames[i], textureInfo, textureType);
+        //            if (!String.IsNullOrEmpty(fileName) && !m_customTextures.TryGetValue(fileName, out tex))
+        //            {
+        //                if (FileManager.GetTextureBytes(fileName + ".png", textureFolder, skipCache, out textureBytes))
+        //                {
+        //                    tex = new Texture2D(1, 1);
+        //                    tex.LoadImage(textureBytes);
+        //                }
+        //                else if (fileName.Contains("-LOD"))
+        //                {
+        //                    Texture2D original = mat.GetTexture(sm_mapNames[i]) as Texture2D;
+        //                    if (original != null)
+        //                    {
+        //                        tex = new Texture2D(original.width, original.height);
+        //                        tex.SetPixels(original.GetPixels());
+        //                        tex.Apply();
+        //                    }
+        //                }
+        //            }
 
-                    if (tex != null)
-                    {
-                        tex.name = fileName;
-                        tex.anisoLevel = anisoLevel;
-                        tex.filterMode = filterMode;
-                        mat.SetTexture(sm_mapNames[i], tex);
-                        m_customTextures[tex.name] = tex;
-                        success = true;
-                        tex = null;
-                    }
-                }
-            }
+        //            if (tex != null)
+        //            {
+        //                tex.name = fileName;
+        //                tex.anisoLevel = anisoLevel;
+        //                tex.filterMode = filterMode;
+        //                mat.SetTexture(sm_mapNames[i], tex);
+        //                m_customTextures[tex.name] = tex;
+        //                success = true;
+        //                tex = null;
+        //            }
+        //        }
+        //    }
 
-            return success;
-        }
+        //    return success;
+        //}
 
         string GetTextureName(string map, TextureInfo info, TextureType type)
         {

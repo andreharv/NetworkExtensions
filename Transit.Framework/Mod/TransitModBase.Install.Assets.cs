@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 using Transit.Framework.Modularity;
 using UnityEngine;
@@ -20,7 +21,7 @@ namespace Transit.Framework.Mod
         [UsedImplicitly]
         private class AssetsInstaller : Installer<TransitModBase>
         {
-            private static bool Done { get; set; } // Only one Assets installation throughout the application
+            private static readonly ICollection<string> _pathsLoaded = new HashSet<string>(); // Only one Assets installation per paths throughout the application
 
             protected override bool ValidatePrerequisites()
             {
@@ -29,11 +30,13 @@ namespace Transit.Framework.Mod
 
             protected override void Install(TransitModBase host)
             {
-                if (Done) // Only one Assets installation throughout the application
+                if (_pathsLoaded.Contains(host.AssetPath)) // Only one Assets installation per paths throughout the application
                 {
                     return;
                 }
-                
+
+                _pathsLoaded.Add(host.AssetPath);
+
                 foreach (var action in AssetManager.instance.CreateLoadingSequence(host.AssetPath))
                 {
                     var localAction = action;
@@ -66,8 +69,6 @@ namespace Transit.Framework.Mod
                         Debug.Log("TFW: " + ex.ToString());
                     }
                 });
-
-                Done = true;
             }
         }
     }

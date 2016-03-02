@@ -12,7 +12,7 @@ namespace CSL_Traffic
             
         public override void OnLoadData()
         {
-            if ((TrafficMod.Options & OptionsManager.ModOptions.RoadCustomizerTool) == OptionsManager.ModOptions.None)
+            if ((Mod.Options & ModOptions.RoadCustomizerTool) == ModOptions.None)
                 return;
                 
 
@@ -82,7 +82,7 @@ namespace CSL_Traffic
 
         public override void OnSaveData()
         {
-            if ((TrafficMod.Options & OptionsManager.ModOptions.RoadCustomizerTool) == OptionsManager.ModOptions.None)
+            if ((Mod.Options & ModOptions.RoadCustomizerTool) == ModOptions.None)
                 return;
 
             Logger.LogInfo("Saving road data!");

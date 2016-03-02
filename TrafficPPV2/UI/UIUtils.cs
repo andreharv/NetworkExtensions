@@ -1,11 +1,21 @@
 ﻿using ColossalFramework.UI;
 using System.Collections.Generic;
+using Transit.Framework;
 using UnityEngine;
 
 namespace CSL_Traffic.UI
 {
     class UIUtils
     {
+        private static readonly string[] sm_thumbnailStates = { "Disabled", "", "Hovered", "Focused" };
+
+        public static readonly Dictionary<string, SpriteTextureInfo> sm_thumbnailCoords = new Dictionary<string, SpriteTextureInfo>()
+        {
+            {"TabBackgrounds", new SpriteTextureInfo() {startX = 763, startY = 50, width = 60, height = 25}},
+            {"Vehicle Restrictions", new SpriteTextureInfo() {startX = 763, startY = 0, width = 32, height = 22}},
+            {"Speed Restrictions", new SpriteTextureInfo() {startX = 763, startY = 22, width = 32, height = 22}},
+        };
+
         public struct SpriteTextureInfo
         {
             public int startX;
@@ -14,13 +24,21 @@ namespace CSL_Traffic.UI
             public int height;
         }
 
-        static Dictionary<string, UITextureAtlas> sm_atlases = new Dictionary<string,UITextureAtlas>();
+        private static UITextureAtlas sm_RoadCustomizerAtlas;
 
-        public static UITextureAtlas LoadThumbnailsTextureAtlas(string name)
+        public static UITextureAtlas GetRoadCustomizerAtlas()
         {
-            UITextureAtlas atlas;
-            if (sm_atlases.TryGetValue(name, out atlas))
-                return atlas;
+            if (sm_RoadCustomizerAtlas == null)
+            {
+                sm_RoadCustomizerAtlas = LoadRoadCustomizerAtlas();
+            }
+
+            return sm_RoadCustomizerAtlas;
+        }
+
+        private static UITextureAtlas LoadRoadCustomizerAtlas()
+        {
+            const string name = "UIThumbnails";
 
             Shader shader = Shader.Find("UI/Default UI Shader");
             if (shader == null)
@@ -29,25 +47,36 @@ namespace CSL_Traffic.UI
                 return null;
             }
 
-            byte[] bytes;
-            if (!FileManager.GetTextureBytes(name + ".png", FileManager.Folder.UI, out bytes))
-            {
-                Logger.LogInfo("Cannot find UI Atlas file. Using default thumbnails.");
-                return null;
-            }
-
-            Texture2D atlasTexture = new Texture2D(1, 1, TextureFormat.ARGB32, false);
-            atlasTexture.LoadImage(bytes);
+            Texture2D atlasTexture = AssetManager.instance.GetTexture(@"Menus\RoadCustomizer\Textures\Thumbnails.png", TextureType.UI);
             FixTransparency(atlasTexture);
 
             Material atlasMaterial = new Material(shader);
             atlasMaterial.mainTexture = atlasTexture;
 
-            atlas = ScriptableObject.CreateInstance<UITextureAtlas>();
+            var atlas = ScriptableObject.CreateInstance<UITextureAtlas>();
             atlas.name = "Traffic++ " + name;
             atlas.material = atlasMaterial;
 
-            sm_atlases[name] = atlas;
+
+            SetThumbnails("rct", new SpriteTextureInfo
+                {
+                    startX = 796,
+                    startY = 0,
+                    width = 36,
+                    height = 36
+                }, 
+                atlas);
+            SetThumbnails("rctBg", new SpriteTextureInfo
+                {
+                    startX = 835,
+                    startY = 0,
+                    width = 43,
+                    height = 49
+                }, 
+                atlas, 
+                new[] { "Hovered", "Pressed", "Focused", "" });
+
+            SetThumbnails("TabBg", sm_thumbnailCoords["TabBackgrounds"], atlas, sm_thumbnailStates);
 
             return atlas;
         }

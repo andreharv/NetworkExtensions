@@ -9,13 +9,6 @@ namespace CSL_Traffic.UI
     {
         private static readonly string kSubbarButtonTemplate = "SubbarButtonTemplate";
         private static readonly string kSubbarPanelTemplate = "SubbarPanelTemplate";
-        static readonly string[] sm_thumbnailStates = new string[] { "Disabled", "", "Hovered", "Focused" };
-        static readonly Dictionary<string, UIUtils.SpriteTextureInfo> sm_thumbnailCoords = new Dictionary<string, UIUtils.SpriteTextureInfo>()
-        {        
-            {"TabBackgrounds", new UIUtils.SpriteTextureInfo() {startX = 763, startY = 50, width = 60, height = 25}},
-            {"Vehicle Restrictions", new UIUtils.SpriteTextureInfo() {startX = 763, startY = 0, width = 32, height = 22}},
-            {"Speed Restrictions", new UIUtils.SpriteTextureInfo() {startX = 763, startY = 22, width = 32, height = 22}},
-        };
 
 
         protected UITabstrip m_strip;
@@ -27,8 +20,7 @@ namespace CSL_Traffic.UI
             this.m_strip = GetComponentInChildren<UITabstrip>();
             this.m_strip.relativePosition = new Vector3(13, -25);
             this.m_strip.startSelectedIndex = 0;
-            this.m_atlas = UIUtils.LoadThumbnailsTextureAtlas("UIThumbnails");
-            UIUtils.SetThumbnails("TabBg", sm_thumbnailCoords["TabBackgrounds"], this.m_atlas, sm_thumbnailStates);
+            this.m_atlas = UIUtils.GetRoadCustomizerAtlas();
             this.m_objectIndex = 0;
         }
 
@@ -70,7 +62,7 @@ namespace CSL_Traffic.UI
             btn.atlas = this.m_atlas;
             //btn.gameObject.GetComponent<TutorialUITag>().tutorialTag = name;
             string text = spriteBase + name;
-            UIUtils.SetThumbnails(text, sm_thumbnailCoords[text], this.m_atlas);
+            UIUtils.SetThumbnails(text, UIUtils.sm_thumbnailCoords[text], this.m_atlas);
             btn.normalFgSprite = text;
             btn.focusedFgSprite = text;// +"Focused";
             btn.hoveredFgSprite = text;// +"Hovered";

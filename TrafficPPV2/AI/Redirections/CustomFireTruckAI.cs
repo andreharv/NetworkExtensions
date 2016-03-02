@@ -12,7 +12,7 @@ namespace CSL_Traffic
         [RedirectFrom(typeof(FireTruckAI))]
         public override void SimulationStep(ushort vehicleID, ref Vehicle vehicleData, ref Vehicle.Frame frameData, ushort leaderID, ref Vehicle leaderData, int lodPhysics)
         {
-            if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
+            if ((Mod.Options & ModOptions.UseRealisticSpeeds) == ModOptions.UseRealisticSpeeds)
             {
                 var speedData = CarSpeedData.Of(vehicleID);
 
@@ -84,7 +84,7 @@ namespace CSL_Traffic
                 Singleton<TransferManager>.instance.AddIncomingOffer((TransferManager.TransferReason)vehicleData.m_transferType, offer);
             }
 
-            if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
+            if ((Mod.Options & ModOptions.UseRealisticSpeeds) == ModOptions.UseRealisticSpeeds)
             {
                 m_info.RestoreVehicleSpeed(CarSpeedData.Of(vehicleID));
             }

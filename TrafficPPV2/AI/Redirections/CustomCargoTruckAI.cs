@@ -13,7 +13,7 @@ namespace CSL_Traffic
         [RedirectFrom(typeof(CargoTruckAI))]
         public override void SimulationStep(ushort vehicleID, ref Vehicle data, Vector3 physicsLodRefPos)
         {
-            if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
+            if ((Mod.Options & ModOptions.UseRealisticSpeeds) == ModOptions.UseRealisticSpeeds)
             {
                 var speedData = CarSpeedData.Of(vehicleID);
 
@@ -26,7 +26,7 @@ namespace CSL_Traffic
             }
 
             if (((data.m_flags & Vehicle.Flags.Congestion) != Vehicle.Flags.None) &&
-                ((TrafficMod.Options & OptionsManager.ModOptions.NoDespawn) != OptionsManager.ModOptions.NoDespawn))
+                ((Mod.Options & ModOptions.NoDespawn) != ModOptions.NoDespawn))
             {
                 Singleton<VehicleManager>.instance.ReleaseVehicle(vehicleID);
             }
@@ -46,7 +46,7 @@ namespace CSL_Traffic
                 base.SimulationStep(vehicleID, ref data, physicsLodRefPos);
             }
 
-            if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
+            if ((Mod.Options & ModOptions.UseRealisticSpeeds) == ModOptions.UseRealisticSpeeds)
             {
                 m_info.RestoreVehicleSpeed(CarSpeedData.Of(vehicleID));
             }
