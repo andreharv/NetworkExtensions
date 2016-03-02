@@ -1,11 +1,12 @@
 ﻿using Transit.Framework.ExtensionPoints.AI;
+using Transit.Framework.Prerequisites;
 using Transit.Framework.Redirection;
 
 namespace Transit.Framework.Hooks.AI
 {
-    public partial class TAMRoadAI : RoadAI
+    public partial class RoadAIHook : RoadAI
     {
-        [RedirectFrom(typeof (RoadAI))]
+        [RedirectFrom(typeof(RoadAI), (ulong)PrerequisiteType.AI)]
         public override float GetLengthSnap()
         {
             if (RoadSnappingModeManager.HasCustomSnapping(this.m_info.name))

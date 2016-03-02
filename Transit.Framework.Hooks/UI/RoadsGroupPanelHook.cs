@@ -1,11 +1,12 @@
 ﻿using Transit.Framework.ExtensionPoints.UI;
+using Transit.Framework.Prerequisites;
 using Transit.Framework.Redirection;
 
 namespace Transit.Framework.Hooks.UI
 {
-    public class TAMRoadsGroupPanel : GeneratedGroupPanel
+    public class RoadsGroupPanelHook : GeneratedGroupPanel
     {
-        [RedirectFrom(typeof(RoadsGroupPanel))]
+        [RedirectFrom(typeof(RoadsGroupPanel), (ulong)PrerequisiteType.UI)]
         protected override int GetCategoryOrder(string name)
         {
             int? order = RoadCategoryOrderManager.GetOrder(name);

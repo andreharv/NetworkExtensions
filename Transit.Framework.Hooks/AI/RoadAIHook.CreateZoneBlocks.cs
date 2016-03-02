@@ -2,16 +2,17 @@
 using ColossalFramework;
 using ColossalFramework.Math;
 using Transit.Framework.ExtensionPoints.AI;
+using Transit.Framework.Prerequisites;
 using Transit.Framework.Redirection;
 using UnityEngine;
 
 namespace Transit.Framework.Hooks.AI
 {
-    public partial class TAMRoadAI : RoadAI
+    public partial class RoadAIHook : RoadAI
     {
         private const float MIN_HALFWIDTH_DEFAULT = 8f;
 
-        [RedirectFrom(typeof(RoadAI))]
+        [RedirectFrom(typeof(RoadAI), (ulong)PrerequisiteType.AI)]
         private void CreateZoneBlocks(ushort segment, ref NetSegment data)
         {
             try
@@ -34,6 +35,7 @@ namespace Transit.Framework.Hooks.AI
                 Debug.Log("TAM: " + ex.ToString());
             }
         }
+
         private static void CreateZoneBlocksVanilla(NetInfo info, ushort segmentId, ref NetSegment segment)
         {
             var netManager = Singleton<NetManager>.instance;

@@ -51,13 +51,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AI\TAMRoadAI.CreateZoneBlocks.cs" />
-    <Compile Include="AI\TAMNetAI.CheckBuildPosition.cs" />
-    <Compile Include="AI\TAMRoadAI.Snapping.cs" />
-    <Compile Include="HooksInstaller.cs" />
+    <Compile Include="AI\RoadAIHook.CreateZoneBlocks.cs" />
+    <Compile Include="AI\NetAIHook.CheckBuildPosition.cs" />
+    <Compile Include="AI\RoadAIHook.Snapping.cs" />
+    <Compile Include="HookInstaller.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI\TAMGeneratedGroupPanel.cs" />
-    <Compile Include="UI\TAMRoadsGroupPanel.cs" />
+    <Compile Include="UI\GeneratedGroupPanelHook.cs" />
+    <Compile Include="UI\RoadsGroupPanelHook.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Transit.Framework.ExtensionPoints\Transit.Framework.ExtensionPoints.csproj">

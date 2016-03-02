@@ -1,24 +1,24 @@
-﻿using System;
+﻿using ColossalFramework;
+using ColossalFramework.Globalization;
+using ColossalFramework.UI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using ColossalFramework;
-using ColossalFramework.Globalization;
-using ColossalFramework.UI;
 using Transit.Framework.ExtensionPoints.UI;
-using Transit.Framework;
+using Transit.Framework.Prerequisites;
 using Transit.Framework.Redirection;
 using UnityEngine;
 
 namespace Transit.Framework.Hooks.UI
 {
-    public class TAMGeneratedGroupPanel : GeneratedGroupPanel
+    public class GeneratedGroupPanelHook : GeneratedGroupPanel
     {
         private const string kSubbarButtonTemplate = "SubbarButtonTemplate";
         private const string kSubbarPanelTemplate = "SubbarPanelTemplate";
 
-        [RedirectFrom(typeof (GeneratedGroupPanel))]
+        [RedirectFrom(typeof(GeneratedGroupPanel), (ulong)PrerequisiteType.UI)]
 #pragma warning disable 108,114
         protected UIButton SpawnButtonEntry(UITabstrip strip, string name, string category, bool isDefaultCategory,
 #pragma warning restore 108,114
@@ -94,7 +94,7 @@ namespace Transit.Framework.Hooks.UI
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        [RedirectFrom(typeof(GeneratedGroupPanel))]
+        [RedirectFrom(typeof(GeneratedGroupPanel), (ulong)PrerequisiteType.UI)]
         private PoolList<GroupInfo> CollectAssets(GroupFilter filter, Comparison<GroupInfo> comparison)
         {
             PoolList<GroupInfo> poolList = PoolList<GroupInfo>.Obtain();
@@ -192,49 +192,49 @@ namespace Transit.Framework.Hooks.UI
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        [RedirectTo(typeof(GeneratedGroupPanel))]
+        [RedirectTo(typeof(GeneratedGroupPanel), (ulong)PrerequisiteType.UI)]
         private bool IsPlacementRelevant(NetInfo info)
         {
             throw new NotImplementedException("IsPlacementRelevant is target of redirection and is not implemented.");
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        [RedirectTo(typeof(GeneratedGroupPanel))]
+        [RedirectTo(typeof(GeneratedGroupPanel), (ulong)PrerequisiteType.UI)]
         private bool IsPlacementRelevant(BuildingInfo info)
         {
             throw new NotImplementedException("IsPlacementRelevant is target of redirection and is not implemented.");
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        [RedirectTo(typeof(GeneratedGroupPanel))]
+        [RedirectTo(typeof(GeneratedGroupPanel), (ulong)PrerequisiteType.UI)]
         private bool IsPlacementRelevant(TransportInfo info)
         {
             throw new NotImplementedException("IsPlacementRelevant is target of redirection and is not implemented.");
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        [RedirectTo(typeof(GeneratedGroupPanel))]
+        [RedirectTo(typeof(GeneratedGroupPanel), (ulong)PrerequisiteType.UI)]
         private bool IsPlacementRelevant(TreeInfo info)
         {
             throw new NotImplementedException("IsPlacementRelevant is target of redirection and is not implemented.");
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        [RedirectTo(typeof(GeneratedGroupPanel))]
+        [RedirectTo(typeof(GeneratedGroupPanel), (ulong)PrerequisiteType.UI)]
         private bool IsPlacementRelevant(PropInfo info)
         {
             throw new NotImplementedException("IsPlacementRelevant is target of redirection and is not implemented.");
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        [RedirectTo(typeof(GeneratedGroupPanel))]
+        [RedirectTo(typeof(GeneratedGroupPanel), (ulong)PrerequisiteType.UI)]
         private bool FilterWonders(GroupFilter filter, BuildingInfo info)
         {
             throw new NotImplementedException("FilterWonders is target of redirection and is not implemented.");
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        [RedirectTo(typeof(GeneratedGroupPanel))]
+        [RedirectTo(typeof(GeneratedGroupPanel), (ulong)PrerequisiteType.UI)]
         private void AddGroup(PoolList<GroupInfo> groupItems, PrefabInfo info)
         {
             throw new NotImplementedException("AddGroup is target of redirection and is not implemented.");

@@ -3,14 +3,15 @@ using System.Runtime.CompilerServices;
 using ColossalFramework;
 using ColossalFramework.Math;
 using Transit.Framework.ExtensionPoints.AI;
+using Transit.Framework.Prerequisites;
 using Transit.Framework.Redirection;
 using UnityEngine;
 
 namespace Transit.Framework.Hooks.AI
 {
-    public partial class TAMNetAI : NetAI
+    public partial class NetAIHook : NetAI
     {
-        [RedirectFrom(typeof(NetAI))]
+        [RedirectFrom(typeof(NetAI), (ulong)PrerequisiteType.AI)]
 #pragma warning disable 108,114
         public virtual ToolBase.ToolErrors CheckBuildPosition(bool test, bool visualize, bool overlay, bool autofix,
 #pragma warning restore 108,114
@@ -152,14 +153,14 @@ namespace Transit.Framework.Hooks.AI
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        [RedirectTo(typeof(NetAI))]
+        [RedirectTo(typeof(NetAI), (ulong)PrerequisiteType.AI)]
         private static bool ForceValidDirection(NetInfo info, ref Vector3 direction, ushort nodeID, ref NetNode node)
         {
             throw new NotImplementedException("ForceValidDirection is target of redirection and is not implemented.");
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        [RedirectTo(typeof(NetAI))]
+        [RedirectTo(typeof(NetAI), (ulong)PrerequisiteType.AI)]
         private static bool ForceValidDirection(NetInfo info, Vector3 position, ref Vector3 direction, ushort segmentID, ref NetSegment segment)
         {
             throw new NotImplementedException("ForceValidDirection is target of redirection and is not implemented.");

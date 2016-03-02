@@ -1,49 +1,57 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ICities;
+using ColossalFramework;
 using Transit.Framework.Mod;
 using UnityEngine;
 
 namespace Transit.Framework.Prerequisites
 {
-    public class ModPrerequisites
+    public static class PrerequisiteHandler
     {
-        private static readonly ICollection<Type> _installedMods = new HashSet<Type>();
+        private static readonly IDictionary<PrerequisiteType, ICollection<Type>> _installedPrerequisites = new Dictionary<PrerequisiteType, ICollection<Type>>();
 
-        public static void InstallForMod(TransitModBase mod)
+        public static void InstallPrerequisites(this ITransitMod mod)
         {
             var modType = mod.GetType();
 
-            if (_installedMods.Count == 0)
+            foreach (var requirement in mod.Requirements.GetFlags())
             {
-                DoInstallation();
-            }
+                if (!_installedPrerequisites.ContainsKey(requirement))
+                {
+                    DoInstallation(requirement);
+                    _installedPrerequisites[requirement] = new HashSet<Type>();
+                }
 
-            if (!_installedMods.Contains(modType))
-            {
-                _installedMods.Add(modType);
+                _installedPrerequisites[requirement].Add(modType);
             }
         }
 
-        public static void UninstallForMod(IUserMod mod)
+        public static void UninstallPrerequisites(this ITransitMod mod)
         {
             var modType = mod.GetType();
 
-            if (_installedMods.Contains(modType))
+            foreach (var requirement in mod.Requirements.GetFlags())
             {
-                _installedMods.Remove(modType);
-            }
+                if (_installedPrerequisites.ContainsKey(requirement))
+                {
+                    if (_installedPrerequisites[requirement].Contains(modType))
+                    {
+                        _installedPrerequisites[requirement].Remove(modType);
 
-            if (_installedMods.Count == 0)
-            {
-                DoUninstallation();
+                        if (!_installedPrerequisites[requirement].Any())
+                        {
+                            DoUninstallation(requirement);
+                            _installedPrerequisites.Remove(requirement);
+                        }
+                    }
+                }
             }
         }
 
-        private static IEnumerable<IModPrerequisite> GetAllPrerequisites()
+        private static IEnumerable<IPrerequisiteSetup> GetAllPrerequisites()
         {
-            var prereqType = typeof(IModPrerequisite);
+            var prereqType = typeof(IPrerequisiteSetup);
             return AppDomain
                 .CurrentDomain
                 .GetAssemblies()
@@ -67,7 +75,7 @@ namespace Transit.Framework.Prerequisites
                 {
                     try
                     {
-                        return (IModPrerequisite)Activator.CreateInstance(t);
+                        return (IPrerequisiteSetup)Activator.CreateInstance(t);
                     }
                     catch (Exception ex)
                     {
@@ -81,14 +89,14 @@ namespace Transit.Framework.Prerequisites
                 .ToArray();
         }
 
-        private static void DoInstallation()
+        private static void DoInstallation(PrerequisiteType type)
         {
             try
             {
                 foreach (var p in GetAllPrerequisites())
                 {
                     Debug.Log(string.Format("TFW: Installing Prerequisite {0}", p.GetType().Name));
-                    p.Install();
+                    p.Install(type);
                 }
             }
             catch (Exception ex)
@@ -99,14 +107,14 @@ namespace Transit.Framework.Prerequisites
             }
         }
 
-        private static void DoUninstallation()
+        private static void DoUninstallation(PrerequisiteType type)
         {
             try
             {
                 foreach (var p in GetAllPrerequisites())
                 {
                     Debug.Log(string.Format("TFW: Uninstalling Prerequisites {0}", p.GetType().Name));
-                    p.Uninstall();
+                    p.Uninstall(type);
                 }
             }
             catch (Exception ex)
