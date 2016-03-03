@@ -2,6 +2,12 @@
 A work-in-progress modification for **Cities: Skylines** to add additional road traffic control
 
 # Changelog
+1.6.11, 03/03/2016
+- Added Chinese translation
+- By pressing "Page up"/"Page down" you can now switch between traffic and default map view
+- Size of information icons and signs is now based on your screen resolution
+- UI code refactored 
+
 1.6.10, 03/02/2016
 - Additional controls for vehicle restrictions added
 - Bugfix: Clicking on a Traffic Manager overlay resulted in vanilla game components (e.g. houses, vehicles) being activated 

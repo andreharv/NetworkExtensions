@@ -6,7 +6,7 @@ namespace TrafficManager.UI
 {
     class UITimedLights : UIPanel
     {
-        public static TrafficLightTool TrafficLightTool;
+        public static TrafficManagerTool TrafficLightTool;
 
         public override void Start()
         {

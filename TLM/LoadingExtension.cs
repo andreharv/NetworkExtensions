@@ -39,7 +39,7 @@ namespace TrafficManager {
         public bool NodeSimulationLoaded { get; set; }
 		public List<Detour> Detours { get; set; }
         public TrafficManagerMode ToolMode { get; set; }
-        public TrafficLightTool TrafficLightTool { get; set; }
+        public TrafficManagerTool TrafficLightTool { get; set; }
 #if !TAM
 		public UIBase UI { get; set; }
 #endif
@@ -926,12 +926,12 @@ namespace TrafficManager {
 
         public void EnableTool() {
             if (TrafficLightTool == null) {
-                TrafficLightTool = ToolsModifierControl.toolController.gameObject.GetComponent<TrafficLightTool>() ??
-                                   ToolsModifierControl.toolController.gameObject.AddComponent<TrafficLightTool>();
+                TrafficLightTool = ToolsModifierControl.toolController.gameObject.GetComponent<TrafficManagerTool>() ??
+                                   ToolsModifierControl.toolController.gameObject.AddComponent<TrafficManagerTool>();
             }
 
             ToolsModifierControl.toolController.CurrentTool = TrafficLightTool;
-            ToolsModifierControl.SetTool<TrafficLightTool>();
+            ToolsModifierControl.SetTool<TrafficManagerTool>();
         }
 
         private void DestroyTool() {

@@ -96,6 +96,7 @@ namespace TrafficManager.Custom.PathFinding {
 		private bool _stablePath;
 		private bool _transportVehicle;
 		private ExtVehicleType? _extVehicleType;
+		private static ushort laneChangeRandCounter = 0;
 #if DEBUG
 		public uint _failedPathFinds = 0;
 		public uint _succeededPathFinds = 0;
@@ -1719,8 +1720,10 @@ namespace TrafficManager.Custom.PathFinding {
 			bool nextIsHighway = CustomRoadAI.GetSegmentGeometry(nextSegmentId).IsHighway();
 			// determines if a vehicles wants to change lanes here (randomized). If true, costs for changing to an adjacent lane are not added to the result
 			bool wantToChangeLane = false;
-			if (useAdvancedAI)
-				wantToChangeLane = Options.laneChangingRandomization != 5 ? _pathRandomizer.Int32(1, Options.getLaneChangingRandomizationTargetValue()) == 1 : false;
+			if (useAdvancedAI && Options.laneChangingRandomization != 5) {
+				laneChangeRandCounter = (ushort)((laneChangeRandCounter + 1) % Options.getLaneChangingRandomizationTargetValue());
+				wantToChangeLane = (laneChangeRandCounter == 0);
+			}
 			// NON-STOCK CODE END //
 
 			uint laneIndex = forceLaneIndex != null ? (uint)forceLaneIndex : 0u; // NON-STOCK CODE, forcedLaneIndex is not null if the next node is a (real) junction
