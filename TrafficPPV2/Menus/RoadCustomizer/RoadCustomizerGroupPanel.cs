@@ -62,7 +62,6 @@ namespace CSL_Traffic.UI
             btn.atlas = this.m_atlas;
             //btn.gameObject.GetComponent<TutorialUITag>().tutorialTag = name;
             string text = spriteBase + name;
-            UIUtils.SetThumbnails(text, UIUtils.sm_thumbnailCoords[text], this.m_atlas);
             btn.normalFgSprite = text;
             btn.focusedFgSprite = text;// +"Focused";
             btn.hoveredFgSprite = text;// +"Hovered";

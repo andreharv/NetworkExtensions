@@ -82,9 +82,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Data\LaneManager.cs" />
     <Compile Include="Tools\RoadCustomizerTool.cs" />
-    <Compile Include="UI\RoadCustomizerGroupPanel.cs" />
-    <Compile Include="UI\RoadCustomizerPanel.cs" />
-    <Compile Include="UI\UIUtils.cs" />
+    <Compile Include="Menus\RoadCustomizer\RoadCustomizerGroupPanel.cs" />
+    <Compile Include="Menus\RoadCustomizer\RoadCustomizerPanel.cs" />
+    <Compile Include="Menus\RoadCustomizer\Textures\UIUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Transit.Framework.ExtensionPoints\Transit.Framework.ExtensionPoints.csproj">
