@@ -76,9 +76,6 @@ namespace CSL_Traffic
                 {
                     if (this.m_level == 6)
                     {
-                        if ((Mod.Options & ModOptions.RoadCustomizerTool) == ModOptions.RoadCustomizerTool)
-                            ToolsModifierControl.toolController.AddTool<RoadCustomizerTool>();
-
                         if ((Mod.Options & ModOptions.UseRealisticSpeeds) == ModOptions.UseRealisticSpeeds)
                         {
                             for (uint i = 0; i < PrefabCollection<CitizenInfo>.LoadedCount(); i++)

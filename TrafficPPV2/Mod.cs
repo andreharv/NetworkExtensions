@@ -53,12 +53,26 @@ namespace CSL_Traffic
             }
         }
 
+        public override void OnLevelLoaded(LoadMode mode)
+        {
+            base.OnLevelLoaded(mode);
+
+            if (mode == LoadMode.NewGame || mode == LoadMode.LoadGame)
+            {
+                if ((Options & ModOptions.RoadCustomizerTool) == ModOptions.RoadCustomizerTool)
+                    ToolsModifierControl.toolController.AddTool<RoadCustomizerTool>();
+            }
+        }
+
         public override void OnLevelUnloading()
         {
             base.OnLevelUnloading();
 
             if (m_initializer != null)
                 m_initializer.GetComponent<Initializer>().OnLevelUnloading();
+
+            if ((Options & ModOptions.RoadCustomizerTool) == ModOptions.RoadCustomizerTool)
+                ToolsModifierControl.toolController.RemoveTool<RoadCustomizerTool>();
         }
 
         public override void OnReleased()
