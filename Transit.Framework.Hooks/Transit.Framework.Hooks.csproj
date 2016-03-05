@@ -55,7 +55,7 @@
     <Compile Include="AI\NetAIHook.CheckBuildPosition.cs" />
     <Compile Include="AI\RoadAIHook.Snapping.cs" />
     <Compile Include="HookInstaller.cs" />
-    <Compile Include="PathFinding\PathFindhook.cs" />
+    <Compile Include="PathFinding\PathFindHook.cs" />
     <Compile Include="PathFinding\PathManagerHook.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\GeneratedGroupPanelHook.cs" />
