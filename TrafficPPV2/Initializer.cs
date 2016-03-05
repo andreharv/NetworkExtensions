@@ -1,22 +1,14 @@
 using ColossalFramework;
-using ColossalFramework.Globalization;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Threading;
-using System.Xml.Serialization;
-using Transit.Framework;
 using UnityEngine;
 
 namespace CSL_Traffic
 {
     public class Initializer : MonoBehaviour
     {
-        static Queue<IEnumerator> sm_actionQueue = new Queue<IEnumerator>();
-        static System.Object sm_queueLock = new System.Object();
-
-        Dictionary<string, Texture2D> m_customTextures;
         bool m_initialized;
         float m_gameStartedTime;
         int m_level;
@@ -24,8 +16,6 @@ namespace CSL_Traffic
         void Awake()
         {
             DontDestroyOnLoad(this);
-
-            m_customTextures = new Dictionary<string, Texture2D>();
         }
 
         void OnLevelWasLoaded(int level)
@@ -37,16 +27,6 @@ namespace CSL_Traffic
                 Logger.LogInfo("Game level was loaded. Options enabled: \n\t" + Mod.Options);
 
                 m_initialized = false;
-
-                while (!Monitor.TryEnter(sm_queueLock, SimulationManager.SYNCHRONIZE_TIMEOUT)) { }
-                try
-                {
-                    sm_actionQueue.Clear();
-                }
-                finally
-                {
-                    Monitor.Exit(sm_queueLock);
-                }
             }
         }
 
@@ -114,8 +94,6 @@ namespace CSL_Traffic
                         }
                     }
 
-                    AddQueuedActionsToLoadingQueue();
-
                 }
                 catch (KeyNotFoundException knf)
                 {
@@ -132,74 +110,10 @@ namespace CSL_Traffic
             return true;
         }
 
-        public static void QueuePrioritizedLoadingAction(Action action)
-        {
-            QueuePrioritizedLoadingAction(ActionWrapper(action));
-        }
-
-        public static void QueuePrioritizedLoadingAction(IEnumerator action)
-        {
-            while (!Monitor.TryEnter(sm_queueLock, SimulationManager.SYNCHRONIZE_TIMEOUT)) { }
-            try
-            {
-                sm_actionQueue.Enqueue(action);
-            }
-            finally { Monitor.Exit(sm_queueLock); }
-        }
-
-        static void AddQueuedActionsToLoadingQueue()
-        {
-            LoadingManager loadingManager = Singleton<LoadingManager>.instance;
-            object loadingLock = typeof(LoadingManager).GetFieldByName("m_loadingLock").GetValue(loadingManager);
-
-            while (!Monitor.TryEnter(loadingLock, SimulationManager.SYNCHRONIZE_TIMEOUT)) { }
-            try
-            {
-                FieldInfo mainThreadQueueField = typeof(LoadingManager).GetFieldByName("m_mainThreadQueue");
-                Queue<IEnumerator> mainThreadQueue = (Queue<IEnumerator>)mainThreadQueueField.GetValue(loadingManager);
-                if (mainThreadQueue != null)
-                {
-                    Queue<IEnumerator> newQueue = new Queue<IEnumerator>(mainThreadQueue.Count + 1);
-                    newQueue.Enqueue(mainThreadQueue.Dequeue()); // currently running action must continue to be the first in the queue
-
-                    while (!Monitor.TryEnter(sm_queueLock, SimulationManager.SYNCHRONIZE_TIMEOUT)) { }
-                    try
-                    {
-                        while (sm_actionQueue.Count > 0)
-                            newQueue.Enqueue(sm_actionQueue.Dequeue());
-                    }
-                    finally
-                    {
-                        Monitor.Exit(sm_queueLock);
-                    }
-
-
-                    while (mainThreadQueue.Count > 0)
-                        newQueue.Enqueue(mainThreadQueue.Dequeue());
-
-                    mainThreadQueueField.SetValue(loadingManager, newQueue);
-                }
-            }
-            finally
-            {
-                Monitor.Exit(loadingLock);
-            }
-        }
-
         static IEnumerator ActionWrapper(Action a)
         {
             a.Invoke();
             yield break;
-        }
-
-        public static void QueueLoadingAction(Action action)
-        {
-            Singleton<LoadingManager>.instance.QueueLoadingAction(ActionWrapper(action));
-        }
-
-        public static void QueueLoadingAction(IEnumerator action)
-        {
-            Singleton<LoadingManager>.instance.QueueLoadingAction(action);
         }
 
         #endregion
@@ -280,198 +194,5 @@ namespace CSL_Traffic
         }
 
         #endregion
-
-        #region Textures
-        [Flags]
-        enum TextureType
-        {
-            Normal = 0,
-            Bus = 1,
-            BusBoth = 2,
-            Node = 4,
-            LOD = 8,
-            BusLOD = 9,
-            BusBothLOD = 10,
-            NodeLOD = 12
-        }
-
-        static string[] sm_mapNames = new string[] { "_MainTex", "_XYSMap", "_ACIMap", "_APRMap" };
-
-        //bool ReplaceTextures(TextureInfo textureInfo, TextureType textureType, FileManager.Folder textureFolder, Material mat, int anisoLevel = 8, FilterMode filterMode = FilterMode.Trilinear, bool skipCache = false)
-        //{
-        //    bool success = false;
-        //    byte[] textureBytes;
-        //    Texture2D tex = null;
-
-        //    for (int i = 0; i < sm_mapNames.Length; i++)
-        //    {
-        //        if (mat.HasProperty(sm_mapNames[i]) && mat.GetTexture(sm_mapNames[i]) != null)
-        //        {
-        //            string fileName = GetTextureName(sm_mapNames[i], textureInfo, textureType);
-        //            if (!String.IsNullOrEmpty(fileName) && !m_customTextures.TryGetValue(fileName, out tex))
-        //            {
-        //                if (FileManager.GetTextureBytes(fileName + ".png", textureFolder, skipCache, out textureBytes))
-        //                {
-        //                    tex = new Texture2D(1, 1);
-        //                    tex.LoadImage(textureBytes);
-        //                }
-        //                else if (fileName.Contains("-LOD"))
-        //                {
-        //                    Texture2D original = mat.GetTexture(sm_mapNames[i]) as Texture2D;
-        //                    if (original != null)
-        //                    {
-        //                        tex = new Texture2D(original.width, original.height);
-        //                        tex.SetPixels(original.GetPixels());
-        //                        tex.Apply();
-        //                    }
-        //                }
-        //            }
-
-        //            if (tex != null)
-        //            {
-        //                tex.name = fileName;
-        //                tex.anisoLevel = anisoLevel;
-        //                tex.filterMode = filterMode;
-        //                mat.SetTexture(sm_mapNames[i], tex);
-        //                m_customTextures[tex.name] = tex;
-        //                success = true;
-        //                tex = null;
-        //            }
-        //        }
-        //    }
-
-        //    return success;
-        //}
-
-        string GetTextureName(string map, TextureInfo info, TextureType type)
-        {
-            switch (type)
-            {
-                case TextureType.Normal:
-                    switch (map)
-                    {
-                        case "_MainTex": return info.mainTex;
-                        case "_XYSMap": return info.xysTex;
-                        case "_ACIMap": return info.aciTex;
-                        case "_APRMap": return info.aprTex;
-                    }
-                    break;
-                case TextureType.Bus:
-                    switch (map)
-                    {
-                        case "_MainTex": return info.mainTexBus;
-                        case "_XYSMap": return info.xysTexBus;
-                        case "_ACIMap": return info.aciTexBus;
-                        case "_APRMap": return info.aprTexBus;
-                    }
-                    break;
-                case TextureType.BusBoth:
-                    switch (map)
-                    {
-                        case "_MainTex": return info.mainTexBusBoth;
-                        case "_XYSMap": return info.xysTexBusBoth;
-                        case "_ACIMap": return info.aciTexBusBoth;
-                        case "_APRMap": return info.aprTexBusBoth;
-                    }
-                    break;
-                case TextureType.Node:
-                    switch (map)
-                    {
-                        case "_MainTex": return info.mainTexNode;
-                        case "_XYSMap": return info.xysTexNode;
-                        case "_ACIMap": return info.aciTexNode;
-                        case "_APRMap": return info.aprTexNode;
-                    }
-                    break;
-                case TextureType.LOD:
-                    switch (map)
-                    {
-                        case "_MainTex": return info.lodMainTex;
-                        case "_XYSMap": return info.lodXysTex;
-                        case "_ACIMap": return info.lodAciTex;
-                        case "_APRMap": return info.lodAprTex;
-                    }
-                    break;
-                case TextureType.BusLOD:
-                    switch (map)
-                    {
-                        case "_MainTex": return info.lodMainTexBus;
-                        case "_XYSMap": return info.lodXysTexBus;
-                        case "_ACIMap": return info.lodAciTexBus;
-                        case "_APRMap": return info.lodAprTexBus;
-                    }
-                    break;
-                case TextureType.BusBothLOD:
-                    switch (map)
-                    {
-                        case "_MainTex": return info.lodMainTexBusBoth;
-                        case "_XYSMap": return info.lodXysTexBusBoth;
-                        case "_ACIMap": return info.lodAciTexBusBoth;
-                        case "_APRMap": return info.lodAprTexBusBoth;
-                    }
-                    break;
-                case TextureType.NodeLOD:
-                    switch (map)
-                    {
-                        case "_MainTex": return info.lodMainTexNode;
-                        case "_XYSMap": return info.lodXysTexNode;
-                        case "_ACIMap": return info.lodAciTexNode;
-                        case "_APRMap": return info.lodAprTexNode;
-                    }
-                    break;
-                default:
-                    break;
-            }
-
-            return null;
-        }
-
-        #endregion
-
-        public class TextureInfo
-        {
-            [XmlAttribute]
-            public string name;
-
-            // normal
-            public string mainTex = "";
-            public string aprTex = "";
-            public string xysTex = "";
-            public string aciTex = "";
-            public string lodMainTex = "";
-            public string lodAprTex = "";
-            public string lodXysTex = "";
-            public string lodAciTex = "";
-
-            // bus
-            public string mainTexBus = "";
-            public string aprTexBus = "";
-            public string xysTexBus = "";
-            public string aciTexBus = "";
-            public string lodMainTexBus = "";
-            public string lodAprTexBus = "";
-            public string lodXysTexBus = "";
-            public string lodAciTexBus = "";
-
-            // busBoth
-            public string mainTexBusBoth = "";
-            public string aprTexBusBoth = "";
-            public string xysTexBusBoth = "";
-            public string aciTexBusBoth = "";
-            public string lodMainTexBusBoth = "";
-            public string lodAprTexBusBoth = "";
-            public string lodXysTexBusBoth = "";
-            public string lodAciTexBusBoth = "";
-
-            // node
-            public string mainTexNode = "";
-            public string aprTexNode = "";
-            public string xysTexNode = "";
-            public string aciTexNode = "";
-            public string lodMainTexNode = "";
-            public string lodAprTexNode = "";
-            public string lodXysTexNode = "";
-            public string lodAciTexNode = "";
-        }
     }
 }
