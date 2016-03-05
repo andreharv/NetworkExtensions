@@ -1,9 +1,9 @@
-﻿using ColossalFramework.Math;
-using System;
+﻿using System;
 using System.Threading;
+using ColossalFramework.Math;
 using Transit.Framework.Network;
 
-namespace CSL_Traffic
+namespace Transit.Framework.ExtensionPoints.PathFinding
 {
     public static class PathManagerExtensions
     {
@@ -49,23 +49,7 @@ namespace CSL_Traffic
         {
             if (ExtendedPathManager.PathFindFacades == null)
             {
-                // Redirections are not installed correctly, fallbacking on the default code
-                return pm.CreatePath(
-                    out unit, 
-                    ref randomizer, 
-                    buildIndex, 
-                    startPosA, 
-                    startPosB, 
-                    endPosA,  
-                    endPosB, 
-                    vehiclePosition, 
-                    laneTypes, 
-                    vehicleTypes, 
-                    maxLength, 
-                    isHeavyVehicle, 
-                    ignoreBlocked, 
-                    stablePath, 
-                    skipQueue);
+                throw new Exception("ExtendedPathManager is not installed correctly");
             }
 
             while (!Monitor.TryEnter(pm.m_bufferLock, SimulationManager.SYNCHRONIZE_TIMEOUT))

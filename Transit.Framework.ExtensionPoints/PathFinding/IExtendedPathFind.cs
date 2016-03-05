@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using Transit.Framework.Network;
 
-namespace CSL_Traffic
+namespace Transit.Framework.ExtensionPoints.PathFinding
 {
     public interface IExtendedPathFind
     {

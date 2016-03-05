@@ -4,7 +4,9 @@ using ColossalFramework;
 using ColossalFramework.Globalization;
 using ICities;
 using Transit.Framework;
+using Transit.Framework.ExtensionPoints.PathFinding;
 using Transit.Framework.Mod;
+using Transit.Framework.Prerequisites;
 using Transit.Framework.Redirection;
 using UnityEngine;
 
@@ -33,6 +35,11 @@ namespace CSL_Traffic
         public override string Version
         {
             get { return "1.0.0"; }
+        }
+
+        public override PrerequisiteType Requirements
+        {
+            get { return PrerequisiteType.PathFinding; }
         }
 
         public override void OnCreated(ILoading loading)

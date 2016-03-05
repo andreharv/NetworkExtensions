@@ -30,9 +30,9 @@ namespace Transit.Framework.Hooks.AI
             }
             catch (Exception ex)
             {
-                Debug.Log("TAM: Crashed-CreateZoneBlocks");
-                Debug.Log("TAM: " + ex.Message);
-                Debug.Log("TAM: " + ex.ToString());
+                Debug.Log("TFW: Crashed-CreateZoneBlocks");
+                Debug.Log("TFW: " + ex.Message);
+                Debug.Log("TFW: " + ex.ToString());
             }
         }
 

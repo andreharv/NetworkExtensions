@@ -1,13 +1,12 @@
-﻿
-using System;
+﻿using System;
 
-namespace CSL_Traffic
+namespace Transit.Framework.ExtensionPoints.PathFinding
 {
-    public static partial class ExtendedPathManager
+    public static class ExtendedPathManager
     {
         public static ExtendedPathFindFacade[] PathFindFacades { get; set; }
 
-        private static Type sm_pathFindingType = typeof(DefaultPathFind);
+        private static Type sm_pathFindingType = typeof(VanillaPathFind);
 
         public static void DefinePathFinding<T>()
             where T : IExtendedPathFind, new()
@@ -17,7 +16,7 @@ namespace CSL_Traffic
 
         public static void ResetPathFinding()
         {
-            sm_pathFindingType = typeof(DefaultPathFind);
+            sm_pathFindingType = typeof(VanillaPathFind);
         }    
         
         public static IExtendedPathFind CreatePathFinding(this ExtendedPathFindFacade facade)

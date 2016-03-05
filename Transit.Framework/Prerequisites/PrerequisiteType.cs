@@ -8,6 +8,6 @@ namespace Transit.Framework.Prerequisites
         None        = 0,
         UI          = 1,
         AI          = 1 << 1,
-        Pathfinding = 1 << 2,
+        PathFinding = 1 << 2,
     }
 }

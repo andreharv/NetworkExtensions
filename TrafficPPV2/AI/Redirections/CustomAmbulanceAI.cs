@@ -2,6 +2,7 @@ using System;
 using System.Runtime.CompilerServices;
 using ColossalFramework;
 using ColossalFramework.Math;
+using Transit.Framework.ExtensionPoints.PathFinding;
 using Transit.Framework.Network;
 using Transit.Framework.Redirection;
 using UnityEngine;

@@ -1,12 +1,12 @@
-﻿using ColossalFramework;
+﻿using System;
+using System.Threading;
+using ColossalFramework;
 using ColossalFramework.Math;
 using ColossalFramework.UI;
-using System;
-using System.Threading;
 using Transit.Framework.Network;
 using UnityEngine;
 
-namespace CSL_Traffic
+namespace Transit.Framework.ExtensionPoints.PathFinding
 {
     /// <summary>
     /// This is the (almost) vanilla code found in the PathFind default class.
@@ -15,7 +15,7 @@ namespace CSL_Traffic
     ///   2. private -> protected
     ///   3. CalculatePath signature (uint unit, bool skipQueue, ExtendedVehicleType vehicleType)
     /// </summary>
-    public class DefaultPathFind : IExtendedPathFind
+    public class VanillaPathFind : IExtendedPathFind
     {
         public ExtendedPathFindFacade Facade { get; set; }
 

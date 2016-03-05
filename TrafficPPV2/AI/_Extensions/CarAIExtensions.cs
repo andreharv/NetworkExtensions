@@ -1,6 +1,7 @@
 using ColossalFramework;
 using ColossalFramework.Math;
 using System;
+using Transit.Framework.ExtensionPoints.PathFinding;
 using Transit.Framework.Network;
 using UnityEngine;
 

@@ -52,6 +52,11 @@
     <Compile Include="AI\RoadSnappingModeManager.cs" />
     <Compile Include="AI\RoadZoneBlocksCreationManager.cs" />
     <Compile Include="AI\ZoneBlocksOffset.cs" />
+    <Compile Include="PathFinding\VanillaPathFind.cs" />
+    <Compile Include="PathFinding\ExtendedPathFindFacade.cs" />
+    <Compile Include="PathFinding\ExtendedPathManager.cs" />
+    <Compile Include="PathFinding\IExtendedPathFind.cs" />
+    <Compile Include="PathFinding\_Extensions\PathManagerExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\RoadCategoryOrderManager.cs" />
     <Compile Include="UI\ExtendedMenuManager.cs" />
@@ -62,6 +67,7 @@
       <Name>Transit.Framework</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

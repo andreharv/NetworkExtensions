@@ -1,9 +1,6 @@
-﻿using System;
-using Transit.Framework;
-using Transit.Framework.Network;
-using Transit.Framework.Redirection;
+﻿using Transit.Framework.Network;
 
-namespace CSL_Traffic
+namespace Transit.Framework.ExtensionPoints.PathFinding
 {
     public class ExtendedPathFindFacade : PathFind
     {
@@ -30,18 +27,11 @@ namespace CSL_Traffic
             m_innerPathFind.OnDestroy();
 		}
 
-        [RedirectFrom(typeof(PathFind))]
-        public new bool CalculatePath(uint unit, bool skipQueue)
-        {
-            return m_innerPathFind.CalculatePath(unit, skipQueue, ExtendedVehicleType.Unknown);
-        }
-
         public bool CalculatePath(uint unit, bool skipQueue, ExtendedVehicleType vehicleType)
         {
             return m_innerPathFind.CalculatePath(unit, skipQueue, vehicleType);
         }
-
-        [RedirectFrom(typeof(PathFind))]
+        
         public new void WaitForAllPaths()
         {
             m_innerPathFind.WaitForAllPaths();
