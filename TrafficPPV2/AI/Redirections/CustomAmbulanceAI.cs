@@ -12,43 +12,6 @@ namespace CSL_Traffic
     public class CustomAmbulanceAI : CarAI
     {
         [RedirectFrom(typeof(AmbulanceAI))]
-        public override void SimulationStep(ushort vehicleID, ref Vehicle vehicleData, ref Vehicle.Frame frameData, ushort leaderID, ref Vehicle leaderData, int lodPhysics)
-        {
-            if ((Mod.Options & ModOptions.UseRealisticSpeeds) == ModOptions.UseRealisticSpeeds)
-            {
-                var speedData = CarSpeedData.Of(vehicleID);
-
-                if (speedData.SpeedMultiplier == 0 || speedData.CurrentPath != vehicleData.m_path)
-                {
-                    speedData.CurrentPath = vehicleData.m_path;
-                    if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) == Vehicle.Flags.Emergency2)
-                        speedData.SetRandomSpeedMultiplier(1f, 1.5f);
-                    else
-                        speedData.SetRandomSpeedMultiplier(0.7f, 1.05f);
-                }
-                m_info.ApplySpeedMultiplier(speedData);
-            }
-
-
-            frameData.m_blinkState = (((vehicleData.m_flags & Vehicle.Flags.Emergency2) == Vehicle.Flags.None) ? 0f : 10f);
-            base.SimulationStep(vehicleID, ref vehicleData, ref frameData, leaderID, ref leaderData, lodPhysics);
-            if ((vehicleData.m_flags & Vehicle.Flags.Stopped) != Vehicle.Flags.None && this.CanLeave(vehicleID, ref vehicleData))
-            {
-                vehicleData.m_flags &= ~Vehicle.Flags.Stopped;
-                vehicleData.m_flags |= Vehicle.Flags.Leaving;
-            }
-            if ((vehicleData.m_flags & Vehicle.Flags.GoingBack) == Vehicle.Flags.None && this.ShouldReturnToSource(vehicleID, ref vehicleData))
-            {
-                this.SetTarget(vehicleID, ref vehicleData, 0);
-            }
-
-            if ((Mod.Options & ModOptions.UseRealisticSpeeds) == ModOptions.UseRealisticSpeeds)
-            {
-                m_info.RestoreVehicleSpeed(CarSpeedData.Of(vehicleID));
-            }
-        }
-
-        [RedirectFrom(typeof(AmbulanceAI))]
         protected override bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget)
         {
             ExtendedVehicleType vehicleType = ExtendedVehicleType.Ambulance;
@@ -89,13 +52,6 @@ namespace CSL_Traffic
                 }
             }
             return false;
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        [RedirectTo(typeof(AmbulanceAI))]
-        private bool ShouldReturnToSource(ushort vehicleID, ref Vehicle data)
-        {
-            throw new NotImplementedException("ShouldReturnToSource is target of redirection and is not implemented.");
         }
     }
 }

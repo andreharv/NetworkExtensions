@@ -14,7 +14,6 @@ namespace CSL_Traffic
 {
     public partial class Mod : TransitModBase
     {
-        private GameObject m_initializer;
         private static bool sm_redirectionInstalled = false;
 
         public override ulong WorkshopId
@@ -42,17 +41,6 @@ namespace CSL_Traffic
             get { return PrerequisiteType.PathFinding; }
         }
 
-        public override void OnCreated(ILoading loading)
-        {
-            base.OnCreated(loading);
-
-            if (m_initializer == null)
-            {
-                m_initializer = new GameObject("CSL-Traffic Custom Prefabs");
-                m_initializer.AddComponent<Initializer>();
-            }
-        }
-
         public override void OnLevelLoaded(LoadMode mode)
         {
             base.OnLevelLoaded(mode);
@@ -61,6 +49,9 @@ namespace CSL_Traffic
             {
                 if ((Options & ModOptions.RoadCustomizerTool) == ModOptions.RoadCustomizerTool)
                     ToolsModifierControl.toolController.AddTool<RoadCustomizerTool>();
+
+                if ((Options & ModOptions.UseRealisticSpeeds) == ModOptions.UseRealisticSpeeds)
+                    ActivateRealisticSpeed();
             }
         }
 
@@ -68,21 +59,11 @@ namespace CSL_Traffic
         {
             base.OnLevelUnloading();
 
-            if (m_initializer != null)
-                m_initializer.GetComponent<Initializer>().OnLevelUnloading();
-
             if ((Options & ModOptions.RoadCustomizerTool) == ModOptions.RoadCustomizerTool)
                 ToolsModifierControl.toolController.RemoveTool<RoadCustomizerTool>();
-        }
 
-        public override void OnReleased()
-        {
-            base.OnReleased();
-
-            if (m_initializer != null)
-            {
-                GameObject.Destroy(m_initializer);
-            }
+            if ((Options & ModOptions.UseRealisticSpeeds) == ModOptions.UseRealisticSpeeds)
+                DeactivateRealisticSpeed();
         }
 
         public override void OnEnabled()
@@ -149,6 +130,65 @@ namespace CSL_Traffic
             }
 
             Logger.LogInfo("Localization successfully updated.");
+        }
+
+        private void ActivateRealisticSpeed()
+        {
+            SetRealisticSpeed(true);
+        }
+
+        private void DeactivateRealisticSpeed()
+        {
+            SetRealisticSpeed(false);
+        }
+
+        private void SetRealisticSpeed(bool activating)
+        {
+            for (uint i = 0; i < PrefabCollection<CitizenInfo>.LoadedCount(); i++)
+            {
+                CitizenInfo cit = PrefabCollection<CitizenInfo>.GetLoaded(i);
+                float m_walkSpeedMultiplier = 0.5f;
+
+                if (!activating)
+                {
+                    m_walkSpeedMultiplier = 1f / m_walkSpeedMultiplier;
+                }
+
+                cit.m_walkSpeed *= m_walkSpeedMultiplier;
+            }
+
+            for (uint i = 0; i < PrefabCollection<VehicleInfo>.LoadedCount(); i++)
+            {
+                VehicleInfo vehicle = PrefabCollection<VehicleInfo>.GetLoaded(i);
+                float accelerationMultiplier;
+                float maxSpeedMultiplier;
+
+                var name = vehicle.name.ToLowerInvariant();
+
+                if (name.Contains("bus") ||
+                    name.Contains("truck") ||
+                    name.Contains("tractor") ||
+                    name.Contains("trailer") ||
+                    name.Contains("van"))
+                {
+                    accelerationMultiplier = 0.25f;
+                    maxSpeedMultiplier = 0.5f;
+                }
+                else
+                {
+                    accelerationMultiplier = 0.5f;
+                    maxSpeedMultiplier = 0.5f;
+                }
+
+                if (!activating)
+                {
+                    accelerationMultiplier = 1f / accelerationMultiplier;
+                    maxSpeedMultiplier = 1f / maxSpeedMultiplier;
+                }
+
+                vehicle.m_acceleration *= accelerationMultiplier;
+                vehicle.m_maxSpeed *= maxSpeedMultiplier;
+            }
         }
     }
 }

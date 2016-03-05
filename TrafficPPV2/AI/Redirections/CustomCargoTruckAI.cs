@@ -14,18 +14,6 @@ namespace CSL_Traffic
         [RedirectFrom(typeof(CargoTruckAI))]
         public override void SimulationStep(ushort vehicleID, ref Vehicle data, Vector3 physicsLodRefPos)
         {
-            if ((Mod.Options & ModOptions.UseRealisticSpeeds) == ModOptions.UseRealisticSpeeds)
-            {
-                var speedData = CarSpeedData.Of(vehicleID);
-
-                if (speedData.SpeedMultiplier == 0 || speedData.CurrentPath != data.m_path)
-                {
-                    speedData.CurrentPath = data.m_path;
-                    speedData.SetRandomSpeedMultiplier(0.7f, 1.1f);
-                }
-                m_info.ApplySpeedMultiplier(CarSpeedData.Of(vehicleID));
-            }
-
             if (((data.m_flags & Vehicle.Flags.Congestion) != Vehicle.Flags.None) &&
                 ((Mod.Options & ModOptions.NoDespawn) != ModOptions.NoDespawn))
             {
@@ -45,11 +33,6 @@ namespace CSL_Traffic
                     }
                 }
                 base.SimulationStep(vehicleID, ref data, physicsLodRefPos);
-            }
-
-            if ((Mod.Options & ModOptions.UseRealisticSpeeds) == ModOptions.UseRealisticSpeeds)
-            {
-                m_info.RestoreVehicleSpeed(CarSpeedData.Of(vehicleID));
             }
         }
 

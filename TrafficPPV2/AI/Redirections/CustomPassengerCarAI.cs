@@ -26,38 +26,6 @@ namespace CSL_Traffic
         }
         
         [RedirectFrom(typeof(PassengerCarAI))]
-        public override void SimulationStep(ushort vehicleID, ref Vehicle vehicleData, ref Vehicle.Frame frameData, ushort leaderID, ref Vehicle leaderData, int lodPhysics)
-        {
-            if ((Mod.Options & ModOptions.UseRealisticSpeeds) == ModOptions.UseRealisticSpeeds)
-            {
-                var speedData = CarSpeedData.Of(vehicleID);
-
-                if (speedData.SpeedMultiplier == 0 || speedData.CurrentPath != vehicleData.m_path)
-                {
-                    speedData.CurrentPath = vehicleData.m_path;
-                    speedData.SetRandomSpeedMultiplier(0.6f, 1.4f);
-                }
-                m_info.ApplySpeedMultiplier(CarSpeedData.Of(vehicleID));
-            }
-
-            if ((vehicleData.m_flags & Vehicle.Flags.Stopped) != Vehicle.Flags.None)
-            {
-                vehicleData.m_waitCounter += 1;
-                if (this.CanLeave(vehicleID, ref vehicleData))
-                {
-                    vehicleData.m_flags &= ~Vehicle.Flags.Stopped;
-                    vehicleData.m_waitCounter = 0;
-                }
-            }
-            base.SimulationStep(vehicleID, ref vehicleData, ref frameData, leaderID, ref leaderData, lodPhysics);
-
-            if ((Mod.Options & ModOptions.UseRealisticSpeeds) == ModOptions.UseRealisticSpeeds)
-            {
-                m_info.RestoreVehicleSpeed(CarSpeedData.Of(vehicleID));
-            }
-        }
-        
-        [RedirectFrom(typeof(PassengerCarAI))]
         protected override bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget)
         {
             VehicleInfo info = this.m_info;
@@ -104,13 +72,6 @@ namespace CSL_Traffic
         private ushort GetDriverInstance(ushort vehicleID, ref Vehicle data)
         {
             throw new NotImplementedException("GetDriverInstance is target of redirection and is not implemented.");
-        }
-
-	    [MethodImpl(MethodImplOptions.NoInlining)]
-        [RedirectTo(typeof(PassengerCarAI))]
-        private static bool CheckOverlap(ushort ignoreParked, ref Bezier3 bezier, float offset, float length, out float minPos, out float maxPos)
-        {
-            throw new NotImplementedException("CheckOverlap is target of redirection and is not implemented.");
         }
     }
 }

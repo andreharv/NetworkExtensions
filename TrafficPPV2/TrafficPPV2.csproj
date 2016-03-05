@@ -54,7 +54,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AI\CarSpeedData.cs" />
     <Compile Include="AI\Redirections\CustomAmbulanceAI.cs" />
     <Compile Include="AI\Redirections\CustomBusAI.cs" />
     <Compile Include="AI\Redirections\CustomCargoTruckAI.cs" />
@@ -69,13 +68,11 @@
     <Compile Include="AI\Redirections\CustomCarAI.cs" />
     <Compile Include="AI\Redirections\CustomVehicleAI.cs" />
     <Compile Include="AI\_Extensions\CarAIExtensions.cs" />
-    <Compile Include="AI\_Extensions\VehicleInfoExtensions.cs" />
     <Compile Include="Data\Lane.cs" />
     <Compile Include="Data\LaneSerializationBinder.cs" />
     <Compile Include="Data\LaneSerializer.cs" />
     <Compile Include="Mod.Settings.cs" />
     <Compile Include="Mod.cs" />
-    <Compile Include="Initializer.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="OptionsManager.cs" />
     <Compile Include="PathFinding\TPPPathFind.cs" />
