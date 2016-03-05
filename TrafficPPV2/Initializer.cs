@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using Transit.Framework;
 using UnityEngine;
 
 namespace CSL_Traffic
@@ -10,7 +11,6 @@ namespace CSL_Traffic
     public class Initializer : MonoBehaviour
     {
         bool m_initialized;
-        float m_gameStartedTime;
         int m_level;
 
         void Awake()
@@ -55,11 +55,6 @@ namespace CSL_Traffic
                     return;
                 }
             }
-
-            if (!Singleton<LoadingManager>.instance.m_loadingComplete)
-                return;
-            else if (m_gameStartedTime == 0f)
-                m_gameStartedTime = Time.realtimeSinceStartup;
         }
 
         #region Initialization
@@ -82,7 +77,7 @@ namespace CSL_Traffic
                     if (this.m_level == 6)
                     {
                         if ((Mod.Options & ModOptions.RoadCustomizerTool) == ModOptions.RoadCustomizerTool)
-                            AddTool<RoadCustomizerTool>(ToolsModifierControl.toolController);
+                            ToolsModifierControl.toolController.AddTool<RoadCustomizerTool>();
 
                         if ((Mod.Options & ModOptions.UseRealisticSpeeds) == ModOptions.UseRealisticSpeeds)
                         {
@@ -173,26 +168,6 @@ namespace CSL_Traffic
                 fi.SetValue(to, fi.GetValue(from));
             }
         }
-        #endregion
-
-        #region Tools
-
-        void AddTool<T>(ToolController toolController) where T : ToolBase
-        {
-            if (toolController.GetComponent<T>() != null)
-                return;
-
-            toolController.gameObject.AddComponent<T>();
-
-            // contributed by Japa
-            FieldInfo toolControllerField = typeof(ToolController).GetField("m_tools", BindingFlags.Instance | BindingFlags.NonPublic);
-            if (toolControllerField != null)
-                toolControllerField.SetValue(toolController, toolController.GetComponents<ToolBase>());
-            FieldInfo toolModifierDictionary = typeof(ToolsModifierControl).GetField("m_Tools", BindingFlags.Static | BindingFlags.NonPublic);
-            if (toolModifierDictionary != null)
-                toolModifierDictionary.SetValue(null, null); // to force a refresh
-        }
-
         #endregion
     }
 }
