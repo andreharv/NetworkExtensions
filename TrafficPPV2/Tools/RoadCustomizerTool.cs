@@ -95,14 +95,43 @@ namespace CSL_Traffic
 		ushort m_hoveredNode;
 		ushort m_selectedNode;        
 		NodeLaneMarker m_selectedMarker;
-		Dictionary<ushort, FastList<NodeLaneMarker>> m_nodeMarkers = new Dictionary<ushort, FastList<NodeLaneMarker>>();
-		Dictionary<ushort, Segment> m_segments = new Dictionary<ushort, Segment>();
-		Dictionary<int, FastList<SegmentLaneMarker>> m_hoveredLaneMarkers = new Dictionary<int, FastList<SegmentLaneMarker>>();
-		List<SegmentLaneMarker> m_selectedLaneMarkers = new List<SegmentLaneMarker>();
+	    readonly Dictionary<ushort, FastList<NodeLaneMarker>> m_nodeMarkers = new Dictionary<ushort, FastList<NodeLaneMarker>>();
+	    readonly Dictionary<ushort, Segment> m_segments = new Dictionary<ushort, Segment>();
+	    readonly Dictionary<int, FastList<SegmentLaneMarker>> m_hoveredLaneMarkers = new Dictionary<int, FastList<SegmentLaneMarker>>();
+	    readonly List<SegmentLaneMarker> m_selectedLaneMarkers = new List<SegmentLaneMarker>();
 		int m_hoveredLanes;
 		UIButton m_toolButton;
 
-		protected override void OnToolUpdate()
+        protected override void Awake()
+        {
+            base.Awake();
+
+            StartCoroutine(LoadMarkers());
+            StartCoroutine(CreateToolButton());
+        }
+
+	    private IEnumerator LoadMarkers()
+	    {
+            while (LaneManager.sm_lanes == null)
+            {
+                yield return new WaitForEndOfFrame();
+            }
+
+            var nodesList = new HashSet<ushort>();
+            foreach (var lane in LaneManager.sm_lanes)
+            {
+                if (lane == null)
+                    continue;
+                
+                if (lane.ConnectionCount() > 0)
+                    nodesList.Add(lane.m_nodeId);
+            }
+            
+            foreach (var nodeId in nodesList)
+                SetNodeMarkers(nodeId);
+        }
+
+        protected override void OnToolUpdate()
 		{
 			base.OnToolUpdate();
 
@@ -890,13 +919,6 @@ namespace CSL_Traffic
 			//        RoadManager.SetVehicleRestrictions(lane.m_lane, vehicleRestrictions);
 			//    }
 			//}
-		}
-
-		protected override void Awake()
-		{
-			base.Awake();
-
-			StartCoroutine(CreateToolButton());
 		}
 
 		IEnumerator CreateToolButton()

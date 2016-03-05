@@ -6,7 +6,7 @@ namespace CSL_Traffic
 {
     public static class LaneManager
     {
-        internal static Lane[] sm_lanes = new Lane[NetManager.MAX_LANE_COUNT];
+        internal static Lane[] sm_lanes = null;
 
         public static Lane CreateLane(uint laneId)
         {
