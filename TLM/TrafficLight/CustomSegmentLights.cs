@@ -68,13 +68,14 @@ namespace TrafficManager.TrafficLight {
 		public RoadBaseAI.TrafficLightState GetAutoPedestrianLightState() {
 			RoadBaseAI.TrafficLightState? vehicleState = null;
 			foreach (KeyValuePair<ExtVehicleType, CustomSegmentLight> e in CustomLights) {
-				if (vehicleState == null || e.Value.GetLightMain() != RoadBaseAI.TrafficLightState.Red)
-					vehicleState = e.Value.GetLightMain();
+				RoadBaseAI.TrafficLightState visualState = e.Value.GetVisualLightState();
+				if (vehicleState == null || visualState != RoadBaseAI.TrafficLightState.Red)
+					vehicleState = visualState;
 				if (vehicleState == RoadBaseAI.TrafficLightState.Green)
 					break;
 			}
 			if (vehicleState == null) {
-				return RoadBaseAI.TrafficLightState.Red;
+				vehicleState = RoadBaseAI.TrafficLightState.Red;
 			}
 			return CustomSegmentLight.InvertLight((RoadBaseAI.TrafficLightState)vehicleState);
 		}
