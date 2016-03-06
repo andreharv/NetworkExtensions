@@ -57,19 +57,14 @@ namespace CSL_Traffic.UI
             public int height;
         }
 
-        private static UITextureAtlas sm_RoadCustomizerAtlas;
-
-        public static UITextureAtlas GetRoadCustomizerAtlas()
+        public IEnumerable<string> Keys
         {
-            if (sm_RoadCustomizerAtlas == null)
-            {
-                sm_RoadCustomizerAtlas = LoadRoadCustomizerAtlas();
-            }
-
-            return sm_RoadCustomizerAtlas;
+            get { yield return ID; }
         }
 
-        private static UITextureAtlas LoadRoadCustomizerAtlas()
+        public const string ID = "RoadCustomizer";
+
+        public UITextureAtlas Build()
         {
             const string name = "UIThumbnails";
 
@@ -161,20 +156,6 @@ namespace CSL_Traffic.UI
                 };
                 atlas.AddSprite(sprite);
             }
-        }
-
-
-        public IEnumerable<string> Keys
-        {
-            get
-            {
-                yield break;
-            }
-        }
-
-        public UITextureAtlas Build()
-        {
-            return GetRoadCustomizerAtlas();
         }
     }
 }

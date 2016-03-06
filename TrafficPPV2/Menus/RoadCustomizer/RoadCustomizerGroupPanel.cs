@@ -1,6 +1,7 @@
 ﻿using ColossalFramework.Globalization;
 using ColossalFramework.UI;
 using System.Collections.Generic;
+using Transit.Framework;
 using UnityEngine;
 
 namespace CSL_Traffic.UI
@@ -20,7 +21,7 @@ namespace CSL_Traffic.UI
             this.m_strip = GetComponentInChildren<UITabstrip>();
             this.m_strip.relativePosition = new Vector3(13, -25);
             this.m_strip.startSelectedIndex = 0;
-            this.m_atlas = RoadCustomizerAtlasBuilder.GetRoadCustomizerAtlas();
+            this.m_atlas = AtlasManager.instance.GetAtlas(RoadCustomizerAtlasBuilder.ID);
             this.m_objectIndex = 0;
         }
 

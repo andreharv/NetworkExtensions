@@ -51,13 +51,6 @@ namespace Transit.Addon.RoadExtensions
             }
         }
 
-        public override void OnInstallingAssets()
-        {
-            base.OnInstallingAssets();
-
-            AtlasManager.instance.Include<RExExtendedSubBarAtlasBuilder>();
-        }
-
         public override void OnInstallingContent()
         {
             _container = new GameObject(REX_OBJECT_NAME);

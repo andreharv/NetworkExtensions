@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Transit.Framework;
 using Transit.Framework.Network;
 using UnityEngine;
 
@@ -28,7 +29,7 @@ namespace CSL_Traffic.UI
 
         private void Awake()
         {
-            this.m_atlas = RoadCustomizerAtlasBuilder.GetRoadCustomizerAtlas();
+            this.m_atlas = AtlasManager.instance.GetAtlas(RoadCustomizerAtlasBuilder.ID);
             this.m_scrollablePanel = GetComponentInChildren<UIScrollablePanel>();
             this.m_scrollablePanel.autoLayoutStart = LayoutStart.TopLeft;
             UIScrollbar scrollbar = this.GetComponentInChildren<UIScrollbar>();

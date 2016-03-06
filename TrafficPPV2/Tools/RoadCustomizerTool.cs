@@ -969,7 +969,7 @@ namespace CSL_Traffic
 			btn.normalBgSprite = "rctBg";// roadsButton.normalBgSprite;
 			btn.pressedBgSprite = "rctBg" + "Pressed";// roadsButton.pressedBgSprite;
 
-			btn.atlas = RoadCustomizerAtlasBuilder.GetRoadCustomizerAtlas();
+			btn.atlas = AtlasManager.instance.GetAtlas(RoadCustomizerAtlasBuilder.ID);
 			btn.atlas.AddSprites(roadsButton.atlas.sprites);
 			btn.foregroundSpriteMode = UIForegroundSpriteMode.Fill;
 
