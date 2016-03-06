@@ -65,9 +65,11 @@
     <Compile Include="Mod.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="OptionsManager.cs" />
+    <Compile Include="PathFinding\IRoadRestrictionManager.cs" />
     <Compile Include="PathFinding\TPPPathFind.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Data\LaneManager.cs" />
+    <Compile Include="PathFinding\TPPRoadRestrictionManager.cs" />
     <Compile Include="Tools\RoadCustomizerTool.cs" />
     <Compile Include="Menus\RoadCustomizer\RoadCustomizerGroupPanel.cs" />
     <Compile Include="Menus\RoadCustomizer\RoadCustomizerPanel.cs" />
