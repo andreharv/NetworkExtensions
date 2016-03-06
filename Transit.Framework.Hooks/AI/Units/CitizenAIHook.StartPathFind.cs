@@ -1,17 +1,16 @@
 using System;
-using System.Runtime.CompilerServices;
 using ColossalFramework;
-using ColossalFramework.Math;
 using Transit.Framework.ExtensionPoints.PathFinding;
 using Transit.Framework.Network;
+using Transit.Framework.Prerequisites;
 using Transit.Framework.Redirection;
 using UnityEngine;
 
-namespace CSL_Traffic
+namespace Transit.Framework.Hooks.AI.Units
 {
-    public class CustomCitizenAI : CitizenAI
+    public class CitizenAIHook : CitizenAI
     {
-        [RedirectFrom(typeof(CitizenAI))]
+        [RedirectFrom(typeof(CitizenAI), (ulong)PrerequisiteType.PathFinding)]
         protected new bool StartPathFind(ushort instanceID, ref CitizenInstance citizenData, Vector3 startPos, Vector3 endPos, VehicleInfo vehicleInfo)
         {
             NetInfo.LaneType laneType = NetInfo.LaneType.Pedestrian;

@@ -1,22 +1,22 @@
 using ColossalFramework;
-using ColossalFramework.Math;
-using System;
 using Transit.Framework.ExtensionPoints.PathFinding;
 using Transit.Framework.Network;
+using Transit.Framework.Prerequisites;
+using Transit.Framework.Redirection;
 using UnityEngine;
 
-namespace CSL_Traffic
+namespace Transit.Framework.Hooks.AI.Units
 {
-    public static class CarAIExtensions
+    public class AmbulanceAIHook : CarAI
     {
-        public static bool StartPathFind(this CarAI carAI, ExtendedVehicleType extendedVehicleType, ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool isHeavyVehicle, bool ignoreBlocked)
+        [RedirectFrom(typeof(AmbulanceAI), (ulong)PrerequisiteType.PathFinding)]
+        protected override bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget)
         {
-            return carAI.StartPathFind(extendedVehicleType, vehicleID, ref vehicleData, startPos, endPos, true, true, false, isHeavyVehicle, ignoreBlocked);
-        }
+            ExtendedVehicleType vehicleType = ExtendedVehicleType.Ambulance;
+            if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) != Vehicle.Flags.None)
+                vehicleType |= ExtendedVehicleType.Emergency;
 
-        public static bool StartPathFind(this CarAI carAI, ExtendedVehicleType extendedVehicleType, ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget, bool isHeavyVehicle, bool ignoreBlocked)
-        {
-            VehicleInfo info = carAI.m_info;
+            VehicleInfo info = this.m_info;
             bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != Vehicle.Flags.None;
             PathUnit.Position startPosA;
             PathUnit.Position startPosB;
@@ -37,7 +37,8 @@ namespace CSL_Traffic
                     endPosB = default(PathUnit.Position);
                 }
                 uint path;
-                if (Singleton<PathManager>.instance.CreatePath(extendedVehicleType, out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, NetInfo.LaneType.Vehicle, info.m_vehicleType, 20000f, isHeavyVehicle/*carAI.IsHeavyVehicle()*/, ignoreBlocked/*carAI.IgnoreBlocked(vehicleID, ref vehicleData)*/, false, false))
+                bool createPathResult = Singleton<PathManager>.instance.CreatePath(vehicleType, out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, 20000f, this.IsHeavyVehicle(), this.IgnoreBlocked(vehicleID, ref vehicleData), false, false);
+                if (createPathResult)
                 {
                     if (vehicleData.m_path != 0u)
                     {

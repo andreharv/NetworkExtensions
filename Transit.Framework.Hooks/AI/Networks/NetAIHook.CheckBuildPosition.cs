@@ -154,14 +154,14 @@ namespace Transit.Framework.Hooks.AI.Networks
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        [RedirectTo(typeof(NetAI), (ulong)PrerequisiteType.NetworkAI)]
+        [RedirectTo(typeof(NetAI))]
         private static bool ForceValidDirection(NetInfo info, ref Vector3 direction, ushort nodeID, ref NetNode node)
         {
             throw new NotImplementedException("ForceValidDirection is target of redirection and is not implemented.");
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        [RedirectTo(typeof(NetAI), (ulong)PrerequisiteType.NetworkAI)]
+        [RedirectTo(typeof(NetAI))]
         private static bool ForceValidDirection(NetInfo info, Vector3 position, ref Vector3 direction, ushort segmentID, ref NetSegment segment)
         {
             throw new NotImplementedException("ForceValidDirection is target of redirection and is not implemented.");

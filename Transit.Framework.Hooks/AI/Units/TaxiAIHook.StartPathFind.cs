@@ -3,14 +3,15 @@ using System.Runtime.CompilerServices;
 using ColossalFramework;
 using Transit.Framework.ExtensionPoints.PathFinding;
 using Transit.Framework.Network;
+using Transit.Framework.Prerequisites;
 using Transit.Framework.Redirection;
 using UnityEngine;
 
-namespace CSL_Traffic.AI.Redirections
+namespace Transit.Framework.Hooks.AI.Units
 {
-    public class CustomTaxiAI : CarAI
+    public class TaxiAIHook : CarAI
     {
-        [RedirectFrom(typeof(TaxiAI))]
+        [RedirectFrom(typeof(TaxiAI), (ulong)PrerequisiteType.PathFinding)]
         protected override bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget)
         {
             CitizenManager instance = Singleton<CitizenManager>.instance;
@@ -57,7 +58,7 @@ namespace CSL_Traffic.AI.Redirections
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        [RedirectTo(typeof(TaxiAI))]
+        [RedirectTo(typeof(TaxiAI), (ulong)PrerequisiteType.PathFinding)]
 	    private ushort GetPassengerInstance(ushort vehicleID, ref Vehicle data)
         {
             throw new NotImplementedException("GetPassengerInstance is target of redirection and is not implemented.");

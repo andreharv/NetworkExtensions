@@ -1,20 +1,18 @@
-using System;
-using System.Runtime.CompilerServices;
 using ColossalFramework;
-using ColossalFramework.Math;
 using Transit.Framework.ExtensionPoints.PathFinding;
 using Transit.Framework.Network;
+using Transit.Framework.Prerequisites;
 using Transit.Framework.Redirection;
 using UnityEngine;
 
-namespace CSL_Traffic
+namespace Transit.Framework.Hooks.AI.Units
 {
-    public class CustomAmbulanceAI : CarAI
+    public class FireTruckAIHook : CarAI
     {
-        [RedirectFrom(typeof(AmbulanceAI))]
+        [RedirectFrom(typeof(FireTruckAI), (ulong)PrerequisiteType.PathFinding)]
         protected override bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget)
         {
-            ExtendedVehicleType vehicleType = ExtendedVehicleType.Ambulance;
+            ExtendedVehicleType vehicleType = ExtendedVehicleType.FireTruck;
             if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) != Vehicle.Flags.None)
                 vehicleType |= ExtendedVehicleType.Emergency;
 
@@ -39,8 +37,7 @@ namespace CSL_Traffic
                     endPosB = default(PathUnit.Position);
                 }
                 uint path;
-                bool createPathResult = Singleton<PathManager>.instance.CreatePath(vehicleType, out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, 20000f, this.IsHeavyVehicle(), this.IgnoreBlocked(vehicleID, ref vehicleData), false, false);
-                if (createPathResult)
+                if (Singleton<PathManager>.instance.CreatePath(vehicleType, out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, 20000f, this.IsHeavyVehicle(), this.IgnoreBlocked(vehicleID, ref vehicleData), false, false))
                 {
                     if (vehicleData.m_path != 0u)
                     {

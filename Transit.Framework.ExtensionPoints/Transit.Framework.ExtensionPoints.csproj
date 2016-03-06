@@ -47,6 +47,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AI\Units\_Extensions\CarAIExtensions.cs" />
     <Compile Include="AI\Networks\IRoadSnappingMode.cs" />
     <Compile Include="AI\Networks\IZoneBlocksCreator.cs" />
     <Compile Include="AI\Networks\RoadSnappingModeManager.cs" />

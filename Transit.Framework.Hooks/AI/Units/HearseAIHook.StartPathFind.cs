@@ -1,16 +1,16 @@
-using System;
-using System.Runtime.CompilerServices;
 using ColossalFramework;
 using ColossalFramework.Math;
+using Transit.Framework.ExtensionPoints.AI.Units;
 using Transit.Framework.Network;
-using UnityEngine;
+using Transit.Framework.Prerequisites;
 using Transit.Framework.Redirection;
+using UnityEngine;
 
-namespace CSL_Traffic
+namespace Transit.Framework.Hooks.AI.Units
 {
-    public class CustomHearseAI : CarAI
+    public class HearseAIHook : CarAI
     {
-        [RedirectFrom(typeof(HearseAI))]
+        [RedirectFrom(typeof(HearseAI), (ulong)PrerequisiteType.PathFinding)]
         protected override bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData)
         {
             if ((vehicleData.m_flags & Vehicle.Flags.WaitingTarget) != Vehicle.Flags.None)

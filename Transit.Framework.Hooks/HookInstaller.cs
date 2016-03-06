@@ -8,6 +8,11 @@ namespace Transit.Framework.Hooks
     {
         public void Install(PrerequisiteType type)
         {
+            if (type == PrerequisiteType.None)
+            {
+                return;
+            }
+
             Debug.Log("TFW: Installing requirements of type(s) " + type);
 
             Redirector.PerformRedirections((ulong) type);
@@ -15,6 +20,11 @@ namespace Transit.Framework.Hooks
 
         public void Uninstall(PrerequisiteType type)
         {
+            if (type == PrerequisiteType.None)
+            {
+                return;
+            }
+
             Debug.Log("TFW: Uninstalling requirements of type(s) " + type);
 
             Redirector.RevertRedirections((ulong) type);
