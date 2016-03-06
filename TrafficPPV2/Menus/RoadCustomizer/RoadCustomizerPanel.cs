@@ -64,28 +64,15 @@ namespace CSL_Traffic.UI
             this.m_panelType = Panel.Unset;
         }
 
+        public void AttachLaneCustomizationEvents(RoadCustomizerTool tool)
+        {
+            tool.OnStartLaneCustomization += EnableIcons;
+            tool.OnEndLaneCustomization += DisableIcons;
+        }
+
         private void OnEnable()
         {				
             this.RefreshPanel();
-            RoadCustomizerTool rct = ToolsModifierControl.GetTool<RoadCustomizerTool>();
-            if (rct != null)
-            {
-                rct.OnStartLaneCustomization += EnableIcons;
-                rct.OnEndLaneCustomization += DisableIcons;
-            }
-        }
-
-        private void OnDisable()
-        {
-            RoadCustomizerTool rct = ToolsModifierControl.GetTool<RoadCustomizerTool>();
-            if (rct != null)
-            {
-                if (m_panelType == Panel.VehicleRestrictions)
-                {
-                    rct.OnStartLaneCustomization -= EnableIcons;
-                    rct.OnEndLaneCustomization -= DisableIcons;
-                }
-            }
         }
 
         void Update()

@@ -760,7 +760,7 @@ namespace CSL_Traffic
 
 		#region UI
 
-		public static bool InitializeUI(UIButton button)
+		public bool InitializeUI(UIButton button)
 		{
 			GameObject container = GameObject.Find("TSContainer");
 			if (container == null)
@@ -778,38 +778,43 @@ namespace CSL_Traffic
 			GameObject groupToolstrip = panel.transform.GetChild(1).gameObject;
 			panel.GetComponent<UIPanel>().AttachUIComponent(groupToolstrip);
 
-			GameObject vehiclePanel = UITemplateManager.GetAsGameObject("ScrollablePanelTemplate");
-			if (vehiclePanel == null)
+			GameObject vehiclePanelObj = UITemplateManager.GetAsGameObject("ScrollablePanelTemplate");
+			if (vehiclePanelObj == null)
 				return false;
 
 			UIComponent comp = gtsContainer.GetComponent<UIComponent>();
 			if (comp == null)
 				return false;
-			comp.AttachUIComponent(vehiclePanel);
+			comp.AttachUIComponent(vehiclePanelObj);
 			comp.relativePosition = Vector3.zero;
-			vehiclePanel.GetComponent<UIPanel>().AttachUIComponent(vehiclePanel.transform.GetChild(0).gameObject);
-			vehiclePanel.GetComponent<UIPanel>().relativePosition = Vector3.zero;
-			vehiclePanel.GetComponent<UIPanel>().isVisible = true;
-			vehiclePanel.GetComponent<UIPanel>().isInteractive = true;
-			vehiclePanel.transform.GetChild(0).gameObject.GetComponent<UIComponent>().relativePosition = new Vector3(50f, 0f);
+			vehiclePanelObj.GetComponent<UIPanel>().AttachUIComponent(vehiclePanelObj.transform.GetChild(0).gameObject);
+			vehiclePanelObj.GetComponent<UIPanel>().relativePosition = Vector3.zero;
+			vehiclePanelObj.GetComponent<UIPanel>().isVisible = true;
+			vehiclePanelObj.GetComponent<UIPanel>().isInteractive = true;
+			vehiclePanelObj.transform.GetChild(0).gameObject.GetComponent<UIComponent>().relativePosition = new Vector3(50f, 0f);
 
-			GameObject speedPanel = UITemplateManager.GetAsGameObject("ScrollablePanelTemplate");
-			if (speedPanel == null)
+			GameObject speedPanelObj = UITemplateManager.GetAsGameObject("ScrollablePanelTemplate");
+			if (speedPanelObj == null)
 				return false;
-			comp.AttachUIComponent(speedPanel);
-			speedPanel.GetComponent<UIPanel>().AttachUIComponent(speedPanel.transform.GetChild(0).gameObject);
-			speedPanel.GetComponent<UIPanel>().relativePosition = Vector3.zero;
-			speedPanel.GetComponent<UIPanel>().isInteractive = true;
-			speedPanel.transform.GetChild(0).gameObject.GetComponent<UIComponent>().relativePosition = new Vector3(50f, 0f);
+			comp.AttachUIComponent(speedPanelObj);
+			speedPanelObj.GetComponent<UIPanel>().AttachUIComponent(speedPanelObj.transform.GetChild(0).gameObject);
+			speedPanelObj.GetComponent<UIPanel>().relativePosition = Vector3.zero;
+			speedPanelObj.GetComponent<UIPanel>().isInteractive = true;
+			speedPanelObj.transform.GetChild(0).gameObject.GetComponent<UIComponent>().relativePosition = new Vector3(50f, 0f);
 
 			// add RoadCustomizerGroupPanel to panel
 			panel.AddComponent<RoadCustomizerGroupPanel>();
 
 			// add RoadCustomizerPanel to scrollablePanel
-			vehiclePanel.AddComponent<RoadCustomizerPanel>();//.SetPanel(RoadCustomizerPanel.Panel.VehicleRestrictions);
-			speedPanel.AddComponent<RoadCustomizerPanel>();//.SetPanel(RoadCustomizerPanel.Panel.SpeedRestrictions);
+		    vehiclePanelObj
+		        .AddComponent<RoadCustomizerPanel>()
+		        .AttachLaneCustomizationEvents(this);
 
-			button.eventClick += delegate(UIComponent component, UIMouseEventParameter eventParam)
+            speedPanelObj
+                .AddComponent<RoadCustomizerPanel>()
+                .AttachLaneCustomizationEvents(this);
+
+            button.eventClick += delegate(UIComponent component, UIMouseEventParameter eventParam)
 			{
 				//roadsPanel.isVisible = false;
 				panel.SetActive(true);
