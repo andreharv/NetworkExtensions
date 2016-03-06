@@ -20,7 +20,7 @@ namespace CSL_Traffic.UI
             this.m_strip = GetComponentInChildren<UITabstrip>();
             this.m_strip.relativePosition = new Vector3(13, -25);
             this.m_strip.startSelectedIndex = 0;
-            this.m_atlas = UIUtils.GetRoadCustomizerAtlas();
+            this.m_atlas = RoadCustomizerAtlasBuilder.GetRoadCustomizerAtlas();
             this.m_objectIndex = 0;
         }
 

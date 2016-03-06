@@ -18,32 +18,6 @@ namespace CSL_Traffic.UI
         }
 
         private static readonly string kItemTemplate = "PlaceableItemTemplate";
-        static readonly string[] sm_speedThumbnailStates = new string[] { "Disabled", "", "Hovered", "Focused" };
-        static readonly string[] sm_vehicleThumbnailStates = new string[] { "Disabled", "Deselected", "90%", "", "80%" };
-        static readonly string[] sm_emergencyVehicleThumbnailStates = new string[] { "Disabled", "Deselected", "90%", "", "80%", "Lights0", "Lights1" };
-        static readonly Dictionary<string, UIUtils.SpriteTextureInfo> sm_thumbnailCoords = new Dictionary<string, UIUtils.SpriteTextureInfo>()
-        {        
-            {"Emergency", new UIUtils.SpriteTextureInfo() {startX = 0, startY = 0, width = 109, height = 75}},
-            {"Hearse", new UIUtils.SpriteTextureInfo() {startX = 0, startY = 75, width = 109, height = 75}},
-            {"GarbageTruck", new UIUtils.SpriteTextureInfo() {startX = 0, startY = 150, width = 109, height = 75}},
-            {"CargoTruck", new UIUtils.SpriteTextureInfo() {startX = 0, startY = 225, width = 109, height = 75}},
-            {"Bus", new UIUtils.SpriteTextureInfo() {startX = 0, startY = 300, width = 109, height = 75}},
-            {"PassengerCar", new UIUtils.SpriteTextureInfo() {startX = 0, startY = 375, width = 109, height = 75}},
-
-            {"SpeedSignBackground", new UIUtils.SpriteTextureInfo() {startX = 545, startY = 375, width = 109, height = 100}},
-            {"15", new UIUtils.SpriteTextureInfo() {startX = 654, startY = 75, width = 109, height = 75}},
-            {"30", new UIUtils.SpriteTextureInfo() {startX = 872, startY = 75, width = 109, height = 75}},
-            {"40", new UIUtils.SpriteTextureInfo() {startX = 545, startY = 150, width = 109, height = 75}},
-            {"50", new UIUtils.SpriteTextureInfo() {startX = 654, startY = 150, width = 109, height = 75}},
-            {"60", new UIUtils.SpriteTextureInfo() {startX = 763, startY = 150, width = 109, height = 75}},
-            {"70", new UIUtils.SpriteTextureInfo() {startX = 872, startY = 150, width = 109, height = 75}},
-            {"80", new UIUtils.SpriteTextureInfo() {startX = 545, startY = 225, width = 109, height = 75}},
-            {"90", new UIUtils.SpriteTextureInfo() {startX = 654, startY = 225, width = 109, height = 75}},
-            {"100", new UIUtils.SpriteTextureInfo() {startX = 763, startY = 225, width = 109, height = 75}},
-            {"120", new UIUtils.SpriteTextureInfo() {startX = 545, startY = 300, width = 109, height = 75}},
-            {"140", new UIUtils.SpriteTextureInfo() {startX = 763, startY = 300, width = 109, height = 75}},
-            
-        };
 
         public UITextureAtlas m_atlas;
         private UIScrollablePanel m_scrollablePanel;
@@ -54,7 +28,7 @@ namespace CSL_Traffic.UI
 
         private void Awake()
         {
-            this.m_atlas = UIUtils.GetRoadCustomizerAtlas();
+            this.m_atlas = RoadCustomizerAtlasBuilder.GetRoadCustomizerAtlas();
             this.m_scrollablePanel = GetComponentInChildren<UIScrollablePanel>();
             this.m_scrollablePanel.autoLayoutStart = LayoutStart.TopLeft;
             UIScrollbar scrollbar = this.GetComponentInChildren<UIScrollbar>();
@@ -235,7 +209,6 @@ namespace CSL_Traffic.UI
                         SetVehicleButtonsThumbnails(btn);
                         break;
                     case Panel.SpeedRestrictions:
-                        UIUtils.SetThumbnails("SpeedSignBackground", sm_thumbnailCoords["SpeedSignBackground"], atlas, sm_speedThumbnailStates);
                         SetSpeedButtonsThumbnails(btn);
                         break;
                     default:
@@ -267,7 +240,6 @@ namespace CSL_Traffic.UI
         protected void SetVehicleButtonsThumbnails(UIButton btn)
         {
             string iconName = btn.name;
-            UIUtils.SetThumbnails(iconName, sm_thumbnailCoords[iconName], btn.atlas, iconName == "Emergency" ? sm_emergencyVehicleThumbnailStates : sm_vehicleThumbnailStates);
 
             btn.normalFgSprite = iconName;
             btn.focusedFgSprite = iconName;
@@ -313,7 +285,6 @@ namespace CSL_Traffic.UI
         protected void SetSpeedButtonsThumbnails(UIButton btn)
         {
             string iconName = btn.name;
-            UIUtils.SetThumbnails(iconName, sm_thumbnailCoords[iconName], btn.atlas);
 
             btn.normalBgSprite = "SpeedSignBackground";
             btn.disabledBgSprite = "SpeedSignBackgroundDisabled";
