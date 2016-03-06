@@ -12,7 +12,7 @@ namespace Transit.Framework.Hooks.AI
     {
         private const float MIN_HALFWIDTH_DEFAULT = 8f;
 
-        [RedirectFrom(typeof(RoadAI), (ulong)PrerequisiteType.AI)]
+        [RedirectFrom(typeof(RoadAI), (ulong)PrerequisiteType.RoadAI)]
         private void CreateZoneBlocks(ushort segment, ref NetSegment data)
         {
             try

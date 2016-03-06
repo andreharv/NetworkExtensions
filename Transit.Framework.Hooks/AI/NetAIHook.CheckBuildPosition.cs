@@ -11,7 +11,7 @@ namespace Transit.Framework.Hooks.AI
 {
     public partial class NetAIHook : NetAI
     {
-        [RedirectFrom(typeof(NetAI), (ulong)PrerequisiteType.AI)]
+        [RedirectFrom(typeof(NetAI), (ulong)PrerequisiteType.RoadAI)]
 #pragma warning disable 108,114
         public virtual ToolBase.ToolErrors CheckBuildPosition(bool test, bool visualize, bool overlay, bool autofix,
 #pragma warning restore 108,114
@@ -153,14 +153,14 @@ namespace Transit.Framework.Hooks.AI
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        [RedirectTo(typeof(NetAI), (ulong)PrerequisiteType.AI)]
+        [RedirectTo(typeof(NetAI), (ulong)PrerequisiteType.RoadAI)]
         private static bool ForceValidDirection(NetInfo info, ref Vector3 direction, ushort nodeID, ref NetNode node)
         {
             throw new NotImplementedException("ForceValidDirection is target of redirection and is not implemented.");
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        [RedirectTo(typeof(NetAI), (ulong)PrerequisiteType.AI)]
+        [RedirectTo(typeof(NetAI), (ulong)PrerequisiteType.RoadAI)]
         private static bool ForceValidDirection(NetInfo info, Vector3 position, ref Vector3 direction, ushort segmentID, ref NetSegment segment)
         {
             throw new NotImplementedException("ForceValidDirection is target of redirection and is not implemented.");

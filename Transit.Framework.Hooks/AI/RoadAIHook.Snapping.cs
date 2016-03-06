@@ -6,7 +6,7 @@ namespace Transit.Framework.Hooks.AI
 {
     public partial class RoadAIHook : RoadAI
     {
-        [RedirectFrom(typeof(RoadAI), (ulong)PrerequisiteType.AI)]
+        [RedirectFrom(typeof(RoadAI), (ulong)PrerequisiteType.RoadAI)]
         public override float GetLengthSnap()
         {
             if (RoadSnappingModeManager.HasCustomSnapping(this.m_info.name))

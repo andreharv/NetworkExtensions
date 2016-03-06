@@ -20,7 +20,7 @@ namespace Transit.Framework.Mod
                 module.OnInstallingAssets();
         }
 
-        private void InstallAtlas()
+        private void InstallAtlases()
         {
             var atlasBuilderType = typeof(IAtlasBuilder);
 
@@ -104,7 +104,7 @@ namespace Transit.Framework.Mod
                 {
                     try
                     {
-                        host.InstallAtlas();
+                        host.InstallAtlases();
                     }
                     catch (Exception ex)
                     {

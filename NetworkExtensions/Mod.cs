@@ -27,7 +27,7 @@ namespace NetworkExtensions
 
         public override PrerequisiteType Requirements
         {
-            get { return PrerequisiteType.AI | PrerequisiteType.UI; }
+            get { return PrerequisiteType.RoadAI | PrerequisiteType.UI; }
         }
     }
 }
