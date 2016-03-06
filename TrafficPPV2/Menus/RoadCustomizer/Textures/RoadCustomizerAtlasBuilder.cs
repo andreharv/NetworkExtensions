@@ -14,9 +14,13 @@ namespace CSL_Traffic.UI
 
         private static readonly Dictionary<string, SpriteTextureInfo> sm_thumbnailCoords = new Dictionary<string, SpriteTextureInfo>()
         {
-            {"TabBackgrounds", new SpriteTextureInfo {startX = 763, startY = 50, width = 60, height = 25}},
             {"Vehicle Restrictions", new SpriteTextureInfo {startX = 763, startY = 0, width = 32, height = 22}},
             {"Speed Restrictions", new SpriteTextureInfo {startX = 763, startY = 22, width = 32, height = 22}},
+        };
+
+        private static readonly Dictionary<string, SpriteTextureInfo> sm_bgthumbnailCoords = new Dictionary<string, SpriteTextureInfo>()
+        {
+            {"TabBg", new SpriteTextureInfo {startX = 763, startY = 50, width = 60, height = 25}},
             {"SpeedSignBackground", new SpriteTextureInfo {startX = 545, startY = 375, width = 109, height = 100}},
         };
 
@@ -105,12 +109,14 @@ namespace CSL_Traffic.UI
                 atlas, 
                 new[] { "Hovered", "Pressed", "Focused", "" });
 
-            SetThumbnails("TabBg", sm_thumbnailCoords["TabBackgrounds"], atlas, sm_thumbnailStates);
-
-
             foreach (var kvp in sm_thumbnailCoords)
             {
                 SetThumbnails(kvp.Key, kvp.Value, atlas);
+            }
+
+            foreach (var kvp in sm_bgthumbnailCoords)
+            {
+                SetThumbnails(kvp.Key, kvp.Value, atlas, sm_thumbnailStates);
             }
 
             foreach (var kvp in sm_vehiclesThumbnailCoords)
