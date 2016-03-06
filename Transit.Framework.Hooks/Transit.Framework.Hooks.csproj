@@ -51,9 +51,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AI\RoadAIHook.CreateZoneBlocks.cs" />
-    <Compile Include="AI\NetAIHook.CheckBuildPosition.cs" />
-    <Compile Include="AI\RoadAIHook.Snapping.cs" />
+    <Compile Include="AI\Networks\RoadAIHook.CreateZoneBlocks.cs" />
+    <Compile Include="AI\Networks\NetAIHook.CheckBuildPosition.cs" />
+    <Compile Include="AI\Networks\RoadAIHook.Snapping.cs" />
     <Compile Include="HookInstaller.cs" />
     <Compile Include="PathFinding\PathFindHook.cs" />
     <Compile Include="PathFinding\PathManagerHook.cs" />
@@ -75,7 +75,9 @@
       <Name>Transit.Framework</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="AI\Units\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

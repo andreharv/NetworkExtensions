@@ -47,11 +47,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AI\IRoadSnappingMode.cs" />
-    <Compile Include="AI\IZoneBlocksCreator.cs" />
-    <Compile Include="AI\RoadSnappingModeManager.cs" />
-    <Compile Include="AI\RoadZoneBlocksCreationManager.cs" />
-    <Compile Include="AI\ZoneBlocksOffset.cs" />
+    <Compile Include="AI\Networks\IRoadSnappingMode.cs" />
+    <Compile Include="AI\Networks\IZoneBlocksCreator.cs" />
+    <Compile Include="AI\Networks\RoadSnappingModeManager.cs" />
+    <Compile Include="AI\Networks\RoadZoneBlocksCreationManager.cs" />
+    <Compile Include="AI\Networks\ZoneBlocksOffset.cs" />
     <Compile Include="PathFinding\VanillaPathFind.cs" />
     <Compile Include="PathFinding\ExtendedPathFindFacade.cs" />
     <Compile Include="PathFinding\ExtendedPathManager.cs" />

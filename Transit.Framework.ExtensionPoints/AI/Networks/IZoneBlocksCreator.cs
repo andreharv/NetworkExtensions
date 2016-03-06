@@ -1,4 +1,4 @@
-﻿namespace Transit.Framework.ExtensionPoints.AI
+﻿namespace Transit.Framework.ExtensionPoints.AI.Networks
 {
     public interface IZoneBlocksCreator
     {

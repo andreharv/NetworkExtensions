@@ -3,6 +3,7 @@ using ColossalFramework.Math;
 using Transit.Framework;
 using UnityEngine;
 using Transit.Framework.ExtensionPoints.AI;
+using Transit.Framework.ExtensionPoints.AI.Networks;
 
 #if DEBUG
 using Debug = Transit.Framework.Debug;

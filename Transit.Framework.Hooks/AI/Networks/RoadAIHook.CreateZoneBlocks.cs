@@ -2,17 +2,18 @@
 using ColossalFramework;
 using ColossalFramework.Math;
 using Transit.Framework.ExtensionPoints.AI;
+using Transit.Framework.ExtensionPoints.AI.Networks;
 using Transit.Framework.Prerequisites;
 using Transit.Framework.Redirection;
 using UnityEngine;
 
-namespace Transit.Framework.Hooks.AI
+namespace Transit.Framework.Hooks.AI.Networks
 {
     public partial class RoadAIHook : RoadAI
     {
         private const float MIN_HALFWIDTH_DEFAULT = 8f;
 
-        [RedirectFrom(typeof(RoadAI), (ulong)PrerequisiteType.RoadAI)]
+        [RedirectFrom(typeof(RoadAI), (ulong)PrerequisiteType.NetworkAI)]
         private void CreateZoneBlocks(ushort segment, ref NetSegment data)
         {
             try

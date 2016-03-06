@@ -7,7 +7,7 @@ namespace Transit.Framework.Prerequisites
     {
         None        = 0,
         UI          = 1,
-        RoadAI      = 1 << 1,
+        NetworkAI   = 1 << 1,
         PathFinding = 1 << 2,
     }
 }

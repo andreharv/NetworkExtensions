@@ -13,6 +13,7 @@ using Transit.Addon.RoadExtensions.Roads.TinyRoads.OneWay1L;
 using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.ExtensionPoints.AI;
+using Transit.Framework.ExtensionPoints.AI.Networks;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
