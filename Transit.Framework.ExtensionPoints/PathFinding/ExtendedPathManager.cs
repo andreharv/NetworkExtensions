@@ -1,6 +1,7 @@
 ﻿using System;
 using ColossalFramework;
 using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures;
+using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Vanilla;
 
 namespace Transit.Framework.ExtensionPoints.PathFinding
 {

@@ -3,11 +3,10 @@ using System.Threading;
 using ColossalFramework;
 using ColossalFramework.Math;
 using ColossalFramework.UI;
-using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures;
 using Transit.Framework.Network;
 using UnityEngine;
 
-namespace Transit.Framework.ExtensionPoints.PathFinding
+namespace Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Vanilla
 {
     /// <summary>
     /// This is the (almost) vanilla code found in the PathFind default class.
