@@ -77,7 +77,7 @@ namespace CSL_Traffic
                 sm_redirectionInstalled = true;
             }
 
-            ExtendedPathManager.DefinePathFinding<TPPPathFind>();
+            ExtendedPathManager.instance.DefinePathFinding<TPPPathFind>();
         }
 
         public override void OnDisabled()
@@ -88,7 +88,7 @@ namespace CSL_Traffic
                 sm_redirectionInstalled = false;
             }
 
-            ExtendedPathManager.ResetPathFinding();
+            ExtendedPathManager.instance.ResetPathFinding();
         }
 
         public override void OnInstallLocalization()

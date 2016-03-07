@@ -1,30 +1,29 @@
 ﻿using System;
+using ColossalFramework;
+using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures;
 
 namespace Transit.Framework.ExtensionPoints.PathFinding
 {
-    public static class ExtendedPathManager
+    public partial class ExtendedPathManager : Singleton<ExtendedPathManager>
     {
-        public static ExtendedPathFindFacade[] PathFindFacades { get; set; }
+        public ExtendedPathFindFacade[] PathFindFacades { get; set; }
 
-        private static Type sm_pathFindingType = typeof(VanillaPathFind);
+        private Type _pathFindingType = typeof(VanillaPathFind);
 
-        public static void DefinePathFinding<T>()
+        public void DefinePathFinding<T>()
             where T : IExtendedPathFind, new()
         {
-            sm_pathFindingType = typeof(T);
+            _pathFindingType = typeof(T);
         }
 
-        public static void ResetPathFinding()
+        public void ResetPathFinding()
         {
-            sm_pathFindingType = typeof(VanillaPathFind);
+            _pathFindingType = typeof(VanillaPathFind);
         }    
         
-        public static IExtendedPathFind CreatePathFinding(this ExtendedPathFindFacade facade)
+        public IExtendedPathFind CreatePathFinding()
         {
-            var pf = (IExtendedPathFind)Activator.CreateInstance(sm_pathFindingType);
-            pf.Facade = facade;
-
-            return pf;
+            return (IExtendedPathFind)Activator.CreateInstance(_pathFindingType);
         }
     }
 }

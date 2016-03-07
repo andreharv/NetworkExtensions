@@ -1,12 +1,14 @@
 ﻿
+using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures;
+
 namespace Transit.Framework.ExtensionPoints.PathFinding
 {
-    public partial class PathFindingManager
+    public partial class ExtendedPathManager
     {
-        private ILaneSpeedManager _laneSpeedManager = null;
+        private IExtendedLaneSpeedManager _laneSpeedManager = null;
 
         public void DefineCustomLaneSpeed<T>(T managerInstance)
-            where T : ILaneSpeedManager
+            where T : IExtendedLaneSpeedManager
         {
             _laneSpeedManager = managerInstance;
         }
@@ -21,7 +23,7 @@ namespace Transit.Framework.ExtensionPoints.PathFinding
             return _laneSpeedManager != null;
         }
 
-        public ILaneSpeedManager GetCustomLaneSpeed()
+        public IExtendedLaneSpeedManager GetCustomLaneSpeed()
         {
             return _laneSpeedManager;
         }

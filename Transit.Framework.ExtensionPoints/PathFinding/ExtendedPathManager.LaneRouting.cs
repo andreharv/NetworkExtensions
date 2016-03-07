@@ -1,12 +1,14 @@
 ﻿
+using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures;
+
 namespace Transit.Framework.ExtensionPoints.PathFinding
 {
-    public partial class PathFindingManager
+    public partial class ExtendedPathManager
     {
-        private ILaneRoutingManager _laneRoutingManager = null;
+        private IExtendedLaneRoutingManager _laneRoutingManager = null;
 
         public void DefineCustomLaneRouting<T>(T managerInstance)
-            where T : ILaneRoutingManager
+            where T : IExtendedLaneRoutingManager
         {
             _laneRoutingManager = managerInstance;
         }
@@ -21,7 +23,7 @@ namespace Transit.Framework.ExtensionPoints.PathFinding
             return _laneRoutingManager != null;
         }
 
-        public ILaneRoutingManager GetCustomLaneRouting()
+        public IExtendedLaneRoutingManager GetCustomLaneRouting()
         {
             return _laneRoutingManager;
         }

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 ﻿using Transit.Framework.ExtensionPoints.PathFinding;
+﻿using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures;
 ﻿using Transit.Framework.Network;
 using UnityEngine;
 

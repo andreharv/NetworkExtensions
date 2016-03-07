@@ -19,12 +19,12 @@ namespace Transit.Addon.ToolsV2.LaneRouting
 
         protected override void OnToolInstalled(LaneRoutingTool tool)
         {
-            PathFindingManager.instance.DefineCustomLaneRouting(LaneRoutingManager.instance);
+            ExtendedPathManager.instance.DefineCustomLaneRouting(LaneRoutingManager.instance);
         }
 
         protected override void OnToolUninstalling(LaneRoutingTool tool)
         {
-            PathFindingManager.instance.DisableCustomLaneRouting();
+            ExtendedPathManager.instance.DisableCustomLaneRouting();
         }
     }
 }

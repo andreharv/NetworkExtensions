@@ -1,4 +1,5 @@
-﻿using Transit.Framework.Network;
+﻿using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures;
+using Transit.Framework.Network;
 
 namespace Transit.Framework.ExtensionPoints.PathFinding
 {
@@ -8,7 +9,8 @@ namespace Transit.Framework.ExtensionPoints.PathFinding
 
         public ExtendedPathFindFacade()
         {
-            m_innerPathFind = this.CreatePathFinding();
+            m_innerPathFind = ExtendedPathManager.instance.CreatePathFinding();
+            m_innerPathFind.Facade = this;
         }
 
 		protected void Awake()

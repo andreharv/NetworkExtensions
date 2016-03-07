@@ -5,11 +5,12 @@ using System.Threading;
 using ColossalFramework;
 using Transit.Addon.ToolsV2.LaneRouting.Data;
 using Transit.Framework.ExtensionPoints.PathFinding;
+using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures;
 using UnityEngine;
 
 namespace Transit.Addon.ToolsV2.LaneRouting
 {
-    public class LaneRoutingManager : Singleton<LaneRoutingManager>, ILaneRoutingManager
+    public class LaneRoutingManager : Singleton<LaneRoutingManager>, IExtendedLaneRoutingManager
     {
         private static IDictionary<uint, NodeRoutingData> _routingData;
 
