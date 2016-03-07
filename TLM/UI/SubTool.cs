@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace TrafficManager.UI {
 	public abstract class SubTool {
-		public TrafficManagerTool MainTool { get; private set; }
+		public TrafficManagerTool MainTool { get; set; }
 
 		protected ushort HoveredNodeId {
 			get { return MainTool.HoveredNodeId; }

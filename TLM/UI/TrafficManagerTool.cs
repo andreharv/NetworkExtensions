@@ -26,10 +26,6 @@ namespace TrafficManager.UI {
 
 		private bool mouseClickProcessed;
 
-		internal static Texture2D SecondPanelTexture {
-			get; private set;
-		}
-
 		public const float DebugCloseLod = 300f;
 		public const float PriorityCloseLod = 450f;
 
@@ -37,7 +33,8 @@ namespace TrafficManager.UI {
 		private String tooltipText = null;
 		private Vector3? tooltipWorldPos = null;*/
 
-		private static Dictionary<int, SubTool> subTools = null;
+		private static SubTool[] subTools = new SubTool[11];
+		private static bool initDone = false;
 
 		public static ushort SelectedNodeId { get; internal set; }
 
@@ -48,7 +45,7 @@ namespace TrafficManager.UI {
 		private static SubTool activeSubTool = null;
 
 		static TrafficManagerTool() {
-			SecondPanelTexture = MakeTex(1, 1, new Color(0.5f, 0.5f, 0.5f, 1f));
+			
 		}
 
 		internal ToolController GetToolController() {
@@ -56,8 +53,8 @@ namespace TrafficManager.UI {
 		}
 
 		internal static Rect ResizeGUI(Rect rect) {
-			var rectX = (rect.x / 800) * Screen.width;
-			var rectY = (rect.y / 600) * Screen.height;
+			var rectX = (rect.x / 800f) * (float)Screen.currentResolution.width;
+			var rectY = (rect.y / 600f) * (float)Screen.currentResolution.height;
 
 			return new Rect(rectX, rectY, rect.width, rect.height);
 		}
@@ -70,25 +67,28 @@ namespace TrafficManager.UI {
 			//Log._Debug($"TrafficLightTool: Awake {this.GetHashCode()}");
 			base.Awake();
 
-			subTools = new Dictionary<int, SubTool>();
-			subTools.Add((int)ToolMode.SwitchTrafficLight, new ToggleTrafficLightsTool(this));
-			subTools.Add((int)ToolMode.AddPrioritySigns, new PrioritySignsTool(this));
-			subTools.Add((int)ToolMode.ManualSwitch, new ManualTrafficLightsTool(this));
-			SubTool timedLightsTool = new TimedTrafficLightsTool(this);
-			subTools.Add((int)ToolMode.TimedLightsAddNode, timedLightsTool);
-			subTools.Add((int)ToolMode.TimedLightsRemoveNode, timedLightsTool);
-			subTools.Add((int)ToolMode.TimedLightsSelectNode, timedLightsTool);
-			subTools.Add((int)ToolMode.TimedLightsShowLights, timedLightsTool);
-			subTools.Add((int)ToolMode.VehicleRestrictions, new VehicleRestrictionsTool(this));
-			subTools.Add((int)ToolMode.SpeedLimits, new SpeedLimitsTool(this));
-			subTools.Add((int)ToolMode.LaneChange, new LaneArrowTool(this));
-
-			/*foreach (KeyValuePair<int, SubTool> e in subTools) {
-				var test = e.Value;
-				Log._Debug($"awake: {e.Key} {e.Value} test is {test}");
-				if (test != null)
-					Log._Debug($"type of test is {test.GetType()}. {test is SubTool} {test is ToggleTrafficLightsTool}");
-			}*/
+			if (!initDone) {
+				Log.Info("TrafficManagerTool: Awake - Initialization running now.");
+				subTools[(int)ToolMode.SwitchTrafficLight] = new ToggleTrafficLightsTool(this);
+				subTools[(int)ToolMode.AddPrioritySigns] = new PrioritySignsTool(this);
+				subTools[(int)ToolMode.ManualSwitch] = new ManualTrafficLightsTool(this);
+				SubTool timedLightsTool = new TimedTrafficLightsTool(this);
+				subTools[(int)ToolMode.TimedLightsAddNode] = timedLightsTool;
+				subTools[(int)ToolMode.TimedLightsRemoveNode] = timedLightsTool;
+				subTools[(int)ToolMode.TimedLightsSelectNode] = timedLightsTool;
+				subTools[(int)ToolMode.TimedLightsShowLights] = timedLightsTool;
+				subTools[(int)ToolMode.VehicleRestrictions] = new VehicleRestrictionsTool(this);
+				subTools[(int)ToolMode.SpeedLimits] = new SpeedLimitsTool(this);
+				subTools[(int)ToolMode.LaneChange] = new LaneArrowTool(this);
+				Log.Info("TrafficManagerTool: Awake - Initialization completed.");
+				initDone = true;
+			} else {
+				for (int i = 0; i < subTools.Length; ++i) {
+					if (subTools[i] == null)
+						continue;
+					subTools[i].MainTool = this;
+				}
+			}
 		}
 		
 		public static ToolMode GetToolMode() {
@@ -119,7 +119,7 @@ namespace TrafficManager.UI {
 
 			activeSubTool = null;
 			//Log._Debug($"Getting activeSubTool for mode {_toolMode} {subTools.Count}");
-			subTools.TryGetValue((int)_toolMode, out activeSubTool);
+			activeSubTool = subTools[(int)_toolMode];
 			//subTools.TryGetValue((int)_toolMode, out activeSubTool);
 			//Log._Debug($"activeSubTool is now {activeSubTool}");
 
@@ -211,11 +211,12 @@ namespace TrafficManager.UI {
 #endif
 				}
 
-				foreach (KeyValuePair<int, SubTool> entry in subTools) {
-					if (entry.Key != (int)GetToolMode()) {
-						//Log._Debug($"ShowIcons of SubTool {entry.Key}");
-						entry.Value.ShowIcons();
-					}
+				for (int i = 0; i < subTools.Length; ++i) {
+					if (subTools[i] == null)
+						continue;
+					if (i == (int)GetToolMode())
+						continue;
+					subTools[i].ShowIcons();
 				}
 
 				var guiColor = GUI.color;
@@ -277,7 +278,6 @@ namespace TrafficManager.UI {
 
 		private bool determineHoveredElements() {
 			var mouseRayValid = !UIView.IsInsideUI() && Cursor.visible && (activeSubTool == null || !activeSubTool.IsCursorInPanel());
-			//Log._Debug($"mouseRayValid? {mouseRayValid} {UIView.IsInsideUI()} {Cursor.visible} {activeSubTool} {activeSubTool?.IsCursorInPanel()}");
 
 			if (mouseRayValid) {
 				ushort oldHoveredSegmentId = HoveredSegmentId;
@@ -286,15 +286,8 @@ namespace TrafficManager.UI {
 				HoveredSegmentId = 0;
 				HoveredNodeId = 0;
 
-				// find currently hovered node & segment
-
-				/*var mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-				var mouseRayLength = Camera.main.farClipPlane;
-				var rayRight = Camera.main.transform.TransformDirection(Vector3.right);*/
-
+				// find currently hovered node
 				var nodeInput = new RaycastInput(this.m_mouseRay, this.m_mouseRayLength);
-				//input.m_netService = new RaycastService(ItemClass.Service.Road, ItemClass.SubService.None, ItemClass.Layer.Default);
-				//input.m_rayRight = rayRight;
 				nodeInput.m_netService.m_itemLayers = ItemClass.Layer.Default | ItemClass.Layer.MetroTunnels;
 				nodeInput.m_netService.m_service = ItemClass.Service.Road;
 				nodeInput.m_netService2.m_itemLayers = ItemClass.Layer.Default | ItemClass.Layer.PublicTransport | ItemClass.Layer.MetroTunnels;
@@ -302,7 +295,6 @@ namespace TrafficManager.UI {
 				nodeInput.m_netService2.m_subService = ItemClass.SubService.PublicTransportTrain;
 				nodeInput.m_ignoreTerrain = true;
 				nodeInput.m_ignoreNodeFlags = NetNode.Flags.None;
-				//nodeInput.m_ignoreSegmentFlags = NetSegment.Flags.Untouchable;
 
 				RaycastOutput nodeOutput;
 				if (RayCast(nodeInput, out nodeOutput)) {
@@ -310,15 +302,12 @@ namespace TrafficManager.UI {
 				}
 
 				var segmentInput = new RaycastInput(this.m_mouseRay, this.m_mouseRayLength);
-				//input.m_netService = new RaycastService(ItemClass.Service.Road, ItemClass.SubService.None, ItemClass.Layer.Default);
-				//input.m_rayRight = rayRight;
 				segmentInput.m_netService.m_itemLayers = ItemClass.Layer.Default | ItemClass.Layer.MetroTunnels;
 				segmentInput.m_netService.m_service = ItemClass.Service.Road;
 				segmentInput.m_netService2.m_itemLayers = ItemClass.Layer.Default | ItemClass.Layer.PublicTransport | ItemClass.Layer.MetroTunnels;
 				segmentInput.m_netService2.m_service = ItemClass.Service.PublicTransport;
 				segmentInput.m_netService2.m_subService = ItemClass.SubService.PublicTransportTrain;
 				segmentInput.m_ignoreTerrain = true;
-				//nodeInput.m_ignoreNodeFlags = NetNode.Flags.None;
 				segmentInput.m_ignoreSegmentFlags = NetSegment.Flags.Untouchable;
 
 				RaycastOutput segmentOutput;
@@ -338,14 +327,14 @@ namespace TrafficManager.UI {
 					}
 				}
 
-				/*if (oldHoveredNodeId != HoveredNodeId || oldHoveredSegmentId != HoveredSegmentId) {
+				if (oldHoveredNodeId != HoveredNodeId || oldHoveredSegmentId != HoveredSegmentId) {
 					Log._Debug($"*** Mouse ray @ node {HoveredNodeId}, segment {HoveredSegmentId}, toolMode={GetToolMode()}");
-                }*/
+                }
 
 				return (HoveredNodeId != 0 || HoveredSegmentId != 0);
 			} else {
-				//Log.Message($"Mouse ray invalid: {UIView.IsInsideUI()} {Cursor.visible} {_cursorInSecondaryPanel}");
-			}
+				Log._Debug($"Mouse ray invalid: {UIView.IsInsideUI()} {Cursor.visible} {activeSubTool == null} {activeSubTool.IsCursorInPanel()}");
+            }
 
 			return mouseRayValid;
 		}
@@ -731,7 +720,7 @@ namespace TrafficManager.UI {
 			}
 		}
 
-		private static Texture2D MakeTex(int width, int height, Color col) {
+		public static Texture2D MakeTex(int width, int height, Color col) {
 			var pix = new Color[width * height];
 
 			for (var i = 0; i < pix.Length; i++)

@@ -16,9 +16,10 @@ namespace TrafficManager.UI.SubTools {
 		private static float vehicleRestrictionsSignSize = 80f;
 		private bool _cursorInSecondaryPanel;
 		private bool overlayHandleHovered;
+		private Texture2D SecondPanelTexture;
 
 		public VehicleRestrictionsTool(TrafficManagerTool mainTool) : base(mainTool) {
-			
+			SecondPanelTexture = TrafficManagerTool.MakeTex(1, 1, new Color(0.5f, 0.5f, 0.5f, 1f));
 		}
 
 		public override void OnActivate() {
@@ -43,7 +44,7 @@ namespace TrafficManager.UI.SubTools {
 				_cursorInSecondaryPanel = false;
 
 				var style = new GUIStyle {
-					normal = { background = TrafficManagerTool.SecondPanelTexture },
+					normal = { background = SecondPanelTexture },
 					alignment = TextAnchor.MiddleCenter,
 					border =
 					{

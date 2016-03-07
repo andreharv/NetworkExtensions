@@ -13,9 +13,10 @@ using UnityEngine;
 namespace TrafficManager.UI.SubTools {
 	public class LaneArrowTool : SubTool {
 		private bool _cursorInSecondaryPanel;
+		private Texture2D SecondPanelTexture;
 
 		public LaneArrowTool(TrafficManagerTool mainTool) : base(mainTool) {
-			
+			SecondPanelTexture = TrafficManagerTool.MakeTex(1, 1, new Color(0.5f, 0.5f, 0.5f, 1f));
 		}
 
 		public override bool IsCursorInPanel() {
@@ -51,7 +52,7 @@ namespace TrafficManager.UI.SubTools {
 			}
 
 			var style = new GUIStyle {
-				normal = { background = TrafficManagerTool.SecondPanelTexture },
+				normal = { background = SecondPanelTexture },
 				alignment = TextAnchor.MiddleCenter,
 				border =
 				{

@@ -49,30 +49,91 @@ namespace TrafficManager.UI.SubTools {
 			if (HoveredNodeId <= 0 || nodeSelectionLocked)
 				return;
 
-			if (TrafficManagerTool.GetToolMode() == ToolMode.TimedLightsShowLights) {
-				TrafficManagerTool.SetToolMode(ToolMode.TimedLightsSelectNode);
-				ClearSelectedNodes();
-			}
-
-			TrafficLightSimulation timedSim = TrafficLightSimulation.GetNodeSimulation(HoveredNodeId);
-			if (timedSim == null || !timedSim.IsTimedLight()) {
-				if (IsNodeSelected(HoveredNodeId)) {
-					RemoveSelectedNode(HoveredNodeId);
-				} else {
-					AddSelectedNode(HoveredNodeId);
-				}
-			} else {
-				if (SelectedNodeIndexes.Count == 0) {
-					timedSim.housekeeping(true);
-					var timedLight = timedSim.TimedLight;
-
-					if (timedLight != null) {
-						SelectedNodeIndexes = new List<ushort>(timedLight.NodeGroup);
-						TrafficManagerTool.SetToolMode(ToolMode.TimedLightsShowLights);
+			switch (TrafficManagerTool.GetToolMode()) {
+				case ToolMode.TimedLightsSelectNode:
+				case ToolMode.TimedLightsShowLights:
+					if (TrafficManagerTool.GetToolMode() == ToolMode.TimedLightsShowLights) {
+						TrafficManagerTool.SetToolMode(ToolMode.TimedLightsSelectNode);
+						ClearSelectedNodes();
 					}
-				} else {
-					MainTool.ShowTooltip(Translation.GetString("NODE_IS_TIMED_LIGHT"), Singleton<NetManager>.instance.m_nodes.m_buffer[HoveredNodeId].m_position);
-				}
+
+					TrafficLightSimulation timedSim = TrafficLightSimulation.GetNodeSimulation(HoveredNodeId);
+					if (timedSim == null || !timedSim.IsTimedLight()) {
+						if (IsNodeSelected(HoveredNodeId)) {
+							RemoveSelectedNode(HoveredNodeId);
+						} else {
+							AddSelectedNode(HoveredNodeId);
+						}
+					} else {
+						if (SelectedNodeIndexes.Count == 0) {
+							timedSim.housekeeping(true);
+							var timedLight = timedSim.TimedLight;
+
+							if (timedLight != null) {
+								SelectedNodeIndexes = new List<ushort>(timedLight.NodeGroup);
+								TrafficManagerTool.SetToolMode(ToolMode.TimedLightsShowLights);
+							}
+						} else {
+							MainTool.ShowTooltip(Translation.GetString("NODE_IS_TIMED_LIGHT"), Singleton<NetManager>.instance.m_nodes.m_buffer[HoveredNodeId].m_position);
+						}
+					}
+					break;
+				case ToolMode.TimedLightsAddNode:
+					if (SelectedNodeIndexes.Count <= 0) {
+						TrafficManagerTool.SetToolMode(ToolMode.TimedLightsSelectNode);
+						return;
+					}
+
+					if (SelectedNodeIndexes.Contains(HoveredNodeId))
+						return;
+
+					//bool mayEnterBlocked = Options.mayEnterBlockedJunctions;
+					TimedTrafficLights existingTimedLight = null;
+					foreach (var nodeId in SelectedNodeIndexes) {
+						var nodeSimulation = TrafficLightSimulation.GetNodeSimulation(nodeId);
+						if (nodeSimulation == null || !nodeSimulation.IsTimedLight())
+							continue;
+						TimedTrafficLights timedNode = nodeSimulation.TimedLight;
+						if (timedNode == null)
+							continue;
+
+						//mayEnterBlocked = timedNode.vehiclesMayEnterBlockedJunctions;
+						existingTimedLight = timedNode;
+					}
+
+					var timedSim2 = TrafficLightSimulation.GetNodeSimulation(HoveredNodeId);
+					if (timedSim2 != null)
+						timedSim2.housekeeping(true);
+					TimedTrafficLights timedLight2 = null;
+					if (timedSim2 == null || !timedSim2.IsTimedLight()) {
+						var nodeGroup = new List<ushort>();
+						nodeGroup.Add(HoveredNodeId);
+						timedSim2 = TrafficLightSimulation.AddNodeToSimulation(HoveredNodeId);
+						timedSim2.SetupTimedTrafficLight(nodeGroup);
+						timedLight2 = timedSim2.TimedLight;
+						//timedLight.vehiclesMayEnterBlockedJunctions = mayEnterBlocked;
+					} else {
+						timedLight2 = timedSim2.TimedLight;
+					}
+
+					timedLight2.Join(existingTimedLight);
+					ClearSelectedNodes();
+					foreach (ushort nodeId in timedLight2.NodeGroup)
+						AddSelectedNode(nodeId);
+					TrafficManagerTool.SetToolMode(ToolMode.TimedLightsShowLights);
+					break;
+				case ToolMode.TimedLightsRemoveNode:
+					if (SelectedNodeIndexes.Count <= 0) {
+						TrafficManagerTool.SetToolMode(ToolMode.TimedLightsSelectNode);
+						return;
+					}
+
+					if (SelectedNodeIndexes.Contains(HoveredNodeId)) {
+						TrafficLightSimulation.RemoveNodeFromSimulation(HoveredNodeId, false);
+					}
+					RemoveSelectedNode(HoveredNodeId);
+					TrafficManagerTool.SetToolMode(ToolMode.TimedLightsShowLights);
+					break;
 			}
 		}
 
@@ -500,7 +561,7 @@ namespace TrafficManager.UI.SubTools {
 
 			GUILayout.Window(252, _windowRect2, _guiTimedTrafficLightsNodeWindow, Translation.GetString("Select_nodes_windowTitle"));
 
-			_cursorInSecondaryPanel = _windowRect.Contains(Event.current.mousePosition);
+			_cursorInSecondaryPanel = _windowRect2.Contains(Event.current.mousePosition);
 		}
 
 		private void _guiTimedTrafficLights() {

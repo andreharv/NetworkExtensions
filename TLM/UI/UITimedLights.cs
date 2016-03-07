@@ -10,7 +10,7 @@ namespace TrafficManager.UI
 
         public override void Start()
         {
-            TrafficLightTool = LoadingExtension.Instance.TrafficLightTool;
+            TrafficLightTool = LoadingExtension.Instance.TrafficManagerTool;
             //this makes the panel "visible", I don't know what sprites are available, but found this value to work
             backgroundSprite = "GenericPanel";
             color = new Color32(75, 75, 135, 255);

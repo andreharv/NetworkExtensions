@@ -17,9 +17,10 @@ namespace TrafficManager.UI.SubTools {
 		private bool overlayHandleHovered;
 		private static Dictionary<ushort, Dictionary<NetInfo.Direction, Vector3>> segmentCenterByDir = new Dictionary<ushort, Dictionary<NetInfo.Direction, Vector3>>();
 		private static float speedLimitSignSize = 80f;
+		private Texture2D SecondPanelTexture;
 
 		public SpeedLimitsTool(TrafficManagerTool mainTool) : base(mainTool) {
-			
+			SecondPanelTexture = TrafficManagerTool.MakeTex(1, 1, new Color(0.5f, 0.5f, 0.5f, 1f));
 		}
 
 		public override bool IsCursorInPanel() {
@@ -34,7 +35,7 @@ namespace TrafficManager.UI.SubTools {
 			_cursorInSecondaryPanel = false;
 
 			var style = new GUIStyle {
-				normal = { background = TrafficManagerTool.SecondPanelTexture },
+				normal = { background = SecondPanelTexture },
 				alignment = TextAnchor.MiddleCenter,
 				border =
 				{
