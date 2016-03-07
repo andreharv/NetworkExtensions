@@ -86,6 +86,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TLM", "TLM\TLM.csproj", "{7
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Addon.ToolsV3", "Transit.Addon.ToolsV3\Transit.Addon.ToolsV3.csproj", "{98128597-13A2-4C17-96C9-4DFAC0CA0828}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Addon.ToolsV2", "Transit.Addon.ToolsV2\Transit.Addon.ToolsV2.csproj", "{7D1C44DC-79D4-414F-8DED-42E762AFA862}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -260,6 +262,22 @@ Global
 		{98128597-13A2-4C17-96C9-4DFAC0CA0828}.Release|x64.Build.0 = Release|Any CPU
 		{98128597-13A2-4C17-96C9-4DFAC0CA0828}.Release|x86.ActiveCfg = Release|Any CPU
 		{98128597-13A2-4C17-96C9-4DFAC0CA0828}.Release|x86.Build.0 = Release|Any CPU
+		{7D1C44DC-79D4-414F-8DED-42E762AFA862}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D1C44DC-79D4-414F-8DED-42E762AFA862}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D1C44DC-79D4-414F-8DED-42E762AFA862}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{7D1C44DC-79D4-414F-8DED-42E762AFA862}.Debug|ARM.Build.0 = Debug|Any CPU
+		{7D1C44DC-79D4-414F-8DED-42E762AFA862}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7D1C44DC-79D4-414F-8DED-42E762AFA862}.Debug|x64.Build.0 = Debug|Any CPU
+		{7D1C44DC-79D4-414F-8DED-42E762AFA862}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7D1C44DC-79D4-414F-8DED-42E762AFA862}.Debug|x86.Build.0 = Debug|Any CPU
+		{7D1C44DC-79D4-414F-8DED-42E762AFA862}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D1C44DC-79D4-414F-8DED-42E762AFA862}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D1C44DC-79D4-414F-8DED-42E762AFA862}.Release|ARM.ActiveCfg = Release|Any CPU
+		{7D1C44DC-79D4-414F-8DED-42E762AFA862}.Release|ARM.Build.0 = Release|Any CPU
+		{7D1C44DC-79D4-414F-8DED-42E762AFA862}.Release|x64.ActiveCfg = Release|Any CPU
+		{7D1C44DC-79D4-414F-8DED-42E762AFA862}.Release|x64.Build.0 = Release|Any CPU
+		{7D1C44DC-79D4-414F-8DED-42E762AFA862}.Release|x86.ActiveCfg = Release|Any CPU
+		{7D1C44DC-79D4-414F-8DED-42E762AFA862}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
