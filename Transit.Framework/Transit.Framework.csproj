@@ -58,9 +58,14 @@
     <Compile Include="Builders\IToolBuilder.cs" />
     <Compile Include="Builders\ToolBuilder.cs" />
     <Compile Include="Modularity\ModuleBase.Install.cs" />
+    <Compile Include="Mod\ITransitMod.cs" />
     <Compile Include="Mod\TransitModBase.Install.Assets.cs" />
     <Compile Include="Mod\TransitModBase.Install.cs" />
     <Compile Include="Mod\TransitModBase.Install.Localization.cs" />
+    <Compile Include="Network\ExtendedNetInfoLane.cs" />
+    <Compile Include="Network\ExtendedVehicleType.cs" />
+    <Compile Include="Network\NetInfoClasses.cs" />
+    <Compile Include="Prerequisites\PrerequisiteType.cs" />
     <Compile Include="Serialization\DataSerializer.cs" />
     <Compile Include="Serialization\IDataSerializer.cs" />
     <Compile Include="Texturing\ITextureBlenderComponent.cs" />
@@ -89,13 +94,13 @@
     <Compile Include="Modularity\ModuleBase.Parts.cs" />
     <Compile Include="Modularity\IModule.cs" />
     <Compile Include="Modularity\ModuleBase.cs" />
-    <Compile Include="Prerequisites\IModPrerequisite.cs" />
-    <Compile Include="Prerequisites\ModPrerequisites.cs" />
+    <Compile Include="Prerequisites\IPrerequisiteSetup.cs" />
+    <Compile Include="Prerequisites\PrerequisiteHandler.cs" />
     <Compile Include="Mod\TransitModBase.cs" />
     <Compile Include="Mod\TransitModBase.LoadingExtension.cs" />
     <Compile Include="Mod\TransitModBase.Modules.cs" />
     <Compile Include="Mod\TransitModBase.Settings.cs" />
-    <Compile Include="NetInfoVersion.cs" />
+    <Compile Include="Network\NetInfoVersion.cs" />
     <Compile Include="Notification.cs" />
     <Compile Include="Assets.cs" />
     <Compile Include="Builders\MenuItemBuilder.cs" />
@@ -152,7 +157,7 @@
     <Compile Include="Prefabs.cs" />
     <Compile Include="Tools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="NetInfos.cs" />
+    <Compile Include="Network\NetInfos.cs" />
     <Compile Include="_Extensions\UIHelperBaseExtensions.cs" />
     <Compile Include="_Extensions\XmlExtensions.cs" />
   </ItemGroup>

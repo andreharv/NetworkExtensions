@@ -13,6 +13,7 @@ using Transit.Addon.RoadExtensions.Roads.TinyRoads.OneWay1L;
 using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.ExtensionPoints.AI;
+using Transit.Framework.ExtensionPoints.AI.Networks;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -49,13 +50,6 @@ namespace Transit.Addon.RoadExtensions
                 locale.CreateNetTitleLocalizedString(builder.Name, builder.DisplayName);
                 locale.CreateNetDescriptionLocalizedString(builder.Name, builder.Description);
             }
-        }
-
-        public override void OnInstallingAssets()
-        {
-            base.OnInstallingAssets();
-
-            AtlasManager.instance.Include<RExExtendedSubBarAtlasBuilder>();
         }
 
         public override void OnInstallingContent()

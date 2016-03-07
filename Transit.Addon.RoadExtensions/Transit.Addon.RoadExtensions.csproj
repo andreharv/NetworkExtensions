@@ -2312,10 +2312,6 @@
       <Project>{2E44ECA3-D750-4115-B16B-FCA94C49BBA0}</Project>
       <Name>Transit.Framework.ExtensionPoints</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Transit.Framework.Light\Transit.Framework.Light.csproj">
-      <Project>{fc275c26-1012-474c-b77b-09e366dbc684}</Project>
-      <Name>Transit.Framework.Light</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Transit.Framework\Transit.Framework.csproj">
       <Project>{8891467E-C88E-46B0-96F9-4413DF6DC205}</Project>
       <Name>Transit.Framework</Name>

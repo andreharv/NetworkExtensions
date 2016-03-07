@@ -3,6 +3,7 @@ using Transit.Addon.RoadExtensions.Roads.Highways;
 using Transit.Addon.RoadExtensions.Roads.Highways.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
+using Transit.Framework.Network;
 
 namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway1L
 {
@@ -64,6 +65,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway1L
             info.m_pavementWidth = 2;
             if (version == NetInfoVersion.Tunnel)
             {
+                info.m_setVehicleFlags = Vehicle.Flags.Transition | Vehicle.Flags.Underground;
                 info.m_class = highwayTunnelInfo.m_class.Clone(NetInfoClasses.NEXT_HIGHWAY1L_TUNNEL);
             }
             else
@@ -149,6 +151,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway1L
             {
                 roadBaseAI.m_highwayRules = true;
                 roadBaseAI.m_trafficLights = false;
+                roadBaseAI.m_accumulateSnow = false;
             }
 
             var roadAI = info.GetComponent<RoadAI>();
