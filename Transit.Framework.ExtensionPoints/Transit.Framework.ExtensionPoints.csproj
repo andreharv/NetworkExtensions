@@ -54,10 +54,14 @@
     <Compile Include="AI\Networks\RoadZoneBlocksCreationManager.cs" />
     <Compile Include="AI\Networks\ZoneBlocksOffset.cs" />
     <Compile Include="PathFinding\ExtendedFeatures\IExtendedLaneRestrictionManager.cs" />
+    <Compile Include="PathFinding\ExtendedFeatures\Vanilla\VanillaLaneRestrictionManager.cs" />
+    <Compile Include="PathFinding\ExtendedFeatures\Vanilla\VanillaLaneRoutingManager.cs" />
+    <Compile Include="PathFinding\ExtendedFeatures\Vanilla\VanillaLaneSpeedManager.cs" />
     <Compile Include="PathFinding\ExtendedFeatures\Vanilla\VanillaPathFind.cs" />
     <Compile Include="PathFinding\ExtendedPathFindFacade.cs" />
     <Compile Include="PathFinding\ExtendedPathManager.cs" />
     <Compile Include="PathFinding\ExtendedFeatures\IExtendedPathFind.cs" />
+    <Compile Include="PathFinding\ExtendedPathManager.LaneRestriction.cs" />
     <Compile Include="PathFinding\_Extensions\PathManagerExtensions.cs" />
     <Compile Include="PathFinding\ExtendedFeatures\IExtendedLaneRoutingManager.cs" />
     <Compile Include="PathFinding\ExtendedFeatures\IExtendedLaneSpeedManager.cs" />

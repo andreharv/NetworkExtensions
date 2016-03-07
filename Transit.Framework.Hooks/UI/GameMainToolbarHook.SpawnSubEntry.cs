@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Transit.Framework.Hooks.UI
 {
-    public partial class TAMGameMainToolbar : MainToolbar
+    public partial class GameMainToolbarHook : MainToolbar
     {
 // ReSharper disable once ParameterHidesMember
         private UIButton SpawnSubEntry(UITabstrip strip, string name, string localeID, string unlockText, string spriteBase, bool enabled, Type type)

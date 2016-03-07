@@ -12,7 +12,7 @@ using Transit.Framework.UI.Toolbar.Items;
 
 namespace Transit.Framework.Hooks.UI
 {
-    public partial class TAMGameMainToolbar : MainToolbar
+    public partial class GameMainToolbarHook : MainToolbar
     {
         private class VanillaToolbarItemInfo : IToolbarItemInfo
         {
