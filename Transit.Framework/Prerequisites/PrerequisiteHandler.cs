@@ -113,7 +113,6 @@ namespace Transit.Framework.Prerequisites
             {
                 foreach (var p in GetAllPrerequisites())
                 {
-                    Debug.Log(string.Format("TFW: Uninstalling Prerequisites {0}", p.GetType().Name));
                     p.Uninstall(type);
                 }
             }

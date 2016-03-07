@@ -70,34 +70,28 @@ namespace Transit.Framework.Redirection
         {
             private bool _isDisposed = false;
 
-            private MethodInfo _originalMethod;
-            private readonly RedirectCallsState _callsState;
+            public MethodInfo OriginalMethod { get; private set; }
+            public MethodInfo NewMethod { get; private set; }
             public Assembly RedirectionSource { get; private set; }
             public ulong BitSetRequiredOption { get; private set; }
+            private readonly RedirectCallsState _callsState;
 
             public MethodRedirection(MethodInfo originalMethod, MethodInfo newMethod, Assembly redirectionSource, ulong bitSetOption)
             {
-                _originalMethod = originalMethod;
-                _callsState = RedirectionHelper.RedirectCalls(_originalMethod, newMethod);
+                OriginalMethod = originalMethod;
+                NewMethod = newMethod;
                 RedirectionSource = redirectionSource;
                 BitSetRequiredOption = bitSetOption;
+                _callsState = RedirectionHelper.RedirectCalls(OriginalMethod, NewMethod);
             }
 
             public void Dispose()
             {
                 if (!_isDisposed)
                 {
-                    RedirectionHelper.RevertRedirect(_originalMethod, _callsState);
-                    _originalMethod = null;
+                    RedirectionHelper.RevertRedirect(OriginalMethod, _callsState);
+                    OriginalMethod = null;
                     _isDisposed = true;
-                }
-            }
-
-            public MethodInfo OriginalMethod
-            {
-                get
-                {
-                    return _originalMethod;
                 }
             }
         }
@@ -185,8 +179,12 @@ namespace Transit.Framework.Redirection
                 if (redirection.BitSetRequiredOption != 0 && (bitMask & redirection.BitSetRequiredOption) == 0)
                     continue;
 
-                Debug.Log(string.Format("TFW: Removing redirection {0}", s_redirections[i].OriginalMethod));
-                s_redirections[i].Dispose();
+                Debug.Log(string.Format("TFW: Removing redirection from {0}.{1} to {2}.{3}",
+                    redirection.OriginalMethod.DeclaringType,
+                    redirection.OriginalMethod.Name,
+                    redirection.NewMethod.DeclaringType,
+                    redirection.NewMethod.Name));
+                redirection.Dispose();
                 s_redirections.RemoveAt(i);
             }
         }
