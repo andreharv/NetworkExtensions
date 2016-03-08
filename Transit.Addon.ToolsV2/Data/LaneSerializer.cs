@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using Transit.Addon.ToolsV2;
 using UnityEngine;
 
 namespace CSL_Traffic
@@ -12,7 +13,7 @@ namespace CSL_Traffic
             
         public override void OnLoadData()
         {
-            if ((Mod.Options & ModOptions.RoadCustomizerTool) == ModOptions.None)
+            if ((ToolModuleV2.ActiveOptions & ModOptions.RoadCustomizerTool) == ModOptions.None)
                 return;
 
             try
@@ -79,7 +80,7 @@ namespace CSL_Traffic
 
         public override void OnSaveData()
         {
-            if ((Mod.Options & ModOptions.RoadCustomizerTool) == ModOptions.None)
+            if ((ToolModuleV2.ActiveOptions & ModOptions.RoadCustomizerTool) == ModOptions.None)
                 return;
 
             Logger.LogInfo("Saving road data!");

@@ -1,8 +1,7 @@
 ﻿using System;
-using ColossalFramework.Plugins;
 using UnityEngine;
 
-namespace CSL_Traffic
+namespace Transit.Addon.ToolsV2
 {
     static class Logger
     {

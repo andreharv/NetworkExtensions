@@ -1,44 +1,36 @@
 ﻿using ColossalFramework.Plugins;
 using Transit.Framework.Mod;
+using Transit.Framework.Prerequisites;
 
 namespace Transit.Addon
 {
     public sealed partial class Mod : TransitModBase
     {
-        private ulong? _workshopId;
         public override ulong WorkshopId
         {
-            get
-            {
-                if (_workshopId == null)
-                {
-                    foreach(var mod in PluginManager.instance.GetPluginsInfo())
-                    {
-                        if (mod.userModInstance == this)
-                        {
-                            _workshopId = mod.publishedFileID.AsUInt64;
-                        }
-                    }
-                    _workshopId = 543703997;
-                }
-
-                return _workshopId.Value;
-            }
+            get { return 626024868ul; }
         }
 
         public override string Name
         {
-            get { return "Transit Addons Mod"; }
+            get { return "Traffic++ V2"; }
+            //get { return "Transit Addons Mod"; }
         }
 
         public override string Description
         {
-            get { return "Closed Beta"; }
+            get { return "Adds transit routing and restriction features.\n[GAME REBOOT REQUIRED]"; }
         }
 
         public override string Version
         {
-            get { return "0.0.1"; }
+            get { return "2.0.0"; }
+            //get { return "0.0.1"; }
+        }
+
+        public override PrerequisiteType Requirements
+        {
+            get { return PrerequisiteType.PathFinding; }
         }
     }
 }

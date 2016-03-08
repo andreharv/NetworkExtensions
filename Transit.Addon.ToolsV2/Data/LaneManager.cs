@@ -1,5 +1,6 @@
 ﻿using System;
 using ColossalFramework;
+using Transit.Addon.ToolsV2;
 using Transit.Framework.Network;
 
 namespace CSL_Traffic
@@ -149,7 +150,7 @@ namespace CSL_Traffic
 
         public static float GetLaneSpeed(uint laneId, NetInfo.Lane lane)
         {
-            if ((Mod.Options & ModOptions.RoadCustomizerTool) != ModOptions.RoadCustomizerTool)
+            if ((ToolModuleV2.ActiveOptions & ModOptions.RoadCustomizerTool) != ModOptions.RoadCustomizerTool)
             {
                 return lane.m_speedLimit;
             }

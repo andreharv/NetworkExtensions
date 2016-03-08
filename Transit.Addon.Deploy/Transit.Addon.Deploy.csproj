@@ -35,13 +35,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Transit.Addon.ToolsV2\Transit.Addon.ToolsV2.csproj">
+      <Project>{7d1c44dc-79d4-414f-8ded-42e762afa862}</Project>
+      <Name>Transit.Addon.ToolsV2</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Transit.Addon\Transit.Addon.csproj">
       <Project>{80C47696-4D41-4BB6-9CAE-C477FE528ADF}</Project>
       <Name>Transit.Addon</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Transit.Addon.RoadExtensions\Transit.Addon.RoadExtensions.csproj">
-      <Project>{19FA21B2-39CC-4B90-BE7E-B6BDCCB09208}</Project>
-      <Name>Transit.Addon.RoadExtensions</Name>
     </ProjectReference>
     <ProjectReference Include="..\Transit.Framework.ExtensionPoints\Transit.Framework.ExtensionPoints.csproj">
       <Project>{2e44eca3-d750-4115-b16b-fca94c49bba0}</Project>
@@ -62,21 +62,17 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>forfiles /P "$(ProjectDir)bin\$(ConfigurationName)" /S /M *.CRP /C "cmd /c move @file "$(ProjectDir)bin\$(ConfigurationName)""
-
+    <PostBuildEvent>del "$(TargetDir)*.pdb"
 del "$(TargetDir)Transit.Addon.Deploy.dll"
-del "$(TargetDir)*.pdb"
-rd /s /q "$(TargetDir)\Buildings"
-
 
 if $(ConfigurationName) == Debug (
-rd /s /q  "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\Transit Addons Mod"
-mkdir "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\Transit Addons Mod"
-xcopy /q /y /e "$(ProjectDir)bin\$(ConfigurationName)" "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\Transit Addons Mod"
+rd /s /q  "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\TrafficPPV2"
+mkdir "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\TrafficPPV2"
+xcopy /q /y /e "$(ProjectDir)bin\$(ConfigurationName)" "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\TrafficPPV2"
 ) else (
-rd /s /q  "D:\Games\Steam\SteamApps\workshop\content\255710\543703997"
-mkdir "D:\Games\Steam\SteamApps\workshop\content\255710\543703997"
-xcopy /q /y /e "$(ProjectDir)bin\$(ConfigurationName)" "D:\Games\Steam\SteamApps\workshop\content\255710\543703997"
+rd /s /q  "D:\Games\Steam\SteamApps\workshop\content\255710\626024868"
+mkdir "D:\Games\Steam\SteamApps\workshop\content\255710\626024868"
+xcopy /q /y /e "$(ProjectDir)bin\$(ConfigurationName)" "D:\Games\Steam\SteamApps\workshop\content\255710\626024868"
 )</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
