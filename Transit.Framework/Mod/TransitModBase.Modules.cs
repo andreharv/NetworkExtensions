@@ -28,26 +28,10 @@ namespace Transit.Framework.Mod
 
             try
             {
-                var moduleType = typeof(IModule);
                 var modType = this.GetType();
 
-                _modules = AppDomain.CurrentDomain.GetAssemblies()
-                    .SelectMany(a =>
-                    {
-                        try
-                        {
-                            return a.GetTypes();
-                        }
-                        catch (Exception ex)
-                        {
-                            Debug.Log("TFW: LoadModulesIfNeeded looking into assembly " + a.FullName);
-                            Debug.Log("TFW: " + ex.Message);
-                            Debug.Log("TFW: " + ex.ToString());
-                            return new Type[] { };
-                        }
-                    })
-                    .Where(t => !t.IsAbstract && !t.IsInterface)
-                    .Where(t => moduleType.IsAssignableFrom(t))
+                _modules = Extensibility
+                    .GetImplementations<IModule>()
                     .Where(t => t.GetCustomAttributes(typeof(ModuleAttribute), true)
                         .OfType<ModuleAttribute>()
                         .Any(a => a.IsAssociatedWith(modType)))

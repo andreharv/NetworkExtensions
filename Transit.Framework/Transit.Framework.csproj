@@ -57,6 +57,7 @@
     <Compile Include="Builders\IAtlasBuilder.cs" />
     <Compile Include="Builders\IToolBuilder.cs" />
     <Compile Include="Builders\ToolBuilder.cs" />
+    <Compile Include="Extensibility.cs" />
     <Compile Include="Modularity\ModuleBase.Install.cs" />
     <Compile Include="Mod\ITransitMod.cs" />
     <Compile Include="Mod\TransitModBase.Install.Assets.cs" />
@@ -118,7 +119,6 @@
     <Compile Include="UI\Toolbar\Items\IToolbarMenuItemInfo.cs" />
     <Compile Include="UI\Toolbar\Items\ToolbarSeparatorItemInfo.cs" />
     <Compile Include="UI\MouseKeyCode.cs" />
-    <Compile Include="_Extensions\AppDomainExtensions.cs" />
     <Compile Include="_Extensions\AssetManagerExtensions.cs" />
     <Compile Include="_Extensions\CloningExtensions.cs" />
     <Compile Include="_Extensions\CollectionExtensions.cs" />

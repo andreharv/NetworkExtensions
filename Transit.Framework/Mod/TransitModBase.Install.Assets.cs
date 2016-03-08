@@ -22,27 +22,7 @@ namespace Transit.Framework.Mod
 
         private void InstallAtlases()
         {
-            var atlasBuilderType = typeof(IAtlasBuilder);
-
-            var atlasBuilderTypes = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(a =>
-                {
-                    try
-                    {
-                        return a.GetTypes();
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.Log("TFW: InstallAtlas looking into assembly " + a.FullName);
-                        Debug.Log("TFW: " + ex.Message);
-                        Debug.Log("TFW: " + ex.ToString());
-                        return new Type[] {};
-                    }
-                })
-                .Where(t => !t.IsAbstract && !t.IsInterface)
-                .Where(t => atlasBuilderType.IsAssignableFrom(t));
-
-            foreach (var type in atlasBuilderTypes)
+            foreach (var type in Extensibility.GetImplementations<IAtlasBuilder>())
             {
                 AtlasManager.instance.Include(type);
             }

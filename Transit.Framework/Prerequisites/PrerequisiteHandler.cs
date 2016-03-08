@@ -51,26 +51,8 @@ namespace Transit.Framework.Prerequisites
 
         private static IEnumerable<IPrerequisiteSetup> GetAllPrerequisites()
         {
-            var prereqType = typeof(IPrerequisiteSetup);
-            return AppDomain
-                .CurrentDomain
-                .GetAssemblies()
-                .SelectMany(a =>
-                {
-                    try
-                    {
-                        return a.GetTypes();
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.Log("TFW: Crashed-Prerequisites looking into assembly " + a.FullName);
-                        Debug.Log("TFW: " + ex.Message);
-                        Debug.Log("TFW: " + ex.ToString());
-                        return new Type[] {};
-                    }
-                })
-                .Where(t => !t.IsAbstract && !t.IsInterface)
-                .Where(t => prereqType.IsAssignableFrom(t))
+            return Extensibility
+                .GetImplementations<IPrerequisiteSetup>()
                 .Select(t =>
                 {
                     try
