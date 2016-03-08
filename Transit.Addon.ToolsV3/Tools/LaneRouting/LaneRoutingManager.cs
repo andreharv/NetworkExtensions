@@ -6,6 +6,7 @@ using ColossalFramework;
 using Transit.Addon.ToolsV3.LaneRouting.Data;
 using Transit.Framework.ExtensionPoints.PathFinding;
 using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures;
+using Transit.Framework.Network;
 using UnityEngine;
 
 namespace Transit.Addon.ToolsV3.LaneRouting
@@ -57,7 +58,7 @@ namespace Transit.Addon.ToolsV3.LaneRouting
             return _routingData[nodeId];
         }
 
-        public bool CanLanesConnect(ushort nodeId, uint laneId1, uint laneId2)
+        public bool CanLanesConnect(ushort nodeId, uint originLaneId, uint destinationLaneId, ExtendedVehicleType vehicleType)
         {
             if (_routingData == null)
             {
@@ -82,7 +83,7 @@ namespace Transit.Addon.ToolsV3.LaneRouting
             }
 
 
-            return nodeRouting.HasRouteFor(laneId1, laneId2);
+            return nodeRouting.HasRouteFor(originLaneId, destinationLaneId);
         }
 
         //bool static FindNode(NetSegment segment)

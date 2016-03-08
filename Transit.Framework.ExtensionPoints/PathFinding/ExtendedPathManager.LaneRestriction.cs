@@ -9,7 +9,7 @@ namespace Transit.Framework.ExtensionPoints.PathFinding
         private Type _laneRestrictionManagerType = typeof(VanillaLaneRestrictionManager);
         private IExtendedLaneRestrictionManager _laneRestrictionManager = null;
 
-        public IExtendedLaneRestrictionManager LaneRestrictionManager
+        public IExtendedLaneRestrictionManager LaneRestriction
         {
             get
             {

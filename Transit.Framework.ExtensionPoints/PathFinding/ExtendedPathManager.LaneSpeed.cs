@@ -9,7 +9,7 @@ namespace Transit.Framework.ExtensionPoints.PathFinding
         private Type _laneSpeedManagerType = typeof(VanillaLaneSpeedManager);
         private IExtendedLaneSpeedManager _laneSpeedManager = null;
 
-        public IExtendedLaneSpeedManager LaneSpeedManager
+        public IExtendedLaneSpeedManager LaneSpeed
         {
             get
             {

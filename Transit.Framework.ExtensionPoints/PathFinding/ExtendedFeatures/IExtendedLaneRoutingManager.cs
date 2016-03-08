@@ -1,8 +1,10 @@
 ﻿
+using Transit.Framework.Network;
+
 namespace Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures
 {
     public interface IExtendedLaneRoutingManager
     {
-        bool CanLanesConnect(ushort nodeId, uint laneId1, uint laneId2);
+        bool CanLanesConnect(ushort nodeId, uint originLaneId, uint destinationLaneId, ExtendedVehicleType vehicleType);
     }
 }

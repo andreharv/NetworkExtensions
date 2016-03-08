@@ -3,9 +3,9 @@ namespace Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Vanilla
 {
     public class VanillaLaneSpeedManager : IExtendedLaneSpeedManager
     {
-        public float GetLaneSpeedLimit(NetInfo.Lane lane, uint laneId)
+        public float GetLaneSpeedLimit(ref NetSegment segment, NetInfo.Lane laneInfo)
         {
-            return lane.m_speedLimit;
+            return laneInfo.m_speedLimit;
         }
     }
 }

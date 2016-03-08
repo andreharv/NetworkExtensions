@@ -9,7 +9,7 @@ namespace Transit.Framework.ExtensionPoints.PathFinding
         private Type _laneRoutingManagerType = typeof(VanillaLaneRoutingManager);
         private IExtendedLaneRoutingManager _laneRoutingManager = null;
 
-        public IExtendedLaneRoutingManager LaneRoutingManager
+        public IExtendedLaneRoutingManager LaneRouting
         {
             get
             {
