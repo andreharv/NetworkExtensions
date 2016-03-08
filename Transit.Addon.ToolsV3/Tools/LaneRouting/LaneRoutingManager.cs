@@ -6,6 +6,7 @@ using ColossalFramework;
 using Transit.Addon.ToolsV3.LaneRouting.Data;
 using Transit.Framework.ExtensionPoints.PathFinding;
 using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures;
+using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Contracts;
 using Transit.Framework.Network;
 using UnityEngine;
 

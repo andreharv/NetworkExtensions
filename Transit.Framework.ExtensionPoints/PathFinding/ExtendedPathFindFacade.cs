@@ -1,4 +1,5 @@
 ﻿using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures;
+using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Contracts;
 using Transit.Framework.Network;
 
 namespace Transit.Framework.ExtensionPoints.PathFinding

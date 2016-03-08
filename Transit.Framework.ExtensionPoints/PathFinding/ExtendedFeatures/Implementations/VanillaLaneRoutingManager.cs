@@ -1,7 +1,7 @@
-﻿
+﻿using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Contracts;
 using Transit.Framework.Network;
 
-namespace Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Vanilla
+namespace Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Implementations
 {
     public class VanillaLaneRoutingManager : IExtendedLaneRoutingManager
     {

@@ -1,6 +1,6 @@
 ﻿using System;
-using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures;
-using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Vanilla;
+using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Contracts;
+using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Implementations;
 
 namespace Transit.Framework.ExtensionPoints.PathFinding
 {
@@ -39,11 +39,6 @@ namespace Transit.Framework.ExtensionPoints.PathFinding
         {
             _laneRoutingManagerType = typeof(VanillaLaneRoutingManager);
             _laneRoutingManager = null;
-        }
-
-        public IExtendedLaneRoutingManager GetLaneRouting()
-        {
-            return _laneRoutingManager;
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using Transit.Framework.Network;
 
-namespace Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures
+namespace Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Contracts
 {
     public interface IExtendedPathFind
     {
