@@ -1,6 +1,7 @@
 using ColossalFramework;
 using ColossalFramework.Math;
 using System;
+using Transit.Addon.ToolsV2.Data;
 using Transit.Framework.Redirection;
 using UnityEngine;
 
@@ -377,7 +378,7 @@ namespace CSL_Traffic
             NetInfo info = instance.m_segments.m_buffer[(int)position.m_segment].Info;
             if (info.m_lanes != null && info.m_lanes.Length > (int)position.m_lane)
             {
-                maxSpeed = this.CalculateTargetSpeed(vehicleID, ref vehicleData, LaneManager.GetLaneSpeed(laneID, info.m_lanes[(int)position.m_lane]), instance.m_lanes.m_buffer[(int)((UIntPtr)laneID)].m_curve);
+                maxSpeed = this.CalculateTargetSpeed(vehicleID, ref vehicleData, TPPLaneDataManager.GetLaneSpeed(laneID, info.m_lanes[(int)position.m_lane]), instance.m_lanes.m_buffer[(int)((UIntPtr)laneID)].m_curve);
             }
             else
             {
@@ -393,7 +394,7 @@ namespace CSL_Traffic
             NetInfo info = instance.m_segments.m_buffer[(int)position.m_segment].Info;
             if (info.m_lanes != null && info.m_lanes.Length > (int)position.m_lane)
             {
-                maxSpeed = this.CalculateTargetSpeed(vehicleID, ref vehicleData, LaneManager.GetLaneSpeed(laneID, info.m_lanes[(int)position.m_lane]), instance.m_lanes.m_buffer[(int)((UIntPtr)laneID)].m_curve);
+                maxSpeed = this.CalculateTargetSpeed(vehicleID, ref vehicleData, TPPLaneDataManager.GetLaneSpeed(laneID, info.m_lanes[(int)position.m_lane]), instance.m_lanes.m_buffer[(int)((UIntPtr)laneID)].m_curve);
             }
             else
             {

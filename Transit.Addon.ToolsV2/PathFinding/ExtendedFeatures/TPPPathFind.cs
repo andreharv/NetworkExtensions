@@ -1,16 +1,17 @@
-﻿﻿using ColossalFramework;
-using ColossalFramework.Math;
-using ColossalFramework.UI;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-﻿using Transit.Framework.ExtensionPoints.PathFinding;
-﻿using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures;
-﻿using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Contracts;
-﻿using Transit.Framework.Network;
+using ColossalFramework;
+using ColossalFramework.Math;
+using ColossalFramework.UI;
+using CSL_Traffic;
+using Transit.Addon.ToolsV2.Data;
+using Transit.Framework.ExtensionPoints.PathFinding;
+using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Contracts;
+using Transit.Framework.Network;
 using UnityEngine;
 
-namespace CSL_Traffic
+namespace Transit.Addon.ToolsV2.PathFinding.ExtendedFeatures
 {
     public class TPPPathFind : IPathFind
     {
@@ -748,7 +749,7 @@ namespace CSL_Traffic
 
         private float CalculateLaneSpeed(byte startOffset, byte endOffset, ref NetSegment segment, NetInfo.Lane laneInfo, uint laneId)
         {
-            float speedLimit = LaneManager.GetLaneSpeed(laneId, laneInfo);
+            float speedLimit = TPPLaneDataManager.GetLaneSpeed(laneId, laneInfo);
             //float speedLimit = laneInfo.m_speedLimit;
 
             NetInfo.Direction direction = ((segment.m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None) ? laneInfo.m_finalDirection : NetInfo.InvertDirection(laneInfo.m_finalDirection);
@@ -796,7 +797,7 @@ namespace CSL_Traffic
                     l = instance.m_lanes.m_buffer[l].m_nextLane;
 
                 NetInfo.Lane lane2 = info2.m_lanes[(int)item.m_position.m_lane];
-                num3 = LaneManager.GetLaneSpeed(l, lane2);
+                num3 = TPPLaneDataManager.GetLaneSpeed(l, lane2);
                 laneType = lane2.m_laneType;
                 if ((byte)(laneType & (NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle)) != 0)
                 {
@@ -833,7 +834,7 @@ namespace CSL_Traffic
                         }
                         if (lane3.m_laneType != NetInfo.LaneType.Pedestrian || item2.m_methodDistance < 1000f)
                         {
-                            item2.m_comparisonValue = num7 + num9 / ((num3 + LaneManager.GetLaneSpeed(lane, lane3)) * 0.5f * this.m_maxLength);
+                            item2.m_comparisonValue = num7 + num9 / ((num3 + TPPLaneDataManager.GetLaneSpeed(lane, lane3)) * 0.5f * this.m_maxLength);
                             if ((segment.m_flags & NetSegment.Flags.Invert) != NetSegment.Flags.None)
                             {
                                 item2.m_direction = NetInfo.InvertDirection(lane3.m_finalDirection);
@@ -929,7 +930,7 @@ namespace CSL_Traffic
                 NetInfo.Lane lane = info2.m_lanes[(int)item.m_position.m_lane];
                 laneType = lane.m_laneType;
                 vehicleType = lane.m_vehicleType;
-				num5 = LaneManager.GetLaneSpeed(l, lane);
+				num5 = TPPLaneDataManager.GetLaneSpeed(l, lane);
                 num6 = this.CalculateLaneSpeed(connectOffset, item.m_position.m_offset, ref instance.m_segments.m_buffer[(int)item.m_position.m_segment], lane, l);
             }
             float num7 = instance.m_segments.m_buffer[(int)item.m_position.m_segment].m_averageLength;
@@ -1015,7 +1016,7 @@ namespace CSL_Traffic
                         {
                             num13 *= 2f;
                         }
-                        float num14 = num13 / ((num5 + LaneManager.GetLaneSpeed(num2, lane2)) * 0.5f * this.m_maxLength);
+                        float num14 = num13 / ((num5 + TPPLaneDataManager.GetLaneSpeed(num2, lane2)) * 0.5f * this.m_maxLength);
                         BufferItem item2;
                         item2.m_position.m_segment = segmentID;
                         item2.m_position.m_lane = (byte)num12;
@@ -1069,7 +1070,7 @@ namespace CSL_Traffic
                                 int lastTarget = (int)instance.m_lanes.m_buffer[(int)((UIntPtr)num2)].m_lastTarget;
                                 if (currentTargetIndex < firstTarget || currentTargetIndex >= lastTarget)
                                 {
-                                    item2.m_comparisonValue += Mathf.Max(1f, num13 * 3f - 3f) / ((num5 + LaneManager.GetLaneSpeed(num2, lane2)) * 0.5f * this.m_maxLength);
+                                    item2.m_comparisonValue += Mathf.Max(1f, num13 * 3f - 3f) / ((num5 + TPPLaneDataManager.GetLaneSpeed(num2, lane2)) * 0.5f * this.m_maxLength);
                                 }
                                 if (!this.m_transportVehicle && lane2.m_laneType == NetInfo.LaneType.TransportVehicle)
                                 {
@@ -1139,7 +1140,7 @@ namespace CSL_Traffic
                     l = instance.m_lanes.m_buffer[l].m_nextLane;
 
                 NetInfo.Lane lane2 = info2.m_lanes[(int)item.m_position.m_lane];
-                num3 = LaneManager.GetLaneSpeed(l, lane2);
+                num3 = TPPLaneDataManager.GetLaneSpeed(l, lane2);
                 laneType = lane2.m_laneType;
                 if ((byte)(laneType & (NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle)) != 0)
                 {
@@ -1172,7 +1173,7 @@ namespace CSL_Traffic
                 }
                 if (lane3.m_laneType != NetInfo.LaneType.Pedestrian || item2.m_methodDistance < 1000f)
                 {
-                    item2.m_comparisonValue = num7 + num2 / ((num3 + LaneManager.GetLaneSpeed(lane, lane3)) * 0.25f * this.m_maxLength);
+                    item2.m_comparisonValue = num7 + num2 / ((num3 + TPPLaneDataManager.GetLaneSpeed(lane, lane3)) * 0.25f * this.m_maxLength);
                     if ((segment.m_flags & NetSegment.Flags.Invert) != NetSegment.Flags.None)
                     {
                         item2.m_direction = NetInfo.InvertDirection(lane3.m_finalDirection);

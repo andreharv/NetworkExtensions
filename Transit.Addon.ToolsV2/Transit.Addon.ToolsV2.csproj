@@ -55,10 +55,10 @@
     <Compile Include="AI\Redirections\CustomCargoTruckAI.cs" />
     <Compile Include="AI\Redirections\CustomPassengerCarAI.cs" />
     <Compile Include="AI\Redirections\CustomVehicleAI.cs" />
-    <Compile Include="Data\Lane.cs" />
-    <Compile Include="Data\LaneManager.cs" />
-    <Compile Include="Data\LaneSerializationBinder.cs" />
-    <Compile Include="Data\LaneSerializer.cs" />
+    <Compile Include="Data\TPPLaneData.cs" />
+    <Compile Include="Data\TPPLaneDataManager.cs" />
+    <Compile Include="Data\TPPLaneDataSerializationBinder.cs" />
+    <Compile Include="Data\TPPLaneDataSerializer.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Menus\RoadCustomizer\RoadCustomizerGroupPanel.cs" />
     <Compile Include="Menus\RoadCustomizer\RoadCustomizerPanel.cs" />
@@ -89,9 +89,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Managers\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using CSL_Traffic;
 using Transit.Framework.Network;
 using UnityEngine;
 
-namespace CSL_Traffic
+namespace Transit.Addon.ToolsV2.Data
 {
     [Serializable]
-    public class Lane
+    public class TPPLaneData
     {
         public const ushort CONTROL_BIT = 2048;
 
@@ -218,8 +219,8 @@ namespace CSL_Traffic
             int laneCount = info.m_lanes.Length;
             for (int laneIndex = 0; laneIndex < laneCount && laneId != 0; laneIndex++)
             {
-                if (laneId != m_laneId && LaneManager.sm_lanes[laneId] != null && LaneManager.sm_lanes[laneId].ConnectionCount() > 0)
-                    LaneManager.sm_lanes[laneId].UpdateArrows();
+                if (laneId != m_laneId && TPPLaneDataManager.sm_lanes[laneId] != null && TPPLaneDataManager.sm_lanes[laneId].ConnectionCount() > 0)
+                    TPPLaneDataManager.sm_lanes[laneId].UpdateArrows();
 
                 laneId = NetManager.instance.m_lanes.m_buffer[laneId].m_nextLane;
             }

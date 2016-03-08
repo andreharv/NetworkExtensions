@@ -4,6 +4,7 @@ using ColossalFramework;
 using ColossalFramework.Globalization;
 using CSL_Traffic;
 using ICities;
+using Transit.Addon.ToolsV2.PathFinding.ExtendedFeatures;
 using Transit.Framework;
 using Transit.Framework.ExtensionPoints.PathFinding;
 using Transit.Framework.Modularity;

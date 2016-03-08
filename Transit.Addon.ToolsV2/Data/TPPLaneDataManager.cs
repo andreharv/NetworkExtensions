@@ -1,17 +1,15 @@
 ﻿using System;
-using ColossalFramework;
-using Transit.Addon.ToolsV2;
 using Transit.Framework.Network;
 
-namespace CSL_Traffic
+namespace Transit.Addon.ToolsV2.Data
 {
-    public static class LaneManager
+    public static class TPPLaneDataManager
     {
-        internal static Lane[] sm_lanes = null;
+        internal static TPPLaneData[] sm_lanes = null;
 
-        public static Lane CreateLane(uint laneId)
+        public static TPPLaneData CreateLane(uint laneId)
         {
-            Lane lane = new Lane()
+            TPPLaneData lane = new TPPLaneData()
             {
                 m_laneId = laneId
             };
@@ -37,17 +35,17 @@ namespace CSL_Traffic
                 lane.m_speed = netInfo.m_lanes[laneIndex].m_speedLimit;
             }
 
-            NetManager.instance.m_lanes.m_buffer[laneId].m_flags |= Lane.CONTROL_BIT;
+            NetManager.instance.m_lanes.m_buffer[laneId].m_flags |= TPPLaneData.CONTROL_BIT;
 
             sm_lanes[laneId] = lane;
 
             return lane;
         }
 
-        public static Lane GetLane(uint laneId)
+        public static TPPLaneData GetLane(uint laneId)
         {
-            Lane lane = sm_lanes[laneId];
-            if (lane == null || (NetManager.instance.m_lanes.m_buffer[laneId].m_flags & Lane.CONTROL_BIT) == 0)
+            TPPLaneData lane = sm_lanes[laneId];
+            if (lane == null || (NetManager.instance.m_lanes.m_buffer[laneId].m_flags & TPPLaneData.CONTROL_BIT) == 0)
                 lane = CreateLane(laneId);
 
             return lane;
@@ -56,7 +54,7 @@ namespace CSL_Traffic
         #region Lane Connections
         public static bool AddLaneConnection(uint laneId, uint connectionId)
         {
-            Lane lane = GetLane(laneId);
+            TPPLaneData lane = GetLane(laneId);
             GetLane(connectionId); // makes sure lane information is stored
 
             return lane.AddConnection(connectionId);
@@ -64,14 +62,14 @@ namespace CSL_Traffic
 
         public static bool RemoveLaneConnection(uint laneId, uint connectionId)
         {
-            Lane lane = GetLane(laneId);
+            TPPLaneData lane = GetLane(laneId);
 
             return lane.RemoveConnection(connectionId);
         }
 
         public static uint[] GetLaneConnections(uint laneId)
         {
-            Lane lane = GetLane(laneId);
+            TPPLaneData lane = GetLane(laneId);
 
             return lane.GetConnectionsAsArray();
         }
@@ -101,7 +99,7 @@ namespace CSL_Traffic
                 return true;
             }
 
-            Lane lane = GetLane(from);
+            TPPLaneData lane = GetLane(from);
 
             return lane.ConnectsTo(to);
         }

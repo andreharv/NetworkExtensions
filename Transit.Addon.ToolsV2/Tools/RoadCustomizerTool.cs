@@ -5,6 +5,7 @@ using CSL_Traffic.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Transit.Addon.ToolsV2.Data;
 using Transit.Framework;
 using Transit.Framework.Network;
 using UnityEngine;
@@ -112,13 +113,13 @@ namespace CSL_Traffic
 
 	    private IEnumerator LoadMarkers()
 	    {
-            while (LaneManager.sm_lanes == null)
+            while (TPPLaneDataManager.sm_lanes == null)
             {
                 yield return new WaitForEndOfFrame();
             }
 
             var nodesList = new HashSet<ushort>();
-            foreach (var lane in LaneManager.sm_lanes)
+            foreach (var lane in TPPLaneDataManager.sm_lanes)
             {
                 if (lane == null)
                     continue;
@@ -272,11 +273,11 @@ namespace CSL_Traffic
 					{
 						m_selectedMarker = hoveredMarker;
 					}
-					else if (LaneManager.RemoveLaneConnection(m_selectedMarker.m_lane, hoveredMarker.m_lane))
+					else if (TPPLaneDataManager.RemoveLaneConnection(m_selectedMarker.m_lane, hoveredMarker.m_lane))
 					{
 						m_selectedMarker.m_connections.Remove(hoveredMarker);
 					}
-					else if (LaneManager.AddLaneConnection(m_selectedMarker.m_lane, hoveredMarker.m_lane))
+					else if (TPPLaneDataManager.AddLaneConnection(m_selectedMarker.m_lane, hoveredMarker.m_lane))
 					{
 						m_selectedMarker.m_connections.Add(hoveredMarker);
 					}
@@ -459,7 +460,7 @@ namespace CSL_Traffic
 				if (!nodeMarkers.m_buffer[i].m_isSource)
 					continue;
 
-				uint[] connections = LaneManager.GetLaneConnections(nodeMarkers.m_buffer[i].m_lane);
+				uint[] connections = TPPLaneDataManager.GetLaneConnections(nodeMarkers.m_buffer[i].m_lane);
 				if (connections == null || connections.Length == 0)
 					continue;
 
@@ -722,7 +723,7 @@ namespace CSL_Traffic
 			if (!AnyLaneSelected)
 				return ExtendedVehicleType.None;
 
-			return LaneManager.GetVehicleRestrictions(m_selectedLaneMarkers[0].m_lane);
+			return TPPLaneDataManager.GetVehicleRestrictions(m_selectedLaneMarkers[0].m_lane);
 		}
 
 		public ExtendedVehicleType ToggleRestriction(ExtendedVehicleType vehicleType)
@@ -730,11 +731,11 @@ namespace CSL_Traffic
 			if (!AnyLaneSelected)
 				return ExtendedVehicleType.None;
 
-			ExtendedVehicleType vehicleRestrictions = LaneManager.GetVehicleRestrictions(m_selectedLaneMarkers[0].m_lane);
+			ExtendedVehicleType vehicleRestrictions = TPPLaneDataManager.GetVehicleRestrictions(m_selectedLaneMarkers[0].m_lane);
 			vehicleRestrictions ^= vehicleType;
 
 			foreach (SegmentLaneMarker lane in m_selectedLaneMarkers)
-				LaneManager.SetVehicleRestrictions(lane.m_lane, vehicleRestrictions);
+				TPPLaneDataManager.SetVehicleRestrictions(lane.m_lane, vehicleRestrictions);
 
 			return vehicleRestrictions;
 		}
@@ -744,7 +745,7 @@ namespace CSL_Traffic
 			if (!AnyLaneSelected)
 				return -1f;
 
-			return LaneManager.GetLaneSpeedRestriction(m_selectedLaneMarkers[0].m_lane);
+			return TPPLaneDataManager.GetLaneSpeedRestriction(m_selectedLaneMarkers[0].m_lane);
 		}
 
 		public void SetSpeedRestrictions(int speed)
@@ -753,7 +754,7 @@ namespace CSL_Traffic
 				return;
 
 			foreach (SegmentLaneMarker lane in m_selectedLaneMarkers)
-				LaneManager.SetLaneSpeedRestriction(lane.m_lane, speed);
+				TPPLaneDataManager.SetLaneSpeedRestriction(lane.m_lane, speed);
 		}
 
 		#endregion

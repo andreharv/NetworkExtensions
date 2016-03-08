@@ -1,15 +1,15 @@
-﻿using ICities;
-using System;
+﻿using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using Transit.Addon.ToolsV2;
+using CSL_Traffic;
+using ICities;
 using UnityEngine;
 
-namespace CSL_Traffic
+namespace Transit.Addon.ToolsV2.Data
 {
-    public class LaneSerializer : SerializableDataExtensionBase
+    public class TPPLaneDataSerializer : SerializableDataExtensionBase
     {
-        const string LANE_DATA_ID = "Traffic++_RoadManager_Lanes";
+        private const string LANE_DATA_ID = "Traffic++_RoadManager_Lanes";
             
         public override void OnLoadData()
         {
@@ -33,12 +33,12 @@ namespace CSL_Traffic
 
                     var binaryFormatter = new BinaryFormatter()
                     {
-                        Binder = new LaneSerializationBinder()
+                        Binder = new TPPLaneDataSerializationBinder()
                     };
-                    LaneManager.sm_lanes = (Lane[]) binaryFormatter.Deserialize(memStream);
+                    TPPLaneDataManager.sm_lanes = (TPPLaneData[]) binaryFormatter.Deserialize(memStream);
                 }
 
-                foreach (Lane lane in LaneManager.sm_lanes)
+                foreach (TPPLaneData lane in TPPLaneDataManager.sm_lanes)
                 {
                     if (lane == null)
                         continue;
@@ -71,9 +71,9 @@ namespace CSL_Traffic
             }
             finally
             {
-                if (LaneManager.sm_lanes == null)
+                if (TPPLaneDataManager.sm_lanes == null)
                 {
-                    LaneManager.sm_lanes = new Lane[NetManager.MAX_LANE_COUNT];
+                    TPPLaneDataManager.sm_lanes = new TPPLaneData[NetManager.MAX_LANE_COUNT];
                 }
             }
         }
@@ -88,7 +88,7 @@ namespace CSL_Traffic
             MemoryStream memStream = new MemoryStream();
             try
             {
-                binaryFormatter.Serialize(memStream, LaneManager.sm_lanes);
+                binaryFormatter.Serialize(memStream, TPPLaneDataManager.sm_lanes);
                 serializableDataManager.SaveData(LANE_DATA_ID, memStream.ToArray());
                 Logger.LogInfo("Finished saving road data!");
             }
