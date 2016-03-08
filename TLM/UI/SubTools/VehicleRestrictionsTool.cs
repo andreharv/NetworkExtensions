@@ -17,6 +17,7 @@ namespace TrafficManager.UI.SubTools {
 		private bool _cursorInSecondaryPanel;
 		private bool overlayHandleHovered;
 		private Texture2D SecondPanelTexture;
+		private Rect windowRect = TrafficManagerTool.MoveGUI(new Rect(0, 0, 620, 100));
 
 		public VehicleRestrictionsTool(TrafficManagerTool mainTool) : base(mainTool) {
 			SecondPanelTexture = TrafficManagerTool.MakeTex(1, 1, new Color(0.5f, 0.5f, 0.5f, 1f));
@@ -55,7 +56,6 @@ namespace TrafficManager.UI.SubTools {
 					}
 				};
 
-				var windowRect = TrafficManagerTool.ResizeGUI(new Rect(155, 45, 620, 80));
 				GUILayout.Window(255, windowRect, _guiVehicleRestrictionsWindow, Translation.GetString("Vehicle_restrictions"), style);
 				_cursorInSecondaryPanel = windowRect.Contains(Event.current.mousePosition);
 

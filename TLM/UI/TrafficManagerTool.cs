@@ -52,11 +52,12 @@ namespace TrafficManager.UI {
 			return m_toolController;
 		}
 
-		internal static Rect ResizeGUI(Rect rect) {
-			var rectX = (rect.x / 800f) * (float)Screen.currentResolution.width;
-			var rectY = (rect.y / 600f) * (float)Screen.currentResolution.height;
+		internal static Rect MoveGUI(Rect rect) {
+			/*var rectX = (rect.x / 800f) * (float)Screen.currentResolution.width;
+			var rectY = (rect.y / 600f) * (float)Screen.currentResolution.height;*/
 
-			return new Rect(rectX, rectY, rect.width, rect.height);
+			//return new Rect(rectX, rectY, rect.width, rect.height);
+			return new Rect(85f + (float)Translation.getMenuWidth() + 50f + rect.x, 80f + 10f + rect.y, rect.width, rect.height);
 		}
 
 		internal float GetBaseZoom() {
@@ -301,6 +302,7 @@ namespace TrafficManager.UI {
 					HoveredNodeId = nodeOutput.m_netNode;
 				}
 
+				// find currently hovered segment
 				var segmentInput = new RaycastInput(this.m_mouseRay, this.m_mouseRayLength);
 				segmentInput.m_netService.m_itemLayers = ItemClass.Layer.Default | ItemClass.Layer.MetroTunnels;
 				segmentInput.m_netService.m_service = ItemClass.Service.Road;
@@ -315,6 +317,7 @@ namespace TrafficManager.UI {
 					HoveredSegmentId = segmentOutput.m_netSegment;
 
 					if (HoveredNodeId <= 0) {
+						// alternative way to get a node hit: check distance to start and end nodes of the segment
 						ushort startNodeId = Singleton<NetManager>.instance.m_segments.m_buffer[HoveredSegmentId].m_startNode;
 						ushort endNodeId = Singleton<NetManager>.instance.m_segments.m_buffer[HoveredSegmentId].m_endNode;
 

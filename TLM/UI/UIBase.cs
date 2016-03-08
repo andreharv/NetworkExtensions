@@ -61,14 +61,14 @@ namespace TrafficManager.UI {
 
 		public void Show() {
 			if (LoadingExtension.Instance != null) {
-				var uiView = UIView.GetAView();
 				try {
 					ToolsModifierControl.mainToolbar.CloseEverything();
 				} catch (Exception e) {
 					Log.Error("Error on Show(): " + e.ToString());
 				}
+				var uiView = UIView.GetAView();
 				uiView.AddUIComponent(typeof(UITrafficManager));
-				LoadingExtension.Instance.SetToolMode(TrafficManagerMode.TrafficLight);
+				LoadingExtension.Instance.SetToolMode(TrafficManagerMode.Activated);
 				_uiShown = true;
 			}
 		}
