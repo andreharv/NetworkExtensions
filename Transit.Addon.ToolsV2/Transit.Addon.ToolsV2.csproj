@@ -63,6 +63,9 @@
     <Compile Include="Menus\RoadCustomizer\RoadCustomizerGroupPanel.cs" />
     <Compile Include="Menus\RoadCustomizer\RoadCustomizerPanel.cs" />
     <Compile Include="Menus\RoadCustomizer\Textures\RoadCustomizerAtlasBuilder.cs" />
+    <Compile Include="PathFinding\ExtendedFeatures\TPPSupported.cs" />
+    <Compile Include="PathFinding\ExtendedFeatures\TPPLaneRoutingManager.cs" />
+    <Compile Include="PathFinding\ExtendedFeatures\TPPRoadSpeedManager.cs" />
     <Compile Include="ToolModuleV2.cs" />
     <Compile Include="ToolModuleV2.Settings.cs" />
     <Compile Include="PathFinding\ExtendedFeatures\TPPPathFind.cs" />

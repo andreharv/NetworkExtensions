@@ -1,5 +1,4 @@
-﻿using CSL_Traffic;
-using Transit.Addon.ToolsV2.Data;
+﻿using Transit.Addon.ToolsV2.Data;
 using Transit.Framework;
 using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Contracts;
 using Transit.Framework.Network;
@@ -8,20 +7,9 @@ namespace Transit.Addon.ToolsV2.PathFinding.ExtendedFeatures
 {
     public class TPPRoadRestrictionManager : IRoadRestrictionManager
     {
-        private const ExtendedVehicleType ROUTED_UNITS =
-            ExtendedVehicleType.ServiceVehicles |
-            ExtendedVehicleType.PassengerCar |
-            ExtendedVehicleType.CargoTruck |
-            ExtendedVehicleType.Bus |
-            ExtendedVehicleType.Taxi;
-
-        private const VehicleInfo.VehicleType ROUTED_VEHICLETYPES =
-            VehicleInfo.VehicleType.Car |
-            VehicleInfo.VehicleType.Train;
-
         public bool CanUseLane(uint laneId, ExtendedVehicleType vehicleType)
         {
-            if ((vehicleType & ROUTED_UNITS) == 0)
+            if ((vehicleType & TPPSupported.UNITS) == 0)
             {
                 return true;
             }
@@ -33,7 +21,7 @@ namespace Transit.Addon.ToolsV2.PathFinding.ExtendedFeatures
                 return true;
             }
 
-            if ((laneInfo.m_vehicleType & ROUTED_VEHICLETYPES) == 0)
+            if ((laneInfo.m_vehicleType & TPPSupported.VEHICLETYPES) == 0)
             {
                 return true;
             }
