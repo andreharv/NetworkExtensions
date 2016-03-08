@@ -2,7 +2,7 @@
 
 namespace Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Implementations
 {
-    public class VanillaRoadSpeedManager : IExtendedRoadSpeedManager
+    public class VanillaRoadSpeedManager : IRoadSpeedManager
     {
         public float GetLaneSpeedLimit(ref NetSegment segment, NetInfo.Lane laneInfo)
         {

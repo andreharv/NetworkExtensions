@@ -6,7 +6,7 @@ namespace Transit.Framework.ExtensionPoints.PathFinding
 {
     public class ExtendedPathFindFacade : PathFind
     {
-        private readonly IExtendedPathFind m_innerPathFind;
+        private readonly IPathFind m_innerPathFind;
 
         public ExtendedPathFindFacade()
         {

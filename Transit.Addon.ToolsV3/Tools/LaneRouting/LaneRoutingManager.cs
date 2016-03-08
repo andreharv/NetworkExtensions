@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace Transit.Addon.ToolsV3.LaneRouting
 {
-    public class LaneRoutingManager : Singleton<LaneRoutingManager>, IExtendedLaneRoutingManager
+    public class LaneRoutingManager : Singleton<LaneRoutingManager>, ILaneRoutingManager
     {
         private static IDictionary<uint, NodeRoutingData> _routingData;
 

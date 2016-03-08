@@ -53,7 +53,7 @@
     <Compile Include="AI\Networks\RoadSnappingModeManager.cs" />
     <Compile Include="AI\Networks\RoadZoneBlocksCreationManager.cs" />
     <Compile Include="AI\Networks\ZoneBlocksOffset.cs" />
-    <Compile Include="PathFinding\ExtendedFeatures\Contracts\IExtendedRoadRestrictionManager.cs" />
+    <Compile Include="PathFinding\ExtendedFeatures\Contracts\IRoadRestrictionManager.cs" />
     <Compile Include="PathFinding\ExtendedFeatures\Implementations\ExtendedPathFind.cs" />
     <Compile Include="PathFinding\ExtendedFeatures\Implementations\VanillaRoadRestrictionManager.cs" />
     <Compile Include="PathFinding\ExtendedFeatures\Implementations\VanillaLaneRoutingManager.cs" />
@@ -61,11 +61,11 @@
     <Compile Include="PathFinding\ExtendedFeatures\Implementations\VanillaPathFind.cs" />
     <Compile Include="PathFinding\ExtendedPathFindFacade.cs" />
     <Compile Include="PathFinding\ExtendedPathManager.cs" />
-    <Compile Include="PathFinding\ExtendedFeatures\Contracts\IExtendedPathFind.cs" />
+    <Compile Include="PathFinding\ExtendedFeatures\Contracts\IPathFind.cs" />
     <Compile Include="PathFinding\ExtendedPathManager.RoadRestriction.cs" />
     <Compile Include="PathFinding\_Extensions\PathManagerExtensions.cs" />
-    <Compile Include="PathFinding\ExtendedFeatures\Contracts\IExtendedLaneRoutingManager.cs" />
-    <Compile Include="PathFinding\ExtendedFeatures\Contracts\IExtendedRoadSpeedManager.cs" />
+    <Compile Include="PathFinding\ExtendedFeatures\Contracts\ILaneRoutingManager.cs" />
+    <Compile Include="PathFinding\ExtendedFeatures\Contracts\IRoadSpeedManager.cs" />
     <Compile Include="PathFinding\ExtendedPathManager.LaneRouting.cs" />
     <Compile Include="PathFinding\ExtendedPathManager.RoadSpeed.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -13,19 +13,23 @@ namespace Transit.Framework.ExtensionPoints.PathFinding
         private Type _pathFindingType = typeof(VanillaPathFind);
 
         public void DefinePathFinding<T>()
-            where T : IExtendedPathFind, new()
+            where T : IPathFind, new()
         {
             _pathFindingType = typeof(T);
         }
 
-        public void ResetPathFinding()
+        public void ResetPathFinding<T>()
+            where T : IPathFind
         {
-            _pathFindingType = typeof(VanillaPathFind);
+            if (_pathFindingType == typeof (T))
+            {
+                _pathFindingType = typeof(VanillaPathFind);
+            }
         }    
         
-        public IExtendedPathFind CreatePathFinding()
+        public IPathFind CreatePathFinding()
         {
-            return (IExtendedPathFind)Activator.CreateInstance(_pathFindingType);
+            return (IPathFind)Activator.CreateInstance(_pathFindingType);
         }
     }
 }

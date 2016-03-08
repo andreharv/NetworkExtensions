@@ -65,8 +65,8 @@
     <Compile Include="Menus\RoadCustomizer\Textures\RoadCustomizerAtlasBuilder.cs" />
     <Compile Include="ToolModuleV2.cs" />
     <Compile Include="ToolModuleV2.Settings.cs" />
-    <Compile Include="PathFinding\TPPPathFind.cs" />
-    <Compile Include="Managers\TPPRoadRestrictionManager.cs" />
+    <Compile Include="PathFinding\ExtendedFeatures\TPPPathFind.cs" />
+    <Compile Include="PathFinding\ExtendedFeatures\TPPRoadRestrictionManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\RoadCustomizerTool.cs" />
   </ItemGroup>
@@ -88,6 +88,9 @@
     <Content Include="Menus\RoadCustomizer\Textures\Thumbnails.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Managers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

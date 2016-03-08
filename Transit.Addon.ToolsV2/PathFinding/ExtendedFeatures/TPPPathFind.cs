@@ -12,11 +12,11 @@ using UnityEngine;
 
 namespace CSL_Traffic
 {
-    public class TPPPathFind : IExtendedPathFind
+    public class TPPPathFind : IPathFind
     {
         public ExtendedPathFindFacade Facade { get; set; }
 
-        Thread IExtendedPathFind.PathFindThread
+        Thread IPathFind.PathFindThread
         {
             get { return m_pathFindThread; }
         }

@@ -7,15 +7,15 @@ namespace Transit.Framework.ExtensionPoints.PathFinding
     public partial class ExtendedPathManager
     {
         private Type _roadRestrictionManagerType = typeof(VanillaRoadRestrictionManager);
-        private IExtendedRoadRestrictionManager _roadRestrictionManager = null;
+        private IRoadRestrictionManager _roadRestrictionManager = null;
 
-        public IExtendedRoadRestrictionManager RoadRestriction
+        public IRoadRestrictionManager RoadRestriction
         {
             get
             {
                 if (_roadRestrictionManager == null)
                 {
-                    _roadRestrictionManager = (IExtendedRoadRestrictionManager)Activator.CreateInstance(_roadRestrictionManagerType);
+                    _roadRestrictionManager = (IRoadRestrictionManager)Activator.CreateInstance(_roadRestrictionManagerType);
                 }
 
                 return _roadRestrictionManager;
@@ -23,22 +23,26 @@ namespace Transit.Framework.ExtensionPoints.PathFinding
         }
 
         public void DefineRoadRestrictionManager<T>()
-            where T : IExtendedRoadRestrictionManager, new()
+            where T : IRoadRestrictionManager, new()
         {
             DefineRoadRestrictionManager(new T());
         }
 
         public void DefineRoadRestrictionManager<T>(T managerInstance)
-            where T : IExtendedRoadRestrictionManager
+            where T : IRoadRestrictionManager
         {
             _roadRestrictionManagerType = typeof(T);
             _roadRestrictionManager = managerInstance;
         }
 
-        public void ResetRoadRestrictionManager()
+        public void ResetRoadRestrictionManager<T>()
+            where T : IRoadRestrictionManager
         {
-            _roadRestrictionManagerType = typeof(VanillaRoadRestrictionManager);
-            _roadRestrictionManager = null;
+            if (_roadRestrictionManagerType == typeof(T))
+            {
+                _roadRestrictionManagerType = typeof(VanillaRoadRestrictionManager);
+                _roadRestrictionManager = null;
+            }
         }
     }
 }

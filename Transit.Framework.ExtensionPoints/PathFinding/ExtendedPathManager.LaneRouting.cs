@@ -7,15 +7,15 @@ namespace Transit.Framework.ExtensionPoints.PathFinding
     public partial class ExtendedPathManager
     {
         private Type _laneRoutingManagerType = typeof(VanillaLaneRoutingManager);
-        private IExtendedLaneRoutingManager _laneRoutingManager = null;
+        private ILaneRoutingManager _laneRoutingManager = null;
 
-        public IExtendedLaneRoutingManager LaneRouting
+        public ILaneRoutingManager LaneRouting
         {
             get
             {
                 if (_laneRoutingManager == null)
                 {
-                    _laneRoutingManager = (IExtendedLaneRoutingManager)Activator.CreateInstance(_laneRoutingManagerType);
+                    _laneRoutingManager = (ILaneRoutingManager)Activator.CreateInstance(_laneRoutingManagerType);
                 }
 
                 return _laneRoutingManager;
@@ -23,22 +23,26 @@ namespace Transit.Framework.ExtensionPoints.PathFinding
         }
 
         public void DefineLaneRoutingManager<T>()
-            where T : IExtendedLaneRoutingManager, new()
+            where T : ILaneRoutingManager, new()
         {
             DefineLaneRoutingManager(new T());
         }
 
         public void DefineLaneRoutingManager<T>(T managerInstance)
-            where T : IExtendedLaneRoutingManager
+            where T : ILaneRoutingManager
         {
             _laneRoutingManagerType = typeof(T);
             _laneRoutingManager = managerInstance;
         }
 
-        public void ResetLaneRoutingManager()
+        public void ResetLaneRoutingManager<T>()
+            where T : ILaneRoutingManager
         {
-            _laneRoutingManagerType = typeof(VanillaLaneRoutingManager);
-            _laneRoutingManager = null;
+            if (_laneRoutingManagerType == typeof(T))
+            {
+                _laneRoutingManagerType = typeof(VanillaLaneRoutingManager);
+                _laneRoutingManager = null;
+            }
         }
     }
 }

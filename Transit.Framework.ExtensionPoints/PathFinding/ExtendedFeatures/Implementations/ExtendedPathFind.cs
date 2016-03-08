@@ -10,11 +10,11 @@ using UnityEngine;
 
 namespace Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Implementations
 {
-    public class ExtendedPathFind : IExtendedPathFind
+    public class ExtendedPathFind : IPathFind
     {
         public ExtendedPathFindFacade Facade { get; set; }
 
-        Thread IExtendedPathFind.PathFindThread
+        Thread IPathFind.PathFindThread
         {
             get { return m_pathFindThread; }
         }

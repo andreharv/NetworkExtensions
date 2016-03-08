@@ -3,7 +3,7 @@ using Transit.Framework.Network;
 
 namespace Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Contracts
 {
-    public interface IExtendedPathFind
+    public interface IPathFind
     {
         ExtendedPathFindFacade Facade { get; set; }
 

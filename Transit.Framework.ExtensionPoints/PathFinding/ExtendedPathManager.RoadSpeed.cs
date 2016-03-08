@@ -7,15 +7,15 @@ namespace Transit.Framework.ExtensionPoints.PathFinding
     public partial class ExtendedPathManager
     {
         private Type _roadSpeedManagerType = typeof(VanillaRoadSpeedManager);
-        private IExtendedRoadSpeedManager _roadSpeedManager = null;
+        private IRoadSpeedManager _roadSpeedManager = null;
 
-        public IExtendedRoadSpeedManager RoadSpeed
+        public IRoadSpeedManager RoadSpeed
         {
             get
             {
                 if (_roadSpeedManager == null)
                 {
-                    _roadSpeedManager = (IExtendedRoadSpeedManager) Activator.CreateInstance(_roadSpeedManagerType);
+                    _roadSpeedManager = (IRoadSpeedManager) Activator.CreateInstance(_roadSpeedManagerType);
                 }
 
                 return _roadSpeedManager;
@@ -23,22 +23,26 @@ namespace Transit.Framework.ExtensionPoints.PathFinding
         }
 
         public void DefineRoadSpeedManager<T>()
-            where T : IExtendedRoadSpeedManager, new()
+            where T : IRoadSpeedManager, new()
         {
             DefineRoadSpeedManager(new T());
         }
 
         public void DefineRoadSpeedManager<T>(T managerInstance)
-            where T : IExtendedRoadSpeedManager
+            where T : IRoadSpeedManager
         {
             _roadSpeedManagerType = typeof (T);
             _roadSpeedManager = managerInstance;
         }
 
-        public void ResetRoadSpeedManager()
+        public void ResetRoadSpeedManager<T>()
+            where T : IRoadSpeedManager
         {
-            _roadSpeedManagerType = typeof(VanillaRoadSpeedManager);
-            _roadSpeedManager = null;
+            if (_roadSpeedManagerType == typeof(T))
+            {
+                _roadSpeedManagerType = typeof(VanillaRoadSpeedManager);
+                _roadSpeedManager = null;
+            }
         }
     }
 }

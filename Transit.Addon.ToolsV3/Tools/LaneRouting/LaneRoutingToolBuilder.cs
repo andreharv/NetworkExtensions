@@ -24,7 +24,7 @@ namespace Transit.Addon.ToolsV3.LaneRouting
 
         protected override void OnToolUninstalling(LaneRoutingTool tool)
         {
-            ExtendedPathManager.instance.ResetLaneRoutingManager();
+            ExtendedPathManager.instance.ResetLaneRoutingManager<LaneRoutingManager>();
         }
     }
 }

@@ -67,7 +67,7 @@ namespace Transit.Addon.ToolsV2
                 sm_redirectionInstalled = false;
             }
 
-            ExtendedPathManager.instance.ResetPathFinding();
+            ExtendedPathManager.instance.ResetPathFinding<TPPPathFind>();
         }
 
         public override void OnInstallingLocalization()

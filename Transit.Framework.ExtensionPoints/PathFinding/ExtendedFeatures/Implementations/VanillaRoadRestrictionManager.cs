@@ -3,7 +3,7 @@ using Transit.Framework.Network;
 
 namespace Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Implementations
 {
-    public class VanillaRoadRestrictionManager : IExtendedRoadRestrictionManager
+    public class VanillaRoadRestrictionManager : IRoadRestrictionManager
     {
         public bool CanUseLane(uint laneId, ExtendedVehicleType vehicleType)
         {

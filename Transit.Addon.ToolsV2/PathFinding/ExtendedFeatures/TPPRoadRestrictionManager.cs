@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ColossalFramework;
+using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Contracts;
 using Transit.Framework.Network;
 
 namespace CSL_Traffic
 {
-    public class TPPRoadRestrictionManager : Singleton<TPPRoadRestrictionManager>
+    public class TPPRoadRestrictionManager : Singleton<TPPRoadRestrictionManager>, IRoadRestrictionManager
     {
         private const ExtendedVehicleType ROUTED_UNITS =
             ExtendedVehicleType.ServiceVehicles |
@@ -49,6 +50,11 @@ namespace CSL_Traffic
 //#endif
 
 //            return ((allowedTypes & _extVehicleType) != ExtVehicleType.None);
+        }
+
+        public bool CanUseLane(uint laneId, ExtendedVehicleType vehicleType)
+        {
+            return true;
         }
     }
 }

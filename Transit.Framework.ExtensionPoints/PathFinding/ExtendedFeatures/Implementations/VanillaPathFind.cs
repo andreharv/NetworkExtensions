@@ -16,11 +16,11 @@ namespace Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Impleme
     ///   2. private -> protected
     ///   3. CalculatePath signature (uint unit, bool skipQueue, ExtendedVehicleType vehicleType)
     /// </summary>
-    public class VanillaPathFind : IExtendedPathFind
+    public class VanillaPathFind : IPathFind
     {
         public ExtendedPathFindFacade Facade { get; set; }
 
-        Thread IExtendedPathFind.PathFindThread
+        Thread IPathFind.PathFindThread
         {
             get { return m_pathFindThread; }
         }
