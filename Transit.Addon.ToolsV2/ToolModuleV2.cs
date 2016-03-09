@@ -7,6 +7,7 @@ using ICities;
 using Transit.Addon.ToolsV2.PathFinding.ExtendedFeatures;
 using Transit.Framework;
 using Transit.Framework.ExtensionPoints.PathFinding;
+using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Implementations;
 using Transit.Framework.Modularity;
 using Transit.Framework.Redirection;
 
@@ -57,7 +58,10 @@ namespace Transit.Addon.ToolsV2
                 sm_redirectionInstalled = true;
             }
 
-            ExtendedPathManager.instance.DefinePathFinding<TPPPathFind>();
+            ExtendedPathManager.instance.DefinePathFinding<ExtendedPathFind>();
+            ExtendedPathManager.instance.DefineLaneRoutingManager<TPPLaneRoutingManager>();
+            ExtendedPathManager.instance.DefineRoadRestrictionManager<TPPRoadRestrictionManager>();
+            ExtendedPathManager.instance.DefineRoadSpeedManager<TPPRoadSpeedManager>();
         }
 
         public override void OnDisabled()
@@ -68,7 +72,10 @@ namespace Transit.Addon.ToolsV2
                 sm_redirectionInstalled = false;
             }
 
-            ExtendedPathManager.instance.ResetPathFinding<TPPPathFind>();
+            ExtendedPathManager.instance.ResetPathFinding<ExtendedPathFind>();
+            ExtendedPathManager.instance.ResetLaneRoutingManager<TPPLaneRoutingManager>();
+            ExtendedPathManager.instance.ResetRoadRestrictionManager<TPPRoadRestrictionManager>();
+            ExtendedPathManager.instance.ResetRoadSpeedManager<TPPRoadSpeedManager>();
         }
 
         public override void OnInstallingLocalization()
