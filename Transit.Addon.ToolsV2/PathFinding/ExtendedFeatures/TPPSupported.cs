@@ -5,7 +5,7 @@ namespace Transit.Addon.ToolsV2.PathFinding.ExtendedFeatures
     public static class TPPSupported
     {
         public const ExtendedUnitType UNITS =
-            ExtendedUnitType.ServiceVehicles |
+            ExtendedUnitType.ServiceVehicle |
             ExtendedUnitType.PassengerCar |
             ExtendedUnitType.CargoTruck |
             ExtendedUnitType.Bus |

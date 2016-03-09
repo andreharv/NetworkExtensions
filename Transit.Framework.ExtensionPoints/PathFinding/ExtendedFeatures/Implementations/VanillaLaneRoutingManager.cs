@@ -5,7 +5,7 @@ namespace Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Impleme
 {
     public class VanillaLaneRoutingManager : ILaneRoutingManager
     {
-        public bool CanLanesConnect(ushort nodeId, uint originLaneId, uint destinationLaneId, ExtendedUnitType vehicleType)
+        public bool CanLanesConnect(ushort nodeId, uint originLaneId, uint destinationLaneId, ExtendedUnitType unitType)
         {
             return true;
         }

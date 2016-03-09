@@ -61,6 +61,7 @@
     <Compile Include="Data\TPPLaneDataManager.cs" />
     <Compile Include="Data\TPPLaneDataSerializationBinder.cs" />
     <Compile Include="Data\TPPLaneDataSerializer.cs" />
+    <Compile Include="Data\TPPVehicleTypeConverter.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Menus\RoadCustomizer\RoadCustomizerGroupPanel.cs" />
     <Compile Include="Menus\RoadCustomizer\RoadCustomizerPanel.cs" />

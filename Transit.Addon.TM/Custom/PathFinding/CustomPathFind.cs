@@ -93,7 +93,7 @@ namespace TrafficManager.Custom.PathFinding {
 
 		public bool IsMasterPathFind = false;
 
-		internal ExtVehicleType?[] pathUnitExtVehicleType = null;
+		private ExtVehicleType?[] pathUnitExtVehicleType = null;
 
 		public void OnAwake() {
 			const BindingFlags fieldFlags = BindingFlags.NonPublic | BindingFlags.Instance;
@@ -136,11 +136,11 @@ namespace TrafficManager.Custom.PathFinding {
 			}
         }
 
-	    public bool CalculatePath(ExtendedUnitType vehicleType, uint unit, bool skipQueue)
+	    public bool CalculatePath(ExtendedUnitType unitType, uint unit, bool skipQueue)
 	    {
-            // TODO: translate ExtendedVehicleType into ExtVehicleType
-            throw new Exception("translate ExtendedVehicleType into ExtVehicleType");
-        }
+            // TODO: use ExtendedUnitType without translation
+	        return CalculatePath(unitType.ConvertToExtVehicleType(), unit, skipQueue);
+	    }
 
         public bool CalculatePath(ExtVehicleType vehicleType, uint unit, bool skipQueue) {
 			if (Singleton<PathManager>.instance.AddPathReference(unit)) {

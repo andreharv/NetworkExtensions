@@ -7,9 +7,9 @@ namespace Transit.Addon.ToolsV2.PathFinding.ExtendedFeatures
 {
     public class TPPRoadRestrictionManager : IRoadRestrictionManager
     {
-        public bool CanUseLane(uint laneId, ExtendedUnitType vehicleType)
+        public bool CanUseLane(uint laneId, ExtendedUnitType unitType)
         {
-            if ((vehicleType & TPPSupported.UNITS) == 0)
+            if ((unitType & TPPSupported.UNITS) == 0)
             {
                 return true;
             }
@@ -27,7 +27,7 @@ namespace Transit.Addon.ToolsV2.PathFinding.ExtendedFeatures
             }
 
             // T++ 
-            return (TPPLaneDataManager.GetLane(laneId).m_unitTypes & vehicleType) != ExtendedUnitType.None;
+            return (TPPLaneDataManager.GetLane(laneId).m_unitTypes & unitType) != ExtendedUnitType.None;
 
             // TM
             //            ExtVehicleType allowedTypes = VehicleRestrictionsManager.GetAllowedVehicleTypes(segmentId, laneIndex, laneId, laneInfo);

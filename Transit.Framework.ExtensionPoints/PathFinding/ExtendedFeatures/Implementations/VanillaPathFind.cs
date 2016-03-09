@@ -14,7 +14,7 @@ namespace Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Impleme
     /// What is changed:
     ///   1. IExtendedPathFind implementation
     ///   2. private -> protected
-    ///   3. CalculatePath signature (uint unit, bool skipQueue, ExtendedVehicleType vehicleType)
+    ///   3. CalculatePath signature (uint unit, bool skipQueue, ExtendedUnitType unitType)
     /// </summary>
     public class VanillaPathFind : IPathFind
     {
@@ -140,7 +140,7 @@ namespace Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Impleme
 			}
 		}
 
-        public virtual bool CalculatePath(ExtendedUnitType vehicleType, uint unit, bool skipQueue)
+        public virtual bool CalculatePath(ExtendedUnitType unitType, uint unit, bool skipQueue)
 		{
 			if (Singleton<PathManager>.instance.AddPathReference(unit))
 			{

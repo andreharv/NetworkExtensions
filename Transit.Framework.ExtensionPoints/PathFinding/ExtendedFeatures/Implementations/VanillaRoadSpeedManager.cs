@@ -5,7 +5,7 @@ namespace Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Impleme
 {
     public class VanillaRoadSpeedManager : IRoadSpeedManager
     {
-        public float GetLaneSpeedLimit(ref NetSegment segment, NetInfo.Lane laneInfo, ExtendedUnitType vehicleType)
+        public float GetLaneSpeedLimit(ref NetSegment segment, NetInfo.Lane laneInfo, ExtendedUnitType unitType)
         {
             return laneInfo.m_speedLimit;
         }

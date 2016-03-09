@@ -28,6 +28,7 @@ namespace TrafficManager.Traffic {
 		RoadPublicTransport = Bus | Taxi,
 		RoadVehicle = PassengerCar | Bus | Taxi | CargoTruck | Service | Emergency,
 		RailVehicle = PassengerTrain | CargoTrain,
-		NonTransportRoadVehicle = RoadVehicle & ~PublicTransport
+		NonTransportRoadVehicle = RoadVehicle & ~PublicTransport,
+        Unknown = 65536
 	}
 }

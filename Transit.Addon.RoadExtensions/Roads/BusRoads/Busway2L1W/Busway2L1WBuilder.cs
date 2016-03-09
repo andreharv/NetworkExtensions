@@ -222,7 +222,7 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L1W
                     lane.m_laneType = NetInfo.LaneType.TransportVehicle; 
                     lane.SetBusLaneProps();
 
-                    info.m_lanes[i] = new ExtendedNetInfoLane(lane, ExtendedUnitType.Bus | ExtendedUnitType.EmergencyVehicles);
+                    info.m_lanes[i] = new ExtendedNetInfoLane(lane, ExtendedUnitType.Bus | ExtendedUnitType.EmergencyVehicle);
                 }
             }
 

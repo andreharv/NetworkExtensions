@@ -3,7 +3,7 @@
 namespace Transit.Framework.Network
 {
     [Flags]
-    public enum ExtendedUnitType : long
+    public enum ExtendedUnitType : ulong
     {
         None                    = 0,
         Unknown                 = 1 << 0,
@@ -15,27 +15,29 @@ namespace Transit.Framework.Network
         FireTruck               = 1 << 6,
         PoliceCar               = 1 << 7,
         Emergency               = 1 << 8,
-        EmergencyVehicles       = Emergency | Ambulance | FireTruck | PoliceCar,
+        EmergencyVehicle        = Emergency | Ambulance | FireTruck | PoliceCar,
         GarbageTruck            = 1 << 9,
         Hearse                  = 1 << 10,
         SnowTruck               = 1 << 11,
         MaintenanceTruck        = 1 << 12,
-        ServiceVehicles         = EmergencyVehicles | GarbageTruck | Hearse | SnowTruck | MaintenanceTruck,
-        Bus                     = 1 << 13,
-        Tram                    = 1 << 14,
-        Taxi                    = 1 << 15,
+        UnknownService          = 1 << 13,
+        ServiceVehicle          = UnknownService | EmergencyVehicle | GarbageTruck | Hearse | SnowTruck | MaintenanceTruck,
+        Bus                     = 1 << 14,
+        Tram                    = 1 << 15,
+        Metro                   = 1 << 16,
+        Taxi                    = 1 << 17,
         RoadPublicTransport     = Bus | Taxi,
-        RoadVehicle             = PassengerCar | CargoTruck | EmergencyVehicles | ServiceVehicles | RoadPublicTransport,
-        PassengerTrain          = 1 << 16,
-        CargoTrain              = 1 << 17,
+        RoadVehicle             = PassengerCar | CargoTruck | EmergencyVehicle | ServiceVehicle | RoadPublicTransport,
+        PassengerTrain          = 1 << 18,
+        CargoTrain              = 1 << 19,
         Train                   = PassengerTrain | CargoTrain,
-        PassengerShip           = 1 << 18,
-        CargoShip               = 1 << 19,
+        PassengerShip           = 1 << 20,
+        CargoShip               = 1 << 21,
         Ship                    = PassengerShip | CargoShip,
-        PassengerPlane          = 1 << 20,
+        PassengerPlane          = 1 << 22,
         Plane                   = PassengerPlane,
         Cargo                   = CargoTruck | CargoTrain | CargoShip,
-        PublicTransport         = RoadPublicTransport | Tram | PassengerTrain,
+        PublicTransport         = RoadPublicTransport | Tram | Metro | PassengerTrain,
         NonTransportRoadVehicle = RoadVehicle & ~PublicTransport
     }
 }

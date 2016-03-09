@@ -6,16 +6,16 @@ namespace Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Contrac
 {
     public interface IRoadSpeedManager
     {
-        float GetLaneSpeedLimit(ref NetSegment segment, NetInfo.Lane laneInfo, ExtendedUnitType vehicleType);
+        float GetLaneSpeedLimit(ref NetSegment segment, NetInfo.Lane laneInfo, ExtendedUnitType unitType);
     }
 
     public static class ExtendedRoadSpeedManagerExtensions
     {
-        public static float GetLaneSpeedLimit(this IRoadSpeedManager roadSpeedManager, ushort segmentId, NetInfo.Lane laneInfo, ExtendedUnitType vehicleType)
+        public static float GetLaneSpeedLimit(this IRoadSpeedManager roadSpeedManager, ushort segmentId, NetInfo.Lane laneInfo, ExtendedUnitType unitType)
         {
             var segment = Singleton<NetManager>.instance.m_segments.m_buffer[segmentId];
 
-            return roadSpeedManager.GetLaneSpeedLimit(ref segment, laneInfo, vehicleType);
+            return roadSpeedManager.GetLaneSpeedLimit(ref segment, laneInfo, unitType);
         }
     }
 }

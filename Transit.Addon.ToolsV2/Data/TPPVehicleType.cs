@@ -1,5 +1,4 @@
 ﻿using System;
-using Transit.Framework.Network;
 
 namespace Transit.Addon.ToolsV2.Data
 {
@@ -38,17 +37,5 @@ namespace Transit.Addon.ToolsV2.Data
         Taxi = 1 << 26,
 
         Unknown = 1 << 31,
-    }
-
-    public static class TPPExtendedVehicleTypeConverter
-    {
-        public static ExtendedUnitType ToExtendedUnitType(this TPPVehicleType vehicleType)
-        {
-            var result = ExtendedUnitType.None;
-
-            // TODO
-
-            return result;
-        }
     }
 }
