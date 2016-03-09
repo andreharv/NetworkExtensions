@@ -133,7 +133,7 @@ namespace TrafficManager.State {
 		}
 
 		private static bool checkGameLoaded() {
-			if (!SerializableDataExtension.StateLoading && !LoadingExtension.IsGameLoaded()) {
+			if (!SerializableDataExtension.StateLoading && !TrafficManagerModule.IsGameLoaded()) {
 				UIView.library.ShowModal<ExceptionPanel>("ExceptionPanel").SetMessage("Nope!", Translation.GetString("Settings_are_defined_for_each_savegame_separately") + ". https://www.viathinksoft.de/tmpe/#options", false);
 				return false;
 			}
@@ -257,7 +257,7 @@ namespace TrafficManager.State {
 				return;
 
 #if !TAM
-			if (!LoadingExtension.IsPathManagerCompatible) {
+			if (!TrafficManagerModule.IsPathManagerCompatible) {
 				if (newAdvancedAI) {
 					setAdvancedAI(false);
 					UIView.library.ShowModal<ExceptionPanel>("ExceptionPanel").SetMessage(Translation.GetString("Advanced_AI_cannot_be_activated"), Translation.GetString("The_Advanced_Vehicle_AI_cannot_be_activated"), false);
@@ -276,7 +276,7 @@ namespace TrafficManager.State {
 				return;
 
 #if !TAM
-			if (!LoadingExtension.IsPathManagerCompatible) {
+			if (!TrafficManagerModule.IsPathManagerCompatible) {
 				if (newHighwayRules) {
 					setAdvancedAI(false);
 					setDynamicPathRecalculation(false);
@@ -301,7 +301,7 @@ namespace TrafficManager.State {
 				return;
 
 #if !TAM
-			if (!LoadingExtension.IsPathManagerCompatible) {
+			if (!TrafficManagerModule.IsPathManagerCompatible) {
 				if (value) {
 					setAdvancedAI(false);
 					setDynamicPathRecalculation(false);
@@ -356,7 +356,7 @@ namespace TrafficManager.State {
 				return;
 
 #if !TAM
-			if (!LoadingExtension.IsPathManagerCompatible) {
+			if (!TrafficManagerModule.IsPathManagerCompatible) {
 				setEnableDespawning(true);
 				UIView.library.ShowModal<ExceptionPanel>("ExceptionPanel").SetMessage("Despawning cannot be modified", "The despawning option cannot be changed because you are using another mod that modifies vehicle behavior (e.g. Improved AI or Traffic++).", false);
 			} else
@@ -510,7 +510,7 @@ namespace TrafficManager.State {
 
 		public static void setHighwayRules(bool newHighwayRules) {
 #if !TAM
-			if (!LoadingExtension.IsPathManagerCompatible) {
+			if (!TrafficManagerModule.IsPathManagerCompatible) {
 				newHighwayRules = false;
 				highwayRules = false;
 			} else {
@@ -531,7 +531,7 @@ namespace TrafficManager.State {
 
 		public static void setAdvancedAI(bool newAdvancedAI) {
 #if !TAM
-			if (!LoadingExtension.IsPathManagerCompatible) {
+			if (!TrafficManagerModule.IsPathManagerCompatible) {
 				newAdvancedAI = false;
 				advancedAI = false;
 			} else {
@@ -551,7 +551,7 @@ namespace TrafficManager.State {
 
 		public static void setDynamicPathRecalculation(bool value) {
 #if !TAM
-			if (!LoadingExtension.IsPathManagerCompatible) {
+			if (!TrafficManagerModule.IsPathManagerCompatible) {
 				value = false;
 				dynamicPathRecalculation = false;
 			} else {
@@ -578,7 +578,7 @@ namespace TrafficManager.State {
 
 		public static void setEnableDespawning(bool value) {
 #if !TAM
-			if (!LoadingExtension.IsPathManagerCompatible) {
+			if (!TrafficManagerModule.IsPathManagerCompatible) {
 				value = true;
 				enableDespawning = true;
 			} else {

@@ -251,7 +251,7 @@ namespace TrafficManager.UI.SubTools {
 		}
 
 		private bool drawVehicleRestrictionHandles(ushort segmentId, bool viewOnly) {
-			if (!LoadingExtension.IsPathManagerCompatible) {
+			if (!TrafficManagerModule.IsPathManagerCompatible) {
 				return false;
 			}
 

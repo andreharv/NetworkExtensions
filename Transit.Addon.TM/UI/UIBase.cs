@@ -60,7 +60,7 @@ namespace TrafficManager.UI {
 		}
 
 		public void Show() {
-			if (LoadingExtension.Instance != null) {
+			if (TrafficManagerModule.Instance != null) {
 				try {
 					ToolsModifierControl.mainToolbar.CloseEverything();
 				} catch (Exception e) {
@@ -68,13 +68,13 @@ namespace TrafficManager.UI {
 				}
 				var uiView = UIView.GetAView();
 				uiView.AddUIComponent(typeof(UITrafficManager));
-				LoadingExtension.Instance.SetToolMode(TrafficManagerMode.Activated);
+				TrafficManagerModule.Instance.SetToolMode(TrafficManagerMode.Activated);
 				_uiShown = true;
 			}
 		}
 
 		public void Close() {
-			if (LoadingExtension.Instance != null) {
+			if (TrafficManagerModule.Instance != null) {
 				var uiView = UIView.GetAView();
 				var trafficManager = uiView.FindUIComponent("UITrafficManager");
 
@@ -84,7 +84,7 @@ namespace TrafficManager.UI {
 
 				UITrafficManager.deactivateButtons();
 				TrafficManagerTool.SetToolMode(ToolMode.None);
-				LoadingExtension.Instance.SetToolMode(TrafficManagerMode.None);
+				TrafficManagerModule.Instance.SetToolMode(TrafficManagerMode.None);
 
 				_uiShown = false;
 			}

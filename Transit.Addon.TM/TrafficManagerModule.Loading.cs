@@ -16,7 +16,7 @@ using TrafficManager.Custom.PathFinding;
 using Transit.Framework.Redirection;
 
 namespace TrafficManager {
-    public class LoadingExtension : LoadingExtensionBase {
+    public partial class TrafficManagerModule {
 		public class Detour {
 			public MethodInfo OriginalMethod;
 			public MethodInfo CustomMethod;
@@ -29,7 +29,7 @@ namespace TrafficManager {
 			}
 		}
 
-        public static LoadingExtension Instance;
+        public static TrafficManagerModule Instance;
 #if !TAM
 		public static bool IsPathManagerCompatible = true;
 #endif
@@ -46,22 +46,19 @@ namespace TrafficManager {
 
 		private static bool gameLoaded = false;
 
-        public LoadingExtension() {
-        }
-
 		public void revertDetours() {
-			if (LoadingExtension.Instance.DetourInited) {
+			if (Instance.DetourInited) {
 				Log.Info("Revert detours");
 				foreach (Detour d in Detours) {
 					RedirectionHelper.RevertRedirect(d.OriginalMethod, d.Redirect);
 				}
-				LoadingExtension.Instance.DetourInited = false;
+                Instance.DetourInited = false;
 			}
 		}
 
 		public void initDetours() {
 			Log.Info("Init detours");
-			if (!LoadingExtension.Instance.DetourInited) {
+			if (!TrafficManagerModule.Instance.DetourInited) {
 				bool detourFailed = false;
 
 				Log.Info("Redirecting Vehicle AI Calculate Segment Calls (1)");
@@ -237,7 +234,7 @@ namespace TrafficManager {
 				/*++i;
 				Log._Debug("Redirecting Train AI Calculate Segment Calls");
 				try {
-					LoadingExtension.Instance.OriginalMethods[i] = typeof(TrainAI).GetMethod("CalculateSegmentPosition",
+					TrafficManagerModule.Instance.OriginalMethods[i] = typeof(TrainAI).GetMethod("CalculateSegmentPosition",
 							BindingFlags.NonPublic | BindingFlags.Instance,
 							null,
 							new[]
@@ -256,8 +253,8 @@ namespace TrafficManager {
 								typeof (float).MakeByRefType()
 							},
 							null);
-					LoadingExtension.Instance.CustomMethods[i] = typeof(CustomTrainAI).GetMethod("TmCalculateSegmentPosition");
-					LoadingExtension.Instance.CustomRedirects[i] = RedirectionHelper.RedirectCalls(LoadingExtension.Instance.OriginalMethods[i], LoadingExtension.Instance.CustomMethods[i]);
+					TrafficManagerModule.Instance.CustomMethods[i] = typeof(CustomTrainAI).GetMethod("TmCalculateSegmentPosition");
+					TrafficManagerModule.Instance.CustomRedirects[i] = RedirectionHelper.RedirectCalls(TrafficManagerModule.Instance.OriginalMethods[i], TrafficManagerModule.Instance.CustomMethods[i]);
 				} catch (Exception) {
 					Log.Error("Could not redirect TrainAI::CalculateSegmentPosition (1)");
 					detourFailed = true;
@@ -746,7 +743,7 @@ namespace TrafficManager {
 					Log.Info("Detours successful");
 				}
 
-				LoadingExtension.Instance.DetourInited = true;
+				Instance.DetourInited = true;
 			}
 		}
 

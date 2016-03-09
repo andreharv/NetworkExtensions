@@ -10,21 +10,21 @@ namespace TrafficManager {
         public override void OnUpdate(float realTimeDelta, float simulationTimeDelta) {
             base.OnUpdate(realTimeDelta, simulationTimeDelta);
 #if !TAM
-			if (LoadingExtension.Instance == null || ToolsModifierControl.toolController == null || ToolsModifierControl.toolController == null || LoadingExtension.Instance.UI == null) {
+			if (TrafficManagerModule.Instance == null || ToolsModifierControl.toolController == null || ToolsModifierControl.toolController == null || TrafficManagerModule.Instance.UI == null) {
                 return;
             }
 
-            if (ToolsModifierControl.toolController.CurrentTool != LoadingExtension.Instance.TrafficManagerTool && LoadingExtension.Instance.UI.IsVisible()) {
-                LoadingExtension.Instance.UI.Close();
+            if (ToolsModifierControl.toolController.CurrentTool != TrafficManagerModule.Instance.TrafficManagerTool && TrafficManagerModule.Instance.UI.IsVisible()) {
+                TrafficManagerModule.Instance.UI.Close();
             }
 			
-            if (!LoadingExtension.Instance.NodeSimulationLoaded) {
-                LoadingExtension.Instance.NodeSimulationLoaded = true;
+            if (!TrafficManagerModule.Instance.NodeSimulationLoaded) {
+                TrafficManagerModule.Instance.NodeSimulationLoaded = true;
                 ToolsModifierControl.toolController.gameObject.AddComponent<CustomRoadAI>();
             }
 
             if (Input.GetKeyDown(KeyCode.Escape)) {
-                LoadingExtension.Instance.UI.Close();
+                TrafficManagerModule.Instance.UI.Close();
             }
 #endif
         }

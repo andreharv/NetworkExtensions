@@ -70,7 +70,7 @@ namespace TrafficManager.State {
 
 					if (options.Length >= 7) {
 #if !TAM
-						if (!LoadingExtension.IsPathManagerCompatible) {
+						if (!TrafficManagerModule.IsPathManagerCompatible) {
 							Options.setAdvancedAI(false);
 						} else {
 #endif
@@ -558,7 +558,7 @@ namespace TrafficManager.State {
 			}
 
 #if !TAM
-			if (LoadingExtension.IsPathManagerCompatible) {
+			if (TrafficManagerModule.IsPathManagerCompatible) {
 #endif
 				for (uint i = 0; i < Singleton<NetManager>.instance.m_lanes.m_buffer.Length; i++) {
 					SaveLaneData(i, configuration);

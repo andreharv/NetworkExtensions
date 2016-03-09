@@ -72,7 +72,7 @@
     <Compile Include="Custom\AI\CustomVehicleAI.cs" />
     <Compile Include="Custom\PathFinding\CustomPathFind.cs" />
     <Compile Include="Custom\PathFinding\CustomPathManager.cs" />
-    <Compile Include="LoadingExtension.cs" />
+    <Compile Include="TrafficManagerModule.Loading.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="State\Configuration.cs" />
@@ -87,7 +87,7 @@
     <Compile Include="TrafficLight\TimedTrafficLights.cs" />
     <Compile Include="TrafficLight\TimedTrafficLightsStep.cs" />
     <Compile Include="TrafficLight\TrafficLightSimulation.cs" />
-    <Compile Include="TrafficManagerMod.cs" />
+    <Compile Include="TrafficManagerModule.cs" />
     <Compile Include="TrafficManagerMode.cs" />
     <Compile Include="Traffic\Direction.cs" />
     <Compile Include="Traffic\ExtVehicleType.cs" />
@@ -388,6 +388,10 @@
     <ProjectReference Include="..\Transit.Framework.Redirection\Transit.Framework.Redirection.csproj">
       <Project>{7dcc08ef-dc85-47a4-bd6f-79fc52c7ef13}</Project>
       <Name>Transit.Framework.Redirection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Transit.Framework\Transit.Framework.csproj">
+      <Project>{8891467e-c88e-46b0-96f9-4413df6dc205}</Project>
+      <Name>Transit.Framework</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

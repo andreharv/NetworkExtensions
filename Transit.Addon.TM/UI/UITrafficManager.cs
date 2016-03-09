@@ -33,16 +33,16 @@ namespace TrafficManager.UI {
 		public static UILabel title;
 
 		public override void Start() {
-			if (LoadingExtension.Instance == null) {
+			if (TrafficManagerModule.Instance == null) {
 				Log.Error("UITrafficManager.Start(): LoadingExtension is null.");
 				return;
 			}
-			TrafficLightTool = LoadingExtension.Instance.TrafficManagerTool;
+			TrafficLightTool = TrafficManagerModule.Instance.TrafficManagerTool;
 
 			backgroundSprite = "GenericPanel";
 			color = new Color32(75, 75, 135, 255);
 			width = Translation.getMenuWidth();
-			height = LoadingExtension.IsPathManagerCompatible ? 390 : 230;
+			height = TrafficManagerModule.IsPathManagerCompatible ? 390 : 230;
 #if DEBUG
 			height += 160;		
 #endif
@@ -62,7 +62,7 @@ namespace TrafficManager.UI {
 			_buttonTimedMain = _createButton(Translation.GetString("Timed_traffic_lights"), y, clickTimedAdd);
 			y += 40;
 
-			if (LoadingExtension.IsPathManagerCompatible) {
+			if (TrafficManagerModule.IsPathManagerCompatible) {
 				_buttonLaneChange = _createButton(Translation.GetString("Change_lane_arrows"), y, clickChangeLanes);
 				y += 40;
 
@@ -76,7 +76,7 @@ namespace TrafficManager.UI {
 			_buttonClearTraffic = _createButton(Translation.GetString("Clear_Traffic"), y, clickClearTraffic);
 			y += 40;
 
-			if (LoadingExtension.IsPathManagerCompatible) {
+			if (TrafficManagerModule.IsPathManagerCompatible) {
 				_buttonToggleDespawn = _createButton(Options.enableDespawning ? Translation.GetString("Disable_despawning") : Translation.GetString("Enable_despawning"), y, ClickToggleDespawn);
 				y += 40;
 			}
@@ -265,7 +265,7 @@ namespace TrafficManager.UI {
 
 			Options.setEnableDespawning(!Options.enableDespawning);
 
-			if (LoadingExtension.IsPathManagerCompatible) {
+			if (TrafficManagerModule.IsPathManagerCompatible) {
 				_buttonToggleDespawn.text = Options.enableDespawning
 					? Translation.GetString("Disable_despawning")
 					: Translation.GetString("Enable_despawning");
