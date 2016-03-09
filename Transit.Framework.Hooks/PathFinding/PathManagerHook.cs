@@ -43,7 +43,7 @@ namespace Transit.Framework.Hooks.PathFinding
         public new bool CreatePath(out uint unit, ref Randomizer randomizer, uint buildIndex, PathUnit.Position startPosA, PathUnit.Position startPosB, PathUnit.Position endPosA, PathUnit.Position endPosB, PathUnit.Position vehiclePosition, NetInfo.LaneType laneTypes, VehicleInfo.VehicleType vehicleTypes, float maxLength, bool isHeavyVehicle, bool ignoreBlocked, bool stablePath, bool skipQueue)
         {
             return this.CreatePath(
-                ExtendedVehicleType.Unknown, 
+                ExtendedUnitType.Unknown, 
                 out unit,
                 ref randomizer,
                 buildIndex,

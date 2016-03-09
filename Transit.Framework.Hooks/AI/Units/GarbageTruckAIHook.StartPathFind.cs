@@ -11,7 +11,7 @@ namespace Transit.Framework.Hooks.AI.Units
         [RedirectFrom(typeof(GarbageTruckAI), (ulong)PrerequisiteType.PathFinding)]
         protected override bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget)
         {
-            return this.StartPathFind(ExtendedVehicleType.GarbageTruck, vehicleID, ref vehicleData, startPos, endPos, startBothWays, endBothWays, undergroundTarget, IsHeavyVehicle(), IgnoreBlocked(vehicleID, ref vehicleData));
+            return this.StartPathFind(ExtendedUnitType.GarbageTruck, vehicleID, ref vehicleData, startPos, endPos, startBothWays, endBothWays, undergroundTarget, IsHeavyVehicle(), IgnoreBlocked(vehicleID, ref vehicleData));
         }
     }
 }

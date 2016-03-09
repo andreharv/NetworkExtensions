@@ -40,7 +40,7 @@ namespace Transit.Framework.Hooks.PathFinding
                 throw new Exception("ExtendedPathManager is not installed correctly");
             }
 
-            return facade.CalculatePath(ExtendedVehicleType.Unknown, unit, skipQueue);
+            return facade.CalculatePath(ExtendedUnitType.Unknown, unit, skipQueue);
         }
 
         [RedirectFrom(typeof(PathFind), (ulong)PrerequisiteType.PathFinding)]

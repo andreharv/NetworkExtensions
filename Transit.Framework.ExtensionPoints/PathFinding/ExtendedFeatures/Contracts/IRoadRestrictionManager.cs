@@ -5,6 +5,6 @@ namespace Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Contrac
 {
     public interface IRoadRestrictionManager
     {
-        bool CanUseLane(uint laneId, ExtendedVehicleType vehicleType);
+        bool CanUseLane(uint laneId, ExtendedUnitType vehicleType);
     }
 }

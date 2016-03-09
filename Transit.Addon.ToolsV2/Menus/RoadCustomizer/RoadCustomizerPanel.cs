@@ -69,7 +69,7 @@ namespace CSL_Traffic.UI
             RoadCustomizerTool rct = ToolsModifierControl.GetCurrentTool<RoadCustomizerTool>();
             if (rct != null)
             {
-                ExtendedVehicleType restrictions = rct.GetCurrentVehicleRestrictions();
+                ExtendedUnitType restrictions = rct.GetCurrentVehicleRestrictions();
                 float speed = rct.GetCurrentSpeedRestrictions()*50f;
                 
                 for (int i = 0; i < this.m_scrollablePanel.components.Count; i++)
@@ -78,7 +78,7 @@ namespace CSL_Traffic.UI
 
                     if (this.m_panelType == Panel.VehicleRestrictions)
                     {
-                        ExtendedVehicleType vehicleType = (ExtendedVehicleType)btn.objectUserData;
+                        ExtendedUnitType vehicleType = (ExtendedUnitType)btn.objectUserData;
 
                         if ((vehicleType & restrictions) == vehicleType)
                         {
@@ -88,7 +88,7 @@ namespace CSL_Traffic.UI
                             btn.hoveredFgSprite = btn.name + "90%";
                             btn.pressedFgSprite = btn.name + "80%";
                         }
-                        else if (vehicleType == ExtendedVehicleType.EmergencyVehicles && (restrictions & ExtendedVehicleType.Emergency) == ExtendedVehicleType.Emergency)
+                        else if (vehicleType == ExtendedUnitType.EmergencyVehicles && (restrictions & ExtendedUnitType.Emergency) == ExtendedUnitType.Emergency)
                         {
                             btn.stringUserData = "Emergency";
                             btn.hoveredFgSprite = btn.name + "90%";
@@ -140,12 +140,12 @@ namespace CSL_Traffic.UI
             if (m_panelIndex == 0)
             {
                 this.m_panelType = Panel.VehicleRestrictions;
-                this.SpawnEntry("PassengerCar", "PassengerCar", null, null, false, false).objectUserData = ExtendedVehicleType.PassengerCar;
-                this.SpawnEntry("Bus", "Bus", null, null, false, false).objectUserData = ExtendedVehicleType.Bus;
-                this.SpawnEntry("CargoTruck", "CargoTruck", null, null, false, false).objectUserData = ExtendedVehicleType.CargoTruck;
-                this.SpawnEntry("GarbageTruck", "GarbageTruck", null, null, false, false).objectUserData = ExtendedVehicleType.GarbageTruck;
-                this.SpawnEntry("Hearse", "Hearse", null, null, false, false).objectUserData = ExtendedVehicleType.Hearse;
-                this.SpawnEntry("Emergency", "Emergency", null, null, false, false).objectUserData = ExtendedVehicleType.EmergencyVehicles;
+                this.SpawnEntry("PassengerCar", "PassengerCar", null, null, false, false).objectUserData = ExtendedUnitType.PassengerCar;
+                this.SpawnEntry("Bus", "Bus", null, null, false, false).objectUserData = ExtendedUnitType.Bus;
+                this.SpawnEntry("CargoTruck", "CargoTruck", null, null, false, false).objectUserData = ExtendedUnitType.CargoTruck;
+                this.SpawnEntry("GarbageTruck", "GarbageTruck", null, null, false, false).objectUserData = ExtendedUnitType.GarbageTruck;
+                this.SpawnEntry("Hearse", "Hearse", null, null, false, false).objectUserData = ExtendedUnitType.Hearse;
+                this.SpawnEntry("Emergency", "Emergency", null, null, false, false).objectUserData = ExtendedUnitType.EmergencyVehicles;
             }
             //else if (this.m_panelType == Panel.SpeedRestrictions)
             else if (m_panelIndex == 1)
@@ -303,8 +303,8 @@ namespace CSL_Traffic.UI
         {
             if (m_panelType == Panel.VehicleRestrictions)
             {
-                ExtendedVehicleType vehicleType = (ExtendedVehicleType)btn.objectUserData;
-                if (vehicleType != ExtendedVehicleType.None)
+                ExtendedUnitType vehicleType = (ExtendedUnitType)btn.objectUserData;
+                if (vehicleType != ExtendedUnitType.None)
                 {
                     if (String.IsNullOrEmpty(btn.stringUserData))
                     {
@@ -314,14 +314,14 @@ namespace CSL_Traffic.UI
                         btn.hoveredFgSprite = btn.name + "90%";
                         btn.pressedFgSprite = btn.name + "80%";
                     }
-                    else if (vehicleType == ExtendedVehicleType.EmergencyVehicles && btn.stringUserData != "Emergency")
+                    else if (vehicleType == ExtendedUnitType.EmergencyVehicles && btn.stringUserData != "Emergency")
                     {
                         btn.stringUserData = "Emergency";
                         StartCoroutine("EmergencyLights", btn);
                     }
                     else
                     {
-                        if (vehicleType == ExtendedVehicleType.EmergencyVehicles)
+                        if (vehicleType == ExtendedUnitType.EmergencyVehicles)
                             StopCoroutine("EmergencyLights");
 
                         btn.stringUserData = null;
@@ -335,9 +335,9 @@ namespace CSL_Traffic.UI
                     if (rct != null)
                     {
                         if (btn.stringUserData == "Emergency")
-                            rct.ToggleRestriction(vehicleType ^ ExtendedVehicleType.Emergency);
-                        else if (vehicleType == ExtendedVehicleType.EmergencyVehicles && btn.stringUserData == null)
-                            rct.ToggleRestriction(ExtendedVehicleType.Emergency);
+                            rct.ToggleRestriction(vehicleType ^ ExtendedUnitType.Emergency);
+                        else if (vehicleType == ExtendedUnitType.EmergencyVehicles && btn.stringUserData == null)
+                            rct.ToggleRestriction(ExtendedUnitType.Emergency);
                         else
                             rct.ToggleRestriction(vehicleType);		
                     }

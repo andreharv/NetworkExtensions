@@ -43,7 +43,7 @@ namespace Transit.Framework.Hooks.AI.Units
                 PathUnit.Position endPosB = default(PathUnit.Position);
                 SimulationManager instance2 = Singleton<SimulationManager>.instance;
                 uint path;
-                if (Singleton<PathManager>.instance.CreatePath(ExtendedVehicleType.Taxi, out path, ref instance2.m_randomizer, instance2.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, laneType, vehicleType, 20000f))
+                if (Singleton<PathManager>.instance.CreatePath(ExtendedUnitType.Taxi, out path, ref instance2.m_randomizer, instance2.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, laneType, vehicleType, 20000f))
                 {
                     if (vehicleData.m_path != 0u)
                     {

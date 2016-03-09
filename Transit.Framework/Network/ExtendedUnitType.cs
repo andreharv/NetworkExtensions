@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Transit.Framework.Network
 {
+    [Flags]
     public enum ExtendedUnitType : long
     {
         None                    = 0,
         Unknown                 = 1 << 0,
-        Bicycle                 = 1 << 1,
-        Pedestrian              = 1 << 2,
+        Pedestrian              = 1 << 1,
+        Bicycle                 = 1 << 2,
         PassengerCar            = 1 << 3,
         CargoTruck              = 1 << 4,
         Ambulance               = 1 << 5,

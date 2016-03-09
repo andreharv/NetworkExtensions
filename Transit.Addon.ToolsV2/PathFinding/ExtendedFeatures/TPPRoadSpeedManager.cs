@@ -8,9 +8,9 @@ namespace Transit.Addon.ToolsV2.PathFinding.ExtendedFeatures
 {
     public class TPPRoadSpeedManager : IRoadSpeedManager
     {
-        public float GetLaneSpeedLimit(ref NetSegment segment, NetInfo.Lane laneInfo, ExtendedVehicleType vehicleType)
+        public float GetLaneSpeedLimit(ref NetSegment segment, NetInfo.Lane laneInfo, ExtendedUnitType unitType)
         {
-            if ((vehicleType & TPPSupported.UNITS) == 0)
+            if ((unitType & TPPSupported.UNITS) == 0)
             {
                 return laneInfo.m_speedLimit;
             }

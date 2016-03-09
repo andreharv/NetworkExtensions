@@ -88,7 +88,7 @@ namespace Transit.Framework.Hooks.AI.Units
                 return true;
             }
             uint path;
-            bool createPathResult = Singleton<PathManager>.instance.CreatePath(ExtendedVehicleType.Bus | ExtendedVehicleType.Tram, out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, vehicleType, 20000f, false, true, true, skipQueue);
+            bool createPathResult = Singleton<PathManager>.instance.CreatePath(ExtendedUnitType.Bus | ExtendedUnitType.Tram, out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, vehicleType, 20000f, false, true, true, skipQueue);
             if (createPathResult)
             {
                 if (startPosA.m_segment != 0 && startPosB.m_segment != 0)

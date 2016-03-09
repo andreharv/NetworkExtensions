@@ -718,20 +718,20 @@ namespace CSL_Traffic
 
 		bool AnyLaneSelected { get { return m_selectedLaneMarkers.Count > 0; } }
 
-		public ExtendedVehicleType GetCurrentVehicleRestrictions()
+		public ExtendedUnitType GetCurrentVehicleRestrictions()
 		{
 			if (!AnyLaneSelected)
-				return ExtendedVehicleType.None;
+				return ExtendedUnitType.None;
 
 			return TPPLaneDataManager.GetVehicleRestrictions(m_selectedLaneMarkers[0].m_lane);
 		}
 
-		public ExtendedVehicleType ToggleRestriction(ExtendedVehicleType vehicleType)
+		public ExtendedUnitType ToggleRestriction(ExtendedUnitType vehicleType)
 		{
 			if (!AnyLaneSelected)
-				return ExtendedVehicleType.None;
+				return ExtendedUnitType.None;
 
-			ExtendedVehicleType vehicleRestrictions = TPPLaneDataManager.GetVehicleRestrictions(m_selectedLaneMarkers[0].m_lane);
+			ExtendedUnitType vehicleRestrictions = TPPLaneDataManager.GetVehicleRestrictions(m_selectedLaneMarkers[0].m_lane);
 			vehicleRestrictions ^= vehicleType;
 
 			foreach (SegmentLaneMarker lane in m_selectedLaneMarkers)

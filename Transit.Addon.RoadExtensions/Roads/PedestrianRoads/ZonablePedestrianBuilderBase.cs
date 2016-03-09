@@ -71,13 +71,13 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
                         info.m_lanes[3].m_width = 2f;
                         info.m_lanes[3].m_stopType = VehicleInfo.VehicleType.None;
 
-                        info.m_lanes[1] = new ExtendedNetInfoLane(info.m_lanes[1], ExtendedVehicleType.ServiceVehicles);
+                        info.m_lanes[1] = new ExtendedNetInfoLane(info.m_lanes[1], ExtendedUnitType.ServiceVehicles);
                         info.m_lanes[1].m_position = -1.25f;
                         info.m_lanes[1].m_speedLimit = 0.3f;
                         info.m_lanes[1].m_stopType = VehicleInfo.VehicleType.None;
                         info.m_lanes[1].m_laneType = NetInfo.LaneType.Vehicle;
 
-                        info.m_lanes[2] = new ExtendedNetInfoLane(info.m_lanes[2], ExtendedVehicleType.ServiceVehicles);
+                        info.m_lanes[2] = new ExtendedNetInfoLane(info.m_lanes[2], ExtendedUnitType.ServiceVehicles);
                         info.m_lanes[2].m_position = 1.25f;
                         info.m_lanes[2].m_speedLimit = 0.3f;
                         info.m_lanes[2].m_stopType = VehicleInfo.VehicleType.None;
@@ -94,7 +94,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
                         lanes[0].m_laneProps = null;
 
                         // Backward Lane
-                        lanes[1] = new ExtendedNetInfoLane(ExtendedVehicleType.ServiceVehicles);
+                        lanes[1] = new ExtendedNetInfoLane(ExtendedUnitType.ServiceVehicles);
                         lanes[1].m_position = -1.5f;
                         lanes[1].m_width = 2f;
                         lanes[1].m_speedLimit = 0.3f;
@@ -104,7 +104,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
                         lanes[1].m_vehicleType = VehicleInfo.VehicleType.Car;
 
                         // Forward Lane
-                        lanes[2] = new ExtendedNetInfoLane(ExtendedVehicleType.ServiceVehicles);
+                        lanes[2] = new ExtendedNetInfoLane(ExtendedUnitType.ServiceVehicles);
                         lanes[2].m_position = 1.5f;
                         lanes[2].m_width = 2f;
                         lanes[2].m_speedLimit = 0.3f;

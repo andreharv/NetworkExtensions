@@ -3,14 +3,14 @@ namespace Transit.Framework.Network
 {
     public class ExtendedNetInfoLane : NetInfo.Lane
     {
-        public ExtendedVehicleType AllowedVehicleTypes { get; private set; }
+        public ExtendedUnitType AllowedVehicleTypes { get; private set; }
 
-        public ExtendedNetInfoLane(ExtendedVehicleType vehicleTypes)
+        public ExtendedNetInfoLane(ExtendedUnitType vehicleTypes)
         {
             this.AllowedVehicleTypes = vehicleTypes;
         }
 
-        public ExtendedNetInfoLane(NetInfo.Lane lane, ExtendedVehicleType vehicleTypes)
+        public ExtendedNetInfoLane(NetInfo.Lane lane, ExtendedUnitType vehicleTypes)
         {
             this.AllowedVehicleTypes = vehicleTypes;
             this.ShallowCloneFrom(lane);

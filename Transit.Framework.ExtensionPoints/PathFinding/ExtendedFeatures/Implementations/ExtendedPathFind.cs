@@ -99,8 +99,8 @@ namespace Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Impleme
         protected VehicleInfo.VehicleType m_vehicleTypes;
 
         // TAM Extensions
-        private ExtendedVehicleType m_vehicleTypeExtended = ExtendedVehicleType.Unknown;
-        private readonly Dictionary<uint, ExtendedVehicleType> m_pathVehicleType = new Dictionary<uint, ExtendedVehicleType>();
+        private ExtendedUnitType m_vehicleTypeExtended = ExtendedUnitType.Unknown;
+        private readonly Dictionary<uint, ExtendedUnitType> m_pathVehicleType = new Dictionary<uint, ExtendedUnitType>();
         // TAM Extensions
 
         public virtual void OnAwake()
@@ -139,7 +139,7 @@ namespace Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Impleme
             }
         }
 
-        public virtual bool CalculatePath(ExtendedVehicleType vehicleType, uint unit, bool skipQueue)
+        public virtual bool CalculatePath(ExtendedUnitType vehicleType, uint unit, bool skipQueue)
         {
             if (Singleton<PathManager>.instance.AddPathReference(unit))
             {
@@ -227,7 +227,7 @@ namespace Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Impleme
 
             if (!m_pathVehicleType.TryGetValue(unit, out m_vehicleTypeExtended))
             {
-                this.m_vehicleTypeExtended = ExtendedVehicleType.Unknown;
+                this.m_vehicleTypeExtended = ExtendedUnitType.Unknown;
             }
 
             int num = (int)(this.m_pathUnits.m_buffer[(int)((UIntPtr)unit)].m_positionCount & 15);

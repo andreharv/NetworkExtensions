@@ -1,80 +1,76 @@
-﻿using System;
+﻿using System.Linq;
+using ICities;
+using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using CSL_Traffic;
-using ICities;
-using UnityEngine;
+using Transit.Framework.Serialization;
 
 namespace Transit.Addon.ToolsV2.Data
 {
     public class TPPLaneDataSerializer : SerializableDataExtensionBase
     {
-        private const string LANE_DATA_ID = "Traffic++_RoadManager_Lanes";
+        private const string LANE_DATAV1_ID = "Traffic++_RoadManager_Lanes";
+        private const string LANE_DATAV2_ID = "Traffic++V2_RoadManager_Lanes";
             
         public override void OnLoadData()
         {
-            if ((ToolModuleV2.ActiveOptions & ModOptions.RoadCustomizerTool) == ModOptions.None)
-                return;
+            var dataV1 = new DataSerializer<TPPLaneDataV1[], TPPLaneDataSerializationBinder>(LANE_DATAV1_ID).DeserializeData(serializableDataManager);
+            var dataV2 = new DataSerializer<TPPLaneDataV2[], TPPLaneDataSerializationBinder>(LANE_DATAV2_ID).DeserializeData(serializableDataManager);
 
-            try
+            TPPLaneDataManager.sm_lanes = null;
+
+            if (dataV2 != null)
             {
-                Logger.LogInfo("Loading road data. Time: " + Time.realtimeSinceStartup);
-                byte[] data = serializableDataManager.LoadData(LANE_DATA_ID);
-                if (data == null)
+                TPPLaneDataManager.sm_lanes = dataV2;
+            }
+            else
+            {
+                if (dataV1 != null)
                 {
-                    Logger.LogInfo("No road data to load.");
-                    return;
-                }
-
-                using (var memStream = new MemoryStream())
-                {
-                    memStream.Write(data, 0, data.Length);
-                    memStream.Position = 0;
-
-                    var binaryFormatter = new BinaryFormatter()
-                    {
-                        Binder = new TPPLaneDataSerializationBinder()
-                    };
-                    TPPLaneDataManager.sm_lanes = (TPPLaneData[]) binaryFormatter.Deserialize(memStream);
-                }
-
-                foreach (TPPLaneData lane in TPPLaneDataManager.sm_lanes)
-                {
-                    if (lane == null)
-                        continue;
-
-                    lane.UpdateArrows();
-
-                    if (lane.m_speed == 0)
-                    {
-                        NetSegment segment = NetManager.instance.m_segments.m_buffer[NetManager.instance.m_lanes.m_buffer[lane.m_laneId].m_segment];
-                        NetInfo info = segment.Info;
-                        uint l = segment.m_lanes;
-                        int n = 0;
-                        while (l != lane.m_laneId && n < info.m_lanes.Length)
+                    TPPLaneDataManager.sm_lanes = dataV1
+                        .Select(d =>
                         {
-                            l = NetManager.instance.m_lanes.m_buffer[l].m_nextLane;
-                            n++;
-                        }
+                            if (d == null)
+                            {
+                                return null;
+                            }
+                            else
+                            {
+                                return d.ConvertToV2();
+                            }
+                        })
+                        .ToArray();
+                }
+            }
 
-                        if (n < info.m_lanes.Length)
-                            lane.m_speed = info.m_lanes[n].m_speedLimit;
+            if (TPPLaneDataManager.sm_lanes == null)
+            {
+                TPPLaneDataManager.sm_lanes = new TPPLaneDataV2[NetManager.MAX_LANE_COUNT];
+            }
+
+            foreach (TPPLaneDataV2 lane in TPPLaneDataManager.sm_lanes)
+            {
+                if (lane == null)
+                    continue;
+
+                lane.UpdateArrows();
+
+                if (lane.m_speed == 0)
+                {
+                    NetSegment segment = NetManager.instance.m_segments.m_buffer[NetManager.instance.m_lanes.m_buffer[lane.m_laneId].m_segment];
+                    NetInfo info = segment.Info;
+                    uint l = segment.m_lanes;
+                    int n = 0;
+                    while (l != lane.m_laneId && n < info.m_lanes.Length)
+                    {
+                        l = NetManager.instance.m_lanes.m_buffer[l].m_nextLane;
+                        n++;
                     }
 
+                    if (n < info.m_lanes.Length)
+                        lane.m_speed = info.m_lanes[n].m_speedLimit;
                 }
 
-                Logger.LogInfo("Finished loading road data. Time: " + Time.realtimeSinceStartup);
-            }
-            catch (Exception e)
-            {
-                Logger.LogError("Unexpected " + e.GetType().Name + " loading road data.");
-            }
-            finally
-            {
-                if (TPPLaneDataManager.sm_lanes == null)
-                {
-                    TPPLaneDataManager.sm_lanes = new TPPLaneData[NetManager.MAX_LANE_COUNT];
-                }
             }
         }
 
@@ -89,7 +85,7 @@ namespace Transit.Addon.ToolsV2.Data
             try
             {
                 binaryFormatter.Serialize(memStream, TPPLaneDataManager.sm_lanes);
-                serializableDataManager.SaveData(LANE_DATA_ID, memStream.ToArray());
+                serializableDataManager.SaveData(LANE_DATAV2_ID, memStream.ToArray());
                 Logger.LogInfo("Finished saving road data!");
             }
             catch (Exception e)

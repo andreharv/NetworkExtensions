@@ -2,21 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using CSL_Traffic;
-using Transit.Framework.Network;
 using UnityEngine;
 
 namespace Transit.Addon.ToolsV2.Data
 {
     [Serializable]
-    public class TPPLaneData
+    public class TPPLaneDataV1
     {
         public const ushort CONTROL_BIT = 2048;
 
         public uint m_laneId;
         public ushort m_nodeId;
-        private List<uint> m_laneConnections = new List<uint>();
-        public ExtendedVehicleType m_vehicleTypes = ExtendedVehicleType.All;
+        public List<uint> m_laneConnections = new List<uint>();
+        public TPPVehicleType m_vehicleTypes = TPPVehicleType.All;
         public float m_speed = 1f;            
 
         public bool AddConnection(uint laneId)
@@ -224,6 +222,18 @@ namespace Transit.Addon.ToolsV2.Data
 
                 laneId = NetManager.instance.m_lanes.m_buffer[laneId].m_nextLane;
             }
+        }
+
+        public TPPLaneDataV2 ConvertToV2()
+        {
+            return new TPPLaneDataV2()
+            {
+                m_laneId = m_laneId,
+                m_nodeId = m_nodeId,
+                m_laneConnections = m_laneConnections,
+                m_unitTypes = m_vehicleTypes.ToExtendedUnitType(),
+                m_speed = m_speed,
+            };
         }
     }
 }

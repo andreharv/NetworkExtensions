@@ -55,7 +55,9 @@
     <Compile Include="AI\Redirections\CustomCargoTruckAI.cs" />
     <Compile Include="AI\Redirections\CustomPassengerCarAI.cs" />
     <Compile Include="AI\Redirections\CustomVehicleAI.cs" />
-    <Compile Include="Data\TPPLaneData.cs" />
+    <Compile Include="Data\TPPVehicleType.cs" />
+    <Compile Include="Data\TPPLaneDataV2.cs" />
+    <Compile Include="Data\TPPLaneDataV1.cs" />
     <Compile Include="Data\TPPLaneDataManager.cs" />
     <Compile Include="Data\TPPLaneDataSerializationBinder.cs" />
     <Compile Include="Data\TPPLaneDataSerializer.cs" />

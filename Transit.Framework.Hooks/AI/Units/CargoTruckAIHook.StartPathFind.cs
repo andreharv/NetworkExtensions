@@ -17,7 +17,7 @@ namespace Transit.Framework.Hooks.AI.Units
         {
             if ((vehicleData.m_flags & (Vehicle.Flags.TransferToSource | Vehicle.Flags.GoingBack)) != Vehicle.Flags.None)
             {
-                return this.StartPathFind(ExtendedVehicleType.CargoTruck, vehicleID, ref vehicleData, startPos, endPos, startBothWays, endBothWays, undergroundTarget, this.IsHeavyVehicle(), this.IgnoreBlocked(vehicleID, ref vehicleData));
+                return this.StartPathFind(ExtendedUnitType.CargoTruck, vehicleID, ref vehicleData, startPos, endPos, startBothWays, endBothWays, undergroundTarget, this.IsHeavyVehicle(), this.IgnoreBlocked(vehicleID, ref vehicleData));
             }
             bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != Vehicle.Flags.None;
             PathUnit.Position startPosA;
@@ -74,7 +74,7 @@ namespace Transit.Framework.Hooks.AI.Units
                 NetInfo.LaneType laneTypes = NetInfo.LaneType.Vehicle | NetInfo.LaneType.CargoVehicle;
                 VehicleInfo.VehicleType vehicleTypes = VehicleInfo.VehicleType.Car | VehicleInfo.VehicleType.Train | VehicleInfo.VehicleType.Ship;
                 uint path;
-                if (instance.CreatePath(ExtendedVehicleType.CargoTruck, out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, laneTypes, vehicleTypes, 20000f, this.IsHeavyVehicle(), this.IgnoreBlocked(vehicleID, ref vehicleData), false, false))
+                if (instance.CreatePath(ExtendedUnitType.CargoTruck, out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, laneTypes, vehicleTypes, 20000f, this.IsHeavyVehicle(), this.IgnoreBlocked(vehicleID, ref vehicleData), false, false))
                 {
                     if (vehicleData.m_path != 0u)
                     {

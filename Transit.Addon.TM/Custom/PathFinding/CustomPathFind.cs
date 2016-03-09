@@ -136,7 +136,7 @@ namespace TrafficManager.Custom.PathFinding {
 			}
         }
 
-	    public bool CalculatePath(ExtendedVehicleType vehicleType, uint unit, bool skipQueue)
+	    public bool CalculatePath(ExtendedUnitType vehicleType, uint unit, bool skipQueue)
 	    {
             // TODO: translate ExtendedVehicleType into ExtVehicleType
             throw new Exception("translate ExtendedVehicleType into ExtVehicleType");

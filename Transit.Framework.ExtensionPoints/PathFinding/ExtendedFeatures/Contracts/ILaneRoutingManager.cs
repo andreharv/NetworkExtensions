@@ -5,6 +5,6 @@ namespace Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Contrac
 {
     public interface ILaneRoutingManager
     {
-        bool CanLanesConnect(ushort nodeId, uint originLaneId, uint destinationLaneId, ExtendedVehicleType vehicleType);
+        bool CanLanesConnect(ushort nodeId, uint originLaneId, uint destinationLaneId, ExtendedUnitType vehicleType);
     }
 }

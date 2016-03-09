@@ -8,7 +8,7 @@ namespace Transit.Addon.ToolsV2.PathFinding.ExtendedFeatures
 {
     public class TPPLaneRoutingManager : ILaneRoutingManager
     {
-        public bool CanLanesConnect(ushort nodeId, uint originLaneId, uint destinationLaneId, ExtendedVehicleType vehicleType)
+        public bool CanLanesConnect(ushort nodeId, uint originLaneId, uint destinationLaneId, ExtendedUnitType vehicleType)
         {
             if ((vehicleType & TPPSupported.UNITS) == 0)
             {

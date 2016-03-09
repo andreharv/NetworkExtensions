@@ -5,11 +5,11 @@ namespace Transit.Addon.ToolsV2.Data
 {
     public static class TPPLaneDataManager
     {
-        internal static TPPLaneData[] sm_lanes = null;
+        internal static TPPLaneDataV2[] sm_lanes = null;
 
-        public static TPPLaneData CreateLane(uint laneId)
+        public static TPPLaneDataV2 CreateLane(uint laneId)
         {
-            TPPLaneData lane = new TPPLaneData()
+            TPPLaneDataV2 lane = new TPPLaneDataV2()
             {
                 m_laneId = laneId
             };
@@ -30,22 +30,22 @@ namespace Transit.Addon.ToolsV2.Data
             {
                 ExtendedNetInfoLane netInfoLane = netInfo.m_lanes[laneIndex] as ExtendedNetInfoLane;
                 if (netInfoLane != null)
-                    lane.m_vehicleTypes = netInfoLane.AllowedVehicleTypes;
+                    lane.m_unitTypes = netInfoLane.AllowedVehicleTypes;
 
                 lane.m_speed = netInfo.m_lanes[laneIndex].m_speedLimit;
             }
 
-            NetManager.instance.m_lanes.m_buffer[laneId].m_flags |= TPPLaneData.CONTROL_BIT;
+            NetManager.instance.m_lanes.m_buffer[laneId].m_flags |= TPPLaneDataV2.CONTROL_BIT;
 
             sm_lanes[laneId] = lane;
 
             return lane;
         }
 
-        public static TPPLaneData GetLane(uint laneId)
+        public static TPPLaneDataV2 GetLane(uint laneId)
         {
-            TPPLaneData lane = sm_lanes[laneId];
-            if (lane == null || (NetManager.instance.m_lanes.m_buffer[laneId].m_flags & TPPLaneData.CONTROL_BIT) == 0)
+            TPPLaneDataV2 lane = sm_lanes[laneId];
+            if (lane == null || (NetManager.instance.m_lanes.m_buffer[laneId].m_flags & TPPLaneDataV2.CONTROL_BIT) == 0)
                 lane = CreateLane(laneId);
 
             return lane;
@@ -54,7 +54,7 @@ namespace Transit.Addon.ToolsV2.Data
         #region Lane Connections
         public static bool AddLaneConnection(uint laneId, uint connectionId)
         {
-            TPPLaneData lane = GetLane(laneId);
+            TPPLaneDataV2 lane = GetLane(laneId);
             GetLane(connectionId); // makes sure lane information is stored
 
             return lane.AddConnection(connectionId);
@@ -62,26 +62,26 @@ namespace Transit.Addon.ToolsV2.Data
 
         public static bool RemoveLaneConnection(uint laneId, uint connectionId)
         {
-            TPPLaneData lane = GetLane(laneId);
+            TPPLaneDataV2 lane = GetLane(laneId);
 
             return lane.RemoveConnection(connectionId);
         }
 
         public static uint[] GetLaneConnections(uint laneId)
         {
-            TPPLaneData lane = GetLane(laneId);
+            TPPLaneDataV2 lane = GetLane(laneId);
 
             return lane.GetConnectionsAsArray();
         }
 
-        private const ExtendedVehicleType sm_routedUnits =
-            ExtendedVehicleType.ServiceVehicles |
-            ExtendedVehicleType.PassengerCar |
-            ExtendedVehicleType.CargoTruck |
-            ExtendedVehicleType.Bus |
-            ExtendedVehicleType.Taxi;
+        private const ExtendedUnitType sm_routedUnits =
+            ExtendedUnitType.ServiceVehicles |
+            ExtendedUnitType.PassengerCar |
+            ExtendedUnitType.CargoTruck |
+            ExtendedUnitType.Bus |
+            ExtendedUnitType.Taxi;
 
-        public static bool CheckLaneConnection(this NetInfo.Lane laneInfo, ExtendedVehicleType vehicleType, uint from, uint to)
+        public static bool CheckLaneConnection(this NetInfo.Lane laneInfo, ExtendedUnitType vehicleType, uint from, uint to)
         {
             if ((vehicleType & sm_routedUnits) == 0)
             {
@@ -99,14 +99,14 @@ namespace Transit.Addon.ToolsV2.Data
                 return true;
             }
 
-            TPPLaneData lane = GetLane(from);
+            TPPLaneDataV2 lane = GetLane(from);
 
             return lane.ConnectsTo(to);
         }
         #endregion
 
         #region Vehicle Restrictions
-        public static bool CanUseLane(this NetInfo.Lane laneInfo, ExtendedVehicleType vehicleType, uint laneId)
+        public static bool CanUseLane(this NetInfo.Lane laneInfo, ExtendedUnitType vehicleType, uint laneId)
         {
             if ((vehicleType & sm_routedUnits) == 0)
             {
@@ -124,22 +124,22 @@ namespace Transit.Addon.ToolsV2.Data
                 return true;
             }
 
-            return (GetLane(laneId).m_vehicleTypes & vehicleType) != ExtendedVehicleType.None;
+            return (GetLane(laneId).m_unitTypes & vehicleType) != ExtendedUnitType.None;
         }
 
-        public static ExtendedVehicleType GetVehicleRestrictions(uint laneId)
+        public static ExtendedUnitType GetVehicleRestrictions(uint laneId)
         {
-            return GetLane(laneId).m_vehicleTypes;
+            return GetLane(laneId).m_unitTypes;
         }
 
-        public static void SetVehicleRestrictions(uint laneId, ExtendedVehicleType vehicleRestrictions)
+        public static void SetVehicleRestrictions(uint laneId, ExtendedUnitType vehicleRestrictions)
         {
-            GetLane(laneId).m_vehicleTypes = vehicleRestrictions;
+            GetLane(laneId).m_unitTypes = vehicleRestrictions;
         }
 
-        public static void ToggleVehicleRestriction(uint laneId, ExtendedVehicleType vehicleType)
+        public static void ToggleVehicleRestriction(uint laneId, ExtendedUnitType vehicleType)
         {
-            GetLane(laneId).m_vehicleTypes ^= vehicleType;
+            GetLane(laneId).m_unitTypes ^= vehicleType;
         }
 
         #endregion

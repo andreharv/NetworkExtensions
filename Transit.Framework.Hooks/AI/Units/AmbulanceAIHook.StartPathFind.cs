@@ -12,9 +12,9 @@ namespace Transit.Framework.Hooks.AI.Units
         [RedirectFrom(typeof(AmbulanceAI), (ulong)PrerequisiteType.PathFinding)]
         protected override bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget)
         {
-            ExtendedVehicleType vehicleType = ExtendedVehicleType.Ambulance;
+            ExtendedUnitType vehicleType = ExtendedUnitType.Ambulance;
             if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) != Vehicle.Flags.None)
-                vehicleType |= ExtendedVehicleType.Emergency;
+                vehicleType |= ExtendedUnitType.Emergency;
 
             VehicleInfo info = this.m_info;
             bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != Vehicle.Flags.None;

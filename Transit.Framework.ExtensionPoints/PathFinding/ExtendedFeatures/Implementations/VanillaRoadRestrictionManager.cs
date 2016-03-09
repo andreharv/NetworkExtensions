@@ -5,7 +5,7 @@ namespace Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Impleme
 {
     public class VanillaRoadRestrictionManager : IRoadRestrictionManager
     {
-        public bool CanUseLane(uint laneId, ExtendedVehicleType vehicleType)
+        public bool CanUseLane(uint laneId, ExtendedUnitType vehicleType)
         {
             return true;
         }

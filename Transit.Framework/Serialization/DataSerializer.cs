@@ -6,11 +6,16 @@ using ICities;
 
 namespace Transit.Framework.Serialization
 {
-    public abstract class DataSerializer<TData, TBinder> : IDataSerializer<TData>
+    public class DataSerializer<TData, TBinder> : IDataSerializer<TData>
         where TData : class
         where TBinder : SerializationBinder, new()
     {
-        public abstract string DataId { get; }
+        public string DataId { get; private set; }
+
+        public DataSerializer(string dataId)
+        {
+            DataId = dataId;
+        }
 
         public TData DeserializeData(ISerializableData gameData)
         {
@@ -37,7 +42,7 @@ namespace Transit.Framework.Serialization
             }
             catch (Exception e)
             {
-                UnityEngine.Debug.Log(string.Format("TFW: Crashed-Loading Routing configurations"));
+                UnityEngine.Debug.Log(string.Format("TFW: Crashed-Loading Data of type " + typeof(TData).Name));
                 UnityEngine.Debug.Log("TFW: " + e.Message);
                 UnityEngine.Debug.Log("TFW: " + e.ToString());
 
