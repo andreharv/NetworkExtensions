@@ -251,9 +251,11 @@ namespace TrafficManager.UI.SubTools {
 		}
 
 		private bool drawVehicleRestrictionHandles(ushort segmentId, bool viewOnly) {
-			if (!TrafficManagerModule.IsPathManagerCompatible) {
+#if !TAM
+            if (!TrafficManagerModule.IsPathManagerCompatible) {
 				return false;
 			}
+#endif
 
 			if (viewOnly && !Options.vehicleRestrictionsOverlay && TrafficManagerTool.GetToolMode() != ToolMode.VehicleRestrictions)
 				return false;

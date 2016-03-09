@@ -45,41 +45,5 @@ namespace TrafficManager.Custom.AI
 			}
 			return 0;
 		}
-
-		public bool CustomStartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget) {
-			VehicleInfo info = this.m_info;
-			ushort driverInstance = CustomPassengerCarAI.GetDriverInstance(vehicleID, ref vehicleData);
-			if (driverInstance == 0) {
-				return false;
-			}
-			CitizenManager instance = Singleton<CitizenManager>.instance;
-			CitizenInfo info2 = instance.m_instances.m_buffer[(int)driverInstance].Info;
-			NetInfo.LaneType laneTypes = NetInfo.LaneType.Vehicle | NetInfo.LaneType.Pedestrian;
-			VehicleInfo.VehicleType vehicleType = this.m_info.m_vehicleType;
-			bool allowUnderground = (vehicleData.m_flags & Vehicle.Flags.Underground) != Vehicle.Flags.None;
-			PathUnit.Position startPosA;
-			PathUnit.Position startPosB;
-			float num;
-			float num2;
-			PathUnit.Position endPosA;
-			if (CustomPathManager.FindPathPosition(startPos, ItemClass.Service.Road, NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, info.m_vehicleType, allowUnderground, false, 32f, out startPosA, out startPosB, out num, out num2) &&
-				info2.m_citizenAI.FindPathPosition(driverInstance, ref instance.m_instances.m_buffer[(int)driverInstance], endPos, laneTypes, vehicleType, undergroundTarget, out endPosA)) {
-				if (!startBothWays || num < 10f) {
-					startPosB = default(PathUnit.Position);
-				}
-				PathUnit.Position endPosB = default(PathUnit.Position);
-				SimulationManager instance2 = Singleton<SimulationManager>.instance;
-				uint path;
-				if (Singleton<CustomPathManager>.instance.CreatePath(ExtVehicleType.PassengerCar, out path, ref instance2.m_randomizer, instance2.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, laneTypes, vehicleType, 20000f)) {
-					if (vehicleData.m_path != 0u) {
-						Singleton<PathManager>.instance.ReleasePath(vehicleData.m_path);
-					}
-					vehicleData.m_path = path;
-					vehicleData.m_flags |= Vehicle.Flags.WaitingPath;
-					return true;
-				}
-			}
-			return false;
-		}
 	}
 }

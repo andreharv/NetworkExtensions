@@ -115,9 +115,11 @@ namespace TrafficManager.UI.SubTools {
 		}
 
 		private bool drawSpeedLimitHandles(ushort segmentId, bool viewOnly) {
-			if (!TrafficManagerModule.IsPathManagerCompatible) {
+#if !TAM
+            if (!TrafficManagerModule.IsPathManagerCompatible) {
 				return false;
 			}
+#endif
 
 			if (viewOnly && !Options.speedLimitsOverlay)
 				return false;

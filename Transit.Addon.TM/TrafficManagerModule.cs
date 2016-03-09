@@ -8,7 +8,7 @@ namespace TrafficManager
     [Module("Transit.Addon.Mod")]
     public partial class TrafficManagerModule : ModuleBase
     {
-		public override string Name => "Traffic Manager: President Edition";
+		public override string Name => "Traffic Manager";
 
 		public override void OnEnabled() {
 			Log._Debug("TrafficManagerMod Enabled");

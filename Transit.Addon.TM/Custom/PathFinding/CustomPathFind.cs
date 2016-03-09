@@ -730,7 +730,7 @@ namespace TrafficManager.Custom.PathFinding {
 					logBuf.Add($"Exploring path! Segment {item.m_position.m_segment} @ node {nextNodeId}: Preparation started");
 #endif
 
-				CustomPathManager pathManager = Singleton<CustomPathManager>.instance;
+				PathManager pathManager = Singleton<PathManager>.instance;
 				bool nextIsJunction = (nextNode.m_flags & NetNode.Flags.Junction) != NetNode.Flags.None;
 				bool nextIsRealJunction = nextNode.CountSegments() > 2;
 				bool nextIsTransition = (nextNode.m_flags & NetNode.Flags.Transition) != NetNode.Flags.None;

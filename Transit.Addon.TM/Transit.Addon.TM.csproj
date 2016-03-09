@@ -25,7 +25,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;TAM</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -54,24 +54,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Custom\AI\CustomAmbulanceAI.cs" />
-    <Compile Include="Custom\AI\CustomBusAI.cs" />
     <Compile Include="Custom\AI\CustomCarAI.cs" />
     <Compile Include="Custom\AI\CustomCargoTruckAI.cs" />
     <Compile Include="Custom\AI\CustomCitizenAI.cs" />
-    <Compile Include="Custom\AI\CustomFireTruckAI.cs" />
     <Compile Include="Custom\AI\CustomHumanAI.cs" />
     <Compile Include="Custom\AI\CustomPassengerCarAI.cs" />
-    <Compile Include="Custom\AI\CustomPoliceCarAI.cs" />
     <Compile Include="Custom\AI\CustomResidentAI.cs" />
     <Compile Include="Custom\AI\CustomRoadAI.cs" />
-    <Compile Include="Custom\AI\CustomTaxiAI.cs" />
     <Compile Include="Custom\AI\CustomTrainAI.cs" />
     <Compile Include="Custom\AI\CustomTramBaseAI.cs" />
-    <Compile Include="Custom\AI\CustomTransportLineAI.cs" />
     <Compile Include="Custom\AI\CustomVehicleAI.cs" />
     <Compile Include="Custom\PathFinding\CustomPathFind.cs" />
-    <Compile Include="Custom\PathFinding\CustomPathManager.cs" />
     <Compile Include="TrafficManagerModule.Loading.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
