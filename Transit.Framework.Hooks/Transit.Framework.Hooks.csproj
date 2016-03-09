@@ -71,8 +71,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\GeneratedGroupPanelHook.cs" />
     <Compile Include="UI\RoadsGroupPanelHook.cs" />
-    <Compile Include="UI\GameMainToolbarHook.SpawnSubEntry.cs" />
-    <Compile Include="UI\GameMainToolbarHook.RefreshPanel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Transit.Framework.ExtensionPoints\Transit.Framework.ExtensionPoints.csproj">
