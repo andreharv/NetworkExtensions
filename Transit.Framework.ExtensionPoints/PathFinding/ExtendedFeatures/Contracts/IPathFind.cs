@@ -13,7 +13,7 @@ namespace Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Contrac
 
         Thread PathFindThread { get; }
 
-        bool CalculatePath(uint unit, bool skipQueue, ExtendedVehicleType vehicleType);
+        bool CalculatePath(ExtendedVehicleType vehicleType, uint unit, bool skipQueue);
 
         void WaitForAllPaths();
     }

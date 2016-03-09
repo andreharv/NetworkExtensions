@@ -114,7 +114,7 @@ namespace Transit.Framework.ExtensionPoints.PathFinding
                     pathFindFacade = pathFind2;
                 }
             }
-            if (pathFindFacade != null && pathFindFacade.CalculatePath(unit, skipQueue, extendedVehicleType))
+            if (pathFindFacade != null && pathFindFacade.CalculatePath(extendedVehicleType, unit, skipQueue))
             {
                 return true;
             }

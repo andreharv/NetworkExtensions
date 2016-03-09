@@ -140,7 +140,7 @@ namespace Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Impleme
 			}
 		}
 
-        public virtual bool CalculatePath(uint unit, bool skipQueue, ExtendedVehicleType vehicleType)
+        public virtual bool CalculatePath(ExtendedVehicleType vehicleType, uint unit, bool skipQueue)
 		{
 			if (Singleton<PathManager>.instance.AddPathReference(unit))
 			{

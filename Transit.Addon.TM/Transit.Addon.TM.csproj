@@ -378,6 +378,10 @@
     <EmbeddedResource Include="Resources\tram_infosign.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Transit.Framework.ExtensionPoints\Transit.Framework.ExtensionPoints.csproj">
+      <Project>{2e44eca3-d750-4115-b16b-fca94c49bba0}</Project>
+      <Name>Transit.Framework.ExtensionPoints</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Transit.Framework.Redirection\Transit.Framework.Redirection.csproj">
       <Project>{7dcc08ef-dc85-47a4-bd6f-79fc52c7ef13}</Project>
       <Name>Transit.Framework.Redirection</Name>

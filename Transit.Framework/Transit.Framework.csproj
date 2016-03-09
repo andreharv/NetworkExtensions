@@ -64,6 +64,7 @@
     <Compile Include="Mod\TransitModBase.Install.cs" />
     <Compile Include="Mod\TransitModBase.Install.Localization.cs" />
     <Compile Include="Network\ExtendedNetInfoLane.cs" />
+    <Compile Include="Network\ExtendedUnitType.cs" />
     <Compile Include="Network\ExtendedVehicleType.cs" />
     <Compile Include="Network\NetInfoClasses.cs" />
     <Compile Include="Prerequisites\PrerequisiteType.cs" />

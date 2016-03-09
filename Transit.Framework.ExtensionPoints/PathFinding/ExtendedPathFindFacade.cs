@@ -30,9 +30,9 @@ namespace Transit.Framework.ExtensionPoints.PathFinding
             m_innerPathFind.OnDestroy();
 		}
 
-        public bool CalculatePath(uint unit, bool skipQueue, ExtendedVehicleType vehicleType)
+        public bool CalculatePath(ExtendedVehicleType vehicleType, uint unit, bool skipQueue)
         {
-            return m_innerPathFind.CalculatePath(unit, skipQueue, vehicleType);
+            return m_innerPathFind.CalculatePath(vehicleType, unit, skipQueue);
         }
         
         public new void WaitForAllPaths()
