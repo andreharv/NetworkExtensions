@@ -46,9 +46,6 @@
       <HintPath>..\References\ICities.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="NLog">
-      <HintPath>..\packages\NLog.4.2.2\lib\net35\NLog.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Cities_Skylines\Managed\System.Core.dll</HintPath>
@@ -82,11 +79,18 @@
     <Compile Include="Custom\AI\CustomPassengerCarAI.cs" />
     <Compile Include="Custom\AI\CustomRoadAI.cs" />
     <Compile Include="Custom\AI\CustomTrainAI.cs" />
-    <Compile Include="CustomNetTool.cs" />
     <Compile Include="Custom\PathFinding\CustomPathFind.cs" />
     <Compile Include="Custom\PathFinding\CustomPathManager.cs" />
     <Compile Include="Traffic\SegmentGeometry.cs" />
     <Compile Include="LoadingExtension.cs" />
+    <Compile Include="UI\SubTool.cs" />
+    <Compile Include="UI\SubTools\SpeedLimitsTool.cs" />
+    <Compile Include="UI\SubTools\VehicleRestrictionsTool.cs" />
+    <Compile Include="UI\SubTools\LaneArrowTool.cs" />
+    <Compile Include="UI\SubTools\TimedTrafficLightsTool.cs" />
+    <Compile Include="UI\SubTools\ManualTrafficLightsTool.cs" />
+    <Compile Include="UI\SubTools\PrioritySignsTool.cs" />
+    <Compile Include="UI\SubTools\ToggleTrafficLightsTool.cs" />
     <Compile Include="UI\Translation.cs" />
     <Compile Include="State\Options.cs" />
     <Compile Include="Traffic\Direction.cs" />
@@ -95,7 +99,6 @@
     <Compile Include="State\Flags.cs" />
     <Compile Include="Traffic\SegmentEnd.cs" />
     <Compile Include="Util\RedirectionHelper.cs" />
-    <Compile Include="SelfDestruct.cs" />
     <Compile Include="State\SerializableDataExtension.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="ThreadingExtension.cs" />
@@ -105,7 +108,7 @@
     <Compile Include="TrafficLight\TrafficLightSimulation.cs" />
     <Compile Include="TrafficLight\CustomTrafficLights.cs" />
     <Compile Include="TrafficLight\TimedTrafficLights.cs" />
-    <Compile Include="UI\TrafficLightTool.cs" />
+    <Compile Include="UI\TrafficManagerTool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\TrafficLightToolTextureResources.cs" />
     <Compile Include="TrafficManagerMod.cs" />
@@ -153,6 +156,8 @@
     <EmbeddedResource Include="Resources\sign_yield.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\lang_zh-tw.txt" />
+    <EmbeddedResource Include="Resources\lang_zh-cn.txt" />
     <EmbeddedResource Include="Resources\lang_es.txt" />
     <EmbeddedResource Include="Resources\lanechange_allowed.png" />
     <EmbeddedResource Include="Resources\lanechange_forbidden.png" />
@@ -194,9 +199,6 @@
     <EmbeddedResource Include="Resources\lang_ja.txt" />
     <EmbeddedResource Include="Resources\light_counter_ja.png" />
     <EmbeddedResource Include="Resources\light_mode_ja.png" />
-    <Content Include="NLog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <EmbeddedResource Include="Resources\0.png" />
     <EmbeddedResource Include="Resources\10.png" />
     <EmbeddedResource Include="Resources\100.png" />
@@ -214,10 +216,6 @@
     <EmbeddedResource Include="Resources\clock_test.png" />
     <EmbeddedResource Include="Resources\clock_play.png" />
     <EmbeddedResource Include="Resources\remove_signs.png" />
-    <None Include="NLog.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
