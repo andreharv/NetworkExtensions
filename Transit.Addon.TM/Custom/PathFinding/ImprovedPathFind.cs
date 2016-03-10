@@ -21,7 +21,7 @@ using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Contracts;
 using Transit.Framework.Network;
 
 namespace TrafficManager.Custom.PathFinding {
-	public class CustomPathFind : IPathFind
+	public class ImprovedPathFind : IPathFind
     {
         public ExtendedPathFindFacade Facade { get; set; }
 

@@ -64,7 +64,7 @@
     <Compile Include="Custom\AI\CustomTrainAI.cs" />
     <Compile Include="Custom\AI\CustomTramBaseAI.cs" />
     <Compile Include="Custom\AI\CustomVehicleAI.cs" />
-    <Compile Include="Custom\PathFinding\CustomPathFind.cs" />
+    <Compile Include="Custom\PathFinding\ImprovedPathFind.cs" />
     <Compile Include="TrafficManagerModule.Loading.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

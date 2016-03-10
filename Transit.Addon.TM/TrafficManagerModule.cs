@@ -16,13 +16,13 @@ namespace TrafficManager
 		public override void OnEnabled() {
 			Log._Debug("TrafficManagerMod Enabled");
 
-            ExtendedPathManager.instance.DefinePathFinding<CustomPathFind>();
+            ExtendedPathManager.instance.DefinePathFinding<ImprovedPathFind>();
         }
 
 		public override void OnDisabled() {
 			Log._Debug("TrafficManagerMod Disabled");
 
-            ExtendedPathManager.instance.ResetPathFinding<CustomPathFind>();
+            ExtendedPathManager.instance.ResetPathFinding<ImprovedPathFind>();
         }
 
 		public override void OnSettingsUI(UIHelperBase helper) {

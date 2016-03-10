@@ -13,9 +13,17 @@ namespace Transit.Framework.ExtensionPoints.PathFinding
 
         private Type _pathFindingType = typeof(VanillaPathFind);
 
-        public void DefinePathFinding<T>()
+        public void DefinePathFinding<T>(bool onlyIfVanilla = false)
             where T : IPathFind, new()
         {
+            if (onlyIfVanilla)
+            {
+                if (_pathFindingType != typeof (VanillaPathFind))
+                {
+                    return;
+                }
+            }
+
             _pathFindingType = typeof(T);
         }
 

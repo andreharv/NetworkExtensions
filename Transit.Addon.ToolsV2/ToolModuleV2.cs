@@ -58,7 +58,7 @@ namespace Transit.Addon.ToolsV2
                 sm_redirectionInstalled = true;
             }
 
-            ExtendedPathManager.instance.DefinePathFinding<ExtendedPathFind>();
+            ExtendedPathManager.instance.DefinePathFinding<ExtendedPathFind>(true /*Dont redefine if allready*/);
             ExtendedPathManager.instance.DefineLaneRoutingManager<TPPLaneRoutingManager>();
             ExtendedPathManager.instance.DefineRoadRestrictionManager<TPPRoadRestrictionManager>();
             ExtendedPathManager.instance.DefineRoadSpeedManager<TPPRoadSpeedManager>();
