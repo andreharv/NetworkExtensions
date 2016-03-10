@@ -64,6 +64,10 @@
     <Compile Include="Custom\AI\CustomTrainAI.cs" />
     <Compile Include="Custom\AI\CustomTramBaseAI.cs" />
     <Compile Include="Custom\AI\CustomVehicleAI.cs" />
+    <Compile Include="Custom\PathFindingFeatures\TMLaneRoutingManager.cs" />
+    <Compile Include="Custom\PathFindingFeatures\TMRoadRestrictionManager.cs" />
+    <Compile Include="Custom\PathFindingFeatures\TMRoadSpeedManager.cs" />
+    <Compile Include="Custom\PathFindingFeatures\TMSupported.cs" />
     <Compile Include="Custom\PathFinding\ImprovedPathFind.cs" />
     <Compile Include="TrafficManagerModule.Loading.cs" />
     <Compile Include="Log.cs" />
