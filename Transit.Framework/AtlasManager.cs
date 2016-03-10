@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using ColossalFramework;
 using ColossalFramework.UI;
 using Transit.Framework.Builders;
+using UnityEngine;
 
 namespace Transit.Framework
 {
@@ -29,15 +30,25 @@ namespace Transit.Framework
                 return;
             }
 
-            var builder = (IAtlasBuilder)Activator.CreateInstance(atlasBuilderType);
-            var atlas = builder.Build();
-
-            foreach (var atlasKey in builder.Keys)
+            try
             {
-                _atlases[atlasKey] = atlas;
+                var builder = (IAtlasBuilder)Activator.CreateInstance(atlasBuilderType);
+                var atlas = builder.Build();
+
+                foreach (var atlasKey in builder.Keys)
+                {
+                    _atlases[atlasKey] = atlas;
+                }
+
+                _atlasTypes.Add(atlasBuilderType);
+            }
+            catch (Exception e)
+            {
+                Debug.Log(string.Format("TFW: Crashed-Executing Atlas builder " + atlasBuilderType.Name));
+                Debug.Log("TFW: " + e.Message);
+                Debug.Log("TFW: " + e.ToString());
             }
 
-            _atlasTypes.Add(atlasBuilderType);
         }
 
         public UITextureAtlas GetAtlas(string atlasKey)

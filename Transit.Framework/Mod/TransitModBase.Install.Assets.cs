@@ -22,9 +22,12 @@ namespace Transit.Framework.Mod
 
         private void InstallAtlases()
         {
-            foreach (var type in Extensibility.GetImplementations<IAtlasBuilder>())
+            foreach (IModule module in Modules)
             {
-                AtlasManager.instance.Include(type);
+                foreach (var type in module.GetType().Assembly.GetImplementations<IAtlasBuilder>())
+                {
+                    AtlasManager.instance.Include(type);
+                }
             }
         }
 

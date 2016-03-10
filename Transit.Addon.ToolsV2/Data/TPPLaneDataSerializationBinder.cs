@@ -15,7 +15,7 @@ namespace Transit.Addon.ToolsV2.Data
 
             // Legacy
             if (typeName.Contains("Lane"))
-                return typeof(TPPLaneDataV2);
+                return typeof(TPPLaneDataV1);
             if (typeName.Contains("VehicleType"))
                 return typeof(TPPVehicleType);
 

@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Transit.Framework.Serialization;
+using UnityEngine;
 
 namespace Transit.Addon.ToolsV2.Data
 {
@@ -28,17 +29,7 @@ namespace Transit.Addon.ToolsV2.Data
                 if (dataV1 != null)
                 {
                     TPPLaneDataManager.sm_lanes = dataV1
-                        .Select(d =>
-                        {
-                            if (d == null)
-                            {
-                                return null;
-                            }
-                            else
-                            {
-                                return d.ConvertToV2();
-                            }
-                        })
+                        .Select(d => d == null ? null : d.ConvertToV2())
                         .ToArray();
                 }
             }
