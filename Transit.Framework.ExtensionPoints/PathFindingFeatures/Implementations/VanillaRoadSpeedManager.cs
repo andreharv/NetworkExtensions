@@ -1,7 +1,7 @@
-﻿using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Contracts;
+﻿using Transit.Framework.ExtensionPoints.PathFindingFeatures.Contracts;
 using Transit.Framework.Network;
 
-namespace Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Implementations
+namespace Transit.Framework.ExtensionPoints.PathFindingFeatures.Implementations
 {
     public class VanillaRoadSpeedManager : IRoadSpeedManager
     {

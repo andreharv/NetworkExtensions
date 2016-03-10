@@ -66,13 +66,12 @@
     <Compile Include="Menus\RoadCustomizer\RoadCustomizerGroupPanel.cs" />
     <Compile Include="Menus\RoadCustomizer\RoadCustomizerPanel.cs" />
     <Compile Include="Menus\RoadCustomizer\Textures\RoadCustomizerAtlasBuilder.cs" />
-    <Compile Include="PathFinding\ExtendedFeatures\TPPSupported.cs" />
-    <Compile Include="PathFinding\ExtendedFeatures\TPPLaneRoutingManager.cs" />
-    <Compile Include="PathFinding\ExtendedFeatures\TPPRoadSpeedManager.cs" />
+    <Compile Include="PathFindingFeatures\TPPSupported.cs" />
+    <Compile Include="PathFindingFeatures\TPPLaneRoutingManager.cs" />
+    <Compile Include="PathFindingFeatures\TPPRoadSpeedManager.cs" />
     <Compile Include="ToolModuleV2.cs" />
     <Compile Include="ToolModuleV2.Settings.cs" />
-    <Compile Include="PathFinding\ExtendedFeatures\TPPPathFind.cs" />
-    <Compile Include="PathFinding\ExtendedFeatures\TPPRoadRestrictionManager.cs" />
+    <Compile Include="PathFindingFeatures\TPPRoadRestrictionManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\RoadCustomizerTool.cs" />
   </ItemGroup>

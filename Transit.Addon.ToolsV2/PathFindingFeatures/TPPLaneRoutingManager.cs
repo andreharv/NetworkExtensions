@@ -1,10 +1,9 @@
-﻿using System;
-using Transit.Addon.ToolsV2.Data;
+﻿using Transit.Addon.ToolsV2.Data;
 using Transit.Framework;
-using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Contracts;
+using Transit.Framework.ExtensionPoints.PathFindingFeatures.Contracts;
 using Transit.Framework.Network;
 
-namespace Transit.Addon.ToolsV2.PathFinding.ExtendedFeatures
+namespace Transit.Addon.ToolsV2.PathFindingFeatures
 {
     public class TPPLaneRoutingManager : ILaneRoutingManager
     {

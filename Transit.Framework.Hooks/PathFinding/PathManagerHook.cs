@@ -27,13 +27,13 @@ namespace Transit.Framework.Hooks.PathFinding
             uint num;
             this.m_pathUnits.CreateItem(out num);
             int num2 = Mathf.Clamp(SystemInfo.processorCount / 2, 1, 4);
-            var facades = new ExtendedPathFindFacade[num2];
+            var facades = new TAMPathFindFacade[num2];
             for (int i = 0; i < num2; i++)
             {
-                facades[i] = base.gameObject.AddComponent<ExtendedPathFindFacade>();
+                facades[i] = base.gameObject.AddComponent<TAMPathFindFacade>();
             }
 
-            ExtendedPathManager.instance.PathFindFacades = facades;
+            TAMPathFindFacadeManager.instance.Facades = facades;
             typeof(PathManager)
                 .GetFieldByName("m_pathfinds")
                 .SetValue(this, facades.OfType<PathFind>().ToArray());
@@ -64,14 +64,14 @@ namespace Transit.Framework.Hooks.PathFinding
         [RedirectFrom(typeof(PathManager), (ulong)PrerequisiteType.PathFinding)]
         public new void WaitForAllPaths()
         {
-            if (ExtendedPathManager.instance.PathFindFacades == null)
+            if (TAMPathFindFacadeManager.instance.Facades == null)
             {
-                throw new Exception("ExtendedPathManager is not installed correctly");
+                throw new Exception("PathManagerHook is not installed correctly");
             }
 
-            for (int i = 0; i < ExtendedPathManager.instance.PathFindFacades.Length; i++)
+            for (int i = 0; i < TAMPathFindFacadeManager.instance.Facades.Length; i++)
             {
-                ExtendedPathManager.instance.PathFindFacades[i].WaitForAllPaths();
+                TAMPathFindFacadeManager.instance.Facades[i].WaitForAllPaths();
             }
         }
     }

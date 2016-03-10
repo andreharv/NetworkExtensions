@@ -1,10 +1,10 @@
 ﻿using System;
-using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Contracts;
-using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Implementations;
+using Transit.Framework.ExtensionPoints.PathFindingFeatures.Contracts;
+using Transit.Framework.ExtensionPoints.PathFindingFeatures.Implementations;
 
-namespace Transit.Framework.ExtensionPoints.PathFinding
+namespace Transit.Framework.ExtensionPoints.PathFindingFeatures
 {
-    public partial class ExtendedPathManager
+    public partial class TAMPathFindFeatureManager
     {
         private Type _laneRoutingManagerType = typeof(VanillaLaneRoutingManager);
         private ILaneRoutingManager _laneRoutingManager = null;

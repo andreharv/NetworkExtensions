@@ -23,21 +23,21 @@ namespace Transit.Framework.Hooks.PathFinding
         [RedirectFrom(typeof (PathFind), (ulong) PrerequisiteType.PathFinding)]
         public new bool CalculatePath(uint unit, bool skipQueue)
         {
-            ExtendedPathFindFacade facade;
+            TAMPathFindFacade facade;
             
             // ReSharper disable SuspiciousTypeConversion.Global
-            if ((object)this is ExtendedPathFindFacade)
+            if ((object)this is TAMPathFindFacade)
             // ReSharper restore SuspiciousTypeConversion.Global
             // ReSharper disable HeuristicUnreachableCode
             {
                 // ReSharper disable SuspiciousTypeConversion.Global
-                facade = (ExtendedPathFindFacade)(object)this;
+                facade = (TAMPathFindFacade)(object)this;
                 // ReSharper restore SuspiciousTypeConversion.Global
             }
             // ReSharper restore HeuristicUnreachableCode
             else
             {
-                throw new Exception("ExtendedPathManager is not installed correctly");
+                throw new Exception("PathManagerHook is not installed correctly");
             }
 
             return facade.CalculatePath(ExtendedUnitType.Unknown, unit, skipQueue);
@@ -46,21 +46,21 @@ namespace Transit.Framework.Hooks.PathFinding
         [RedirectFrom(typeof(PathFind), (ulong)PrerequisiteType.PathFinding)]
         public new void WaitForAllPaths()
         {
-            ExtendedPathFindFacade facade;
+            TAMPathFindFacade facade;
             
             // ReSharper disable SuspiciousTypeConversion.Global
-            if ((object)this is ExtendedPathFindFacade)
+            if ((object)this is TAMPathFindFacade)
             // ReSharper restore SuspiciousTypeConversion.Global
             // ReSharper disable HeuristicUnreachableCode
             {
                 // ReSharper disable SuspiciousTypeConversion.Global
-                facade = (ExtendedPathFindFacade)(object)this;
+                facade = (TAMPathFindFacade)(object)this;
                 // ReSharper restore SuspiciousTypeConversion.Global
             }
             // ReSharper restore HeuristicUnreachableCode
             else
             {
-                throw new Exception("ExtendedPathManager is not installed correctly");
+                throw new Exception("PathManagerHook is not installed correctly");
             }
 
             // ReSharper disable HeuristicUnreachableCode

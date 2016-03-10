@@ -4,10 +4,11 @@ using ColossalFramework;
 using ColossalFramework.Globalization;
 using CSL_Traffic;
 using ICities;
-using Transit.Addon.ToolsV2.PathFinding.ExtendedFeatures;
+using Transit.Addon.ToolsV2.PathFindingFeatures;
 using Transit.Framework;
 using Transit.Framework.ExtensionPoints.PathFinding;
-using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Implementations;
+using Transit.Framework.ExtensionPoints.PathFinding.Implementations;
+using Transit.Framework.ExtensionPoints.PathFindingFeatures;
 using Transit.Framework.Modularity;
 using Transit.Framework.Redirection;
 
@@ -58,10 +59,14 @@ namespace Transit.Addon.ToolsV2
                 sm_redirectionInstalled = true;
             }
 
-            ExtendedPathManager.instance.DefinePathFinding<ExtendedPathFind>(true /*Dont redefine if allready*/);
-            ExtendedPathManager.instance.DefineLaneRoutingManager<TPPLaneRoutingManager>();
-            ExtendedPathManager.instance.DefineRoadRestrictionManager<TPPRoadRestrictionManager>();
-            ExtendedPathManager.instance.DefineRoadSpeedManager<TPPRoadSpeedManager>();
+            if (TAMPathFindManager.instance.IsDefaultPathFinding)
+            {
+                // Dont redefine if allready
+                TAMPathFindManager.instance.DefinePathFinding<TAMVanillaPathFind>();
+            }
+            TAMPathFindFeatureManager.instance.DefineLaneRoutingManager<TPPLaneRoutingManager>();
+            TAMPathFindFeatureManager.instance.DefineRoadRestrictionManager<TPPRoadRestrictionManager>();
+            TAMPathFindFeatureManager.instance.DefineRoadSpeedManager<TPPRoadSpeedManager>();
         }
 
         public override void OnDisabled()
@@ -72,10 +77,10 @@ namespace Transit.Addon.ToolsV2
                 sm_redirectionInstalled = false;
             }
 
-            ExtendedPathManager.instance.ResetPathFinding<ExtendedPathFind>();
-            ExtendedPathManager.instance.ResetLaneRoutingManager<TPPLaneRoutingManager>();
-            ExtendedPathManager.instance.ResetRoadRestrictionManager<TPPRoadRestrictionManager>();
-            ExtendedPathManager.instance.ResetRoadSpeedManager<TPPRoadSpeedManager>();
+            TAMPathFindManager.instance.ResetPathFinding<TAMVanillaPathFind>();
+            TAMPathFindFeatureManager.instance.ResetLaneRoutingManager<TPPLaneRoutingManager>();
+            TAMPathFindFeatureManager.instance.ResetRoadRestrictionManager<TPPRoadRestrictionManager>();
+            TAMPathFindFeatureManager.instance.ResetRoadSpeedManager<TPPRoadSpeedManager>();
         }
 
         public override void OnInstallingLocalization()

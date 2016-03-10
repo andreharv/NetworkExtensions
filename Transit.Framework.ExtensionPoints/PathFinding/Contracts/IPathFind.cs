@@ -1,11 +1,11 @@
 ﻿using System.Threading;
 using Transit.Framework.Network;
 
-namespace Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Contracts
+namespace Transit.Framework.ExtensionPoints.PathFinding.Contracts
 {
     public interface IPathFind
     {
-        ExtendedPathFindFacade Facade { get; set; }
+        TAMPathFindFacade Facade { get; set; }
 
         void OnAwake();
 

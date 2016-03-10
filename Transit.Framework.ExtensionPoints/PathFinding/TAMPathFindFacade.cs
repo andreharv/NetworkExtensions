@@ -1,16 +1,15 @@
-﻿using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures;
-using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Contracts;
+﻿using Transit.Framework.ExtensionPoints.PathFinding.Contracts;
 using Transit.Framework.Network;
 
 namespace Transit.Framework.ExtensionPoints.PathFinding
 {
-    public class ExtendedPathFindFacade : PathFind
+    public class TAMPathFindFacade : PathFind
     {
         private readonly IPathFind m_innerPathFind;
 
-        public ExtendedPathFindFacade()
+        public TAMPathFindFacade()
         {
-            m_innerPathFind = ExtendedPathManager.instance.CreatePathFinding();
+            m_innerPathFind = TAMPathFindManager.instance.CreatePathFinding();
             m_innerPathFind.Facade = this;
         }
 

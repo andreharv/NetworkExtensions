@@ -2,7 +2,6 @@ using ICities;
 using TrafficManager.Custom.PathFinding;
 using TrafficManager.State;
 using Transit.Framework.ExtensionPoints.PathFinding;
-using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Implementations;
 using Transit.Framework.Modularity;
 using UnityEngine;
 
@@ -16,13 +15,13 @@ namespace TrafficManager
 		public override void OnEnabled() {
 			Log._Debug("TrafficManagerMod Enabled");
 
-            ExtendedPathManager.instance.DefinePathFinding<ImprovedPathFind>();
+            TAMPathFindManager.instance.DefinePathFinding<ImprovedPathFind>();
         }
 
 		public override void OnDisabled() {
 			Log._Debug("TrafficManagerMod Disabled");
 
-            ExtendedPathManager.instance.ResetPathFinding<ImprovedPathFind>();
+            TAMPathFindManager.instance.ResetPathFinding<ImprovedPathFind>();
         }
 
 		public override void OnSettingsUI(UIHelperBase helper) {

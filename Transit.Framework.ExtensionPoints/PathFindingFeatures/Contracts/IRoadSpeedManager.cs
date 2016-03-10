@@ -1,10 +1,9 @@
-﻿
-using ColossalFramework;
+﻿using ColossalFramework;
 using Transit.Framework.Network;
 
-namespace Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Contracts
+namespace Transit.Framework.ExtensionPoints.PathFindingFeatures.Contracts
 {
-    public interface IRoadSpeedManager
+    public interface IRoadSpeedManager : IPathFindFeature
     {
         float GetLaneSpeedLimit(ref NetSegment segment, NetInfo.Lane laneInfo, ExtendedUnitType unitType);
     }

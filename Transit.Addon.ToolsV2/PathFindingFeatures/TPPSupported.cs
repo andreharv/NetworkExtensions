@@ -1,6 +1,6 @@
 ﻿using Transit.Framework.Network;
 
-namespace Transit.Addon.ToolsV2.PathFinding.ExtendedFeatures
+namespace Transit.Addon.ToolsV2.PathFindingFeatures
 {
     public static class TPPSupported
     {

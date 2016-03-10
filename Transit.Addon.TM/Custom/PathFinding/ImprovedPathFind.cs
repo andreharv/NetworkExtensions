@@ -17,13 +17,13 @@ using TrafficManager.Custom.AI;
 using TrafficManager.TrafficLight;
 using TrafficManager.State;
 using Transit.Framework.ExtensionPoints.PathFinding;
-using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Contracts;
+using Transit.Framework.ExtensionPoints.PathFinding.Contracts;
 using Transit.Framework.Network;
 
 namespace TrafficManager.Custom.PathFinding {
 	public class ImprovedPathFind : IPathFind
     {
-        public ExtendedPathFindFacade Facade { get; set; }
+        public TAMPathFindFacade Facade { get; set; }
 
         Thread IPathFind.PathFindThread
         {

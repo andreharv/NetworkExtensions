@@ -47,9 +47,9 @@ namespace Transit.Framework.ExtensionPoints.PathFinding
 
         public static bool CreatePath(this PathManager pm, ExtendedUnitType unitType, out uint unit, ref Randomizer randomizer, uint buildIndex, PathUnit.Position startPosA, PathUnit.Position startPosB, PathUnit.Position endPosA, PathUnit.Position endPosB, PathUnit.Position vehiclePosition, NetInfo.LaneType laneTypes, VehicleInfo.VehicleType vehicleTypes, float maxLength, bool isHeavyVehicle, bool ignoreBlocked, bool stablePath, bool skipQueue)
         {
-            if (ExtendedPathManager.instance.PathFindFacades == null)
+            if (TAMPathFindFacadeManager.instance.Facades == null)
             {
-                throw new Exception("ExtendedPathManager is not installed correctly");
+                throw new Exception("PathManagerHook is not installed correctly");
             }
 
             while (!Monitor.TryEnter(pm.m_bufferLock, SimulationManager.SYNCHRONIZE_TIMEOUT))
@@ -104,10 +104,10 @@ namespace Transit.Framework.ExtensionPoints.PathFinding
             pm.m_pathUnits.m_buffer[(int)((UIntPtr)unit)].m_positionCount = 20;
             pm.m_pathUnits.m_buffer[(int)((UIntPtr)unit)].m_referenceCount = 1;
             int num2 = 10000000;
-            ExtendedPathFindFacade pathFindFacade = null;
-            for (int i = 0; i < ExtendedPathManager.instance.PathFindFacades.Length; i++)
+            TAMPathFindFacade pathFindFacade = null;
+            for (int i = 0; i < TAMPathFindFacadeManager.instance.Facades.Length; i++)
             {
-                ExtendedPathFindFacade pathFind2 = ExtendedPathManager.instance.PathFindFacades[i];
+                TAMPathFindFacade pathFind2 = TAMPathFindFacadeManager.instance.Facades[i];
                 if (pathFind2.IsAvailable && pathFind2.m_queuedPathFindCount < num2)
                 {
                     num2 = pathFind2.m_queuedPathFindCount;
