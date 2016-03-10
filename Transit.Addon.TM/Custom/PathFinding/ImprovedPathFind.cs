@@ -1679,7 +1679,7 @@ namespace TrafficManager.Custom.PathFinding {
 			}
 
 			// check for vehicle restrictions
-			if (!this.GetFeatures().RoadRestriction.CanUseLane(item.m_laneID, _extendedUnitType)) {
+			if (!this.GetFeatures().RoadRestriction.CanUseLane(item.m_laneID, item.m_position.m_segment, item.m_position.m_lane, _extendedUnitType)) {
 			//if (!CanUseLane(debug, item.m_position.m_segment, item.m_position.m_lane, item.m_laneID, lane)) {
 				if (Options.disableSomething1 && debug) {
 					Log._Debug($"Vehicle {_extendedUnitType} must not use lane {item.m_position.m_lane} @ seg. {item.m_position.m_segment}, null? {lane== null}");

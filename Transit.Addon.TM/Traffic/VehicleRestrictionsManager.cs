@@ -68,35 +68,14 @@ namespace TrafficManager.Traffic {
         /// <param name="laneId"></param>
         /// <param name="laneInfo"></param>
         /// <returns></returns>
-        internal static ExtVehicleType GetAllowedVehicleTypes(ushort segmentId, uint laneIndex, uint laneId, NetInfo.Lane laneInfo)
-        {
-            return GetAllowedVehicleTypes(segmentId, (uint?)laneIndex, laneId, laneInfo);
-        }
-
-        /// <summary>
-        /// Determines the allowed vehicle types for the given segment and lane.
-        /// </summary>
-        /// <param name="segmentId"></param>
-        /// <param name="laneIndex"></param>
-        /// <param name="laneId"></param>
-        /// <param name="laneInfo"></param>
-        /// <returns></returns>
-        internal static ExtVehicleType GetAllowedVehicleTypes(ushort segmentId, uint? laneIndex, uint laneId, NetInfo.Lane laneInfo) {
+        internal static ExtVehicleType GetAllowedVehicleTypes(ushort segmentId, uint laneIndex, uint laneId, NetInfo.Lane laneInfo) {
 			if (Flags.IsInitDone()) {
 				ExtVehicleType?[] fastArray = Flags.laneAllowedVehicleTypesArray[segmentId];
 				if (fastArray != null)
                 {
-                    if (laneIndex == null)
+                    if(laneIndex < fastArray.Length && fastArray[laneIndex] != null)
                     {
-                        laneIndex = NetManager.instance.GetLaneIndex(laneId);
-                    }
-
-                    if (laneIndex != null)
-                    {
-                        if(laneIndex < fastArray.Length && fastArray[laneIndex.Value] != null)
-                        {
-                            return (ExtVehicleType)fastArray[laneIndex.Value];
-                        }
+                        return (ExtVehicleType)fastArray[laneIndex];
                     }
                 }
 			}

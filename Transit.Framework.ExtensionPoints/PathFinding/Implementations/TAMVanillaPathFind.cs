@@ -859,7 +859,7 @@ namespace Transit.Framework.ExtensionPoints.PathFinding.Implementations
                 return false;
             }
 
-            if (!this.GetFeatures().RoadRestriction.CanUseLane(item.m_laneID, this.m_unitType))
+            if (!this.GetFeatures().RoadRestriction.CanUseLane(item.m_laneID, item.m_position.m_segment, item.m_position.m_lane, this.m_unitType))
             {
                 return false;
             }
@@ -959,8 +959,8 @@ namespace Transit.Framework.ExtensionPoints.PathFinding.Implementations
                 NetInfo.Lane lane2 = info.m_lanes[num12];
                 if ((byte)(lane2.m_finalDirection & direction2) != 0 &&
                     this.GetFeatures().LaneRouting.CanLanesConnect(targetNode, num2, item.m_laneID, this.m_unitType) &&
-                    this.GetFeatures().RoadRestriction.CanUseLane(num2, this.m_unitType) &&
-                    this.GetFeatures().RoadRestriction.CanUseLane(item.m_laneID, this.m_unitType))
+                    this.GetFeatures().RoadRestriction.CanUseLane(num2, segmentID, (uint)num12, this.m_unitType) &&
+                    this.GetFeatures().RoadRestriction.CanUseLane(item.m_laneID, item.m_position.m_segment, item.m_position.m_lane, this.m_unitType))
                 {
                     if (lane2.CheckType(laneType2, vehicleType2) && (segmentID != item.m_position.m_segment || num12 != (int)item.m_position.m_lane) && (byte)(lane2.m_finalDirection & direction2) != 0)
                     {
