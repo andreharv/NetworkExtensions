@@ -5,24 +5,31 @@ namespace Transit.Framework.ExtensionPoints.PathFindingFeatures.Contracts
 {
     public interface IRoadSpeedManager : IPathFindFeature
     {
-        float GetLaneSpeedLimit(ref NetSegment segment, NetInfo.Lane laneInfo, ExtendedUnitType unitType);
+        float GetLaneSpeedLimit(ushort segmentId, uint laneIndex, uint laneId, NetInfo.Lane laneInfo, ExtendedUnitType unitType);
     }
 
     public static class ExtendedRoadSpeedManagerExtensions
     {
-        public static float GetLaneSpeedLimit(this IRoadSpeedManager roadSpeedManager, ushort segmentId, byte laneIndex, ExtendedUnitType unitType)
+        public static float GetLaneSpeedLimit(this IRoadSpeedManager roadSpeedManager, ushort segmentId, uint laneIndex, uint laneId, ExtendedUnitType unitType)
         {
             var segment = Singleton<NetManager>.instance.m_segments.m_buffer[segmentId];
             var laneInfo = segment.Info.m_lanes[laneIndex];
 
-            return roadSpeedManager.GetLaneSpeedLimit(ref segment, laneInfo, unitType);
+            return roadSpeedManager.GetLaneSpeedLimit(segmentId, laneIndex, laneId, laneInfo, unitType);
         }
 
-        public static float GetLaneSpeedLimit(this IRoadSpeedManager roadSpeedManager, ushort segmentId, NetInfo.Lane laneInfo, ExtendedUnitType unitType)
+        public static float GetLaneSpeedLimit(this IRoadSpeedManager roadSpeedManager, ushort segmentId, uint laneIndex, ExtendedUnitType unitType)
         {
             var segment = Singleton<NetManager>.instance.m_segments.m_buffer[segmentId];
+            var laneInfo = segment.Info.m_lanes[laneIndex];
+            var laneId = Singleton<NetManager>.instance.GetLaneId(laneInfo, segment);
 
-            return roadSpeedManager.GetLaneSpeedLimit(ref segment, laneInfo, unitType);
+            if(laneId == null)
+            {
+                throw new System.Exception("TFW: LaneId has not been found");
+            }
+
+            return roadSpeedManager.GetLaneSpeedLimit(segmentId, laneIndex, laneId.Value, laneInfo, unitType);
         }
     }
 }

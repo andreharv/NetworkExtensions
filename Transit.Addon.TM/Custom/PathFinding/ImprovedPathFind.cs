@@ -506,7 +506,7 @@ namespace TrafficManager.Custom.PathFinding {
                     laneID, 
                     laneInfo, 
                     (ushort)(this._isHeavyVehicle || _extendedUnitType == ExtendedUnitType.Bus ? 50 : 25), 
-                    (ushort)this.GetFeatures().RoadSpeed.GetLaneSpeedLimit(currentPosition.m_segment, laneInfo, _extendedUnitType), false); 
+                    (ushort)this.GetFeatures().RoadSpeed.GetLaneSpeedLimit(currentPosition.m_segment, currentPosition.m_lane, laneID, _extendedUnitType), false); 
                 //SpeedLimitManager.GetLockFreeGameSpeedLimit(currentPosition.m_segment, currentPosition.m_lane, laneID, ref Singleton<NetManager>.instance.m_segments.m_buffer[currentPosition.m_segment].Info.m_lanes[currentPosition.m_lane])
 				// NON-STOCK CODE END
 				currentPosition = this._laneTarget[(int)((UIntPtr)laneID)];
@@ -1467,7 +1467,7 @@ namespace TrafficManager.Custom.PathFinding {
 			// NON-STOCK CODE END //
 			if ((int)item.m_position.m_lane < prevSegmentInfo.m_lanes.Length) {
 				NetInfo.Lane lane2 = prevSegmentInfo.m_lanes[(int)item.m_position.m_lane];
-                prevMaxSpeed = this.GetFeatures().RoadSpeed.GetLaneSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, _extendedUnitType);
+                prevMaxSpeed = this.GetFeatures().RoadSpeed.GetLaneSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, item.m_laneID, lane2, _extendedUnitType);
                 // prevMaxSpeed = GetLaneSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, item.m_laneID, lane2);
                 // prevMaxSpeed = SpeedLimitManager.GetLockFreeGameSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, item.m_laneID, ref lane2); // NON-STOCK CODE
                 laneType = lane2.m_laneType;
@@ -1481,7 +1481,7 @@ namespace TrafficManager.Custom.PathFinding {
 			float methodDistance = item.m_methodDistance + offsetLength;
 			float comparisonValue = item.m_comparisonValue + offsetLength / (prevSpeed * this._maxLength);
 			Vector3 b = instance.m_lanes.m_buffer[(int)((UIntPtr)item.m_laneID)].CalculatePosition((float)connectOffset * 0.003921569f);
-            int laneIndex = 0;
+            uint laneIndex = 0;
 #if DEBUG
 			int wIter = 0;
 #endif
@@ -1514,7 +1514,7 @@ namespace TrafficManager.Custom.PathFinding {
 						} else {
 							nextItem.m_methodDistance = methodDistance + distance;
                         }
-                        float nextMaxSpeed = this.GetFeatures().RoadSpeed.GetLaneSpeedLimit(nextSegmentId, nextLaneInfo, _extendedUnitType);  // NON-STOCK CODE
+                        float nextMaxSpeed = this.GetFeatures().RoadSpeed.GetLaneSpeedLimit(nextSegmentId, laneIndex, curLaneId, nextLaneInfo, _extendedUnitType);  // NON-STOCK CODE
                         // float nextMaxSpeed = GetLaneSpeedLimit(nextSegmentId, laneIndex, curLaneId, nextLaneInfo);  // NON-STOCK CODE
                         // float nextMaxSpeed = SpeedLimitManager.GetLockFreeGameSpeedLimit(nextSegmentId, laneIndex, curLaneId, ref lane3); // NON-STOCK CODE
 						if (nextLaneInfo.m_laneType != NetInfo.LaneType.Pedestrian || nextItem.m_methodDistance < 1000f) {
@@ -1615,7 +1615,7 @@ namespace TrafficManager.Custom.PathFinding {
 				prevLaneType = lane.m_laneType;
 				prevVehicleType = lane.m_vehicleType;
 
-                prevMaxSpeed = this.GetFeatures().RoadSpeed.GetLaneSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, _extendedUnitType);  // NON-STOCK CODE
+                prevMaxSpeed = this.GetFeatures().RoadSpeed.GetLaneSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, item.m_laneID, lane, _extendedUnitType);  // NON-STOCK CODE
                 //prevMaxSpeed = GetLaneSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, item.m_laneID, lane);   // NON-STOCK CODE
                 // SpeedLimitManager.GetLockFreeGameSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, item.m_laneID, ref lane); // NON-STOCK CODE
 				prevLaneSpeed = this.CalculateLaneSpeed(prevMaxSpeed, connectOffset, item.m_position.m_offset, ref instance.m_segments.m_buffer[(int)item.m_position.m_segment], lane); // NON-STOCK CODE
@@ -1755,7 +1755,7 @@ namespace TrafficManager.Custom.PathFinding {
                         // vehicle types match and no u-turn to the previous lane
 
                         // NON-STOCK CODE START //
-                        float nextMaxSpeed = this.GetFeatures().RoadSpeed.GetLaneSpeedLimit(nextSegmentId, nextLane, _extendedUnitType);
+                        float nextMaxSpeed = this.GetFeatures().RoadSpeed.GetLaneSpeedLimit(nextSegmentId, laneIndex, curLaneId, nextLane, _extendedUnitType);
                         //float nextMaxSpeed = GetLaneSpeedLimit(nextSegmentId, laneIndex, curLaneId, nextLane);
                         bool addCustomTrafficCosts = useAdvancedAI &&
 							curLaneId != this._startLaneA &&
@@ -2126,7 +2126,7 @@ namespace TrafficManager.Custom.PathFinding {
 			VehicleInfo.VehicleType vehicleType = VehicleInfo.VehicleType.None; // NON-STOCK CODE
 			if ((int)item.m_position.m_lane < prevSegmentInfo.m_lanes.Length) {
 				NetInfo.Lane prevLane = prevSegmentInfo.m_lanes[(int)item.m_position.m_lane];
-                prevMaxSpeed = this.GetFeatures().RoadSpeed.GetLaneSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, _extendedUnitType);  // NON-STOCK CODE
+                prevMaxSpeed = this.GetFeatures().RoadSpeed.GetLaneSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, item.m_laneID, prevLane, _extendedUnitType);  // NON-STOCK CODE
                 // prevMaxSpeed = GetLaneSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, item.m_laneID, prevLane);  // NON-STOCK CODE
                 // SpeedLimitManager.GetLockFreeGameSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, item.m_laneID, ref lane2); // NON-STOCK CODE
 				laneType = prevLane.m_laneType;
@@ -2171,7 +2171,7 @@ namespace TrafficManager.Custom.PathFinding {
 					}
 					nextItem.m_methodDistance = methodDistance + distance;
                 }
-                float nextMaxSpeed = this.GetFeatures().RoadSpeed.GetLaneSpeedLimit(nextSegmentId, nextLane, _extendedUnitType); // NON-STOCK CODE
+                float nextMaxSpeed = this.GetFeatures().RoadSpeed.GetLaneSpeedLimit(nextSegmentId, (uint)laneIndex, lane, nextLane, _extendedUnitType); // NON-STOCK CODE
                 //float nextMaxSpeed = GetLaneSpeedLimit(nextSegmentId, (uint)laneIndex, lane, nextLane); // NON-STOCK CODE
 				if (nextLane.m_laneType != NetInfo.LaneType.Pedestrian || nextItem.m_methodDistance < 1000f) {
 					nextItem.m_comparisonValue = comparisonValue + distance / ((prevMaxSpeed + nextMaxSpeed) * 0.25f * this._maxLength);
