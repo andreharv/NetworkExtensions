@@ -39,9 +39,7 @@ namespace TrafficManager {
 		public List<Detour> Detours { get; set; }
         public TrafficManagerMode ToolMode { get; set; }
         public TrafficManagerTool TrafficManagerTool { get; set; }
-#if !TAM
 		public UIBase UI { get; set; }
-#endif
 
 		private static bool gameLoaded = false;
 
@@ -861,13 +859,13 @@ namespace TrafficManager {
 					IsPathManagerCompatible = false;
 				}
 			}
+#endif
 
-			Log.Info("Adding Controls to UI.");
+            Log.Info("Adding Controls to UI.");
 			UI = ToolsModifierControl.toolController.gameObject.AddComponent<UIBase>();
 
 			initDetours();
 			Log.Info("OnLevelLoaded complete.");
-#endif
 		}
 
 

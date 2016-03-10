@@ -100,9 +100,7 @@ namespace TrafficManager.UI {
 			//Log._Debug($"SetToolMode: {mode}");
 			
 			if (mode == ToolMode.None) {
-#if !TAM
 				UITrafficManager.deactivateButtons();
-#endif
 			}
 
 			bool toolModeChanged = (mode != _toolMode);

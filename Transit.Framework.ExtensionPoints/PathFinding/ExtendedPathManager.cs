@@ -3,6 +3,7 @@ using ColossalFramework;
 using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures;
 using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Contracts;
 using Transit.Framework.ExtensionPoints.PathFinding.ExtendedFeatures.Implementations;
+using UnityEngine;
 
 namespace Transit.Framework.ExtensionPoints.PathFinding
 {
@@ -29,6 +30,7 @@ namespace Transit.Framework.ExtensionPoints.PathFinding
         
         public IPathFind CreatePathFinding()
         {
+            Debug.Log("TFW: Creating PathFinding of type " + _pathFindingType.FullName);
             return (IPathFind)Activator.CreateInstance(_pathFindingType);
         }
     }
