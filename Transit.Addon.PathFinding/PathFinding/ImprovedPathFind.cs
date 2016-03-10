@@ -66,7 +66,7 @@ namespace Transit.Addon.PathFinding {
 		private bool _ignoreBlocked;
 		private bool _stablePath;
 		private bool _transportVehicle;
-		private ExtendedUnitType? _extendedUnitType;
+		private ExtendedUnitType _extendedUnitType;
 		private static ushort laneChangeRandCounter = 0;
 #if DEBUG
 		public uint _failedPathFinds = 0;
@@ -88,7 +88,7 @@ namespace Transit.Addon.PathFinding {
 
 		public bool IsMasterPathFind = false;
 
-		private ExtendedUnitType?[] pathUnitExtendedUnitType = null;
+		private ExtendedUnitType[] _pathUnitExtendedUnitType = null;
 
 		public void OnAwake() {
 			const BindingFlags fieldFlags = BindingFlags.NonPublic | BindingFlags.Instance;
@@ -102,8 +102,15 @@ namespace Transit.Addon.PathFinding {
 			_bufferMin = new int[1024]; // 2^10
 			_bufferMax = new int[1024]; // 2^10
 
-			if (pathUnitExtendedUnitType == null)
-				pathUnitExtendedUnitType = new ExtendedUnitType?[m_pathUnits.m_size];
+			if (_pathUnitExtendedUnitType == null)
+            {
+                _pathUnitExtendedUnitType = new ExtendedUnitType[m_pathUnits.m_size];
+
+                for (int i = 0; i < _pathUnitExtendedUnitType.Length; i++)
+                {
+                    _pathUnitExtendedUnitType[i] = ExtendedUnitType.Unknown;
+                }
+            }
 
             m_pathFindThread = new Thread(PathFindThread) { Name = "Pathfind" };
             m_pathFindThread.Priority = SimulationManager.SIMULATION_PRIORITY;
@@ -152,7 +159,7 @@ namespace Transit.Addon.PathFinding {
 					}
 					this.m_pathUnits.m_buffer[unit].m_pathFindFlags |= PathUnit.FLAG_CREATED;
                     Facade.m_queuedPathFindCount++;
-					pathUnitExtendedUnitType[unit] = vehicleType;
+					_pathUnitExtendedUnitType[unit] = vehicleType;
 					Monitor.Pulse(this.m_queueLock);
 				} finally {
 					Monitor.Exit(this.m_queueLock);
@@ -192,7 +199,7 @@ namespace Transit.Addon.PathFinding {
 			this._ignoreBlocked = ((this.m_pathUnits.m_buffer[(int)((UIntPtr)unit)].m_simulationFlags & 32) != 0);
 			this._stablePath = ((this.m_pathUnits.m_buffer[(int)((UIntPtr)unit)].m_simulationFlags & 64) != 0);
 			this._transportVehicle = ((byte)(this._laneTypes & NetInfo.LaneType.TransportVehicle) != 0);
-			this._extendedUnitType = pathUnitExtendedUnitType[unit];
+			this._extendedUnitType = _pathUnitExtendedUnitType[unit];
 			if ((byte)(this._laneTypes & NetInfo.LaneType.Vehicle) != 0) {
 				this._laneTypes |= NetInfo.LaneType.TransportVehicle;
 			}
@@ -386,7 +393,7 @@ namespace Transit.Addon.PathFinding {
 				++_failedPathFinds;
 				//Log._Debug($"THREAD #{Thread.CurrentThread.ManagedThreadId} PF {this._pathFindIndex}: Cannot find path (pfCurrentState={pfCurrentState}) for unit {unit}");
 #endif
-				pathUnitExtendedUnitType[unit] = null;
+				_pathUnitExtendedUnitType[unit] = ExtendedUnitType.Unknown;
 
 				/*PathUnit[] expr_909_cp_0 = this._pathUnits.m_buffer;
 				UIntPtr expr_909_cp_1 = (UIntPtr)unit;
@@ -471,7 +478,7 @@ namespace Transit.Addon.PathFinding {
 							++_failedPathFinds;
 							//Log._Debug($"THREAD #{Thread.CurrentThread.ManagedThreadId} PF {this._pathFindIndex}: Cannot find path (pfCurrentState={pfCurrentState}) for unit {unit}");
 #endif
-							pathUnitExtendedUnitType[unit] = null;
+							_pathUnitExtendedUnitType[unit] = ExtendedUnitType.Unknown;
 							return;
 						}
 						this.m_pathUnits.m_buffer[(int)((UIntPtr)createdPathUnitId)] = this.m_pathUnits.m_buffer[(int)currentPathUnitId];
@@ -493,7 +500,12 @@ namespace Transit.Addon.PathFinding {
 				uint laneID = PathManager.GetLaneID(currentPosition);
 				// NON-STOCK CODE START
 				NetInfo.Lane laneInfo = Singleton<NetManager>.instance.m_segments.m_buffer[currentPosition.m_segment].Info.m_lanes[currentPosition.m_lane];
-				CustomRoadAI.AddTraffic(laneID, laneInfo, (ushort)(this._isHeavyVehicle || _extendedUnitType == ExtendedUnitType.Bus ? 50 : 25), (ushort)this.GetFeatures().RoadSpeed.GetLaneSpeedLimit(currentPosition.m_segment, laneInfo, _extendedUnitType.Value), false); //SpeedLimitManager.GetLockFreeGameSpeedLimit(currentPosition.m_segment, currentPosition.m_lane, laneID, ref Singleton<NetManager>.instance.m_segments.m_buffer[currentPosition.m_segment].Info.m_lanes[currentPosition.m_lane])
+				CustomRoadAI.AddTraffic(
+                    laneID, 
+                    laneInfo, 
+                    (ushort)(this._isHeavyVehicle || _extendedUnitType == ExtendedUnitType.Bus ? 50 : 25), 
+                    (ushort)this.GetFeatures().RoadSpeed.GetLaneSpeedLimit(currentPosition.m_segment, laneInfo, _extendedUnitType), false); 
+                //SpeedLimitManager.GetLockFreeGameSpeedLimit(currentPosition.m_segment, currentPosition.m_lane, laneID, ref Singleton<NetManager>.instance.m_segments.m_buffer[currentPosition.m_segment].Info.m_lanes[currentPosition.m_lane])
 				// NON-STOCK CODE END
 				currentPosition = this._laneTarget[(int)((UIntPtr)laneID)];
 			}
@@ -501,11 +513,11 @@ namespace Transit.Addon.PathFinding {
 #if DEBUG
 			++_failedPathFinds;
 #endif
-			pathUnitExtendedUnitType[unit] = null;
+			_pathUnitExtendedUnitType[unit] = ExtendedUnitType.Unknown;
 #if DEBUG
 			//Log._Debug($"THREAD #{Thread.CurrentThread.ManagedThreadId} PF {this._pathFindIndex}: Cannot find path (pfCurrentState={pfCurrentState}) for unit {unit}");
 #endif
-		}
+        }
 #endregion
 
 		// be aware:
@@ -1453,8 +1465,10 @@ namespace Transit.Addon.PathFinding {
 			// NON-STOCK CODE END //
 			if ((int)item.m_position.m_lane < prevSegmentInfo.m_lanes.Length) {
 				NetInfo.Lane lane2 = prevSegmentInfo.m_lanes[(int)item.m_position.m_lane];
-				prevMaxSpeed = GetLaneSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, item.m_laneID, lane2); // SpeedLimitManager.GetLockFreeGameSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, item.m_laneID, ref lane2); // NON-STOCK CODE
-				laneType = lane2.m_laneType;
+                prevMaxSpeed = this.GetFeatures().RoadSpeed.GetLaneSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, _extendedUnitType);
+                // prevMaxSpeed = GetLaneSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, item.m_laneID, lane2);
+                // prevMaxSpeed = SpeedLimitManager.GetLockFreeGameSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, item.m_laneID, ref lane2); // NON-STOCK CODE
+                laneType = lane2.m_laneType;
 				if ((byte)(laneType & (NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle)) != 0) {
 					laneType = (NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle);
 				}
@@ -1465,7 +1479,7 @@ namespace Transit.Addon.PathFinding {
 			float methodDistance = item.m_methodDistance + offsetLength;
 			float comparisonValue = item.m_comparisonValue + offsetLength / (prevSpeed * this._maxLength);
 			Vector3 b = instance.m_lanes.m_buffer[(int)((UIntPtr)item.m_laneID)].CalculatePosition((float)connectOffset * 0.003921569f);
-			uint laneIndex = 0;
+            int laneIndex = 0;
 #if DEBUG
 			int wIter = 0;
 #endif
@@ -1497,8 +1511,10 @@ namespace Transit.Addon.PathFinding {
 							nextItem.m_methodDistance = 0f;
 						} else {
 							nextItem.m_methodDistance = methodDistance + distance;
-						}
-						float nextMaxSpeed = GetLaneSpeedLimit(nextSegmentId, laneIndex, curLaneId, nextLaneInfo); // SpeedLimitManager.GetLockFreeGameSpeedLimit(nextSegmentId, laneIndex, curLaneId, ref lane3); // NON-STOCK CODE
+                        }
+                        float nextMaxSpeed = this.GetFeatures().RoadSpeed.GetLaneSpeedLimit(nextSegmentId, nextLaneInfo, _extendedUnitType);  // NON-STOCK CODE
+                        // float nextMaxSpeed = GetLaneSpeedLimit(nextSegmentId, laneIndex, curLaneId, nextLaneInfo);  // NON-STOCK CODE
+                        // float nextMaxSpeed = SpeedLimitManager.GetLockFreeGameSpeedLimit(nextSegmentId, laneIndex, curLaneId, ref lane3); // NON-STOCK CODE
 						if (nextLaneInfo.m_laneType != NetInfo.LaneType.Pedestrian || nextItem.m_methodDistance < 1000f) {
 							nextItem.m_comparisonValue = comparisonValue + distance / ((prevMaxSpeed + nextMaxSpeed) * 0.5f * this._maxLength); // NON-STOCK CODE
 							if ((nextSegment.m_flags & NetSegment.Flags.Invert) != NetSegment.Flags.None) {
@@ -1596,7 +1612,10 @@ namespace Transit.Addon.PathFinding {
 				lane = prevSegmentInfo.m_lanes[(int)item.m_position.m_lane];
 				prevLaneType = lane.m_laneType;
 				prevVehicleType = lane.m_vehicleType;
-				prevMaxSpeed = GetLaneSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, item.m_laneID, lane); // SpeedLimitManager.GetLockFreeGameSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, item.m_laneID, ref lane); // NON-STOCK CODE
+
+                prevMaxSpeed = this.GetFeatures().RoadSpeed.GetLaneSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, _extendedUnitType);  // NON-STOCK CODE
+                //prevMaxSpeed = GetLaneSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, item.m_laneID, lane);   // NON-STOCK CODE
+                // SpeedLimitManager.GetLockFreeGameSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, item.m_laneID, ref lane); // NON-STOCK CODE
 				prevLaneSpeed = this.CalculateLaneSpeed(prevMaxSpeed, connectOffset, item.m_position.m_offset, ref instance.m_segments.m_buffer[(int)item.m_position.m_segment], lane); // NON-STOCK CODE
 				// NON-STOCK CODE START //
 				prevNumLanes = lane.m_similarLaneCount;
@@ -1658,7 +1677,8 @@ namespace Transit.Addon.PathFinding {
 			}
 
 			// check for vehicle restrictions
-			if (!CanUseLane(debug, item.m_position.m_segment, item.m_position.m_lane, item.m_laneID, lane)) {
+			if (!this.GetFeatures().RoadRestriction.CanUseLane(item.m_laneID, _extendedUnitType)) {
+			//if (!CanUseLane(debug, item.m_position.m_segment, item.m_position.m_lane, item.m_laneID, lane)) {
 				if (Options.disableSomething1 && debug) {
 					Log._Debug($"Vehicle {_extendedUnitType} must not use lane {item.m_position.m_lane} @ seg. {item.m_position.m_segment}, null? {lane== null}");
 				}
@@ -1723,16 +1743,19 @@ namespace Transit.Addon.PathFinding {
 					logBuf.Add($"Path from {nextSegmentId} (idx {laneIndex}, id {curLaneId}) to {item.m_position.m_segment} (lane {prevRightSimilarLaneIndex} from right, idx {item.m_position.m_lane}): costDebug=TRUE, explore? {nextLane.CheckType(laneType2, vehicleType2)} && {(nextSegmentId != item.m_position.m_segment || laneIndex != (int)item.m_position.m_lane)} && {(byte)(nextLane.m_finalDirection & nextDir2) != 0 && CanLanesConnect(curLaneId, item.m_laneID)}");
 				}
 #endif
-
-				if ((byte)(nextLane.m_finalDirection & nextFinalDir) != 0 && CanLanesConnect(curLaneId, item.m_laneID)) {
+                
+				if ((byte)(nextLane.m_finalDirection & nextFinalDir) != 0 && 
+                    this.GetFeatures().LaneRouting.CanLanesConnect(targetNodeId, curLaneId, item.m_laneID, _extendedUnitType)) {
+				//if ((byte)(nextLane.m_finalDirection & nextFinalDir) != 0 && CanLanesConnect(curLaneId, item.m_laneID)) {
 					// lane direction is compatible
 					if (nextLane.CheckType(allowedLaneTypes, allowedVehicleTypes) &&
 							(nextSegmentId != item.m_position.m_segment || laneIndex != (int)item.m_position.m_lane)) {
-						// vehicle types match and no u-turn to the previous lane
+                        // vehicle types match and no u-turn to the previous lane
 
-						// NON-STOCK CODE START //
-						float nextMaxSpeed = GetLaneSpeedLimit(nextSegmentId, laneIndex, curLaneId, nextLane);
-						bool addCustomTrafficCosts = useAdvancedAI &&
+                        // NON-STOCK CODE START //
+                        float nextMaxSpeed = this.GetFeatures().RoadSpeed.GetLaneSpeedLimit(nextSegmentId, nextLane, _extendedUnitType);
+                        //float nextMaxSpeed = GetLaneSpeedLimit(nextSegmentId, laneIndex, curLaneId, nextLane);
+                        bool addCustomTrafficCosts = useAdvancedAI &&
 							curLaneId != this._startLaneA &&
 							curLaneId != this._startLaneB &&
 							//(byte)(nextLane.m_laneType & prevLaneType) != 0 &&
@@ -2101,7 +2124,9 @@ namespace Transit.Addon.PathFinding {
 			VehicleInfo.VehicleType vehicleType = VehicleInfo.VehicleType.None; // NON-STOCK CODE
 			if ((int)item.m_position.m_lane < prevSegmentInfo.m_lanes.Length) {
 				NetInfo.Lane prevLane = prevSegmentInfo.m_lanes[(int)item.m_position.m_lane];
-				prevMaxSpeed = GetLaneSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, item.m_laneID, prevLane); // SpeedLimitManager.GetLockFreeGameSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, item.m_laneID, ref lane2); // NON-STOCK CODE
+                prevMaxSpeed = this.GetFeatures().RoadSpeed.GetLaneSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, _extendedUnitType);  // NON-STOCK CODE
+                // prevMaxSpeed = GetLaneSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, item.m_laneID, prevLane);  // NON-STOCK CODE
+                // SpeedLimitManager.GetLockFreeGameSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, item.m_laneID, ref lane2); // NON-STOCK CODE
 				laneType = prevLane.m_laneType;
 				vehicleType = prevLane.m_vehicleType; // NON-STOCK CODE
 				if ((byte)(laneType & (NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle)) != 0) {
@@ -2143,8 +2168,9 @@ namespace Transit.Addon.PathFinding {
 						comparisonValue += 100f / (0.25f * this._maxLength);
 					}
 					nextItem.m_methodDistance = methodDistance + distance;
-				}
-				float nextMaxSpeed = GetLaneSpeedLimit(nextSegmentId, (uint)laneIndex, lane, nextLane); // NON-STOCK CODE
+                }
+                float nextMaxSpeed = this.GetFeatures().RoadSpeed.GetLaneSpeedLimit(nextSegmentId, nextLane, _extendedUnitType); // NON-STOCK CODE
+                //float nextMaxSpeed = GetLaneSpeedLimit(nextSegmentId, (uint)laneIndex, lane, nextLane); // NON-STOCK CODE
 				if (nextLane.m_laneType != NetInfo.LaneType.Pedestrian || nextItem.m_methodDistance < 1000f) {
 					nextItem.m_comparisonValue = comparisonValue + distance / ((prevMaxSpeed + nextMaxSpeed) * 0.25f * this._maxLength);
 					if ((nextSegment.m_flags & NetSegment.Flags.Invert) != NetSegment.Flags.None) {
