@@ -51,13 +51,26 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AI\TAMRoadAI.CreateZoneBlocks.cs" />
-    <Compile Include="AI\TAMNetAI.CheckBuildPosition.cs" />
-    <Compile Include="AI\TAMRoadAI.Snapping.cs" />
-    <Compile Include="HooksInstaller.cs" />
+    <Compile Include="AI\Networks\RoadAIHook.CreateZoneBlocks.cs" />
+    <Compile Include="AI\Networks\NetAIHook.CheckBuildPosition.cs" />
+    <Compile Include="AI\Networks\RoadAIHook.Snapping.cs" />
+    <Compile Include="AI\Units\AmbulanceAIHook.StartPathFind.cs" />
+    <Compile Include="AI\Units\BusAIHook.StartPathFind.cs" />
+    <Compile Include="AI\Units\CargoTruckAIHook.StartPathFind.cs" />
+    <Compile Include="AI\Units\CitizenAIHook.StartPathFind.cs" />
+    <Compile Include="AI\Units\FireTruckAIHook.StartPathFind.cs" />
+    <Compile Include="AI\Units\GarbageTruckAIHook.StartPathFind.cs" />
+    <Compile Include="AI\Units\HearseAIHook.StartPathFind.cs" />
+    <Compile Include="AI\Units\PassengerCarAIHook.StartPathFind.cs" />
+    <Compile Include="AI\Units\PoliceCarAIHook.StartPathFind.cs" />
+    <Compile Include="AI\Units\TaxiAIHook.StartPathFind.cs" />
+    <Compile Include="AI\Units\TransportLineAIHook.StartPathFind.cs" />
+    <Compile Include="HookInstaller.cs" />
+    <Compile Include="PathFinding\PathFindHook.cs" />
+    <Compile Include="PathFinding\PathManagerHook.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI\TAMGeneratedGroupPanel.cs" />
-    <Compile Include="UI\TAMRoadsGroupPanel.cs" />
+    <Compile Include="UI\GeneratedGroupPanelHook.cs" />
+    <Compile Include="UI\RoadsGroupPanelHook.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Transit.Framework.ExtensionPoints\Transit.Framework.ExtensionPoints.csproj">

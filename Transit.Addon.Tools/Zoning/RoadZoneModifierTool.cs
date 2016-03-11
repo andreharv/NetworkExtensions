@@ -1,6 +1,7 @@
 ﻿using ColossalFramework;
 using ICities;
 using Transit.Framework.ExtensionPoints.AI;
+using Transit.Framework.ExtensionPoints.AI.Networks;
 using UnityEngine;
 
 namespace Transit.Addon.Tools.Zoning
