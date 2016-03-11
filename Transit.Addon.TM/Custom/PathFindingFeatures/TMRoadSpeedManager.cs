@@ -1,19 +1,19 @@
-﻿using Transit.Addon.ToolsV2.Data;
+﻿using TrafficManager.Traffic;
 using Transit.Framework.ExtensionPoints.PathFindingFeatures.Contracts;
 using Transit.Framework.Network;
 
-namespace Transit.Addon.ToolsV2.PathFindingFeatures
+namespace TrafficManager.Custom.PathFindingFeatures
 {
-    public class TPPRoadSpeedManager : IRoadSpeedManager
+    public class TMRoadSpeedManager : IRoadSpeedManager
     {
         public float GetLaneSpeedLimit(ushort segmentId, uint laneIndex, uint laneId, NetInfo.Lane laneInfo, ExtendedUnitType unitType)
         {
-            if ((unitType & TPPSupported.UNITS) == 0)
+            if ((unitType & TMSupported.UNITS) == 0)
             {
                 return laneInfo.m_speedLimit;
             }
 
-            return TPPLaneDataManager.GetLane(laneId).m_speed;
+            return SpeedLimitManager.GetLockFreeGameSpeedLimit(segmentId, laneIndex, laneId, laneInfo);
         }
     }
 }

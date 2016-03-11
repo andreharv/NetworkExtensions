@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TrafficManager.State;
+using Transit.Framework;
 
 namespace TrafficManager.Traffic {
 	class VehicleRestrictionsManager {
@@ -57,22 +58,26 @@ namespace TrafficManager.Traffic {
 			}
 
 			return ret;
-		}
+        }
 
-		/// <summary>
-		/// Determines the allowed vehicle types for the given segment and lane.
-		/// </summary>
-		/// <param name="segmentId"></param>
-		/// <param name="laneIndex"></param>
-		/// <param name="laneId"></param>
-		/// <param name="laneInfo"></param>
-		/// <returns></returns>
-		internal static ExtVehicleType GetAllowedVehicleTypes(ushort segmentId, uint laneIndex, uint laneId, NetInfo.Lane laneInfo) {
+        /// <summary>
+        /// Determines the allowed vehicle types for the given segment and lane.
+        /// </summary>
+        /// <param name="segmentId"></param>
+        /// <param name="laneIndex"></param>
+        /// <param name="laneId"></param>
+        /// <param name="laneInfo"></param>
+        /// <returns></returns>
+        internal static ExtVehicleType GetAllowedVehicleTypes(ushort segmentId, uint laneIndex, uint laneId, NetInfo.Lane laneInfo) {
 			if (Flags.IsInitDone()) {
 				ExtVehicleType?[] fastArray = Flags.laneAllowedVehicleTypesArray[segmentId];
-				if (fastArray != null && fastArray.Length > laneIndex && fastArray[laneIndex] != null) {
-					return (ExtVehicleType)fastArray[laneIndex];
-				}
+				if (fastArray != null)
+                {
+                    if(laneIndex < fastArray.Length && fastArray[laneIndex] != null)
+                    {
+                        return (ExtVehicleType)fastArray[laneIndex];
+                    }
+                }
 			}
 
 			ExtVehicleType ret = ExtVehicleType.None;

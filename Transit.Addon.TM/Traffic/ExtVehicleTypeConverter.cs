@@ -30,7 +30,7 @@ namespace TrafficManager.Traffic
                         result |= ExtendedUnitType.CargoTruck;
                         break;
                     case ExtVehicleType.Service:
-                        result |= ExtendedUnitType.UnknownService;
+                        result |= ExtendedUnitType.ServiceVehicle;
                         break;
                     case ExtVehicleType.Emergency:
                         result |= ExtendedUnitType.Emergency;
