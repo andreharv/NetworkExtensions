@@ -13,8 +13,8 @@ namespace Transit.Addon
 
         public override string Name
         {
-            get { return "Traffic++ V2"; }
-            //get { return "Transit Addons Mod"; }
+            //get { return "Traffic++ V2"; }
+            get { return "Transit Addons Mod"; }
         }
 
         public override string Description
@@ -24,8 +24,8 @@ namespace Transit.Addon
 
         public override string Version
         {
-            get { return "2.0.0"; }
-            //get { return "0.0.1"; }
+            //get { return "2.0.0"; }
+            get { return "0.0.1"; }
         }
 
         public override PrerequisiteType Requirements

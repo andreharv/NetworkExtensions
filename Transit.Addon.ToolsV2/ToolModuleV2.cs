@@ -24,6 +24,11 @@ namespace Transit.Addon.ToolsV2
             get { return "Tools"; }
         }
 
+        public override int Order
+        {
+            get { return 10; }
+        }
+
         public override void OnLevelLoaded(LoadMode mode)
         {
             base.OnLevelLoaded(mode);
