@@ -61,7 +61,7 @@ namespace Transit.Addon.ToolsV2
 
             if (TAMPathFindManager.instance.IsDefaultPathFinding)
             {
-                // Dont redefine if allready
+                // Dont redefine if allready installed
                 TAMPathFindManager.instance.DefinePathFinding<TAMVanillaPathFind>();
             }
             TAMPathFindFeatureManager.instance.DefineLaneRoutingManager<TPPLaneRoutingManager>();
