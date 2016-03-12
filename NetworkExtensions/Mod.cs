@@ -1,5 +1,7 @@
-﻿using Transit.Framework.Mod;
-using Transit.Framework.Prerequisites;
+﻿using ColossalFramework;
+using ColossalFramework.Plugins;
+using Transit.Framework;
+using Transit.Framework.Mod;
 
 namespace NetworkExtensions
 {
@@ -25,9 +27,20 @@ namespace NetworkExtensions
             get { return "1.0.0"; }
         }
 
-        public override PrerequisiteType Requirements
+        private const string TAM_MOD_ID = "543703997";
+        private bool? _isTAMInstalled;
+
+        public bool IsTAMInstalled
         {
-            get { return PrerequisiteType.NetworkAI | PrerequisiteType.UI; }
+            get
+            {
+                if (_isTAMInstalled == null)
+                {
+                    _isTAMInstalled = Singleton<PluginManager>.instance.IsPluginInstalled(TAM_MOD_ID);
+                }
+
+                return _isTAMInstalled.Value;
+            }
         }
     }
 }

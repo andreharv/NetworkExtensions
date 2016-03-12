@@ -54,36 +54,46 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AI\Redirections\CustomCargoTruckAI.cs" />
+    <Compile Include="AI\Redirections\CustomCitizenAI.cs" />
     <Compile Include="AI\Redirections\CustomPassengerCarAI.cs" />
-    <Compile Include="AI\Redirections\CustomCarAI.cs" />
+    <Compile Include="AI\Redirections\CustomSnowTruckAI.cs" />
+    <Compile Include="AI\Redirections\CustomTramAI.cs" />
     <Compile Include="AI\Redirections\CustomVehicleAI.cs" />
-    <Compile Include="Data\Lane.cs" />
-    <Compile Include="Data\LaneSerializationBinder.cs" />
-    <Compile Include="Data\LaneSerializer.cs" />
-    <Compile Include="Mod.Settings.cs" />
-    <Compile Include="Mod.cs" />
+    <Compile Include="AI\Redirections\CustomAmbulanceAI.cs" />
+    <Compile Include="AI\Redirections\CustomBusAI.cs" />
+    <Compile Include="AI\CarSpeedData.cs" />
+    <Compile Include="AI\Redirections\CustomCargoTruckAI.cs" />
+    <Compile Include="AI\Redirections\CustomFireTruckAI.cs" />
+    <Compile Include="AI\Redirections\CustomGarbageTruckAI.cs" />
+    <Compile Include="AI\Redirections\CustomHearseAI.cs" />
+    <Compile Include="AI\Redirections\CustomPoliceCarAI.cs" />
+    <Compile Include="AI\Redirections\CustomTransportLineAI.cs" />
+    <Compile Include="AI\_Extensions\CarAIExtensions.cs" />
+    <Compile Include="AI\_Extensions\CitizenAIExtensions.cs" />
+    <Compile Include="AI\_Extensions\VehicleInfoExtensions.cs" />
+    <Compile Include="PathFinding\Hooks\PathFindHook.cs" />
+    <Compile Include="PathFinding\_Extensions\NetSegmentExtensions.cs" />
+    <Compile Include="PathFinding\CustomPathManager.cs" />
+    <Compile Include="PathFinding\CustomPathManager.FindPathPosition.cs" />
+    <Compile Include="PathFinding\CustomPathManager.CreatePath.cs" />
+    <Compile Include="RoadManager.LaneSerializationBinder.cs" />
+    <Compile Include="RoadManager.Lane.cs" />
+    <Compile Include="TrafficMod.cs" />
+    <Compile Include="FileManager.cs" />
+    <Compile Include="Initializer.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="OptionsManager.cs" />
-    <Compile Include="PathFinding\IRoadRestrictionManager.cs" />
-    <Compile Include="PathFinding\TPPPathFind.cs" />
+    <Compile Include="PathFinding\CustomPathFind.cs" />
+    <Compile Include="PathFinding\Hooks\PathManagerHook.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Data\LaneManager.cs" />
-    <Compile Include="PathFinding\TPPRoadRestrictionManager.cs" />
+    <Compile Include="RoadManager.LaneSerializer.cs" />
+    <Compile Include="RoadManager.cs" />
     <Compile Include="Tools\RoadCustomizerTool.cs" />
-    <Compile Include="Menus\RoadCustomizer\RoadCustomizerGroupPanel.cs" />
-    <Compile Include="Menus\RoadCustomizer\RoadCustomizerPanel.cs" />
-    <Compile Include="Menus\RoadCustomizer\Textures\RoadCustomizerAtlasBuilder.cs" />
+    <Compile Include="UI\RoadCustomizerGroupPanel.cs" />
+    <Compile Include="UI\RoadCustomizerPanel.cs" />
+    <Compile Include="UI\UIUtils.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Transit.Framework.ExtensionPoints\Transit.Framework.ExtensionPoints.csproj">
-      <Project>{2e44eca3-d750-4115-b16b-fca94c49bba0}</Project>
-      <Name>Transit.Framework.ExtensionPoints</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Transit.Framework.Hooks\Transit.Framework.Hooks.csproj">
-      <Project>{a700f186-b123-45b5-adfe-b865df5a0f39}</Project>
-      <Name>Transit.Framework.Hooks</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Transit.Framework.Redirection\Transit.Framework.Redirection.csproj">
       <Project>{7dcc08ef-dc85-47a4-bd6f-79fc52c7ef13}</Project>
       <Name>Transit.Framework.Redirection</Name>
@@ -94,7 +104,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Menus\RoadCustomizer\Textures\Thumbnails.png">
+    <Content Include="Textures\UI\UIThumbnails.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

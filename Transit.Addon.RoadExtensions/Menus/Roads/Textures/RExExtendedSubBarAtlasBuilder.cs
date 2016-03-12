@@ -15,7 +15,7 @@ namespace Transit.Addon.RoadExtensions.Menus.Roads.Textures
                 yield return RExExtendedMenus.ROADS_TINY;
                 yield return RExExtendedMenus.ROADS_PEDESTRIANS;
                 yield return RExExtendedMenus.ROADS_SMALL_HV;
-                yield return RExExtendedMenus.ROADS_BUSWAYS;
+                yield return RExExtendedMenus.ROADS_TINY;
             }
         }
 

@@ -118,7 +118,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway5L
             {
                 roadBaseAI.m_highwayRules = true;
                 roadBaseAI.m_trafficLights = false;
-                roadBaseAI.m_accumulateSnow = false;
             }
 
             var roadAI = info.GetComponent<RoadAI>();

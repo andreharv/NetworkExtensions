@@ -29,7 +29,6 @@ namespace TrafficManager.Traffic {
 		public bool Valid = false;
 		public bool OnEmergency;
 		public uint LastFrame;
-		public uint LastPathRecalculation;
 		public ExtVehicleType VehicleType;
 
 		public VehiclePosition() {
@@ -45,7 +44,6 @@ namespace TrafficManager.Traffic {
 			ToLaneIndex = 0;
 			//FromLaneId = 0;
 			FromLaneIndex = 0;
-			LastPathRecalculation = 0;
 			VehicleType = ExtVehicleType.None;
 			Stopped = false;
 			WaitTime = 0;

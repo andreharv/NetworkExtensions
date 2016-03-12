@@ -20,43 +20,16 @@ namespace TrafficManager.Custom.AI {
 		public static uint[] currentLaneDensities;
 
 		public static byte[] laneMeanSpeeds;
-		public static byte[] laneMeanDensities;
+		//public static byte[] laneMeanDensities;
 
 		public static bool initDone = false;
 		public static uint simStartFrame = 0;
 
 		public static bool InStartupPhase = true;
 
-		/*public Thread SegmentGeometryUpdateThread { get; private set; }
-		private bool segmentGeometryUpdateThreadRunning = true;*/
-
-		static CustomRoadAI() {
-			// validate geometry
-		}
-
-		public void Destroy() {
-			//segmentGeometryUpdateThreadRunning = false;
-		}
-
 		public void Awake() {
-			/*segmentGeometryUpdateThreadRunning = true;
-			SegmentGeometryUpdateThread = new Thread(SegmentGeometryUpdateRunner) { Name = "Segment Geometry Update" };
-			SegmentGeometryUpdateThread.Priority = SimulationManager.SIMULATION_PRIORITY;
-			SegmentGeometryUpdateThread.Start();*/
-		}
 
-		/*private void SegmentGeometryUpdateRunner() {
-			ushort segmentId = 0;
-			NetManager netManager = Singleton<NetManager>.instance;
-			while (segmentGeometryUpdateThreadRunning) {
-				if (!initDone)
-					continue;
-				segmentId = (ushort)((segmentId + 1) & NetManager.MAX_SEGMENT_COUNT);
-				if ((netManager.m_segments.m_buffer[segmentId].m_flags & NetSegment.Flags.Created) == NetSegment.Flags.None)
-					continue;
-				CustomRoadAI.GetSegmentGeometry(segmentId).VerifySegmentsByCount();
-			}
-		}*/
+		}
 
 		// this implements the Update method of MonoBehaviour
 		public void Update() {
@@ -89,9 +62,6 @@ namespace TrafficManager.Custom.AI {
 
 		public void CustomSegmentSimulationStep(ushort segmentID, ref NetSegment data) {
 			if (initDone) {
-				
-				CustomRoadAI.GetSegmentGeometry(segmentID).VerifySegmentsByCount();
-
 				try {
 					TrafficPriority.segmentHousekeeping(segmentID);
 				} catch (Exception e) {
@@ -106,26 +76,11 @@ namespace TrafficManager.Custom.AI {
 						uint curLaneId = data.m_lanes;
 						int nextNumLanes = data.Info.m_lanes.Length;
 						uint laneIndex = 0;
+						bool firstWithTraffic = true;
 						bool resetDensity = false;
-						uint maxDensity = 0u;
-						uint densitySum = 0u;
-						while (laneIndex < nextNumLanes && curLaneId != 0u) {
-							uint currentDensity = currentLaneDensities[curLaneId];
-							if (maxDensity == 0 || currentDensity > maxDensity)
-								maxDensity = currentDensity;
-							densitySum += currentDensity;
-
-							laneIndex++;
-							curLaneId = Singleton<NetManager>.instance.m_lanes.m_buffer[curLaneId].m_nextLane;
-						}
-						if (maxDensity > 250)
-							resetDensity = true;
-
-						curLaneId = data.m_lanes;
-						laneIndex = 0;
 						while (laneIndex < nextNumLanes && curLaneId != 0u) {
 							uint buf = currentLaneTrafficBuffer[curLaneId];
-							uint currentDensity = currentLaneDensities[curLaneId];
+							uint currentDensities = currentLaneDensities[curLaneId];
 
 							//currentMeanDensity = (byte)Math.Min(100u, (uint)((currentDensities * 100u) / Math.Max(1u, maxDens))); // 0 .. 100
 
@@ -148,19 +103,22 @@ namespace TrafficManager.Custom.AI {
 							}*/
 
 							if (currentMeanSpeed >= laneMeanSpeeds[curLaneId])
-								laneMeanSpeeds[curLaneId] = (byte)Math.Min((int)laneMeanSpeeds[curLaneId] + 2, currentMeanSpeed);
+								laneMeanSpeeds[curLaneId] = (byte)Math.Min((int)laneMeanSpeeds[curLaneId] + 5, currentMeanSpeed);
 							else
-								laneMeanSpeeds[curLaneId] = (byte)Math.Max((int)laneMeanSpeeds[curLaneId] - 2, 0);
+								laneMeanSpeeds[curLaneId] = (byte)Math.Max((int)laneMeanSpeeds[curLaneId] - 5, 0);
 
-							if (densitySum > 0)
-								laneMeanDensities[curLaneId] = (byte)Math.Min(100u, (currentDensity * 100u) / densitySum);
-							else
-								laneMeanDensities[curLaneId] = (byte)0;
+							//laneMeanDensities[curLaneId] = currentMeanDensity;
+
 							currentLaneTrafficBuffer[curLaneId] = 0;
 							currentLaneSpeeds[curLaneId] = 0;
 
+							if (currentLaneDensities[curLaneId] > 0 && firstWithTraffic) {
+								resetDensity = (currentLaneDensities[curLaneId] > 1000000);
+								firstWithTraffic = false;
+							}
+
 							if (resetDensity) {
-								currentLaneDensities[curLaneId] /= 10u;
+								currentLaneDensities[curLaneId] /= 2u;
 							}
 
 							laneIndex++;
@@ -250,9 +208,7 @@ namespace TrafficManager.Custom.AI {
 			SegmentGeometry geometry = CustomRoadAI.GetSegmentGeometry(fromSegmentId);
 
 			// get traffic light state from responsible traffic light
-			if (toSegmentId == fromSegmentId) {
-				vehicleLightState = TrafficPriority.IsLeftHandDrive() ? light.GetLightRight() : light.GetLightLeft();
-			} else if (geometry.IsLeftSegment(toSegmentId, nodeId)) {
+			if (geometry.IsLeftSegment(toSegmentId, nodeId)) {
 				vehicleLightState = light.GetLightLeft();
 			} else if (geometry.IsRightSegment(toSegmentId, nodeId)) {
 				vehicleLightState = light.GetLightRight();
@@ -740,7 +696,7 @@ namespace TrafficManager.Custom.AI {
 				currentLaneSpeeds = new uint[Singleton<NetManager>.instance.m_lanes.m_size];
 				currentLaneDensities = new uint[Singleton<NetManager>.instance.m_lanes.m_size];
 				laneMeanSpeeds = new byte[Singleton<NetManager>.instance.m_lanes.m_size];
-				laneMeanDensities = new byte[Singleton<NetManager>.instance.m_lanes.m_size];
+				//laneMeanDensities = new byte[Singleton<NetManager>.instance.m_lanes.m_size];
 				resetTrafficStats();
 				initDone = true;
 			}
@@ -755,10 +711,8 @@ namespace TrafficManager.Custom.AI {
 			simStartFrame = 0;
 		}
 
-		internal static void AddTraffic(uint laneID, NetInfo.Lane laneInfo, ushort vehicleLength, ushort speed, bool realTraffic) {
+		internal static void AddTraffic(uint laneID, ushort vehicleLength, ushort speed, bool realTraffic) {
 			if (!initDone)
-				return;
-			if ((laneInfo.m_vehicleType & VehicleInfo.VehicleType.Car) == VehicleInfo.VehicleType.None)
 				return;
 			currentLaneTrafficBuffer[laneID] = (ushort)Math.Min(65535u, (uint)currentLaneTrafficBuffer[laneID] + 1u);
 			currentLaneSpeeds[laneID] += speed;
