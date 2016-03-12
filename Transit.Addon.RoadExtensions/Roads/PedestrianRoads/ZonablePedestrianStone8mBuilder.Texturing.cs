@@ -23,14 +23,14 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
                             info.m_nodes[i].SetTextures(
                                 new TextureSet
                                    (@"Roads\PedestrianRoads\Textures\Stone8m\Ground_Node__MainTex.png",
-                                    @"Roads\PedestrianRoads\Textures\Stone8m\Ground_Segment__AlphaMap.png",
+                                    @"Roads\PedestrianRoads\Textures\Stone8m\Ground_Node__AlphaMap.png",
                                     @"Roads\PedestrianRoads\Textures\Stone8m\Ground_Node__XYSMap.png"));
                         }
                         else
                         {
                             info.m_nodes[i].SetTextures(
                                 new TextureSet
-                                   (@"Roads\PedestrianRoads\Textures\Stone8m\Ground_Node__MainTex.png",
+                                   (@"Roads\PedestrianRoads\Textures\Stone8m\Ground_Trans__MainTex.png",
                                     @"Roads\PedestrianRoads\Textures\Stone8m\Ground_Trans__AlphaMap.png"));
                         }
                     }
