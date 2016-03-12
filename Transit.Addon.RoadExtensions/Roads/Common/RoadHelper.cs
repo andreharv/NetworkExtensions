@@ -75,44 +75,14 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             return info.m_lanes.FirstOrDefault(l => l.m_laneType == NetInfo.LaneType.None && l.m_position == 0);
         }
 
-        public static void RemoveProps(this ICollection<NetLaneProps.Prop> props, string[] namesOfPropsToRemove)
+        public static void RemoveProps(this ICollection<NetLaneProps.Prop> props, string[] propsToRemove)
         {
-            for (var i = 0; i < namesOfPropsToRemove.Length; i++)
+            for (var i = 0; i < propsToRemove.Length; i++)
             {
-                var propsToRemove = props.Where(p => p.m_prop != null && p.m_prop.name.ToLower().Contains(namesOfPropsToRemove[i].ToLower())).ToList();
-                if (propsToRemove.Count > 0)
+                if (props.Any(p => p.m_prop.name.ToLower().Contains(propsToRemove[i].ToLower())))
                 {
-                    for (var j = 0; j < propsToRemove.Count; j++)
-                    {
-                        props.Remove(propsToRemove[j]);
-                    }
-                }
-            }
-        }
-        public static void AddProps(this ICollection<NetLaneProps.Prop> props, ICollection<NetLaneProps.Prop> propsToAdd)
-        {
-            foreach (var propToAdd in propsToAdd)
-            {
-                props.Add(propToAdd.ShallowClone());
-            }
-        }
-        /// <summary>
-        /// Replaces a prop whose name is contained in the key with the propinfo in the value.
-        /// </summary>
-        /// <param name="props"></param>
-        /// <param name="replacementPairs">key=prop name part to remove, value = propinfo to add</param>
-        public static void ReplacePropInfo(this ICollection<NetLaneProps.Prop> props, KeyValuePair<string, PropInfo> replacementPair)
-        {
-            if (props.Any(p => p.m_prop.name.ToLower().Contains(replacementPair.Key.ToLower())))
-            {
-                var tempProp = new NetLaneProps.Prop();
-                var propsToReplace = props.Where(p => p.m_prop.name.ToLower().Contains(replacementPair.Key.ToLower())).ToList();
-                for (var i = 0; i < propsToReplace.Count; i++)
-                {
-                    tempProp = propsToReplace[i].ShallowClone();
-                    props.Remove(propsToReplace[i]);
-                    tempProp.m_prop = replacementPair.Value;
-                    props.Add(tempProp);
+                    var propToCenter = props.First(p => p.m_prop.name.ToLower().Contains(propsToRemove[i].ToLower()));
+                    props.Remove(propToCenter);
                 }
             }
         }

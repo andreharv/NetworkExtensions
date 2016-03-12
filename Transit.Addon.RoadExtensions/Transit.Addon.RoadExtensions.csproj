@@ -673,9 +673,6 @@
     <Content Include="Menus\Roads\Textures\RExExtendedSubBar.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone16m\Ground_Node__AlphaMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Roads\PedestrianRoads\Textures\Stone16m\Ground_Node__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -689,12 +686,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\PedestrianRoads\Textures\Stone16m\Ground_Trans__AlphaMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone16m\Ground_Trans__MainTex.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone8m\Ground_Node__AlphaMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\PedestrianRoads\Textures\Stone8m\Ground_Trans__AlphaMap.png">
@@ -713,9 +704,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\PedestrianRoads\Textures\Stone8m\Ground_Segment__XYSMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone8m\Ground_Trans__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\TinyRoads\Alley2L\thumbnails.png">
@@ -1883,16 +1871,10 @@
     <None Include="Buildings\BridgePillar.CableStay32m.crp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Props\StoneBollard.crp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="Roads\Common\Meshes\16m\NoSw\Ground.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\Common\Meshes\16m\NoSw\Ground_Node.obj">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Roads\Common\Meshes\16m\NoSw\Ground_Node_Bike.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\Common\Meshes\16m\NoSw\Ground_Trans.obj">
