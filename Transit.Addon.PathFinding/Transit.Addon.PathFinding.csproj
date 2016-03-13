@@ -49,15 +49,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\Configuration.cs" />
-    <Compile Include="Helpers\CustomRoadAI.cs" />
-    <Compile Include="Helpers\Direction.cs" />
-    <Compile Include="Helpers\Flags.cs" />
-    <Compile Include="Helpers\SegmentGeometry.cs" />
-    <Compile Include="Helpers\TrafficPriority.cs" />
-    <Compile Include="Log.cs" />
-    <Compile Include="Options.cs" />
-    <Compile Include="PathFinding\ImprovedPathFind.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
