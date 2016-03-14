@@ -133,7 +133,7 @@ namespace TrafficManager.State {
 		}
 
 		private static bool checkGameLoaded() {
-			if (!SerializableDataExtension.StateLoading && !TrafficManagerModule.IsGameLoaded()) {
+			if (!TMDataSerializer.StateLoading && !TrafficManagerModule.IsGameLoaded()) {
 				UIView.library.ShowModal<ExceptionPanel>("ExceptionPanel").SetMessage("Nope!", Translation.GetString("Settings_are_defined_for_each_savegame_separately") + ". https://www.viathinksoft.de/tmpe/#options", false);
 				return false;
 			}
