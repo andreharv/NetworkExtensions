@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using Transit.Addon.ToolsV2.Data;
 using Transit.Framework.Network;
 
-namespace Transit.Addon.ToolsV2.Data
+namespace Transit.Addon.ToolsV2.DataSerialization
 {
     public class TPPLaneDataSerializationBinder : SerializationBinder
     {

@@ -1,7 +1,8 @@
 ﻿using System;
+using Transit.Addon.ToolsV2.Data;
 using Transit.Framework.Network;
 
-namespace Transit.Addon.ToolsV2.Data
+namespace Transit.Addon.ToolsV2.PathFindingFeatures
 {
     public static class TPPLaneDataManager
     {
@@ -73,59 +74,9 @@ namespace Transit.Addon.ToolsV2.Data
 
             return lane.GetConnectionsAsArray();
         }
-
-        //private const ExtendedUnitType sm_routedUnits =
-        //    ExtendedUnitType.ServiceVehicle |
-        //    ExtendedUnitType.PassengerCar |
-        //    ExtendedUnitType.CargoTruck |
-        //    ExtendedUnitType.Bus |
-        //    ExtendedUnitType.Taxi;
-
-        //public static bool CheckLaneConnection(this NetInfo.Lane laneInfo, ExtendedUnitType vehicleType, uint from, uint to)
-        //{
-        //    if ((vehicleType & sm_routedUnits) == 0)
-        //    {
-        //        return true;
-        //    }
-
-        //    if ((laneInfo.m_vehicleType & VehicleInfo.VehicleType.Car) == VehicleInfo.VehicleType.None)
-        //    {
-        //        return true;
-        //    }
-
-        //    // Quick fix for tram
-        //    if ((laneInfo.m_vehicleType & VehicleInfo.VehicleType.Tram) != VehicleInfo.VehicleType.None)
-        //    {
-        //        return true;
-        //    }
-
-        //    TPPLaneDataV2 lane = GetLane(from);
-
-        //    return lane.ConnectsTo(to);
-        //}
         #endregion
 
         #region Vehicle Restrictions
-        //public static bool CanUseLane(this NetInfo.Lane laneInfo, ExtendedUnitType vehicleType, uint laneId)
-        //{
-        //    if ((vehicleType & sm_routedUnits) == 0)
-        //    {
-        //        return true;
-        //    }
-
-        //    if ((laneInfo.m_vehicleType & VehicleInfo.VehicleType.Car) == VehicleInfo.VehicleType.None)
-        //    {
-        //        return true;
-        //    }
-
-        //    // Quick fix for tram
-        //    if ((laneInfo.m_vehicleType & VehicleInfo.VehicleType.Tram) != VehicleInfo.VehicleType.None)
-        //    {
-        //        return true;
-        //    }
-
-        //    return (GetLane(laneId).m_unitTypes & vehicleType) != ExtendedUnitType.None;
-        //}
 
         public static ExtendedUnitType GetVehicleRestrictions(uint laneId)
         {

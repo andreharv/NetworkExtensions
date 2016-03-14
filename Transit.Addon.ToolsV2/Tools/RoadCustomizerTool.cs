@@ -1,16 +1,16 @@
-﻿using System;
-using ColossalFramework.Math;
-using ColossalFramework.UI;
-using CSL_Traffic.UI;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Transit.Addon.ToolsV2.Data;
+using ColossalFramework.Math;
+using ColossalFramework.UI;
+using Transit.Addon.ToolsV2.Menus.RoadCustomizer;
+using Transit.Addon.ToolsV2.Menus.RoadCustomizer.Textures;
+using Transit.Addon.ToolsV2.PathFindingFeatures;
 using Transit.Framework;
 using Transit.Framework.Network;
 using UnityEngine;
 
-namespace CSL_Traffic
+namespace Transit.Addon.ToolsV2.Tools
 {
 	class RoadCustomizerTool : ToolBase
 	{

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Transit.Addon.ToolsV2.PathFindingFeatures;
 using Transit.Framework.Network;
 using UnityEngine;
 

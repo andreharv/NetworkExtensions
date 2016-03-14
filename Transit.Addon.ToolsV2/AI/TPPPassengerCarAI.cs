@@ -1,16 +1,10 @@
 ﻿using ColossalFramework;
-using System;
-using System.Runtime.CompilerServices;
-using ColossalFramework.Math;
-using Transit.Addon.ToolsV2;
-using Transit.Framework.ExtensionPoints.PathFinding;
-using Transit.Framework.Network;
-using UnityEngine;
 using Transit.Framework.Redirection;
+using UnityEngine;
 
-namespace CSL_Traffic
+namespace Transit.Addon.ToolsV2.AI
 {
-	public class CustomPassengerCarAI : CarAI
+    public class TPPPassengerCarAI : CarAI
     {
         [RedirectFrom(typeof(PassengerCarAI))]
         public override void SimulationStep(ushort vehicleID, ref Vehicle data, Vector3 physicsLodRefPos)

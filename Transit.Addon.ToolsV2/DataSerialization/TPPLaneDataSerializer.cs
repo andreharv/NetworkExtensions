@@ -1,12 +1,13 @@
-﻿using System.Linq;
-using ICities;
-using System;
+﻿using System;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using ICities;
+using Transit.Addon.ToolsV2.Data;
+using Transit.Addon.ToolsV2.PathFindingFeatures;
 using Transit.Framework.Serialization;
-using UnityEngine;
 
-namespace Transit.Addon.ToolsV2.Data
+namespace Transit.Addon.ToolsV2.DataSerialization
 {
     public class TPPLaneDataSerializer : SerializableDataExtensionBase
     {

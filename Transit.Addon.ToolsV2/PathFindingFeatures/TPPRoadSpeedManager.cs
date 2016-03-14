@@ -1,5 +1,4 @@
-﻿using Transit.Addon.ToolsV2.Data;
-using Transit.Framework.ExtensionPoints.PathFindingFeatures.Contracts;
+﻿using Transit.Framework.ExtensionPoints.PathFindingFeatures.Contracts;
 using Transit.Framework.Network;
 
 namespace Transit.Addon.ToolsV2.PathFindingFeatures
