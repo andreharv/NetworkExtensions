@@ -5,11 +5,12 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using ColossalFramework;
 using ICities;
+using TrafficManager.Custom.AI;
+using TrafficManager.State;
 using TrafficManager.Traffic;
 using TrafficManager.TrafficLight;
-using TrafficManager.Custom.AI;
 
-namespace TrafficManager.State
+namespace TrafficManager.DataSerialization
 {
     public class TMDataSerializer : SerializableDataExtensionBase
     {
