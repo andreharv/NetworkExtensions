@@ -38,6 +38,6 @@ namespace Transit.Framework.Network
         Plane                   = PassengerPlane,
         Cargo                   = CargoTruck | CargoTrain | CargoShip,
         PublicTransport         = RoadPublicTransport | Tram | Metro | PassengerTrain,
-        NonTransportRoadVehicle = RoadVehicle & ~PublicTransport
+        NonTransportRoadVehicle = RoadVehicle & ~RoadPublicTransport
     }
 }

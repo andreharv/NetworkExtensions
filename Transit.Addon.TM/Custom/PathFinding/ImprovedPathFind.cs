@@ -71,7 +71,6 @@ namespace TrafficManager.Custom.PathFinding
         private bool _transportVehicle;
 
         private ExtendedUnitType _unitType = ExtendedUnitType.Unknown;
-        //private ExtendedUnitType[] _pathUnitTypes;
         private readonly Dictionary<uint, ExtendedUnitType> _pathUnitTypes = new Dictionary<uint, ExtendedUnitType>();
 
         private ushort _laneChangeRandCounter;
@@ -1848,8 +1847,7 @@ namespace TrafficManager.Custom.PathFinding
 
             // determine if Advanced AI shouuld be used here
             bool useAdvancedAI = !Options.isStockLaneChangerUsed() &&
-                (_unitType != null &&
-                (_unitType & (ExtendedUnitType.RoadVehicle & ~ExtendedUnitType.RoadPublicTransport)) != ExtendedUnitType.None) &&
+                ((_unitType & (ExtendedUnitType.RoadVehicle & ~ExtendedUnitType.RoadPublicTransport)) != ExtendedUnitType.None) &&
                 allowCustomLaneChanging &&
                 !_transportVehicle &&
                 !_stablePath &&
@@ -2069,7 +2067,7 @@ namespace TrafficManager.Custom.PathFinding
                                     // apply vehicle restrictions
                                     distanceOnBezier *= 75f;
                                 }
-                                else if (avoidLane && (_unitType == null || (_unitType & (ExtendedUnitType.CargoTruck | ExtendedUnitType.PassengerCar)) != ExtendedUnitType.None))
+                                else if (avoidLane && ((_unitType & (ExtendedUnitType.CargoTruck | ExtendedUnitType.PassengerCar)) != ExtendedUnitType.None))
                                 {
                                     // apply vanilla game restriction policies
                                     distanceOnBezier *= 3f;

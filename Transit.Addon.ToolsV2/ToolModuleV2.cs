@@ -76,6 +76,8 @@ namespace Transit.Addon.ToolsV2
 
         public override void OnDisabled()
         {
+            base.OnDisabled();
+
             if (sm_redirectionInstalled)
             {
                 Redirector.RevertRedirections();
