@@ -65,6 +65,10 @@
     <Compile Include="AI\CustomTramBaseAI.cs" />
     <Compile Include="AI\CustomVehicleAI.cs" />
     <Compile Include="DataSerialization\TMDataConverter.cs" />
+    <Compile Include="PathFindingFeatures\TMDataManager.Configuration.Apply.cs" />
+    <Compile Include="PathFindingFeatures\TMDataManager.Configuration.Create.cs" />
+    <Compile Include="PathFindingFeatures\TMDataManager.cs" />
+    <Compile Include="PathFindingFeatures\TMDataManager.Options.cs" />
     <Compile Include="PathFindingFeatures\TMLaneRoutingManager.cs" />
     <Compile Include="PathFindingFeatures\TMRoadRestrictionManager.cs" />
     <Compile Include="PathFindingFeatures\TMRoadSpeedManager.cs" />

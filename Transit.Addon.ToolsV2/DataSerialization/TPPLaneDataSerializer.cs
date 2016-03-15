@@ -16,8 +16,8 @@ namespace Transit.Addon.ToolsV2.DataSerialization
             
         public override void OnLoadData()
         {
-            var dataV1 = new DataSerializer<TPPLaneDataV1[], TPPLaneDataSerializationBinder>(LANE_DATAV1_ID).DeserializeData(serializableDataManager);
-            var dataV2 = new DataSerializer<TPPLaneDataV2[], TPPLaneDataSerializationBinder>(LANE_DATAV2_ID).DeserializeData(serializableDataManager);
+            var dataV1 = new DataSerializer<TPPLaneDataV1[], TPPLaneDataSerializationBinder>().DeserializeData(serializableDataManager, LANE_DATAV1_ID);
+            var dataV2 = new DataSerializer<TPPLaneDataV2[], TPPLaneDataSerializationBinder>().DeserializeData(serializableDataManager, LANE_DATAV2_ID);
 
             TPPLaneDataManager.sm_lanes = null;
 
@@ -72,21 +72,10 @@ namespace Transit.Addon.ToolsV2.DataSerialization
                 return;
 
             Logger.LogInfo("Saving road data!");
-            BinaryFormatter binaryFormatter = new BinaryFormatter();
-            MemoryStream memStream = new MemoryStream();
-            try
+
+            if (TPPLaneDataManager.sm_lanes != null)
             {
-                binaryFormatter.Serialize(memStream, TPPLaneDataManager.sm_lanes);
-                serializableDataManager.SaveData(LANE_DATAV2_ID, memStream.ToArray());
-                Logger.LogInfo("Finished saving road data!");
-            }
-            catch (Exception e)
-            {
-                Logger.LogError("Unexpected " + e.GetType().Name + " saving road data.");
-            }
-            finally
-            {
-                memStream.Close();
+                new DataSerializer<TPPLaneDataV2[], TPPLaneDataSerializationBinder>().SerializeData(serializableDataManager, LANE_DATAV2_ID, TPPLaneDataManager.sm_lanes);
             }
         }
     }

@@ -10,18 +10,11 @@ namespace Transit.Framework.Serialization
         where TData : class
         where TBinder : SerializationBinder, new()
     {
-        public string DataId { get; private set; }
-
-        public DataSerializer(string dataId)
-        {
-            DataId = dataId;
-        }
-
-        public TData DeserializeData(ISerializableData gameData)
+        public TData DeserializeData(ISerializableData gameData, string dataId)
         {
             try
             {
-                var data = gameData.LoadData(DataId);
+                var data = gameData.LoadData(dataId);
                 if (data == null)
                 {
                     return null;
@@ -50,7 +43,7 @@ namespace Transit.Framework.Serialization
             }
         }
 
-        public void SerializeData(ISerializableData gameData, TData data)
+        public void SerializeData(ISerializableData gameData, string dataId, TData data)
         {
             try
             {
@@ -58,7 +51,7 @@ namespace Transit.Framework.Serialization
                 {
                     var binaryFormatter = new BinaryFormatter();
                     binaryFormatter.Serialize(memStream, data);
-                    gameData.SaveData(DataId, memStream.ToArray());
+                    gameData.SaveData(dataId, memStream.ToArray());
                 }
             }
             catch (Exception e)
@@ -67,6 +60,19 @@ namespace Transit.Framework.Serialization
                 UnityEngine.Debug.Log("TFW: " + e.Message);
                 UnityEngine.Debug.Log("TFW: " + e.ToString());
             }
+        }
+    }
+
+    public class DataSerializer<TData> : DataSerializer<TData, DefaultSerializationBinder>
+        where TData : class
+    {
+    }
+
+    public class DefaultSerializationBinder : SerializationBinder
+    {
+        public override Type BindToType(string assemblyName, string typeName)
+        {
+            return null;
         }
     }
 }
