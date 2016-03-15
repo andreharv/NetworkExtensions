@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace TrafficManager.UI {
+namespace Transit.Addon.TM.UI {
 	public abstract class SubTool {
 		public TrafficManagerTool MainTool { get; set; }
 

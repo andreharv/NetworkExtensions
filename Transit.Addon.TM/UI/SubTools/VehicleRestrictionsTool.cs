@@ -4,15 +4,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TrafficManager.State;
-using TrafficManager.Traffic;
-using TrafficManager.TrafficLight;
+using Transit.Addon.TM.State;
+using Transit.Addon.TM.Traffic;
+using Transit.Addon.TM.TrafficLight;
+using Transit.Addon.TM.Data;
 using UnityEngine;
 
-namespace TrafficManager.UI.SubTools {
+namespace Transit.Addon.TM.UI.SubTools {
 	public class VehicleRestrictionsTool : SubTool {
-		private static ExtVehicleType[] roadVehicleTypes = new ExtVehicleType[] { ExtVehicleType.PassengerCar, ExtVehicleType.Bus, ExtVehicleType.Taxi, ExtVehicleType.CargoTruck, ExtVehicleType.Service, ExtVehicleType.Emergency };
-		private static ExtVehicleType[] railVehicleTypes = new ExtVehicleType[] { ExtVehicleType.PassengerTrain, ExtVehicleType.CargoTrain };
+		private static TMVehicleType[] roadVehicleTypes = new TMVehicleType[] { TMVehicleType.PassengerCar, TMVehicleType.Bus, TMVehicleType.Taxi, TMVehicleType.CargoTruck, TMVehicleType.Service, TMVehicleType.Emergency };
+		private static TMVehicleType[] railVehicleTypes = new TMVehicleType[] { TMVehicleType.PassengerTrain, TMVehicleType.CargoTrain };
 		private static float vehicleRestrictionsSignSize = 80f;
 		private bool _cursorInSecondaryPanel;
 		private bool overlayHandleHovered;
@@ -116,17 +117,17 @@ namespace TrafficManager.UI.SubTools {
 					uint laneIndex = (uint)laneData[2];
 					NetInfo.Lane laneInfo = segmentInfo.m_lanes[laneIndex];
 
-					ExtVehicleType baseMask = ExtVehicleType.None;
+					TMVehicleType baseMask = TMVehicleType.None;
 					if (VehicleRestrictionsManager.IsRoadLane(laneInfo)) {
-						baseMask = ExtVehicleType.RoadVehicle;
+						baseMask = TMVehicleType.RoadVehicle;
 					} else if (VehicleRestrictionsManager.IsRailLane(laneInfo)) {
-						baseMask = ExtVehicleType.RailVehicle;
+						baseMask = TMVehicleType.RailVehicle;
 					}
 
-					if (baseMask == ExtVehicleType.None)
+					if (baseMask == TMVehicleType.None)
 						continue;
 
-					ExtVehicleType allowedTypes = VehicleRestrictionsManager.GetAllowedVehicleTypes(SelectedSegmentId, laneIndex, laneId, laneInfo);
+					TMVehicleType allowedTypes = VehicleRestrictionsManager.GetAllowedVehicleTypes(SelectedSegmentId, laneIndex, laneId, laneInfo);
 					allowedTypes = ~allowedTypes & baseMask;
 					VehicleRestrictionsManager.SetAllowedVehicleTypes(SelectedSegmentId, laneIndex, laneId, allowedTypes);
 				}
@@ -143,14 +144,14 @@ namespace TrafficManager.UI.SubTools {
 					uint laneIndex = (uint)laneData[2];
 					NetInfo.Lane laneInfo = segmentInfo.m_lanes[laneIndex];
 
-					ExtVehicleType baseMask = ExtVehicleType.None;
+					TMVehicleType baseMask = TMVehicleType.None;
 					if (VehicleRestrictionsManager.IsRoadLane(laneInfo)) {
-						baseMask = ExtVehicleType.RoadVehicle;
+						baseMask = TMVehicleType.RoadVehicle;
 					} else if (VehicleRestrictionsManager.IsRailLane(laneInfo)) {
-						baseMask = ExtVehicleType.RailVehicle;
+						baseMask = TMVehicleType.RailVehicle;
 					}
 
-					if (baseMask == ExtVehicleType.None)
+					if (baseMask == TMVehicleType.None)
 						continue;
 
 					VehicleRestrictionsManager.SetAllowedVehicleTypes(SelectedSegmentId, laneIndex, laneId, baseMask);
@@ -167,14 +168,14 @@ namespace TrafficManager.UI.SubTools {
 					uint laneIndex = (uint)laneData[2];
 					NetInfo.Lane laneInfo = segmentInfo.m_lanes[laneIndex];
 
-					ExtVehicleType baseMask = ExtVehicleType.None;
+					TMVehicleType baseMask = TMVehicleType.None;
 					if (VehicleRestrictionsManager.IsRoadLane(laneInfo)) {
-						baseMask = ExtVehicleType.RoadVehicle;
+						baseMask = TMVehicleType.RoadVehicle;
 					} else if (VehicleRestrictionsManager.IsRailLane(laneInfo)) {
-						baseMask = ExtVehicleType.RailVehicle;
+						baseMask = TMVehicleType.RailVehicle;
 					}
 
-					if (baseMask == ExtVehicleType.None)
+					if (baseMask == TMVehicleType.None)
 						continue;
 
 					VehicleRestrictionsManager.SetAllowedVehicleTypes(SelectedSegmentId, laneIndex, laneId, ~baseMask);
@@ -310,7 +311,7 @@ namespace TrafficManager.UI.SubTools {
 					directions.Add(laneInfo.m_direction);
 				}
 
-				ExtVehicleType[] possibleVehicleTypes = null;
+				TMVehicleType[] possibleVehicleTypes = null;
 				if (VehicleRestrictionsManager.IsRoadLane(laneInfo)) {
 					possibleVehicleTypes = roadVehicleTypes;
 				} else if (VehicleRestrictionsManager.IsRailLane(laneInfo)) {
@@ -320,7 +321,7 @@ namespace TrafficManager.UI.SubTools {
 					continue;
 				}
 
-				ExtVehicleType allowedTypes = VehicleRestrictionsManager.GetAllowedVehicleTypes(segmentId, laneIndex, laneId, laneInfo);
+				TMVehicleType allowedTypes = VehicleRestrictionsManager.GetAllowedVehicleTypes(segmentId, laneIndex, laneId, laneInfo);
 
 				uint y = 0;
 #if DEBUGx
@@ -341,7 +342,7 @@ namespace TrafficManager.UI.SubTools {
 
 				++y;
 #endif
-				foreach (ExtVehicleType vehicleType in possibleVehicleTypes) {
+				foreach (TMVehicleType vehicleType in possibleVehicleTypes) {
 					bool allowed = VehicleRestrictionsManager.IsAllowed(allowedTypes, vehicleType);
 					if (allowed && viewOnly)
 						continue; // do not draw allowed vehicles in view-only mode

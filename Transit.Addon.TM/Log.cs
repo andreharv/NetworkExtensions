@@ -5,7 +5,7 @@ using System.IO;
 using System.Threading;
 using UnityEngine;
 
-namespace TrafficManager {
+namespace Transit.Addon.TM {
 
 	public static class Log {
 		private enum LogLevel {

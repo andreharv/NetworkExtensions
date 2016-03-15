@@ -7,7 +7,7 @@
     <ProjectGuid>{65C72736-B189-4144-91BF-1717287BA925}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TrafficManager</RootNamespace>
+    <RootNamespace>Transit.Addon.TM</RootNamespace>
     <AssemblyName>Transit.Addon.TM</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -54,34 +54,33 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Custom\AI\CustomCarAI.cs" />
-    <Compile Include="Custom\AI\CustomCargoTruckAI.cs" />
-    <Compile Include="Custom\AI\CustomCitizenAI.cs" />
-    <Compile Include="Custom\AI\CustomHumanAI.cs" />
-    <Compile Include="Custom\AI\CustomPassengerCarAI.cs" />
-    <Compile Include="Custom\AI\CustomResidentAI.cs" />
-    <Compile Include="Custom\AI\CustomRoadAI.cs" />
-    <Compile Include="Custom\AI\CustomTrainAI.cs" />
-    <Compile Include="Custom\AI\CustomTramBaseAI.cs" />
-    <Compile Include="Custom\AI\CustomVehicleAI.cs" />
-    <Compile Include="Custom\PathFindingFeatures\TMLaneRoutingManager.cs" />
-    <Compile Include="Custom\PathFindingFeatures\TMRoadRestrictionManager.cs" />
-    <Compile Include="Custom\PathFindingFeatures\TMRoadSpeedManager.cs" />
-    <Compile Include="Custom\PathFindingFeatures\TMSupported.cs" />
-    <Compile Include="Custom\PathFinding\ImprovedPathFind.cs" />
-    <Compile Include="Data\Configuration.CustomSegmentLight.cs" />
-    <Compile Include="Data\Configuration.CustomSegmentLights.cs" />
-    <Compile Include="Data\Configuration.SegmentNodeFlags.cs" />
-    <Compile Include="Data\Configuration.SegmentNodeConf.cs" />
-    <Compile Include="Data\Configuration.TimedTrafficLightsStep.cs" />
-    <Compile Include="Data\Configuration.TimedTrafficLights.cs" />
-    <Compile Include="Data\Configuration.LaneVehicleTypes.cs" />
-    <Compile Include="Data\Configuration.LaneSpeedLimit.cs" />
-    <Compile Include="DataSerialization\TMDataSerializationBinder.cs" />
+    <Compile Include="AI\CustomCarAI.cs" />
+    <Compile Include="AI\CustomCargoTruckAI.cs" />
+    <Compile Include="AI\CustomCitizenAI.cs" />
+    <Compile Include="AI\CustomHumanAI.cs" />
+    <Compile Include="AI\CustomPassengerCarAI.cs" />
+    <Compile Include="AI\CustomResidentAI.cs" />
+    <Compile Include="AI\CustomRoadAI.cs" />
+    <Compile Include="AI\CustomTrainAI.cs" />
+    <Compile Include="AI\CustomTramBaseAI.cs" />
+    <Compile Include="AI\CustomVehicleAI.cs" />
+    <Compile Include="PathFindingFeatures\TMLaneRoutingManager.cs" />
+    <Compile Include="PathFindingFeatures\TMRoadRestrictionManager.cs" />
+    <Compile Include="PathFindingFeatures\TMRoadSpeedManager.cs" />
+    <Compile Include="PathFindingFeatures\TMSupported.cs" />
+    <Compile Include="PathFinding\ImprovedPathFind.cs" />
+    <Compile Include="Data\TMConfiguration.CustomSegmentLight.cs" />
+    <Compile Include="Data\TMConfiguration.CustomSegmentLights.cs" />
+    <Compile Include="Data\TMConfiguration.SegmentNodeFlags.cs" />
+    <Compile Include="Data\TMConfiguration.SegmentNodeConf.cs" />
+    <Compile Include="Data\TMConfiguration.TimedTrafficLightsStep.cs" />
+    <Compile Include="Data\TMConfiguration.TimedTrafficLights.cs" />
+    <Compile Include="Data\TMConfiguration.LaneVehicleTypes.cs" />
+    <Compile Include="Data\TMConfiguration.LaneSpeedLimit.cs" />
     <Compile Include="TrafficManagerModule.Loading.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Data\Configuration.cs" />
+    <Compile Include="Data\TMConfiguration.cs" />
     <Compile Include="Data\Flags.cs" />
     <Compile Include="State\Options.cs" />
     <Compile Include="DataSerialization\TMDataSerializer.cs" />
@@ -96,11 +95,11 @@
     <Compile Include="TrafficManagerModule.cs" />
     <Compile Include="TrafficManagerMode.cs" />
     <Compile Include="Traffic\Direction.cs" />
-    <Compile Include="Data\ExtVehicleType.cs" />
+    <Compile Include="Data\TMVehicleType.cs" />
     <Compile Include="Traffic\SegmentEnd.cs" />
     <Compile Include="Traffic\SegmentGeometry.cs" />
     <Compile Include="Traffic\SpeedLimitManager.cs" />
-    <Compile Include="Data\ExtVehicleTypeConverter.cs" />
+    <Compile Include="Data\_Extensions\TMVehicleTypeExtensions.cs" />
     <Compile Include="Traffic\TrafficPriority.cs" />
     <Compile Include="Traffic\TrafficSegment.cs" />
     <Compile Include="Traffic\VehicleJunctionTransitState.cs" />
@@ -391,6 +390,10 @@
     <EmbeddedResource Include="Resources\tram_infosign.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Transit.Addon.TMLegacy\Transit.Addon.TMLegacy.csproj">
+      <Project>{c6fb53c5-223f-4cee-863d-63f3237f058a}</Project>
+      <Name>Transit.Addon.TMLegacy</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Transit.Framework.ExtensionPoints\Transit.Framework.ExtensionPoints.csproj">
       <Project>{2e44eca3-d750-4115-b16b-fca94c49bba0}</Project>
       <Name>Transit.Framework.ExtensionPoints</Name>

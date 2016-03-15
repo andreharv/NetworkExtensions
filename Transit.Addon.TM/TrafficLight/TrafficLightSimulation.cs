@@ -1,11 +1,11 @@
 using System;
 using ColossalFramework;
-using TrafficManager.Traffic;
+using Transit.Addon.TM.Traffic;
 using System.Collections.Generic;
-using TrafficManager.State;
-using TrafficManager.Custom.AI;
+using Transit.Addon.TM.State;
+using Transit.Addon.TM.AI;
 
-namespace TrafficManager.TrafficLight {
+namespace Transit.Addon.TM.TrafficLight {
 	public class TrafficLightSimulation {
 		/// <summary>
 		/// For each node id: traffic light simulation assigned to the node

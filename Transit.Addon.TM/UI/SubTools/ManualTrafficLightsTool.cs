@@ -4,13 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TrafficManager.Custom.AI;
-using TrafficManager.State;
-using TrafficManager.Traffic;
-using TrafficManager.TrafficLight;
+using Transit.Addon.TM.AI;
+using Transit.Addon.TM.State;
+using Transit.Addon.TM.Traffic;
+using Transit.Addon.TM.TrafficLight;
+using Transit.Addon.TM.Data;
 using UnityEngine;
 
-namespace TrafficManager.UI.SubTools {
+namespace Transit.Addon.TM.UI.SubTools {
 	public class ManualTrafficLightsTool : SubTool {
 		private readonly int[] _hoveredButton = new int[2];
 		private readonly GUIStyle _counterStyle = new GUIStyle();
@@ -114,7 +115,7 @@ namespace TrafficManager.UI.SubTools {
 					}
 
 					int lightOffset = -1;
-					foreach (ExtVehicleType vehicleType in segmentLights.VehicleTypes) {
+					foreach (TMVehicleType vehicleType in segmentLights.VehicleTypes) {
 						++lightOffset;
 						CustomSegmentLight segmentLight = segmentLights.GetCustomLight(vehicleType);
 
@@ -139,7 +140,7 @@ namespace TrafficManager.UI.SubTools {
 
 							int numInfos = 0;
 							for (int k = 0; k < TrafficManagerTool.InfoSignsToDisplay.Length; ++k) {
-								if ((TrafficManagerTool.InfoSignsToDisplay[k] & vehicleType) == ExtVehicleType.None)
+								if ((TrafficManagerTool.InfoSignsToDisplay[k] & vehicleType) == TMVehicleType.None)
 									continue;
 								var infoRect = new Rect(offsetScreenPos.x + modeWidth / 2f + 7f * zoom * (float)(numInfos + 1) + infoWidth * (float)numInfos, offsetScreenPos.y - infoHeight / 2f, infoWidth, infoHeight);
 								guiColor.a = 0.6f;

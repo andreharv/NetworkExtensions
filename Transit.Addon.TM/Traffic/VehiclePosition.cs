@@ -1,6 +1,7 @@
 using ColossalFramework;
+using Transit.Addon.TM.Data;
 
-namespace TrafficManager.Traffic {
+namespace Transit.Addon.TM.Traffic {
 	public class VehiclePosition {
 		private VehicleJunctionTransitState carState;
 
@@ -30,7 +31,7 @@ namespace TrafficManager.Traffic {
 		public bool OnEmergency;
 		public uint LastFrame;
 		public uint LastPathRecalculation;
-		public ExtVehicleType VehicleType;
+		public TMVehicleType VehicleType;
 
 		public VehiclePosition() {
 			ResetCar();
@@ -46,7 +47,7 @@ namespace TrafficManager.Traffic {
 			//FromLaneId = 0;
 			FromLaneIndex = 0;
 			LastPathRecalculation = 0;
-			VehicleType = ExtVehicleType.None;
+			VehicleType = TMVehicleType.None;
 			Stopped = false;
 			WaitTime = 0;
 			CarState = VehicleJunctionTransitState.None;

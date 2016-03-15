@@ -1,4 +1,4 @@
-namespace TrafficManager
+namespace Transit.Addon.TM.Traffic
 {
     public enum VehicleJunctionTransitState
     {

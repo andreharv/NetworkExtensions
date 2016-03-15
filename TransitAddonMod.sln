@@ -39,6 +39,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Addon.Deploy", "Transit.Addon.Deploy\Transit.Addon.Deploy.csproj", "{7DFBABEB-DED8-4E16-8AA5-B38C3EF64305}"
 	ProjectSection(ProjectDependencies) = postProject
 		{97D70503-6567-41A1-92FC-66D813A53370} = {97D70503-6567-41A1-92FC-66D813A53370}
+		{65C72736-B189-4144-91BF-1717287BA925} = {65C72736-B189-4144-91BF-1717287BA925}
+		{7D1C44DC-79D4-414F-8DED-42E762AFA862} = {7D1C44DC-79D4-414F-8DED-42E762AFA862}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Addon", "Transit.Addon\Transit.Addon.csproj", "{80C47696-4D41-4BB6-9CAE-C477FE528ADF}"
@@ -73,6 +75,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Addon.TM", "Transit.Addon.TM\Transit.Addon.TM.csproj", "{65C72736-B189-4144-91BF-1717287BA925}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Addon.PathFinding", "Transit.Addon.PathFinding\Transit.Addon.PathFinding.csproj", "{41F6975F-A6E2-4166-A840-3EE1A9579F07}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Addon.TMLegacy", "Transit.Addon.TMLegacy\Transit.Addon.TMLegacy.csproj", "{C6FB53C5-223F-4CEE-863D-63F3237F058A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -260,6 +264,22 @@ Global
 		{41F6975F-A6E2-4166-A840-3EE1A9579F07}.Release|x64.Build.0 = Release|Any CPU
 		{41F6975F-A6E2-4166-A840-3EE1A9579F07}.Release|x86.ActiveCfg = Release|Any CPU
 		{41F6975F-A6E2-4166-A840-3EE1A9579F07}.Release|x86.Build.0 = Release|Any CPU
+		{C6FB53C5-223F-4CEE-863D-63F3237F058A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6FB53C5-223F-4CEE-863D-63F3237F058A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6FB53C5-223F-4CEE-863D-63F3237F058A}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{C6FB53C5-223F-4CEE-863D-63F3237F058A}.Debug|ARM.Build.0 = Debug|Any CPU
+		{C6FB53C5-223F-4CEE-863D-63F3237F058A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C6FB53C5-223F-4CEE-863D-63F3237F058A}.Debug|x64.Build.0 = Debug|Any CPU
+		{C6FB53C5-223F-4CEE-863D-63F3237F058A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C6FB53C5-223F-4CEE-863D-63F3237F058A}.Debug|x86.Build.0 = Debug|Any CPU
+		{C6FB53C5-223F-4CEE-863D-63F3237F058A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6FB53C5-223F-4CEE-863D-63F3237F058A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6FB53C5-223F-4CEE-863D-63F3237F058A}.Release|ARM.ActiveCfg = Release|Any CPU
+		{C6FB53C5-223F-4CEE-863D-63F3237F058A}.Release|ARM.Build.0 = Release|Any CPU
+		{C6FB53C5-223F-4CEE-863D-63F3237F058A}.Release|x64.ActiveCfg = Release|Any CPU
+		{C6FB53C5-223F-4CEE-863D-63F3237F058A}.Release|x64.Build.0 = Release|Any CPU
+		{C6FB53C5-223F-4CEE-863D-63F3237F058A}.Release|x86.ActiveCfg = Release|Any CPU
+		{C6FB53C5-223F-4CEE-863D-63F3237F058A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

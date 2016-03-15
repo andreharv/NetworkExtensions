@@ -2,15 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ColossalFramework;
-using TrafficManager.Traffic;
-using TrafficManager.TrafficLight;
-using TrafficManager.Custom.AI;
+using Transit.Addon.TM.Traffic;
+using Transit.Addon.TM.TrafficLight;
+using Transit.Addon.TM.AI;
+using Transit.Addon.TM.Data;
 
 /// <summary>
 /// A priority segment describes a directional traffic segment connected to a controlled
 /// node (with traffic lights, priority settings).
 /// </summary>
-namespace TrafficManager.Traffic {
+namespace Transit.Addon.TM.Traffic {
 	public class SegmentEnd {
 		public enum PriorityType {
 			None = 0,
@@ -76,7 +77,7 @@ namespace TrafficManager.Traffic {
 		/// Calculates for each segment the number of cars going to this segment.
 		/// We use integer arithmetic for better performance.
 		/// </summary>
-		public Dictionary<ushort, uint> GetVehicleMetricGoingToSegment(float? minSpeed, ExtVehicleType? vehicleTypes=null, ExtVehicleType separateVehicleTypes=ExtVehicleType.None, bool debug = false) {
+		public Dictionary<ushort, uint> GetVehicleMetricGoingToSegment(float? minSpeed, TMVehicleType? vehicleTypes=null, TMVehicleType separateVehicleTypes=TMVehicleType.None, bool debug = false) {
 			Dictionary<ushort, uint> numCarsGoingToSegmentId = new Dictionary<ushort, uint>();
 			VehicleManager vehicleManager = Singleton<VehicleManager>.instance;
 			NetManager netManager = Singleton<NetManager>.instance;
@@ -113,13 +114,13 @@ namespace TrafficManager.Traffic {
 					continue;
 				}
 				if (vehicleTypes != null) {
-					if (vehicleTypes == ExtVehicleType.None) {
-						if ((globalPos.VehicleType & separateVehicleTypes) != ExtVehicleType.None) {
+					if (vehicleTypes == TMVehicleType.None) {
+						if ((globalPos.VehicleType & separateVehicleTypes) != TMVehicleType.None) {
 							// we want all vehicles that do not have separate traffic lights
 							continue;
 						}
 					} else {
-						if ((globalPos.VehicleType & vehicleTypes) == ExtVehicleType.None) {
+						if ((globalPos.VehicleType & vehicleTypes) == TMVehicleType.None) {
 							continue;
 						}
 					}

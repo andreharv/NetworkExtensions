@@ -1,14 +1,15 @@
 using ICities;
-using TrafficManager.Custom.PathFinding;
-using TrafficManager.Custom.PathFindingFeatures;
-using TrafficManager.State;
+using Transit.Addon.TM;
+using Transit.Addon.TM.PathFinding;
+using Transit.Addon.TM.PathFindingFeatures;
+using Transit.Addon.TM.State;
 using Transit.Framework.ExtensionPoints.PathFinding;
 using Transit.Framework.ExtensionPoints.PathFindingFeatures;
 using Transit.Framework.Modularity;
 using Transit.Framework.Redirection;
 using UnityEngine;
 
-namespace TrafficManager
+namespace Transit.Addon.TM
 {
     [Module("Transit.Addon.Mod")]
     public partial class TrafficManagerModule : ModuleBase

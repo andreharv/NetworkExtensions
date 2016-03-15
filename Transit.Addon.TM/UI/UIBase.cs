@@ -1,9 +1,10 @@
 using ColossalFramework.UI;
 using System;
-using TrafficManager.TrafficLight;
+using Transit.Addon.TM.TrafficLight;
+using Transit.Addon.TM;
 using UnityEngine;
 
-namespace TrafficManager.UI {
+namespace Transit.Addon.TM.UI {
 	public class UIBase : UICustomControl {
 		private bool _uiShown;
 

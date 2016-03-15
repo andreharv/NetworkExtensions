@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using ColossalFramework;
-using TrafficManager.Traffic;
+using Transit.Addon.TM.Traffic;
 
-namespace TrafficManager.TrafficLight {
+namespace Transit.Addon.TM.TrafficLight {
 	class CustomTrafficLights {
 
 		/// <summary>

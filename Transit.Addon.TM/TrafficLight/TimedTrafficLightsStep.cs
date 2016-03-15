@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using ColossalFramework;
-using TrafficManager.TrafficLight;
-using TrafficManager.Traffic;
-using TrafficManager.Custom.AI;
+using Transit.Addon.TM.TrafficLight;
+using Transit.Addon.TM.Traffic;
+using Transit.Addon.TM.AI;
+using Transit.Addon.TM.Data;
 
-namespace TrafficManager.TrafficLight {
+namespace Transit.Addon.TM.TrafficLight {
 	public class TimedTrafficLightsStep : ICloneable {
 		/// <summary>
 		/// The number of time units this traffic light remains in the current state at least
@@ -114,7 +115,7 @@ namespace TrafficManager.TrafficLight {
 			return getCurrentFrame() == startFrame && !StepDone(false);
 		}
 
-		public RoadBaseAI.TrafficLightState GetLight(ushort segmentId, ExtVehicleType vehicleType, int lightType) {
+		public RoadBaseAI.TrafficLightState GetLight(ushort segmentId, TMVehicleType vehicleType, int lightType) {
 			CustomSegmentLight segLight = segmentLights[segmentId].GetCustomLight(vehicleType);
 			if (segLight != null) {
 				switch (lightType) {
@@ -184,7 +185,7 @@ namespace TrafficManager.TrafficLight {
 						//Log._Debug($"Step @ {timedNode.NodeId}: Segment {segmentId}: Ped.: {liveSegmentLights.PedestrianLightState.ToString()}");
 					}
 
-					foreach (ExtVehicleType vehicleType in curStepSegmentLights.VehicleTypes) {
+					foreach (TMVehicleType vehicleType in curStepSegmentLights.VehicleTypes) {
 						CustomSegmentLight liveSegmentLight = liveSegmentLights.GetCustomLight(vehicleType);
 						if (liveSegmentLight == null) {
 							Log.Warning($"Timed step @ seg. {segmentId}, node {timedNode.NodeId} has a traffic light for {vehicleType} but the live segment does not have one.");
@@ -404,10 +405,10 @@ namespace TrafficManager.TrafficLight {
 					}
 
 					bool startPhase = getCurrentFrame() <= startFrame + minTime + 2; // during start phase all vehicles on "green" segments are counted as flowing
-					ExtVehicleType validVehicleTypes = VehicleRestrictionsManager.GetAllowedVehicleTypes(fromSegmentId, timedNode.NodeId);
+					TMVehicleType validVehicleTypes = VehicleRestrictionsManager.GetAllowedVehicleTypes(fromSegmentId, timedNode.NodeId);
 
-					foreach (ExtVehicleType vehicleType in segLights.VehicleTypes) {
-						if (vehicleType != ExtVehicleType.None && (validVehicleTypes & vehicleType) == ExtVehicleType.None)
+					foreach (TMVehicleType vehicleType in segLights.VehicleTypes) {
+						if (vehicleType != TMVehicleType.None && (validVehicleTypes & vehicleType) == TMVehicleType.None)
 							continue;
 						CustomSegmentLight segLight = segLights.GetCustomLight(vehicleType);
 						if (segLight == null) {
@@ -507,7 +508,7 @@ namespace TrafficManager.TrafficLight {
 			return true;
 		}
 
-		internal void ChangeLightMode(ushort segmentId, ExtVehicleType vehicleType, CustomSegmentLight.Mode mode) {
+		internal void ChangeLightMode(ushort segmentId, TMVehicleType vehicleType, CustomSegmentLight.Mode mode) {
 			CustomSegmentLight light = segmentLights[segmentId].GetCustomLight(vehicleType);
 			if (light != null)
 				light.CurrentMode = mode;

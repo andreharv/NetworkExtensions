@@ -2,13 +2,12 @@ using System;
 using System.Linq;
 using ColossalFramework;
 using ColossalFramework.UI;
-using TrafficManager.Traffic;
-using TrafficManager.TrafficLight;
+using Transit.Addon.TM.Traffic;
+using Transit.Addon.TM.TrafficLight;
 using UnityEngine;
-using TrafficManager.State;
-using TrafficManager.Custom.PathFinding;
+using Transit.Addon.TM.State;
 
-namespace TrafficManager.UI {
+namespace Transit.Addon.TM.UI {
 	public class UITrafficManager : UIPanel {
 		//private static UIState _uiState = UIState.None;
 

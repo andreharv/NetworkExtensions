@@ -6,9 +6,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace TrafficManager.UI {
+namespace Transit.Addon.TM.UI {
 	public class Translation {
-		const string RESOURCES_PREFIX = "TrafficManager.Resources.";
+		const string RESOURCES_PREFIX = "Transit.Addon.TM.Resources.";
 		private static readonly string DEFAULT_TRANSLATION_FILENAME = "lang.txt";
 
 		private static Dictionary<string, string> translations;

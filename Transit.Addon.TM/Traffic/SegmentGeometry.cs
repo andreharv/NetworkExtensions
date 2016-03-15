@@ -6,12 +6,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using TrafficManager.Custom.AI;
-using TrafficManager.State;
-using TrafficManager.Traffic;
-using TrafficManager.TrafficLight;
+using Transit.Addon.TM.AI;
+using Transit.Addon.TM.Data;
+using Transit.Addon.TM.State;
+using Transit.Addon.TM.Traffic;
+using Transit.Addon.TM.TrafficLight;
 
-namespace TrafficManager.Traffic {
+namespace Transit.Addon.TM.Traffic {
 	/// <summary>
 	/// Manages segment geometry data (e.g. if a segment is one-way or not, which incoming/outgoing segments are connected at the start or end node) of one specific segment.
 	/// Directional data (left, right, straight) is always given relatively to the managed segment.

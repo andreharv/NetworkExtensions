@@ -2,13 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ColossalFramework;
-using TrafficManager.TrafficLight;
-using TrafficManager.Custom.AI;
+using Transit.Addon.TM.TrafficLight;
+using Transit.Addon.TM.AI;
 using UnityEngine;
-using TrafficManager.State;
+using Transit.Addon.TM.State;
 using System.Threading;
+using Transit.Addon.TM.Data;
 
-namespace TrafficManager.Traffic {
+namespace Transit.Addon.TM.Traffic {
 	class TrafficPriority {
 		private static uint[] segmentsCheckLoadBalanceMod = new uint[] { 127, 255, 511, 1023, 2047 };
 		

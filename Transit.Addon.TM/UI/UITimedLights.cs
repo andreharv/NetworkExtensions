@@ -1,8 +1,9 @@
 ﻿using ColossalFramework.UI;
-using TrafficManager.TrafficLight;
+using Transit.Addon.TM.TrafficLight;
+using Transit.Addon.TM;
 using UnityEngine;
 
-namespace TrafficManager.UI
+namespace Transit.Addon.TM.UI
 {
     class UITimedLights : UIPanel
     {
