@@ -53,7 +53,7 @@ namespace Transit.Addon.TM.Data {
 		/// <summary>
 		/// For each segment and node: Defines additional flags for segments at a node
 		/// </summary>
-		private static TMConfiguration.SegmentNodeFlags[][] segmentNodeFlags = null;
+		private static TMConfigurationV2.SegmentNodeFlags[][] segmentNodeFlags = null;
 
 		private static object laneSpeedLimitLock = new object();
 		private static object laneAllowedVehicleTypesLock = new object();
@@ -404,7 +404,7 @@ namespace Transit.Addon.TM.Data {
 
 			int index = startNode ? 0 : 1;
 
-			TMConfiguration.SegmentNodeFlags[] nodeFlags = segmentNodeFlags[segmentId];
+			TMConfigurationV2.SegmentNodeFlags[] nodeFlags = segmentNodeFlags[segmentId];
 			if (nodeFlags == null || nodeFlags[index] == null || nodeFlags[index].uturnAllowed == null)
 				return Options.allowUTurns;
 			return (bool)nodeFlags[index].uturnAllowed;
@@ -420,7 +420,7 @@ namespace Transit.Addon.TM.Data {
 				if (valueToSet == null)
 					return;
 
-				segmentNodeFlags[segmentId][index] = new TMConfiguration.SegmentNodeFlags();
+				segmentNodeFlags[segmentId][index] = new TMConfigurationV2.SegmentNodeFlags();
 			}
 			segmentNodeFlags[segmentId][index].uturnAllowed = valueToSet;
 		}
@@ -431,7 +431,7 @@ namespace Transit.Addon.TM.Data {
 
 			int index = startNode ? 0 : 1;
 
-			TMConfiguration.SegmentNodeFlags[] nodeFlags = segmentNodeFlags[segmentId];
+			TMConfigurationV2.SegmentNodeFlags[] nodeFlags = segmentNodeFlags[segmentId];
 			if (nodeFlags == null || nodeFlags[index] == null || nodeFlags[index].straightLaneChangingAllowed == null)
 				return Options.allowLaneChangesWhileGoingStraight;
 			return (bool)nodeFlags[index].straightLaneChangingAllowed;
@@ -446,7 +446,7 @@ namespace Transit.Addon.TM.Data {
 			if (segmentNodeFlags[segmentId][index] == null) {
 				if (valueToSet == null)
 					return;
-				segmentNodeFlags[segmentId][index] = new TMConfiguration.SegmentNodeFlags();
+				segmentNodeFlags[segmentId][index] = new TMConfigurationV2.SegmentNodeFlags();
 			}
 			segmentNodeFlags[segmentId][index].straightLaneChangingAllowed = valueToSet;
 		}
@@ -457,7 +457,7 @@ namespace Transit.Addon.TM.Data {
 
 			int index = startNode ? 0 : 1;
 
-			TMConfiguration.SegmentNodeFlags[] nodeFlags = segmentNodeFlags[segmentId];
+			TMConfigurationV2.SegmentNodeFlags[] nodeFlags = segmentNodeFlags[segmentId];
 			if (nodeFlags == null || nodeFlags[index] == null || nodeFlags[index].enterWhenBlockedAllowed == null)
 				return Options.allowEnterBlockedJunctions;
 			return (bool)nodeFlags[index].enterWhenBlockedAllowed;
@@ -472,12 +472,12 @@ namespace Transit.Addon.TM.Data {
 			if (segmentNodeFlags[segmentId][index] == null) {
 				if (valueToSet == null)
 					return;
-				segmentNodeFlags[segmentId][index] = new TMConfiguration.SegmentNodeFlags();
+				segmentNodeFlags[segmentId][index] = new TMConfigurationV2.SegmentNodeFlags();
 			}
 			segmentNodeFlags[segmentId][index].enterWhenBlockedAllowed = valueToSet;
 		}
 
-		internal static void setSegmentNodeFlags(ushort segmentId, bool startNode, TMConfiguration.SegmentNodeFlags flags) {
+		internal static void setSegmentNodeFlags(ushort segmentId, bool startNode, TMConfigurationV2.SegmentNodeFlags flags) {
 			if (flags == null)
 				return;
 
@@ -485,7 +485,7 @@ namespace Transit.Addon.TM.Data {
 			segmentNodeFlags[segmentId][index] = flags;
 		}
 
-		internal static TMConfiguration.SegmentNodeFlags getSegmentNodeFlags(ushort segmentId, bool startNode) {
+		internal static TMConfigurationV2.SegmentNodeFlags getSegmentNodeFlags(ushort segmentId, bool startNode) {
 			int index = startNode ? 0 : 1;
 			return segmentNodeFlags[segmentId][index];
 		}
@@ -622,9 +622,9 @@ namespace Transit.Addon.TM.Data {
 			laneAllowedVehicleTypesArray = new TMVehicleType?[Singleton<NetManager>.instance.m_segments.m_size][];
 			highwayLaneArrowFlags = new LaneArrows?[Singleton<NetManager>.instance.m_lanes.m_size];
 			nodeTrafficLightFlag = new bool?[Singleton<NetManager>.instance.m_nodes.m_size];
-			segmentNodeFlags = new TMConfiguration.SegmentNodeFlags[Singleton<NetManager>.instance.m_segments.m_size][];
+			segmentNodeFlags = new TMConfigurationV2.SegmentNodeFlags[Singleton<NetManager>.instance.m_segments.m_size][];
 			for (int i = 0; i < segmentNodeFlags.Length; ++i) {
-				segmentNodeFlags[i] = new TMConfiguration.SegmentNodeFlags[2];
+				segmentNodeFlags[i] = new TMConfigurationV2.SegmentNodeFlags[2];
 			}
 			initDone = true;
 		}

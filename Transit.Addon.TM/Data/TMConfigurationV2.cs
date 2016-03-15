@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Transit.Addon.TM.Data
 {
     [Serializable]
-    public partial class TMConfiguration
+    public partial class TMConfigurationV2
     {
         public string NodeTrafficLights = ""; // TODO rework
         public string NodeCrosswalk = ""; // TODO rework

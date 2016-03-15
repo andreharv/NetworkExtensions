@@ -2,7 +2,7 @@ using System;
 
 namespace Transit.Addon.TM.Data
 {
-    public partial class TMConfiguration
+    public partial class TMConfigurationV2
     {
         [Serializable]
         public class CustomSegmentLight

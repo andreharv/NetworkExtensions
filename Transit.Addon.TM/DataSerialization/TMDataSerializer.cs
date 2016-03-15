@@ -18,7 +18,7 @@ namespace Transit.Addon.TM.DataSerialization
         private const string DataId = "TrafficManager_v1.0";
 
         private static ISerializableData _serializableData;
-        private static TMConfiguration _configuration;
+        private static TMConfigurationV2 _configuration;
         public static bool StateLoading = false;
 
         public override void OnCreated(ISerializableData serializableData)
@@ -173,7 +173,7 @@ namespace Transit.Addon.TM.DataSerialization
                     memoryStream.Position = 0;
 
                     var binaryFormatter = new BinaryFormatter();
-                    _configuration = (TMConfiguration)binaryFormatter.Deserialize(memoryStream);
+                    _configuration = (TMConfigurationV2)binaryFormatter.Deserialize(memoryStream);
                 }
                 else {
                     Log.Warning("No data to deserialize!");
@@ -254,7 +254,7 @@ namespace Transit.Addon.TM.DataSerialization
             if (_configuration.LaneAllowedVehicleTypes != null)
             {
                 Log.Info($"Loading lane vehicle restriction data. {_configuration.LaneAllowedVehicleTypes.Count} elements");
-                foreach (TMConfiguration.LaneVehicleTypes laneVehicleTypes in _configuration.LaneAllowedVehicleTypes)
+                foreach (TMConfigurationV2.LaneVehicleTypes laneVehicleTypes in _configuration.LaneAllowedVehicleTypes)
                 {
                     Log._Debug($"Loading lane vehicle restriction: lane {laneVehicleTypes.laneId} = {laneVehicleTypes.vehicleTypes}");
                     Flags.setLaneAllowedVehicleTypes(laneVehicleTypes.laneId, laneVehicleTypes.vehicleTypes);
@@ -273,7 +273,7 @@ namespace Transit.Addon.TM.DataSerialization
             {
                 Log.Info($"Loading {_configuration.TimedLights.Count()} timed traffic lights (new method)");
 
-                foreach (TMConfiguration.TimedTrafficLights cnfTimedLights in _configuration.TimedLights)
+                foreach (TMConfigurationV2.TimedTrafficLights cnfTimedLights in _configuration.TimedLights)
                 {
                     if ((Singleton<NetManager>.instance.m_nodes.m_buffer[cnfTimedLights.nodeId].m_flags & NetNode.Flags.Created) == NetNode.Flags.None)
                         continue;
@@ -286,12 +286,12 @@ namespace Transit.Addon.TM.DataSerialization
                     var timedNode = sim.TimedLight;
 
                     int j = 0;
-                    foreach (TMConfiguration.TimedTrafficLightsStep cnfTimedStep in cnfTimedLights.timedSteps)
+                    foreach (TMConfigurationV2.TimedTrafficLightsStep cnfTimedStep in cnfTimedLights.timedSteps)
                     {
                         Log._Debug($"Loading timed step {j} at node {cnfTimedLights.nodeId}");
                         TimedTrafficLightsStep step = timedNode.AddStep(cnfTimedStep.minTime, cnfTimedStep.maxTime, cnfTimedStep.waitFlowBalance);
 
-                        foreach (KeyValuePair<ushort, TMConfiguration.CustomSegmentLights> e in cnfTimedStep.segmentLights)
+                        foreach (KeyValuePair<ushort, TMConfigurationV2.CustomSegmentLights> e in cnfTimedStep.segmentLights)
                         {
                             Log._Debug($"Loading timed step {j}, segment {e.Key} at node {cnfTimedLights.nodeId}");
                             CustomSegmentLights lights = null;
@@ -300,14 +300,14 @@ namespace Transit.Addon.TM.DataSerialization
                                 Log._Debug($"No segment lights found at timed step {j} for segment {e.Key}, node {cnfTimedLights.nodeId}");
                                 continue;
                             }
-                            TMConfiguration.CustomSegmentLights cnfLights = e.Value;
+                            TMConfigurationV2.CustomSegmentLights cnfLights = e.Value;
 
                             Log._Debug($"Loading pedestrian light @ seg. {e.Key}, step {j}: {cnfLights.pedestrianLightState} {cnfLights.manualPedestrianMode}");
 
                             lights.ManualPedestrianMode = cnfLights.manualPedestrianMode;
                             lights.PedestrianLightState = cnfLights.pedestrianLightState;
 
-                            foreach (KeyValuePair<TMVehicleType, TMConfiguration.CustomSegmentLight> e2 in cnfLights.customLights)
+                            foreach (KeyValuePair<TMVehicleType, TMConfigurationV2.CustomSegmentLight> e2 in cnfLights.customLights)
                             {
                                 Log._Debug($"Loading timed step {j}, segment {e.Key}, vehicleType {e2.Key} at node {cnfTimedLights.nodeId}");
                                 CustomSegmentLight light = null;
@@ -316,7 +316,7 @@ namespace Transit.Addon.TM.DataSerialization
                                     Log._Debug($"No segment light found for timed step {j}, segment {e.Key}, vehicleType {e2.Key} at node {cnfTimedLights.nodeId}");
                                     continue;
                                 }
-                                TMConfiguration.CustomSegmentLight cnfLight = e2.Value;
+                                TMConfigurationV2.CustomSegmentLight cnfLight = e2.Value;
 
                                 light.CurrentMode = (CustomSegmentLight.Mode)cnfLight.currentMode;
                                 light.LightLeft = cnfLight.leftLight;
@@ -563,7 +563,7 @@ namespace Transit.Addon.TM.DataSerialization
             if (_configuration.LaneSpeedLimits != null)
             {
                 Log.Info($"Loading lane speed limit data. {_configuration.LaneSpeedLimits.Count} elements");
-                foreach (TMConfiguration.LaneSpeedLimit laneSpeedLimit in _configuration.LaneSpeedLimits)
+                foreach (TMConfigurationV2.LaneSpeedLimit laneSpeedLimit in _configuration.LaneSpeedLimits)
                 {
                     Log._Debug($"Loading lane speed limit: lane {laneSpeedLimit.laneId} = {laneSpeedLimit.speedLimit}");
                     Flags.setLaneSpeedLimit(laneSpeedLimit.laneId, laneSpeedLimit.speedLimit);
@@ -577,7 +577,7 @@ namespace Transit.Addon.TM.DataSerialization
             if (_configuration.SegmentNodeConfs != null)
             {
                 Log.Info($"Loading segment-at-node data. {_configuration.SegmentNodeConfs.Count} elements");
-                foreach (TMConfiguration.SegmentNodeConf segNodeConf in _configuration.SegmentNodeConfs)
+                foreach (TMConfigurationV2.SegmentNodeConf segNodeConf in _configuration.SegmentNodeConfs)
                 {
                     if ((Singleton<NetManager>.instance.m_segments.m_buffer[segNodeConf.segmentId].m_flags & NetSegment.Flags.Created) == NetSegment.Flags.None)
                         continue;
@@ -623,7 +623,7 @@ namespace Transit.Addon.TM.DataSerialization
         public override void OnSaveData()
         {
             Log.Info("Saving Mod Data.");
-            var configuration = new TMConfiguration();
+            var configuration = new TMConfigurationV2();
 
             if (TrafficPriority.PrioritySegments != null)
             {
@@ -667,12 +667,12 @@ namespace Transit.Addon.TM.DataSerialization
 
             foreach (KeyValuePair<uint, ushort> e in Flags.getAllLaneSpeedLimits())
             {
-                SaveLaneSpeedLimit(new TMConfiguration.LaneSpeedLimit(e.Key, e.Value), configuration);
+                SaveLaneSpeedLimit(new TMConfigurationV2.LaneSpeedLimit(e.Key, e.Value), configuration);
             }
 
             foreach (KeyValuePair<uint, TMVehicleType> e in Flags.getAllLaneAllowedVehicleTypes())
             {
-                SaveLaneAllowedVehicleTypes(new TMConfiguration.LaneVehicleTypes(e.Key, e.Value), configuration);
+                SaveLaneAllowedVehicleTypes(new TMConfigurationV2.LaneVehicleTypes(e.Key, e.Value), configuration);
             }
 
             var binaryFormatter = new BinaryFormatter();
@@ -716,7 +716,7 @@ namespace Transit.Addon.TM.DataSerialization
             }
         }
 
-        private static void SaveLaneData(uint i, TMConfiguration configuration)
+        private static void SaveLaneData(uint i, TMConfigurationV2 configuration)
         {
             try
             {
@@ -747,7 +747,7 @@ namespace Transit.Addon.TM.DataSerialization
             }
         }
 
-        private static void SaveNodeLights(int i, TMConfiguration configuration)
+        private static void SaveNodeLights(int i, TMConfigurationV2 configuration)
         {
             try
             {
@@ -775,7 +775,7 @@ namespace Transit.Addon.TM.DataSerialization
             }
         }
 
-        private static void SaveTimedTrafficLight(ushort i, TMConfiguration configuration)
+        private static void SaveTimedTrafficLight(ushort i, TMConfigurationV2 configuration)
         {
             try
             {
@@ -788,36 +788,36 @@ namespace Transit.Addon.TM.DataSerialization
                 var timedNode = sim.TimedLight;
                 timedNode.handleNewSegments();
 
-                TMConfiguration.TimedTrafficLights cnfTimedLights = new TMConfiguration.TimedTrafficLights();
+                TMConfigurationV2.TimedTrafficLights cnfTimedLights = new TMConfigurationV2.TimedTrafficLights();
                 configuration.TimedLights.Add(cnfTimedLights);
 
                 cnfTimedLights.nodeId = timedNode.NodeId;
                 cnfTimedLights.nodeGroup = timedNode.NodeGroup;
                 cnfTimedLights.started = timedNode.IsStarted();
-                cnfTimedLights.timedSteps = new List<TMConfiguration.TimedTrafficLightsStep>();
+                cnfTimedLights.timedSteps = new List<TMConfigurationV2.TimedTrafficLightsStep>();
 
                 for (var j = 0; j < timedNode.NumSteps(); j++)
                 {
                     Log._Debug($"Saving timed light step {j} at node {i}.");
                     TimedTrafficLightsStep timedStep = timedNode.Steps[j];
-                    TMConfiguration.TimedTrafficLightsStep cnfTimedStep = new TMConfiguration.TimedTrafficLightsStep();
+                    TMConfigurationV2.TimedTrafficLightsStep cnfTimedStep = new TMConfigurationV2.TimedTrafficLightsStep();
                     cnfTimedLights.timedSteps.Add(cnfTimedStep);
 
                     cnfTimedStep.minTime = timedStep.minTime;
                     cnfTimedStep.maxTime = timedStep.maxTime;
                     cnfTimedStep.waitFlowBalance = timedStep.waitFlowBalance;
-                    cnfTimedStep.segmentLights = new Dictionary<ushort, TMConfiguration.CustomSegmentLights>();
+                    cnfTimedStep.segmentLights = new Dictionary<ushort, TMConfigurationV2.CustomSegmentLights>();
                     foreach (KeyValuePair<ushort, CustomSegmentLights> e in timedStep.segmentLights)
                     {
                         Log._Debug($"Saving timed light step {j}, segment {e.Key} at node {i}.");
 
                         CustomSegmentLights segLights = e.Value;
-                        TMConfiguration.CustomSegmentLights cnfSegLights = new TMConfiguration.CustomSegmentLights();
+                        TMConfigurationV2.CustomSegmentLights cnfSegLights = new TMConfigurationV2.CustomSegmentLights();
                         cnfTimedStep.segmentLights.Add(e.Key, cnfSegLights);
 
                         cnfSegLights.nodeId = segLights.NodeId;
                         cnfSegLights.segmentId = segLights.SegmentId;
-                        cnfSegLights.customLights = new Dictionary<TMVehicleType, TMConfiguration.CustomSegmentLight>();
+                        cnfSegLights.customLights = new Dictionary<TMVehicleType, TMConfigurationV2.CustomSegmentLight>();
                         cnfSegLights.pedestrianLightState = segLights.PedestrianLightState;
                         cnfSegLights.manualPedestrianMode = segLights.ManualPedestrianMode;
 
@@ -828,7 +828,7 @@ namespace Transit.Addon.TM.DataSerialization
                             Log._Debug($"Saving timed light step {j}, segment {e.Key}, vehicleType {e2.Key} at node {i}.");
 
                             CustomSegmentLight segLight = e2.Value;
-                            TMConfiguration.CustomSegmentLight cnfSegLight = new TMConfiguration.CustomSegmentLight();
+                            TMConfigurationV2.CustomSegmentLight cnfSegLight = new TMConfigurationV2.CustomSegmentLight();
                             cnfSegLights.customLights.Add(e2.Key, cnfSegLight);
 
                             cnfSegLight.nodeId = segLight.NodeId;
@@ -847,19 +847,19 @@ namespace Transit.Addon.TM.DataSerialization
             }
         }
 
-        private static void SaveLaneSpeedLimit(TMConfiguration.LaneSpeedLimit laneSpeedLimit, TMConfiguration configuration)
+        private static void SaveLaneSpeedLimit(TMConfigurationV2.LaneSpeedLimit laneSpeedLimit, TMConfigurationV2 configuration)
         {
             Log._Debug($"Saving speed limit of lane {laneSpeedLimit.laneId}: {laneSpeedLimit.speedLimit}");
             configuration.LaneSpeedLimits.Add(laneSpeedLimit);
         }
 
-        private void SaveLaneAllowedVehicleTypes(TMConfiguration.LaneVehicleTypes laneVehicleTypes, TMConfiguration configuration)
+        private void SaveLaneAllowedVehicleTypes(TMConfigurationV2.LaneVehicleTypes laneVehicleTypes, TMConfigurationV2 configuration)
         {
             Log._Debug($"Saving vehicle restrictions of lane {laneVehicleTypes.laneId}: {laneVehicleTypes.vehicleTypes}");
             configuration.LaneAllowedVehicleTypes.Add(laneVehicleTypes);
         }
 
-        private static void SavePrioritySegment(ushort segmentId, TMConfiguration configuration)
+        private static void SavePrioritySegment(ushort segmentId, TMConfigurationV2 configuration)
         {
             try
             {
@@ -893,20 +893,20 @@ namespace Transit.Addon.TM.DataSerialization
             }
         }
 
-        private static void SaveSegmentNodeFlags(ushort segmentId, TMConfiguration configuration)
+        private static void SaveSegmentNodeFlags(ushort segmentId, TMConfigurationV2 configuration)
         {
             try
             {
                 if ((Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].m_flags & NetSegment.Flags.Created) == NetSegment.Flags.None)
                     return;
 
-                TMConfiguration.SegmentNodeFlags startNodeFlags = Flags.getSegmentNodeFlags(segmentId, true);
-                TMConfiguration.SegmentNodeFlags endNodeFlags = Flags.getSegmentNodeFlags(segmentId, false);
+                TMConfigurationV2.SegmentNodeFlags startNodeFlags = Flags.getSegmentNodeFlags(segmentId, true);
+                TMConfigurationV2.SegmentNodeFlags endNodeFlags = Flags.getSegmentNodeFlags(segmentId, false);
 
                 if (startNodeFlags == null && endNodeFlags == null)
                     return;
 
-                TMConfiguration.SegmentNodeConf conf = new TMConfiguration.SegmentNodeConf(segmentId);
+                TMConfigurationV2.SegmentNodeConf conf = new TMConfigurationV2.SegmentNodeConf(segmentId);
 
                 conf.startNodeFlags = startNodeFlags;
                 conf.endNodeFlags = endNodeFlags;
