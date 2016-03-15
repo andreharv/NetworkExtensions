@@ -225,7 +225,7 @@ namespace Transit.Addon.TM.UI.SubTools {
 			if (!MainTool.CheckClicked())
 				return true;
 
-			segmentLights.ManualPedestrianMode = true;
+			segmentLights.ManualPedestrianMode = !segmentLights.ManualPedestrianMode;
 			return true;
 		}
 

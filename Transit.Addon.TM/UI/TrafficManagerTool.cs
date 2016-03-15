@@ -62,7 +62,7 @@ namespace Transit.Addon.TM.UI {
 		}
 
 		internal float GetBaseZoom() {
-			return (float)Screen.currentResolution.width / 1920f;
+			return (float)Screen.currentResolution.height / 1200f;
 		}
 
 		protected override void Awake() {
