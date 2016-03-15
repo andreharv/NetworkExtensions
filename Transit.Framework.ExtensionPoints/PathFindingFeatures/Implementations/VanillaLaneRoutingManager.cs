@@ -6,12 +6,19 @@ namespace Transit.Framework.ExtensionPoints.PathFindingFeatures.Implementations
 {
     public class VanillaLaneRoutingManager : ILaneRoutingManager
     {
-        public bool CanLanesConnect(ushort nodeId, uint originLaneId, uint destinationLaneId, ExtendedUnitType unitType)
-        {
-            return true;
-        }
+        public bool CanLanesConnect
+           (ushort nodeId,
 
-		public bool CanLanesConnect(ushort nodeId, ushort segment1Id, byte lane1Index, uint lane1Id, ushort segment2Id, byte lane2Index, uint lane2Id, ExtendedUnitType unitType) {
+            ushort destinationSegmentId,
+            byte destinationLaneIndex,
+            uint destinationLaneId, 
+
+            ushort originSegmentId, 
+            byte originLaneIndex, 
+            uint originLaneId, 
+
+            ExtendedUnitType unitType)
+        {
 			return true;
 		}
 	}

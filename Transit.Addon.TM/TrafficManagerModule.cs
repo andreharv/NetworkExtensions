@@ -1,5 +1,4 @@
 using ICities;
-using TrafficManager.Custom.PathFindingFeatures;
 using Transit.Addon.TM;
 using Transit.Addon.TM.PathFinding;
 using Transit.Addon.TM.PathFindingFeatures;
