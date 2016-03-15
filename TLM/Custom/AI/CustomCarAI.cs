@@ -452,7 +452,7 @@ namespace TrafficManager.Custom.AI {
 				maxSpeed = CalculateTargetSpeed(vehicleId, ref vehicleData, 1f, 0f);
 			}
 
-			maxSpeed = CalcMaxSpeed(vehicleId, ref vehicleData, position, pos, maxSpeed, isRecklessDriver);
+			maxSpeed = CalcMaxSpeed(vehicleId, ref vehicleData, position, offset, nextPosition, pos, maxSpeed, isRecklessDriver);
 		}
 
 		internal static readonly float MIN_SPEED = 8f * 0.2f; // 10 km/h
@@ -463,9 +463,24 @@ namespace TrafficManager.Custom.AI {
 		internal static readonly float BROKEN_ROADS_MAX_SPEED = 8f * 1.6f; // 80 km/h
 		internal static readonly float BROKEN_ROADS_FACTOR = 0.75f;
 
+		internal static float CalcMaxSpeed(ushort vehicleId, ref Vehicle vehicleData, PathUnit.Position position, byte offset, PathUnit.Position nextPosition, Vector3 pos, float maxSpeed, bool isRecklessDriver) {
+			float maxSpeed1 = CalcMaxSpeed(vehicleId, ref vehicleData, position.m_segment, pos, maxSpeed, isRecklessDriver);
+			if (nextPosition.m_segment == 0)
+				return maxSpeed1;
+			float maxSpeed2 = CalcMaxSpeed(vehicleId, ref vehicleData, nextPosition.m_segment, pos, maxSpeed, isRecklessDriver);
+			float weight = (255f - (float)offset) * 0.0039215686f;
+			return weight * maxSpeed1 + (1f - weight) * maxSpeed2;
+		}
+
 		internal static float CalcMaxSpeed(ushort vehicleId, ref Vehicle vehicleData, PathUnit.Position position, Vector3 pos, float maxSpeed, bool isRecklessDriver) {
+			return CalcMaxSpeed(vehicleId, ref vehicleData, position.m_segment, pos, maxSpeed, isRecklessDriver);
+		}
+
+		internal static float CalcMaxSpeed(ushort vehicleId, ref Vehicle vehicleData, ushort segmentId, Vector3 pos, float maxSpeed, bool isRecklessDriver) {
 			var netManager = Singleton<NetManager>.instance;
-			NetInfo segmentInfo = netManager.m_segments.m_buffer[(int)position.m_segment].Info;
+			NetInfo segmentInfo = netManager.m_segments.m_buffer[segmentId].Info;
+			float wetness = (float)netManager.m_segments.m_buffer[segmentId].m_wetness;
+			float condition = (float)netManager.m_segments.m_buffer[segmentId].m_condition;
 			bool highwayRules = (segmentInfo.m_netAI is RoadBaseAI && ((RoadBaseAI)segmentInfo.m_netAI).m_highwayRules);
 
 			if (!highwayRules) {
@@ -476,43 +491,43 @@ namespace TrafficManager.Custom.AI {
 					if ((cityPlanningPolicies & DistrictPolicies.CityPlanning.StuddedTires) != DistrictPolicies.CityPlanning.None) {
 						if (Options.strongerRoadConditionEffects) {
 							if (maxSpeed > ICY_ROADS_STUDDED_MIN_SPEED)
-								maxSpeed = ICY_ROADS_STUDDED_MIN_SPEED + (float)(255 - netManager.m_segments.m_buffer[(int)position.m_segment].m_wetness) * 0.0039215686f * (maxSpeed - ICY_ROADS_STUDDED_MIN_SPEED);
+								maxSpeed = ICY_ROADS_STUDDED_MIN_SPEED + (255f - wetness) * 0.0039215686f * (maxSpeed - ICY_ROADS_STUDDED_MIN_SPEED);
 						} else {
-							maxSpeed *= 1f - (float)netManager.m_segments.m_buffer[(int)position.m_segment].m_wetness * 0.0005882353f; // vanilla: -15% .. ±0%
+							maxSpeed *= 1f - wetness * 0.0005882353f; // vanilla: -15% .. ±0%
 						}
 						districtManager.m_districts.m_buffer[(int)district].m_cityPlanningPoliciesEffect |= DistrictPolicies.CityPlanning.StuddedTires;
 					} else {
 						if (Options.strongerRoadConditionEffects) {
 							if (maxSpeed > ICY_ROADS_MIN_SPEED)
-								maxSpeed = ICY_ROADS_MIN_SPEED + (float)(255 - netManager.m_segments.m_buffer[(int)position.m_segment].m_wetness) * 0.0039215686f * (maxSpeed - ICY_ROADS_MIN_SPEED);
+								maxSpeed = ICY_ROADS_MIN_SPEED + (255f - wetness) * 0.0039215686f * (maxSpeed - ICY_ROADS_MIN_SPEED);
 						} else {
-							maxSpeed *= 1f - (float)netManager.m_segments.m_buffer[(int)position.m_segment].m_wetness * 0.00117647066f; // vanilla: -30% .. ±0%
+							maxSpeed *= 1f - wetness * 0.00117647066f; // vanilla: -30% .. ±0%
 						}
 					}
 				} else {
 					if (Options.strongerRoadConditionEffects) {
 						float minSpeed = Math.Min(maxSpeed * WET_ROADS_FACTOR, WET_ROADS_MAX_SPEED);
 						if (maxSpeed > minSpeed)
-							maxSpeed = minSpeed + (float)(255 - netManager.m_segments.m_buffer[(int)position.m_segment].m_wetness) * 0.0039215686f * (maxSpeed - minSpeed);
+							maxSpeed = minSpeed + (255f - wetness) * 0.0039215686f * (maxSpeed - minSpeed);
 					} else {
-						maxSpeed *= 1f - (float)netManager.m_segments.m_buffer[(int)position.m_segment].m_wetness * 0.0005882353f; // vanilla: -15% .. ±0%
+						maxSpeed *= 1f - wetness * 0.0005882353f; // vanilla: -15% .. ±0%
 					}
 				}
 
 				if (Options.strongerRoadConditionEffects) {
 					float minSpeed = Math.Min(maxSpeed * BROKEN_ROADS_FACTOR, BROKEN_ROADS_MAX_SPEED);
 					if (maxSpeed > minSpeed) {
-						maxSpeed = minSpeed + (float)netManager.m_segments.m_buffer[(int)position.m_segment].m_condition * 0.0039215686f * (maxSpeed - minSpeed);
+						maxSpeed = minSpeed + condition * 0.0039215686f * (maxSpeed - minSpeed);
 					}
 				} else {
-					maxSpeed *= 1f + (float)netManager.m_segments.m_buffer[(int)position.m_segment].m_condition * 0.0005882353f; // vanilla: ±0% .. +15 %
+					maxSpeed *= 1f + condition * 0.0005882353f; // vanilla: ±0% .. +15 %
 				}
 			}
 
 			ExtVehicleType? vehicleType = CustomVehicleAI.DetermineVehicleTypeFromVehicle(vehicleId, ref vehicleData);
 			float vehicleRand = Math.Min(1f, (float)(vehicleId % 101) * 0.01f); // we choose 101 because it's a prime number
 			if (isRecklessDriver)
-				maxSpeed *= 1.5f + vehicleRand * 1.5f; // woohooo, 1.5 .. 3
+				maxSpeed *= 1.25f + vehicleRand * 0.25f; // woohooo, 1.25 .. 1.5
 			else if ((vehicleType & ExtVehicleType.PassengerCar) != ExtVehicleType.None)
 				maxSpeed *= 0.8f + vehicleRand * 0.3f; // a little variance, 0.8 .. 1.1
 			else if ((vehicleType & ExtVehicleType.Taxi) != ExtVehicleType.None)

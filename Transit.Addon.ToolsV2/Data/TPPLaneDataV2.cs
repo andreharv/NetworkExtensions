@@ -11,137 +11,132 @@ namespace Transit.Addon.ToolsV2.Data
     [Serializable]
     public class TPPLaneDataV2
     {
-        public const ushort CONTROL_BIT = 2048;
-
         public uint m_laneId;
         public ushort m_nodeId;
-        public List<uint> m_laneConnections = new List<uint>();
-        public ExtendedUnitType m_unitTypes = ExtendedUnitType.RoadVehicle;
+		public uint[] m_laneConnections = new uint[0];
+		public ExtendedUnitType m_unitTypes = ExtendedUnitType.RoadVehicle;
         public float m_speed = 1f;
+		private object m_lock = new object();
 
-        public bool AddConnection(uint laneId)
-        {
-            bool exists = false;
-            while (!Monitor.TryEnter(this.m_laneConnections, SimulationManager.SYNCHRONIZE_TIMEOUT))
-            {
-            }
-            try
-            {
-                if (m_laneConnections.Contains(laneId))
-                    exists = true;
-                else
-                    m_laneConnections.Add(laneId);
-            }
-            finally
-            {
-                Monitor.Exit(this.m_laneConnections);
-            }
+		/// <summary>
+		/// Adds a connection from m_laneId to laneId.
+		/// </summary>
+		/// <param name="laneId"></param>
+		/// <returns></returns>
+		public bool AddConnection(uint laneId) {
+			try {
+				Monitor.Enter(m_lock);
 
-            if (exists)
-                return false;
+				if (m_laneConnections.Contains(laneId))
+					return false; // already connected
 
-            UpdateArrows();
+				// expand the array & add the lane
+				var oldLaneConnections = m_laneConnections;
+				m_laneConnections = new uint[m_laneConnections.Length + 1];
+				Array.Copy(oldLaneConnections, m_laneConnections, oldLaneConnections.Length);
+				m_laneConnections[m_laneConnections.Length - 1] = laneId;
+			} finally {
+				Monitor.Exit(m_lock);
+			}
 
-            return true;
-        }
+			UpdateArrows();
+			return true;
+		}
 
-        public bool RemoveConnection(uint laneId)
-        {
-            bool result = false;
-            while (!Monitor.TryEnter(this.m_laneConnections, SimulationManager.SYNCHRONIZE_TIMEOUT))
-            {
-            }
-            try
-            {
-                result = m_laneConnections.Remove(laneId);
-            }
-            finally
-            {
-                Monitor.Exit(this.m_laneConnections);
-            }
+		/// <summary>
+		/// Removes a connection from m_laneId to laneId.
+		/// </summary>
+		/// <param name="laneId"></param>
+		/// <returns></returns>
+		public bool RemoveConnection(uint laneId) {
+			try {
+				Monitor.Enter(m_lock);
 
-            if (result)
-                UpdateArrows();
+				bool found = false;
+				for (int i = 0; i < m_laneConnections.Length; ++i) {
+					if (m_laneConnections[i] == laneId) {
+						// connected lane found. shift succeeding elements to the front.
+						found = true;
+						for (int k = i; k < m_laneConnections.Length - 1; ++k) {
+							m_laneConnections[k] = m_laneConnections[k + 1];
+						}
+						break;
+					}
+				}
 
-            return result;
-        }
+				if (!found)
+					return false;
 
-        public uint[] GetConnectionsAsArray()
-        {
-            uint[] connections = null;
-            while (!Monitor.TryEnter(this.m_laneConnections, SimulationManager.SYNCHRONIZE_TIMEOUT))
-            {
-            }
-            try
-            {
-                connections = m_laneConnections.ToArray();
-            }
-            finally
-            {
-                Monitor.Exit(this.m_laneConnections);
-            }
-            return connections;
-        }
+				// shrink the array
+				var oldLaneConnections = m_laneConnections;
+				m_laneConnections = new uint[m_laneConnections.Length - 1];
+				Array.Copy(oldLaneConnections, m_laneConnections, m_laneConnections.Length);
+			} finally {
+				Monitor.Exit(m_lock);
+			}
 
-        public int ConnectionCount()
-        {
-            int count = 0;
-            while (!Monitor.TryEnter(this.m_laneConnections, SimulationManager.SYNCHRONIZE_TIMEOUT))
-            {
-            }
-            try
-            {
-                count = m_laneConnections.Count();
-            }
-            finally
-            {
-                Monitor.Exit(this.m_laneConnections);
-            }
-            return count;
-        }
+			UpdateArrows();
+			return true;
+		}
 
-        public bool ConnectsTo(uint laneId)
-        {
-            VerifyConnections();
+		public uint[] GetConnectionsAsArray() {
+			return m_laneConnections;
+		}
 
-            bool result = true;
-            while (!Monitor.TryEnter(this.m_laneConnections, SimulationManager.SYNCHRONIZE_TIMEOUT))
-            {
-            }
-            try
-            {
-                result = m_laneConnections.Count == 0 || m_laneConnections.Contains(laneId);
-            }
-            finally
-            {
-                Monitor.Exit(this.m_laneConnections);
-            }
+		public int ConnectionCount() {
+			return m_laneConnections.Length;
+		}
 
-            return result;
-        }
+		/// <summary>
+		/// Determines if the lane m_laneId is connected to the lane laneId.
+		/// </summary>
+		/// <param name="laneId"></param>
+		/// <param name="verifyConnections">if true, does a validity check for all known connected lanes</param>
+		/// <returns></returns>
+		public bool ConnectsTo(uint laneId, bool verifyConnections = false) {
+			if (verifyConnections) // TODO find a suitable location where we can verify connections
+				VerifyConnections();
 
-        void VerifyConnections()
-        {
-            uint[] connections = GetConnectionsAsArray();
-            while (!Monitor.TryEnter(this.m_laneConnections, SimulationManager.SYNCHRONIZE_TIMEOUT))
-            {
-            }
-            try
-            {
-                foreach (uint laneId in connections)
-                {
-                    NetLane lane = NetManager.instance.m_lanes.m_buffer[laneId];
-                    if ((lane.m_flags & CONTROL_BIT) != CONTROL_BIT)
-                        m_laneConnections.Remove(laneId);
-                }
-            }
-            finally
-            {
-                Monitor.Exit(this.m_laneConnections);
-            }
-        }
+			if (m_laneConnections.Length <= 0)
+				return true; // default
 
-        public void UpdateArrows()
+			while (true) {
+				try {
+					return m_laneConnections.Contains(laneId);
+				} catch (Exception) {
+					// we might get an IndexOutOfBounds here since we are not locking
+#if DEBUG
+						Logger.LogWarning("ConnectsTo: %s", e.ToString());
+#endif
+				}
+			}
+		}
+
+		void VerifyConnections() {
+			int startI = 0;
+			while (true) {
+				for (int i = startI; i < m_laneConnections.Length; ++i) {
+					try {
+						ushort laneFlags = NetManager.instance.m_lanes.m_buffer[m_laneConnections[i]].m_flags;
+						if ((laneFlags & ((ushort)NetLane.Flags.Created)) == 0) {
+							// lane invalid
+							RemoveConnection(m_laneConnections[i]);
+							startI = i;
+							goto CONTINUE_WHILE; // lane has been deleted; continue search for invalid lanes
+						}
+					} catch (Exception) {
+						// we might get an IndexOutOfBounds here since we are not locking
+#if DEBUG
+							Logger.LogWarning("ConnectsTo: %s", e.ToString());
+#endif
+					}
+				}
+				break; // no more lanes or everything ok
+				CONTINUE_WHILE:;
+			}
+		}
+
+		public void UpdateArrows()
         {
             VerifyConnections();
             NetLane lane = NetManager.instance.m_lanes.m_buffer[m_laneId];

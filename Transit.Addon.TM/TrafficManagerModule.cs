@@ -21,7 +21,7 @@ namespace TrafficManager
 
         public override void OnEnabled()
         {
-            Log._Debug("TrafficManagerMod Enabled");
+            Log.Info("TrafficManagerMod Enabled");
             base.OnEnabled();
 
             if (!sm_redirectionInstalled)
@@ -34,11 +34,13 @@ namespace TrafficManager
             //TAMPathFindFeatureManager.instance.DefineLaneRoutingManager<TMLaneRoutingManager>();
             TAMPathFindFeatureManager.instance.DefineRoadRestrictionManager<TMRoadRestrictionManager>();
             TAMPathFindFeatureManager.instance.DefineRoadSpeedManager<TMRoadSpeedManager>();
-        }
+
+			Log.Info("TrafficManagerMod took over path finding helper services");
+		}
 
         public override void OnDisabled()
         {
-            Log._Debug("TrafficManagerMod Disabled");
+            Log.Info("TrafficManagerMod Disabled");
             base.OnDisabled();
 
             if (sm_redirectionInstalled)
@@ -51,7 +53,9 @@ namespace TrafficManager
             //TAMPathFindFeatureManager.instance.ResetLaneRoutingManager<TMLaneRoutingManager>();
             TAMPathFindFeatureManager.instance.ResetRoadRestrictionManager<TMRoadRestrictionManager>();
             TAMPathFindFeatureManager.instance.ResetRoadSpeedManager<TMRoadSpeedManager>();
-        }
+
+			Log.Info("TrafficManagerMod released path finding helper services");
+		}
 
         public override void OnSettingsUI(UIHelperBase helper)
         {

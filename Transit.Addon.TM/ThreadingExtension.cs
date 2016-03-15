@@ -9,7 +9,7 @@ namespace TrafficManager {
     public sealed class ThreadingExtension : ThreadingExtensionBase {
         public override void OnUpdate(float realTimeDelta, float simulationTimeDelta) {
             base.OnUpdate(realTimeDelta, simulationTimeDelta);
-#if !TAM
+
 			if (TrafficManagerModule.Instance == null || ToolsModifierControl.toolController == null || ToolsModifierControl.toolController == null || TrafficManagerModule.Instance.UI == null) {
                 return;
             }
@@ -26,7 +26,6 @@ namespace TrafficManager {
             if (Input.GetKeyDown(KeyCode.Escape)) {
                 TrafficManagerModule.Instance.UI.Close();
             }
-#endif
         }
     }
 }

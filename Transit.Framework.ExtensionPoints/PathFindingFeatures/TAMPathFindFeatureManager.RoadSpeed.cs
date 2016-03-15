@@ -31,7 +31,8 @@ namespace Transit.Framework.ExtensionPoints.PathFindingFeatures
         public void DefineRoadSpeedManager<T>(T managerInstance)
             where T : IRoadSpeedManager
         {
-            _roadSpeedManagerType = typeof (T);
+			UnityEngine.Debug.Log($"New RoadSpeedManager: {managerInstance.ToString()}");
+			_roadSpeedManagerType = typeof (T);
             _roadSpeedManager = managerInstance;
         }
 

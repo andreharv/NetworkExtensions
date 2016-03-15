@@ -231,7 +231,7 @@ namespace Transit.Addon.ToolsV2.Data
             {
                 m_laneId = m_laneId,
                 m_nodeId = m_nodeId,
-                m_laneConnections = m_laneConnections,
+                m_laneConnections = m_laneConnections.ToArray(),
                 m_unitTypes = m_vehicleTypes.ConvertToUnitType(),
                 m_speed = m_speed,
             };

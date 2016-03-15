@@ -49,7 +49,7 @@ namespace TrafficManager.Traffic {
 				ushort toNodeId = (laneInfo.m_direction == dir3) ? netManager.m_segments.m_buffer[segmentId].m_endNode : netManager.m_segments.m_buffer[segmentId].m_startNode;
 
 				if (toNodeId == nodeId) {
-					ExtVehicleType vehicleTypes = GetAllowedVehicleTypes(segmentId, laneIndex, curLaneId, laneInfo);
+					ExtVehicleType vehicleTypes = GetAllowedVehicleTypes(segmentId, laneIndex, laneInfo);
 					if (vehicleTypes != ExtVehicleType.None)
 						ret.Add(vehicleTypes);
 				}
@@ -65,10 +65,9 @@ namespace TrafficManager.Traffic {
         /// </summary>
         /// <param name="segmentId"></param>
         /// <param name="laneIndex"></param>
-        /// <param name="laneId"></param>
         /// <param name="laneInfo"></param>
         /// <returns></returns>
-        internal static ExtVehicleType GetAllowedVehicleTypes(ushort segmentId, uint laneIndex, uint laneId, NetInfo.Lane laneInfo) {
+        internal static ExtVehicleType GetAllowedVehicleTypes(ushort segmentId, uint laneIndex, NetInfo.Lane laneInfo) {
 			if (Flags.IsInitDone()) {
 				ExtVehicleType?[] fastArray = Flags.laneAllowedVehicleTypesArray[segmentId];
 				if (fastArray != null)
@@ -129,7 +128,7 @@ namespace TrafficManager.Traffic {
 		/// <param name="road"></param>
 		/// <param name="vehicleType"></param>
 		public static void AddAllowedType(ushort segmentId, uint laneIndex, uint laneId, NetInfo.Lane laneInfo, ExtVehicleType vehicleType) {
-			ExtVehicleType allowedTypes = GetAllowedVehicleTypes(segmentId, laneIndex, laneId, laneInfo);
+			ExtVehicleType allowedTypes = GetAllowedVehicleTypes(segmentId, laneIndex, laneInfo);
 			allowedTypes |= vehicleType;
 			Flags.setLaneAllowedVehicleTypes(segmentId, laneIndex, laneId, allowedTypes);
 		}
@@ -144,7 +143,7 @@ namespace TrafficManager.Traffic {
 		/// <param name="road"></param>
 		/// <param name="vehicleType"></param>
 		public static void RemoveAllowedType(ushort segmentId, uint laneIndex, uint laneId, NetInfo.Lane laneInfo, ExtVehicleType vehicleType) {
-			ExtVehicleType allowedTypes = GetAllowedVehicleTypes(segmentId, laneIndex, laneId, laneInfo);
+			ExtVehicleType allowedTypes = GetAllowedVehicleTypes(segmentId, laneIndex, laneInfo);
 			allowedTypes &= ~vehicleType;
 			Flags.setLaneAllowedVehicleTypes(segmentId, laneIndex, laneId, allowedTypes);
 		}
@@ -178,10 +177,6 @@ namespace TrafficManager.Traffic {
 
 		public static bool IsEmergencyAllowed(ExtVehicleType? allowedTypes) {
 			return IsAllowed(allowedTypes, ExtVehicleType.Emergency);
-		}
-
-		internal static ExtVehicleType GetAllowedVehicleTypes(object selectedSegment, uint selectedLaneIndex, uint selectedLaneId, NetInfo.Lane selectedLaneInfo) {
-			throw new NotImplementedException();
 		}
 
 		public static bool IsPassengerCarAllowed(ExtVehicleType? allowedTypes) {

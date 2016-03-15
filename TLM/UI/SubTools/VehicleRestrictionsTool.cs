@@ -126,7 +126,7 @@ namespace TrafficManager.UI.SubTools {
 					if (baseMask == ExtVehicleType.None)
 						continue;
 
-					ExtVehicleType allowedTypes = VehicleRestrictionsManager.GetAllowedVehicleTypes(SelectedSegmentId, laneIndex, laneId, laneInfo);
+					ExtVehicleType allowedTypes = VehicleRestrictionsManager.GetAllowedVehicleTypes(SelectedSegmentId, laneIndex, laneInfo);
 					allowedTypes = ~allowedTypes & baseMask;
 					VehicleRestrictionsManager.SetAllowedVehicleTypes(SelectedSegmentId, laneIndex, laneId, allowedTypes);
 				}
@@ -233,7 +233,7 @@ namespace TrafficManager.UI.SubTools {
 								NetInfo.Lane laneInfo = segmentInfo.m_lanes[laneIndex];
 
 								// apply restrictions of selected segment & lane
-								VehicleRestrictionsManager.SetAllowedVehicleTypes(segmentId, laneIndex, laneId, VehicleRestrictionsManager.GetAllowedVehicleTypes(SelectedSegmentId, selectedLaneIndex, selectedLaneId, selectedLaneInfo));
+								VehicleRestrictionsManager.SetAllowedVehicleTypes(segmentId, laneIndex, laneId, VehicleRestrictionsManager.GetAllowedVehicleTypes(SelectedSegmentId, selectedLaneIndex, selectedLaneInfo));
 							}
 
 							// add nodes to explore
@@ -318,7 +318,7 @@ namespace TrafficManager.UI.SubTools {
 					continue;
 				}
 
-				ExtVehicleType allowedTypes = VehicleRestrictionsManager.GetAllowedVehicleTypes(segmentId, laneIndex, laneId, laneInfo);
+				ExtVehicleType allowedTypes = VehicleRestrictionsManager.GetAllowedVehicleTypes(segmentId, laneIndex, laneInfo);
 
 				uint y = 0;
 #if DEBUGx

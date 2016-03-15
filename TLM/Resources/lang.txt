@@ -114,3 +114,4 @@ The_chosen_traffic_light_program_is_incompatible_to_this_junction The chosen tra
 Advanced_AI_cannot_be_activated Advanced AI cannot be activated
 The_Advanced_Vehicle_AI_cannot_be_activated The Advanced Vehicle AI cannot be activated because you are already using another mod that modifies vehicle behavior (e.g. Improved AI or Traffic++).
 Enable_dynamic_path_calculation Enable dynamic path calculation
+Changes_made_with_this_tool_will_take_full_effect_after_some_minutes Remember: Changes made with this tool will take full effect after some minutes.

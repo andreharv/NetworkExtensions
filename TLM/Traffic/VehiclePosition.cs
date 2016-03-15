@@ -20,9 +20,7 @@ namespace TrafficManager.Traffic {
 		public ushort ToNode;
 		public ushort FromSegment;
 		public ushort ToSegment;
-		//public uint ToLaneId;
 		public uint ToLaneIndex;
-		//public uint FromLaneId;
 		public uint FromLaneIndex;
 		public float ReduceSpeedByValueToYield;
 		public bool Stopped = false;

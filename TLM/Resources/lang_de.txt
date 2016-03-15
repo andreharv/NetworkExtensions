@@ -114,3 +114,4 @@ The_chosen_traffic_light_program_is_incompatible_to_this_junction Das ausgewähl
 Advanced_AI_cannot_be_activated Erweiterte Fahrzeug-KI kann nicht aktiviert werden
 The_Advanced_Vehicle_AI_cannot_be_activated Die erweiterte Fahrzeug-KI kann nicht aktiviert werden, weil du bereits einen anderen Mod verwendest, der das Verhalten von Fahrzeugen verändern (z.B. Improved AI oder Traffic++).
 Enable_dynamic_path_calculation Aktiviere die dynamische Pfadberechnung
+Changes_made_with_this_tool_will_take_full_effect_after_some_minutes Änderungen, die mit diesem Werkzeug vorgenommen werden, treten erst nach ein paar Minuten in Kraft.

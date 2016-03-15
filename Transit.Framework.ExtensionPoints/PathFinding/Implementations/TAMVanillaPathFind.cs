@@ -859,11 +859,6 @@ namespace Transit.Framework.ExtensionPoints.PathFinding.Implementations
                 return false;
             }
 
-            if (!this.GetFeatures().RoadRestriction.CanUseLane(item.m_laneID, item.m_position.m_segment, item.m_position.m_lane, this.m_unitType))
-            {
-                return false;
-            }
-
             bool result = false;
             NetManager instance = Singleton<NetManager>.instance;
             NetInfo info = segment.Info;
@@ -906,7 +901,12 @@ namespace Transit.Framework.ExtensionPoints.PathFinding.Implementations
             if ((int)item.m_position.m_lane < info2.m_lanes.Length)
             {
                 NetInfo.Lane lane = info2.m_lanes[(int)item.m_position.m_lane];
-                laneType = lane.m_laneType;
+				// NON-STOCK CODE START
+				if (!this.GetFeatures().RoadRestriction.CanUseLane(item.m_position.m_segment, item.m_position.m_lane, item.m_laneID, lane, this.m_unitType)) {
+					return false;
+				}
+				// NON-STOCK CODE END
+				laneType = lane.m_laneType;
                 vehicleType = lane.m_vehicleType;
                 num5 = this.GetFeatures().RoadSpeed.GetLaneSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, m_unitType);
                 num6 = this.CalculateLaneSpeed(connectOffset, item.m_position.m_offset, item.m_position.m_segment, ref instance.m_segments.m_buffer[(int)item.m_position.m_segment], item.m_position.m_lane, lane);
@@ -958,9 +958,8 @@ namespace Transit.Framework.ExtensionPoints.PathFinding.Implementations
             {
                 NetInfo.Lane lane2 = info.m_lanes[num12];
                 if ((byte)(lane2.m_finalDirection & direction2) != 0 &&
-                    this.GetFeatures().LaneRouting.CanLanesConnect(targetNode, num2, item.m_laneID, this.m_unitType) &&
-                    this.GetFeatures().RoadRestriction.CanUseLane(num2, segmentID, (uint)num12, this.m_unitType) &&
-                    this.GetFeatures().RoadRestriction.CanUseLane(item.m_laneID, item.m_position.m_segment, item.m_position.m_lane, this.m_unitType))
+                    this.GetFeatures().LaneRouting.CanLanesConnect(targetNode, segmentID, (byte)num12, num2, item.m_position.m_segment, item.m_position.m_lane, item.m_laneID, this.m_unitType) &&
+                    this.GetFeatures().RoadRestriction.CanUseLane(segmentID, (byte)num12, num2, lane2, this.m_unitType))
                 {
                     if (lane2.CheckType(laneType2, vehicleType2) && (segmentID != item.m_position.m_segment || num12 != (int)item.m_position.m_lane) && (byte)(lane2.m_finalDirection & direction2) != 0)
                     {

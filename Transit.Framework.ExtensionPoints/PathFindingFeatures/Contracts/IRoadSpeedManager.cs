@@ -22,7 +22,7 @@ namespace Transit.Framework.ExtensionPoints.PathFindingFeatures.Contracts
         {
             var segment = Singleton<NetManager>.instance.m_segments.m_buffer[segmentId];
             var laneInfo = segment.Info.m_lanes[laneIndex];
-            var laneId = Singleton<NetManager>.instance.GetLaneId(laneInfo, segment);
+            var laneId = Singleton<NetManager>.instance.GetLaneId(laneInfo, ref segment);
 
             if(laneId == null)
             {

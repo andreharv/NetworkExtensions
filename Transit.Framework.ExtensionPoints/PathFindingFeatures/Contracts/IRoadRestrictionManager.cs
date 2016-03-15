@@ -4,11 +4,22 @@ namespace Transit.Framework.ExtensionPoints.PathFindingFeatures.Contracts
 {
     public interface IRoadRestrictionManager : IPathFindFeature
     {
-        /// <param name="laneId"></param>
-        /// <param name="segmentId">Optional information specifying where the laneId comes from</param>
-        /// <param name="laneIndex">Optional information specifying where the laneId comes from</param>
-        /// <param name="unitType"></param>
-        /// <returns>Returns whenever the lane can be use of not</returns>
-        bool CanUseLane(uint laneId, ushort? segmentId, uint? laneIndex, ExtendedUnitType unitType);
-    }
+		/// Determines if the lane with the given id may be used by the unit with the given type.
+		/// Warning: Avoid using this method due to performance considerations.
+		/// 
+		/// <param name="laneId"></param>
+		/// <param name="unitType"></param>
+		/// <returns>true if the lane may be used, else false</returns>
+		bool CanUseLane(uint laneId, ExtendedUnitType unitType);
+
+		/// Determines if the lane with the given lane index and segment id may be used by the unit with the given type.
+		/// 
+		/// <param name="segmentId"></param>
+		/// <param name="laneIndex"></param>
+		/// <param name="laneId"></param>
+		/// <param name="laneInfo"></param>
+		/// <param name="unitType"></param>
+		/// <returns>true if the lane may be used, else false</returns>
+		bool CanUseLane(ushort segmentId, byte laneIndex, uint laneId, NetInfo.Lane laneInfo, ExtendedUnitType unitType);
+	}
 }

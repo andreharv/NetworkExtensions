@@ -1,4 +1,6 @@
-﻿using Transit.Framework;
+using System;
+using Transit.Addon.ToolsV2.Data;
+using Transit.Framework;
 using Transit.Framework.ExtensionPoints.PathFindingFeatures.Contracts;
 using Transit.Framework.Network;
 
@@ -6,7 +8,9 @@ namespace Transit.Addon.ToolsV2.PathFindingFeatures
 {
     public class TPPRoadRestrictionManager : IRoadRestrictionManager
     {
-        public bool CanUseLane(uint laneId, ushort? segmentId, uint? laneIndex, ExtendedUnitType unitType)
+
+		// TODO Method should not be used due to performance considerations
+		public bool CanUseLane(uint laneId, ExtendedUnitType unitType)
         {
             if ((unitType & TPPSupported.UNITS) == 0)
             {
@@ -25,18 +29,33 @@ namespace Transit.Addon.ToolsV2.PathFindingFeatures
                 return true;
             }
 
-            // T++ 
-            return (TPPLaneDataManager.GetLane(laneId).m_unitTypes & unitType) != ExtendedUnitType.None;
+			TPPLaneDataV2 lane = TPPLaneDataManager.GetLane(laneId, false);
+			if (lane == null)
+				return true;
 
-            // TM
-            //            ExtVehicleType allowedTypes = VehicleRestrictionsManager.GetAllowedVehicleTypes(segmentId, laneIndex, laneId, laneInfo);
-            //#if DEBUGPF
-            //			if (debug) {
-            //				Log._Debug($"CanUseLane: segmentId={segmentId} laneIndex={laneIndex} laneId={laneId}, _extVehicleType={_extVehicleType} _vehicleTypes={_vehicleTypes} _laneTypes={_laneTypes} _transportVehicle={_transportVehicle} _isHeavyVehicle={_isHeavyVehicle} allowedTypes={allowedTypes} res={((allowedTypes & _extVehicleType) != ExtVehicleType.None)}");
-            //            }
-            //#endif
-
-            //            return ((allowedTypes & _extVehicleType) != ExtVehicleType.None);
+			// T++ 
+			return (lane.m_unitTypes & unitType) != ExtendedUnitType.None;
         }
-    }
+
+		public bool CanUseLane(ushort segmentId, byte laneIndex, uint laneId, NetInfo.Lane laneInfo, ExtendedUnitType unitType) {
+			if ((unitType & TPPSupported.UNITS) == 0) {
+				return true;
+			}
+
+			if (laneInfo == null) {
+				return true;
+			}
+
+			if ((laneInfo.m_vehicleType & TPPSupported.VEHICLETYPES) == 0) {
+				return true;
+			}
+
+			TPPLaneDataV2 lane = TPPLaneDataManager.GetLane(laneId, false);
+			if (lane == null)
+				return true;
+
+			// T++ 
+			return (lane.m_unitTypes & unitType) != ExtendedUnitType.None;
+		}
+	}
 }

@@ -4,49 +4,37 @@ using Transit.Framework;
 using Transit.Framework.ExtensionPoints.PathFindingFeatures.Contracts;
 using Transit.Framework.Network;
 
-namespace TrafficManager.Custom.PathFindingFeatures
-{
-    public class TMRoadRestrictionManager : IRoadRestrictionManager
-    {
-        public bool CanUseLane(uint laneId, ushort? segmentId, uint? laneIndex, ExtendedUnitType unitType)
-        {
-            if ((unitType & TMSupported.UNITS) == 0)
-            {
-                return true;
-            }
+namespace TrafficManager.Custom.PathFindingFeatures {
+	public class TMRoadRestrictionManager : IRoadRestrictionManager {
 
-            var laneInfo = NetManager.instance.GetLaneInfo(laneId);
+		// Warning: Avoid using this method due to performance considerations.
+		public bool CanUseLane(uint laneId, ExtendedUnitType unitType) {
+			if ((unitType & TMSupported.UNITS) == 0) {
+				return true;
+			}
 
-            if (laneInfo == null)
-            {
-                return true;
-            }
+			var laneInfo = NetManager.instance.GetLaneInfo(laneId);
 
-            if ((laneInfo.m_vehicleType & TMSupported.VEHICLETYPES) == 0)
-            {
-                return true;
-            }
+			if (laneInfo == null) {
+				return true;
+			}
 
-            if (segmentId == null)
-            {
-                segmentId = NetManager.instance.GetLaneNetSegmentId(laneId);
-            }
-            if (segmentId == null)
-            {
-                throw new Exception("TM: Segment not found for LaneID " + laneId);
-            }
+			if ((laneInfo.m_vehicleType & TMSupported.VEHICLETYPES) == 0) {
+				return true;
+			}
 
-            if (laneIndex == null)
-            {
-                laneIndex = NetManager.instance.GetLaneIndex(laneId);
-            }
-            if (laneIndex == null)
-            {
-                throw new Exception("TM: LaneIndex not found for LaneID " + laneId);
-            }
+			ushort? segmentId = NetManager.instance.GetLaneNetSegmentId(laneId);
+			if (segmentId == null) {
+				throw new Exception("TM: Segment not found for LaneID " + laneId);
+			}
 
-            var allowedVehicleTypes = VehicleRestrictionsManager.GetAllowedVehicleTypes(segmentId.Value, laneIndex.Value, laneId, laneInfo);
-            var allowedUnitTypes = allowedVehicleTypes.ConvertToUnitType();
+			byte? laneIndex = NetManager.instance.GetLaneIndex(laneId);
+			if (laneIndex == null) {
+				throw new Exception("TM: LaneIndex not found for LaneID " + laneId);
+			}
+
+			ExtVehicleType allowedVehicleTypes = VehicleRestrictionsManager.GetAllowedVehicleTypes(segmentId.Value, laneIndex.Value, laneInfo);
+			ExtendedUnitType allowedUnitTypes = allowedVehicleTypes.ConvertToUnitType(); // TODO remove type ExtVehicleType
 
 #if DEBUGPF
             	if (debug) {
@@ -54,7 +42,19 @@ namespace TrafficManager.Custom.PathFindingFeatures
                 }
 #endif
 
-            return ((allowedUnitTypes & unitType) != 0);
-        }
-    }
+			return ((allowedUnitTypes & unitType) != 0);
+		}
+
+		public bool CanUseLane(ushort segmentId, byte laneIndex, uint laneId, NetInfo.Lane laneInfo, ExtendedUnitType unitType) {
+			if ((unitType & TMSupported.UNITS) == 0) {
+				// unsupported type. allow.
+				return true;
+			}
+
+			ExtVehicleType allowedVehicleTypes = VehicleRestrictionsManager.GetAllowedVehicleTypes(segmentId, laneIndex, laneInfo);
+			ExtendedUnitType allowedUnitTypes = allowedVehicleTypes.ConvertToUnitType(); // TODO remove type ExtVehicleType
+
+			return ((allowedUnitTypes & unitType) != 0);
+		}
+	}
 }

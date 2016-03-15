@@ -25,13 +25,14 @@ namespace Transit.Framework.ExtensionPoints.PathFindingFeatures
         public void DefineRoadRestrictionManager<T>()
             where T : IRoadRestrictionManager, new()
         {
-            DefineRoadRestrictionManager(new T());
+			DefineRoadRestrictionManager(new T());
         }
 
         public void DefineRoadRestrictionManager<T>(T managerInstance)
             where T : IRoadRestrictionManager
         {
-            _roadRestrictionManagerType = typeof(T);
+			UnityEngine.Debug.Log($"New RoadRestrictionManager: {managerInstance.ToString()}");
+			_roadRestrictionManagerType = typeof(T);
             _roadRestrictionManager = managerInstance;
         }
 

@@ -140,20 +140,17 @@ namespace TrafficManager.Traffic {
 
 		internal static float GetLockFreeGameSpeedLimit(ushort segmentId, uint laneIndex, uint laneId, NetInfo.Lane laneInfo) {
 			if (Flags.IsInitDone()) {
-				float speedLimit = 0;
-
 				if (Flags.laneSpeedLimitArray.Length <= segmentId) {
 					Log.Error($"laneSpeedLimitArray.Length = {Flags.laneSpeedLimitArray.Length}, segmentId={segmentId}. Out of range!");
-					return speedLimit = laneInfo.m_speedLimit;
+					return laneInfo.m_speedLimit;
 				}
 
 				ushort?[] fastArray = Flags.laneSpeedLimitArray[segmentId];
 				if (fastArray != null && fastArray.Length > laneIndex && fastArray[laneIndex] != null) {
-					speedLimit = ToGameSpeedLimit((ushort)fastArray[laneIndex]);
+					return ToGameSpeedLimit((ushort)fastArray[laneIndex]);
 				} else {
-					speedLimit = laneInfo.m_speedLimit;
+					return laneInfo.m_speedLimit;
 				}
-				return speedLimit;
 			} else
 				return GetGameSpeedLimit(laneId);
 		}

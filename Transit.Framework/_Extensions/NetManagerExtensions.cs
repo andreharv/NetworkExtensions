@@ -2,37 +2,49 @@
 {
     public static class NetManagerExtensions
     {
-        public static NetLane GetLane(this NetManager netManager, uint laneId)
+		// TODO Delete this method if not used. It should never be called due to performance considerations.
+		public static NetLane GetLane(this NetManager netManager, uint laneId)
         {
-            return netManager.m_lanes.m_buffer[laneId];
+			// TODO add lane validity check & do not return a struct
+			return netManager.m_lanes.m_buffer[laneId];
         }
 
+		// TODO Delete this method if not used. It should never be called due to performance considerations.
         public static NetSegment GetLaneNetSegment(this NetManager netManager, uint laneId)
         {
-            var netLane = netManager.m_lanes.m_buffer[laneId];
-            return netManager.m_segments.m_buffer[netLane.m_segment];
+			// TODO add lane, segment validity check & do not return a struct
+            return netManager.m_segments.m_buffer[netManager.m_lanes.m_buffer[laneId].m_segment];
         }
 
-        public static ushort GetLaneNetSegmentId(this NetManager netManager, uint laneId)
+        public static ushort? GetLaneNetSegmentId(this NetManager netManager, uint laneId)
         {
-            return netManager.m_lanes.m_buffer[laneId].m_segment;
+			if (((NetLane.Flags)netManager.m_lanes.m_buffer[laneId].m_flags & NetLane.Flags.Created) == NetLane.Flags.None)
+				return null;
+			ushort segmentId = netManager.m_lanes.m_buffer[laneId].m_segment;
+			if ((netManager.m_segments.m_buffer[segmentId].m_flags & NetSegment.Flags.Created) == NetSegment.Flags.None)
+				return null;
+			return segmentId;
         }
 
         public static NetInfo GetLaneNetInfo(this NetManager netManager, uint laneId)
         {
-            var netLane = netManager.m_lanes.m_buffer[laneId];
-            var netSegment = netManager.m_segments.m_buffer[netLane.m_segment];
-            return netSegment.Info;
+			if (((NetLane.Flags)netManager.m_lanes.m_buffer[laneId].m_flags & NetLane.Flags.Created) == NetLane.Flags.None)
+				return null;
+			return netManager.m_segments.m_buffer[netManager.m_lanes.m_buffer[laneId].m_segment].Info;
         }
 
-        public static NetInfo.Lane GetLaneInfo(this NetManager netManager, uint laneId)
+		// TODO Delete this method if not used. It should never be called due to performance considerations.
+		public static NetInfo.Lane GetLaneInfo(this NetManager netManager, uint laneId)
         {
-            var netLane = netManager.m_lanes.m_buffer[laneId];
-            var netSegment = netManager.m_segments.m_buffer[netLane.m_segment];
-            var netInfo = netSegment.Info;
+			if (((NetLane.Flags)netManager.m_lanes.m_buffer[laneId].m_flags & NetLane.Flags.Created) == NetLane.Flags.None)
+				return null;
+			ushort segmentId = netManager.m_lanes.m_buffer[laneId].m_segment;
+			if ((netManager.m_segments.m_buffer[segmentId].m_flags & NetSegment.Flags.Created) == NetSegment.Flags.None)
+				return null;
+			NetInfo netInfo = netManager.m_segments.m_buffer[segmentId].Info;
 
-            var netInfoLanes = netInfo.m_lanes;
-            var netSegmentLaneId = netSegment.m_lanes;
+            NetInfo.Lane[] netInfoLanes = netInfo.m_lanes;
+            uint netSegmentLaneId = netManager.m_segments.m_buffer[segmentId].m_lanes;
             for (int i = 0; i < netInfoLanes.Length && netSegmentLaneId != 0; i++)
             {
                 if (netSegmentLaneId == laneId)
@@ -46,15 +58,26 @@
             return null;
         }
 
-        public static uint? GetLaneIndex(this NetManager netManager, uint laneId)
+		public static NetInfo.Lane GetLaneInfo(this NetManager netManager, ushort segmentId, byte laneIndex) {
+			if ((netManager.m_segments.m_buffer[segmentId].m_flags & NetSegment.Flags.Created) == NetSegment.Flags.None)
+				return null;
+			if (laneIndex >= netManager.m_segments.m_buffer[segmentId].Info.m_lanes.Length)
+				return null;
+			return netManager.m_segments.m_buffer[segmentId].Info.m_lanes[laneIndex];
+		}
+
+        public static byte? GetLaneIndex(this NetManager netManager, uint laneId)
         {
-            var netLane = netManager.m_lanes.m_buffer[laneId];
-            var netSegment = netManager.m_segments.m_buffer[netLane.m_segment];
-            var netInfo = netSegment.Info;
+			if (((NetLane.Flags)netManager.m_lanes.m_buffer[laneId].m_flags & NetLane.Flags.Created) == NetLane.Flags.None)
+				return null;
+			ushort segmentId = netManager.m_lanes.m_buffer[laneId].m_segment;
+			if ((netManager.m_segments.m_buffer[segmentId].m_flags & NetSegment.Flags.Created) == NetSegment.Flags.None)
+				return null;
+			var netInfo = netManager.m_segments.m_buffer[segmentId].Info;
 
             var netInfoLanes = netInfo.m_lanes;
-            var netSegmentLaneId = netSegment.m_lanes;
-            for (uint i = 0; i < netInfoLanes.Length && netSegmentLaneId != 0; i++)
+            var netSegmentLaneId = netManager.m_segments.m_buffer[segmentId].m_lanes;
+            for (byte i = 0; i < netInfoLanes.Length && netSegmentLaneId != 0; i++)
             {
                 if (netSegmentLaneId == laneId)
                 {
@@ -67,13 +90,14 @@
             return null;
         }
 
-        public static uint? GetLaneId(this NetManager netManager, NetInfo.Lane laneInfo, NetSegment netSegment)
+		// TODO Delete this method if not used. It should never be called due to performance considerations.
+		public static uint? GetLaneId(this NetManager netManager, NetInfo.Lane laneInfo, ref NetSegment netSegment)
         {
             // To be tested
-            var netInfo = netSegment.Info;
+            NetInfo netInfo = netSegment.Info;
 
-            var netInfoLanes = netInfo.m_lanes;
-            var netSegmentLaneId = netSegment.m_lanes;
+            NetInfo.Lane[] netInfoLanes = netInfo.m_lanes;
+            uint netSegmentLaneId = netSegment.m_lanes;
             for (int i = 0; i < netInfoLanes.Length && netSegmentLaneId != 0; i++)
             {
                 var segmentLaneInfo = netInfoLanes[i];
