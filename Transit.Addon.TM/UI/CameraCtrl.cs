@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace TrafficManager.UI {
+namespace Transit.Addon.TM.UI {
 	class CameraCtrl {
 
 		public static void GoToVehicle(ushort vehicleId, Vector3 pos) {

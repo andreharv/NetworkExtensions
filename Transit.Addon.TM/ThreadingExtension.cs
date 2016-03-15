@@ -2,10 +2,10 @@ using System;
 using System.Reflection;
 using ColossalFramework;
 using ICities;
-using TrafficManager.Custom.AI;
+using Transit.Addon.TM.AI;
 using UnityEngine;
 
-namespace TrafficManager {
+namespace Transit.Addon.TM {
     public sealed class ThreadingExtension : ThreadingExtensionBase {
         public override void OnUpdate(float realTimeDelta, float simulationTimeDelta) {
             base.OnUpdate(realTimeDelta, simulationTimeDelta);

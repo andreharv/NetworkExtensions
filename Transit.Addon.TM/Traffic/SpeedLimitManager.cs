@@ -3,9 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TrafficManager.State;
+using Transit.Addon.TM.Data;
+using Transit.Addon.TM.State;
 
-namespace TrafficManager.Traffic {
+namespace Transit.Addon.TM.Traffic {
 	class SpeedLimitManager {
 		public static readonly List<ushort> AvailableSpeedLimits;
 

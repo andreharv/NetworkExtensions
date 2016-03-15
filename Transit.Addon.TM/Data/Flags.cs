@@ -1,12 +1,11 @@
-﻿using ColossalFramework;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using TrafficManager.Traffic;
+using ColossalFramework;
+using Transit.Addon.TM.State;
+using Transit.Addon.TM.Traffic;
 
-namespace TrafficManager.State {
+namespace Transit.Addon.TM.Data {
 	public class Flags {
 		[Flags]
 		public enum LaneArrows { // compatible with NetLane.Flags
@@ -47,14 +46,14 @@ namespace TrafficManager.State {
 		/// <summary>
 		/// For each lane: Defines the allowed vehicle types
 		/// </summary>
-		private static Dictionary<uint, ExtVehicleType> laneAllowedVehicleTypes = new Dictionary<uint, ExtVehicleType>();
+		private static Dictionary<uint, TMVehicleType> laneAllowedVehicleTypes = new Dictionary<uint, TMVehicleType>();
 
-		internal static ExtVehicleType?[][] laneAllowedVehicleTypesArray; // for faster, lock-free access, 1st index: segment id, 2nd index: lane index
+		internal static TMVehicleType?[][] laneAllowedVehicleTypesArray; // for faster, lock-free access, 1st index: segment id, 2nd index: lane index
 
 		/// <summary>
 		/// For each segment and node: Defines additional flags for segments at a node
 		/// </summary>
-		private static Configuration.SegmentNodeFlags[][] segmentNodeFlags = null;
+		private static TMConfigurationV2.SegmentNodeFlags[][] segmentNodeFlags = null;
 
 		private static object laneSpeedLimitLock = new object();
 		private static object laneAllowedVehicleTypesLock = new object();
@@ -207,7 +206,7 @@ namespace TrafficManager.State {
 			}
 		}
 
-		public static void setLaneAllowedVehicleTypes(uint laneId, ExtVehicleType vehicleTypes) {
+		public static void setLaneAllowedVehicleTypes(uint laneId, TMVehicleType vehicleTypes) {
 			if (laneId <= 0)
 				return;
 			if (((NetLane.Flags)Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags & NetLane.Flags.Created) == NetLane.Flags.None)
@@ -232,7 +231,7 @@ namespace TrafficManager.State {
 			}
 		}
 
-		public static void setLaneAllowedVehicleTypes(ushort segmentId, uint laneIndex, uint laneId, ExtVehicleType vehicleTypes) {
+		public static void setLaneAllowedVehicleTypes(ushort segmentId, uint laneIndex, uint laneId, TMVehicleType vehicleTypes) {
 			if (segmentId <= 0 || laneIndex < 0 || laneId <= 0)
 				return;
 			if ((Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].m_flags & NetSegment.Flags.Created) == NetSegment.Flags.None) {
@@ -254,10 +253,10 @@ namespace TrafficManager.State {
 				// save allowed vehicle types into the fast-access array.
 				// (1) ensure that the array is defined and large enough
 				if (laneAllowedVehicleTypesArray[segmentId] == null) {
-					laneAllowedVehicleTypesArray[segmentId] = new ExtVehicleType?[segmentInfo.m_lanes.Length];
+					laneAllowedVehicleTypesArray[segmentId] = new TMVehicleType?[segmentInfo.m_lanes.Length];
 				} else if (laneAllowedVehicleTypesArray[segmentId].Length < segmentInfo.m_lanes.Length) {
 					var oldArray = laneAllowedVehicleTypesArray[segmentId];
-					laneAllowedVehicleTypesArray[segmentId] = new ExtVehicleType?[segmentInfo.m_lanes.Length];
+					laneAllowedVehicleTypesArray[segmentId] = new TMVehicleType?[segmentInfo.m_lanes.Length];
 					Array.Copy(oldArray, laneAllowedVehicleTypesArray[segmentId], oldArray.Length);
 				}
 				// (2) insert the custom speed limit
@@ -378,12 +377,12 @@ namespace TrafficManager.State {
 			return ret;
 		}
 
-		internal static Dictionary<uint, ExtVehicleType> getAllLaneAllowedVehicleTypes() {
-			Dictionary<uint, ExtVehicleType> ret = new Dictionary<uint, ExtVehicleType>();
+		internal static Dictionary<uint, TMVehicleType> getAllLaneAllowedVehicleTypes() {
+			Dictionary<uint, TMVehicleType> ret = new Dictionary<uint, TMVehicleType>();
 			try {
 				Monitor.Enter(laneAllowedVehicleTypesLock);
 
-				ret = new Dictionary<uint, ExtVehicleType>(laneAllowedVehicleTypes);
+				ret = new Dictionary<uint, TMVehicleType>(laneAllowedVehicleTypes);
 
 			} finally {
 				Monitor.Exit(laneAllowedVehicleTypesLock);
@@ -405,7 +404,7 @@ namespace TrafficManager.State {
 
 			int index = startNode ? 0 : 1;
 
-			Configuration.SegmentNodeFlags[] nodeFlags = segmentNodeFlags[segmentId];
+			TMConfigurationV2.SegmentNodeFlags[] nodeFlags = segmentNodeFlags[segmentId];
 			if (nodeFlags == null || nodeFlags[index] == null || nodeFlags[index].uturnAllowed == null)
 				return Options.allowUTurns;
 			return (bool)nodeFlags[index].uturnAllowed;
@@ -421,7 +420,7 @@ namespace TrafficManager.State {
 				if (valueToSet == null)
 					return;
 
-				segmentNodeFlags[segmentId][index] = new Configuration.SegmentNodeFlags();
+				segmentNodeFlags[segmentId][index] = new TMConfigurationV2.SegmentNodeFlags();
 			}
 			segmentNodeFlags[segmentId][index].uturnAllowed = valueToSet;
 		}
@@ -432,7 +431,7 @@ namespace TrafficManager.State {
 
 			int index = startNode ? 0 : 1;
 
-			Configuration.SegmentNodeFlags[] nodeFlags = segmentNodeFlags[segmentId];
+			TMConfigurationV2.SegmentNodeFlags[] nodeFlags = segmentNodeFlags[segmentId];
 			if (nodeFlags == null || nodeFlags[index] == null || nodeFlags[index].straightLaneChangingAllowed == null)
 				return Options.allowLaneChangesWhileGoingStraight;
 			return (bool)nodeFlags[index].straightLaneChangingAllowed;
@@ -447,7 +446,7 @@ namespace TrafficManager.State {
 			if (segmentNodeFlags[segmentId][index] == null) {
 				if (valueToSet == null)
 					return;
-				segmentNodeFlags[segmentId][index] = new Configuration.SegmentNodeFlags();
+				segmentNodeFlags[segmentId][index] = new TMConfigurationV2.SegmentNodeFlags();
 			}
 			segmentNodeFlags[segmentId][index].straightLaneChangingAllowed = valueToSet;
 		}
@@ -458,7 +457,7 @@ namespace TrafficManager.State {
 
 			int index = startNode ? 0 : 1;
 
-			Configuration.SegmentNodeFlags[] nodeFlags = segmentNodeFlags[segmentId];
+			TMConfigurationV2.SegmentNodeFlags[] nodeFlags = segmentNodeFlags[segmentId];
 			if (nodeFlags == null || nodeFlags[index] == null || nodeFlags[index].enterWhenBlockedAllowed == null)
 				return Options.allowEnterBlockedJunctions;
 			return (bool)nodeFlags[index].enterWhenBlockedAllowed;
@@ -473,12 +472,12 @@ namespace TrafficManager.State {
 			if (segmentNodeFlags[segmentId][index] == null) {
 				if (valueToSet == null)
 					return;
-				segmentNodeFlags[segmentId][index] = new Configuration.SegmentNodeFlags();
+				segmentNodeFlags[segmentId][index] = new TMConfigurationV2.SegmentNodeFlags();
 			}
 			segmentNodeFlags[segmentId][index].enterWhenBlockedAllowed = valueToSet;
 		}
 
-		internal static void setSegmentNodeFlags(ushort segmentId, bool startNode, Configuration.SegmentNodeFlags flags) {
+		internal static void setSegmentNodeFlags(ushort segmentId, bool startNode, TMConfigurationV2.SegmentNodeFlags flags) {
 			if (flags == null)
 				return;
 
@@ -486,7 +485,7 @@ namespace TrafficManager.State {
 			segmentNodeFlags[segmentId][index] = flags;
 		}
 
-		internal static Configuration.SegmentNodeFlags getSegmentNodeFlags(ushort segmentId, bool startNode) {
+		internal static TMConfigurationV2.SegmentNodeFlags getSegmentNodeFlags(ushort segmentId, bool startNode) {
 			int index = startNode ? 0 : 1;
 			return segmentNodeFlags[segmentId][index];
 		}
@@ -620,12 +619,12 @@ namespace TrafficManager.State {
 
 			laneSpeedLimitArray = new ushort?[Singleton<NetManager>.instance.m_segments.m_size][];
 			laneArrowFlags = new LaneArrows?[Singleton<NetManager>.instance.m_lanes.m_size];
-			laneAllowedVehicleTypesArray = new ExtVehicleType?[Singleton<NetManager>.instance.m_segments.m_size][];
+			laneAllowedVehicleTypesArray = new TMVehicleType?[Singleton<NetManager>.instance.m_segments.m_size][];
 			highwayLaneArrowFlags = new LaneArrows?[Singleton<NetManager>.instance.m_lanes.m_size];
 			nodeTrafficLightFlag = new bool?[Singleton<NetManager>.instance.m_nodes.m_size];
-			segmentNodeFlags = new Configuration.SegmentNodeFlags[Singleton<NetManager>.instance.m_segments.m_size][];
+			segmentNodeFlags = new TMConfigurationV2.SegmentNodeFlags[Singleton<NetManager>.instance.m_segments.m_size][];
 			for (int i = 0; i < segmentNodeFlags.Length; ++i) {
-				segmentNodeFlags[i] = new Configuration.SegmentNodeFlags[2];
+				segmentNodeFlags[i] = new TMConfigurationV2.SegmentNodeFlags[2];
 			}
 			initDone = true;
 		}

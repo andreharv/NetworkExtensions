@@ -2,18 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TrafficManager.DataSerialization;
+using Transit.Addon.TM.DataSerialization;
 using UnityEngine;
 using ColossalFramework;
 using ColossalFramework.UI;
 using ICities;
-using TrafficManager.Traffic;
-using TrafficManager.State;
-using TrafficManager.UI;
+using Transit.Addon.TM.Traffic;
+using Transit.Addon.TM.State;
+using Transit.Addon.TM.UI;
 using ColossalFramework.Plugins;
 using ColossalFramework.Globalization;
+using Transit.Addon.TM;
+using Transit.Addon.TM.Data;
 
-namespace TrafficManager.State {
+namespace Transit.Addon.TM.State {
 
 	public class Options : MonoBehaviour {
 		private static UIDropDown simAccuracyDropdown = null;

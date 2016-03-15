@@ -1,4 +1,4 @@
-namespace TrafficManager.Traffic
+namespace Transit.Addon.TM.Traffic
 {
 	/// <summary>
 	/// A traffic segment (essentially a road) connects two nodes (Node1, Node2). One traffic segment

@@ -3,10 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TrafficManager.State;
+using Transit.Addon.TM.State;
+using Transit.Addon.TM.Data;
 using Transit.Framework;
 
-namespace TrafficManager.Traffic {
+namespace Transit.Addon.TM.Traffic {
 	class VehicleRestrictionsManager {
 		/// <summary>
 		/// Determines the allowed vehicle types that may approach the given node from the given segment.
@@ -14,9 +15,9 @@ namespace TrafficManager.Traffic {
 		/// <param name="segmentId"></param>
 		/// <param name="nodeId"></param>
 		/// <returns></returns>
-		internal static ExtVehicleType GetAllowedVehicleTypes(ushort segmentId, ushort nodeId) {
-			ExtVehicleType ret = ExtVehicleType.None;
-			foreach (ExtVehicleType vehicleType in GetAllowedVehicleTypesAsSet(segmentId, nodeId)) {
+		internal static TMVehicleType GetAllowedVehicleTypes(ushort segmentId, ushort nodeId) {
+			TMVehicleType ret = TMVehicleType.None;
+			foreach (TMVehicleType vehicleType in GetAllowedVehicleTypesAsSet(segmentId, nodeId)) {
 				ret |= vehicleType;
 			}
 			return ret;
@@ -28,8 +29,8 @@ namespace TrafficManager.Traffic {
 		/// <param name="segmentId"></param>
 		/// <param name="nodeId"></param>
 		/// <returns></returns>
-		internal static HashSet<ExtVehicleType> GetAllowedVehicleTypesAsSet(ushort segmentId, ushort nodeId) {
-			HashSet<ExtVehicleType> ret = new HashSet<ExtVehicleType>();
+		internal static HashSet<TMVehicleType> GetAllowedVehicleTypesAsSet(ushort segmentId, ushort nodeId) {
+			HashSet<TMVehicleType> ret = new HashSet<TMVehicleType>();
 
 			NetManager netManager = Singleton<NetManager>.instance;
 			if (segmentId == 0 || (netManager.m_segments.m_buffer[segmentId].m_flags & NetSegment.Flags.Created) == NetSegment.Flags.None ||
@@ -49,8 +50,8 @@ namespace TrafficManager.Traffic {
 				ushort toNodeId = (laneInfo.m_direction == dir3) ? netManager.m_segments.m_buffer[segmentId].m_endNode : netManager.m_segments.m_buffer[segmentId].m_startNode;
 
 				if (toNodeId == nodeId) {
-					ExtVehicleType vehicleTypes = GetAllowedVehicleTypes(segmentId, laneIndex, laneInfo);
-					if (vehicleTypes != ExtVehicleType.None)
+					TMVehicleType vehicleTypes = GetAllowedVehicleTypes(segmentId, laneIndex, laneInfo);
+					if (vehicleTypes != TMVehicleType.None)
 						ret.Add(vehicleTypes);
 				}
 				curLaneId = netManager.m_lanes.m_buffer[curLaneId].m_nextLane;
@@ -67,33 +68,33 @@ namespace TrafficManager.Traffic {
         /// <param name="laneIndex"></param>
         /// <param name="laneInfo"></param>
         /// <returns></returns>
-        internal static ExtVehicleType GetAllowedVehicleTypes(ushort segmentId, uint laneIndex, NetInfo.Lane laneInfo) {
+        internal static TMVehicleType GetAllowedVehicleTypes(ushort segmentId, uint laneIndex, NetInfo.Lane laneInfo) {
 			if (Flags.IsInitDone()) {
-				ExtVehicleType?[] fastArray = Flags.laneAllowedVehicleTypesArray[segmentId];
+				TMVehicleType?[] fastArray = Flags.laneAllowedVehicleTypesArray[segmentId];
 				if (fastArray != null)
                 {
                     if(laneIndex < fastArray.Length && fastArray[laneIndex] != null)
                     {
-                        return (ExtVehicleType)fastArray[laneIndex];
+                        return (TMVehicleType)fastArray[laneIndex];
                     }
                 }
 			}
 
-			ExtVehicleType ret = ExtVehicleType.None;
+			TMVehicleType ret = TMVehicleType.None;
 			if ((laneInfo.m_vehicleType & VehicleInfo.VehicleType.Bicycle) != VehicleInfo.VehicleType.None)
-				ret |= ExtVehicleType.Bicycle;
+				ret |= TMVehicleType.Bicycle;
 			if ((laneInfo.m_vehicleType & VehicleInfo.VehicleType.Tram) != VehicleInfo.VehicleType.None)
-				ret |= ExtVehicleType.Tram;
+				ret |= TMVehicleType.Tram;
 			if ((laneInfo.m_laneType & NetInfo.LaneType.TransportVehicle) != NetInfo.LaneType.None)
-				ret |= ExtVehicleType.RoadPublicTransport | ExtVehicleType.Emergency;
+				ret |= TMVehicleType.RoadPublicTransport | TMVehicleType.Emergency;
 			else if ((laneInfo.m_vehicleType & VehicleInfo.VehicleType.Car) != VehicleInfo.VehicleType.None)
-				ret |= ExtVehicleType.RoadVehicle;
+				ret |= TMVehicleType.RoadVehicle;
 			if ((laneInfo.m_vehicleType & (VehicleInfo.VehicleType.Train | VehicleInfo.VehicleType.Metro)) != VehicleInfo.VehicleType.None)
-				ret |= ExtVehicleType.RailVehicle;
+				ret |= TMVehicleType.RailVehicle;
 			if ((laneInfo.m_vehicleType & VehicleInfo.VehicleType.Ship) != VehicleInfo.VehicleType.None)
-				ret |= ExtVehicleType.Ship;
+				ret |= TMVehicleType.Ship;
 			if ((laneInfo.m_vehicleType & VehicleInfo.VehicleType.Plane) != VehicleInfo.VehicleType.None)
-				ret |= ExtVehicleType.Plane;
+				ret |= TMVehicleType.Plane;
 
 			return ret;
 		}
@@ -106,7 +107,7 @@ namespace TrafficManager.Traffic {
 		/// <param name="laneId"></param>
 		/// <param name="allowedTypes"></param>
 		/// <returns></returns>
-		internal static bool SetAllowedVehicleTypes(ushort segmentId, uint laneIndex, uint laneId, ExtVehicleType allowedTypes) {
+		internal static bool SetAllowedVehicleTypes(ushort segmentId, uint laneIndex, uint laneId, TMVehicleType allowedTypes) {
 			if (segmentId == 0)
 				return false;
 			if ((Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].m_flags & NetSegment.Flags.Created) == NetSegment.Flags.None)
@@ -127,8 +128,8 @@ namespace TrafficManager.Traffic {
 		/// <param name="laneInfo"></param>
 		/// <param name="road"></param>
 		/// <param name="vehicleType"></param>
-		public static void AddAllowedType(ushort segmentId, uint laneIndex, uint laneId, NetInfo.Lane laneInfo, ExtVehicleType vehicleType) {
-			ExtVehicleType allowedTypes = GetAllowedVehicleTypes(segmentId, laneIndex, laneInfo);
+		public static void AddAllowedType(ushort segmentId, uint laneIndex, uint laneId, NetInfo.Lane laneInfo, TMVehicleType vehicleType) {
+			TMVehicleType allowedTypes = GetAllowedVehicleTypes(segmentId, laneIndex, laneInfo);
 			allowedTypes |= vehicleType;
 			Flags.setLaneAllowedVehicleTypes(segmentId, laneIndex, laneId, allowedTypes);
 		}
@@ -142,69 +143,69 @@ namespace TrafficManager.Traffic {
 		/// <param name="laneInfo"></param>
 		/// <param name="road"></param>
 		/// <param name="vehicleType"></param>
-		public static void RemoveAllowedType(ushort segmentId, uint laneIndex, uint laneId, NetInfo.Lane laneInfo, ExtVehicleType vehicleType) {
-			ExtVehicleType allowedTypes = GetAllowedVehicleTypes(segmentId, laneIndex, laneInfo);
+		public static void RemoveAllowedType(ushort segmentId, uint laneIndex, uint laneId, NetInfo.Lane laneInfo, TMVehicleType vehicleType) {
+			TMVehicleType allowedTypes = GetAllowedVehicleTypes(segmentId, laneIndex, laneInfo);
 			allowedTypes &= ~vehicleType;
 			Flags.setLaneAllowedVehicleTypes(segmentId, laneIndex, laneId, allowedTypes);
 		}
 
-		public static void ToggleAllowedType(ushort segmentId, uint laneIndex, uint laneId, NetInfo.Lane laneInfo, ExtVehicleType vehicleType, bool add) {
+		public static void ToggleAllowedType(ushort segmentId, uint laneIndex, uint laneId, NetInfo.Lane laneInfo, TMVehicleType vehicleType, bool add) {
 			if (add)
 				AddAllowedType(segmentId, laneIndex, laneId, laneInfo, vehicleType);
 			else
 				RemoveAllowedType(segmentId, laneIndex, laneId, laneInfo, vehicleType);
 		}
 
-		public static bool IsAllowed(ExtVehicleType? allowedTypes, ExtVehicleType vehicleType) {
-			return allowedTypes == null || ((ExtVehicleType)allowedTypes & vehicleType) != ExtVehicleType.None;
+		public static bool IsAllowed(TMVehicleType? allowedTypes, TMVehicleType vehicleType) {
+			return allowedTypes == null || ((TMVehicleType)allowedTypes & vehicleType) != TMVehicleType.None;
 		}
 
-		public static bool IsBicycleAllowed(ExtVehicleType? allowedTypes) {
-			return IsAllowed(allowedTypes, ExtVehicleType.Bicycle);
+		public static bool IsBicycleAllowed(TMVehicleType? allowedTypes) {
+			return IsAllowed(allowedTypes, TMVehicleType.Bicycle);
 		}
 
-		public static bool IsBusAllowed(ExtVehicleType? allowedTypes) {
-			return IsAllowed(allowedTypes, ExtVehicleType.Bus);
+		public static bool IsBusAllowed(TMVehicleType? allowedTypes) {
+			return IsAllowed(allowedTypes, TMVehicleType.Bus);
 		}
 
-		public static bool IsCargoTrainAllowed(ExtVehicleType? allowedTypes) {
-			return IsAllowed(allowedTypes, ExtVehicleType.CargoTrain);
+		public static bool IsCargoTrainAllowed(TMVehicleType? allowedTypes) {
+			return IsAllowed(allowedTypes, TMVehicleType.CargoTrain);
 		}
 
-		public static bool IsCargoTruckAllowed(ExtVehicleType? allowedTypes) {
-			return IsAllowed(allowedTypes, ExtVehicleType.CargoTruck);
+		public static bool IsCargoTruckAllowed(TMVehicleType? allowedTypes) {
+			return IsAllowed(allowedTypes, TMVehicleType.CargoTruck);
 		}
 
-		public static bool IsEmergencyAllowed(ExtVehicleType? allowedTypes) {
-			return IsAllowed(allowedTypes, ExtVehicleType.Emergency);
+		public static bool IsEmergencyAllowed(TMVehicleType? allowedTypes) {
+			return IsAllowed(allowedTypes, TMVehicleType.Emergency);
 		}
 
-		public static bool IsPassengerCarAllowed(ExtVehicleType? allowedTypes) {
-			return IsAllowed(allowedTypes, ExtVehicleType.PassengerCar);
+		public static bool IsPassengerCarAllowed(TMVehicleType? allowedTypes) {
+			return IsAllowed(allowedTypes, TMVehicleType.PassengerCar);
 		}
 
-		public static bool IsPassengerTrainAllowed(ExtVehicleType? allowedTypes) {
-			return IsAllowed(allowedTypes, ExtVehicleType.PassengerTrain);
+		public static bool IsPassengerTrainAllowed(TMVehicleType? allowedTypes) {
+			return IsAllowed(allowedTypes, TMVehicleType.PassengerTrain);
 		}
 
-		public static bool IsServiceAllowed(ExtVehicleType? allowedTypes) {
-			return IsAllowed(allowedTypes, ExtVehicleType.Service);
+		public static bool IsServiceAllowed(TMVehicleType? allowedTypes) {
+			return IsAllowed(allowedTypes, TMVehicleType.Service);
 		}
 
-		public static bool IsTaxiAllowed(ExtVehicleType? allowedTypes) {
-			return IsAllowed(allowedTypes, ExtVehicleType.Taxi);
+		public static bool IsTaxiAllowed(TMVehicleType? allowedTypes) {
+			return IsAllowed(allowedTypes, TMVehicleType.Taxi);
 		}
 
-		public static bool IsTramAllowed(ExtVehicleType? allowedTypes) {
-			return IsAllowed(allowedTypes, ExtVehicleType.Tram);
+		public static bool IsTramAllowed(TMVehicleType? allowedTypes) {
+			return IsAllowed(allowedTypes, TMVehicleType.Tram);
 		}
 
-		public static bool IsRailVehicleAllowed(ExtVehicleType? allowedTypes) {
-			return IsAllowed(allowedTypes, ExtVehicleType.RailVehicle);
+		public static bool IsRailVehicleAllowed(TMVehicleType? allowedTypes) {
+			return IsAllowed(allowedTypes, TMVehicleType.RailVehicle);
 		}
 
-		public static bool IsRoadVehicleAllowed(ExtVehicleType? allowedTypes) {
-			return IsAllowed(allowedTypes, ExtVehicleType.RoadVehicle);
+		public static bool IsRoadVehicleAllowed(TMVehicleType? allowedTypes) {
+			return IsAllowed(allowedTypes, TMVehicleType.RoadVehicle);
 		}
 
 		public static bool IsRailLane(NetInfo.Lane laneInfo) {

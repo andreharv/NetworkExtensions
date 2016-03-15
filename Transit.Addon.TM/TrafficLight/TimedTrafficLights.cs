@@ -3,11 +3,12 @@
 using System;
 using System.Collections.Generic;
 using ColossalFramework;
-using TrafficManager.Custom.AI;
-using TrafficManager.Traffic;
+using Transit.Addon.TM.AI;
+using Transit.Addon.TM.Traffic;
 using System.Linq;
+using Transit.Addon.TM.Data;
 
-namespace TrafficManager.TrafficLight {
+namespace Transit.Addon.TM.TrafficLight {
 	public class TimedTrafficLights {
 		public ushort NodeId {
 			get; private set;
@@ -268,7 +269,7 @@ namespace TrafficManager.TrafficLight {
 			}
 		}
 
-		public long CheckNextChange(ushort segmentId, ExtVehicleType vehicleType, int lightType) {
+		public long CheckNextChange(ushort segmentId, TMVehicleType vehicleType, int lightType) {
 			var curStep = CurrentStep;
 			var nextStep = (CurrentStep + 1) % NumSteps();
 			var numFrames = Steps[CurrentStep].MaxTimeRemaining();
@@ -396,7 +397,7 @@ namespace TrafficManager.TrafficLight {
 							Steps[i].segmentLights.Add(segmentId, segmentLights);
 							Steps[i].calcMaxSegmentLength();
 							CustomSegmentLights liveSegLights = CustomTrafficLights.GetSegmentLights(NodeId, segmentId);
-							foreach (KeyValuePair<ExtVehicleType, CustomSegmentLight> e in segmentLights.CustomLights) {
+							foreach (KeyValuePair<TMVehicleType, CustomSegmentLight> e in segmentLights.CustomLights) {
 								CustomSegmentLight liveSegLight = liveSegLights.GetCustomLight(e.Key);
 								if (liveSegLight == null)
 									continue;
@@ -429,7 +430,7 @@ namespace TrafficManager.TrafficLight {
 			return testMode;
 		}
 
-		internal void ChangeLightMode(ushort segmentId, ExtVehicleType vehicleType, CustomSegmentLight.Mode mode) {
+		internal void ChangeLightMode(ushort segmentId, TMVehicleType vehicleType, CustomSegmentLight.Mode mode) {
 			foreach (TimedTrafficLightsStep step in Steps) {
 				step.ChangeLightMode(segmentId, vehicleType, mode);
 			}

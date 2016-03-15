@@ -5,15 +5,16 @@ using ColossalFramework;
 using ColossalFramework.Math;
 using ColossalFramework.UI;
 using JetBrains.Annotations;
-using TrafficManager.Custom.AI;
-using TrafficManager.Traffic;
-using TrafficManager.UI;
+using Transit.Addon.TM.AI;
+using Transit.Addon.TM.Traffic;
+using Transit.Addon.TM.UI;
 using UnityEngine;
-using TrafficManager.State;
-using TrafficManager.TrafficLight;
-using TrafficManager.UI.SubTools;
+using Transit.Addon.TM.State;
+using Transit.Addon.TM.TrafficLight;
+using Transit.Addon.TM.UI.SubTools;
+using Transit.Addon.TM.Data;
 
-namespace TrafficManager.UI {
+namespace Transit.Addon.TM.UI {
 	[UsedImplicitly]
 	public class TrafficManagerTool : DefaultTool {
 		private static ToolMode _toolMode;
@@ -40,7 +41,7 @@ namespace TrafficManager.UI {
 
 		public static ushort SelectedSegmentId { get; internal set; }
 
-		internal static ExtVehicleType[] InfoSignsToDisplay = new ExtVehicleType[] { ExtVehicleType.Bicycle, ExtVehicleType.Bus, ExtVehicleType.Taxi, ExtVehicleType.Tram, ExtVehicleType.CargoTruck, ExtVehicleType.Service };
+		internal static TMVehicleType[] InfoSignsToDisplay = new TMVehicleType[] { TMVehicleType.Bicycle, TMVehicleType.Bus, TMVehicleType.Taxi, TMVehicleType.Tram, TMVehicleType.CargoTruck, TMVehicleType.Service };
 
 		private static SubTool activeSubTool = null;
 

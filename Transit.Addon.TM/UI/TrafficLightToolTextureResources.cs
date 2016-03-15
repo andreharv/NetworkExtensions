@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using TrafficManager.Traffic;
-using TrafficManager.UI;
+using Transit.Addon.TM.Traffic;
+using Transit.Addon.TM.UI;
+using Transit.Addon.TM.Data;
 using UnityEngine;
 
-namespace TrafficManager.UI
+namespace Transit.Addon.TM.UI
 {
     public class TrafficLightToolTextureResources
     {
@@ -44,8 +45,8 @@ namespace TrafficManager.UI
 		public static readonly Texture2D ClockPauseTexture2D;
 		public static readonly Texture2D ClockTestTexture2D;
 		public static readonly Dictionary<ushort, Texture2D> SpeedLimitTextures;
-		public static readonly Dictionary<ExtVehicleType, Dictionary<bool, Texture2D>> VehicleRestrictionTextures;
-		public static readonly Dictionary<ExtVehicleType, Texture2D> VehicleInfoSignTextures;
+		public static readonly Dictionary<TMVehicleType, Dictionary<bool, Texture2D>> VehicleRestrictionTextures;
+		public static readonly Dictionary<TMVehicleType, Texture2D> VehicleInfoSignTextures;
 		public static readonly Texture2D LaneChangeForbiddenTexture2D;
 		public static readonly Texture2D LaneChangeAllowedTexture2D;
 
@@ -105,17 +106,17 @@ namespace TrafficManager.UI
 				SpeedLimitTextures.Add(speedLimit, LoadDllResource(speedLimit.ToString() + ".png", 200, 200));
 			}
 
-			VehicleRestrictionTextures = new Dictionary<ExtVehicleType, Dictionary<bool, Texture2D>>();
-			VehicleRestrictionTextures[ExtVehicleType.Bus] = new Dictionary<bool, Texture2D>();
-			VehicleRestrictionTextures[ExtVehicleType.CargoTrain] = new Dictionary<bool, Texture2D>();
-			VehicleRestrictionTextures[ExtVehicleType.CargoTruck] = new Dictionary<bool, Texture2D>();
-			VehicleRestrictionTextures[ExtVehicleType.Emergency] = new Dictionary<bool, Texture2D>();
-			VehicleRestrictionTextures[ExtVehicleType.PassengerCar] = new Dictionary<bool, Texture2D>();
-			VehicleRestrictionTextures[ExtVehicleType.PassengerTrain] = new Dictionary<bool, Texture2D>();
-			VehicleRestrictionTextures[ExtVehicleType.Service] = new Dictionary<bool, Texture2D>();
-			VehicleRestrictionTextures[ExtVehicleType.Taxi] = new Dictionary<bool, Texture2D>();
+			VehicleRestrictionTextures = new Dictionary<TMVehicleType, Dictionary<bool, Texture2D>>();
+			VehicleRestrictionTextures[TMVehicleType.Bus] = new Dictionary<bool, Texture2D>();
+			VehicleRestrictionTextures[TMVehicleType.CargoTrain] = new Dictionary<bool, Texture2D>();
+			VehicleRestrictionTextures[TMVehicleType.CargoTruck] = new Dictionary<bool, Texture2D>();
+			VehicleRestrictionTextures[TMVehicleType.Emergency] = new Dictionary<bool, Texture2D>();
+			VehicleRestrictionTextures[TMVehicleType.PassengerCar] = new Dictionary<bool, Texture2D>();
+			VehicleRestrictionTextures[TMVehicleType.PassengerTrain] = new Dictionary<bool, Texture2D>();
+			VehicleRestrictionTextures[TMVehicleType.Service] = new Dictionary<bool, Texture2D>();
+			VehicleRestrictionTextures[TMVehicleType.Taxi] = new Dictionary<bool, Texture2D>();
 
-			foreach (KeyValuePair<ExtVehicleType, Dictionary<bool, Texture2D>> e in VehicleRestrictionTextures) {
+			foreach (KeyValuePair<TMVehicleType, Dictionary<bool, Texture2D>> e in VehicleRestrictionTextures) {
 				foreach (bool b in new bool[]{false, true}) {
 					string suffix = b ? "allowed" : "forbidden";
 					e.Value[b] = LoadDllResource(e.Key.ToString().ToLower() + "_" + suffix + ".png", 200, 200);
@@ -125,23 +126,23 @@ namespace TrafficManager.UI
 			LaneChangeAllowedTexture2D = LoadDllResource("lanechange_allowed.png", 200, 200);
 			LaneChangeForbiddenTexture2D = LoadDllResource("lanechange_forbidden.png", 200, 200);
 
-			VehicleInfoSignTextures = new Dictionary<ExtVehicleType, Texture2D>();
-			VehicleInfoSignTextures[ExtVehicleType.Bicycle] = LoadDllResource("bicycle_infosign.png", 449, 411);
-			VehicleInfoSignTextures[ExtVehicleType.Bus] = LoadDllResource("bus_infosign.png", 449, 411);
-			VehicleInfoSignTextures[ExtVehicleType.CargoTrain] = LoadDllResource("cargotrain_infosign.png", 449, 411);
-			VehicleInfoSignTextures[ExtVehicleType.CargoTruck] = LoadDllResource("cargotruck_infosign.png", 449, 411);
-			VehicleInfoSignTextures[ExtVehicleType.Emergency] = LoadDllResource("emergency_infosign.png", 449, 411);
-			VehicleInfoSignTextures[ExtVehicleType.PassengerCar] = LoadDllResource("passengercar_infosign.png", 449, 411);
-			VehicleInfoSignTextures[ExtVehicleType.PassengerTrain] = LoadDllResource("passengertrain_infosign.png", 449, 411);
-			VehicleInfoSignTextures[ExtVehicleType.Service] = LoadDllResource("service_infosign.png", 449, 411);
-			VehicleInfoSignTextures[ExtVehicleType.Taxi] = LoadDllResource("taxi_infosign.png", 449, 411);
-			VehicleInfoSignTextures[ExtVehicleType.Tram] = LoadDllResource("tram_infosign.png", 449, 411);
+			VehicleInfoSignTextures = new Dictionary<TMVehicleType, Texture2D>();
+			VehicleInfoSignTextures[TMVehicleType.Bicycle] = LoadDllResource("bicycle_infosign.png", 449, 411);
+			VehicleInfoSignTextures[TMVehicleType.Bus] = LoadDllResource("bus_infosign.png", 449, 411);
+			VehicleInfoSignTextures[TMVehicleType.CargoTrain] = LoadDllResource("cargotrain_infosign.png", 449, 411);
+			VehicleInfoSignTextures[TMVehicleType.CargoTruck] = LoadDllResource("cargotruck_infosign.png", 449, 411);
+			VehicleInfoSignTextures[TMVehicleType.Emergency] = LoadDllResource("emergency_infosign.png", 449, 411);
+			VehicleInfoSignTextures[TMVehicleType.PassengerCar] = LoadDllResource("passengercar_infosign.png", 449, 411);
+			VehicleInfoSignTextures[TMVehicleType.PassengerTrain] = LoadDllResource("passengertrain_infosign.png", 449, 411);
+			VehicleInfoSignTextures[TMVehicleType.Service] = LoadDllResource("service_infosign.png", 449, 411);
+			VehicleInfoSignTextures[TMVehicleType.Taxi] = LoadDllResource("taxi_infosign.png", 449, 411);
+			VehicleInfoSignTextures[TMVehicleType.Tram] = LoadDllResource("tram_infosign.png", 449, 411);
 		}
 
         private static Texture2D LoadDllResource(string resourceName, int width, int height)
         {
             var myAssembly = Assembly.GetExecutingAssembly();
-            var myStream = myAssembly.GetManifestResourceStream("TrafficManager.Resources." + resourceName);
+            var myStream = myAssembly.GetManifestResourceStream("Transit.Addon.TM.Resources." + resourceName);
 
             var texture = new Texture2D(width, height, TextureFormat.ARGB32, false);
 

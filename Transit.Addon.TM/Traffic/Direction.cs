@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace TrafficManager.Traffic {
+namespace Transit.Addon.TM.Traffic {
 	public enum Direction {
 		Left,
 		Forward,

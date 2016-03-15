@@ -2,20 +2,21 @@ using System;
 using System.Reflection;
 using ColossalFramework;
 using ICities;
-using TrafficManager.Custom.AI;
-using TrafficManager.Traffic;
-using TrafficManager.TrafficLight;
-using TrafficManager.UI;
+using Transit.Addon.TM.AI;
+using Transit.Addon.TM.Traffic;
+using Transit.Addon.TM.TrafficLight;
+using Transit.Addon.TM.UI;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using System.Collections.Generic;
-using TrafficManager.State;
+using Transit.Addon.TM.State;
 using ColossalFramework.UI;
 using ColossalFramework.Math;
-using TrafficManager.Custom.PathFinding;
 using Transit.Framework.Redirection;
+using Transit.Addon.TM;
+using Transit.Addon.TM.Data;
 
-namespace TrafficManager {
+namespace Transit.Addon.TM {
     public partial class TrafficManagerModule {
 		public class Detour {
 			public MethodInfo OriginalMethod;

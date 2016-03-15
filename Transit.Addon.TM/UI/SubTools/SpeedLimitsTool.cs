@@ -4,13 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TrafficManager.Custom.AI;
-using TrafficManager.State;
-using TrafficManager.Traffic;
-using TrafficManager.TrafficLight;
+using Transit.Addon.TM.AI;
+using Transit.Addon.TM.State;
+using Transit.Addon.TM.Traffic;
+using Transit.Addon.TM.TrafficLight;
 using UnityEngine;
 
-namespace TrafficManager.UI.SubTools {
+namespace Transit.Addon.TM.UI.SubTools {
 	public class SpeedLimitsTool : SubTool {
 		private bool _cursorInSecondaryPanel;
 		private int curSpeedLimitIndex = 0;

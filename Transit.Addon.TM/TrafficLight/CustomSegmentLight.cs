@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using ColossalFramework;
-using TrafficManager.Traffic;
+using Transit.Addon.TM.Traffic;
 using UnityEngine;
-using TrafficManager.Custom.AI;
+using Transit.Addon.TM.AI;
 
-namespace TrafficManager.TrafficLight {
+namespace Transit.Addon.TM.TrafficLight {
 	public class CustomSegmentLight : ICloneable {
 		public enum Mode {
 			Simple = 1, // <^>

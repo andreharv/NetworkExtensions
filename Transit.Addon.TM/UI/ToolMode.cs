@@ -1,4 +1,4 @@
-namespace TrafficManager.UI
+namespace Transit.Addon.TM.UI
 {
     public enum ToolMode
     {
