@@ -61,7 +61,7 @@ namespace TrafficManager.UI {
 		}
 
 		internal float GetBaseZoom() {
-			return (float)Screen.currentResolution.width / 1920f;
+			return (float)Screen.currentResolution.height / 1200f;
 		}
 
 		protected override void Awake() {
@@ -330,13 +330,13 @@ namespace TrafficManager.UI {
 					}
 				}
 
-				if (oldHoveredNodeId != HoveredNodeId || oldHoveredSegmentId != HoveredSegmentId) {
+				/*if (oldHoveredNodeId != HoveredNodeId || oldHoveredSegmentId != HoveredSegmentId) {
 					Log._Debug($"*** Mouse ray @ node {HoveredNodeId}, segment {HoveredSegmentId}, toolMode={GetToolMode()}");
-                }
+                }*/
 
 				return (HoveredNodeId != 0 || HoveredSegmentId != 0);
 			} else {
-				Log._Debug($"Mouse ray invalid: {UIView.IsInsideUI()} {Cursor.visible} {activeSubTool == null} {activeSubTool.IsCursorInPanel()}");
+				//Log._Debug($"Mouse ray invalid: {UIView.IsInsideUI()} {Cursor.visible} {activeSubTool == null} {activeSubTool.IsCursorInPanel()}");
             }
 
 			return mouseRayValid;

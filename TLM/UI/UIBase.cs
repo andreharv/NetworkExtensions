@@ -67,9 +67,18 @@ namespace TrafficManager.UI {
 					Log.Error("Error on Show(): " + e.ToString());
 				}
 				var uiView = UIView.GetAView();
-				uiView.AddUIComponent(typeof(UITrafficManager));
+				var trafficManager = uiView.FindUIComponent("UITrafficManager");
+				if (trafficManager != null) {
+					Log._Debug("Showing TM UI");
+					trafficManager.Show();
+				} else {
+					Log._Debug("Showing TM UI: create");
+					uiView.AddUIComponent(typeof(UITrafficManager));
+				}
 				LoadingExtension.Instance.SetToolMode(TrafficManagerMode.Activated);
 				_uiShown = true;
+			} else {
+				Log._Debug("TM UI Show: LoadingExtension.Instance is null!");
 			}
 		}
 
@@ -77,9 +86,11 @@ namespace TrafficManager.UI {
 			if (LoadingExtension.Instance != null) {
 				var uiView = UIView.GetAView();
 				var trafficManager = uiView.FindUIComponent("UITrafficManager");
-
 				if (trafficManager != null) {
-					Destroy(trafficManager);
+					Log._Debug("Hiding TM UI");
+					trafficManager.Hide();
+				} else {
+					Log._Debug("Hiding TM UI: null!");
 				}
 
 				UITrafficManager.deactivateButtons();
@@ -87,6 +98,8 @@ namespace TrafficManager.UI {
 				LoadingExtension.Instance.SetToolMode(TrafficManagerMode.None);
 
 				_uiShown = false;
+			} else {
+				Log._Debug("TM UI Close: LoadingExtension.Instance is null!");
 			}
 		}
 	}
