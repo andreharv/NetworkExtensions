@@ -1,9 +1,9 @@
 ﻿using Transit.Framework.Mod;
 using Transit.Framework.Prerequisites;
 
-namespace Transit.Mod.TAM
+namespace Transit.Mod
 {
-    public sealed partial class Mod : TransitModBase
+    public sealed partial class TAM : TransitModBase
     {
         public override ulong WorkshopId
         {

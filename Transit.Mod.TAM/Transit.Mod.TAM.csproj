@@ -7,7 +7,7 @@
     <ProjectGuid>{80C47696-4D41-4BB6-9CAE-C477FE528ADF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Transit.Mod.TAM</RootNamespace>
+    <RootNamespace>Transit.Mod</RootNamespace>
     <AssemblyName>Transit.Mod.TAM</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -50,8 +50,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Mod.cs" />
-    <Compile Include="Mod.Settings.cs" />
+    <Compile Include="TAM.cs" />
+    <Compile Include="TAM.Settings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

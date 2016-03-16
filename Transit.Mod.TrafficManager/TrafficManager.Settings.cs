@@ -1,22 +1,13 @@
-﻿using ColossalFramework.UI;
+﻿using System;
 using ICities;
 using Transit.Framework.Modularity;
 using UnityEngine;
+using ColossalFramework.UI;
 
-namespace Transit.Mod.NetworkExtensions
+namespace Transit.Mod
 {
-    public partial class Mod
+    public partial class TrafficManager
     {
-        protected override string SettingsFile
-        {
-            get { return "NetworkExtensionsConfig.xml"; }
-        }
-
-        protected override string SettingsNode
-        {
-            get { return "NetworkExtensions"; }
-        }
-
         private UIScrollablePanel _optionsPanel;
 
         public void OnSettingsUI(UIHelperBase helper)
@@ -27,13 +18,6 @@ namespace Transit.Mod.NetworkExtensions
 
             _optionsPanel = ((UIHelper)helper).self as UIScrollablePanel;
             _optionsPanel.autoLayout = false;
-
-            //if (IsTAMInstalled)
-            //{
-            //    UILabel label = _optionsPanel.AddUIComponent<UILabel>();
-            //    label.text = "Transit Addons Mod (TAM) has been detected - Network Extensions have been disabled";
-            //    return;
-            //}
 
             UITabstrip strip = _optionsPanel.AddUIComponent<UITabstrip>();
             strip.relativePosition = new Vector3(0, 0);
@@ -57,9 +41,36 @@ namespace Transit.Mod.NetworkExtensions
                 stripRoot.autoLayoutPadding.top = 5;
                 stripRoot.autoLayoutPadding.left = 10;
                 UIHelper stripHelper = new UIHelper(stripRoot);
-
+                
                 module.OnSettingsUI(stripHelper);
             }
+
+        }
+
+        protected override string SettingsFile
+        {
+            get
+            {
+                throw new NotImplementedException(); // Manually handled by module
+            }
+        }
+
+        protected override string SettingsNode
+        {
+            get
+            {
+                throw new NotImplementedException(); // Manually handled by module
+            }
+        }
+
+        protected override void LoadSettings()
+        {
+            //base.LoadSettings(); Manually handled by module
+        }
+
+        protected override void SaveSettings()
+        {
+            //base.SaveSettings(); Manually handled by module
         }
     }
 }

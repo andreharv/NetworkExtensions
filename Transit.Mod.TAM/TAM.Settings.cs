@@ -1,13 +1,22 @@
-﻿using System;
+﻿using ColossalFramework.UI;
 using ICities;
 using Transit.Framework.Modularity;
 using UnityEngine;
-using ColossalFramework.UI;
 
-namespace Transit.Mod.TrafficManager
+namespace Transit.Mod
 {
-    public partial class Mod
+    public partial class TAM
     {
+        protected override string SettingsFile
+        {
+            get { return "TransitAddonModSettings.xml"; }
+        }
+
+        protected override string SettingsNode
+        {
+            get { return "TransitAddonMod"; }
+        }
+
         private UIScrollablePanel _optionsPanel;
 
         public void OnSettingsUI(UIHelperBase helper)
@@ -45,32 +54,6 @@ namespace Transit.Mod.TrafficManager
                 module.OnSettingsUI(stripHelper);
             }
 
-        }
-
-        protected override string SettingsFile
-        {
-            get
-            {
-                throw new NotImplementedException(); // Manually handled by module
-            }
-        }
-
-        protected override string SettingsNode
-        {
-            get
-            {
-                throw new NotImplementedException(); // Manually handled by module
-            }
-        }
-
-        protected override void LoadSettings()
-        {
-            //base.LoadSettings(); Manually handled by module
-        }
-
-        protected override void SaveSettings()
-        {
-            //base.SaveSettings(); Manually handled by module
         }
     }
 }

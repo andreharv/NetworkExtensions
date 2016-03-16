@@ -7,7 +7,7 @@
     <ProjectGuid>{E5A4726D-24B7-4885-A3F4-F711AC9236AD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Transit.Mod.TrafficManager</RootNamespace>
+    <RootNamespace>Transit.Mod</RootNamespace>
     <AssemblyName>Transit.Mod.TrafficManager</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -49,8 +49,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Mod.cs" />
-    <Compile Include="Mod.Settings.cs" />
+    <Compile Include="TrafficManager.cs" />
+    <Compile Include="TrafficManager.Settings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
