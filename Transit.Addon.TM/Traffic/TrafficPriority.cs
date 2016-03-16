@@ -882,7 +882,8 @@ namespace Transit.Addon.TM.Traffic {
 
 		internal static void OnLevelLoading() {
 			try {
-				TrafficPriority.fixJunctions(); // TODO maybe remove this
+				//TrafficPriority.fixJunctions(); // TODO maybe remove this
+				lastTrafficLightUpdateFrame = 0;
 			} catch (Exception e) {
 				Log.Error($"OnLevelLoading: {e.ToString()}");
             }

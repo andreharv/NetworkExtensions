@@ -1894,7 +1894,7 @@ namespace Transit.Addon.TM.PathFinding
 			}
 
 			// check for vehicle restrictions
-			if (!this.GetFeatures().RoadRestriction.CanUseLane(item.m_position.m_segment, item.m_position.m_lane, item.m_laneID, prevLaneInfo, _unitType))
+			if (!this.GetFeatures().RoadRestriction.CanUseLane(item.m_position.m_segment, prevSegmentInfo, item.m_position.m_lane, item.m_laneID, prevLaneInfo, _unitType))
 			{
 				//if (false) {
 #if DEBUGPF

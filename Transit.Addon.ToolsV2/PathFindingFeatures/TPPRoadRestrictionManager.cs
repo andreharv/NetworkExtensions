@@ -6,7 +6,7 @@ namespace Transit.Addon.ToolsV2.PathFindingFeatures
 {
     public class TPPRoadRestrictionManager : IRoadRestrictionManager
     {
-        public bool CanUseLane(ushort segmentId, byte laneIndex, uint laneId, NetInfo.Lane laneInfo, ExtendedUnitType unitType)
+        public bool CanUseLane(ushort segmentId, NetInfo segmentInfo, byte laneIndex, uint laneId, NetInfo.Lane laneInfo, ExtendedUnitType unitType)
         {
             if ((unitType & TPPSupported.UNITS) == 0)
             {

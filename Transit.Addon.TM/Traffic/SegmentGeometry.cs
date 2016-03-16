@@ -255,7 +255,7 @@ namespace Transit.Addon.TM.Traffic {
 		/// <param name="segmentId">id of the managed segment</param>
 		public SegmentGeometry(ushort segmentId) {
 			this.segmentId = segmentId;
-			Recalculate(true, true);
+			Recalculate(false, true);
 		}
 
 		/// <summary>
@@ -1244,6 +1244,9 @@ namespace Transit.Addon.TM.Traffic {
 
 				// reset highway lane arrows
 				Flags.removeHighwayLaneArrowFlagsAtSegment(segmentId); // TODO refactor
+
+				// clear default vehicle type cache
+				VehicleRestrictionsManager.ClearCache(segmentId);
 			} finally {
 				Monitor.Exit(Lock);
 			}

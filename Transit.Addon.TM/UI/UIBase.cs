@@ -67,9 +67,18 @@ namespace Transit.Addon.TM.UI {
 					Log.Error("Error on Show(): " + e.ToString());
 				}
 				var uiView = UIView.GetAView();
-				uiView.AddUIComponent(typeof(UITrafficManager));
+				var trafficManager = uiView.FindUIComponent("UITrafficManager");
+				if (trafficManager != null) {
+					Log._Debug("Showing TM UI");
+					trafficManager.Show();
+				} else {
+					Log._Debug("Showing TM UI: create");
+					uiView.AddUIComponent(typeof(UITrafficManager));
+				}
 				TrafficManagerModule.Instance.SetToolMode(TrafficManagerMode.Activated);
 				_uiShown = true;
+			} else {
+				Log._Debug("TM UI Show: LoadingExtension.Instance is null!");
 			}
 		}
 
@@ -79,7 +88,10 @@ namespace Transit.Addon.TM.UI {
 				var trafficManager = uiView.FindUIComponent("UITrafficManager");
 
 				if (trafficManager != null) {
-					Destroy(trafficManager);
+					Log._Debug("Hiding TM UI");
+					trafficManager.Hide();
+				} else {
+					Log._Debug("Hiding TM UI: null!");
 				}
 
 				UITrafficManager.deactivateButtons();
@@ -87,6 +99,8 @@ namespace Transit.Addon.TM.UI {
 				TrafficManagerModule.Instance.SetToolMode(TrafficManagerMode.None);
 
 				_uiShown = false;
+			} else {
+				Log._Debug("TM UI Close: LoadingExtension.Instance is null!");
 			}
 		}
 	}

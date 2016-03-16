@@ -87,6 +87,7 @@ namespace Transit.Addon.TM.DataSerialization
             var dataV2 = new TMConfigurationV2.TimedTrafficLightsStep();
             dataV2.minTime = dataV1.minTime;
             dataV2.maxTime = dataV1.maxTime;
+			dataV2.waitFlowBalance = dataV1.waitFlowBalance;
             dataV2.segmentLights = dataV1
                 .segmentLights
                 .AsEnumerable()

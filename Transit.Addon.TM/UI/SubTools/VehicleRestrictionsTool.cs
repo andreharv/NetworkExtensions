@@ -110,12 +110,12 @@ namespace Transit.Addon.TM.UI.SubTools {
 			if (GUILayout.Button(Translation.GetString("Invert"))) {
 				// invert pattern
 
-				NetInfo segmentInfo = Singleton<NetManager>.instance.m_segments.m_buffer[SelectedSegmentId].Info;
-				List<object[]> sortedLanes = TrafficManagerTool.GetSortedVehicleLanes(SelectedSegmentId, segmentInfo, null); // TODO does not need to be sorted, but every lane should be a vehicle lane
+				NetInfo selectedSegmentInfo = Singleton<NetManager>.instance.m_segments.m_buffer[SelectedSegmentId].Info;
+				List<object[]> sortedLanes = TrafficManagerTool.GetSortedVehicleLanes(SelectedSegmentId, selectedSegmentInfo, null); // TODO does not need to be sorted, but every lane should be a vehicle lane
 				foreach (object[] laneData in sortedLanes) {
 					uint laneId = (uint)laneData[0];
 					uint laneIndex = (uint)laneData[2];
-					NetInfo.Lane laneInfo = segmentInfo.m_lanes[laneIndex];
+					NetInfo.Lane laneInfo = selectedSegmentInfo.m_lanes[laneIndex];
 
 					TMVehicleType baseMask = TMVehicleType.None;
 					if (VehicleRestrictionsManager.IsRoadLane(laneInfo)) {
@@ -127,7 +127,7 @@ namespace Transit.Addon.TM.UI.SubTools {
 					if (baseMask == TMVehicleType.None)
 						continue;
 
-					TMVehicleType allowedTypes = VehicleRestrictionsManager.GetAllowedVehicleTypes(SelectedSegmentId, laneIndex, laneInfo);
+					TMVehicleType allowedTypes = VehicleRestrictionsManager.GetAllowedVehicleTypes(SelectedSegmentId, selectedSegmentInfo, laneIndex, laneInfo);
 					allowedTypes = ~allowedTypes & baseMask;
 					VehicleRestrictionsManager.SetAllowedVehicleTypes(SelectedSegmentId, laneIndex, laneId, allowedTypes);
 				}
@@ -234,7 +234,7 @@ namespace Transit.Addon.TM.UI.SubTools {
 								NetInfo.Lane laneInfo = segmentInfo.m_lanes[laneIndex];
 
 								// apply restrictions of selected segment & lane
-								VehicleRestrictionsManager.SetAllowedVehicleTypes(segmentId, laneIndex, laneId, VehicleRestrictionsManager.GetAllowedVehicleTypes(SelectedSegmentId, selectedLaneIndex, selectedLaneInfo));
+								VehicleRestrictionsManager.SetAllowedVehicleTypes(segmentId, laneIndex, laneId, VehicleRestrictionsManager.GetAllowedVehicleTypes(SelectedSegmentId, selectedSegmentInfo, selectedLaneIndex, selectedLaneInfo));
 							}
 
 							// add nodes to explore
@@ -321,7 +321,7 @@ namespace Transit.Addon.TM.UI.SubTools {
 					continue;
 				}
 
-				TMVehicleType allowedTypes = VehicleRestrictionsManager.GetAllowedVehicleTypes(segmentId, laneIndex, laneInfo);
+				TMVehicleType allowedTypes = VehicleRestrictionsManager.GetAllowedVehicleTypes(segmentId, segmentInfo, laneIndex, laneInfo);
 
 				uint y = 0;
 #if DEBUGx
@@ -355,7 +355,7 @@ namespace Transit.Addon.TM.UI.SubTools {
 					if (hoveredHandle && MainTool.CheckClicked()) {
 						// toggle vehicle restrictions
 						//Log._Debug($"Setting vehicle restrictions of segment {segmentId}, lane idx {laneIndex}, {vehicleType.ToString()} to {!allowed}");
-						VehicleRestrictionsManager.ToggleAllowedType(segmentId, laneIndex, laneId, laneInfo, vehicleType, !allowed);
+						VehicleRestrictionsManager.ToggleAllowedType(segmentId, segmentInfo, laneIndex, laneId, laneInfo, vehicleType, !allowed);
 					}
 
 					++y;

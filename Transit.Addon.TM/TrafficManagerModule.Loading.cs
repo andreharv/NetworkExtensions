@@ -51,12 +51,13 @@ namespace Transit.Addon.TM {
 					RedirectionHelper.RevertRedirect(d.OriginalMethod, d.Redirect);
 				}
                 Instance.DetourInited = false;
+				Detours.Clear();
 			}
 		}
 
 		public void initDetours() {
-			Log.Info("Init detours");
 			if (!TrafficManagerModule.Instance.DetourInited) {
+				Log.Info("Init detours");
 				bool detourFailed = false;
 
 				Log.Info("Redirecting Vehicle AI Calculate Segment Calls (1)");
@@ -777,8 +778,11 @@ namespace Transit.Addon.TM {
 			base.OnLevelUnloading();
 			if (Instance == null)
 				Instance = this;
-			//revertDetours();
+			revertDetours();
 			gameLoaded = false;
+
+			Object.Destroy(UI);
+			UI = null;
 
 			try {
 				TrafficPriority.OnLevelUnloading();
@@ -786,6 +790,7 @@ namespace Transit.Addon.TM {
 				CustomRoadAI.OnLevelUnloading();
 				CustomTrafficLights.OnLevelUnloading();
 				TrafficLightSimulation.OnLevelUnloading();
+				VehicleRestrictionsManager.OnLevelUnloading();
 				Flags.OnLevelUnloading();
 				Translation.OnLevelUnloading();
 
@@ -815,102 +820,13 @@ namespace Transit.Addon.TM {
             }
 
 			TrafficPriority.OnLevelLoading();
-#if !TAM
-			determinePathManagerCompatible();
-			
-			//SpeedLimitManager.GetDefaultSpeedLimits();
 
-			if (IsPathManagerCompatible && ! IsPathManagerReplaced) {
-				try {
-					Log.Info("Pathfinder Compatible. Setting up CustomPathManager and SimManager.");
-					var pathManagerInstance = typeof(Singleton<PathManager>).GetField("sInstance", BindingFlags.Static | BindingFlags.NonPublic);
-
-					var stockPathManager = PathManager.instance;
-					Log._Debug($"Got stock PathManager instance {stockPathManager.GetName()}");
-
-					CustomPathManager = stockPathManager.gameObject.AddComponent<CustomPathManager>();
-					Log._Debug("Added CustomPathManager to gameObject List");
-
-					if (CustomPathManager == null) {
-						Log.Error("CustomPathManager null. Error creating it.");
-						return;
-					}
-
-					CustomPathManager.UpdateWithPathManagerValues(stockPathManager);
-					Log._Debug("UpdateWithPathManagerValues success");
-
-					pathManagerInstance?.SetValue(null, CustomPathManager);
-
-					Log._Debug("Getting Current SimulationManager");
-					var simManager =
-						typeof(SimulationManager).GetField("m_managers", BindingFlags.Static | BindingFlags.NonPublic)?
-							.GetValue(null) as FastList<ISimulationManager>;
-
-					Log._Debug("Removing Stock PathManager");
-					simManager?.Remove(stockPathManager);
-
-					Log._Debug("Adding Custom PathManager");
-					simManager?.Add(CustomPathManager);
-
-					Object.Destroy(stockPathManager, 10f);
-
-					IsPathManagerReplaced = true;
-				} catch (Exception) {
-					UIView.library.ShowModal<ExceptionPanel>("ExceptionPanel").SetMessage("Incompatibility Issue", "Traffic Manager: President Edition detected an incompatibility with another mod! You can continue playing but it's NOT recommended. Traffic Manager will not work as expected.", true);
-					IsPathManagerCompatible = false;
-				}
-			}
-#endif
-
-            Log.Info("Adding Controls to UI.");
+			Log.Info("Adding Controls to UI.");
 			UI = ToolsModifierControl.toolController.gameObject.AddComponent<UIBase>();
 
 			initDetours();
 			Log.Info("OnLevelLoaded complete.");
 		}
-
-
-#if !TAM
-		private void determinePathManagerCompatible() {
-			IsPathManagerCompatible = true;
-			if (!IsPathManagerReplaced) {
-
-				var loadingWrapperLoadingExtensionsField = typeof(LoadingWrapper).GetField("m_LoadingExtensions", BindingFlags.NonPublic | BindingFlags.Instance);
-				List<ILoadingExtension> loadingExtensions = null;
-				if (loadingWrapperLoadingExtensionsField != null) {
-					loadingExtensions = (List<ILoadingExtension>) loadingWrapperLoadingExtensionsField.GetValue(Singleton<LoadingManager>.instance.m_LoadingWrapper);
-				} else {
-					Log._Debug("Could not get loading extensions field");
-				}
-
-				if (loadingExtensions != null) {
-					Log._Debug("Loaded extensions:");
-					foreach (ILoadingExtension extension in loadingExtensions) {
-						if (extension.GetType().Namespace == null)
-							continue;
-
-						Log._Debug($"type: {extension.GetType().ToString()} type namespace: {extension.GetType().Namespace.ToString()} toString: {extension.ToString()}");
-						var namespaceStr = extension.GetType().Namespace.ToString();
-						if ("Improved_AI".Equals(namespaceStr) || "CSL_Traffic".Equals(namespaceStr)) {
-							IsPathManagerCompatible = false; // Improved AI found
-							Log.Info($"type: {extension.GetType().ToString()} type namespace: {extension.GetType().Namespace.ToString()} toString: {extension.ToString()}. Custom PathManager detected.");
-						}
-					}
-				} else {
-					Log._Debug("Could not get loading extensions");
-				}
-
-				if (Singleton<PathManager>.instance.GetType() != typeof(PathManager)) {
-					Log.Info("PathManager manipulation detected. Disabling custom PathManager " + Singleton<PathManager>.instance.GetType().ToString());
-					IsPathManagerCompatible = false;
-				}
-			}
-
-			if (!IsPathManagerCompatible) {
-				Options.setAdvancedAI(false);
-			}
-		}
-#endif
 
         public void SetToolMode(TrafficManagerMode mode) {
             if (mode == ToolMode) return;

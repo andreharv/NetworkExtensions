@@ -10,6 +10,15 @@ using Transit.Framework;
 namespace Transit.Addon.TM.Traffic {
 	class VehicleRestrictionsManager {
 		/// <summary>
+		/// For each segment id and lane index: Holds the default set of vehicle types allowed for the lane
+		/// </summary>
+		private static TMVehicleType?[][] defaultVehicleTypeCache = null;
+
+		internal static void OnLevelUnloading() {
+			defaultVehicleTypeCache = null;
+		}
+
+		/// <summary>
 		/// Determines the allowed vehicle types that may approach the given node from the given segment.
 		/// </summary>
 		/// <param name="segmentId"></param>
@@ -50,7 +59,7 @@ namespace Transit.Addon.TM.Traffic {
 				ushort toNodeId = (laneInfo.m_direction == dir3) ? netManager.m_segments.m_buffer[segmentId].m_endNode : netManager.m_segments.m_buffer[segmentId].m_startNode;
 
 				if (toNodeId == nodeId) {
-					TMVehicleType vehicleTypes = GetAllowedVehicleTypes(segmentId, laneIndex, laneInfo);
+					TMVehicleType vehicleTypes = GetAllowedVehicleTypes(segmentId, segmentInfo, laneIndex, laneInfo);
 					if (vehicleTypes != TMVehicleType.None)
 						ret.Add(vehicleTypes);
 				}
@@ -59,44 +68,58 @@ namespace Transit.Addon.TM.Traffic {
 			}
 
 			return ret;
-        }
+		}
 
-        /// <summary>
-        /// Determines the allowed vehicle types for the given segment and lane.
-        /// </summary>
-        /// <param name="segmentId"></param>
-        /// <param name="laneIndex"></param>
-        /// <param name="laneInfo"></param>
-        /// <returns></returns>
-        internal static TMVehicleType GetAllowedVehicleTypes(ushort segmentId, uint laneIndex, NetInfo.Lane laneInfo) {
+		/// <summary>
+		/// Determines the allowed vehicle types for the given segment and lane.
+		/// </summary>
+		/// <param name="segmentId"></param>
+		/// <param name="segmentInfo"></param>
+		/// <param name="laneIndex"></param>
+		/// <param name="laneInfo"></param>
+		/// <returns></returns>
+		internal static TMVehicleType GetAllowedVehicleTypes(ushort segmentId, NetInfo segmentInfo, uint laneIndex, NetInfo.Lane laneInfo) {
 			if (Flags.IsInitDone()) {
 				TMVehicleType?[] fastArray = Flags.laneAllowedVehicleTypesArray[segmentId];
-				if (fastArray != null)
-                {
-                    if(laneIndex < fastArray.Length && fastArray[laneIndex] != null)
-                    {
-                        return (TMVehicleType)fastArray[laneIndex];
-                    }
-                }
+				if (fastArray != null) {
+					if (laneIndex < fastArray.Length && fastArray[laneIndex] != null) {
+						return (TMVehicleType)fastArray[laneIndex];
+					}
+				}
 			}
 
-			TMVehicleType ret = TMVehicleType.None;
-			if ((laneInfo.m_vehicleType & VehicleInfo.VehicleType.Bicycle) != VehicleInfo.VehicleType.None)
-				ret |= TMVehicleType.Bicycle;
-			if ((laneInfo.m_vehicleType & VehicleInfo.VehicleType.Tram) != VehicleInfo.VehicleType.None)
-				ret |= TMVehicleType.Tram;
-			if ((laneInfo.m_laneType & NetInfo.LaneType.TransportVehicle) != NetInfo.LaneType.None)
-				ret |= TMVehicleType.RoadPublicTransport | TMVehicleType.Emergency;
-			else if ((laneInfo.m_vehicleType & VehicleInfo.VehicleType.Car) != VehicleInfo.VehicleType.None)
-				ret |= TMVehicleType.RoadVehicle;
-			if ((laneInfo.m_vehicleType & (VehicleInfo.VehicleType.Train | VehicleInfo.VehicleType.Metro)) != VehicleInfo.VehicleType.None)
-				ret |= TMVehicleType.RailVehicle;
-			if ((laneInfo.m_vehicleType & VehicleInfo.VehicleType.Ship) != VehicleInfo.VehicleType.None)
-				ret |= TMVehicleType.Ship;
-			if ((laneInfo.m_vehicleType & VehicleInfo.VehicleType.Plane) != VehicleInfo.VehicleType.None)
-				ret |= TMVehicleType.Plane;
+			// manage cached default vehicle types
+			if (defaultVehicleTypeCache == null) {
+				defaultVehicleTypeCache = new TMVehicleType?[NetManager.MAX_SEGMENT_COUNT][];
+			}
 
-			return ret;
+			TMVehicleType?[] cachedDefaultTypes = defaultVehicleTypeCache[segmentId];
+			if (cachedDefaultTypes == null || cachedDefaultTypes.Length != segmentInfo.m_lanes.Length) {
+				defaultVehicleTypeCache[segmentId] = cachedDefaultTypes = new TMVehicleType?[segmentInfo.m_lanes.Length];
+			}
+
+			TMVehicleType? defaultVehicleType = cachedDefaultTypes[laneIndex];
+			if (defaultVehicleType == null) {
+				TMVehicleType ret = TMVehicleType.None;
+				if ((laneInfo.m_vehicleType & VehicleInfo.VehicleType.Bicycle) != VehicleInfo.VehicleType.None)
+					ret |= TMVehicleType.Bicycle;
+				if ((laneInfo.m_vehicleType & VehicleInfo.VehicleType.Tram) != VehicleInfo.VehicleType.None)
+					ret |= TMVehicleType.Tram;
+				if ((laneInfo.m_laneType & NetInfo.LaneType.TransportVehicle) != NetInfo.LaneType.None)
+					ret |= TMVehicleType.RoadPublicTransport | TMVehicleType.Emergency;
+				else if ((laneInfo.m_vehicleType & VehicleInfo.VehicleType.Car) != VehicleInfo.VehicleType.None)
+					ret |= TMVehicleType.RoadVehicle;
+				if ((laneInfo.m_vehicleType & (VehicleInfo.VehicleType.Train | VehicleInfo.VehicleType.Metro)) != VehicleInfo.VehicleType.None)
+					ret |= TMVehicleType.RailVehicle;
+				if ((laneInfo.m_vehicleType & VehicleInfo.VehicleType.Ship) != VehicleInfo.VehicleType.None)
+					ret |= TMVehicleType.Ship;
+				if ((laneInfo.m_vehicleType & VehicleInfo.VehicleType.Plane) != VehicleInfo.VehicleType.None)
+					ret |= TMVehicleType.Plane;
+				cachedDefaultTypes[laneIndex] = ret;
+				return ret;
+			} else {
+				return (TMVehicleType)defaultVehicleType;
+			}
 		}
 
 		/// <summary>
@@ -128,8 +151,8 @@ namespace Transit.Addon.TM.Traffic {
 		/// <param name="laneInfo"></param>
 		/// <param name="road"></param>
 		/// <param name="vehicleType"></param>
-		public static void AddAllowedType(ushort segmentId, uint laneIndex, uint laneId, NetInfo.Lane laneInfo, TMVehicleType vehicleType) {
-			TMVehicleType allowedTypes = GetAllowedVehicleTypes(segmentId, laneIndex, laneInfo);
+		public static void AddAllowedType(ushort segmentId, NetInfo segmentInfo, uint laneIndex, uint laneId, NetInfo.Lane laneInfo, TMVehicleType vehicleType) {
+			TMVehicleType allowedTypes = GetAllowedVehicleTypes(segmentId, segmentInfo, laneIndex, laneInfo);
 			allowedTypes |= vehicleType;
 			Flags.setLaneAllowedVehicleTypes(segmentId, laneIndex, laneId, allowedTypes);
 		}
@@ -143,17 +166,17 @@ namespace Transit.Addon.TM.Traffic {
 		/// <param name="laneInfo"></param>
 		/// <param name="road"></param>
 		/// <param name="vehicleType"></param>
-		public static void RemoveAllowedType(ushort segmentId, uint laneIndex, uint laneId, NetInfo.Lane laneInfo, TMVehicleType vehicleType) {
-			TMVehicleType allowedTypes = GetAllowedVehicleTypes(segmentId, laneIndex, laneInfo);
+		public static void RemoveAllowedType(ushort segmentId, NetInfo segmentInfo, uint laneIndex, uint laneId, NetInfo.Lane laneInfo, TMVehicleType vehicleType) {
+			TMVehicleType allowedTypes = GetAllowedVehicleTypes(segmentId, segmentInfo, laneIndex, laneInfo);
 			allowedTypes &= ~vehicleType;
 			Flags.setLaneAllowedVehicleTypes(segmentId, laneIndex, laneId, allowedTypes);
 		}
 
-		public static void ToggleAllowedType(ushort segmentId, uint laneIndex, uint laneId, NetInfo.Lane laneInfo, TMVehicleType vehicleType, bool add) {
+		public static void ToggleAllowedType(ushort segmentId, NetInfo segmentInfo, uint laneIndex, uint laneId, NetInfo.Lane laneInfo, TMVehicleType vehicleType, bool add) {
 			if (add)
-				AddAllowedType(segmentId, laneIndex, laneId, laneInfo, vehicleType);
+				AddAllowedType(segmentId, segmentInfo, laneIndex, laneId, laneInfo, vehicleType);
 			else
-				RemoveAllowedType(segmentId, laneIndex, laneId, laneInfo, vehicleType);
+				RemoveAllowedType(segmentId, segmentInfo, laneIndex, laneId, laneInfo, vehicleType);
 		}
 
 		public static bool IsAllowed(TMVehicleType? allowedTypes, TMVehicleType vehicleType) {
@@ -214,6 +237,12 @@ namespace Transit.Addon.TM.Traffic {
 
 		public static bool IsRoadLane(NetInfo.Lane laneInfo) {
 			return (laneInfo.m_vehicleType & VehicleInfo.VehicleType.Car) != VehicleInfo.VehicleType.None;
+		}
+
+		internal static void ClearCache(ushort segmentId) {
+			if (defaultVehicleTypeCache != null) {
+				defaultVehicleTypeCache[segmentId] = null;
+			}
 		}
 	}
 }

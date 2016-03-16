@@ -17,11 +17,6 @@ namespace Transit.Addon.TM {
             if (ToolsModifierControl.toolController.CurrentTool != TrafficManagerModule.Instance.TrafficManagerTool && TrafficManagerModule.Instance.UI.IsVisible()) {
                 TrafficManagerModule.Instance.UI.Close();
             }
-			
-            if (!TrafficManagerModule.Instance.NodeSimulationLoaded) {
-                TrafficManagerModule.Instance.NodeSimulationLoaded = true;
-                ToolsModifierControl.toolController.gameObject.AddComponent<CustomRoadAI>();
-            }
 
             if (Input.GetKeyDown(KeyCode.Escape)) {
                 TrafficManagerModule.Instance.UI.Close();

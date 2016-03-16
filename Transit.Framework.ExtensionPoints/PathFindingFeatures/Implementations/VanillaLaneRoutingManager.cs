@@ -9,13 +9,13 @@ namespace Transit.Framework.ExtensionPoints.PathFindingFeatures.Implementations
         public bool CanLanesConnect
            (ushort nodeId,
 
-            ushort destinationSegmentId,
+			ushort originSegmentId,
+			byte originLaneIndex,
+			uint originLaneId,
+
+			ushort destinationSegmentId,
             byte destinationLaneIndex,
             uint destinationLaneId, 
-
-            ushort originSegmentId, 
-            byte originLaneIndex, 
-            uint originLaneId, 
 
             ExtendedUnitType unitType)
         {

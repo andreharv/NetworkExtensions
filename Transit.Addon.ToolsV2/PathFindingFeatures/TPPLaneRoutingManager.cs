@@ -8,14 +8,14 @@ namespace Transit.Addon.ToolsV2.PathFindingFeatures
 {
     public class TPPLaneRoutingManager : ILaneRoutingManager
     {
-		public bool CanLanesConnect(ushort nodeId, ushort segment1Id, byte lane1Index, uint lane1Id, ushort segment2Id, byte lane2Index, uint lane2Id, ExtendedUnitType unitType) {
+		public bool CanLanesConnect(ushort nodeId, ushort originSegmentId, byte originLaneIndex, uint originLaneId, ushort destinationSegmentId, byte destinationLaneIndex, uint destinationLaneId, ExtendedUnitType unitType) {
 			if ((unitType & TPPSupported.UNITS) == 0) {
 				// unit type not supported
 				return true;
 			}
 
 
-			var originLaneInfo = NetManager.instance.GetLaneInfo(segment1Id, lane1Index); // TODO query over segment id and lane index
+			var originLaneInfo = NetManager.instance.GetLaneInfo(originSegmentId, originLaneIndex); // TODO query over segment id and lane index
 			if (originLaneInfo == null) {
 				// no lane info found
 				return true;
@@ -26,7 +26,7 @@ namespace Transit.Addon.ToolsV2.PathFindingFeatures
 				return true;
 			}
 
-			var destinationLane = NetManager.instance.GetLaneInfo(segment2Id, lane2Index); // TODO query over segment id and lane index
+			var destinationLane = NetManager.instance.GetLaneInfo(destinationSegmentId, destinationLaneIndex); // TODO query over segment id and lane index
 			if (destinationLane == null) {
 				// no lane info found
 				return true;
@@ -37,11 +37,11 @@ namespace Transit.Addon.ToolsV2.PathFindingFeatures
 				return true;
 			}
 
-			TPPLaneDataV2 lane = TPPLaneDataManager.GetLane(lane1Id, false);
+			TPPLaneDataV2 lane = TPPLaneDataManager.GetLane(originLaneId, false);
 			if (lane == null)
 				return true;
 
-			return lane.ConnectsTo(lane2Id);
+			return lane.ConnectsTo(destinationLaneId);
 		}
 	}
 }
