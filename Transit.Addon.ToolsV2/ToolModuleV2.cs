@@ -14,7 +14,7 @@ using Transit.Framework.Redirection;
 
 namespace Transit.Addon.ToolsV2
 {
-    [Module("Transit.Addon.Mod")]
+    [Module("Transit.Mod.TAM")]
     public partial class ToolModuleV2 : ModuleBase
     {
         private static bool sm_redirectionInstalled = false;

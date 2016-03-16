@@ -8,8 +8,8 @@
     <ProjectGuid>{7DFBABEB-DED8-4E16-8AA5-B38C3EF64305}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Transit.Addon.Deploy</RootNamespace>
-    <AssemblyName>Transit.Addon.Deploy</AssemblyName>
+    <RootNamespace>Transit.Mod.TAM.Deploy</RootNamespace>
+    <AssemblyName>Transit.Mod.TAM.Deploy</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -47,10 +47,6 @@
       <Project>{7d1c44dc-79d4-414f-8ded-42e762afa862}</Project>
       <Name>Transit.Addon.ToolsV2</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Transit.Addon\Transit.Addon.csproj">
-      <Project>{80C47696-4D41-4BB6-9CAE-C477FE528ADF}</Project>
-      <Name>Transit.Addon</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Transit.Framework.ExtensionPoints\Transit.Framework.ExtensionPoints.csproj">
       <Project>{2e44eca3-d750-4115-b16b-fca94c49bba0}</Project>
       <Name>Transit.Framework.ExtensionPoints</Name>
@@ -67,11 +63,15 @@
       <Project>{8891467e-c88e-46b0-96f9-4413df6dc205}</Project>
       <Name>Transit.Framework</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Transit.Mod.TAM\Transit.Mod.TAM.csproj">
+      <Project>{80c47696-4d41-4bb6-9cae-c477fe528adf}</Project>
+      <Name>Transit.Mod.TAM</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>del "$(TargetDir)*.pdb"
-del "$(TargetDir)Transit.Addon.Deploy.dll"
+del "$(TargetDir)Transit.Mod.TAM.Deploy.dll"
 
 if $(ConfigurationName) == Debug (
 rd /s /q  "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\TrafficPPV2"

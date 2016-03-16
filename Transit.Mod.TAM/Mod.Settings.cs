@@ -3,7 +3,7 @@ using ICities;
 using Transit.Framework.Modularity;
 using UnityEngine;
 
-namespace Transit.Addon
+namespace Transit.Mod.TAM
 {
     public partial class Mod
     {

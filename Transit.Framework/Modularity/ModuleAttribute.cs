@@ -20,7 +20,7 @@ namespace Transit.Framework.Modularity
 
         public bool IsAssociatedWith(Type type)
         {
-            return _associatedMods.Contains(type.FullName);
+            return _associatedMods.Contains(type.FullName) || _associatedMods.Contains(type.Namespace);
         }
     }
 }

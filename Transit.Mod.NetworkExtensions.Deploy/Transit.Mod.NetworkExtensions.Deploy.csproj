@@ -8,8 +8,8 @@
     <ProjectGuid>{D2DA5492-3DE6-4E7D-AFF1-BB62C950632D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NetworkExtensions.Deploy</RootNamespace>
-    <AssemblyName>NetworkExtensions.Deploy</AssemblyName>
+    <RootNamespace>Transit.Mod.NetworkExtensions.Deploy</RootNamespace>
+    <AssemblyName>Transit.Mod.NetworkExtensions.Deploy</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -35,9 +35,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NetworkExtensions\NetworkExtensions.csproj">
+    <ProjectReference Include="..\Transit.Mod.NetworkExtensions\Transit.Mod.NetworkExtensions.csproj">
       <Project>{dcd9dd56-9c49-4ba9-8f37-7567444fe7cb}</Project>
-      <Name>NetworkExtensions</Name>
+      <Name>Transit.Mod.NetworkExtensions</Name>
     </ProjectReference>
     <ProjectReference Include="..\Transit.Addon.RoadExtensions\Transit.Addon.RoadExtensions.csproj">
       <Project>{19FA21B2-39CC-4B90-BE7E-B6BDCCB09208}</Project>
@@ -68,7 +68,7 @@
   <PropertyGroup>
     <PostBuildEvent>forfiles /P "$(ProjectDir)bin\$(ConfigurationName)" /S /M *.CRP /C "cmd /c move @file "$(ProjectDir)bin\$(ConfigurationName)""
 
-del "$(TargetDir)NetworkExtensions.Deploy.dll"
+del "$(TargetDir)Transit.Mod.NetworkExtensions.Deploy.dll"
 del "$(TargetDir)*.pdb"
 rd /s /q "$(TargetDir)\Buildings"
 

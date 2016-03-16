@@ -3,7 +3,7 @@ using ICities;
 using Transit.Framework.Modularity;
 using UnityEngine;
 
-namespace NetworkExtensions
+namespace Transit.Mod.NetworkExtensions
 {
     public partial class Mod
     {

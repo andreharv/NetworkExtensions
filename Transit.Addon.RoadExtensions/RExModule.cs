@@ -2,7 +2,7 @@
 
 namespace Transit.Addon.RoadExtensions
 {
-    [Module("Transit.Addon.Mod", "NetworkExtensions.Mod")]
+    [Module("Transit.Mod.TAM", "Transit.Mod.NetworkExtensions")]
     public partial class RExModule : ModuleBase
     {
         public const string REX_OBJECT_NAME = "Road Extensions";
