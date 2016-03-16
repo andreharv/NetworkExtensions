@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace Transit.Addon.TM
 {
-    [Module("Transit.Mod.TAM")]
+    [Module("Transit.Mod.TAM", "Transit.Mod.TrafficManager")]
     public partial class TrafficManagerModule : ModuleBase
     {
         public override string Name => "Traffic Manager";

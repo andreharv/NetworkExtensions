@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2121F443-B38B-46E6-923B-62598CDEF55C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Transit.Mod.TrafficManager.Deploy</RootNamespace>
+    <AssemblyName>Transit.Mod.TrafficManager.Deploy</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Transit.Addon.TMLegacy\Transit.Addon.TMLegacy.csproj">
+      <Project>{c6fb53c5-223f-4cee-863d-63f3237f058a}</Project>
+      <Name>Transit.Addon.TMLegacy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Transit.Addon.TM\Transit.Addon.TM.csproj">
+      <Project>{65c72736-b189-4144-91bf-1717287ba925}</Project>
+      <Name>Transit.Addon.TM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Transit.Framework.ExtensionPoints\Transit.Framework.ExtensionPoints.csproj">
+      <Project>{2e44eca3-d750-4115-b16b-fca94c49bba0}</Project>
+      <Name>Transit.Framework.ExtensionPoints</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Transit.Framework.Hooks\Transit.Framework.Hooks.csproj">
+      <Project>{a700f186-b123-45b5-adfe-b865df5a0f39}</Project>
+      <Name>Transit.Framework.Hooks</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Transit.Framework.Redirection\Transit.Framework.Redirection.csproj">
+      <Project>{7dcc08ef-dc85-47a4-bd6f-79fc52c7ef13}</Project>
+      <Name>Transit.Framework.Redirection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Transit.Framework\Transit.Framework.csproj">
+      <Project>{8891467e-c88e-46b0-96f9-4413df6dc205}</Project>
+      <Name>Transit.Framework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Transit.Mod.TrafficManager\Transit.Mod.TrafficManager.csproj">
+      <Project>{e5a4726d-24b7-4885-a3f4-f711ac9236ad}</Project>
+      <Name>Transit.Mod.TrafficManager</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>del "$(TargetDir)*.pdb"
+del "$(TargetDir)Transit.Mod.TrafficManager.Deploy.dll"
+
+if $(ConfigurationName) == Debug (
+rd /s /q  "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\TrafficManagerPresidentEdition"
+mkdir "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\TrafficManagerPresidentEdition"
+xcopy /q /y /e "$(ProjectDir)bin\$(ConfigurationName)" "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\TrafficManagerPresidentEdition"
+) else (
+rd /s /q  "D:\Games\Steam\SteamApps\workshop\content\255710\583429740"
+mkdir "D:\Games\Steam\SteamApps\workshop\content\255710\583429740"
+xcopy /q /y /e "$(ProjectDir)bin\$(ConfigurationName)" "D:\Games\Steam\SteamApps\workshop\content\255710\583429740"
+)</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
