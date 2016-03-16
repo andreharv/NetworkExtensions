@@ -559,7 +559,7 @@ namespace Transit.Addon.TM.PathFinding
 					laneID,
 					laneInfo,
 					(ushort)(_isHeavyVehicle || _unitType == ExtendedUnitType.Bus ? 50 : 25),
-					(ushort)this.GetFeatures().RoadSpeed.GetLaneSpeedLimit(currentPosition.m_segment, currentPosition.m_lane, laneID, _unitType),
+					null,
 					false);
 				//SpeedLimitManager.GetLockFreeGameSpeedLimit(currentPosition.m_segment, currentPosition.m_lane, laneID, ref Singleton<NetManager>.instance.m_segments.m_buffer[currentPosition.m_segment].Info.m_lanes[currentPosition.m_lane])
 				// NON-STOCK CODE END

@@ -27,13 +27,6 @@ namespace TrafficManager.Custom.AI {
 
 		public static bool InStartupPhase = true;
 
-		/*public Thread SegmentGeometryUpdateThread { get; private set; }
-		private bool segmentGeometryUpdateThreadRunning = true;*/
-
-		static CustomRoadAI() {
-			// validate geometry
-		}
-
 		public void CustomNodeSimulationStep(ushort nodeId, ref NetNode data) {
 			if (simStartFrame == 0)
 				simStartFrame = Singleton<SimulationManager>.instance.m_currentFrameIndex;
@@ -85,7 +78,7 @@ namespace TrafficManager.Custom.AI {
 							if (maxDensity == 0 || currentDensity > maxDensity)
 								maxDensity = currentDensity;
 							densitySum += currentDensity;
-
+							
 							laneIndex++;
 							curLaneId = Singleton<NetManager>.instance.m_lanes.m_buffer[curLaneId].m_nextLane;
 						}
@@ -119,9 +112,9 @@ namespace TrafficManager.Custom.AI {
 							}*/
 
 							if (currentMeanSpeed >= laneMeanSpeeds[curLaneId])
-								laneMeanSpeeds[curLaneId] = (byte)Math.Min((int)laneMeanSpeeds[curLaneId] + 2, currentMeanSpeed);
+								laneMeanSpeeds[curLaneId] = (byte)Math.Min((int)laneMeanSpeeds[curLaneId] + 10, currentMeanSpeed);
 							else
-								laneMeanSpeeds[curLaneId] = (byte)Math.Max((int)laneMeanSpeeds[curLaneId] - 2, 0);
+								laneMeanSpeeds[curLaneId] = (byte)Math.Max((int)laneMeanSpeeds[curLaneId] - 10, 0);
 
 							if (densitySum > 0)
 								laneMeanDensities[curLaneId] = (byte)Math.Min(100u, (currentDensity * 100u) / densitySum);
@@ -726,13 +719,15 @@ namespace TrafficManager.Custom.AI {
 			simStartFrame = 0;
 		}
 
-		internal static void AddTraffic(uint laneID, NetInfo.Lane laneInfo, ushort vehicleLength, ushort speed, bool realTraffic) {
+		internal static void AddTraffic(uint laneID, NetInfo.Lane laneInfo, ushort vehicleLength, ushort? speed, bool realTraffic) {
 			if (!initDone)
 				return;
 			if ((laneInfo.m_vehicleType & VehicleInfo.VehicleType.Car) == VehicleInfo.VehicleType.None)
 				return;
-			currentLaneTrafficBuffer[laneID] = (ushort)Math.Min(65535u, (uint)currentLaneTrafficBuffer[laneID] + 1u);
-			currentLaneSpeeds[laneID] += speed;
+			if (realTraffic && speed != null) {
+				currentLaneTrafficBuffer[laneID] = (ushort)Math.Min(65535u, (uint)currentLaneTrafficBuffer[laneID] + 1u);
+				currentLaneSpeeds[laneID] += (uint)speed;
+			}
 			currentLaneDensities[laneID] += vehicleLength;
 		}
 
