@@ -34,35 +34,6 @@ namespace TrafficManager.Custom.AI {
 			// validate geometry
 		}
 
-		public void Destroy() {
-			//segmentGeometryUpdateThreadRunning = false;
-		}
-
-		public void Awake() {
-			/*segmentGeometryUpdateThreadRunning = true;
-			SegmentGeometryUpdateThread = new Thread(SegmentGeometryUpdateRunner) { Name = "Segment Geometry Update" };
-			SegmentGeometryUpdateThread.Priority = SimulationManager.SIMULATION_PRIORITY;
-			SegmentGeometryUpdateThread.Start();*/
-		}
-
-		/*private void SegmentGeometryUpdateRunner() {
-			ushort segmentId = 0;
-			NetManager netManager = Singleton<NetManager>.instance;
-			while (segmentGeometryUpdateThreadRunning) {
-				if (!initDone)
-					continue;
-				segmentId = (ushort)((segmentId + 1) & NetManager.MAX_SEGMENT_COUNT);
-				if ((netManager.m_segments.m_buffer[segmentId].m_flags & NetSegment.Flags.Created) == NetSegment.Flags.None)
-					continue;
-				CustomRoadAI.GetSegmentGeometry(segmentId).VerifySegmentsByCount();
-			}
-		}*/
-
-		// this implements the Update method of MonoBehaviour
-		public void Update() {
-			
-		}
-
 		public void CustomNodeSimulationStep(ushort nodeId, ref NetNode data) {
 			if (simStartFrame == 0)
 				simStartFrame = Singleton<SimulationManager>.instance.m_currentFrameIndex;

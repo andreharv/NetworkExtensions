@@ -1,0 +1,115 @@
+Switch_traffic_lights Verwijder/Voeg verkeerslichten (toe)
+Add_priority_signs Voeg voorrangsborden toe
+Manual_traffic_lights Handmatig aanpasbare verkeerslichten
+Timed_traffic_lights Getimede verkeerslichten
+Change_lane_arrows Verander rijstrook pijlmarkeringen
+Clear_Traffic Ververs verkeer
+Disable_despawning Sta despawning niet toe
+Enable_despawning Sta despawning toe
+NODE_IS_LIGHT Het kruispunt heeft verkeerslichten.\nVerwijder de verkeerslichten door te klikken op "Verwijder/Voeg verkeerslichten (toe)".
+NODE_IS_TIMED_LIGHT Het kruispunt is onderdeel van een getimed script. \nSelecteer "Getimede verkeerslichten" en klik eerst op "Verwijder".
+Select_nodes_windowTitle Selecteer knooppunten
+Select_nodes Selecteer knooppunten
+Node Knooppunt
+Deselect_all_nodes Deselecteer alle knooppunten
+Setup_timed_traffic_light Stel getimede verkeerslichten in
+State Toestand
+Skip Sla over
+up Omhoog
+down Omlaag
+View Bekijk
+Edit Bewerk
+Delete Verwijder
+Timed_traffic_lights_manager Getimede verkeerslichten beheerder
+Add_step Voeg stap toe
+Remove_timed_traffic_light Verwijder getimede verkeerslichten
+Min._Time: Minimum Tijd:
+Max._Time: Maximum Tijd:
+Save Opslaan
+Add Voeg toe
+Sensitivity Gevoeligheid
+Very_Low Zeer laag
+Low Laag 
+Medium Middelmatig
+High Hoog
+Very_high Zeer hoog
+Extreme_long_green/red_phases Extreem lange groen-/rood-fases
+Very_long_green/red_phases Zeer lange groen-/rood-fases
+Long_green/red_phases Lange groen-/rood-fases
+Moderate_green/red_phases Aanpasbare groen-/rood-fases
+Short_green/red_phases Korte groen-/rood-fases
+Very_short_green/red_phases Zeer korte groen-/rood-fases
+Extreme_short_green/red_phases Extreem korte groen-/rood-fases
+Hide_counters Verberg tellers
+Show_counters Toon tellers
+Start Start
+Stop Stop
+Enable_test_mode_(stay_in_current_step) Zet test mode aan (blijft bij huidige stap)
+avg._flow Gemiddelde doorstroming
+avg._wait Gemiddelde wachtperiode
+min/max Minimum/Maximum
+Lane Rijstrook
+Set_Speed Stel snelheid vast {0}
+Max_speed Maximum snelheid
+Segment Segment
+incoming Inkomend
+Enable_Advanced_Vehicle_AI Sta Advanced Vehicle AI toe
+Vehicles_may_enter_blocked_junctions Voertuigen kunnen geblokkeerde kruispunten betreden
+All_vehicles_may_ignore_lane_arrows Alle voertuigen kunnen rijstrook pijlmarkeringen negeren
+Busses_may_ignore_lane_arrows Bussen kunnen rijstrook pijlmarkeringen negeren
+Reckless_driving Roekeloos rijden (BETA onderdeel)
+TMPE_Title Traffic Manager: President Edition
+Settings_are_defined_for_each_savegame_separately Instellingen zijn voor iedere savegame onafhankelijk bepaald
+Simulation_accuracy Simulatie nauwkeurigheid
+Enable_highway_specific_lane_merging/splitting_rules Sta specifieke invoeg- en uitvoeg-lijnen op de snelweg toe
+Drivers_want_to_change_lanes_(only_applied_if_Advanced_AI_is_enabled): Bestuurders zijn geneigd van rijstrook te veranderen (alleen wanneer Advanced AI aanstaat)
+Maintenance Onderhoud
+Very_often Zeer vaak
+Often Vaak
+Sometimes Soms
+Rarely Zelden
+Very_rarely Vrijwel nooit
+Only_if_necessary Alleen indien nodig
+Nodes_and_segments Knooppunten en segmenten
+Lanes Rijstroken
+Path_Of_Evil_(10_%) Kwaadaardig pad (10 %)
+Rush_Hour_(5_%) Spitsuur (5 %)
+Minor_Complaints_(2_%) Weinig voorstellende klachten (2 %)
+Holy_City_(0_%) Heilige stad (0 %)
+Forget_toggled_traffic_lights Vergeet ingeschakelde verkeerslichten
+Road_is_already_in_a_group! Weg is al in een groepering!
+All_selected_roads_must_be_of_the_same_type! Alle geselecteerde wegen moeten van het zelfde type zijn!
+Create_group Creëer groep
+Delete_group Verwijder groep
+Add_zoning Voeg zonering toe
+Remove_zoning Verwijder zonering
+Lane_Arrow_Changer_Disabled De pijlmarkering veranderaar voor deze rijstrook staat uit, omdat je het snelweg regel systeem hebt geactiveerd. 
+Add_junction_to_timed_light Voeg een kruispunt toe aan dit verkeerslicht toe
+Remove_junction_from_timed_light Verwijder een kruispunt van dit verkeerslicht
+Select_junction Selecteer een kruispunt
+Cancel Annuleer
+Speed_limits Snelheidslimieten
+Persistently_visible_overlays Aanhoudende zichtbare overlappingen
+Priority_signs Voorrangsborden
+Vehicles_may_do_u-turns_at_junctions Voertuigen kunnen een U-bocht doen bij kruispunten
+Vehicles_going_straight_may_change_lanes_at_junctions Voertuigen die rechtdoor gaan kunnen veranderen van rijstrook bij kruispunten
+Allow_u-turns Staat U-bochten toe
+Allow_lane_changing_for_vehicles_going_straight Sta rijstrook verwisselingen toe voor voertuigen die rechtdoor gaan
+Allow_vehicles_to_enter_a_blocked_junction Sta voertuigen toe om een geblokkeerde kruispunt te betreden
+Road_condition_has_a_bigger_impact_on_vehicle_speed De staat van een weg heeft een grotere impact op de snelheid van voertuigen
+Vehicle_restrictions Voertuig beperkingen
+Copy Kopieer
+Paste Plak
+Invert Keer om
+Apply_vehicle_restrictions_to_all_road_segments_between_two_junctions Laat voertuig beperkingen van toepassing zijn op alle wegsegmenten tussen twee kruispunten. 
+Allow_all_vehicles Sta alle voertuigen toe
+Ban_all_vehicles Verbied alle voertuigen
+Set_all_traffic_lights_to_red Zet alle verkeerslichten op rood
+Rotate_left Draai naar links
+Rotate_right Draai naar rechts
+Name Naam 
+Apply Pas toe
+Select_a_timed_traffic_light_program Selecteer een getimed verkeerslicht programma
+The_chosen_traffic_light_program_is_incompatible_to_this_junction Het gekozen verkeerslicht programma is niet compatibel met dit kruispunt
+Advanced_AI_cannot_be_activated Advanced AI kan niet geactiveerd worden
+The_Advanced_Vehicle_AI_cannot_be_activated Advanced Vehicle AI kan niet geactiveerd worden

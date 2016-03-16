@@ -661,7 +661,7 @@ namespace TrafficManager.UI.SubTools {
 								hoveredSegment = true;
 
 								if (MainTool.CheckClicked()) {
-									liveSegmentLights.ManualPedestrianMode = true;
+									liveSegmentLights.ManualPedestrianMode = !liveSegmentLights.ManualPedestrianMode;
 								}
 							}
 						}
