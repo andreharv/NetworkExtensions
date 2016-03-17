@@ -16,13 +16,13 @@ namespace Transit.Framework.Mod
     {
         public virtual void OnInstallAssets()
         {
-            foreach (IModule module in Modules)
+            foreach (IModule module in this.GetOrCreateModules())
                 module.OnInstallingAssets();
         }
 
         private void InstallAtlases()
         {
-            foreach (IModule module in Modules)
+            foreach (IModule module in this.GetOrCreateModules())
             {
                 foreach (var type in module.GetType().Assembly.GetImplementations<IAtlasBuilder>())
                 {

@@ -9,10 +9,10 @@ namespace Transit.Framework.Mod
         public virtual void OnEnabled()
         {
             this.InstallPrerequisites();
-            ModuleManager.instance.RegisterModules(this);
+            this.RegisterModules();
             LoadSettings();
 
-            foreach (IModule module in Modules)
+            foreach (IModule module in this.GetOrCreateModules())
             {
                 if (!module.IsEnabled)
                 {
@@ -23,7 +23,7 @@ namespace Transit.Framework.Mod
 
         public virtual void OnDisabled()
         {
-            foreach (IModule module in ModuleManager.instance.GetModules(this))
+            foreach (IModule module in this.GetModules())
             {
                 if (module.IsEnabled)
                 {
@@ -31,19 +31,19 @@ namespace Transit.Framework.Mod
                 }
             }
 
-            ModuleManager.instance.TryReleaseModules(this);
+            this.TryReleaseModules();
             this.UninstallPrerequisites();
         }
 
         public override void OnLevelUnloading()
         {
-            foreach (IModule module in Modules)
+            foreach (IModule module in this.GetOrCreateModules())
                 module.OnLevelUnloading();
         }
 
         public override void OnLevelLoaded(LoadMode mode)
         {
-            foreach (IModule module in Modules)
+            foreach (IModule module in this.GetOrCreateModules())
                 module.OnLevelLoaded(mode);
         }
     }

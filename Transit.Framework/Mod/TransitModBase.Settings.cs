@@ -18,7 +18,7 @@ namespace Transit.Framework.Mod
 
             root.AppendAttribute("Version", Version);
 
-            foreach (IModule module in Modules)
+            foreach (IModule module in this.GetOrCreateModules())
             {
                 XmlElement moduleElement = root.AppendElement(module.GetCodeName());
                 module.OnSaveSettings(moduleElement);
@@ -48,7 +48,7 @@ namespace Transit.Framework.Mod
                 settingsDoc = null;
             }
 
-            foreach (IModule module in Modules)
+            foreach (IModule module in this.GetOrCreateModules())
             {
                 if (settingsDoc != null)
                 {

@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using ColossalFramework.UI;
 using ICities;
+using Transit.Framework.Mod;
 using Transit.Framework.Modularity;
 using UnityEngine;
 
@@ -29,7 +30,7 @@ namespace Transit.Mod
             _optionsPanel = ((UIHelper)helper).self as UIScrollablePanel;
             _optionsPanel.autoLayout = false;
 
-            if (!Modules.Any())
+            if (!this.GetOrCreateModules().Any())
             {
                 UILabel label = _optionsPanel.AddUIComponent<UILabel>();
                 label.text = "Transit Addons Mod (TAM) has been detected - Network Extensions have been disabled";
@@ -46,7 +47,7 @@ namespace Transit.Mod
             strip.tabPages = container;
 
             int tabIndex = 0;
-            foreach (IModule module in Modules)
+            foreach (IModule module in this.GetOrCreateModules())
             {
                 strip.AddTab(module.Name, tabTemplate, true);
                 strip.selectedIndex = tabIndex;

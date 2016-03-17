@@ -64,6 +64,7 @@
     <Compile Include="Mod\TransitModBase.Install.Assets.cs" />
     <Compile Include="Mod\TransitModBase.Install.cs" />
     <Compile Include="Mod\TransitModBase.Install.Localization.cs" />
+    <Compile Include="Mod\_Extensions\TransitModExtensions.cs" />
     <Compile Include="Network\ExtendedNetInfoLane.cs" />
     <Compile Include="Network\ExtendedUnitType.cs" />
     <Compile Include="Network\NetInfoClasses.cs" />
@@ -100,7 +101,6 @@
     <Compile Include="Prerequisites\PrerequisiteHandler.cs" />
     <Compile Include="Mod\TransitModBase.cs" />
     <Compile Include="Mod\TransitModBase.LoadingExtension.cs" />
-    <Compile Include="Mod\TransitModBase.Modules.cs" />
     <Compile Include="Mod\TransitModBase.Settings.cs" />
     <Compile Include="Network\NetInfoVersion.cs" />
     <Compile Include="Notification.cs" />
