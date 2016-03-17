@@ -52,16 +52,9 @@
     <Compile Include="AI\RoadSnappingModeManager.cs" />
     <Compile Include="AI\RoadZoneBlocksCreationManager.cs" />
     <Compile Include="AI\ZoneBlocksOffset.cs" />
-    <Compile Include="PathFinding\ILaneRoutingManager.cs" />
-    <Compile Include="PathFinding\ILaneSpeedManager.cs" />
-    <Compile Include="PathFinding\IPathFindingImplementation.cs" />
-    <Compile Include="PathFinding\PathFindingManager.cs" />
-    <Compile Include="PathFinding\PathFindingManager.LaneRouting.cs" />
-    <Compile Include="PathFinding\PathFindingManager.LaneSpeed.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\RoadCategoryOrderManager.cs" />
     <Compile Include="UI\ExtendedMenuManager.cs" />
-    <Compile Include="UI\GameMainToolbarItemsManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Transit.Framework\Transit.Framework.csproj">

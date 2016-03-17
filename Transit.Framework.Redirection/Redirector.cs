@@ -142,7 +142,11 @@ namespace Transit.Framework.Redirection
                     {
                         if (!s_redirections.Any(r => r.OriginalMethod == originalMethod))
                         {
-                            Debug.Log(string.Format("TFW: Adding redirection from {0}", originalMethod.Name));
+                            Debug.Log(string.Format("TFW: Redirecting from {0}.{1} to {2}.{3}",
+                                originalMethod.DeclaringType,
+                                originalMethod.Name,
+                                method.DeclaringType,
+                                method.Name));
                             s_redirections.Add(originalMethod.RedirectTo(method, callingAssembly));
                         }
                     }
@@ -151,7 +155,11 @@ namespace Transit.Framework.Redirection
                     {
                         if (!s_redirections.Any(r => r.OriginalMethod == method))
                         {
-                            Debug.Log(string.Format("TFW: Adding redirection to {0}", originalMethod.Name));
+                            Debug.Log(string.Format("TFW: Redirecting from {0}.{1} to {2}.{3}",
+                                method.DeclaringType,
+                                method.Name,
+                                originalMethod.DeclaringType,
+                                originalMethod.Name));
                             s_redirections.Add(method.RedirectTo(originalMethod, callingAssembly));
                         }
                     }

@@ -127,7 +127,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Common
 
                 for (var i = 0; i < lanesToAdd; i++)
                 {
-                    var newLane = sourceLane.Clone();
+                    var newLane = sourceLane.CloneWithoutStops();
                     tempLanes.Add(newLane);
                 }
 
@@ -145,7 +145,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Common
             for (var i = 0; i < vehicleLanes.Length; i++)
             {
                 var l = vehicleLanes[i];
-                //l.m_allowStop = false;
+                l.m_stopType = VehicleInfo.VehicleType.None;
                 l.m_speedLimit = 2f;
                 l.m_verticalOffset = 0f;
                 l.m_width = laneWidth;

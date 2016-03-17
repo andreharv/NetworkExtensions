@@ -5,13 +5,14 @@ namespace Transit.Framework
 {
     public static partial class NetInfoExtensions
     {
-        public static NetInfo.Lane Clone(this NetInfo.Lane templateLane, string newName = null)
+        public static NetInfo.Lane CloneWithoutStops(this NetInfo.Lane templateLane, string newName = null)
         {
             var newLane = new NetInfo.Lane();
 
             newLane.m_direction = templateLane.m_direction;
             newLane.m_finalDirection = templateLane.m_finalDirection;
             newLane.m_allowConnect = templateLane.m_allowConnect;
+            newLane.m_stopType = VehicleInfo.VehicleType.None;
             newLane.m_stopOffset = 0;
             newLane.m_laneType = templateLane.m_laneType;
             newLane.m_speedLimit = templateLane.m_speedLimit;

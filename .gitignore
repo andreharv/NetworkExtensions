@@ -67,14 +67,12 @@ build/
 *.tlb
 *.tli
 *.tlh
-*.tmp
 *.tmp_proj
 *.log
 *.vspscc
 *.vssscc
 .builds
 *.pidb
-*.log
 *.scc
 
 # Visual C++ cache files
@@ -193,7 +191,6 @@ $RECYCLE.BIN/
 *.egg
 *.egg-info
 dist/
-build/
 eggs/
 parts/
 var/
@@ -214,3 +211,6 @@ pip-log.txt
 #Mr Developer
 .mr.developer.cfg
 /Transit.Addon.RoadExtensions/Roads/TinyRoads/OneWay1L2
+/packages/
+/.vs/
+*.dll

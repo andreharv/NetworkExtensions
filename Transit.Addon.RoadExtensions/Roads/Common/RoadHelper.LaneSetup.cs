@@ -31,7 +31,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
 
                 for (var i = 0; i < config.LanesToAdd; i++)
                 {
-                    var newLane = sourceLane.Clone();
+                    var newLane = sourceLane.CloneWithoutStops();
                     tempLanes.Add(newLane);
                 }
 
@@ -141,7 +141,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                 }
 
                 //Debug.Log(">>>> Lane Id : " + i + " Position : " + l.m_position);
-                //l.m_allowStop = false;
+                l.m_stopType = VehicleInfo.VehicleType.None;
                 l.m_width = config.LaneWidth;
 
                 l.m_laneProps = l.m_laneProps.Clone();
@@ -192,47 +192,54 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             vehicleLanes = vehicleLanes.OrderBy(l => l.m_position).ToArray();
 
             // Bus stops configs
-            //for (int i = 0; i < vehicleLanes.Length; i++)
-            //{
-            //    var l = vehicleLanes[i];
+            for (int i = 0; i < vehicleLanes.Length; i++)
+            {
+                var l = vehicleLanes[i];
 
-            //    if (version == NetInfoVersion.Ground)
-            //    {
-            //        if (i == 0)
-            //        {
-            //            l.m_allowStop = config.IsTwoWay;
-            //        }
-            //        else if (i == vehicleLanes.Length - 1)
-            //        {
-            //            l.m_allowStop = true;
-            //        }
-            //        else
-            //        {
-            //            l.m_allowStop = false;
-            //        }
+                if (version == NetInfoVersion.Ground)
+                {
+                    if (i == 0)
+                    {
+                        if (config.IsTwoWay)
+                        {
+                            l.m_stopType = VehicleInfo.VehicleType.Car;
+                        }
+                        else
+                        {
+                            l.m_stopType = VehicleInfo.VehicleType.None;
+                        }
+                    }
+                    else if (i == vehicleLanes.Length - 1)
+                    {
+                        l.m_stopType = VehicleInfo.VehicleType.Car;
+                    }
+                    else
+                    {
+                        l.m_stopType = VehicleInfo.VehicleType.None;
+                    }
 
-            //        if (l.m_allowStop)
-            //        {
-            //            if (l.m_position < 0)
-            //            {
-            //                l.m_stopOffset = -config.BusStopOffset;
-            //            }
-            //            else
-            //            {
-            //                l.m_stopOffset = config.BusStopOffset;
-            //            }
-            //        }
-            //    }
-            //    else
-            //    {
-            //        l.m_allowStop = false;
-            //    }
-            //}
+                    if (l.m_stopType == VehicleInfo.VehicleType.Car)
+                    {
+                        if (l.m_position < 0)
+                        {
+                            l.m_stopOffset = -config.BusStopOffset;
+                        }
+                        else
+                        {
+                            l.m_stopOffset = config.BusStopOffset;
+                        }
+                    }
+                }
+                else
+                {
+                    l.m_stopType = VehicleInfo.VehicleType.None;
+                }
+            }
 
             return vehicleLanes;
         }
 
-        private static IEnumerable<NetInfo.Lane> SetupPedestrianLanes(this NetInfo rdInfo, NetInfoVersion version, LanesConfiguration config)
+        public static IEnumerable<NetInfo.Lane> SetupPedestrianLanes(this NetInfo rdInfo, NetInfoVersion version, LanesConfiguration config)
         {
             var pedestrianLanes = rdInfo.m_lanes
                 .Where(l => l.m_laneType == NetInfo.LaneType.Pedestrian)

@@ -15,6 +15,7 @@ using Transit.Framework.Builders;
 using Transit.Framework.ExtensionPoints.AI;
 using UnityEngine;
 using Object = UnityEngine.Object;
+using Transit.Addon.RoadExtensions.Roads.PedestrianRoads;
 
 namespace Transit.Addon.RoadExtensions
 {
@@ -64,9 +65,11 @@ namespace Transit.Addon.RoadExtensions
 
             RoadZoneBlocksCreationManager.RegisterCustomCreator<TinyRoadZoneBlocksCreator>(Alley2LBuilder.NAME);
             RoadZoneBlocksCreationManager.RegisterCustomCreator<TinyRoadZoneBlocksCreator>(OneWay1LBuilder.NAME);
+            RoadZoneBlocksCreationManager.RegisterCustomCreator<TinyRoadZoneBlocksCreator>(ZonablePedestrianStone8mBuilder.NAME);
 
             RoadSnappingModeManager.RegisterCustomSnapping<TinyRoadSnappingMode>(Alley2LBuilder.NAME);
             RoadSnappingModeManager.RegisterCustomSnapping<TinyRoadSnappingMode>(OneWay1LBuilder.NAME);
+            RoadSnappingModeManager.RegisterCustomSnapping<TinyRoadSnappingMode>(ZonablePedestrianStone8mBuilder.NAME);
 
             _menuInstaller = _container.AddInstallerComponent<MenuInstaller>();
             _menuInstaller.Host = this;

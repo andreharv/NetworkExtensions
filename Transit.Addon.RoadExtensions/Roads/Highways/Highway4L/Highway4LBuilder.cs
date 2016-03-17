@@ -3,6 +3,7 @@ using Transit.Addon.RoadExtensions.Roads.Highways;
 using Transit.Addon.RoadExtensions.Roads.Highways.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
+using Transit.Framework.Network;
 
 namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway4L
 {
@@ -63,7 +64,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway4L
             info.m_pavementWidth = 2;
             if (version == NetInfoVersion.Tunnel)
             {
-                info.m_setVehicleFlags = Vehicle.Flags.Transition;
+                info.m_setVehicleFlags = Vehicle.Flags.Transition | Vehicle.Flags.Underground;
                 info.m_class = highwayTunnelInfo.m_class.Clone(NetInfoClasses.NEXT_HIGHWAY4L_TUNNEL);
             }
             else

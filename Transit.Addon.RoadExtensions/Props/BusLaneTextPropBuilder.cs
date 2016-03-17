@@ -1,4 +1,5 @@
-﻿using Transit.Framework;
+﻿using Transit.Addon.RoadExtensions.Compatibility;
+using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.Interfaces;
 using Transit.Framework.Modularity;
@@ -6,7 +7,7 @@ using UnityEngine;
 
 namespace Transit.Addon.RoadExtensions.Props
 {
-    public class BusLaneTextPropBuilder : IPrefabBuilder<PropInfo>, IModulePart, IIdentifiable
+    public class BusLaneTextPropBuilder : IPrefabBuilder<PropInfo>, ITrafficPlusPlusPart, IModulePart, IIdentifiable
     {
         public string Name { get { return "BusLaneText"; } }
         public string BasedPrefabName { get { return "Road Arrow F"; } }

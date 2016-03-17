@@ -5,6 +5,7 @@ using Transit.Addon.RoadExtensions.Props;
 using Transit.Addon.RoadExtensions.Roads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
+using Transit.Framework.Network;
 using UnityEngine;
 
 namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
@@ -12,7 +13,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
     public partial class LargeAvenue8LMBuilder : Activable, INetInfoBuilderPart, INetInfoLateBuilder
     {
         public int Order { get { return 25; } }
-        public int UIOrder { get { return 150; } }
+        public int UIOrder { get { return 1500; } }
 
         public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_4L; } }
         public string Name { get { return "Eight-Lane Avenue"; } }
@@ -55,8 +56,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
 
             if (version == NetInfoVersion.Tunnel)
             {
-                info.m_setVehicleFlags = Vehicle.Flags.Transition;
-                info.m_setCitizenFlags = CitizenInstance.Flags.Transition;
+                info.m_setVehicleFlags = Vehicle.Flags.Transition | Vehicle.Flags.Underground;
+                info.m_setCitizenFlags = CitizenInstance.Flags.Transition | CitizenInstance.Flags.Underground;
                 info.m_class = roadTunnelInfo.m_class.Clone(NetInfoClasses.NEXT_XLARGE_ROAD_TUNNEL);
             }
             else
@@ -140,7 +141,13 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
         {
             if (version == NetInfoVersion.Bridge)
             {
-                var bridgePillar = PrefabCollection<BuildingInfo>.FindLoaded("BridgePillar.CableStay32m_Data");
+                var bridgePillar = PrefabCollection<BuildingInfo>.FindLoaded("478820060.CableStay32m_Data");
+
+                if (bridgePillar == null)
+                {
+                    bridgePillar = PrefabCollection<BuildingInfo>.FindLoaded("BridgePillar.CableStay32m_Data");
+                }
+
                 if (bridgePillar != null)
                 {
                     var bridgeAI = info.GetComponent<RoadBridgeAI>();

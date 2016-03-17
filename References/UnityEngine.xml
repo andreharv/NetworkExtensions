@@ -6104,17 +6104,22 @@ SA: [[WWW.assetBundle]], [[WWW.LoadFromCacheOrDownload]].</param>
     </member>
     <member name="T:UnityEngine.CollisionDetectionMode2D">
       <summary>
-        <para>Options for the detection mode used by a Rigidbody2D.</para>
+        <para>Controls how collisions are detected when a [[Rigidbody2D]] moves.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.CollisionDetectionMode2D.Continuous">
       <summary>
-        <para>The Rigidbody2D estimates its position between physics updates.</para>
+        <para>Ensures that all collisions are detected when a [[Rigidbody2D]] moves.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.CollisionDetectionMode2D.Discrete">
+      <summary>
+        <para>When a [[Rigidbody2D]] moves, only collisions at the new position are detected.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.CollisionDetectionMode2D.None">
       <summary>
-        <para>No collision detection is used on the Rigidbody2D.</para>
+        <para>This mode is obsolete.  You should use ::ref::Discrete mode.</para>
       </summary>
     </member>
     <member name="T:UnityEngine.CollisionFlags">
@@ -17787,12 +17792,7 @@ GUILayout::ref::MaxHeight, GUILayout::ref::ExpandWidth, GUILayout::ref::ExpandHe
     </member>
     <member name="P:UnityEngine.LightmapSettings.lightmapsMode">
       <summary>
-        <para>Single, Dual or Directional lightmaps rendering mode.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEngine.LightmapSettings.lightmapsModeLegacy">
-      <summary>
-        <para>UnderlyingModel.MemDoc.MemDocModel</para>
+        <para>Non-directional, Directional or Directional Specular lightmaps rendering mode.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.LightmapSettings.lightProbes">
@@ -18738,6 +18738,11 @@ GUILayout::ref::MaxHeight, GUILayout::ref::ExpandWidth, GUILayout::ref::ExpandHe
     <member name="T:UnityEngine.MaterialPropertyBlock">
       <summary>
         <para>A block of material values to apply.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.MaterialPropertyBlock.isEmpty">
+      <summary>
+        <para>Is the material property block empty? (RO)</para>
       </summary>
     </member>
     <member name="M:UnityEngine.MaterialPropertyBlock.AddColor(System.String,UnityEngine.Color)">
@@ -21601,6 +21606,11 @@ If the Elo is provided the result set will be ordered according to the magnitude
 Each game can calculate this value as they wish according to whatever scale is best for that game.</para>
       </summary>
     </member>
+    <member name="P:UnityEngine.Networking.Match.ListMatchRequest.includePasswordMatches">
+      <summary>
+        <para>Only return matches that have a password if this is true, only return matches without a password if this is false.</para>
+      </summary>
+    </member>
     <member name="P:UnityEngine.Networking.Match.ListMatchRequest.matchAttributeFilterEqualTo">
       <summary>
         <para>List of match attributes to filter against. This will filter down to matches that both have a name that contains the entire text string provided and the value specified in the filter is equal to the attribute value for the matching name.
@@ -21955,6 +21965,11 @@ The game is free to use this as desired to assist in finding better match result
     <member name="P:UnityEngine.Networking.Match.Request.domain">
       <summary>
         <para>Domain for the request. All commands will be sandboxed to their own domain; For example no clients with domain 1 will see matches with domain 2. This can be used to prevent incompatible client versions from communicating.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Networking.Match.Request.projectId">
+      <summary>
+        <para>The Cloud Project Id for this game, required in every request. This is used to match games of the same type.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Networking.Match.Request.sourceId">
@@ -22313,6 +22328,14 @@ Topology is used to define how many client can connect, and how many messages sh
         <para>Time in micro seconds.</para>
       </returns>
     </member>
+    <member name="M:UnityEngine.Networking.NetworkTransport.GetNetworkLostPacketNum(System.Int32,System.Int32,System.Byte&amp;)">
+      <summary>
+        <para>Return total number of packets has been lost from start.</para>
+      </summary>
+      <param name="hostId">Id of udp socket used to.</param>
+      <param name="connectionId">Id of connection.</param>
+      <param name="error">Possible error.</param>
+    </member>
     <member name="M:UnityEngine.Networking.NetworkTransport.GetNetworkTimestamp">
       <summary>
         <para>Get UNET timestamp which can be added to message for further definitions of packet delaying.</para>
@@ -22345,7 +22368,7 @@ Topology is used to define how many client can connect, and how many messages sh
     </member>
     <member name="M:UnityEngine.Networking.NetworkTransport.GetRemotePacketReceivedRate(System.Int32,System.Int32,System.Byte&amp;)">
       <summary>
-        <para>Get received rate in bytes per second for remote peer, comparison with local send rate can give information how many bytes was lost.</para>
+        <para>Obsolete will be removed. Use GetNetworkLostPacketNum() instead.</para>
       </summary>
       <param name="hostId">Id of udp socket used to.</param>
       <param name="connectionId">Id of connection.</param>
