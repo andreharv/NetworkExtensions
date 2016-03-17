@@ -35,6 +35,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Transit.Addon.RoadExtensions\Transit.Addon.RoadExtensions.csproj">
+      <Project>{19fa21b2-39cc-4b90-be7e-b6bdccb09208}</Project>
+      <Name>Transit.Addon.RoadExtensions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Transit.Addon.TMLegacy\Transit.Addon.TMLegacy.csproj">
       <Project>{c6fb53c5-223f-4cee-863d-63f3237f058a}</Project>
       <Name>Transit.Addon.TMLegacy</Name>
@@ -46,6 +50,10 @@
     <ProjectReference Include="..\Transit.Addon.ToolsV2\Transit.Addon.ToolsV2.csproj">
       <Project>{7d1c44dc-79d4-414f-8ded-42e762afa862}</Project>
       <Name>Transit.Addon.ToolsV2</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Transit.Addon.Tools\Transit.Addon.Tools.csproj">
+      <Project>{4499042e-dcd1-4f9f-a3c8-4830108169cd}</Project>
+      <Name>Transit.Addon.Tools</Name>
     </ProjectReference>
     <ProjectReference Include="..\Transit.Framework.ExtensionPoints\Transit.Framework.ExtensionPoints.csproj">
       <Project>{2e44eca3-d750-4115-b16b-fca94c49bba0}</Project>

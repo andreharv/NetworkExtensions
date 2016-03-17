@@ -59,6 +59,7 @@
     <Compile Include="Builders\ToolBuilder.cs" />
     <Compile Include="Extensibility.cs" />
     <Compile Include="Modularity\ModuleBase.Install.cs" />
+    <Compile Include="Modularity\ModuleManager.cs" />
     <Compile Include="Mod\ITransitMod.cs" />
     <Compile Include="Mod\TransitModBase.Install.Assets.cs" />
     <Compile Include="Mod\TransitModBase.Install.cs" />

@@ -51,7 +51,7 @@ namespace Transit.Framework.Mod
                 return;
             }
 
-            foreach (IModule module in Modules)
+            foreach (IModule module in ModuleManager.instance.GetModules(this))
                 module.OnReleased();
 
             if (_localizationInstaller != null)

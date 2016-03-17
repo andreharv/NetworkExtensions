@@ -25,6 +25,11 @@ namespace Transit.Mod
             get { return "1.0.0"; }
         }
 
+        public override TransitModType Type
+        {
+            get { return TransitModType.Standalone; }
+        }
+
         public override PrerequisiteType Requirements
         {
             get { return PrerequisiteType.PathFinding; }

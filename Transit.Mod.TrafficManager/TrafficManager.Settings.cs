@@ -63,12 +63,12 @@ namespace Transit.Mod
             }
         }
 
-        protected override void LoadSettings()
+        public override void LoadSettings()
         {
             //base.LoadSettings(); Manually handled by module
         }
 
-        protected override void SaveSettings()
+        public override void SaveSettings()
         {
             //base.SaveSettings(); Manually handled by module
         }

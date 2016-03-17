@@ -28,6 +28,8 @@ namespace Transit.Framework.Mod
             get { return Name; }
         }
 
+        public abstract TransitModType Type { get; }
+
         public virtual PrerequisiteType Requirements { get { return PrerequisiteType.None; } }
 
         private string _assetPath;

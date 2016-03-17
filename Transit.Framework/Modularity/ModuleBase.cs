@@ -26,8 +26,14 @@ namespace Transit.Framework.Modularity
 
         public virtual void OnReleased() { }
 
-        public virtual void OnEnabled() { }
+        public virtual void OnEnabled()
+        {
+            IsEnabled = true;
+        }
 
-        public virtual void OnDisabled() { }
+        public virtual void OnDisabled()
+        {
+            IsEnabled = false;
+        }
     }
 }

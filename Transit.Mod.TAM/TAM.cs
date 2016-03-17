@@ -1,4 +1,5 @@
-﻿using Transit.Framework.Mod;
+﻿using System;
+using Transit.Framework.Mod;
 using Transit.Framework.Prerequisites;
 
 namespace Transit.Mod
@@ -25,6 +26,11 @@ namespace Transit.Mod
         {
             //get { return "2.0.0"; }
             get { return "0.0.1"; }
+        }
+
+        public override TransitModType Type
+        {
+            get { return TransitModType.Master; }
         }
 
         public override PrerequisiteType Requirements

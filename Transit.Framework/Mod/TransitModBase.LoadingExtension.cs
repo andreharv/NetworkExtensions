@@ -9,18 +9,29 @@ namespace Transit.Framework.Mod
         public virtual void OnEnabled()
         {
             this.InstallPrerequisites();
-            LoadModulesIfNeeded();
+            ModuleManager.instance.RegisterModules(this);
             LoadSettings();
 
             foreach (IModule module in Modules)
-                module.OnEnabled();
+            {
+                if (!module.IsEnabled)
+                {
+                    module.OnEnabled();
+                }
+            }
         }
 
         public virtual void OnDisabled()
         {
-            foreach (IModule module in Modules)
-                module.OnDisabled();
+            foreach (IModule module in ModuleManager.instance.GetModules(this))
+            {
+                if (module.IsEnabled)
+                {
+                    module.OnDisabled();
+                }
+            }
 
+            ModuleManager.instance.TryReleaseModules(this);
             this.UninstallPrerequisites();
         }
 

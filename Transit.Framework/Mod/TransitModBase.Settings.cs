@@ -11,7 +11,7 @@ namespace Transit.Framework.Mod
         protected abstract string SettingsFile { get; }
         protected abstract string SettingsNode { get; }
 
-        protected virtual void SaveSettings()
+        public virtual void SaveSettings()
         {
             var settingsDoc = new XmlDocument();
             var root = settingsDoc.AppendElement(SettingsNode);
@@ -34,7 +34,7 @@ namespace Transit.Framework.Mod
             }
         }
 
-        protected virtual void LoadSettings()
+        public virtual void LoadSettings()
         {
             XmlDocument settingsDoc = null;
             if (File.Exists(SettingsFile))
