@@ -1,10 +1,21 @@
 ﻿using System.Collections.Generic;
 using Transit.Framework.Modularity;
+using Transit.Framework.Prerequisites;
 
 namespace Transit.Framework.Mod
 {
     public static class TransitModExtensions
     {
+        public static void InstallPrerequisites(this ITransitMod mod)
+        {
+            PrerequisiteManager.instance.InstallPrerequisites(mod);
+        }
+
+        public static void UninstallPrerequisites(this ITransitMod mod)
+        {
+            PrerequisiteManager.instance.UninstallPrerequisites(mod);
+        }
+
         public static void RegisterModules(this ITransitMod mod)
         {
             ModuleManager.instance.RegisterModules(mod);

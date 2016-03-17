@@ -98,7 +98,7 @@
     <Compile Include="Modularity\IModule.cs" />
     <Compile Include="Modularity\ModuleBase.cs" />
     <Compile Include="Prerequisites\IPrerequisiteSetup.cs" />
-    <Compile Include="Prerequisites\PrerequisiteHandler.cs" />
+    <Compile Include="Prerequisites\PrerequisiteManager.cs" />
     <Compile Include="Mod\TransitModBase.cs" />
     <Compile Include="Mod\TransitModBase.LoadingExtension.cs" />
     <Compile Include="Mod\TransitModBase.Settings.cs" />

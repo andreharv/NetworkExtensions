@@ -7,11 +7,11 @@ using UnityEngine;
 
 namespace Transit.Framework.Prerequisites
 {
-    public static class PrerequisiteHandler
+    public class PrerequisiteManager : Singleton<PrerequisiteManager>
     {
-        private static readonly IDictionary<PrerequisiteType, ICollection<Type>> _installedPrerequisites = new Dictionary<PrerequisiteType, ICollection<Type>>();
+        private readonly IDictionary<PrerequisiteType, ICollection<Type>> _installedPrerequisites = new Dictionary<PrerequisiteType, ICollection<Type>>();
 
-        public static void InstallPrerequisites(this ITransitMod mod)
+        public void InstallPrerequisites(ITransitMod mod)
         {
             var modType = mod.GetType();
 
@@ -27,7 +27,7 @@ namespace Transit.Framework.Prerequisites
             }
         }
 
-        public static void UninstallPrerequisites(this ITransitMod mod)
+        public void UninstallPrerequisites(ITransitMod mod)
         {
             var modType = mod.GetType();
 
@@ -49,7 +49,7 @@ namespace Transit.Framework.Prerequisites
             }
         }
 
-        private static IEnumerable<IPrerequisiteSetup> GetAllPrerequisites()
+        private IEnumerable<IPrerequisiteSetup> GetAllPrerequisites()
         {
             return Extensibility
                 .GetImplementations<IPrerequisiteSetup>()
@@ -71,7 +71,7 @@ namespace Transit.Framework.Prerequisites
                 .ToArray();
         }
 
-        private static void DoInstallation(PrerequisiteType type)
+        private void DoInstallation(PrerequisiteType type)
         {
             try
             {
@@ -89,7 +89,7 @@ namespace Transit.Framework.Prerequisites
             }
         }
 
-        private static void DoUninstallation(PrerequisiteType type)
+        private void DoUninstallation(PrerequisiteType type)
         {
             try
             {
