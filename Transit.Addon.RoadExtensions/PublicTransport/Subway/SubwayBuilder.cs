@@ -86,7 +86,6 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.Subway
             info.m_class = info2.m_class.Clone("NExtSingleTrack");
             var owPlayerNetAI = roadInfo.GetComponent<PlayerNetAI>();
             var playerNetAI = info.GetComponent<PlayerNetAI>();
-
             if (owPlayerNetAI != null && playerNetAI != null)
             {
                 playerNetAI.m_constructionCost = owPlayerNetAI.m_constructionCost * 3 / 2; // Charge by the lane?

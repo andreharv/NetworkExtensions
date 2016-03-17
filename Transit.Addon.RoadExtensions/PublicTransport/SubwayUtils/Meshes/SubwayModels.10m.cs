@@ -1,4 +1,5 @@
-﻿using Transit.Framework;
+﻿using System.Collections.Generic;
+using Transit.Framework;
 
 namespace Transit.Addon.RoadExtensions.PublicTransport.SubwayUtils
 {
@@ -25,10 +26,15 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.SubwayUtils
                         var nodes3 = info.m_nodes[3];
                         var nodes4 = info.m_nodes[1].ShallowClone();
                         var nodes5 = info.m_nodes[1].ShallowClone();
+                        var nodes6 = info.m_nodes[3].ShallowClone();
+                        var nodes7 = info.m_nodes[3].ShallowClone();
 
                         nodes1.m_connectGroup = NetInfo.ConnectGroup.CenterTram;
+                        nodes3.m_connectGroup = NetInfo.ConnectGroup.CenterTram;
                         nodes4.m_connectGroup = NetInfo.ConnectGroup.NarrowTram | NetInfo.ConnectGroup.OnewayStart;
                         nodes5.m_connectGroup = NetInfo.ConnectGroup.NarrowTram | NetInfo.ConnectGroup.OnewayEnd;
+                        nodes6.m_connectGroup = NetInfo.ConnectGroup.NarrowTram | NetInfo.ConnectGroup.OnewayStart;
+                        nodes7.m_connectGroup = NetInfo.ConnectGroup.NarrowTram | NetInfo.ConnectGroup.OnewayEnd;
 
                         segments0
                             .SetFlagsDefault()
@@ -41,7 +47,6 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.SubwayUtils
                             (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail.obj");
 
                         segments2
-                            .SetFlagsDefault()
                             .SetMeshes
                             (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power.obj");
 
@@ -52,16 +57,51 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.SubwayUtils
                         nodes1
                             .SetMeshes
                             (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail.obj");
-
+                        nodes3
+                            .SetMeshes
+                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power.obj");
                         nodes4
                             .SetMeshes
                             (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail_Start.obj");
                         nodes5
                             .SetMeshes
                             (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail_End.obj");
-                        info.m_segments = new[] { segments0, segments1, segments2 };
-                        info.m_nodes = new[] { nodes0, nodes1, nodes2, nodes3, nodes4, nodes5 };
+                        nodes6
+                            .SetMeshes
+                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power_Start.obj");
+                        nodes7
+                            .SetMeshes
+                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power_End.obj");
 
+                        var colors = new List<UnityEngine.Color>();
+                        var colors32 = new List<UnityEngine.Color32>();
+                        var tangents = new List<UnityEngine.Vector4>();
+
+                        for (int i = 0; i < segments2.m_mesh.vertexCount; i++)
+                        {
+                            colors.Add(new UnityEngine.Color(0, 0, 0, 255));
+                            colors32.Add(new UnityEngine.Color32(0, 0, 0, 255));
+                            tangents.Add(new UnityEngine.Vector4(0, 0, 1, -1));
+                        }
+
+                        segments2.m_mesh.colors = colors.ToArray();
+                        segments2.m_mesh.colors32 = colors32.ToArray();
+                        segments2.m_mesh.tangents = tangents.ToArray();
+
+                        nodes3.m_mesh.colors = colors.ToArray();
+                        nodes3.m_mesh.colors32 = colors32.ToArray();
+                        nodes3.m_mesh.tangents = tangents.ToArray();
+
+                        nodes6.m_mesh.colors = colors.ToArray();
+                        nodes6.m_mesh.colors32 = colors32.ToArray();
+                        nodes6.m_mesh.tangents = tangents.ToArray();
+
+                        nodes7.m_mesh.colors = colors.ToArray();
+                        nodes7.m_mesh.colors32 = colors32.ToArray();
+                        nodes7.m_mesh.tangents = tangents.ToArray();
+
+                        info.m_segments = new[] { segments0, segments1, segments2 };
+                        info.m_nodes = new[] { nodes0, nodes1, nodes2, nodes3, nodes4, nodes5, nodes6, nodes7 };
                         break;
                     }
 

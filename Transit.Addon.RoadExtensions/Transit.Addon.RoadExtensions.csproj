@@ -1862,6 +1862,12 @@
     <None Include="PublicTransport\SubwayUtils\Meshes\10m\Ground_Power.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="PublicTransport\SubwayUtils\Meshes\10m\Ground_Power_End.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="PublicTransport\SubwayUtils\Meshes\10m\Ground_Power_Start.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
