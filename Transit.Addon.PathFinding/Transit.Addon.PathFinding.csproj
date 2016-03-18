@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{20F6A0DC-131C-49CD-9D9B-95B6E41CDDFF}</ProjectGuid>
+    <ProjectGuid>{41F6975F-A6E2-4166-A840-3EE1A9579F07}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Transit.Addon.PathFinding</RootNamespace>

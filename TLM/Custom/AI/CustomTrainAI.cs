@@ -108,18 +108,6 @@ namespace TrafficManager.Custom.AI {
 			}
 		}
 
-		/*public void TmCalculateSegmentPosition(ushort vehicleID, ref Vehicle vehicleData, PathUnit.Position nextPosition, PathUnit.Position position, uint laneID, byte offset, PathUnit.Position prevPos, uint prevLaneID, byte prevOffset, out Vector3 pos, out Vector3 dir, out float maxSpeed) {
-			NetManager instance = Singleton<NetManager>.instance;
-			instance.m_lanes.m_buffer[(int)((UIntPtr)laneID)].CalculatePositionAndDirection((float)offset * 0.003921569f, out pos, out dir);
-			NetInfo info = instance.m_segments.m_buffer[(int)position.m_segment].Info;
-			if (info.m_lanes != null && info.m_lanes.Length > (int)position.m_lane) {
-				var laneSpeedLimit = SpeedLimitManager.GetLockFreeGameSpeedLimit(position.m_segment, position.m_lane, laneID, info.m_lanes[position.m_lane]);
-				maxSpeed = this.CalculateTargetSpeed(vehicleID, ref vehicleData, laneSpeedLimit, instance.m_lanes.m_buffer[(int)((UIntPtr)laneID)].m_curve);
-			} else {
-				maxSpeed = this.CalculateTargetSpeed(vehicleID, ref vehicleData, 1f, 0f);
-			}
-		}*/
-
 		public void TmCalculateSegmentPositionPathFinder(ushort vehicleID, ref Vehicle vehicleData, PathUnit.Position position, uint laneID, byte offset, out Vector3 pos, out Vector3 dir, out float maxSpeed) {
 			NetManager instance = Singleton<NetManager>.instance;
 			instance.m_lanes.m_buffer[(int)((UIntPtr)laneID)].CalculatePositionAndDirection((float)offset * 0.003921569f, out pos, out dir);
@@ -135,6 +123,8 @@ namespace TrafficManager.Custom.AI {
 		public bool CustomStartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays) {
 			/// NON-STOCK CODE START ///
 			ExtVehicleType? vehicleType = CustomVehicleAI.DetermineVehicleTypeFromVehicle(vehicleID, ref vehicleData);
+			if (vehicleType == ExtVehicleType.CargoTrain)
+				vehicleType = ExtVehicleType.CargoVehicle;
 			//Log._Debug($"CustomTrainAI.CustomStartPathFind. vehicleID={vehicleID}. type={this.GetType().ToString()} vehicleType={vehicleType}");
 			/// NON-STOCK CODE END ///
 
