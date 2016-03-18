@@ -64,15 +64,33 @@
     <Compile Include="AI\CustomTrainAI.cs" />
     <Compile Include="AI\CustomTramBaseAI.cs" />
     <Compile Include="AI\CustomVehicleAI.cs" />
+    <Compile Include="AI\TPPCargoTruckAI.cs" />
+    <Compile Include="AI\TPPPassengerCarAI.cs" />
     <Compile Include="DataSerialization\TMDataConverter.cs" />
+    <Compile Include="DataSerialization\TPPLaneDataSerializationBinder.cs" />
+    <Compile Include="DataSerialization\TPPLaneDataSerializer.cs" />
+    <Compile Include="Data\Legacy\TPPLaneDataV1.cs" />
+    <Compile Include="Data\TPPLaneDataV2.cs" />
+    <Compile Include="Data\Legacy\TPPVehicleType.cs" />
+    <Compile Include="Data\_Extensions\TPPVehicleTypeExtensions.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="Menus\RoadCustomizer\RoadCustomizerGroupPanel.cs" />
+    <Compile Include="Menus\RoadCustomizer\RoadCustomizerPanel.cs" />
+    <Compile Include="Menus\RoadCustomizer\Textures\RoadCustomizerAtlasBuilder.cs" />
+    <Compile Include="Options.cs" />
+    <Compile Include="PathFindingFeatures\UnitRealisticSpeedManager.cs" />
     <Compile Include="PathFindingFeatures\TMDataManager.Configuration.Apply.cs" />
     <Compile Include="PathFindingFeatures\TMDataManager.Configuration.Create.cs" />
     <Compile Include="PathFindingFeatures\TMDataManager.cs" />
     <Compile Include="PathFindingFeatures\TMDataManager.Options.cs" />
-    <Compile Include="PathFindingFeatures\TMLaneRoutingManager.cs" />
     <Compile Include="PathFindingFeatures\TMRoadRestrictionManager.cs" />
     <Compile Include="PathFindingFeatures\TMRoadSpeedManager.cs" />
     <Compile Include="PathFindingFeatures\TMSupported.cs" />
+    <Compile Include="PathFindingFeatures\TPPLaneDataManager.cs" />
+    <Compile Include="PathFindingFeatures\TPPLaneRoutingManager.cs" />
+    <Compile Include="PathFindingFeatures\TPPRoadRestrictionManager.cs" />
+    <Compile Include="PathFindingFeatures\TPPRoadSpeedManager.cs" />
+    <Compile Include="PathFindingFeatures\TPPSupported.cs" />
     <Compile Include="PathFinding\ImprovedPathFind.cs" />
     <Compile Include="Data\TMConfigurationV2.CustomSegmentLight.cs" />
     <Compile Include="Data\TMConfigurationV2.CustomSegmentLights.cs" />
@@ -82,12 +100,18 @@
     <Compile Include="Data\TMConfigurationV2.TimedTrafficLights.cs" />
     <Compile Include="Data\TMConfigurationV2.LaneVehicleTypes.cs" />
     <Compile Include="Data\TMConfigurationV2.LaneSpeedLimit.cs" />
-    <Compile Include="TrafficManagerModule.Loading.cs" />
+    <Compile Include="ToolModuleV2.Tool.cs" />
+    <Compile Include="ToolModuleV2.Loading.cs" />
+    <Compile Include="ToolModuleV2.Localization.cs" />
+    <Compile Include="ToolModuleV2.cs" />
+    <Compile Include="ToolModuleV2.Settings.cs" />
+    <Compile Include="Tools\RoadCustomizerTool.cs" />
+    <Compile Include="ToolModuleV2.Detours.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Data\TMConfigurationV2.cs" />
     <Compile Include="Data\Flags.cs" />
-    <Compile Include="State\Options.cs" />
+    <Compile Include="OptionManager.cs" />
     <Compile Include="DataSerialization\TMDataSerializer.cs" />
     <Compile Include="ThreadingExtension.cs" />
     <Compile Include="TrafficLight\CustomSegment.cs" />
@@ -97,8 +121,7 @@
     <Compile Include="TrafficLight\TimedTrafficLights.cs" />
     <Compile Include="TrafficLight\TimedTrafficLightsStep.cs" />
     <Compile Include="TrafficLight\TrafficLightSimulation.cs" />
-    <Compile Include="TrafficManagerModule.cs" />
-    <Compile Include="TrafficManagerMode.cs" />
+    <Compile Include="Mode.cs" />
     <Compile Include="Traffic\Direction.cs" />
     <Compile Include="Data\TMVehicleType.cs" />
     <Compile Include="Traffic\SegmentEnd.cs" />
@@ -111,17 +134,17 @@
     <Compile Include="Traffic\VehiclePosition.cs" />
     <Compile Include="Traffic\VehicleRestrictionsManager.cs" />
     <Compile Include="UI\CameraCtrl.cs" />
-    <Compile Include="UI\SubTool.cs" />
-    <Compile Include="UI\SubTools\LaneArrowTool.cs" />
-    <Compile Include="UI\SubTools\ManualTrafficLightsTool.cs" />
-    <Compile Include="UI\SubTools\PrioritySignsTool.cs" />
-    <Compile Include="UI\SubTools\SpeedLimitsTool.cs" />
-    <Compile Include="UI\SubTools\TimedTrafficLightsTool.cs" />
-    <Compile Include="UI\SubTools\ToggleTrafficLightsTool.cs" />
-    <Compile Include="UI\SubTools\VehicleRestrictionsTool.cs" />
-    <Compile Include="UI\ToolMode.cs" />
+    <Compile Include="Tools\SubTool.cs" />
+    <Compile Include="Tools\SubTools\LaneArrowTool.cs" />
+    <Compile Include="Tools\SubTools\ManualTrafficLightsTool.cs" />
+    <Compile Include="Tools\SubTools\PrioritySignsTool.cs" />
+    <Compile Include="Tools\SubTools\SpeedLimitsTool.cs" />
+    <Compile Include="Tools\SubTools\TimedTrafficLightsTool.cs" />
+    <Compile Include="Tools\SubTools\ToggleTrafficLightsTool.cs" />
+    <Compile Include="Tools\SubTools\VehicleRestrictionsTool.cs" />
+    <Compile Include="Tools\TrafficManagerToolMode.cs" />
     <Compile Include="UI\TrafficLightToolTextureResources.cs" />
-    <Compile Include="UI\TrafficManagerTool.cs" />
+    <Compile Include="Tools\TrafficManagerTool.cs" />
     <Compile Include="UI\Translation.cs" />
     <Compile Include="UI\UIBase.cs" />
     <Compile Include="UI\UITimedLights.cs" />
@@ -414,6 +437,11 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\lang_nl.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Menus\RoadCustomizer\Textures\Thumbnails.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

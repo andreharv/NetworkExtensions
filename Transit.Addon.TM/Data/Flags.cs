@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading;
 using ColossalFramework;
-using Transit.Addon.TM.State;
 using Transit.Addon.TM.Traffic;
 
 namespace Transit.Addon.TM.Data {
@@ -406,13 +405,13 @@ namespace Transit.Addon.TM.Data {
 
 			TMConfigurationV2.SegmentNodeFlags[] nodeFlags = segmentNodeFlags[segmentId];
 			if (nodeFlags == null || nodeFlags[index] == null || nodeFlags[index].uturnAllowed == null)
-				return Options.allowUTurns;
+				return OptionManager.allowUTurns;
 			return (bool)nodeFlags[index].uturnAllowed;
 		}
 
 		public static void setUTurnAllowed(ushort segmentId, bool startNode, bool value) {
 			bool? valueToSet = value;
-			if (value == Options.allowUTurns)
+			if (value == OptionManager.allowUTurns)
 				valueToSet = null;
 
 			int index = startNode ? 0 : 1;
@@ -433,13 +432,13 @@ namespace Transit.Addon.TM.Data {
 
 			TMConfigurationV2.SegmentNodeFlags[] nodeFlags = segmentNodeFlags[segmentId];
 			if (nodeFlags == null || nodeFlags[index] == null || nodeFlags[index].straightLaneChangingAllowed == null)
-				return Options.allowLaneChangesWhileGoingStraight;
+				return OptionManager.allowLaneChangesWhileGoingStraight;
 			return (bool)nodeFlags[index].straightLaneChangingAllowed;
 		}
 
 		public static void setStraightLaneChangingAllowed(ushort segmentId, bool startNode, bool value) {
 			bool? valueToSet = value;
-			if (value == Options.allowLaneChangesWhileGoingStraight)
+			if (value == OptionManager.allowLaneChangesWhileGoingStraight)
 				valueToSet = null;
 
 			int index = startNode ? 0 : 1;
@@ -459,13 +458,13 @@ namespace Transit.Addon.TM.Data {
 
 			TMConfigurationV2.SegmentNodeFlags[] nodeFlags = segmentNodeFlags[segmentId];
 			if (nodeFlags == null || nodeFlags[index] == null || nodeFlags[index].enterWhenBlockedAllowed == null)
-				return Options.allowEnterBlockedJunctions;
+				return OptionManager.allowEnterBlockedJunctions;
 			return (bool)nodeFlags[index].enterWhenBlockedAllowed;
 		}
 
 		public static void setEnterWhenBlockedAllowed(ushort segmentId, bool startNode, bool value) {
 			bool? valueToSet = value;
-			if (value == Options.allowEnterBlockedJunctions)
+			if (value == OptionManager.allowEnterBlockedJunctions)
 				valueToSet = null;
 
 			int index = startNode ? 0 : 1;

@@ -10,16 +10,16 @@ namespace Transit.Addon.TM {
         public override void OnUpdate(float realTimeDelta, float simulationTimeDelta) {
             base.OnUpdate(realTimeDelta, simulationTimeDelta);
 
-			if (TrafficManagerModule.Instance == null || ToolsModifierControl.toolController == null || ToolsModifierControl.toolController == null || TrafficManagerModule.Instance.UI == null) {
+			if (ToolModuleV2.Instance == null || ToolsModifierControl.toolController == null || ToolsModifierControl.toolController == null || ToolModuleV2.Instance.UI == null) {
                 return;
             }
 
-            if (ToolsModifierControl.toolController.CurrentTool != TrafficManagerModule.Instance.TrafficManagerTool && TrafficManagerModule.Instance.UI.IsVisible()) {
-                TrafficManagerModule.Instance.UI.Close();
+            if (ToolsModifierControl.toolController.CurrentTool != ToolModuleV2.Instance.TrafficManagerTool && ToolModuleV2.Instance.UI.IsVisible()) {
+                ToolModuleV2.Instance.UI.Close();
             }
 
             if (Input.GetKeyDown(KeyCode.Escape)) {
-                TrafficManagerModule.Instance.UI.Close();
+                ToolModuleV2.Instance.UI.Close();
             }
         }
     }

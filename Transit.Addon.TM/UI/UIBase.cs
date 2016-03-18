@@ -2,6 +2,7 @@ using ColossalFramework.UI;
 using System;
 using Transit.Addon.TM.TrafficLight;
 using Transit.Addon.TM;
+using Transit.Addon.TM.Tools;
 using UnityEngine;
 
 namespace Transit.Addon.TM.UI {
@@ -60,7 +61,7 @@ namespace Transit.Addon.TM.UI {
 		}
 
 		public void Show() {
-			if (TrafficManagerModule.Instance != null) {
+			if (ToolModuleV2.Instance != null) {
 				try {
 					ToolsModifierControl.mainToolbar.CloseEverything();
 				} catch (Exception e) {
@@ -75,7 +76,7 @@ namespace Transit.Addon.TM.UI {
 					Log._Debug("Showing TM UI: create");
 					uiView.AddUIComponent(typeof(UITrafficManager));
 				}
-				TrafficManagerModule.Instance.SetToolMode(TrafficManagerMode.Activated);
+				ToolModuleV2.Instance.SetToolMode(Mode.Activated);
 				_uiShown = true;
 			} else {
 				Log._Debug("TM UI Show: LoadingExtension.Instance is null!");
@@ -83,7 +84,7 @@ namespace Transit.Addon.TM.UI {
 		}
 
 		public void Close() {
-			if (TrafficManagerModule.Instance != null) {
+			if (ToolModuleV2.Instance != null) {
 				var uiView = UIView.GetAView();
 				var trafficManager = uiView.FindUIComponent("UITrafficManager");
 
@@ -95,8 +96,8 @@ namespace Transit.Addon.TM.UI {
 				}
 
 				UITrafficManager.deactivateButtons();
-				TrafficManagerTool.SetToolMode(ToolMode.None);
-				TrafficManagerModule.Instance.SetToolMode(TrafficManagerMode.None);
+				TrafficManagerTool.SetToolMode(TrafficManagerToolMode.None);
+				ToolModuleV2.Instance.SetToolMode(Mode.Disabled);
 
 				_uiShown = false;
 			} else {

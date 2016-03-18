@@ -43,10 +43,6 @@
       <Project>{65c72736-b189-4144-91bf-1717287ba925}</Project>
       <Name>Transit.Addon.TM</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Transit.Addon.ToolsV2\Transit.Addon.ToolsV2.csproj">
-      <Project>{7d1c44dc-79d4-414f-8ded-42e762afa862}</Project>
-      <Name>Transit.Addon.ToolsV2</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Transit.Framework.ExtensionPoints\Transit.Framework.ExtensionPoints.csproj">
       <Project>{2e44eca3-d750-4115-b16b-fca94c49bba0}</Project>
       <Name>Transit.Framework.ExtensionPoints</Name>

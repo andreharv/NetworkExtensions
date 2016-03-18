@@ -10,7 +10,6 @@ using ColossalFramework;
 using ColossalFramework.Math;
 using Transit.Addon.TM.AI;
 using Transit.Addon.TM.Data;
-using Transit.Addon.TM.State;
 using Transit.Addon.TM.Traffic;
 using Transit.Framework.ExtensionPoints.PathFinding;
 using Transit.Framework.ExtensionPoints.PathFinding.Contracts;
@@ -824,7 +823,7 @@ namespace Transit.Addon.TM.PathFinding
 				bool isStrictLaneArrowPolicyEnabled =
 					_unitType != ExtendedUnitType.Emergency &&
 					(nextIsJunction || nextIsTransition) &&
-					!(Options.allRelaxed || (Options.relaxedBusses && _transportVehicle)) &&
+					!(OptionManager.allRelaxed || (OptionManager.relaxedBusses && _transportVehicle)) &&
 					(_vehicleTypes & VehicleInfo.VehicleType.Car) != VehicleInfo.VehicleType.None;
 
 				// get segment geometry
@@ -872,7 +871,7 @@ namespace Transit.Addon.TM.PathFinding
 				// determine if we should explore the previous segment (for u-turns)
 				bool explorePrevSegment =
 					Flags.getUTurnAllowed(prevSegmentId, nextIsStartNodeOfPrevSegment) &&
-					!Options.isStockLaneChangerUsed() &&
+					!OptionManager.isStockLaneChangerUsed() &&
 					nextIsJunction &&
 					!prevIsHighway &&
 					!prevIsOutgoingOneWay &&
@@ -917,7 +916,7 @@ namespace Transit.Addon.TM.PathFinding
 					//mCurrentState = 23;
 					SegmentGeometry nextGeometry = CustomRoadAI.GetSegmentGeometry(nextSegmentId);
 					bool nextIsHighway = nextGeometry.IsHighway();
-					bool applyHighwayRules = Options.highwayRules && nextAreOnlyOneWayHighways && prevIsOutgoingOneWay && prevIsHighway && nextIsRealJunction;
+					bool applyHighwayRules = OptionManager.highwayRules && nextAreOnlyOneWayHighways && prevIsOutgoingOneWay && prevIsHighway && nextIsRealJunction;
 					bool applyHighwayRulesAtSegment = applyHighwayRules;
 					bool nextIsUntouchable = (netManager.m_segments.m_buffer[nextSegmentId].m_flags & NetSegment.Flags.Untouchable) != NetSegment.Flags.None;
 					bool nextIsStartNodeOfNextSegment = netManager.m_segments.m_buffer[nextSegmentId].m_startNode == nextNodeId;
@@ -1840,7 +1839,7 @@ namespace Transit.Addon.TM.PathFinding
 			}
 
 			// determine if Advanced AI shouuld be used here
-			bool useAdvancedAI = !Options.isStockLaneChangerUsed() &&
+			bool useAdvancedAI = !OptionManager.isStockLaneChangerUsed() &&
 				(_unitType != ExtendedUnitType.Unknown &&
 				(_unitType & (ExtendedUnitType.RoadVehicle & ~ExtendedUnitType.RoadPublicTransport)) != ExtendedUnitType.None) &&
 				allowCustomLaneChanging &&
@@ -1944,9 +1943,9 @@ namespace Transit.Addon.TM.PathFinding
 			bool nextIsHighway = CustomRoadAI.GetSegmentGeometry(nextSegmentId).IsHighway();
 			// determines if a vehicles wants to change lanes here (randomized). If true, costs for changing to an adjacent lane are not added to the result
 			bool wantToChangeLane = false;
-			if (useAdvancedAI && Options.laneChangingRandomization != 5)
+			if (useAdvancedAI && OptionManager.laneChangingRandomization != 5)
 			{
-				_laneChangeRandCounter = (ushort)((_laneChangeRandCounter + 1) % Options.getLaneChangingRandomizationTargetValue());
+				_laneChangeRandCounter = (ushort)((_laneChangeRandCounter + 1) % OptionManager.getLaneChangingRandomizationTargetValue());
 				wantToChangeLane = (_laneChangeRandCounter == 0);
 			}
 			// NON-STOCK CODE END //
@@ -2187,7 +2186,7 @@ namespace Transit.Addon.TM.PathFinding
 								divMetric = nextSpeed * nextMaxSpeed; // 0 .. nextMaxSpeed
 
 								// calculate density metric
-								multMetric = Options.pathCostMultiplicator * nextDensity; // 1 .. pathCostMultiplicator
+								multMetric = OptionManager.pathCostMultiplicator * nextDensity; // 1 .. pathCostMultiplicator
 
 								// calculate density/speed metric
 								metric = Math.Max(0.01f, multMetric) / Math.Max(0.1f, divMetric);
@@ -2197,7 +2196,7 @@ namespace Transit.Addon.TM.PathFinding
 
 								// multiply with lane distance if distance > 1 or if vehicle does not like to change lanes
 								float laneMetric = 1f;
-								float laneChangeCostBase = _isHeavyVehicle ? Options.someValue : Options.someValue2; // heavy vehicles have higher lane changing costs assigned
+								float laneChangeCostBase = _isHeavyVehicle ? OptionManager.someValue : OptionManager.someValue2; // heavy vehicles have higher lane changing costs assigned
 																													 //if (! isPreferredLaneChangingDir)
 																													 //laneChangeCostBase *= 1.25f; // costs for changing lanes not along the "favorite" direction of the map traffic system
 
@@ -2217,7 +2216,7 @@ namespace Transit.Addon.TM.PathFinding
 									laneDist > 0 &&
 									nextItem.m_numSegmentsToJunction < 3)
 								{
-									float junctionMetric = (float)Math.Pow(Options.someValue3, Math.Max(0f, 3f - nextItem.m_numSegmentsToJunction));
+									float junctionMetric = (float)Math.Pow(OptionManager.someValue3, Math.Max(0f, 3f - nextItem.m_numSegmentsToJunction));
 									metric *= junctionMetric;
 								}
 

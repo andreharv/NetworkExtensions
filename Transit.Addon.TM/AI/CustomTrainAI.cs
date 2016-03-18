@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Transit.Addon.TM.State;
 using Transit.Addon.TM.Traffic;
 using UnityEngine;
 
@@ -99,7 +98,7 @@ namespace Transit.Addon.TM.AI {
 						}
 					}
 				}
-				if ((vehicleData.m_flags & (Vehicle.Flags.Spawned | Vehicle.Flags.WaitingPath | Vehicle.Flags.WaitingSpace | Vehicle.Flags.WaitingCargo)) == Vehicle.Flags.None || (vehicleData.m_blockCounter == 255 && Options.enableDespawning)) {
+				if ((vehicleData.m_flags & (Vehicle.Flags.Spawned | Vehicle.Flags.WaitingPath | Vehicle.Flags.WaitingSpace | Vehicle.Flags.WaitingCargo)) == Vehicle.Flags.None || (vehicleData.m_blockCounter == 255 && OptionManager.enableDespawning)) {
 					Singleton<VehicleManager>.instance.ReleaseVehicle(vehicleId);
 				}
 			} catch (Exception ex) {

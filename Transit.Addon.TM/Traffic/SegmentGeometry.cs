@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading;
 using Transit.Addon.TM.AI;
 using Transit.Addon.TM.Data;
-using Transit.Addon.TM.State;
 using Transit.Addon.TM.Traffic;
 using Transit.Addon.TM.TrafficLight;
 
@@ -1051,7 +1050,7 @@ namespace Transit.Addon.TM.Traffic {
 		/// <param name="startNode"></param>
 		/// <returns></returns>
 		public bool AreHighwayRulesEnabled(bool startNode) {
-			if (!Options.highwayRules)
+			if (!OptionManager.highwayRules)
 				return false;
 			if (!IsIncomingOneWay(startNode ? startNodeId() : endNodeId()))
 				return false;

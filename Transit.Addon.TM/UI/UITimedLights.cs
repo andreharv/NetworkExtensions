@@ -1,6 +1,7 @@
 ﻿using ColossalFramework.UI;
 using Transit.Addon.TM.TrafficLight;
 using Transit.Addon.TM;
+using Transit.Addon.TM.Tools;
 using UnityEngine;
 
 namespace Transit.Addon.TM.UI
@@ -11,7 +12,7 @@ namespace Transit.Addon.TM.UI
 
         public override void Start()
         {
-            TrafficLightTool = TrafficManagerModule.Instance.TrafficManagerTool;
+            TrafficLightTool = ToolModuleV2.Instance.TrafficManagerTool;
             //this makes the panel "visible", I don't know what sprites are available, but found this value to work
             backgroundSprite = "GenericPanel";
             color = new Color32(75, 75, 135, 255);

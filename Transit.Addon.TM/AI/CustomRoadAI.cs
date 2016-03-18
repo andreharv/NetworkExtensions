@@ -7,8 +7,8 @@ using UnityEngine;
 using ColossalFramework.Math;
 using System.Threading;
 using Transit.Addon.TM.UI;
-using Transit.Addon.TM.State;
 using Transit.Addon.TM.Data;
+using Transit.Addon.TM.Tools;
 
 namespace Transit.Addon.TM.AI {
 	class CustomRoadAI : RoadBaseAI {
@@ -33,7 +33,7 @@ namespace Transit.Addon.TM.AI {
 				simStartFrame = Singleton<SimulationManager>.instance.m_currentFrameIndex;
 
 			try {
-				if (TrafficManagerTool.GetToolMode() != ToolMode.AddPrioritySigns) {
+				if (TrafficManagerTool.GetToolMode() != TrafficManagerToolMode.AddPrioritySigns) {
 					try {
 						TrafficPriority.nodeHousekeeping(nodeId);
 					} catch (Exception e) {
@@ -63,7 +63,7 @@ namespace Transit.Addon.TM.AI {
 					Log.Error($"Error occured while housekeeping segment {segmentID}: " + e.ToString());
 				}
 
-				if (!Options.isStockLaneChangerUsed()) {
+				if (!OptionManager.isStockLaneChangerUsed()) {
 					try {
 						InStartupPhase = simStartFrame == 0 || simStartFrame >> 14 >= Singleton<SimulationManager>.instance.m_currentFrameIndex >> 14; // approx. 3 minutes
 

@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Transit.Addon.TM.State;
 using Transit.Addon.TM.Traffic;
 using Transit.Addon.TM.TrafficLight;
 using Transit.Addon.TM.Data;
@@ -335,7 +334,7 @@ namespace Transit.Addon.TM.AI {
 				return false;
 			if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) == Vehicle.Flags.None)
 				return false;
-			if (!Options.dynamicPathRecalculation)
+			if (!OptionManager.dynamicPathRecalculation)
 				return false;
 			if (TrafficPriority.GetVehiclePosition(vehicleId).LastPathRecalculation >= GetVehiclePathRecalculationFrame())
 				return false;

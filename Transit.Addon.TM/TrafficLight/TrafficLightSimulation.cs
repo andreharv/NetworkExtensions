@@ -2,7 +2,6 @@ using System;
 using ColossalFramework;
 using Transit.Addon.TM.Traffic;
 using System.Collections.Generic;
-using Transit.Addon.TM.State;
 using Transit.Addon.TM.AI;
 
 namespace Transit.Addon.TM.TrafficLight {

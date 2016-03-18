@@ -5,7 +5,6 @@ using ColossalFramework;
 using Transit.Addon.TM.TrafficLight;
 using Transit.Addon.TM.AI;
 using UnityEngine;
-using Transit.Addon.TM.State;
 using System.Threading;
 using Transit.Addon.TM.Data;
 
@@ -618,7 +617,7 @@ namespace Transit.Addon.TM.Traffic {
 						/*RemoveVehicleFromSegments(targetCarId);
 						Vehicles[targetCarId].Valid = false;*/
 
-						if (Options.simAccuracy <= 1) {
+						if (OptionManager.simAccuracy <= 1) {
 							CustomVehicleAI.HandleVehicle(targetCarId, ref Singleton<VehicleManager>.instance.m_vehicles.m_buffer[targetCarId], false, false, 1);
 							if (!Vehicles[targetCarId].Valid)
 								return true;
@@ -649,7 +648,7 @@ namespace Transit.Addon.TM.Traffic {
 						/*RemoveVehicleFromSegments(incomingCarId);
 						Vehicles[incomingCarId].Valid = false;*/
 
-						if (Options.simAccuracy <= 2) {
+						if (OptionManager.simAccuracy <= 2) {
 							CustomVehicleAI.HandleVehicle(incomingCarId, ref Singleton<VehicleManager>.instance.m_vehicles.m_buffer[incomingCarId], false, false, 1);
 							if (!Vehicles[incomingCarId].Valid)
 								return true;
