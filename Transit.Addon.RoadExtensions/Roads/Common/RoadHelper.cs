@@ -29,29 +29,33 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                 return;
             }
 
-            foreach (var lane in info.m_lanes.Where(l => l.m_laneProps != null))
+            for (int i = 0; i < info.m_lanes.Count(); i++)
             {
-                if (lane.m_laneProps.m_props == null ||
+                var lane = info.m_lanes[i];
+                if (lane.m_laneProps == null ||
+                    lane.m_laneProps.m_props == null ||
                     lane.m_laneProps.m_props.Length == 0)
                 {
                     continue;
                 }
 
-                var oldProp = lane
+                var oldProps = lane
                     .m_laneProps
                     .m_props
-                    .FirstOrDefault(prop => prop.m_prop == oldPropInfo);
+                    .Where(prop => prop != null && prop.m_prop == oldPropInfo)
+                    .ToList();
 
-                if (oldProp != null)
+                if (oldProps.Count() > 0)
                 {
-                    var newSpeedLimitProp = oldProp.ShallowClone();
-                    newSpeedLimitProp.m_prop = newPropInfo;
-                    newSpeedLimitProp.m_finalProp = null;
-
                     var newPropsContent = new List<NetLaneProps.Prop>();
                     newPropsContent.AddRange(lane.m_laneProps.m_props.Where(prop => prop.m_prop != oldPropInfo));
-                    newPropsContent.Add(newSpeedLimitProp);
-
+                    for (int j = 0; j < oldProps.Count(); j++)
+                    {
+                        var newProp = oldProps[j].ShallowClone();
+                        newProp.m_prop = newPropInfo;
+                        newProp.m_finalProp = newPropInfo;
+                        newPropsContent.Add(newProp);
+                    }
                     var newProps = ScriptableObject.CreateInstance<NetLaneProps>();
                     newProps.name = lane.m_laneProps.name;
                     newProps.m_props = newPropsContent.ToArray();
@@ -89,13 +93,13 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                 }
             }
         }
-        public static void AddProps(this ICollection<NetLaneProps.Prop> props, ICollection<NetLaneProps.Prop> propsToAdd)
-        {
-            foreach (var propToAdd in propsToAdd)
-            {
-                props.Add(propToAdd.ShallowClone());
-            }
-        }
+        //public static void AddProps(this ICollection<NetLaneProps.Prop> props, ICollection<NetLaneProps.Prop> propsToAdd)
+        //{
+        //    foreach (var propToAdd in propsToAdd)
+        //    {
+        //        props.Add(propToAdd.ShallowClone());
+        //    }
+        //}
         /// <summary>
         /// Replaces a prop whose name is contained in the key with the propinfo in the value.
         /// </summary>
@@ -112,6 +116,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                     tempProp = propsToReplace[i].ShallowClone();
                     props.Remove(propsToReplace[i]);
                     tempProp.m_prop = replacementPair.Value;
+                    tempProp.m_finalProp = replacementPair.Value;
                     props.Add(tempProp);
                 }
             }

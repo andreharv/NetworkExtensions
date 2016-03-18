@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Transit.Framework;
+using Transit.Framework.Network;
 
 namespace Transit.Addon.RoadExtensions.PublicTransport.SubwayUtils
 {

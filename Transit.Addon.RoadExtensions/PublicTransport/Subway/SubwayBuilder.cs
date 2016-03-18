@@ -4,10 +4,13 @@ using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Addon.RoadExtensions.PublicTransport.SubwayUtils;
 using System.Collections.Generic;
+using Transit.Framework.Network;
+using Transit.Addon.RoadExtensions.Roads.Common;
+using UnityEngine;
 
 namespace Transit.Addon.RoadExtensions.PublicTransport.Subway
 {
-    public partial class SubwayBuilder : Activable, INetInfoBuilderPart
+    public partial class SubwayBuilder : Activable, INetInfoBuilderPart, INetInfoLateBuilder
     {
         public int Order { get { return 7; } }
         public int UIOrder { get { return 9; } }
@@ -21,7 +24,7 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.Subway
 
         public string ThumbnailsPath { get { return @"PublicTransport\Subway\thumbnails.png"; } }
         public string InfoTooltipPath { get { return @"PublicTransport\Subway\infotooltip.png"; } }
-        
+
         public NetInfoVersion SupportedVersions
         {
             get { return NetInfoVersion.All; }
@@ -32,9 +35,9 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.Subway
             ///////////////////////////
             // Template              //
             ///////////////////////////
-            var highwayInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L_SLOPE);
-            var roadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_2L);
-            var owRoadTunnelInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ONEWAY_2L_TUNNEL);
+            //var highwayInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L_SLOPE);
+            var railInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.TRAINTRACK);
+            //var owRoadTunnelInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ONEWAY_2L_TUNNEL);
 
             ///////////////////////////
             // 3DModeling            //
@@ -65,26 +68,30 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.Subway
 
             //var propLanes = info.m_lanes.Where(l => l.m_laneProps != null && (l.m_laneProps.name.ToLower().Contains("left") || l.m_laneProps.name.ToLower().Contains("right"))).ToList();
 
-            var remainingLanes = new List<NetInfo.Lane>();
-            remainingLanes.AddRange(info
-                .m_lanes
-                .Where(l => l.m_laneType == NetInfo.LaneType.Pedestrian || l.m_laneType == NetInfo.LaneType.None || l.m_laneType == NetInfo.LaneType.Parking));
-            remainingLanes.AddRange(info
-                .m_lanes
-                .Where(l => l.m_laneType != NetInfo.LaneType.None)
-                .Skip(1));
+            //var remainingLanes = new List<NetInfo.Lane>();
+            //remainingLanes.AddRange(info
+            //    .m_lanes
+            //    .Where(l => l.m_laneType == NetInfo.LaneType.Pedestrian || l.m_laneType == NetInfo.LaneType.None || l.m_laneType == NetInfo.LaneType.Parking));
+            //remainingLanes.AddRange(info
+            //    .m_lanes
+            //    .Where(l => l.m_laneType != NetInfo.LaneType.None)
+            //    .Skip(1));
+            //info.m_lanes = remainingLanes.ToArray();
+            info.SetRoadLanes(version, new LanesConfiguration()
+            {
+                IsTwoWay = false,
+                LanesToAdd = -1,
+            });
 
-            info.m_lanes = remainingLanes.ToArray();
-            info.m_class.m_layer = ItemClass.Layer.PublicTransport;
+            //info.m_class.m_layer = ItemClass.Layer.PublicTransport;
             info.m_connectGroup = NetInfo.ConnectGroup.CenterTram;
             info.m_nodeConnectGroups = NetInfo.ConnectGroup.CenterTram | NetInfo.ConnectGroup.NarrowTram;
             //info.m_nodes[1].m_connectGroup = (NetInfo.ConnectGroup)9; 
-            var info2 = Prefabs.Find<NetInfo>("Train Track", false);
-            info2.m_connectGroup = NetInfo.ConnectGroup.NarrowTram;
-            info2.m_nodeConnectGroups = NetInfo.ConnectGroup.NarrowTram;
-            info2.m_nodes[1].m_connectGroup = NetInfo.ConnectGroup.NarrowTram;
-            info.m_class = info2.m_class.Clone("NExtSingleTrack");
-            var owPlayerNetAI = roadInfo.GetComponent<PlayerNetAI>();
+            railInfo.m_connectGroup = NetInfo.ConnectGroup.NarrowTram;
+            railInfo.m_nodeConnectGroups = NetInfo.ConnectGroup.NarrowTram;
+            railInfo.m_nodes[1].m_connectGroup = NetInfo.ConnectGroup.NarrowTram;
+            info.m_class = railInfo.m_class.Clone("NExtSingleTrack");
+            var owPlayerNetAI = railInfo.GetComponent<PlayerNetAI>();
             var playerNetAI = info.GetComponent<PlayerNetAI>();
             if (owPlayerNetAI != null && playerNetAI != null)
             {
@@ -96,7 +103,27 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.Subway
 
             if (trainTrackAI != null)
             {
-             
+
+            }
+        }
+
+        public void LateBuildUp(NetInfo info, NetInfoVersion version)
+        {
+            var plPropInfo = PrefabCollection<PropInfo>.FindLoaded("Rail1LPowerLine.Rail1LPowerLine_Data");
+            if (plPropInfo == null)
+            {
+                plPropInfo = PrefabCollection<PropInfo>.FindLoaded("478820060.Rail1LPowerLine_Data");
+            }
+            var oldPlPropInfo = Prefabs.Find<PropInfo>("RailwayPowerline");
+            info.ReplaceProps(plPropInfo, oldPlPropInfo);
+            for (int i = 0; i < info.m_lanes.Count(); i++)
+            {
+                var powerLineProp = info.m_lanes[i].m_laneProps.m_props.Where(p => p.m_prop == plPropInfo).ToList();
+                for (int j = 0; j < powerLineProp.Count(); j++)
+                {
+                    powerLineProp[j].m_position = new Vector3(2.4f, -0.15f, 0);
+                    powerLineProp[j].m_angle = 180;
+                }
             }
         }
     }
