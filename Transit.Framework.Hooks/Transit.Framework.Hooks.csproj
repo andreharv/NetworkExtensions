@@ -59,10 +59,15 @@
     <Compile Include="AI\Units\CargoTruckAIHook.StartPathFind.cs" />
     <Compile Include="AI\Units\CitizenAIHook.StartPathFind.cs" />
     <Compile Include="AI\Units\FireTruckAIHook.StartPathFind.cs" />
+    <Compile Include="AI\Units\MaintenanceTruckAIHook.StartPathFind.cs" />
+    <Compile Include="AI\Units\SnowTruckAIHook.StartPathFind.cs" />
     <Compile Include="AI\Units\GarbageTruckAIHook.StartPathFind.cs" />
     <Compile Include="AI\Units\HearseAIHook.StartPathFind.cs" />
     <Compile Include="AI\Units\PassengerCarAIHook.StartPathFind.cs" />
     <Compile Include="AI\Units\PoliceCarAIHook.StartPathFind.cs" />
+    <Compile Include="AI\Units\TrainAIHook.StartPathFind.cs" />
+    <Compile Include="AI\Units\TramBaseAIHook.StartPathFind.cs" />
+    <Compile Include="AI\Units\ShipAIHook.StartPathFind.cs" />
     <Compile Include="AI\Units\TaxiAIHook.StartPathFind.cs" />
     <Compile Include="AI\Units\TransportLineAIHook.StartPathFind.cs" />
     <Compile Include="HookInstaller.cs" />

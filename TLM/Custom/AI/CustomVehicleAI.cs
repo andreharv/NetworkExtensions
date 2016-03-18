@@ -275,7 +275,7 @@ namespace TrafficManager.Custom.AI {
 			}*/
 
 			VehicleAI ai = vehicleData.Info.m_vehicleAI;
-			return DetermineVehicleTypeFromAIType(ai, (vehicleData.m_flags & Vehicle.Flags.Emergency2) != Vehicle.Flags.None);
+			return DetermineVehicleTypeFromAIType(ai, false);
 		}
 
 		internal static ExtVehicleType? DetermineVehicleTypeFromVehicleInfo(VehicleInfo vehicleInfo) {
@@ -309,9 +309,9 @@ namespace TrafficManager.Custom.AI {
 				case VehicleInfo.VehicleType.Train:
 					if (ai is PassengerTrainAI)
 						return ExtVehicleType.PassengerTrain;
-					if (ai is CargoTrainAI)
+					//if (ai is CargoTrainAI)
 						return ExtVehicleType.CargoTrain;
-					break;
+					//break;
 				case VehicleInfo.VehicleType.Tram:
 					return ExtVehicleType.Tram;
 				case VehicleInfo.VehicleType.Ship:

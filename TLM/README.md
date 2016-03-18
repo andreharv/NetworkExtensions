@@ -2,6 +2,10 @@
 A work-in-progress modification for **Cities: Skylines** to add additional road traffic control
 
 # Changelog
+1.6.14, 03/17/2016
+- Bugfix: Cargo trucks did not obey vehicle restrictions (thanks to @ad.vissers for pointing out this problem)
+- Bugfix: When Advanced AI was deactivated, u-turns did not have costs assigned
+
 1.6.13, 03/16/2016
 - Added Dutch translation
 - The pedestrian light mode of a traffic light can now be switched back to automatic

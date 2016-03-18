@@ -564,6 +564,27 @@ namespace TrafficManager {
 						detourFailed = true;
 					}
 
+					Log.Info("Redirection ShipAI::StartPathFind calls");
+					try {
+						Detours.Add(new Detour(typeof(ShipAI).GetMethod("StartPathFind",
+								BindingFlags.NonPublic | BindingFlags.Instance,
+								null,
+								new[]
+								{
+									typeof (ushort),
+									typeof (Vehicle).MakeByRefType(),
+									typeof (Vector3),
+									typeof (Vector3),
+									typeof (bool),
+									typeof (bool)
+								},
+								null),
+								typeof(CustomShipAI).GetMethod("CustomStartPathFind")));
+					} catch (Exception) {
+						Log.Error("Could not redirect ShipAI::StartPathFind");
+						detourFailed = true;
+					}
+
 					Log.Info("Redirection CitizenAI::StartPathFind calls");
 					try {
 						Detours.Add(new Detour(typeof(CitizenAI).GetMethod("StartPathFind",

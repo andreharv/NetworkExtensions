@@ -1893,9 +1893,8 @@ namespace Transit.Addon.TM.PathFinding
 			}
 
 			// check for vehicle restrictions
-			if (!this.GetFeatures().RoadRestriction.CanUseLane(item.m_position.m_segment, prevSegmentInfo, item.m_position.m_lane, item.m_laneID, prevLaneInfo, _unitType))
-			{
-				//if (false) {
+			//if (!this.GetFeatures().RoadRestriction.CanUseLane(item.m_position.m_segment, prevSegmentInfo, item.m_position.m_lane, item.m_laneID, prevLaneInfo, _unitType)) {
+			if (false) {
 #if DEBUGPF
 				if (Options.disableSomething1 && debug) {
 					Log._Debug($"Vehicle {_unitType} must not use lane {item.m_position.m_lane} @ seg. {item.m_position.m_segment}, null? {prevLaneInfo == null}");
@@ -1909,6 +1908,12 @@ namespace Transit.Addon.TM.PathFinding
 				// apply vehicle restrictions when not using Advanced AI
 				if (strictlyAvoidLane)
 					prevCost *= 50f;
+
+				// add costs for u-turns
+				if (!isMiddle && nextSegmentId == item.m_position.m_segment)
+				{
+					prevCost *= 2f;
+				}
 			}
 
 			if ((byte)(prevLaneType & (NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle)) != 0)

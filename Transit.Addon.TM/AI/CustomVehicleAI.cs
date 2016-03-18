@@ -275,7 +275,7 @@ namespace Transit.Addon.TM.AI {
 			}*/
 
 			VehicleAI ai = vehicleData.Info.m_vehicleAI;
-			return DetermineVehicleTypeFromAIType(ai, (vehicleData.m_flags & Vehicle.Flags.Emergency2) != Vehicle.Flags.None);
+			return DetermineVehicleTypeFromAIType(ai, false);
 		}
 
 		internal static TMVehicleType? DetermineVehicleTypeFromVehicleInfo(VehicleInfo vehicleInfo) {
@@ -309,9 +309,9 @@ namespace Transit.Addon.TM.AI {
 				case VehicleInfo.VehicleType.Train:
 					if (ai is PassengerTrainAI)
 						return TMVehicleType.PassengerTrain;
-					if (ai is CargoTrainAI)
+					//if (ai is CargoTrainAI)
 						return TMVehicleType.CargoTrain;
-					break;
+					//break;
 				case VehicleInfo.VehicleType.Tram:
 					return TMVehicleType.Tram;
 				case VehicleInfo.VehicleType.Ship:

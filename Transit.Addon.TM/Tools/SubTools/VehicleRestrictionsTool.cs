@@ -112,19 +112,14 @@ namespace Transit.Addon.TM.Tools.SubTools {
 					uint laneIndex = (uint)laneData[2];
 					NetInfo.Lane laneInfo = selectedSegmentInfo.m_lanes[laneIndex];
 
-					TMVehicleType baseMask = TMVehicleType.None;
-					if (VehicleRestrictionsManager.IsRoadLane(laneInfo)) {
-						baseMask = TMVehicleType.RoadVehicle;
-					} else if (VehicleRestrictionsManager.IsRailLane(laneInfo)) {
-						baseMask = TMVehicleType.RailVehicle;
-					}
+					TMVehicleType baseMask = VehicleRestrictionsManager.GetDefaultAllowedVehicleTypes(SelectedSegmentId, selectedSegmentInfo, laneIndex, laneInfo);
 
 					if (baseMask == TMVehicleType.None)
 						continue;
 
 					TMVehicleType allowedTypes = VehicleRestrictionsManager.GetAllowedVehicleTypes(SelectedSegmentId, selectedSegmentInfo, laneIndex, laneInfo);
 					allowedTypes = ~allowedTypes & baseMask;
-					VehicleRestrictionsManager.SetAllowedVehicleTypes(SelectedSegmentId, laneIndex, laneId, allowedTypes);
+					VehicleRestrictionsManager.SetAllowedVehicleTypes(SelectedSegmentId, selectedSegmentInfo, laneIndex, laneInfo, laneId, allowedTypes);
 				}
 			}
 
@@ -132,36 +127,31 @@ namespace Transit.Addon.TM.Tools.SubTools {
 			if (GUILayout.Button(Translation.GetString("Allow_all_vehicles"))) {
 				// allow all vehicle types
 
-				NetInfo segmentInfo = Singleton<NetManager>.instance.m_segments.m_buffer[SelectedSegmentId].Info;
-				List<object[]> sortedLanes = TrafficManagerTool.GetSortedVehicleLanes(SelectedSegmentId, segmentInfo, null); // TODO does not need to be sorted, but every lane should be a vehicle lane
+				NetInfo selectedSegmentInfo = Singleton<NetManager>.instance.m_segments.m_buffer[SelectedSegmentId].Info;
+				List<object[]> sortedLanes = TrafficManagerTool.GetSortedVehicleLanes(SelectedSegmentId, selectedSegmentInfo, null); // TODO does not need to be sorted, but every lane should be a vehicle lane
 				foreach (object[] laneData in sortedLanes) {
 					uint laneId = (uint)laneData[0];
 					uint laneIndex = (uint)laneData[2];
-					NetInfo.Lane laneInfo = segmentInfo.m_lanes[laneIndex];
+					NetInfo.Lane laneInfo = selectedSegmentInfo.m_lanes[laneIndex];
 
-					TMVehicleType baseMask = TMVehicleType.None;
-					if (VehicleRestrictionsManager.IsRoadLane(laneInfo)) {
-						baseMask = TMVehicleType.RoadVehicle;
-					} else if (VehicleRestrictionsManager.IsRailLane(laneInfo)) {
-						baseMask = TMVehicleType.RailVehicle;
-					}
+					TMVehicleType baseMask = VehicleRestrictionsManager.GetDefaultAllowedVehicleTypes(SelectedSegmentId, selectedSegmentInfo, laneIndex, laneInfo);
 
 					if (baseMask == TMVehicleType.None)
 						continue;
 
-					VehicleRestrictionsManager.SetAllowedVehicleTypes(SelectedSegmentId, laneIndex, laneId, baseMask);
+					VehicleRestrictionsManager.SetAllowedVehicleTypes(SelectedSegmentId, selectedSegmentInfo, laneIndex, laneInfo, laneId, baseMask);
 				}
 			}
 
 			if (GUILayout.Button(Translation.GetString("Ban_all_vehicles"))) {
 				// ban all vehicle types
 
-				NetInfo segmentInfo = Singleton<NetManager>.instance.m_segments.m_buffer[SelectedSegmentId].Info;
-				List<object[]> sortedLanes = TrafficManagerTool.GetSortedVehicleLanes(SelectedSegmentId, segmentInfo, null); // TODO does not need to be sorted, but every lane should be a vehicle lane
+				NetInfo selectedSegmentInfo = Singleton<NetManager>.instance.m_segments.m_buffer[SelectedSegmentId].Info;
+				List<object[]> sortedLanes = TrafficManagerTool.GetSortedVehicleLanes(SelectedSegmentId, selectedSegmentInfo, null); // TODO does not need to be sorted, but every lane should be a vehicle lane
 				foreach (object[] laneData in sortedLanes) {
 					uint laneId = (uint)laneData[0];
 					uint laneIndex = (uint)laneData[2];
-					NetInfo.Lane laneInfo = segmentInfo.m_lanes[laneIndex];
+					NetInfo.Lane laneInfo = selectedSegmentInfo.m_lanes[laneIndex];
 
 					TMVehicleType baseMask = TMVehicleType.None;
 					if (VehicleRestrictionsManager.IsRoadLane(laneInfo)) {
@@ -173,7 +163,7 @@ namespace Transit.Addon.TM.Tools.SubTools {
 					if (baseMask == TMVehicleType.None)
 						continue;
 
-					VehicleRestrictionsManager.SetAllowedVehicleTypes(SelectedSegmentId, laneIndex, laneId, ~baseMask);
+					VehicleRestrictionsManager.SetAllowedVehicleTypes(SelectedSegmentId, selectedSegmentInfo, laneIndex, laneInfo, laneId, TMVehicleType.None);
 				}
 			}
 			GUILayout.EndHorizontal();
@@ -229,7 +219,7 @@ namespace Transit.Addon.TM.Tools.SubTools {
 								NetInfo.Lane laneInfo = segmentInfo.m_lanes[laneIndex];
 
 								// apply restrictions of selected segment & lane
-								VehicleRestrictionsManager.SetAllowedVehicleTypes(segmentId, laneIndex, laneId, VehicleRestrictionsManager.GetAllowedVehicleTypes(SelectedSegmentId, selectedSegmentInfo, selectedLaneIndex, selectedLaneInfo));
+								VehicleRestrictionsManager.SetAllowedVehicleTypes(segmentId, segmentInfo, laneIndex, laneInfo, laneId, VehicleRestrictionsManager.GetAllowedVehicleTypes(SelectedSegmentId, selectedSegmentInfo, selectedLaneIndex, selectedLaneInfo));
 							}
 
 							// add nodes to explore
