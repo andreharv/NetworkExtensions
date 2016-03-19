@@ -1050,7 +1050,7 @@ namespace Transit.Addon.TM.Traffic {
 		/// <param name="startNode"></param>
 		/// <returns></returns>
 		public bool AreHighwayRulesEnabled(bool startNode) {
-			if (!OptionManager.highwayRules)
+			if (!TMDataManager.Options.highwayRules)
 				return false;
 			if (!IsIncomingOneWay(startNode ? startNodeId() : endNodeId()))
 				return false;

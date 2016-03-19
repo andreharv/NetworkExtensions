@@ -63,7 +63,7 @@ namespace Transit.Addon.TM.AI {
 					Log.Error($"Error occured while housekeeping segment {segmentID}: " + e.ToString());
 				}
 
-				if (!OptionManager.isStockLaneChangerUsed()) {
+				if (TMDataManager.Options.advancedAI) {
 					try {
 						InStartupPhase = simStartFrame == 0 || simStartFrame >> 14 >= Singleton<SimulationManager>.instance.m_currentFrameIndex >> 14; // approx. 3 minutes
 

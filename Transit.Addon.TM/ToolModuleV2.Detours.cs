@@ -30,7 +30,7 @@ namespace Transit.Addon.TM {
         public bool DetourInited { get; set; }
         public bool NodeSimulationLoaded { get; set; }
 		public List<Detour> Detours { get; set; }
-		public UIBase UI { get; set; }
+		public BaseUI UI { get; set; }
 
 		public void revertDetours() {
 			if (Instance.DetourInited) {

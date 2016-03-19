@@ -57,7 +57,7 @@ namespace Transit.Addon.TM.Tools.SubTools {
 
 		public void ShowGUI(bool viewOnly) {
 			try {
-				if (viewOnly && !OptionManager.prioritySignsOverlay)
+				if (viewOnly && !TMDataManager.Options.prioritySignsOverlay)
 					return;
 
 				bool clicked = !viewOnly ? MainTool.CheckClicked() : false;
@@ -65,8 +65,8 @@ namespace Transit.Addon.TM.Tools.SubTools {
 				//Log.Message("_guiPrioritySigns called. num of prio segments: " + TrafficPriority.PrioritySegments.Count);
 
 				HashSet<ushort> nodeIdsWithSigns = new HashSet<ushort>();
-				for (ushort segmentId = 0; segmentId < TrafficPriority.PrioritySegments.Length; ++segmentId) {
-					var trafficSegment = TrafficPriority.PrioritySegments[segmentId];
+				for (ushort segmentId = 0; segmentId < TrafficPriority.TrafficSegments.Length; ++segmentId) {
+					var trafficSegment = TrafficPriority.TrafficSegments[segmentId];
 					if (trafficSegment == null)
 						continue;
 					SegmentGeometry geometry = CustomRoadAI.GetSegmentGeometry(segmentId);
@@ -132,7 +132,7 @@ namespace Transit.Addon.TM.Tools.SubTools {
 
 						switch (prioritySegment.Type) {
 							case SegmentEnd.PriorityType.Main:
-								GUI.DrawTexture(nodeDrawingBox, TrafficLightToolTextureResources.SignPriorityTexture2D);
+								GUI.DrawTexture(nodeDrawingBox, Textures.SignPriorityTexture2D);
 								if (clicked && hoveredSegment) {
 									//Log._Debug("Click on node " + nodeId + ", segment " + segmentId + " to change prio type (1)");
 									//Log.Message("PrioritySegment.Type = Yield");
@@ -141,7 +141,7 @@ namespace Transit.Addon.TM.Tools.SubTools {
 								}
 								break;
 							case SegmentEnd.PriorityType.Yield:
-								GUI.DrawTexture(nodeDrawingBox, TrafficLightToolTextureResources.SignYieldTexture2D);
+								GUI.DrawTexture(nodeDrawingBox, Textures.SignYieldTexture2D);
 								if (clicked && hoveredSegment) {
 									//Log._Debug("Click on node " + nodeId + ", segment " + segmentId + " to change prio type (2)");
 									prioritySegment.Type = SegmentEnd.PriorityType.Stop;
@@ -150,7 +150,7 @@ namespace Transit.Addon.TM.Tools.SubTools {
 
 								break;
 							case SegmentEnd.PriorityType.Stop:
-								GUI.DrawTexture(nodeDrawingBox, TrafficLightToolTextureResources.SignStopTexture2D);
+								GUI.DrawTexture(nodeDrawingBox, Textures.SignStopTexture2D);
 								if (clicked && hoveredSegment) {
 									//Log._Debug("Click on node " + nodeId + ", segment " + segmentId + " to change prio type (3)");
 									prioritySegment.Type = SegmentEnd.PriorityType.None;
@@ -160,7 +160,7 @@ namespace Transit.Addon.TM.Tools.SubTools {
 							case SegmentEnd.PriorityType.None:
 								if (viewOnly)
 									break;
-								GUI.DrawTexture(nodeDrawingBox, TrafficLightToolTextureResources.SignNoneTexture2D);
+								GUI.DrawTexture(nodeDrawingBox, Textures.SignNoneTexture2D);
 
 								if (clicked && hoveredSegment) {
 									//Log._Debug("Click on node " + nodeId + ", segment " + segmentId + " to change prio type (4)");
@@ -205,7 +205,7 @@ namespace Transit.Addon.TM.Tools.SubTools {
 					}
 					GUI.color = guiColor;
 
-					GUI.DrawTexture(nodeBoundingBox, TrafficLightToolTextureResources.SignRemoveTexture2D);
+					GUI.DrawTexture(nodeBoundingBox, Textures.SignRemoveTexture2D);
 				}
 
 				// add a new or delete a priority segment node

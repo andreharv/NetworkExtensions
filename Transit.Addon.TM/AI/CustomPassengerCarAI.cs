@@ -2,6 +2,7 @@ using System;
 using ColossalFramework;
 using UnityEngine;
 using Transit.Addon.TM.Traffic;
+using Transit.Addon.TM.Data;
 
 namespace Transit.Addon.TM.AI
 {
@@ -10,7 +11,7 @@ namespace Transit.Addon.TM.AI
         public void CustomSimulationStep(ushort vehicleId, ref Vehicle data, Vector3 physicsLodRefPos)
         {
 			try {
-				if ((data.m_flags & Vehicle.Flags.Congestion) != Vehicle.Flags.None && OptionManager.enableDespawning) {
+				if ((data.m_flags & Vehicle.Flags.Congestion) != Vehicle.Flags.None && TMDataManager.Options.enableDespawning) {
 					Singleton<VehicleManager>.instance.ReleaseVehicle(vehicleId);
 				} else {
 					base.SimulationStep(vehicleId, ref data, physicsLodRefPos);

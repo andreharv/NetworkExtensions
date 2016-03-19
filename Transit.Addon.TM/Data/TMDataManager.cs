@@ -1,26 +1,40 @@
-﻿using Transit.Addon.TM.AI;
+﻿using TrafficManager;
+using Transit.Addon.TM.AI;
 using Transit.Addon.TM.Data;
 using Transit.Addon.TM.Traffic;
 
-namespace Transit.Addon.TM.Data
-{
-    public static partial class TMDataManager
-    {
-        public static void Init(TMConfigurationV2 configuration, byte[] options)
-        {
-            Log.Info("Initializing flags");
-            Flags.OnBeforeLoadData();
-            Log.Info("Initializing segment geometries");
-            CustomRoadAI.OnBeforeLoadData();
-            Log.Info("Initialization done. Loading mod data now.");
+namespace Transit.Addon.TM.Data {
+	public static partial class TMDataManager {
+		public static TMConfigurationV2.Options Options {
+			get; private set;
+		} = new TMConfigurationV2.Options();
 
-            ApplyConfiguration(configuration);
+		private static void OnBeforeLoad() {
+			Flags.OnBeforeLoadData();
+			CustomRoadAI.OnBeforeLoadData();
+		}
 
-            Flags.clearHighwayLaneArrows();
-            Flags.applyAllFlags();
-            TrafficPriority.HandleAllVehicles();
+		private static void OnAfterLoad() {
+			Flags.clearHighwayLaneArrows();
+			Flags.applyAllFlags();
+			TrafficPriority.HandleAllVehicles();
+		}
 
-            ApplyOptions(options);
-        }
-    }
+		internal static void Apply(TMConfigurationV2 configuration) {
+			OnBeforeLoad();
+			if (configuration != null) {
+				if (configuration.Opt != null)
+					Options = configuration.Opt;
+				ApplyConfiguration(configuration);
+			}
+			OnAfterLoad();
+		}
+
+		internal static void Apply(Configuration dataV1, byte[] options) {
+			OnBeforeLoad();
+			Options = ParseV1Options(options);
+			ApplyConfiguration(dataV1);
+			OnAfterLoad();
+		}
+	}
 }

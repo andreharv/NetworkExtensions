@@ -6,37 +6,24 @@ namespace Transit.Addon.TM.Data
     [Serializable]
     public partial class TMConfigurationV2
     {
-        public string NodeTrafficLights = ""; // TODO rework
-        public string NodeCrosswalk = ""; // TODO rework
-        public string LaneFlags = ""; // TODO rework
+		/// <summary>
+		/// Node configurations
+		/// </summary>
+		public List<NodeConf> NodeConfs = new List<NodeConf>();
 
-        /// <summary>
-        /// Stored lane speed limits
-        /// </summary>
-        public List<LaneSpeedLimit> LaneSpeedLimits = new List<LaneSpeedLimit>();
+		/// <summary>
+		/// Segment configurations
+		/// </summary>
+		public List<SegmentConf> SegmentConfs = new List<SegmentConf>();
 
-        /// <summary>
-        /// Stored vehicle restrictions
-        /// </summary>
-        public List<LaneVehicleTypes> LaneAllowedVehicleTypes = new List<LaneVehicleTypes>();
+		/// <summary>
+		/// Stored lane speed limits
+		/// </summary>
+		public List<LaneConf> LaneConfs = new List<LaneConf>();
 
-        /// <summary>
-        /// Timed traffic lights
-        /// </summary>
-        public List<TimedTrafficLights> TimedLights = new List<TimedTrafficLights>();
-
-        /// <summary>
-        /// Segment-at-Node configurations
-        /// </summary>
-        public List<SegmentNodeConf> SegmentNodeConfs = new List<SegmentNodeConf>();
-
-        public List<int[]> PrioritySegments = new List<int[]>(); // TODO rework
-        public List<int[]> NodeDictionary = new List<int[]>(); // TODO rework
-        public List<int[]> ManualSegments = new List<int[]>(); // TODO rework
-
-        public List<int[]> TimedNodes = new List<int[]>(); // TODO rework
-        public List<ushort[]> TimedNodeGroups = new List<ushort[]>(); // TODO rework
-        public List<int[]> TimedNodeSteps = new List<int[]>(); // TODO rework
-        public List<int[]> TimedNodeStepSegments = new List<int[]>(); // TODO rework
+		/// <summary>
+		/// Options
+		/// </summary>
+		public Options Opt = new Options();
     }
 }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Transit.Addon.TM.Data;
 using Transit.Addon.TM.Traffic;
 using UnityEngine;
 
@@ -63,7 +64,7 @@ namespace Transit.Addon.TM.AI {
 					break;
 				}
 			}
-			if ((vehicleData.m_flags & (Vehicle.Flags.Spawned | Vehicle.Flags.WaitingPath | Vehicle.Flags.WaitingSpace | Vehicle.Flags.WaitingCargo)) == Vehicle.Flags.None || (vehicleData.m_blockCounter == 255 && OptionManager.enableDespawning)) {
+			if ((vehicleData.m_flags & (Vehicle.Flags.Spawned | Vehicle.Flags.WaitingPath | Vehicle.Flags.WaitingSpace | Vehicle.Flags.WaitingCargo)) == Vehicle.Flags.None || (vehicleData.m_blockCounter == 255 && TMDataManager.Options.enableDespawning)) {
 				Singleton<VehicleManager>.instance.ReleaseVehicle(vehicleId);
 			}
 		}
@@ -107,7 +108,7 @@ namespace Transit.Addon.TM.AI {
 					bool flag = (flags & NetNode.Flags.TrafficLights) != NetNode.Flags.None;
 					bool flag2 = (flags & NetNode.Flags.LevelCrossing) != NetNode.Flags.None;
 					bool flag3 = (flags2 & NetLane.Flags.JoinedJunction) != NetLane.Flags.None;
-					bool checkSpace = !OptionManager.allowEnterBlockedJunctions; // NON-STOCK CODE
+					bool checkSpace = !TMDataManager.Options.allowEnterBlockedJunctions; // NON-STOCK CODE
 					if (checkSpace && (flags & (NetNode.Flags.Junction | NetNode.Flags.OneWayOut | NetNode.Flags.OneWayIn)) == NetNode.Flags.Junction && instance.m_nodes.m_buffer[(int)num2].CountSegments() != 2) {
 						float len = vehicleData.CalculateTotalLength(vehicleID) + 2f;
 						if (!instance.m_lanes.m_buffer[(int)((UIntPtr)laneID)].CheckSpace(len)) {

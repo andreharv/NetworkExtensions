@@ -103,7 +103,7 @@ namespace Transit.Addon.TM.Data
 			while (true) {
 				try {
 					return m_laneConnections.Contains(laneId);
-				} catch (Exception) {
+				} catch (Exception e) {
 					// we might get an IndexOutOfBounds here since we are not locking
 #if DEBUG
 						Logger.LogWarning("ConnectsTo: %s", e.ToString());
@@ -124,7 +124,7 @@ namespace Transit.Addon.TM.Data
 							startI = i;
 							goto CONTINUE_WHILE; // lane has been deleted; continue search for invalid lanes
 						}
-					} catch (Exception) {
+					} catch (Exception e) {
 						// we might get an IndexOutOfBounds here since we are not locking
 #if DEBUG
 							Logger.LogWarning("ConnectsTo: %s", e.ToString());

@@ -329,7 +329,7 @@ namespace Transit.Addon.TM.AI {
 				return false;
 			if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) == Vehicle.Flags.None)
 				return false;
-			if (!OptionManager.dynamicPathRecalculation)
+			if (!TMDataManager.Options.dynamicPathRecalculation)
 				return false;
 			if (TrafficPriority.GetVehiclePosition(vehicleId).LastPathRecalculation >= GetVehiclePathRecalculationFrame())
 				return false;

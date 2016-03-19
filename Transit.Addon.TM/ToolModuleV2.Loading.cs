@@ -9,17 +9,10 @@ using Transit.Addon.TM.TrafficLight;
 using Transit.Addon.TM.UI;
 using Transit.Framework;
 using Transit.Framework.Modularity;
-using System;
 using System.Reflection;
 using ColossalFramework;
-using ICities;
-using Transit.Addon.TM.AI;
-using Transit.Addon.TM.Traffic;
-using Transit.Addon.TM.TrafficLight;
-using Transit.Addon.TM.UI;
 using UnityEngine;
 using Object = UnityEngine.Object;
-using System.Collections.Generic;
 using ColossalFramework.UI;
 using ColossalFramework.Math;
 using Transit.Framework.Redirection;
@@ -49,7 +42,7 @@ namespace Transit.Addon.TM
                 TrafficPriority.OnLevelLoading();
 
                 Log.Info("Adding Controls to UI.");
-                UI = ToolsModifierControl.toolController.gameObject.AddComponent<UIBase>();
+                UI = ToolsModifierControl.toolController.gameObject.AddComponent<BaseUI>();
 
                 initDetours();
                 Log.Info("OnLevelLoaded complete.");

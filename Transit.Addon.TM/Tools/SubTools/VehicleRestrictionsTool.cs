@@ -243,7 +243,7 @@ namespace Transit.Addon.TM.Tools.SubTools {
 			}
 #endif
 
-			if (viewOnly && !OptionManager.vehicleRestrictionsOverlay && TrafficManagerTool.GetToolMode() != TrafficManagerToolMode.VehicleRestrictions)
+			if (viewOnly && !TMDataManager.Options.vehicleRestrictionsOverlay && TrafficManagerTool.GetToolMode() != TrafficManagerToolMode.VehicleRestrictions)
 				return false;
 
 			Vector3 center = Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].m_bounds.center;
@@ -333,7 +333,7 @@ namespace Transit.Addon.TM.Tools.SubTools {
 						continue; // do not draw allowed vehicles in view-only mode
 
 					bool hoveredHandle;
-					DrawRestrictionsSign(viewOnly, camPos, out diff, xu, yu, f, zero, x, y, ref guiColor, TrafficLightToolTextureResources.VehicleRestrictionTextures[vehicleType][allowed], out hoveredHandle);
+					DrawRestrictionsSign(viewOnly, camPos, out diff, xu, yu, f, zero, x, y, ref guiColor, Textures.VehicleRestrictionTextures[vehicleType][allowed], out hoveredHandle);
 					if (hoveredHandle)
 						hovered = true;
 

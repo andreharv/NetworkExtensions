@@ -8,7 +8,6 @@ namespace Transit.Addon.TM.Data
         [Serializable]
         public class TimedTrafficLights
         {
-            public ushort nodeId;
             public List<ushort> nodeGroup;
             public bool started;
             public List<TimedTrafficLightsStep> timedSteps;

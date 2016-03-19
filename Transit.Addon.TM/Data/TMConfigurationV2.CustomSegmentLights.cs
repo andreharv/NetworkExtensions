@@ -9,8 +9,6 @@ namespace Transit.Addon.TM.Data
         [Serializable]
         public class CustomSegmentLights
         {
-            public ushort nodeId;
-            public ushort segmentId;
             public Dictionary<TMVehicleType, CustomSegmentLight> customLights;
             public RoadBaseAI.TrafficLightState? pedestrianLightState;
             public bool manualPedestrianMode;

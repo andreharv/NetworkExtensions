@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Transit.Addon.TM.UI
 {
-    public class TrafficLightToolTextureResources
+    public class Textures
     {
         public static readonly Texture2D RedLightTexture2D;
         public static readonly Texture2D YellowRedLightTexture2D;
@@ -50,7 +50,7 @@ namespace Transit.Addon.TM.UI
 		public static readonly Texture2D LaneChangeForbiddenTexture2D;
 		public static readonly Texture2D LaneChangeAllowedTexture2D;
 
-		static TrafficLightToolTextureResources()
+		static Textures()
         {
             // simple
             RedLightTexture2D = LoadDllResource("light_1_1.png", 103, 243);

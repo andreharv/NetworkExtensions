@@ -2,12 +2,13 @@ using System;
 using ColossalFramework;
 using UnityEngine;
 using Transit.Addon.TM.Traffic;
+using Transit.Addon.TM.Data;
 
 namespace Transit.Addon.TM.AI {
 	class CustomCargoTruckAI : CarAI {
 		public void CustomSimulationStep(ushort vehicleId, ref Vehicle data, Vector3 physicsLodRefPos) {
 			try {
-				if ((data.m_flags & Vehicle.Flags.Congestion) != Vehicle.Flags.None && OptionManager.enableDespawning) {
+				if ((data.m_flags & Vehicle.Flags.Congestion) != Vehicle.Flags.None && TMDataManager.Options.enableDespawning) {
 					Singleton<VehicleManager>.instance.ReleaseVehicle(vehicleId);
 				} else {
 					if ((data.m_flags & Vehicle.Flags.WaitingTarget) != Vehicle.Flags.None && (data.m_waitCounter += 1) > 20) {
@@ -100,7 +101,7 @@ namespace Transit.Addon.TM.AI {
 			if ((data.m_flags & (Vehicle.Flags.Spawned | Vehicle.Flags.WaitingPath | Vehicle.Flags.WaitingSpace)) ==
 				Vehicle.Flags.None && data.m_cargoParent == 0) {
 				Singleton<VehicleManager>.instance.ReleaseVehicle(vehicleId);
-			} else if (data.m_blockCounter >= maxBlockCounter && OptionManager.enableDespawning) {
+			} else if (data.m_blockCounter >= maxBlockCounter && TMDataManager.Options.enableDespawning) {
 				Singleton<VehicleManager>.instance.ReleaseVehicle(vehicleId);
 			} else if (data.m_leadingVehicle == 0 && CustomVehicleAI.ShouldRecalculatePath(vehicleId, ref data, maxBlockCounter)) {
 				CustomVehicleAI.MarkPathRecalculation(vehicleId);

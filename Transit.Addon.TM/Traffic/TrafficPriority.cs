@@ -17,12 +17,12 @@ namespace Transit.Addon.TM.Traffic {
 		/// <summary>
 		/// Dictionary of segments that are connected to roads with timed traffic lights or priority signs. Index: segment id
 		/// </summary>
-		public static TrafficSegment[] PrioritySegments = null;
+		internal static TrafficSegment[] TrafficSegments = new TrafficSegment[NetManager.MAX_SEGMENT_COUNT];
 
 		/// <summary>
 		/// Known vehicles and their current known positions. Index: vehicle id
 		/// </summary>
-		private static VehiclePosition[] Vehicles = null;
+		private static VehiclePosition[] Vehicles = new VehiclePosition[VehicleManager.MAX_VEHICLE_COUNT];
 
 		/// <summary>
 		/// Markers that defined in which segment(s) a vehicle will be in the near future. Index: vehicle id
@@ -30,7 +30,7 @@ namespace Transit.Addon.TM.Traffic {
 		public static HashSet<ushort>[] markedVehicles = null;
 
 		/// <summary>
-		/// Nodes that have timed traffic lights or priority signs
+		/// Nodes that have timed traffic lights or priority signs (implicitly defined)
 		/// </summary>
 		private static HashSet<ushort> priorityNodes = new HashSet<ushort>();
 
@@ -42,8 +42,6 @@ namespace Transit.Addon.TM.Traffic {
 		private static uint lastTrafficLightUpdateFrame = 0;
 
 		static TrafficPriority() {
-			PrioritySegments = new TrafficSegment[Singleton<NetManager>.instance.m_segments.m_size];
-			Vehicles = new VehiclePosition[Singleton<VehicleManager>.instance.m_vehicles.m_size];
 			for (int i = 0; i < Singleton<VehicleManager>.instance.m_vehicles.m_size; ++i) {
 				Vehicles[i] = new VehiclePosition();
 			}
@@ -63,7 +61,7 @@ namespace Transit.Addon.TM.Traffic {
 
 			Log.Info("adding PrioritySegment @ node " + nodeId + ", seg. " + segmentId + ", type " + type);
 
-			var prioritySegment = PrioritySegments[segmentId];
+			var prioritySegment = TrafficSegments[segmentId];
 			if (prioritySegment != null) { // do not replace with IsPrioritySegment!
 				prioritySegment.Segment = segmentId;
 
@@ -72,7 +70,7 @@ namespace Transit.Addon.TM.Traffic {
 				if (prioritySegment.Node1 == nodeId || prioritySegment.Node1 == 0) {
 					Log._Debug("Updating Node1");
 					prioritySegment.Node1 = nodeId;
-					PrioritySegments[segmentId].Instance1 = new SegmentEnd(nodeId, segmentId, type);
+					TrafficSegments[segmentId].Instance1 = new SegmentEnd(nodeId, segmentId, type);
 					return;
 				}
 
@@ -95,7 +93,7 @@ namespace Transit.Addon.TM.Traffic {
 				prioritySegment.Segment = segmentId;
 				prioritySegment.Node1 = nodeId;
 				prioritySegment.Instance1 = new SegmentEnd(nodeId, segmentId, type);
-				PrioritySegments[segmentId] = prioritySegment;
+				TrafficSegments[segmentId] = prioritySegment;
 			}
 			priorityNodes.Add(nodeId);
 		}
@@ -119,7 +117,7 @@ namespace Transit.Addon.TM.Traffic {
 
 				if (IsPrioritySegment(nodeId, segmentId)) {
 					//Log.Message("Housekeeping: node " + nodeId + " contains prio seg. " + segmentId);
-					var prioritySegment = PrioritySegments[segmentId];
+					var prioritySegment = TrafficSegments[segmentId];
 					if (prioritySegment.Node1 == nodeId) {
 						prioritySegment.Node1 = 0;
 						prioritySegment.Instance1.RemoveAllCars();
@@ -131,7 +129,7 @@ namespace Transit.Addon.TM.Traffic {
 					}
 
 					if (prioritySegment.Node1 == 0 && prioritySegment.Node2 == 0) {
-						PrioritySegments[segmentId] = null;
+						TrafficSegments[segmentId] = null;
 					}
 				}
 			}
@@ -173,8 +171,8 @@ namespace Transit.Addon.TM.Traffic {
 			if (nodeId <= 0 || segmentId <= 0)
 				return false;
 
-			if (PrioritySegments[segmentId] != null) {
-				var prioritySegment = PrioritySegments[segmentId];
+			if (TrafficSegments[segmentId] != null) {
+				var prioritySegment = TrafficSegments[segmentId];
 
 				NetManager netManager = Singleton<NetManager>.instance;
 				if ((netManager.m_segments.m_buffer[segmentId].m_flags & NetSegment.Flags.Created) == NetSegment.Flags.None) {
@@ -202,7 +200,7 @@ namespace Transit.Addon.TM.Traffic {
 		public static SegmentEnd GetPrioritySegment(ushort nodeId, ushort segmentId) {
 			if (!IsPrioritySegment(nodeId, segmentId)) return null;
 
-			var prioritySegment = PrioritySegments[segmentId];
+			var prioritySegment = TrafficSegments[segmentId];
 
 			if (prioritySegment.Node1 == nodeId) {
 				return prioritySegment.Instance1;
@@ -213,9 +211,9 @@ namespace Transit.Addon.TM.Traffic {
 		}
 
 		internal static void RemovePrioritySegment(ushort nodeId, ushort segmentId) { // priorityNodes: OK
-			if (nodeId <= 0 || segmentId <= 0 || PrioritySegments[segmentId] == null)
+			if (nodeId <= 0 || segmentId <= 0 || TrafficSegments[segmentId] == null)
 				return;
-			var prioritySegment = PrioritySegments[segmentId];
+			var prioritySegment = TrafficSegments[segmentId];
 
 			if (prioritySegment.Node1 == nodeId) {
 				prioritySegment.Node1 = 0;
@@ -229,7 +227,7 @@ namespace Transit.Addon.TM.Traffic {
 			}
 
 			if (prioritySegment.Node1 == 0 && prioritySegment.Node2 == 0)
-				PrioritySegments[segmentId] = null;
+				TrafficSegments[segmentId] = null;
 			rebuildPriorityNodes();
 		}
 
@@ -552,7 +550,7 @@ namespace Transit.Addon.TM.Traffic {
 			HashSet<ushort> segmentIds = new HashSet<ushort>(markedVehicles[vehicleId]);
 			foreach (ushort segmentId in segmentIds) {
 				//Log._Debug($"Removing vehicle {vehicleId} from segment {segmentId}");
-				TrafficSegment trafficSeg = PrioritySegments[segmentId];
+				TrafficSegment trafficSeg = TrafficSegments[segmentId];
 				if (trafficSeg == null) {
 					markedVehicles[vehicleId].Remove(segmentId);
 					Log.Warning($"RemoveVehicleFromSegments: Inconsistency detected in markedVehicles: PrioritySegment for {segmentId} does not exist. Tried to remove vehicle {vehicleId}");
@@ -617,7 +615,7 @@ namespace Transit.Addon.TM.Traffic {
 						/*RemoveVehicleFromSegments(targetCarId);
 						Vehicles[targetCarId].Valid = false;*/
 
-						if (OptionManager.simAccuracy <= 1) {
+						if (TMDataManager.Options.simAccuracy <= 1) {
 							CustomVehicleAI.HandleVehicle(targetCarId, ref Singleton<VehicleManager>.instance.m_vehicles.m_buffer[targetCarId], false, false, 1);
 							if (!Vehicles[targetCarId].Valid)
 								return true;
@@ -648,7 +646,7 @@ namespace Transit.Addon.TM.Traffic {
 						/*RemoveVehicleFromSegments(incomingCarId);
 						Vehicles[incomingCarId].Valid = false;*/
 
-						if (OptionManager.simAccuracy <= 2) {
+						if (TMDataManager.Options.simAccuracy <= 2) {
 							CustomVehicleAI.HandleVehicle(incomingCarId, ref Singleton<VehicleManager>.instance.m_vehicles.m_buffer[incomingCarId], false, false, 1);
 							if (!Vehicles[incomingCarId].Valid)
 								return true;
@@ -891,8 +889,8 @@ namespace Transit.Addon.TM.Traffic {
 		internal static void OnLevelUnloading() {
 			TrafficLightSimulation.LightSimulationByNodeId.Clear();
 			priorityNodes.Clear();
-			for (int i = 0; i < PrioritySegments.Length; ++i)
-				PrioritySegments[i] = null;
+			for (int i = 0; i < TrafficSegments.Length; ++i)
+				TrafficSegments[i] = null;
 			for (int i = 0; i < Vehicles.Length; ++i)
 				Vehicles[i].Valid = false;
 			for (int i = 0; i < markedVehicles.Length; ++i)
@@ -1011,8 +1009,8 @@ namespace Transit.Addon.TM.Traffic {
 		private static void rebuildPriorityNodes() {
 			priorityNodes.Clear();
 
-			for (ushort i = 0; i < PrioritySegments.Length; ++i) {
-				var trafficSeg = PrioritySegments[i];
+			for (ushort i = 0; i < TrafficSegments.Length; ++i) {
+				var trafficSeg = TrafficSegments[i];
 				if (trafficSeg == null)
 					continue;
 				if (trafficSeg.Node1 != 0)

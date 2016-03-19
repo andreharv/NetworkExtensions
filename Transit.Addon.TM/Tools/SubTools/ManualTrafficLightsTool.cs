@@ -99,11 +99,11 @@ namespace Transit.Addon.TM.Tools.SubTools {
 
 						switch (segmentLights.PedestrianLightState) {
 							case RoadBaseAI.TrafficLightState.Green:
-								GUI.DrawTexture(myRect3, TrafficLightToolTextureResources.PedestrianGreenLightTexture2D);
+								GUI.DrawTexture(myRect3, Textures.PedestrianGreenLightTexture2D);
 								break;
 							case RoadBaseAI.TrafficLightState.Red:
 							default:
-								GUI.DrawTexture(myRect3, TrafficLightToolTextureResources.PedestrianRedLightTexture2D);
+								GUI.DrawTexture(myRect3, Textures.PedestrianRedLightTexture2D);
 								break;
 						}
 
@@ -122,7 +122,7 @@ namespace Transit.Addon.TM.Tools.SubTools {
 
 						var myRect1 = new Rect(offsetScreenPos.x - modeWidth / 2, offsetScreenPos.y - modeHeight / 2 + modeHeight - 7f * zoom, modeWidth, modeHeight);
 
-						GUI.DrawTexture(myRect1, TrafficLightToolTextureResources.LightModeTexture2D);
+						GUI.DrawTexture(myRect1, Textures.LightModeTexture2D);
 
 						hoveredSegment = GetHoveredSegment(myRect1, segmentId, hoveredSegment, segmentLight);
 
@@ -140,7 +140,7 @@ namespace Transit.Addon.TM.Tools.SubTools {
 									continue;
 								var infoRect = new Rect(offsetScreenPos.x + modeWidth / 2f + 7f * zoom * (float)(numInfos + 1) + infoWidth * (float)numInfos, offsetScreenPos.y - infoHeight / 2f, infoWidth, infoHeight);
 								guiColor.a = 0.6f;
-								GUI.DrawTexture(infoRect, TrafficLightToolTextureResources.VehicleInfoSignTextures[TrafficManagerTool.InfoSignsToDisplay[k]]);
+								GUI.DrawTexture(infoRect, Textures.VehicleInfoSignTextures[TrafficManagerTool.InfoSignsToDisplay[k]]);
 								++numInfos;
 							}
 						}
@@ -210,7 +210,7 @@ namespace Transit.Addon.TM.Tools.SubTools {
 			var myRect2 = new Rect(screenPos.x - manualPedestrianWidth / 2 - lightWidth + 5f * zoom,
 				screenPos.y - manualPedestrianHeight / 2 - 9f * zoom, manualPedestrianWidth, manualPedestrianHeight);
 
-			GUI.DrawTexture(myRect2, segmentLights.ManualPedestrianMode ? TrafficLightToolTextureResources.PedestrianModeManualTexture2D : TrafficLightToolTextureResources.PedestrianModeAutomaticTexture2D);
+			GUI.DrawTexture(myRect2, segmentLights.ManualPedestrianMode ? Textures.PedestrianModeManualTexture2D : Textures.PedestrianModeAutomaticTexture2D);
 
 			if (!myRect2.Contains(Event.current.mousePosition))
 				return hoveredSegment;
@@ -265,7 +265,7 @@ namespace Transit.Addon.TM.Tools.SubTools {
 
 			var myRectCounter = new Rect(screenPos.x - modeWidth / 2, screenPos.y - modeHeight / 2 - 6f * zoom, modeWidth, modeHeight);
 
-			GUI.DrawTexture(myRectCounter, TrafficLightToolTextureResources.LightCounterTexture2D);
+			GUI.DrawTexture(myRectCounter, Textures.LightCounterTexture2D);
 
 			var counterSize = 20f * zoom;
 
@@ -296,10 +296,10 @@ namespace Transit.Addon.TM.Tools.SubTools {
 
 			switch (segmentDict.LightMain) {
 				case RoadBaseAI.TrafficLightState.Green:
-					GUI.DrawTexture(myRect4, TrafficLightToolTextureResources.GreenLightTexture2D);
+					GUI.DrawTexture(myRect4, Textures.GreenLightTexture2D);
 					break;
 				case RoadBaseAI.TrafficLightState.Red:
-					GUI.DrawTexture(myRect4, TrafficLightToolTextureResources.RedLightTexture2D);
+					GUI.DrawTexture(myRect4, Textures.RedLightTexture2D);
 					break;
 			}
 
@@ -327,10 +327,10 @@ namespace Transit.Addon.TM.Tools.SubTools {
 
 				switch (segmentDict.LightLeft) {
 					case RoadBaseAI.TrafficLightState.Green:
-						GUI.DrawTexture(myRect4, TrafficLightToolTextureResources.GreenLightLeftTexture2D);
+						GUI.DrawTexture(myRect4, Textures.GreenLightLeftTexture2D);
 						break;
 					case RoadBaseAI.TrafficLightState.Red:
-						GUI.DrawTexture(myRect4, TrafficLightToolTextureResources.RedLightLeftTexture2D);
+						GUI.DrawTexture(myRect4, Textures.RedLightLeftTexture2D);
 						break;
 				}
 
@@ -355,28 +355,28 @@ namespace Transit.Addon.TM.Tools.SubTools {
 			if (hasForwardSegment && hasRightSegment) {
 				switch (segmentDict.LightMain) {
 					case RoadBaseAI.TrafficLightState.Green:
-						GUI.DrawTexture(myRect5, TrafficLightToolTextureResources.GreenLightForwardRightTexture2D);
+						GUI.DrawTexture(myRect5, Textures.GreenLightForwardRightTexture2D);
 						break;
 					case RoadBaseAI.TrafficLightState.Red:
-						GUI.DrawTexture(myRect5, TrafficLightToolTextureResources.RedLightForwardRightTexture2D);
+						GUI.DrawTexture(myRect5, Textures.RedLightForwardRightTexture2D);
 						break;
 				}
 			} else if (!hasRightSegment) {
 				switch (segmentDict.LightMain) {
 					case RoadBaseAI.TrafficLightState.Green:
-						GUI.DrawTexture(myRect5, TrafficLightToolTextureResources.GreenLightStraightTexture2D);
+						GUI.DrawTexture(myRect5, Textures.GreenLightStraightTexture2D);
 						break;
 					case RoadBaseAI.TrafficLightState.Red:
-						GUI.DrawTexture(myRect5, TrafficLightToolTextureResources.RedLightStraightTexture2D);
+						GUI.DrawTexture(myRect5, Textures.RedLightStraightTexture2D);
 						break;
 				}
 			} else {
 				switch (segmentDict.LightMain) {
 					case RoadBaseAI.TrafficLightState.Green:
-						GUI.DrawTexture(myRect5, TrafficLightToolTextureResources.GreenLightRightTexture2D);
+						GUI.DrawTexture(myRect5, Textures.GreenLightRightTexture2D);
 						break;
 					case RoadBaseAI.TrafficLightState.Red:
-						GUI.DrawTexture(myRect5, TrafficLightToolTextureResources.RedLightRightTexture2D);
+						GUI.DrawTexture(myRect5, Textures.RedLightRightTexture2D);
 						break;
 				}
 			}
@@ -403,10 +403,10 @@ namespace Transit.Addon.TM.Tools.SubTools {
 			if (hasForwardSegment && hasLeftSegment) {
 				switch (segmentDict.LightLeft) {
 					case RoadBaseAI.TrafficLightState.Green:
-						GUI.DrawTexture(myRect4, TrafficLightToolTextureResources.GreenLightForwardLeftTexture2D);
+						GUI.DrawTexture(myRect4, Textures.GreenLightForwardLeftTexture2D);
 						break;
 					case RoadBaseAI.TrafficLightState.Red:
-						GUI.DrawTexture(myRect4, TrafficLightToolTextureResources.RedLightForwardLeftTexture2D);
+						GUI.DrawTexture(myRect4, Textures.RedLightForwardLeftTexture2D);
 						break;
 				}
 			} else if (!hasLeftSegment) {
@@ -417,10 +417,10 @@ namespace Transit.Addon.TM.Tools.SubTools {
 
 				switch (segmentDict.LightMain) {
 					case RoadBaseAI.TrafficLightState.Green:
-						GUI.DrawTexture(myRect4, TrafficLightToolTextureResources.GreenLightStraightTexture2D);
+						GUI.DrawTexture(myRect4, Textures.GreenLightStraightTexture2D);
 						break;
 					case RoadBaseAI.TrafficLightState.Red:
-						GUI.DrawTexture(myRect4, TrafficLightToolTextureResources.RedLightStraightTexture2D);
+						GUI.DrawTexture(myRect4, Textures.RedLightStraightTexture2D);
 						break;
 				}
 			} else {
@@ -431,10 +431,10 @@ namespace Transit.Addon.TM.Tools.SubTools {
 
 				switch (segmentDict.LightMain) {
 					case RoadBaseAI.TrafficLightState.Green:
-						GUI.DrawTexture(myRect4, TrafficLightToolTextureResources.GreenLightLeftTexture2D);
+						GUI.DrawTexture(myRect4, Textures.GreenLightLeftTexture2D);
 						break;
 					case RoadBaseAI.TrafficLightState.Red:
-						GUI.DrawTexture(myRect4, TrafficLightToolTextureResources.RedLightLeftTexture2D);
+						GUI.DrawTexture(myRect4, Textures.RedLightLeftTexture2D);
 						break;
 				}
 			}
@@ -463,10 +463,10 @@ namespace Transit.Addon.TM.Tools.SubTools {
 
 			switch (segmentDict.LightRight) {
 				case RoadBaseAI.TrafficLightState.Green:
-					GUI.DrawTexture(myRect5, TrafficLightToolTextureResources.GreenLightRightTexture2D);
+					GUI.DrawTexture(myRect5, Textures.GreenLightRightTexture2D);
 					break;
 				case RoadBaseAI.TrafficLightState.Red:
-					GUI.DrawTexture(myRect5, TrafficLightToolTextureResources.RedLightRightTexture2D);
+					GUI.DrawTexture(myRect5, Textures.RedLightRightTexture2D);
 					break;
 			}
 
@@ -502,10 +502,10 @@ namespace Transit.Addon.TM.Tools.SubTools {
 
 			switch (segmentDict.LightLeft) {
 				case RoadBaseAI.TrafficLightState.Green:
-					GUI.DrawTexture(myRect4, TrafficLightToolTextureResources.GreenLightLeftTexture2D);
+					GUI.DrawTexture(myRect4, Textures.GreenLightLeftTexture2D);
 					break;
 				case RoadBaseAI.TrafficLightState.Red:
-					GUI.DrawTexture(myRect4, TrafficLightToolTextureResources.RedLightLeftTexture2D);
+					GUI.DrawTexture(myRect4, Textures.RedLightLeftTexture2D);
 					break;
 			}
 
@@ -540,10 +540,10 @@ namespace Transit.Addon.TM.Tools.SubTools {
 
 			switch (segmentDict.LightMain) {
 				case RoadBaseAI.TrafficLightState.Green:
-					GUI.DrawTexture(myRect6, TrafficLightToolTextureResources.GreenLightStraightTexture2D);
+					GUI.DrawTexture(myRect6, Textures.GreenLightStraightTexture2D);
 					break;
 				case RoadBaseAI.TrafficLightState.Red:
-					GUI.DrawTexture(myRect6, TrafficLightToolTextureResources.RedLightStraightTexture2D);
+					GUI.DrawTexture(myRect6, Textures.RedLightStraightTexture2D);
 					break;
 			}
 
@@ -569,10 +569,10 @@ namespace Transit.Addon.TM.Tools.SubTools {
 
 			switch (segmentDict.LightRight) {
 				case RoadBaseAI.TrafficLightState.Green:
-					GUI.DrawTexture(myRect5, TrafficLightToolTextureResources.GreenLightRightTexture2D);
+					GUI.DrawTexture(myRect5, Textures.GreenLightRightTexture2D);
 					break;
 				case RoadBaseAI.TrafficLightState.Red:
-					GUI.DrawTexture(myRect5, TrafficLightToolTextureResources.RedLightRightTexture2D);
+					GUI.DrawTexture(myRect5, Textures.RedLightRightTexture2D);
 					break;
 			}
 

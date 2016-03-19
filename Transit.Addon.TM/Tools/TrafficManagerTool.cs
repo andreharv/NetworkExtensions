@@ -99,7 +99,7 @@ namespace Transit.Addon.TM.Tools {
 			//Log._Debug($"SetToolMode: {mode}");
 			
 			if (mode == TrafficManagerToolMode.None) {
-				UITrafficManager.deactivateButtons();
+				TrafficManagerMenuUI.deactivateButtons();
 			}
 
 			bool toolModeChanged = (mode != _toolMode);
@@ -201,7 +201,7 @@ namespace Transit.Addon.TM.Tools {
 				}
 
 				_guiSegments();
-				if (OptionManager.nodesOverlay) {
+				if (TMDataManager.Options.nodesOverlay) {
 					_guiNodes();
 #if DEBUG
 					/*_guiVehicles();*/
@@ -430,7 +430,7 @@ namespace Transit.Addon.TM.Tools {
 				if (diff.magnitude > DebugCloseLod)
 					continue; // do not draw if too distant
 
-				if (OptionManager.nodesOverlay) {
+				if (TMDataManager.Options.nodesOverlay) {
 					var zoom = 1.0f / diff.magnitude * 150f;
 
 					_counterStyle.fontSize = (int)(12f * zoom);
@@ -477,7 +477,7 @@ namespace Transit.Addon.TM.Tools {
 
 					GUI.Label(labelRect, labelStr, _counterStyle);
 
-					if (OptionManager.showLanes)
+					if (TMDataManager.Options.showLanes)
 						_guiLanes(ref segments.m_buffer[i], ref segmentInfo);
 				}
 			}
@@ -572,8 +572,8 @@ namespace Transit.Addon.TM.Tools {
 			GUIStyle _counterStyle = new GUIStyle();
 			Array16<CitizenInstance> citizenInstances = Singleton<CitizenManager>.instance.m_instances;
 			for (int i = 1; i < citizenInstances.m_size; ++i) {
-				if (i % (int)OptionManager.someValue4 != 0)
-					continue;
+				/*if (i % (int)TMDataManager.Options.someValue4 != 0)
+					continue;*/
 
 				CitizenInstance citizenInstance = citizenInstances.m_buffer[i];
 				if (citizenInstance.m_flags == CitizenInstance.Flags.None)

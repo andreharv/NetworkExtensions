@@ -4,6 +4,7 @@ using ColossalFramework;
 using Transit.Addon.TM.Traffic;
 using Transit.Addon.TM.UI;
 using UnityEngine;
+using Transit.Addon.TM.Data;
 
 namespace Transit.Addon.TM.Tools.SubTools {
 	public class SpeedLimitsTool : SubTool {
@@ -95,7 +96,7 @@ namespace Transit.Addon.TM.Tools.SubTools {
 			for (int i = 0; i < SpeedLimitManager.AvailableSpeedLimits.Count; ++i) {
 				if (curSpeedLimitIndex != i)
 					GUI.color = Color.gray;
-				if (GUILayout.Button(TrafficLightToolTextureResources.SpeedLimitTextures[SpeedLimitManager.AvailableSpeedLimits[i]], GUILayout.Width(100), GUILayout.Height(100))) {
+				if (GUILayout.Button(Textures.SpeedLimitTextures[SpeedLimitManager.AvailableSpeedLimits[i]], GUILayout.Width(100), GUILayout.Height(100))) {
 					curSpeedLimitIndex = i;
 				}
 				GUI.color = oldColor;
@@ -116,7 +117,7 @@ namespace Transit.Addon.TM.Tools.SubTools {
 			}
 #endif
 
-			if (viewOnly && !OptionManager.speedLimitsOverlay)
+			if (viewOnly && !TMDataManager.Options.speedLimitsOverlay)
 				return false;
 
 			// draw speedlimits over mean middle points of lane beziers
@@ -160,7 +161,7 @@ namespace Transit.Addon.TM.Tools.SubTools {
 				GUI.color = guiColor;
 
 				try {
-					GUI.DrawTexture(boundingBox, TrafficLightToolTextureResources.SpeedLimitTextures[SpeedLimitManager.GetCustomSpeedLimit(segmentId, e.Key)]);
+					GUI.DrawTexture(boundingBox, Textures.SpeedLimitTextures[SpeedLimitManager.GetCustomSpeedLimit(segmentId, e.Key)]);
 				} catch (Exception ex) {
 					Log.Error("segment " + segmentId + " limit: " + SpeedLimitManager.GetCustomSpeedLimit(segmentId, e.Key) + ", ex: " + ex.ToString());
 				}

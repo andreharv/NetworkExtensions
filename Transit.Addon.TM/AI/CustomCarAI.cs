@@ -92,7 +92,7 @@ namespace Transit.Addon.TM.AI {
 			int maxBlockCounter = (privateServiceIndex == -1) ? 150 : 100;
 			if ((vehicleData.m_flags & (Vehicle.Flags.Spawned | Vehicle.Flags.WaitingPath | Vehicle.Flags.WaitingSpace)) == Vehicle.Flags.None && vehicleData.m_cargoParent == 0) {
 				Singleton<VehicleManager>.instance.ReleaseVehicle(vehicleId);
-			} else if ((int)vehicleData.m_blockCounter == maxBlockCounter && OptionManager.enableDespawning) {
+			} else if ((int)vehicleData.m_blockCounter == maxBlockCounter && TMDataManager.Options.enableDespawning) {
 				Singleton<VehicleManager>.instance.ReleaseVehicle(vehicleId);
 			} else if (vehicleData.m_leadingVehicle == 0 && CustomVehicleAI.ShouldRecalculatePath(vehicleId, ref vehicleData, maxBlockCounter)) {
 				CustomVehicleAI.MarkPathRecalculation(vehicleId);
@@ -114,7 +114,7 @@ namespace Transit.Addon.TM.AI {
 			var camPos = Camera.main.transform.position;
 			bool simulatePrioritySigns = (lastFrameVehiclePos - camPos).sqrMagnitude < FarLod && !isRecklessDriver;
 
-			if (OptionManager.simAccuracy <= 2) {
+			if (TMDataManager.Options.simAccuracy <= 2) {
 				if (vehicleData.Info.m_vehicleType == VehicleInfo.VehicleType.Car) {
 					VehiclePosition vehiclePos = TrafficPriority.GetVehiclePosition(vehicleId);
 					if (vehiclePos.Valid && simulatePrioritySigns) { // TODO check if this should be !vehiclePos.Valid
@@ -488,7 +488,7 @@ namespace Transit.Addon.TM.AI {
 					byte district = districtManager.GetDistrict(pos);
 					DistrictPolicies.CityPlanning cityPlanningPolicies = districtManager.m_districts.m_buffer[(int)district].m_cityPlanningPolicies;
 					if ((cityPlanningPolicies & DistrictPolicies.CityPlanning.StuddedTires) != DistrictPolicies.CityPlanning.None) {
-						if (OptionManager.strongerRoadConditionEffects) {
+						if (TMDataManager.Options.strongerRoadConditionEffects) {
 							if (maxSpeed > ICY_ROADS_STUDDED_MIN_SPEED)
 								maxSpeed = ICY_ROADS_STUDDED_MIN_SPEED + (255f - wetness) * 0.0039215686f * (maxSpeed - ICY_ROADS_STUDDED_MIN_SPEED);
 						} else {
@@ -496,7 +496,7 @@ namespace Transit.Addon.TM.AI {
 						}
 						districtManager.m_districts.m_buffer[(int)district].m_cityPlanningPoliciesEffect |= DistrictPolicies.CityPlanning.StuddedTires;
 					} else {
-						if (OptionManager.strongerRoadConditionEffects) {
+						if (TMDataManager.Options.strongerRoadConditionEffects) {
 							if (maxSpeed > ICY_ROADS_MIN_SPEED)
 								maxSpeed = ICY_ROADS_MIN_SPEED + (255f - wetness) * 0.0039215686f * (maxSpeed - ICY_ROADS_MIN_SPEED);
 						} else {
@@ -504,7 +504,7 @@ namespace Transit.Addon.TM.AI {
 						}
 					}
 				} else {
-					if (OptionManager.strongerRoadConditionEffects) {
+					if (TMDataManager.Options.strongerRoadConditionEffects) {
 						float minSpeed = Math.Min(maxSpeed * WET_ROADS_FACTOR, WET_ROADS_MAX_SPEED);
 						if (maxSpeed > minSpeed)
 							maxSpeed = minSpeed + (255f - wetness) * 0.0039215686f * (maxSpeed - minSpeed);
@@ -513,7 +513,7 @@ namespace Transit.Addon.TM.AI {
 					}
 				}
 
-				if (OptionManager.strongerRoadConditionEffects) {
+				if (TMDataManager.Options.strongerRoadConditionEffects) {
 					float minSpeed = Math.Min(maxSpeed * BROKEN_ROADS_FACTOR, BROKEN_ROADS_MAX_SPEED);
 					if (maxSpeed > minSpeed) {
 						maxSpeed = minSpeed + condition * 0.0039215686f * (maxSpeed - minSpeed);
@@ -556,7 +556,7 @@ namespace Transit.Addon.TM.AI {
 			if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) != Vehicle.Flags.None)
 				return true;
 
-			return ((vehicleData.Info.m_vehicleType & VehicleInfo.VehicleType.Car) != VehicleInfo.VehicleType.None) && (uint)vehicleId % (OptionManager.getRecklessDriverModulo()) == 0;
+			return ((vehicleData.Info.m_vehicleType & VehicleInfo.VehicleType.Car) != VehicleInfo.VehicleType.None) && (uint)vehicleId % (TMDataManager.Options.GetRecklessDriverModulo()) == 0;
 		}
 	}
 }

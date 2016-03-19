@@ -2,13 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Transit.Addon.TM.Data;
+using TrafficManager;
 using Transit.Addon.TM.Traffic;
 using Transit.Addon.TM.TrafficLight;
 
 namespace Transit.Addon.TM.Data {
 	public static partial class TMDataManager {
-		private static void ApplyConfiguration(TMConfigurationV2 configuration) {
+		private static void ApplyConfiguration(Configuration configuration) {
 			Log.Info("Loading State from Config");
 			if (configuration == null) {
 				Log.Warning("Configuration NULL, Couldn't load save data. Possibly a new game?");
@@ -17,7 +17,7 @@ namespace Transit.Addon.TM.Data {
 
 			// load priority segments
 			if (configuration.PrioritySegments != null) {
-				Log.Info($"Loading {configuration.PrioritySegments.Count()} priority segments");
+				Log.Info($"Loading {configuration.PrioritySegments.Count} priority segments");
 				foreach (var segment in configuration.PrioritySegments) {
 					if (segment.Length < 3)
 						continue;
@@ -67,10 +67,10 @@ namespace Transit.Addon.TM.Data {
 			// load vehicle restrictions (warning: has to be done before loading timed lights!)
 			if (configuration.LaneAllowedVehicleTypes != null) {
 				Log.Info($"Loading lane vehicle restriction data. {configuration.LaneAllowedVehicleTypes.Count} elements");
-				foreach (TMConfigurationV2.LaneVehicleTypes laneVehicleTypes in configuration.LaneAllowedVehicleTypes) {
-					TMVehicleType maskedType = laneVehicleTypes.vehicleTypes & VehicleRestrictionsManager.GetBaseMask(laneVehicleTypes.laneId);
+				foreach (Configuration.LaneVehicleTypes laneVehicleTypes in configuration.LaneAllowedVehicleTypes) {
+					uint maskedType = (uint)laneVehicleTypes.vehicleTypes & (uint)VehicleRestrictionsManager.GetBaseMask(laneVehicleTypes.laneId);
 					Log._Debug($"Loading lane vehicle restriction: lane {laneVehicleTypes.laneId} = {laneVehicleTypes.vehicleTypes}, masked = {maskedType}");
-					Flags.setLaneAllowedVehicleTypes(laneVehicleTypes.laneId, maskedType);
+					Flags.setLaneAllowedVehicleTypes(laneVehicleTypes.laneId, (TMVehicleType) maskedType);
 				}
 			} else {
 				Log.Warning("Lane speed limit structure undefined!");
@@ -84,7 +84,7 @@ namespace Transit.Addon.TM.Data {
 			if (configuration.TimedLights != null) {
 				Log.Info($"Loading {configuration.TimedLights.Count()} timed traffic lights (new method)");
 
-				foreach (TMConfigurationV2.TimedTrafficLights cnfTimedLights in configuration.TimedLights) {
+				foreach (Configuration.TimedTrafficLights cnfTimedLights in configuration.TimedLights) {
 					if ((Singleton<NetManager>.instance.m_nodes.m_buffer[cnfTimedLights.nodeId].m_flags & NetNode.Flags.Created) == NetNode.Flags.None)
 						continue;
 					Flags.setNodeTrafficLight(cnfTimedLights.nodeId, true);
@@ -96,32 +96,32 @@ namespace Transit.Addon.TM.Data {
 					var timedNode = sim.TimedLight;
 
 					int j = 0;
-					foreach (TMConfigurationV2.TimedTrafficLightsStep cnfTimedStep in cnfTimedLights.timedSteps) {
+					foreach (Configuration.TimedTrafficLightsStep cnfTimedStep in cnfTimedLights.timedSteps) {
 						Log._Debug($"Loading timed step {j} at node {cnfTimedLights.nodeId}");
 						TimedTrafficLightsStep step = timedNode.AddStep(cnfTimedStep.minTime, cnfTimedStep.maxTime, cnfTimedStep.waitFlowBalance);
 
-						foreach (KeyValuePair<ushort, TMConfigurationV2.CustomSegmentLights> e in cnfTimedStep.segmentLights) {
+						foreach (KeyValuePair<ushort, Configuration.CustomSegmentLights> e in cnfTimedStep.segmentLights) {
 							Log._Debug($"Loading timed step {j}, segment {e.Key} at node {cnfTimedLights.nodeId}");
 							CustomSegmentLights lights = null;
 							if (!step.segmentLights.TryGetValue(e.Key, out lights)) {
 								Log._Debug($"No segment lights found at timed step {j} for segment {e.Key}, node {cnfTimedLights.nodeId}");
 								continue;
 							}
-							TMConfigurationV2.CustomSegmentLights cnfLights = e.Value;
+							Configuration.CustomSegmentLights cnfLights = e.Value;
 
 							Log._Debug($"Loading pedestrian light @ seg. {e.Key}, step {j}: {cnfLights.pedestrianLightState} {cnfLights.manualPedestrianMode}");
 
 							lights.ManualPedestrianMode = cnfLights.manualPedestrianMode;
 							lights.PedestrianLightState = cnfLights.pedestrianLightState;
 
-							foreach (KeyValuePair<TMVehicleType, TMConfigurationV2.CustomSegmentLight> e2 in cnfLights.customLights) {
+							foreach (KeyValuePair<TrafficManager.Traffic.ExtVehicleType, Configuration.CustomSegmentLight> e2 in cnfLights.customLights) {
 								Log._Debug($"Loading timed step {j}, segment {e.Key}, vehicleType {e2.Key} at node {cnfTimedLights.nodeId}");
 								CustomSegmentLight light = null;
-								if (!lights.CustomLights.TryGetValue(e2.Key, out light)) {
+								if (!lights.CustomLights.TryGetValue((TMVehicleType)((uint)e2.Key), out light)) {
 									Log._Debug($"No segment light found for timed step {j}, segment {e.Key}, vehicleType {e2.Key} at node {cnfTimedLights.nodeId}");
 									continue;
 								}
-								TMConfigurationV2.CustomSegmentLight cnfLight = e2.Value;
+								Configuration.CustomSegmentLight cnfLight = e2.Value;
 
 								light.CurrentMode = (CustomSegmentLight.Mode)cnfLight.currentMode;
 								light.LightLeft = cnfLight.leftLight;
@@ -136,7 +136,7 @@ namespace Transit.Addon.TM.Data {
 						timedNode.Start();
 				}
 			} else if (configuration.TimedNodes != null && configuration.TimedNodeGroups != null) {
-				Log.Info($"Loading {configuration.TimedNodes.Count()} timed traffic lights (old method)");
+				Log.Info($"Loading {configuration.TimedNodes.Count} timed traffic lights (old method)");
 				for (var i = 0; i < configuration.TimedNodes.Count; i++) {
 					try {
 						var nodeid = (ushort)configuration.TimedNodes[i][0];
@@ -302,13 +302,13 @@ namespace Transit.Addon.TM.Data {
 							if (Singleton<NetManager>.instance.m_lanes.m_buffer.Length <= laneId)
 								continue;
 
-							if (flags > UInt16.MaxValue)
+							if (flags > ushort.MaxValue)
 								continue;
 
 							if ((Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags & (ushort)NetLane.Flags.Created) == 0 || Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_segment == 0)
 								continue;
 
-							Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags = FixLaneFlags(Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags);
+							//Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags = fixLaneFlags(Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags);
 
 							uint laneArrowFlags = flags & Flags.lfr;
 							uint origFlags = (Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags & Flags.lfr);
@@ -331,7 +331,7 @@ namespace Transit.Addon.TM.Data {
 			// load speed limits
 			if (configuration.LaneSpeedLimits != null) {
 				Log.Info($"Loading lane speed limit data. {configuration.LaneSpeedLimits.Count} elements");
-				foreach (TMConfigurationV2.LaneSpeedLimit laneSpeedLimit in configuration.LaneSpeedLimits) {
+				foreach (Configuration.LaneSpeedLimit laneSpeedLimit in configuration.LaneSpeedLimits) {
 					Log._Debug($"Loading lane speed limit: lane {laneSpeedLimit.laneId} = {laneSpeedLimit.speedLimit}");
 					Flags.setLaneSpeedLimit(laneSpeedLimit.laneId, laneSpeedLimit.speedLimit);
 				}
@@ -342,43 +342,102 @@ namespace Transit.Addon.TM.Data {
 			// Load segment-at-node flags
 			if (configuration.SegmentNodeConfs != null) {
 				Log.Info($"Loading segment-at-node data. {configuration.SegmentNodeConfs.Count} elements");
-				foreach (TMConfigurationV2.SegmentNodeConf segNodeConf in configuration.SegmentNodeConfs) {
+				foreach (Configuration.SegmentNodeConf segNodeConf in configuration.SegmentNodeConfs) {
 					if ((Singleton<NetManager>.instance.m_segments.m_buffer[segNodeConf.segmentId].m_flags & NetSegment.Flags.Created) == NetSegment.Flags.None)
 						continue;
-					Flags.setSegmentNodeFlags(segNodeConf.segmentId, true, segNodeConf.startNodeFlags);
-					Flags.setSegmentNodeFlags(segNodeConf.segmentId, false, segNodeConf.endNodeFlags);
+
+					if (segNodeConf.startNodeFlags != null) {
+						TMConfigurationV2.SegmentEndFlags startNodeFlags = new TMConfigurationV2.SegmentEndFlags();
+						startNodeFlags.enterWhenBlockedAllowed = segNodeConf.startNodeFlags.enterWhenBlockedAllowed;
+						startNodeFlags.straightLaneChangingAllowed = segNodeConf.startNodeFlags.straightLaneChangingAllowed;
+						startNodeFlags.uturnAllowed = segNodeConf.startNodeFlags.uturnAllowed;
+						Flags.SetSegmentEndFlags(segNodeConf.segmentId, true, startNodeFlags);
+					}
+
+					if (segNodeConf.endNodeFlags != null) {
+						TMConfigurationV2.SegmentEndFlags endNodeFlags = new TMConfigurationV2.SegmentEndFlags();
+						endNodeFlags.enterWhenBlockedAllowed = segNodeConf.endNodeFlags.enterWhenBlockedAllowed;
+						endNodeFlags.straightLaneChangingAllowed = segNodeConf.endNodeFlags.straightLaneChangingAllowed;
+						endNodeFlags.uturnAllowed = segNodeConf.endNodeFlags.uturnAllowed;
+						Flags.SetSegmentEndFlags(segNodeConf.segmentId, false, endNodeFlags);
+					}
 				}
 			} else {
 				Log.Warning("Segment-at-node structure undefined!");
 			}
 		}
 
-		private static ushort FixLaneFlags(ushort flags) {
-			ushort ret = 0;
-			if ((flags & (ushort)NetLane.Flags.Created) != 0)
-				ret |= (ushort)NetLane.Flags.Created;
-			if ((flags & (ushort)NetLane.Flags.Deleted) != 0)
-				ret |= (ushort)NetLane.Flags.Deleted;
-			if ((flags & (ushort)NetLane.Flags.Inverted) != 0)
-				ret |= (ushort)NetLane.Flags.Inverted;
-			if ((flags & (ushort)NetLane.Flags.JoinedJunction) != 0)
-				ret |= (ushort)NetLane.Flags.JoinedJunction;
-			if ((flags & (ushort)NetLane.Flags.Forward) != 0)
-				ret |= (ushort)NetLane.Flags.Forward;
-			if ((flags & (ushort)NetLane.Flags.Left) != 0)
-				ret |= (ushort)NetLane.Flags.Left;
-			if ((flags & (ushort)NetLane.Flags.Right) != 0)
-				ret |= (ushort)NetLane.Flags.Right;
-			if ((flags & (ushort)NetLane.Flags.Stop) != 0)
-				ret |= (ushort)NetLane.Flags.Stop;
-			if ((flags & (ushort)NetLane.Flags.StartOneWayLeft) != 0)
-				ret |= (ushort)NetLane.Flags.StartOneWayLeft;
-			if ((flags & (ushort)NetLane.Flags.StartOneWayRight) != 0)
-				ret |= (ushort)NetLane.Flags.StartOneWayRight;
-			if ((flags & (ushort)NetLane.Flags.EndOneWayLeft) != 0)
-				ret |= (ushort)NetLane.Flags.EndOneWayLeft;
-			if ((flags & (ushort)NetLane.Flags.EndOneWayRight) != 0)
-				ret |= (ushort)NetLane.Flags.EndOneWayRight;
+		private static TMConfigurationV2.Options ParseV1Options(byte[] options) {
+			TMConfigurationV2.Options ret = new TMConfigurationV2.Options();
+
+			if (options.Length >= 1) {
+				ret.simAccuracy = options[0];
+			}
+
+			if (options.Length >= 2) {
+				ret.laneChangingRandomization = options[1];
+			}
+
+			if (options.Length >= 3) {
+				ret.recklessDrivers = options[2];
+			}
+
+			if (options.Length >= 4) {
+				ret.relaxedBusses = (options[3] == (byte)1);
+			}
+
+			if (options.Length >= 5) {
+				ret.nodesOverlay = (options[4] == (byte)1);
+			}
+
+			if (options.Length >= 6) {
+				ret.allowEnterBlockedJunctions = (options[5] == (byte)1);
+			}
+
+			if (options.Length >= 7) {
+				ret.advancedAI = (options[6] == (byte)1);
+			}
+
+			if (options.Length >= 8) {
+				ret.highwayRules = (options[7] == (byte)1);
+			}
+
+			if (options.Length >= 9) {
+				ret.prioritySignsOverlay = (options[8] == (byte)1);
+			}
+
+			if (options.Length >= 10) {
+				ret.timedLightsOverlay = (options[9] == (byte)1);
+			}
+
+			if (options.Length >= 11) {
+				ret.speedLimitsOverlay = (options[10] == (byte)1);
+			}
+
+			if (options.Length >= 12) {
+				ret.vehicleRestrictionsOverlay = (options[11] == (byte)1);
+			}
+
+			if (options.Length >= 13) {
+				ret.strongerRoadConditionEffects = (options[12] == (byte)1);
+			}
+
+			if (options.Length >= 14) {
+				ret.allowUTurns = (options[13] == (byte)1);
+			}
+
+			if (options.Length >= 15) {
+				ret.allowLaneChangesWhileGoingStraight = (options[14] == (byte)1);
+			}
+
+			if (options.Length >= 16) {
+				ret.enableDespawning = (options[15] == (byte)1);
+			}
+
+			if (options.Length >= 17) {
+				ret.dynamicPathRecalculation = (options[16] == (byte)1);
+			}
+
 			return ret;
 		}
 	}

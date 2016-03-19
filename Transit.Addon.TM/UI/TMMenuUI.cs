@@ -6,9 +6,10 @@ using Transit.Addon.TM.Tools;
 using Transit.Addon.TM.Traffic;
 using Transit.Addon.TM.TrafficLight;
 using UnityEngine;
+using Transit.Addon.TM.Data;
 
 namespace Transit.Addon.TM.UI {
-	public class UITrafficManager : UIPanel {
+	public class TrafficManagerMenuUI : UIPanel {
 		//private static UIState _uiState = UIState.None;
 
 		private static UIButton _buttonSwitchTraffic;
@@ -32,7 +33,7 @@ namespace Transit.Addon.TM.UI {
 
 		public override void Start() {
 			if (ToolModuleV2.Instance == null) {
-				Log.Error("UITrafficManager.Start(): LoadingExtension is null.");
+				Log.Error("MenuUI.Start(): LoadingExtension is null.");
 				return;
 			}
 			TrafficLightTool = ToolModuleV2.Instance.TrafficManagerTool;
@@ -85,7 +86,7 @@ namespace Transit.Addon.TM.UI {
 			if (TrafficManagerModule.IsPathManagerCompatible)
 #endif
             {
-                _buttonToggleDespawn = _createButton(OptionManager.enableDespawning ? Translation.GetString("Disable_despawning") : Translation.GetString("Enable_despawning"), y, ClickToggleDespawn);
+                _buttonToggleDespawn = _createButton(TMDataManager.Options.enableDespawning ? Translation.GetString("Disable_despawning") : Translation.GetString("Enable_despawning"), y, ClickToggleDespawn);
 				y += 40;
 			}
 
@@ -160,7 +161,7 @@ namespace Transit.Addon.TM.UI {
 		}
 
 		private void clickGoToVehicle(UIComponent component, UIMouseEventParameter eventParam) {
-#if DEBUG
+#if xxx
 			if (title != null) {
 				if (CustomPathManager._replacementPathFinds != null && CustomPathManager._replacementPathFinds.Length >= 1)
 					title.text = CustomPathManager._replacementPathFinds[0].m_queuedPathFindCount.ToString();
@@ -271,13 +272,13 @@ namespace Transit.Addon.TM.UI {
 		private static void ClickToggleDespawn(UIComponent component, UIMouseEventParameter eventParam) {
 			TrafficManagerTool.SetToolMode(TrafficManagerToolMode.None);
 
-			OptionManager.setEnableDespawning(!OptionManager.enableDespawning);
+			OptionManager.setEnableDespawning(!TMDataManager.Options.enableDespawning);
 
 #if !TAM
             if (TrafficManagerModule.IsPathManagerCompatible)
 #endif
             {
-                _buttonToggleDespawn.text = OptionManager.enableDespawning
+                _buttonToggleDespawn.text = TMDataManager.Options.enableDespawning
 					? Translation.GetString("Disable_despawning")
 					: Translation.GetString("Enable_despawning");
 			}

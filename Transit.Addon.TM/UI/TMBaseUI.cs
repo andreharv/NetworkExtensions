@@ -6,10 +6,10 @@ using Transit.Addon.TM.Tools;
 using UnityEngine;
 
 namespace Transit.Addon.TM.UI {
-	public class UIBase : UICustomControl {
+	public class TMBaseUI : UICustomControl {
 		private bool _uiShown;
 
-		public UIBase() {
+		public TMBaseUI() {
 			Log._Debug("##### Initializing UIBase.");
 
 			// Get the UIView object. This seems to be the top-level object for most
@@ -68,13 +68,13 @@ namespace Transit.Addon.TM.UI {
 					Log.Error("Error on Show(): " + e.ToString());
 				}
 				var uiView = UIView.GetAView();
-				var trafficManager = uiView.FindUIComponent("UITrafficManager");
+				var trafficManager = uiView.FindUIComponent("TMMenuUI");
 				if (trafficManager != null) {
 					Log._Debug("Showing TM UI");
 					trafficManager.Show();
 				} else {
 					Log._Debug("Showing TM UI: create");
-					uiView.AddUIComponent(typeof(UITrafficManager));
+					uiView.AddUIComponent(typeof(TMMenuUI));
 				}
 				ToolModuleV2.Instance.SetToolMode(Mode.Activated);
 				_uiShown = true;
@@ -86,7 +86,7 @@ namespace Transit.Addon.TM.UI {
 		public void Close() {
 			if (ToolModuleV2.Instance != null) {
 				var uiView = UIView.GetAView();
-				var trafficManager = uiView.FindUIComponent("UITrafficManager");
+				var trafficManager = uiView.FindUIComponent("TMMenuUI");
 
 				if (trafficManager != null) {
 					Log._Debug("Hiding TM UI");
@@ -95,7 +95,7 @@ namespace Transit.Addon.TM.UI {
 					Log._Debug("Hiding TM UI: null!");
 				}
 
-				UITrafficManager.deactivateButtons();
+				TMMenuUI.deactivateButtons();
 				TrafficManagerTool.SetToolMode(TrafficManagerToolMode.None);
 				ToolModuleV2.Instance.SetToolMode(Mode.Disabled);
 
