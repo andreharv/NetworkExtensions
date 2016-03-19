@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using ColossalFramework;
 using Transit.Addon.TM.Traffic;
+using Transit.Framework;
 
 namespace Transit.Addon.TM.Data {
 	public class Flags {

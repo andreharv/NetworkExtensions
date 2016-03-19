@@ -51,14 +51,14 @@ namespace Transit.Framework.Modularity
             try
             {
                 var module = (IModule)Activator.CreateInstance(moduleType);
-                Debug.Log(string.Format("TFW: Loading module {0}", module.Name));
+                Log.Info(string.Format("TFW: Loading module {0}", module.Name));
                 return module;
             }
             catch (Exception ex)
             {
-                Debug.Log("TFW: Crashed-Module " + moduleType.Name);
-                Debug.Log("TFW: " + ex.Message);
-                Debug.Log("TFW: " + ex.ToString());
+                Log.Error("TFW: Crashed-Module " + moduleType.Name);
+                Log.Error("TFW: " + ex.Message);
+                Log.Error("TFW: " + ex.ToString());
                 return null;
             }
         }
@@ -198,7 +198,7 @@ namespace Transit.Framework.Modularity
 
                 if (!moduleOwners.Any())
                 {
-                    Debug.Log(string.Format("TFW: Releasing module {0}", module.Name));
+                    Log.Info(string.Format("TFW: Releasing module {0}", module.Name));
                     _activeModules.Remove(module);
                     _activeModuleTypes.Remove(moduleType);
                 }

@@ -7,6 +7,7 @@ using Transit.Addon.TM.Traffic;
 using Transit.Addon.TM.TrafficLight;
 using UnityEngine;
 using Transit.Addon.TM.Data;
+using Transit.Framework;
 
 namespace Transit.Addon.TM.UI {
 	public class TMMenuUI : UIPanel {

@@ -31,9 +31,9 @@ namespace Transit.Framework.Hooks.AI.Networks
             }
             catch (Exception ex)
             {
-                Debug.Log("TFW: Crashed-CreateZoneBlocks");
-                Debug.Log("TFW: " + ex.Message);
-                Debug.Log("TFW: " + ex.ToString());
+                Log.Error("TFW: Crashed-CreateZoneBlocks");
+                Log.Error("TFW: " + ex.Message);
+                Log.Error("TFW: " + ex.ToString());
             }
         }
 

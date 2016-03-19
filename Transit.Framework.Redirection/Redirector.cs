@@ -138,7 +138,7 @@ namespace Transit.Framework.Redirection
                     {
                         if (!s_redirections.Any(r => r.OriginalMethod == originalMethod))
                         {
-                            Debug.Log(string.Format("TFW: Redirecting from {0}.{1} to {2}.{3}",
+                            Log.Info(string.Format("TFW: Redirecting from {0}.{1} to {2}.{3}",
                                 originalMethod.DeclaringType,
                                 originalMethod.Name,
                                 method.DeclaringType,
@@ -151,7 +151,7 @@ namespace Transit.Framework.Redirection
                     {
                         if (!s_redirections.Any(r => r.OriginalMethod == method))
                         {
-                            Debug.Log(string.Format("TFW: Redirecting from {0}.{1} to {2}.{3}",
+                            Log.Info(string.Format("TFW: Redirecting from {0}.{1} to {2}.{3}",
                                 method.DeclaringType,
                                 method.Name,
                                 originalMethod.DeclaringType,
@@ -179,7 +179,7 @@ namespace Transit.Framework.Redirection
                 if (redirection.BitSetRequiredOption != 0 && (bitMask & redirection.BitSetRequiredOption) == 0)
                     continue;
 
-                Debug.Log(string.Format("TFW: Removing redirection from {0}.{1} to {2}.{3}",
+                Log.Info(string.Format("TFW: Removing redirection from {0}.{1} to {2}.{3}",
                     redirection.OriginalMethod.DeclaringType,
                     redirection.OriginalMethod.Name,
                     redirection.NewMethod.DeclaringType,

@@ -34,7 +34,7 @@ namespace Transit.Framework.ExtensionPoints.PathFinding
         
         public IPathFind CreatePathFinding()
         {
-            Debug.Log("TFW: Creating PathFinding of type " + PathFindingType.FullName);
+            Log.Info("TFW: Creating PathFinding of type " + PathFindingType.FullName);
             return (IPathFind)Activator.CreateInstance(PathFindingType);
         }
     }

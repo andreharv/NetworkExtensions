@@ -7,6 +7,7 @@ using Transit.Addon.TM.AI;
 using UnityEngine;
 using System.Threading;
 using Transit.Addon.TM.Data;
+using Transit.Framework;
 
 namespace Transit.Addon.TM.Traffic {
 	class TrafficPriority {

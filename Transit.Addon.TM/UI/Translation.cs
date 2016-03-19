@@ -5,13 +5,14 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Transit.Framework;
 
 namespace Transit.Addon.TM.UI {
 	public class Translation {
 		const string RESOURCES_PREFIX = "Transit.Addon.TM.Resources.";
-		private static readonly string DEFAULT_TRANSLATION_FILENAME = "lang.txt";
+	    private const string DEFAULT_TRANSLATION_FILENAME = "lang.txt";
 
-		private static Dictionary<string, string> translations;
+	    private static Dictionary<string, string> translations;
 		private static string loadedLanguage = null;
 
 		public static string GetString(string key) {

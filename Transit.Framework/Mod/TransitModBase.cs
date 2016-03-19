@@ -8,7 +8,7 @@ using Transit.Framework.Prerequisites;
 using UnityEngine;
 
 #if DEBUG
-using Debug = Transit.Framework.Debug;
+
 #endif
 
 namespace Transit.Framework.Mod
@@ -43,11 +43,11 @@ namespace Transit.Framework.Mod
 
                     if (_assetPath != Assets.PATH_NOT_FOUND)
                     {
-                        Debug.Log("TFW: Mod path " + _assetPath);
+                        Log.Info("TFW: Mod path " + _assetPath);
                     }
                     else
                     {
-                        Debug.Log("TFW: Path not found");
+                        Log.Info("TFW: Path not found");
                     }
                 }
                 return _assetPath;
@@ -58,7 +58,7 @@ namespace Transit.Framework.Mod
         {
             // 1. Check Local path (CurrentUser\Appdata\Local\Colossal Order\Cities_Skylines\Addons\Mods)
             var localPath = Path.Combine(DataLocation.modsPath, defaultFolderPath);
-            Debug.Log(string.Format("TFW: Exist={0} DataLocation.modsPath={1}", Directory.Exists(localPath), localPath));
+            Log.Info(string.Format("TFW: Exist={0} DataLocation.modsPath={1}", Directory.Exists(localPath), localPath));
 
             if (Directory.Exists(localPath))
             {
@@ -67,7 +67,7 @@ namespace Transit.Framework.Mod
 
             // 2. Check Local path (CurrentUser\Appdata\Local\Colossal Order\Cities_Skylines\Addons\Mods) without spaces
             localPath = Path.Combine(DataLocation.modsPath, defaultFolderPath.Replace(" ", ""));
-            Debug.Log(string.Format("TFW: Exist={0} DataLocation.modsPath={1}", Directory.Exists(localPath), localPath));
+            Log.Info(string.Format("TFW: Exist={0} DataLocation.modsPath={1}", Directory.Exists(localPath), localPath));
 
             if (Directory.Exists(localPath))
             {
@@ -80,7 +80,7 @@ namespace Transit.Framework.Mod
                 if (mod.AsUInt64 == workshopId)
                 {
                     var workshopPath = Steam.workshop.GetSubscribedItemPath(mod);
-                    Debug.Log(string.Format("TFW: Exist={0} WorkshopPath={1}", Directory.Exists(workshopPath), workshopPath));
+                    Log.Info(string.Format("TFW: Exist={0} WorkshopPath={1}", Directory.Exists(workshopPath), workshopPath));
                     if (Directory.Exists(workshopPath))
                     {
                         return workshopPath;
@@ -90,7 +90,7 @@ namespace Transit.Framework.Mod
 
             // 4. Check Cities Skylines files folder
             var csFolderPath = Path.Combine(Path.Combine(DataLocation.gameContentPath, "Mods"), defaultFolderPath);
-            Debug.Log(string.Format("TFW: Exist={0} DataLocation.gameContentPath={1}", Directory.Exists(csFolderPath), csFolderPath));
+            Log.Info(string.Format("TFW: Exist={0} DataLocation.gameContentPath={1}", Directory.Exists(csFolderPath), csFolderPath));
             if (Directory.Exists(csFolderPath))
             {
                 return csFolderPath;
@@ -98,7 +98,7 @@ namespace Transit.Framework.Mod
 
             // 5. Check Cities Skylines files folder without spaces
             csFolderPath = Path.Combine(Path.Combine(DataLocation.gameContentPath, "Mods"), defaultFolderPath.Replace(" ", ""));
-            Debug.Log(string.Format("TFW: Exist={0} DataLocation.gameContentPath={1}", Directory.Exists(csFolderPath), csFolderPath));
+            Log.Info(string.Format("TFW: Exist={0} DataLocation.gameContentPath={1}", Directory.Exists(csFolderPath), csFolderPath));
             if (Directory.Exists(csFolderPath))
             {
                 return csFolderPath;

@@ -44,9 +44,9 @@ namespace Transit.Framework
             }
             catch (Exception e)
             {
-                Debug.Log(string.Format("TFW: Crashed-Executing Atlas builder " + atlasBuilderType.Name));
-                Debug.Log("TFW: " + e.Message);
-                Debug.Log("TFW: " + e.ToString());
+                Log.Error(string.Format("TFW: Crashed-Executing Atlas builder " + atlasBuilderType.Name));
+                Log.Error("TFW: " + e.Message);
+                Log.Error("TFW: " + e.ToString());
             }
 
         }

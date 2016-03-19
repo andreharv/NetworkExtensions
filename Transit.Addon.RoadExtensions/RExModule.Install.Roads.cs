@@ -9,7 +9,7 @@ using Transit.Framework.Modularity;
 using UnityEngine;
 
 #if DEBUG
-using Debug = Transit.Framework.Debug;
+
 #endif
 
 namespace Transit.Addon.RoadExtensions
@@ -84,24 +84,24 @@ namespace Transit.Addon.RoadExtensions
                         {
                             newInfos.Add(builder.Build());
 
-                            Debug.Log(string.Format("REx: Prop {0} installed", builder.Name));
+                            Log.Info(string.Format("REx: Prop {0} installed", builder.Name));
                         }
                         catch (Exception ex)
                         {
-                            Debug.Log(string.Format("REx: Crashed-Prop builder {0}", builder.Name));
-                            Debug.Log("REx: " + ex.Message);
-                            Debug.Log("REx: " + ex.ToString());
+                            Log.Error(string.Format("REx: Crashed-Prop builder {0}", builder.Name));
+                            Log.Error("REx: " + ex.Message);
+                            Log.Error("REx: " + ex.ToString());
 
-                            Debug.Log(string.Format("REx: Fallbacking-Prop builder {0}", builder.Name));
+                            Log.Info(string.Format("REx: Fallbacking-Prop builder {0}", builder.Name));
                             try
                             {
                                 newInfos.Add(builder.BuildEmergencyFallback());
                             }
                             catch (Exception exFallback)
                             {
-                                Debug.Log(string.Format("REx: Crashed-Fallback Prop builder {0}", builder.Name));
-                                Debug.Log("REx: " + exFallback.Message);
-                                Debug.Log("REx: " + exFallback.ToString());
+                                Log.Error(string.Format("REx: Crashed-Fallback Prop builder {0}", builder.Name));
+                                Log.Error("REx: " + exFallback.Message);
+                                Log.Error("REx: " + exFallback.ToString());
                             }
                         }
                     });
@@ -148,25 +148,24 @@ namespace Transit.Addon.RoadExtensions
                         {
                             newInfos.AddRange(builder.Build(lateOperations));
 
-                            Debug.Log(string.Format("REx: {0} installed", builder.Name));
+                            Log.Info(string.Format("REx: {0} installed", builder.Name));
                         }
                         catch (Exception ex)
                         {
+                            Log.Error(string.Format("REx: Crashed-Network builder {0}", builder.Name));
+                            Log.Error("REx: " + ex.Message);
+                            Log.Error("REx: " + ex.ToString());
 
-                            Debug.Log(string.Format("REx: Crashed-Network builder {0}", builder.Name));
-                            Debug.Log("REx: " + ex.Message);
-                            Debug.Log("REx: " + ex.ToString());
-
-                            Debug.Log(string.Format("REx: Fallbacking-Network builder {0}", builder.Name));
+                            Log.Info(string.Format("REx: Fallbacking-Network builder {0}", builder.Name));
                             try
                             {
                                 newInfos.AddRange(builder.BuildEmergencyFallback());
                             }
                             catch (Exception exFallback)
                             {
-                                Debug.Log(string.Format("REx: Crashed-Fallback Network builder {0}", builder.Name));
-                                Debug.Log("REx: " + exFallback.Message);
-                                Debug.Log("REx: " + exFallback.ToString());
+                                Log.Error(string.Format("REx: Crashed-Fallback Network builder {0}", builder.Name));
+                                Log.Error("REx: " + exFallback.Message);
+                                Log.Error("REx: " + exFallback.ToString());
                             }
                         }
                     });
@@ -207,13 +206,13 @@ namespace Transit.Addon.RoadExtensions
                         {
                             modifier.ModifyExistingNetInfo();
 
-                            Debug.Log(string.Format("REx: {0} modifications applied", modifier.Name));
+                            Log.Info(string.Format("REx: {0} modifications applied", modifier.Name));
                         }
                         catch (Exception ex)
                         {
-                            Debug.Log(string.Format("REx: Crashed-Network modifiers {0}", modifier.Name));
-                            Debug.Log("REx: " + ex.Message);
-                            Debug.Log("REx: " + ex.ToString());
+                            Log.Error(string.Format("REx: Crashed-Network modifiers {0}", modifier.Name));
+                            Log.Error("REx: " + ex.Message);
+                            Log.Error("REx: " + ex.ToString());
                         }
                     });
                 }
@@ -235,14 +234,14 @@ namespace Transit.Addon.RoadExtensions
                             {
                                 compatibilityPart.Setup(host._roads.m_prefabs);
 
-                                Debug.Log(string.Format("REx: {0} compatibility activated", compatibilityPart.Name));
+                                Log.Info(string.Format("REx: {0} compatibility activated", compatibilityPart.Name));
                             }
                         }
                         catch (Exception ex)
                         {
-                            Debug.Log(string.Format("REx: Crashed-CompatibilitySupport {0}", compatibilityPart.Name));
-                            Debug.Log("REx: " + ex.Message);
-                            Debug.Log("REx: " + ex.ToString());
+                            Log.Error(string.Format("REx: Crashed-CompatibilitySupport {0}", compatibilityPart.Name));
+                            Log.Error("REx: " + ex.Message);
+                            Log.Error("REx: " + ex.ToString());
                         }
                     }
                 });

@@ -9,6 +9,7 @@ using Transit.Addon.TM.TrafficLight;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using Transit.Addon.TM.Data;
+using Transit.Framework;
 
 namespace Transit.Addon.TM.AI {
 	internal class CustomCarAI : CarAI { // correct would be to inherit from VehicleAI (in order to keep the correct references to `base`)

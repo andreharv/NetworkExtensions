@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using ColossalFramework.UI;
 using ColossalFramework.Math;
 using Transit.Framework.Redirection;
+using Transit.Framework;
 
 namespace Transit.Addon.TM {
     public partial class ToolModuleV2 {

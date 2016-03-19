@@ -5,6 +5,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using TrafficManager;
 using Transit.Addon.TM.Data;
 using Transit.Addon.TM.PathFindingFeatures;
+using Transit.Framework;
 using Transit.Framework.Serialization;
 
 namespace Transit.Addon.TM.DataSerialization {

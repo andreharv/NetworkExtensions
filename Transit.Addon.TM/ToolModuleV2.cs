@@ -5,6 +5,7 @@ using Transit.Framework.ExtensionPoints.PathFinding.Implementations;
 using Transit.Framework.ExtensionPoints.PathFindingFeatures;
 using Transit.Framework.Modularity;
 using Transit.Framework.Redirection;
+using Transit.Framework;
 
 namespace Transit.Addon.TM
 {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Transit.Addon.TM.PathFindingFeatures;
+using Transit.Framework;
 using Transit.Framework.Network;
 using UnityEngine;
 
@@ -106,7 +107,7 @@ namespace Transit.Addon.TM.Data
 				} catch (Exception e) {
 					// we might get an IndexOutOfBounds here since we are not locking
 #if DEBUG
-						Logger.LogWarning("ConnectsTo: %s", e.ToString());
+						Log.Warning("ConnectsTo: " + e.ToString());
 #endif
 				}
 			}
@@ -125,9 +126,9 @@ namespace Transit.Addon.TM.Data
 							goto CONTINUE_WHILE; // lane has been deleted; continue search for invalid lanes
 						}
 					} catch (Exception e) {
-						// we might get an IndexOutOfBounds here since we are not locking
+                        // we might get an IndexOutOfBounds here since we are not locking
 #if DEBUG
-							Logger.LogWarning("ConnectsTo: %s", e.ToString());
+                        Log.Warning("ConnectsTo: " + e.ToString());
 #endif
 					}
 				}

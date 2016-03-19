@@ -5,10 +5,6 @@ using UnityEngine;
 using Transit.Framework.ExtensionPoints.AI;
 using Transit.Framework.ExtensionPoints.AI.Networks;
 
-#if DEBUG
-using Debug = Transit.Framework.Debug;
-#endif
-
 namespace Transit.Addon.RoadExtensions.AI
 {
     public class TinyRoadZoneBlocksCreator : IZoneBlocksCreator

@@ -7,6 +7,7 @@ using Transit.Addon.TM.Data;
 using Transit.Addon.TM.Data.Legacy;
 using Transit.Addon.TM.PathFindingFeatures;
 using Transit.Framework.Serialization;
+using Transit.Framework;
 
 namespace Transit.Addon.TM.DataSerialization
 {
@@ -72,7 +73,7 @@ namespace Transit.Addon.TM.DataSerialization
             if ((ToolModuleV2.ActiveOptions & Options.RoadCustomizerTool) == Options.None)
                 return;
 
-            Logger.LogInfo("Saving road data!");
+            Log.Info("Saving road data!");
 
             if (TPPLaneDataManager.sm_lanes != null)
             {

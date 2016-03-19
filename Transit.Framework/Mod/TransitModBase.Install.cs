@@ -18,9 +18,6 @@ namespace Transit.Framework.Mod
 
             if (_isReleased)
             {
-                var version = GetType().Assembly.GetName().Version;
-                Debug.Log(string.Format(Name + ": Version {0}", version));
-
                 if (AssetPath != null && AssetPath != Assets.PATH_NOT_FOUND)
                 {
                     _container = new GameObject(Name.Replace(" ", ""));

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 #if DEBUG
-using Debug = Transit.Framework.Debug;
+
 #endif
 
 namespace Transit.Framework
@@ -39,7 +39,7 @@ namespace Transit.Framework
                 if (ValidatePrerequisites())
                 {
                     Install();
-                    Debug.Log(string.Format("TFW: {0} completed", GetType().Name));
+                    Log.Info(string.Format("TFW: {0} completed", GetType().Name));
 
                     _doneWithInstall = true;
                 }
@@ -86,7 +86,7 @@ namespace Transit.Framework
                 if (ValidatePrerequisites())
                 {
                     Install(Host); // Host is copyied locally to the function, the current object will be destroyed
-                    Debug.Log(string.Format("TFW: {0} completed", GetType().Name));
+                    Log.Info(string.Format("TFW: {0} completed", GetType().Name));
 
                     _doneWithInstall = true;
                 }

@@ -10,6 +10,7 @@ using Transit.Addon.TM.AI;
 using Transit.Addon.TM.Data;
 using Transit.Addon.TM.Traffic;
 using Transit.Addon.TM.TrafficLight;
+using Transit.Framework;
 
 namespace Transit.Addon.TM.Traffic {
 	/// <summary>

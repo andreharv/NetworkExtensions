@@ -76,7 +76,6 @@
     <Compile Include="Data\TPPLaneDataV2.cs" />
     <Compile Include="Data\Legacy\TPPVehicleType.cs" />
     <Compile Include="Data\_Extensions\TPPVehicleTypeExtensions.cs" />
-    <Compile Include="Logger.cs" />
     <Compile Include="Menus\RoadCustomizer\RoadCustomizerGroupPanel.cs" />
     <Compile Include="Menus\RoadCustomizer\RoadCustomizerPanel.cs" />
     <Compile Include="Menus\RoadCustomizer\Textures\RoadCustomizerAtlasBuilder.cs" />
@@ -107,7 +106,6 @@
     <Compile Include="ToolModuleV2.Settings.cs" />
     <Compile Include="Tools\RoadCustomizerTool.cs" />
     <Compile Include="ToolModuleV2.Detours.cs" />
-    <Compile Include="Log.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Data\TMConfigurationV2.cs" />
     <Compile Include="Data\Flags.cs" />

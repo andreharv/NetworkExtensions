@@ -8,6 +8,9 @@ namespace Transit.Framework.Mod
     {
         public virtual void OnEnabled()
         {
+            var version = GetType().Assembly.GetName().Version;
+            Log.Info(string.Format(Name + ": Version {0}", version));
+
             this.InstallPrerequisites();
             this.RegisterModules();
             LoadSettings();

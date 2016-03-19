@@ -58,6 +58,7 @@
     <Compile Include="Builders\IToolBuilder.cs" />
     <Compile Include="Builders\ToolBuilder.cs" />
     <Compile Include="Extensibility.cs" />
+    <Compile Include="Log.cs" />
     <Compile Include="Modularity\ModuleBase.Install.cs" />
     <Compile Include="Modularity\ModuleManager.cs" />
     <Compile Include="Mod\ITransitMod.cs" />
@@ -136,7 +137,6 @@
     <Compile Include="_Extensions\PrefabInfoExtensions.cs" />
     <Compile Include="_Extensions\TextureExtensions.cs" />
     <Compile Include="AssetManager.cs" />
-    <Compile Include="Debug.cs" />
     <Compile Include="_Extensions\EnumExtensions.cs" />
     <Compile Include="_Extensions\ExpressionExtensions.cs" />
     <Compile Include="_Extensions\ItemClassExtensions.cs" />

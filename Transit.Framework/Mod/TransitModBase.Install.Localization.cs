@@ -59,9 +59,9 @@ namespace Transit.Framework.Mod
                     }
                     catch (Exception ex)
                     {
-                        Debug.Log("TFW: Crashed-Localization");
-                        Debug.Log("TFW: " + ex.Message);
-                        Debug.Log("TFW: " + ex.ToString());
+                        Log.Error("TFW: Crashed-Localization");
+                        Log.Error("TFW: " + ex.Message);
+                        Log.Error("TFW: " + ex.ToString());
                     }
                 });
             }

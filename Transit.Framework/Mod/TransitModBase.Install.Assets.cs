@@ -62,9 +62,9 @@ namespace Transit.Framework.Mod
                         }
                         catch (Exception ex)
                         {
-                            Debug.Log("TFW: Crashed-AssetsInstaller");
-                            Debug.Log("TFW: " + ex.Message);
-                            Debug.Log("TFW: " + ex.ToString());
+                            Log.Error("TFW: Crashed-AssetsInstaller");
+                            Log.Error("TFW: " + ex.Message);
+                            Log.Error("TFW: " + ex.ToString());
                         }
                     });
                 }
@@ -77,9 +77,9 @@ namespace Transit.Framework.Mod
                     }
                     catch (Exception ex)
                     {
-                        Debug.Log("TFW: Crashed-AssetsInstaller-Modules");
-                        Debug.Log("TFW: " + ex.Message);
-                        Debug.Log("TFW: " + ex.ToString());
+                        Log.Error("TFW: Crashed-AssetsInstaller-Modules");
+                        Log.Error("TFW: " + ex.Message);
+                        Log.Error("TFW: " + ex.ToString());
                     }
                 });
 
@@ -91,9 +91,9 @@ namespace Transit.Framework.Mod
                     }
                     catch (Exception ex)
                     {
-                        Debug.Log("TFW: Crashed-AtlasInstaller");
-                        Debug.Log("TFW: " + ex.Message);
-                        Debug.Log("TFW: " + ex.ToString());
+                        Log.Error("TFW: Crashed-AtlasInstaller");
+                        Log.Error("TFW: " + ex.Message);
+                        Log.Error("TFW: " + ex.ToString());
                     }
                 });
             }

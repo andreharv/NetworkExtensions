@@ -9,7 +9,7 @@ namespace Transit.Framework
         public static void Compare<T>(T unityObj, T otherUnityObj)
              where T : Object
         {
-            Debug.Log(string.Format("TFW: ----->  Comparing {0} with {1}", unityObj.name, otherUnityObj.name));
+            Log.Info(string.Format("TFW: ----->  Comparing {0} with {1}", unityObj.name, otherUnityObj.name));
 
             var fields = typeof(T).GetAllFieldsFromType();
 
@@ -20,7 +20,7 @@ namespace Transit.Framework
 
                 if (!Equals(newValue, oldValue))
                 {
-                    Debug.Log(string.Format("Value {0} not equal (N-O) ({1},{2})", f.Name, newValue, oldValue));
+                    Log.Info(string.Format("Value {0} not equal (N-O) ({1},{2})", f.Name, newValue, oldValue));
                 }
             }
         }
@@ -28,14 +28,14 @@ namespace Transit.Framework
         public static void ListMembers<T>(this T unityObj)
             where T : Object
         {
-            Debug.Log(string.Format("TFW: ----->  Listing {0}", unityObj.name));
+            Log.Info(string.Format("TFW: ----->  Listing {0}", unityObj.name));
 
             var fields = typeof(T).GetAllFieldsFromType();
 
             foreach (var f in fields)
             {
                 var value = f.GetValue(unityObj);
-                Debug.Log(string.Format("Member name \"{0}\" value is \"{1}\"", f.Name, value));
+                Log.Info(string.Format("Member name \"{0}\" value is \"{1}\"", f.Name, value));
             }
         }
     }

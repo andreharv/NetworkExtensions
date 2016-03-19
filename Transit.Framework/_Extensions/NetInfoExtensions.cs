@@ -6,7 +6,7 @@ using ColossalFramework.Globalization;
 using UnityEngine;
 
 #if DEBUG
-using Debug = Transit.Framework.Debug;
+
 #endif
 
 namespace Transit.Framework
@@ -19,7 +19,7 @@ namespace Transit.Framework
             {
                 if (lane.m_laneProps != null)
                 {
-                    Debug.Log(string.Format("TFW: Lane name {0}", lane.m_laneProps.name));
+                    Log.Info(string.Format("TFW: Lane name {0}", lane.m_laneProps.name));
 
                     if (lane.m_laneProps.m_props != null)
                     {
@@ -27,7 +27,7 @@ namespace Transit.Framework
                         {
                             if (prop.m_prop != null)
                             {
-                                Debug.Log(string.Format("TFW:     Prop name {0}", prop.m_prop.name));
+                                Log.Info(string.Format("TFW:     Prop name {0}", prop.m_prop.name));
                             }
                         }
                     }

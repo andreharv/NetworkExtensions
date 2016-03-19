@@ -11,6 +11,7 @@ using ColossalFramework.Math;
 using Transit.Addon.TM.AI;
 using Transit.Addon.TM.Data;
 using Transit.Addon.TM.Traffic;
+using Transit.Framework;
 using Transit.Framework.ExtensionPoints.PathFinding;
 using Transit.Framework.ExtensionPoints.PathFinding.Contracts;
 using Transit.Framework.ExtensionPoints.PathFindingFeatures.Contracts;

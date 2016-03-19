@@ -9,6 +9,7 @@ using System.Threading;
 using Transit.Addon.TM.UI;
 using Transit.Addon.TM.Data;
 using Transit.Addon.TM.Tools;
+using Transit.Framework;
 
 namespace Transit.Addon.TM.AI {
 	class CustomRoadAI : RoadBaseAI {

@@ -7,6 +7,7 @@ using Transit.Addon.TM.AI;
 using Transit.Addon.TM.Traffic;
 using System.Linq;
 using Transit.Addon.TM.Data;
+using Transit.Framework;
 
 namespace Transit.Addon.TM.TrafficLight {
 	public class TimedTrafficLights {

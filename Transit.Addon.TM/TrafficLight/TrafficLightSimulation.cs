@@ -3,6 +3,7 @@ using ColossalFramework;
 using Transit.Addon.TM.Traffic;
 using System.Collections.Generic;
 using Transit.Addon.TM.AI;
+using Transit.Framework;
 
 namespace Transit.Addon.TM.TrafficLight {
 	public class TrafficLightSimulation {

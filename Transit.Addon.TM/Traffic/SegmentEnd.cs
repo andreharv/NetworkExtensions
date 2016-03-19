@@ -6,6 +6,7 @@ using Transit.Addon.TM.Traffic;
 using Transit.Addon.TM.TrafficLight;
 using Transit.Addon.TM.AI;
 using Transit.Addon.TM.Data;
+using Transit.Framework;
 
 /// <summary>
 /// A priority segment describes a directional traffic segment connected to a controlled

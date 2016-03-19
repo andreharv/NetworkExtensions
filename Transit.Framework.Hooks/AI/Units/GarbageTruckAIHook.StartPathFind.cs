@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Transit.Framework.Hooks.AI.Units
 {
-    public class GarbageTruckAIHook : CarAI
+    public class GarbageTruckAIHook : GarbageTruckAI
     {
         [RedirectFrom(typeof(GarbageTruckAI), (ulong)PrerequisiteType.PathFinding)]
         protected override bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget)

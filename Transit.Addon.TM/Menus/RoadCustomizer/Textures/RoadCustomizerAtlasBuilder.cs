@@ -71,7 +71,7 @@ namespace Transit.Addon.TM.Menus.RoadCustomizer.Textures
             Shader shader = Shader.Find("UI/Default UI Shader");
             if (shader == null)
             {
-                Logger.LogInfo("Cannot find UI Shader. Using default thumbnails.");
+                Log.Info("Cannot find UI Shader. Using default thumbnails.");
                 return null;
             }
 

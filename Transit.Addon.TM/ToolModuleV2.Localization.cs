@@ -11,7 +11,7 @@ namespace Transit.Addon.TM
     {
         public override void OnInstallingLocalization()
         {
-            Logger.LogInfo("Updating Localization.");
+            Log.Info("Updating Localization.");
 
             try
             {
@@ -45,10 +45,10 @@ namespace Transit.Addon.TM
             }
             catch (ArgumentException e)
             {
-                Logger.LogInfo("Unexpected " + e.GetType().Name + " updating localization: " + e.Message + "\n" + e.StackTrace + "\n");
+                Log.Info("Unexpected " + e.GetType().Name + " updating localization: " + e.Message + "\n" + e.StackTrace + "\n");
             }
 
-            Logger.LogInfo("Localization successfully updated.");
+            Log.Info("Localization successfully updated.");
         }
     }
 }

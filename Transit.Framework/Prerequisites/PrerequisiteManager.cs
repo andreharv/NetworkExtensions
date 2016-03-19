@@ -61,9 +61,9 @@ namespace Transit.Framework.Prerequisites
                     }
                     catch (Exception ex)
                     {
-                        Debug.Log("TFW: Crashed-Prerequisites " + t.Name);
-                        Debug.Log("TFW: " + ex.Message);
-                        Debug.Log("TFW: " + ex.ToString());
+                        Log.Error("TFW: Crashed-Prerequisites " + t.Name);
+                        Log.Error("TFW: " + ex.Message);
+                        Log.Error("TFW: " + ex.ToString());
                         return null;
                     }
                 })
@@ -77,15 +77,15 @@ namespace Transit.Framework.Prerequisites
             {
                 foreach (var p in GetAllPrerequisites())
                 {
-                    Debug.Log(string.Format("TFW: Installing Prerequisite {0}", p.GetType().Name));
+                    Log.Info(string.Format("TFW: Installing Prerequisite {0}", p.GetType().Name));
                     p.Install(type);
                 }
             }
             catch (Exception ex)
             {
-                Debug.Log("TFW: Crashed-Prerequisites Installation");
-                Debug.Log("TFW: " + ex.Message);
-                Debug.Log("TFW: " + ex.ToString());
+                Log.Error("TFW: Crashed-Prerequisites Installation");
+                Log.Error("TFW: " + ex.Message);
+                Log.Error("TFW: " + ex.ToString());
             }
         }
 
@@ -100,9 +100,9 @@ namespace Transit.Framework.Prerequisites
             }
             catch (Exception ex)
             {
-                Debug.Log("TFW: Crashed-Prerequisites Uninstallation");
-                Debug.Log("TFW: " + ex.Message);
-                Debug.Log("TFW: " + ex.ToString());
+                Log.Error("TFW: Crashed-Prerequisites Uninstallation");
+                Log.Error("TFW: " + ex.Message);
+                Log.Error("TFW: " + ex.ToString());
             }
         }
     }

@@ -4,6 +4,7 @@ using ColossalFramework;
 using Transit.Addon.TM.Traffic;
 using UnityEngine;
 using Transit.Addon.TM.AI;
+using Transit.Framework;
 
 namespace Transit.Addon.TM.TrafficLight {
 	public class CustomSegmentLight : ICloneable {

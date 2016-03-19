@@ -15,7 +15,7 @@ namespace Transit.Framework.Hooks.PathFinding
         [RedirectFrom(typeof(PathManager), (ulong)PrerequisiteType.PathFinding)]
         protected override void Awake()
         {
-            Debug.Log("TFW: PathManager hook installed");
+            Log.Info("TFW: PathManager hook installed");
 
             this.m_simulationProfiler = new ThreadProfiler();
             typeof(PathManager)

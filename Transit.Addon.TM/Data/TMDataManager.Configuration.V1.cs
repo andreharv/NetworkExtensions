@@ -5,6 +5,7 @@ using System.Linq;
 using TrafficManager;
 using Transit.Addon.TM.Traffic;
 using Transit.Addon.TM.TrafficLight;
+using Transit.Framework;
 
 namespace Transit.Addon.TM.Data {
 	public static partial class TMDataManager {
