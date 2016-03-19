@@ -7,6 +7,7 @@ using Transit.Addon.TM.AI;
 using UnityEngine;
 using System.Threading;
 using Transit.Addon.TM.Data;
+using Transit.Addon.TM.PathFindingFeatures;
 using Transit.Framework;
 
 namespace Transit.Addon.TM.Traffic {
@@ -1046,19 +1047,11 @@ namespace Transit.Addon.TM.Traffic {
 				ClearTrafficRequested = false;
 			}
 
-			NetManager netManager = Singleton<NetManager>.instance;
-
 			if (CustomRoadAI.initDone)
 				CustomRoadAI.GetSegmentGeometry(segmentId).VerifySegmentsByCount();
 
-			// update lane arrows
-			uint laneId = netManager.m_segments.m_buffer[segmentId].m_lanes;
-			while (laneId != 0) {
-				if (!Flags.applyLaneArrowFlags(laneId)) {
-					Flags.removeLaneArrowFlags(laneId);
-				}
-				laneId = netManager.m_lanes.m_buffer[laneId].m_nextLane;
-			}
+            // update route
+		    TMLaneRoutingManager.instance.ScrubSegment(segmentId);
 
 			/*if (PrioritySegments[segmentId] == null)
 				return;

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TrafficManager;
+using Transit.Addon.TM.PathFindingFeatures;
 using Transit.Addon.TM.Traffic;
 using Transit.Addon.TM.TrafficLight;
 using Transit.Framework;
@@ -286,7 +287,7 @@ namespace Transit.Addon.TM.Data {
 			}
 
 			if (configuration.LaneFlags != null) {
-				Log.Info($"Loading lane arrow data");
+				Log.Info($"Loading lane direction data");
 #if DEBUG
 				Log._Debug($"LaneFlags: {configuration.LaneFlags}");
 #endif
@@ -314,12 +315,12 @@ namespace Transit.Addon.TM.Data {
 							uint laneArrowFlags = flags & Flags.lfr;
 							uint origFlags = (Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags & Flags.lfr);
 #if DEBUG
-							Log._Debug("Setting flags for lane " + laneId + " to " + flags + " (" + ((Flags.LaneArrows)(laneArrowFlags)).ToString() + ")");
+							Log._Debug("Setting flags for lane " + laneId + " to " + flags + " (" + ((LaneArrows)(laneArrowFlags)).ToString() + ")");
 							if ((origFlags | laneArrowFlags) == origFlags) { // only load if setting differs from default
 								Log._Debug("Flags for lane " + laneId + " are original (" + ((NetLane.Flags)(origFlags)).ToString() + ")");
 							}
 #endif
-							Flags.setLaneArrowFlags(laneId, (Flags.LaneArrows)(laneArrowFlags));
+                            TMLaneRoutingManager.instance.LoadLaneDirection(laneId, (TMLaneDirection)(laneArrowFlags));
 						} catch (Exception e) {
 							Log.Error($"Error loading Lane Split data. Length: {split.Length} value: {split}\nError: {e.Message}");
 						}

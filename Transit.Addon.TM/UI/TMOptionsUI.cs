@@ -3,6 +3,7 @@ using ColossalFramework.UI;
 using ICities;
 using Transit.Addon.TM.Data;
 using Transit.Addon.TM.DataSerialization;
+using Transit.Addon.TM.PathFindingFeatures;
 using Transit.Addon.TM.UI;
 using Transit.Framework;
 using UnityEngine;
@@ -228,7 +229,7 @@ namespace Transit.Addon.TM {
 
 			Log._Debug($"Highway rules changed to {newHighwayRules}");
 			TMDataManager.Options.highwayRules = newHighwayRules;
-			Flags.clearHighwayLaneArrows();
+            TMLaneRoutingManager.instance.ClearAllHighwayDirections();
 			Flags.applyAllFlags();
 			if (newHighwayRules)
 				setAdvancedAI(true);

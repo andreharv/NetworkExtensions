@@ -7,7 +7,7 @@ namespace Transit.Addon.TM.Data {
 			public uint laneId;
 			public ushort? speedLimit = null;
 			public TMVehicleType? vehicleTypes = null;
-			public Flags.LaneArrows? laneArrows = null;
+			public TMLaneDirection? directions = null;
 
 			public LaneConf() {
 			}

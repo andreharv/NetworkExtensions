@@ -66,6 +66,7 @@
     <Compile Include="AI\CustomVehicleAI.cs" />
     <Compile Include="AI\TPPCargoTruckAI.cs" />
     <Compile Include="AI\TPPPassengerCarAI.cs" />
+    <Compile Include="Data\TMLaneDirection.cs" />
     <Compile Include="Data\TMConfigurationV2.Options.cs" />
     <Compile Include="Data\TMConfigurationV2.NodeConf.cs" />
     <Compile Include="Data\TMConfigurationV2.SegmentEndFlags.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Menus\RoadCustomizer\RoadCustomizerPanel.cs" />
     <Compile Include="Menus\RoadCustomizer\Textures\RoadCustomizerAtlasBuilder.cs" />
     <Compile Include="Options.cs" />
+    <Compile Include="PathFindingFeatures\TMLaneRoutingManager.cs" />
     <Compile Include="PathFindingFeatures\UnitRealisticSpeedManager.cs" />
     <Compile Include="Data\TMDataManager.Configuration.V2.cs" />
     <Compile Include="Data\TMDataManager.cs" />

@@ -10,6 +10,7 @@ using ColossalFramework;
 using ColossalFramework.Math;
 using Transit.Addon.TM.AI;
 using Transit.Addon.TM.Data;
+using Transit.Addon.TM.PathFindingFeatures;
 using Transit.Addon.TM.Traffic;
 using Transit.Framework;
 using Transit.Framework.ExtensionPoints.PathFinding;
@@ -1321,19 +1322,19 @@ namespace Transit.Addon.TM.PathFinding
 								/*if (Options.disableSomething1)
 									Log._Debug($"THREAD #{Thread.CurrentThread.ManagedThreadId} PF {_pathFindIndex}: Setting highway arrows @ lane {nextLaneId}: START");*/
 #endif
-								Flags.LaneArrows? prevHighwayArrows = Flags.getHighwayLaneArrowFlags(nextLaneId);
-								Flags.LaneArrows newHighwayArrows = Flags.LaneArrows.None;
+								TMLaneDirection? prevHighwayArrows = TMLaneRoutingManager.instance.GetHighwayLaneDirection(nextLaneId);
+								TMLaneDirection newHighwayArrows = TMLaneDirection.None;
 								if (prevHighwayArrows != null)
-									newHighwayArrows = (Flags.LaneArrows)prevHighwayArrows;
+									newHighwayArrows = (TMLaneDirection)prevHighwayArrows;
 								if (isIncomingRight)
-									newHighwayArrows |= Flags.LaneArrows.Left;
+									newHighwayArrows |= TMLaneDirection.Left;
 								else if (isIncomingLeft)
-									newHighwayArrows |= Flags.LaneArrows.Right;
+									newHighwayArrows |= TMLaneDirection.Right;
 								else if (isIncomingStraight)
-									newHighwayArrows |= Flags.LaneArrows.Forward;
+									newHighwayArrows |= TMLaneDirection.Forward;
 
-								if (newHighwayArrows != prevHighwayArrows && newHighwayArrows != Flags.LaneArrows.None)
-									Flags.setHighwayLaneArrowFlags(nextLaneId, newHighwayArrows, false);
+								if (newHighwayArrows != prevHighwayArrows && newHighwayArrows != TMLaneDirection.None)
+                                    TMLaneRoutingManager.instance.SetHighwayLaneDirection(nextLaneId, newHighwayArrows, false);
 #if DEBUGPF
 								/*if (Options.disableSomething1)
 									Log._Debug($"THREAD #{Thread.CurrentThread.ManagedThreadId} PF {_pathFindIndex}: Setting highway arrows @ lane {nextLaneId} to {newHighwayArrows.ToString()}: END");*/

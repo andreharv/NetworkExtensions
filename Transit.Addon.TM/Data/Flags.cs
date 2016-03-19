@@ -2,22 +2,13 @@
 using System.Collections.Generic;
 using System.Threading;
 using ColossalFramework;
+using Transit.Addon.TM.PathFindingFeatures;
 using Transit.Addon.TM.Traffic;
 using Transit.Framework;
 
 namespace Transit.Addon.TM.Data {
-	public class Flags {
-		[Flags]
-		public enum LaneArrows { // compatible with NetLane.Flags
-			None = 0,
-			Forward = 16,
-			Left = 32,
-			Right = 64,
-			LeftForward = 48,
-			LeftRight = 96,
-			ForwardRight = 80,
-			LeftForwardRight = 112
-		}
+
+    public class Flags {
 
 		public static readonly uint lfr = (uint)NetLane.Flags.LeftForwardRight;
 
@@ -27,21 +18,11 @@ namespace Transit.Addon.TM.Data {
 		private static bool?[] nodeTrafficLightFlag = null;
 
 		/// <summary>
-		/// For each lane: Defines the lane arrows which are set
-		/// </summary>
-		private static LaneArrows?[] laneArrowFlags = null;
-
-		/// <summary>
 		/// For each lane: Defines the currently set speed limit
 		/// </summary>
 		private static Dictionary<uint, ushort> laneSpeedLimit = new Dictionary<uint, ushort>();
 
 		internal static ushort?[][] laneSpeedLimitArray; // for faster, lock-free access, 1st index: segment id, 2nd index: lane index
-
-		/// <summary>
-		/// For each lane: Defines the lane arrows which are set in highway rule mode (they are not saved)
-		/// </summary>
-		private static LaneArrows?[] highwayLaneArrowFlags = null;
 
 		/// <summary>
 		/// For each lane: Defines the allowed vehicle types
@@ -266,91 +247,6 @@ namespace Transit.Addon.TM.Data {
 			}
 		}
 
-		public static void setLaneArrowFlags(uint laneId, LaneArrows flags) {
-			if (!mayHaveLaneArrows(laneId)) {
-				removeLaneArrowFlags(laneId);
-				return;
-			}
-
-			if (highwayLaneArrowFlags[laneId] != null)
-				return; // disallow custom lane arrows in highway rule mode
-
-			laneArrowFlags[laneId] = flags;
-			applyLaneArrowFlags(laneId, false);
-		}
-
-		public static void setHighwayLaneArrowFlags(uint laneId, LaneArrows flags, bool check=true) {
-			if (check && !mayHaveLaneArrows(laneId)) {
-				removeLaneArrowFlags(laneId);
-				return;
-			}
-			
-			highwayLaneArrowFlags[laneId] = flags;
-			applyLaneArrowFlags(laneId, false);
-		}
-
-		public static bool toggleLaneArrowFlags(uint laneId, LaneArrows flags) {
-			if (!mayHaveLaneArrows(laneId)) {
-				removeLaneArrowFlags(laneId);
-				return false;
-			}
-
-			if (highwayLaneArrowFlags[laneId] != null)
-				return false; // disallow custom lane arrows in highway rule mode
-
-			LaneArrows? arrows = laneArrowFlags[laneId];
-			if (arrows == null) {
-				// read currently defined arrows
-				uint laneFlags = (uint)Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags;
-				laneFlags &= lfr; // filter arrows
-				arrows = (LaneArrows)laneFlags;
-			}
-
-			arrows ^= flags;
-			laneArrowFlags[laneId] = arrows;
-			applyLaneArrowFlags(laneId, false);
-			return true;
-		}
-
-		private static bool mayHaveLaneArrows(uint laneId) {
-			if (laneId <= 0)
-				return false;
-			NetManager netManager = Singleton<NetManager>.instance;
-			if (((NetLane.Flags)Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags & NetLane.Flags.Created) == NetLane.Flags.None)
-				return false;
-
-			ushort segmentId = netManager.m_lanes.m_buffer[laneId].m_segment;
-
-			var dir = NetInfo.Direction.Forward;
-			var dir2 = ((netManager.m_segments.m_buffer[segmentId].m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None) ? dir : NetInfo.InvertDirection(dir);
-			var dir3 = TrafficPriority.IsLeftHandDrive() ? NetInfo.InvertDirection(dir2) : dir2;
-
-			NetInfo segmentInfo = netManager.m_segments.m_buffer[segmentId].Info;
-			uint curLaneId = netManager.m_segments.m_buffer[segmentId].m_lanes;
-			int numLanes = segmentInfo.m_lanes.Length;
-			int laneIndex = 0;
-			int wIter = 0;
-			while (laneIndex < numLanes && curLaneId != 0u) {
-				++wIter;
-				if (wIter >= 20) {
-					Log.Error("Too many iterations in Flags.mayHaveLaneArrows!");
-					break;
-				}
-
-				if (curLaneId == laneId) {
-					NetInfo.Lane laneInfo = segmentInfo.m_lanes[laneIndex];
-					ushort nodeId = (laneInfo.m_direction == dir3) ? netManager.m_segments.m_buffer[segmentId].m_endNode : netManager.m_segments.m_buffer[segmentId].m_startNode;
-
-					if ((netManager.m_nodes.m_buffer[nodeId].m_flags & NetNode.Flags.Created) == NetNode.Flags.None)
-						return false;
-					return (netManager.m_nodes.m_buffer[nodeId].m_flags & NetNode.Flags.Junction) != NetNode.Flags.None;
-				}
-				curLaneId = netManager.m_lanes.m_buffer[curLaneId].m_nextLane;
-				++laneIndex;
-			}
-			return false;
-		}
-
 		public static ushort? getLaneSpeedLimit(uint laneId) {
 			try {
 				Monitor.Enter(laneSpeedLimitLock);
@@ -401,14 +297,6 @@ namespace Transit.Addon.TM.Data {
 				Monitor.Exit(laneAllowedVehicleTypesLock);
 			}
 			return ret;
-		}
-
-		public static LaneArrows? getLaneArrowFlags(uint laneId) {
-			return laneArrowFlags[laneId];
-		}
-
-		public static LaneArrows? getHighwayLaneArrowFlags(uint laneId) {
-			return highwayLaneArrowFlags[laneId];
 		}
 
 		public static bool getUTurnAllowed(ushort segmentId, bool startNode) {
@@ -503,19 +391,12 @@ namespace Transit.Addon.TM.Data {
 			return segmentNodeFlags[segmentId][index];
 		}
 
-		public static void removeHighwayLaneArrowFlags(uint laneId) {
-			highwayLaneArrowFlags[laneId] = null;
-		}
-
 		public static void applyAllFlags() {
 			for (ushort i = 0; i < nodeTrafficLightFlag.Length; ++i) {
 				applyNodeTrafficLightFlag(i);
 			}
 
-			for (uint i = 0; i < laneArrowFlags.Length; ++i) {
-				if (!applyLaneArrowFlags(i))
-					laneArrowFlags[i] = null;
-			}
+		    TMLaneRoutingManager.instance.ApplyAll();
 		}
 
 		public static void applyNodeTrafficLightFlag(ushort nodeId) {
@@ -534,69 +415,6 @@ namespace Transit.Addon.TM.Data {
 					Log.Warning($"Flags: Refusing to apply traffic light flag at node {nodeId}");
 					nodeTrafficLightFlag[nodeId] = null;
 				}
-			}
-		}
-
-		public static bool applyLaneArrowFlags(uint laneId, bool check=true) {
-			if (laneId <= 0)
-				return true;
-
-			uint laneFlags = (uint)Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags;
-
-			if (check && !mayHaveLaneArrows(laneId))
-				return false;
-
-			LaneArrows? hwArrows = highwayLaneArrowFlags[laneId];
-			LaneArrows? arrows = laneArrowFlags[laneId];
-
-			if (hwArrows != null) {
-				laneFlags &= ~lfr; // remove all arrows
-				laneFlags |= (uint)hwArrows; // add highway arrows
-			} else if (arrows != null) {
-				LaneArrows flags = (LaneArrows)arrows;
-				laneFlags &= ~lfr; // remove all arrows
-				laneFlags |= (uint)flags; // add desired arrows
-			}
-			
-			//Log._Debug($"Setting lane flags @ lane {laneId}, seg. {Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_segment} to {((NetLane.Flags)laneFlags).ToString()}");
-			Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags = Convert.ToUInt16(laneFlags);
-			return true;
-		}
-
-		public static void removeLaneArrowFlags(uint laneId) {
-			if (laneId <= 0)
-				return;
-
-			if (highwayLaneArrowFlags[laneId] != null)
-				return; // modification of arrows in highway rule mode is forbidden
-
-			laneArrowFlags[laneId] = null;
-			uint laneFlags = (uint)Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags;
-
-			if (((NetLane.Flags)laneFlags & NetLane.Flags.Created) == NetLane.Flags.None) {
-				Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags = 0;
-			} else {
-				Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags &= (ushort)~lfr;
-			}
-		}
-
-		internal static void removeHighwayLaneArrowFlagsAtSegment(ushort segmentId) {
-			if ((Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].m_flags & NetSegment.Flags.Created) == NetSegment.Flags.None)
-				return;
-
-			int i = 0;
-			uint curLaneId = Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].m_lanes;
-
-			while (i < Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].Info.m_lanes.Length && curLaneId != 0u) {
-				Flags.removeHighwayLaneArrowFlags(curLaneId);
-				curLaneId = Singleton<NetManager>.instance.m_lanes.m_buffer[curLaneId].m_nextLane;
-				++i;
-			} // foreach lane
-		}
-
-		public static void clearHighwayLaneArrows() {
-			for (uint i = 0; i < Singleton<NetManager>.instance.m_lanes.m_size; ++i) {
-				highwayLaneArrowFlags[i] = null;
 			}
 		}
 
@@ -620,9 +438,8 @@ namespace Transit.Addon.TM.Data {
 			} finally {
 				Monitor.Exit(laneAllowedVehicleTypesLock);
 			}
-
-			laneArrowFlags = null;
-			highwayLaneArrowFlags = null;
+            
+            TMLaneRoutingManager.instance.Reset();
 			segmentNodeFlags = null;
 		}
 
@@ -630,10 +447,10 @@ namespace Transit.Addon.TM.Data {
 			if (initDone)
 				return;
 
-			laneSpeedLimitArray = new ushort?[Singleton<NetManager>.instance.m_segments.m_size][];
-			laneArrowFlags = new LaneArrows?[Singleton<NetManager>.instance.m_lanes.m_size];
+		    TMLaneRoutingManager.instance.Init();
+
+            laneSpeedLimitArray = new ushort?[Singleton<NetManager>.instance.m_segments.m_size][];
 			laneAllowedVehicleTypesArray = new TMVehicleType?[Singleton<NetManager>.instance.m_segments.m_size][];
-			highwayLaneArrowFlags = new LaneArrows?[Singleton<NetManager>.instance.m_lanes.m_size];
 			nodeTrafficLightFlag = new bool?[Singleton<NetManager>.instance.m_nodes.m_size];
 			segmentNodeFlags = new TMConfigurationV2.SegmentEndFlags[Singleton<NetManager>.instance.m_segments.m_size][];
 			for (int i = 0; i < segmentNodeFlags.Length; ++i) {

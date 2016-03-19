@@ -1,6 +1,7 @@
 ﻿using TrafficManager;
 using Transit.Addon.TM.AI;
 using Transit.Addon.TM.Data;
+using Transit.Addon.TM.PathFindingFeatures;
 using Transit.Addon.TM.Traffic;
 
 namespace Transit.Addon.TM.Data {
@@ -15,7 +16,7 @@ namespace Transit.Addon.TM.Data {
 		}
 
 		private static void OnAfterLoad() {
-			Flags.clearHighwayLaneArrows();
+            TMLaneRoutingManager.instance.ClearAllHighwayDirections();
 			Flags.applyAllFlags();
 			TrafficPriority.HandleAllVehicles();
 		}

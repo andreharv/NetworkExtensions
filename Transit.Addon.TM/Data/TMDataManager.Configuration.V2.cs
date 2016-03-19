@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Transit.Addon.TM.Data;
+using Transit.Addon.TM.PathFindingFeatures;
 using Transit.Addon.TM.Traffic;
 using Transit.Addon.TM.TrafficLight;
 using Transit.Framework;
@@ -83,9 +84,9 @@ namespace Transit.Addon.TM.Data {
 						Flags.setLaneSpeedLimit(laneConf.laneId, (ushort)laneConf.speedLimit);
 					}
 
-					if (laneConf.laneArrows != null) {
-						// load lane arrows
-						Flags.setLaneArrowFlags(laneConf.laneId, (Flags.LaneArrows)(laneConf.laneArrows));
+					if (laneConf.directions != null) {
+                        // load lane arrows
+                        TMLaneRoutingManager.instance.LoadLaneDirection(laneConf.laneId, (TMLaneDirection)(laneConf.directions));
 					}
 				}
 			} else {
@@ -324,7 +325,7 @@ namespace Transit.Addon.TM.Data {
 
 			// Assemble lane configuration
 			for (uint laneId = 0; laneId < NetManager.MAX_LANE_COUNT; laneId++) {
-				Flags.LaneArrows? laneArrows = Flags.getLaneArrowFlags(laneId);
+				TMLaneDirection? laneArrows = TMLaneRoutingManager.instance.GetLaneDirection(laneId);
 				if (laneArrows != null) {
 					// save lane arrows
 
@@ -332,7 +333,7 @@ namespace Transit.Addon.TM.Data {
 					if (!laneConfs.ContainsKey(laneId))
 						laneConfs[laneId] = new TMConfigurationV2.LaneConf(laneId);
 
-					laneConfs[laneId].laneArrows = laneArrows;
+					laneConfs[laneId].directions = laneArrows;
 				}
 
 				ushort? speedLimit = Flags.getLaneSpeedLimit(laneId);

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using Transit.Addon.TM.AI;
 using Transit.Addon.TM.Data;
+using Transit.Addon.TM.PathFindingFeatures;
 using Transit.Addon.TM.Traffic;
 using Transit.Addon.TM.TrafficLight;
 using Transit.Framework;
@@ -1242,8 +1243,8 @@ namespace Transit.Addon.TM.Traffic {
 					endNodeIncomingStraightSegmentsArray[i] = 0;
 				}
 
-				// reset highway lane arrows
-				Flags.removeHighwayLaneArrowFlagsAtSegment(segmentId); // TODO refactor
+                // reset highway lane arrows
+                TMLaneRoutingManager.instance.RemoveHighwayLaneDirectionAtSegment(segmentId); // TODO refactor
 
 				// clear default vehicle type cache
 				VehicleRestrictionsManager.ClearCache(segmentId);
@@ -1344,8 +1345,8 @@ namespace Transit.Addon.TM.Traffic {
 					}
 				}
 
-				// reset highway lane arrows
-				Flags.removeHighwayLaneArrowFlagsAtSegment(otherSegmentId); // TODO refactor
+                // reset highway lane arrows
+                TMLaneRoutingManager.instance.RemoveHighwayLaneDirectionAtSegment(otherSegmentId); // TODO refactor
 
 				nodeSegments.Add(otherSegmentId);
 			}
