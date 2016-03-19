@@ -42,7 +42,7 @@ namespace Transit.Addon.TM
                 TrafficPriority.OnLevelLoading();
 
                 Log.Info("Adding Controls to UI.");
-                UI = ToolsModifierControl.toolController.gameObject.AddComponent<BaseUI>();
+                UI = ToolsModifierControl.toolController.gameObject.AddComponent<TMBaseUI>();
 
                 initDetours();
                 Log.Info("OnLevelLoaded complete.");

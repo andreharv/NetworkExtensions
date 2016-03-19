@@ -99,7 +99,7 @@ namespace Transit.Addon.TM.Tools {
 			//Log._Debug($"SetToolMode: {mode}");
 			
 			if (mode == TrafficManagerToolMode.None) {
-				TrafficManagerMenuUI.deactivateButtons();
+				TMMenuUI.deactivateButtons();
 			}
 
 			bool toolModeChanged = (mode != _toolMode);

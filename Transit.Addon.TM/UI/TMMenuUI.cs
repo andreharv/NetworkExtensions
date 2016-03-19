@@ -9,7 +9,7 @@ using UnityEngine;
 using Transit.Addon.TM.Data;
 
 namespace Transit.Addon.TM.UI {
-	public class TrafficManagerMenuUI : UIPanel {
+	public class TMMenuUI : UIPanel {
 		//private static UIState _uiState = UIState.None;
 
 		private static UIButton _buttonSwitchTraffic;
