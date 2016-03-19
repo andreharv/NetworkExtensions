@@ -70,8 +70,8 @@
     <Compile Include="Data\TMConfigurationV2.Options.cs" />
     <Compile Include="Data\TMConfigurationV2.NodeConf.cs" />
     <Compile Include="Data\TMConfigurationV2.SegmentEndFlags.cs" />
-    <Compile Include="DataSerialization\TPPLaneDataSerializationBinder.cs" />
-    <Compile Include="DataSerialization\TPPLaneDataSerializer.cs" />
+    <Compile Include="DataSerialization\TPPDataSerializationBinder.cs" />
+    <Compile Include="DataSerialization\TPPDataSerializer.cs" />
     <Compile Include="Data\Legacy\TPPLaneDataV1.cs" />
     <Compile Include="Data\TMDataManager.Configuration.V1.cs" />
     <Compile Include="Data\TPPLaneDataV2.cs" />
@@ -88,7 +88,7 @@
     <Compile Include="PathFindingFeatures\TMRoadRestrictionManager.cs" />
     <Compile Include="PathFindingFeatures\TMRoadSpeedManager.cs" />
     <Compile Include="PathFindingFeatures\TMSupported.cs" />
-    <Compile Include="PathFindingFeatures\TPPLaneDataManager.cs" />
+    <Compile Include="PathFindingFeatures\TPPDataManager.cs" />
     <Compile Include="PathFindingFeatures\TPPLaneRoutingManager.cs" />
     <Compile Include="PathFindingFeatures\TPPRoadRestrictionManager.cs" />
     <Compile Include="PathFindingFeatures\TPPRoadSpeedManager.cs" />

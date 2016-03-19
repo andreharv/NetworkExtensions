@@ -215,8 +215,8 @@ namespace Transit.Addon.TM.Data
             int laneCount = info.m_lanes.Length;
             for (int laneIndex = 0; laneIndex < laneCount && laneId != 0; laneIndex++)
             {
-                if (laneId != m_laneId && TPPLaneDataManager.sm_lanes[laneId] != null && TPPLaneDataManager.sm_lanes[laneId].ConnectionCount() > 0)
-                    TPPLaneDataManager.sm_lanes[laneId].UpdateArrows();
+                if (laneId != m_laneId && TPPDataManager.instance.GetLane(laneId) != null && TPPDataManager.instance.GetLane(laneId).ConnectionCount() > 0)
+                    TPPDataManager.instance.GetLane(laneId).UpdateArrows();
 
                 laneId = NetManager.instance.m_lanes.m_buffer[laneId].m_nextLane;
             }

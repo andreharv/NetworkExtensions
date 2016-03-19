@@ -65,6 +65,9 @@ namespace Transit.Addon.TM
             revertDetours();
             gameLoaded = false;
 
+            TMLaneRoutingManager.instance.Reset();
+            TPPDataManager.instance.Reset();
+
             Object.Destroy(UI);
             UI = null;
 

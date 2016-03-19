@@ -37,7 +37,7 @@ namespace Transit.Addon.TM.PathFindingFeatures
 				return true;
 			}
 
-			TPPLaneDataV2 lane = TPPLaneDataManager.GetLane(originLaneId, false);
+			TPPLaneDataV2 lane = TPPDataManager.instance.GetLane(originLaneId);
 			if (lane == null)
 				return true;
 

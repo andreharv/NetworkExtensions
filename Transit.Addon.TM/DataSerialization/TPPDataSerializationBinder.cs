@@ -6,7 +6,7 @@ using Transit.Framework.Network;
 
 namespace Transit.Addon.TM.DataSerialization
 {
-    public class TPPLaneDataSerializationBinder : SerializationBinder
+    public class TPPDataSerializationBinder : SerializationBinder
     {
         public override Type BindToType(string assemblyName, string typeName)
         {
