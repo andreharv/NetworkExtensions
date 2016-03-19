@@ -215,7 +215,7 @@ namespace TrafficManager.State {
 			if (_configuration.LaneAllowedVehicleTypes != null) {
 				Log.Info($"Loading lane vehicle restriction data. {_configuration.LaneAllowedVehicleTypes.Count} elements");
 				foreach (Configuration.LaneVehicleTypes laneVehicleTypes in _configuration.LaneAllowedVehicleTypes) {
-					ExtVehicleType maskedType = laneVehicleTypes.vehicleTypes & VehicleRestrictionsManager.GetDefaultAllowedVehicleTypes(laneVehicleTypes.laneId);
+					ExtVehicleType maskedType = laneVehicleTypes.vehicleTypes & VehicleRestrictionsManager.GetBaseMask(laneVehicleTypes.laneId);
 					Log._Debug($"Loading lane vehicle restriction: lane {laneVehicleTypes.laneId} = {laneVehicleTypes.vehicleTypes}, masked = {maskedType}");
 					Flags.setLaneAllowedVehicleTypes(laneVehicleTypes.laneId, maskedType);
 				}
