@@ -10,8 +10,12 @@ namespace Transit.Addon.TM.DataSerialization
     {
         public override Type BindToType(string assemblyName, string typeName)
         {
-            if (typeName.Contains("LaneDataV2"))
-                return typeof(TPPLaneDataV2);
+            if (typeName.Contains("LaneRestriction"))
+                return typeof(TAMLaneRestriction);
+            if (typeName.Contains("LaneRoute"))
+                return typeof(TAMLaneRoute);
+            if (typeName.Contains("LaneSpeedLimit"))
+                return typeof(TAMLaneSpeedLimit);
             if (typeName.Contains("UnitType"))
                 return typeof(ExtendedUnitType);
 

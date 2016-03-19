@@ -44,10 +44,10 @@ namespace Transit.Addon.TM
             TAMPathFindManager.instance.DefinePathFinding<ImprovedPathFind>();
 
             // TODO: Convert TM LaneArrows into TPP routes
-            TAMPathFindFeatureManager.instance.DefineLaneRoutingManager<TPPLaneRoutingManager>();
+            TAMPathFindFeatureManager.instance.DefineLaneRoutingManager(TPPLaneRoutingManager.instance);
 
             // TODO: Merge those 2
-            //TAMPathFindFeatureManager.instance.DefineRoadRestrictionManager<TPPRoadRestrictionManager>();
+            //TAMPathFindFeatureManager.instance.DefineRoadRestrictionManager(TPPRoadRestrictionManager.instance);
             TAMPathFindFeatureManager.instance.DefineRoadRestrictionManager<TMRoadRestrictionManager>();
 
             // TODO: Convert TPP data into TMRoadSpeedManager

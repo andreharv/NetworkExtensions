@@ -10,34 +10,38 @@ using UnityEngine;
 namespace Transit.Addon.TM.Data
 {
     [Serializable]
-    public class TPPLaneDataV2
+    public class TAMLaneRoute
     {
-        public uint m_laneId;
-        public ushort m_nodeId;
-		public uint[] m_laneConnections = new uint[0];
-		public ExtendedUnitType m_unitTypes = ExtendedUnitType.RoadVehicle;
-        public float m_speed = 1f;
-		private object m_lock = new object();
+        public uint LaneId { get; set; }
+        public ushort NodeId { get; set; }
+        public uint[] Connections { get; set; }
 
-		/// <summary>
-		/// Adds a connection from m_laneId to laneId.
-		/// </summary>
-		/// <param name="laneId"></param>
-		/// <returns></returns>
-		public bool AddConnection(uint laneId) {
+		private readonly object _lock = new object();
+
+        public TAMLaneRoute()
+        {
+            Connections = new uint[0];
+        }
+
+        /// <summary>
+        /// Adds a connection from m_laneId to laneId.
+        /// </summary>
+        /// <param name="laneId"></param>
+        /// <returns></returns>
+        public bool AddConnection(uint laneId) {
 			try {
-				Monitor.Enter(m_lock);
+				Monitor.Enter(_lock);
 
-				if (m_laneConnections.Contains(laneId))
+				if (Connections.Contains(laneId))
 					return false; // already connected
 
 				// expand the array & add the lane
-				var oldLaneConnections = m_laneConnections;
-				m_laneConnections = new uint[m_laneConnections.Length + 1];
-				Array.Copy(oldLaneConnections, m_laneConnections, oldLaneConnections.Length);
-				m_laneConnections[m_laneConnections.Length - 1] = laneId;
+				var oldLaneConnections = Connections;
+				Connections = new uint[Connections.Length + 1];
+				Array.Copy(oldLaneConnections, Connections, oldLaneConnections.Length);
+				Connections[Connections.Length - 1] = laneId;
 			} finally {
-				Monitor.Exit(m_lock);
+				Monitor.Exit(_lock);
 			}
 
 			UpdateArrows();
@@ -51,15 +55,15 @@ namespace Transit.Addon.TM.Data
 		/// <returns></returns>
 		public bool RemoveConnection(uint laneId) {
 			try {
-				Monitor.Enter(m_lock);
+				Monitor.Enter(_lock);
 
 				bool found = false;
-				for (int i = 0; i < m_laneConnections.Length; ++i) {
-					if (m_laneConnections[i] == laneId) {
+				for (int i = 0; i < Connections.Length; ++i) {
+					if (Connections[i] == laneId) {
 						// connected lane found. shift succeeding elements to the front.
 						found = true;
-						for (int k = i; k < m_laneConnections.Length - 1; ++k) {
-							m_laneConnections[k] = m_laneConnections[k + 1];
+						for (int k = i; k < Connections.Length - 1; ++k) {
+							Connections[k] = Connections[k + 1];
 						}
 						break;
 					}
@@ -69,23 +73,19 @@ namespace Transit.Addon.TM.Data
 					return false;
 
 				// shrink the array
-				var oldLaneConnections = m_laneConnections;
-				m_laneConnections = new uint[m_laneConnections.Length - 1];
-				Array.Copy(oldLaneConnections, m_laneConnections, m_laneConnections.Length);
+				var oldLaneConnections = Connections;
+				Connections = new uint[Connections.Length - 1];
+				Array.Copy(oldLaneConnections, Connections, Connections.Length);
 			} finally {
-				Monitor.Exit(m_lock);
+				Monitor.Exit(_lock);
 			}
 
 			UpdateArrows();
 			return true;
 		}
 
-		public uint[] GetConnectionsAsArray() {
-			return m_laneConnections;
-		}
-
 		public int ConnectionCount() {
-			return m_laneConnections.Length;
+			return Connections.Length;
 		}
 
 		/// <summary>
@@ -98,12 +98,12 @@ namespace Transit.Addon.TM.Data
 			if (verifyConnections) // TODO find a suitable location where we can verify connections
 				VerifyConnections();
 
-			if (m_laneConnections.Length <= 0)
+			if (Connections.Length <= 0)
 				return true; // default
 
 			while (true) {
 				try {
-					return m_laneConnections.Contains(laneId);
+					return Connections.Contains(laneId);
 				} catch (Exception e) {
 					// we might get an IndexOutOfBounds here since we are not locking
 #if DEBUG
@@ -116,12 +116,12 @@ namespace Transit.Addon.TM.Data
 		void VerifyConnections() {
 			int startI = 0;
 			while (true) {
-				for (int i = startI; i < m_laneConnections.Length; ++i) {
+				for (int i = startI; i < Connections.Length; ++i) {
 					try {
-						ushort laneFlags = NetManager.instance.m_lanes.m_buffer[m_laneConnections[i]].m_flags;
+						ushort laneFlags = NetManager.instance.m_lanes.m_buffer[Connections[i]].m_flags;
 						if ((laneFlags & ((ushort)NetLane.Flags.Created)) == 0) {
 							// lane invalid
-							RemoveConnection(m_laneConnections[i]);
+							RemoveConnection(Connections[i]);
 							startI = i;
 							goto CONTINUE_WHILE; // lane has been deleted; continue search for invalid lanes
 						}
@@ -140,13 +140,13 @@ namespace Transit.Addon.TM.Data
 		public void UpdateArrows()
         {
             VerifyConnections();
-            NetLane lane = NetManager.instance.m_lanes.m_buffer[m_laneId];
+            NetLane lane = NetManager.instance.m_lanes.m_buffer[LaneId];
             NetSegment segment = NetManager.instance.m_segments.m_buffer[lane.m_segment];
 
-            if ((m_nodeId == 0 && !FindNode(segment)) || NetManager.instance.m_nodes.m_buffer[m_nodeId].CountSegments() <= 2)
+            if ((NodeId == 0 && !FindNode(segment)) || NetManager.instance.m_nodes.m_buffer[NodeId].CountSegments() <= 2)
                 return;
 
-            if (ConnectionCount() == 0)
+            if (!Connections.Any())
             {
                 SetDefaultArrows(lane.m_segment, ref NetManager.instance.m_segments.m_buffer[lane.m_segment]);
                 return;
@@ -155,12 +155,11 @@ namespace Transit.Addon.TM.Data
             NetLane.Flags flags = (NetLane.Flags)lane.m_flags;
             flags &= ~(NetLane.Flags.LeftForwardRight);
 
-            Vector3 segDir = segment.GetDirection(m_nodeId);
-            uint[] connections = GetConnectionsAsArray();
-            foreach (uint connection in connections)
+            Vector3 segDir = segment.GetDirection(NodeId);
+            foreach (uint connection in Connections)
             {
                 ushort seg = NetManager.instance.m_lanes.m_buffer[connection].m_segment;
-                Vector3 dir = NetManager.instance.m_segments.m_buffer[seg].GetDirection(m_nodeId);
+                Vector3 dir = NetManager.instance.m_segments.m_buffer[seg].GetDirection(NodeId);
                 if (Vector3.Angle(segDir, dir) > 150f)
                 {
                     flags |= NetLane.Flags.Forward;
@@ -175,7 +174,7 @@ namespace Transit.Addon.TM.Data
                 }
             }
 
-            NetManager.instance.m_lanes.m_buffer[m_laneId].m_flags = (ushort)flags;
+            NetManager.instance.m_lanes.m_buffer[LaneId].m_flags = (ushort)flags;
         }
 
         bool FindNode(NetSegment segment)
@@ -186,7 +185,7 @@ namespace Transit.Addon.TM.Data
             int laneIndex = 0;
             for (; laneIndex < laneCount && laneId != 0; laneIndex++)
             {
-                if (laneId == m_laneId)
+                if (laneId == LaneId)
                     break;
                 laneId = NetManager.instance.m_lanes.m_buffer[laneId].m_nextLane;
             }
@@ -196,9 +195,9 @@ namespace Transit.Addon.TM.Data
                 NetInfo.Direction laneDir = ((segment.m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None) ? info.m_lanes[laneIndex].m_finalDirection : NetInfo.InvertDirection(info.m_lanes[laneIndex].m_finalDirection);
 
                 if ((laneDir & (NetInfo.Direction.Forward | NetInfo.Direction.Avoid)) == NetInfo.Direction.Forward)
-                    m_nodeId = segment.m_endNode;
+                    NodeId = segment.m_endNode;
                 else if ((laneDir & (NetInfo.Direction.Backward | NetInfo.Direction.Avoid)) == NetInfo.Direction.Backward)
-                    m_nodeId = segment.m_startNode;
+                    NodeId = segment.m_startNode;
 
                 return true;
             }
@@ -215,8 +214,10 @@ namespace Transit.Addon.TM.Data
             int laneCount = info.m_lanes.Length;
             for (int laneIndex = 0; laneIndex < laneCount && laneId != 0; laneIndex++)
             {
-                if (laneId != m_laneId && TPPDataManager.instance.GetLane(laneId) != null && TPPDataManager.instance.GetLane(laneId).ConnectionCount() > 0)
-                    TPPDataManager.instance.GetLane(laneId).UpdateArrows();
+                if (laneId != LaneId && 
+                    TPPLaneRoutingManager.instance.GetRoute(laneId) != null && 
+                    TPPLaneRoutingManager.instance.GetRoute(laneId).Connections.Any())
+                    TPPLaneRoutingManager.instance.GetRoute(laneId).UpdateArrows();
 
                 laneId = NetManager.instance.m_lanes.m_buffer[laneId].m_nextLane;
             }

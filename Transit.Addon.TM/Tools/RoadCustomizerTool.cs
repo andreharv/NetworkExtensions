@@ -113,19 +113,19 @@ namespace Transit.Addon.TM.Tools
 
 	    private IEnumerator LoadMarkers()
 	    {
-            while (!TPPDataManager.instance.IsLoaded())
+            while (!TPPLaneSpeedManager.instance.IsLoaded())
             {
                 yield return new WaitForEndOfFrame();
             }
 
             var nodesList = new HashSet<ushort>();
-            foreach (var lane in TPPDataManager.instance.GetAllLanes())
+            foreach (var lane in TPPLaneRoutingManager.instance.GetAllRoutes())
             {
                 if (lane == null)
                     continue;
                 
-                if (lane.ConnectionCount() > 0)
-                    nodesList.Add(lane.m_nodeId);
+                if (lane.Connections.Any())
+                    nodesList.Add(lane.NodeId);
             }
             
             foreach (var nodeId in nodesList)
@@ -273,11 +273,11 @@ namespace Transit.Addon.TM.Tools
 					{
 						m_selectedMarker = hoveredMarker;
 					}
-					else if (TPPDataManager.instance.RemoveLaneConnection(m_selectedMarker.m_lane, hoveredMarker.m_lane))
+					else if (TPPLaneRoutingManager.instance.RemoveLaneConnection(m_selectedMarker.m_lane, hoveredMarker.m_lane))
 					{
 						m_selectedMarker.m_connections.Remove(hoveredMarker);
 					}
-					else if (TPPDataManager.instance.AddLaneConnection(m_selectedMarker.m_lane, hoveredMarker.m_lane))
+					else if (TPPLaneRoutingManager.instance.AddLaneConnection(m_selectedMarker.m_lane, hoveredMarker.m_lane))
 					{
 						m_selectedMarker.m_connections.Add(hoveredMarker);
 					}
@@ -460,7 +460,7 @@ namespace Transit.Addon.TM.Tools
 				if (!nodeMarkers.m_buffer[i].m_isSource)
 					continue;
 
-				uint[] connections = TPPDataManager.instance.GetLaneConnections(nodeMarkers.m_buffer[i].m_lane);
+				uint[] connections = TPPLaneRoutingManager.instance.GetLaneConnections(nodeMarkers.m_buffer[i].m_lane);
 				if (connections == null || connections.Length == 0)
 					continue;
 
@@ -723,7 +723,7 @@ namespace Transit.Addon.TM.Tools
 			if (!AnyLaneSelected)
 				return ExtendedUnitType.None;
 
-			return TPPDataManager.instance.GetVehicleRestrictions(m_selectedLaneMarkers[0].m_lane);
+			return TPPRoadRestrictionManager.instance.GetRestrictions(m_selectedLaneMarkers[0].m_lane);
 		}
 
 		public ExtendedUnitType ToggleRestriction(ExtendedUnitType vehicleType)
@@ -731,11 +731,11 @@ namespace Transit.Addon.TM.Tools
 			if (!AnyLaneSelected)
 				return ExtendedUnitType.None;
 
-			ExtendedUnitType vehicleRestrictions = TPPDataManager.instance.GetVehicleRestrictions(m_selectedLaneMarkers[0].m_lane);
+			ExtendedUnitType vehicleRestrictions = TPPRoadRestrictionManager.instance.GetRestrictions(m_selectedLaneMarkers[0].m_lane);
 			vehicleRestrictions ^= vehicleType;
 
 			foreach (SegmentLaneMarker lane in m_selectedLaneMarkers)
-				TPPDataManager.instance.SetVehicleRestrictions(lane.m_lane, vehicleRestrictions);
+                TPPRoadRestrictionManager.instance.SetRestrictions(lane.m_lane, vehicleRestrictions);
 
 			return vehicleRestrictions;
 		}
@@ -745,7 +745,7 @@ namespace Transit.Addon.TM.Tools
 			if (!AnyLaneSelected)
 				return -1f;
 
-			return TPPDataManager.instance.GetLaneSpeedRestriction(m_selectedLaneMarkers[0].m_lane);
+			return TPPLaneSpeedManager.instance.GetLaneSpeedRestriction(m_selectedLaneMarkers[0].m_lane);
 		}
 
 		public void SetSpeedRestrictions(int speed)
@@ -754,7 +754,7 @@ namespace Transit.Addon.TM.Tools
 				return;
 
 			foreach (SegmentLaneMarker lane in m_selectedLaneMarkers)
-				TPPDataManager.instance.SetLaneSpeedRestriction(lane.m_lane, speed);
+				TPPLaneSpeedManager.instance.SetLaneSpeedRestriction(lane.m_lane, speed);
 		}
 
 		#endregion

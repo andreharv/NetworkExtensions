@@ -12,7 +12,7 @@ namespace Transit.Addon.TM.PathFindingFeatures
                 return laneInfo.m_speedLimit;
             }
 
-			return TPPDataManager.instance.GetLaneSpeedRestriction(laneId, laneInfo);
+			return TPPLaneSpeedManager.instance.GetLaneSpeedRestriction(laneId, laneInfo);
         }
     }
 }

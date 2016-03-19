@@ -12,15 +12,31 @@ namespace Transit.Addon.TM.Data.Legacy
         public TPPVehicleType m_vehicleTypes = TPPVehicleType.All;
         public float m_speed = 1f;
 
-        public TPPLaneDataV2 ConvertToV2()
+        public TAMLaneRoute ConvertToRoute()
         {
-            return new TPPLaneDataV2()
+            return new TAMLaneRoute()
             {
-                m_laneId = m_laneId,
-                m_nodeId = m_nodeId,
-                m_laneConnections = m_laneConnections.ToArray(),
-                m_unitTypes = m_vehicleTypes.ConvertToUnitType(),
-                m_speed = m_speed,
+                LaneId = m_laneId,
+                NodeId = m_nodeId,
+                Connections = m_laneConnections.ToArray(),
+            };
+        }
+
+        public TAMLaneSpeedLimit ConvertToSpeedLimit()
+        {
+            return new TAMLaneSpeedLimit()
+            {
+                LaneId = m_laneId,
+                SpeedLimit = m_speed,
+            };
+        }
+
+        public TAMLaneRestriction ConvertToRestriction()
+        {
+            return new TAMLaneRestriction()
+            {
+                LaneId = m_laneId,
+                UnitTypes = m_vehicleTypes.ConvertToUnitType(),
             };
         }
     }

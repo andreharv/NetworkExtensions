@@ -66,7 +66,9 @@ namespace Transit.Addon.TM
             gameLoaded = false;
 
             TMLaneRoutingManager.instance.Reset();
-            TPPDataManager.instance.Reset();
+            TPPLaneRoutingManager.instance.Reset();
+            TPPRoadRestrictionManager.instance.Reset();
+            TPPLaneSpeedManager.instance.Reset();
 
             Object.Destroy(UI);
             UI = null;
