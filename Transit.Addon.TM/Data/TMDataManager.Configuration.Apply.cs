@@ -6,7 +6,7 @@ using Transit.Addon.TM.Data;
 using Transit.Addon.TM.Traffic;
 using Transit.Addon.TM.TrafficLight;
 
-namespace Transit.Addon.TM.PathFindingFeatures {
+namespace Transit.Addon.TM.Data {
 	public static partial class TMDataManager {
 		private static void ApplyConfiguration(TMConfigurationV2 configuration) {
 			Log.Info("Loading State from Config");
@@ -68,7 +68,7 @@ namespace Transit.Addon.TM.PathFindingFeatures {
 			if (configuration.LaneAllowedVehicleTypes != null) {
 				Log.Info($"Loading lane vehicle restriction data. {configuration.LaneAllowedVehicleTypes.Count} elements");
 				foreach (TMConfigurationV2.LaneVehicleTypes laneVehicleTypes in configuration.LaneAllowedVehicleTypes) {
-					TMVehicleType maskedType = laneVehicleTypes.vehicleTypes & VehicleRestrictionsManager.GetDefaultAllowedVehicleTypes(laneVehicleTypes.laneId);
+					TMVehicleType maskedType = laneVehicleTypes.vehicleTypes & VehicleRestrictionsManager.GetBaseMask(laneVehicleTypes.laneId);
 					Log._Debug($"Loading lane vehicle restriction: lane {laneVehicleTypes.laneId} = {laneVehicleTypes.vehicleTypes}, masked = {maskedType}");
 					Flags.setLaneAllowedVehicleTypes(laneVehicleTypes.laneId, maskedType);
 				}

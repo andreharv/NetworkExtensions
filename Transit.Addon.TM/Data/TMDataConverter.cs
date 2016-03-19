@@ -4,7 +4,7 @@ using TrafficManager;
 using TrafficManager.Traffic;
 using Transit.Addon.TM.Data;
 
-namespace Transit.Addon.TM.DataSerialization
+namespace Transit.Addon.TM.Data
 {
     public static class TMDataConverter
     {

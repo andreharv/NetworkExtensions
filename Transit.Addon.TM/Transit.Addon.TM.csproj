@@ -66,7 +66,7 @@
     <Compile Include="AI\CustomVehicleAI.cs" />
     <Compile Include="AI\TPPCargoTruckAI.cs" />
     <Compile Include="AI\TPPPassengerCarAI.cs" />
-    <Compile Include="DataSerialization\TMDataConverter.cs" />
+    <Compile Include="Data\TMDataConverter.cs" />
     <Compile Include="DataSerialization\TPPLaneDataSerializationBinder.cs" />
     <Compile Include="DataSerialization\TPPLaneDataSerializer.cs" />
     <Compile Include="Data\Legacy\TPPLaneDataV1.cs" />
@@ -79,10 +79,10 @@
     <Compile Include="Menus\RoadCustomizer\Textures\RoadCustomizerAtlasBuilder.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="PathFindingFeatures\UnitRealisticSpeedManager.cs" />
-    <Compile Include="PathFindingFeatures\TMDataManager.Configuration.Apply.cs" />
-    <Compile Include="PathFindingFeatures\TMDataManager.Configuration.Create.cs" />
-    <Compile Include="PathFindingFeatures\TMDataManager.cs" />
-    <Compile Include="PathFindingFeatures\TMDataManager.Options.cs" />
+    <Compile Include="Data\TMDataManager.Configuration.Apply.cs" />
+    <Compile Include="Data\TMDataManager.Configuration.Create.cs" />
+    <Compile Include="Data\TMDataManager.cs" />
+    <Compile Include="Data\TMDataManager.Options.cs" />
     <Compile Include="PathFindingFeatures\TMRoadRestrictionManager.cs" />
     <Compile Include="PathFindingFeatures\TMRoadSpeedManager.cs" />
     <Compile Include="PathFindingFeatures\TMSupported.cs" />

@@ -180,7 +180,7 @@ namespace Transit.Addon.TM.Traffic {
 			if (((NetLane.Flags)Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags & NetLane.Flags.Created) == NetLane.Flags.None)
 				return false;
 
-			allowedTypes &= GetDefaultAllowedVehicleTypes(segmentId, segmentInfo, laneIndex, segmentInfo.m_lanes[laneIndex]); // ensure default base mask
+			allowedTypes &= GetBaseMask(segmentInfo.m_lanes[laneIndex]); // ensure default base mask
 			Flags.setLaneAllowedVehicleTypes(segmentId, laneIndex, laneId, allowedTypes);
 			return true;
 		}
@@ -204,7 +204,7 @@ namespace Transit.Addon.TM.Traffic {
 
 			TMVehicleType allowedTypes = GetAllowedVehicleTypes(segmentId, segmentInfo, laneIndex, laneInfo);
 			allowedTypes |= vehicleType;
-			allowedTypes &= GetDefaultAllowedVehicleTypes(segmentId, segmentInfo, laneIndex, segmentInfo.m_lanes[laneIndex]); // ensure default base mask
+			allowedTypes &= GetBaseMask(segmentInfo.m_lanes[laneIndex]); // ensure default base mask
 			Flags.setLaneAllowedVehicleTypes(segmentId, laneIndex, laneId, allowedTypes);
 		}
 
@@ -227,7 +227,7 @@ namespace Transit.Addon.TM.Traffic {
 
 			TMVehicleType allowedTypes = GetAllowedVehicleTypes(segmentId, segmentInfo, laneIndex, laneInfo);
 			allowedTypes &= ~vehicleType;
-			allowedTypes &= GetDefaultAllowedVehicleTypes(segmentId, segmentInfo, laneIndex, segmentInfo.m_lanes[laneIndex]); // ensure default base mask
+			allowedTypes &= GetBaseMask(segmentInfo.m_lanes[laneIndex]); // ensure default base mask
 			Flags.setLaneAllowedVehicleTypes(segmentId, laneIndex, laneId, allowedTypes);
 		}
 
@@ -236,6 +236,47 @@ namespace Transit.Addon.TM.Traffic {
 				AddAllowedType(segmentId, segmentInfo, laneIndex, laneId, laneInfo, vehicleType);
 			else
 				RemoveAllowedType(segmentId, segmentInfo, laneIndex, laneId, laneInfo, vehicleType);
+		}
+
+		/// <summary>
+		/// Determines the maximum allowed set of vehicles (the base mask) for a given lane
+		/// </summary>
+		/// <param name="laneInfo"></param>
+		/// <returns></returns>
+		public static TMVehicleType GetBaseMask(NetInfo.Lane laneInfo) {
+			if (IsRoadLane(laneInfo))
+				return TMVehicleType.RoadVehicle;
+			else if (IsRailLane(laneInfo))
+				return TMVehicleType.RailVehicle;
+			else
+				return TMVehicleType.None;
+		}
+
+		/// <summary>
+		/// Determines the maximum allowed set of vehicles (the base mask) for a given lane
+		/// </summary>
+		/// <param name="laneInfo"></param>
+		/// <returns></returns>
+		public static TMVehicleType GetBaseMask(uint laneId) {
+			if (((NetLane.Flags)Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags & NetLane.Flags.Created) == NetLane.Flags.None)
+				return TMVehicleType.None;
+			ushort segmentId = Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_segment;
+			if ((Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].m_flags & NetSegment.Flags.Created) == NetSegment.Flags.None)
+				return TMVehicleType.None;
+
+			NetInfo segmentInfo = Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].Info;
+			uint curLaneId = Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].m_lanes;
+			int numLanes = segmentInfo.m_lanes.Length;
+			uint laneIndex = 0;
+			while (laneIndex < numLanes && curLaneId != 0u) {
+				NetInfo.Lane laneInfo = segmentInfo.m_lanes[laneIndex];
+				if (curLaneId == laneId) {
+					return GetBaseMask(laneInfo);
+				}
+				curLaneId = Singleton<NetManager>.instance.m_lanes.m_buffer[curLaneId].m_nextLane;
+				++laneIndex;
+			}
+			return TMVehicleType.None;
 		}
 
 		public static bool IsAllowed(TMVehicleType? allowedTypes, TMVehicleType vehicleType) {

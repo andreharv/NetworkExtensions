@@ -116,7 +116,7 @@ namespace TrafficManager.UI.SubTools {
 					uint laneIndex = (uint)laneData[2];
 					NetInfo.Lane laneInfo = selectedSegmentInfo.m_lanes[laneIndex];
 
-					ExtVehicleType baseMask = VehicleRestrictionsManager.GetDefaultAllowedVehicleTypes(SelectedSegmentId, selectedSegmentInfo, laneIndex, laneInfo);
+					ExtVehicleType baseMask = VehicleRestrictionsManager.GetBaseMask(laneInfo);
 
 					if (baseMask == ExtVehicleType.None)
 						continue;
@@ -138,7 +138,7 @@ namespace TrafficManager.UI.SubTools {
 					uint laneIndex = (uint)laneData[2];
 					NetInfo.Lane laneInfo = selectedSegmentInfo.m_lanes[laneIndex];
 
-					ExtVehicleType baseMask = VehicleRestrictionsManager.GetDefaultAllowedVehicleTypes(SelectedSegmentId, selectedSegmentInfo, laneIndex, laneInfo);
+					ExtVehicleType baseMask = VehicleRestrictionsManager.GetBaseMask(laneInfo);
 
 					if (baseMask == ExtVehicleType.None)
 						continue;

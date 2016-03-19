@@ -112,7 +112,7 @@ namespace Transit.Addon.TM.Tools.SubTools {
 					uint laneIndex = (uint)laneData[2];
 					NetInfo.Lane laneInfo = selectedSegmentInfo.m_lanes[laneIndex];
 
-					TMVehicleType baseMask = VehicleRestrictionsManager.GetDefaultAllowedVehicleTypes(SelectedSegmentId, selectedSegmentInfo, laneIndex, laneInfo);
+					TMVehicleType baseMask = VehicleRestrictionsManager.GetBaseMask(laneInfo);
 
 					if (baseMask == TMVehicleType.None)
 						continue;
@@ -134,7 +134,7 @@ namespace Transit.Addon.TM.Tools.SubTools {
 					uint laneIndex = (uint)laneData[2];
 					NetInfo.Lane laneInfo = selectedSegmentInfo.m_lanes[laneIndex];
 
-					TMVehicleType baseMask = VehicleRestrictionsManager.GetDefaultAllowedVehicleTypes(SelectedSegmentId, selectedSegmentInfo, laneIndex, laneInfo);
+					TMVehicleType baseMask = VehicleRestrictionsManager.GetBaseMask(laneInfo);
 
 					if (baseMask == TMVehicleType.None)
 						continue;

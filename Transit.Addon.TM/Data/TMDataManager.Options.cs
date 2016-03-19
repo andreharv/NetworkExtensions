@@ -1,4 +1,4 @@
-﻿namespace Transit.Addon.TM.PathFindingFeatures
+﻿namespace Transit.Addon.TM.Data
 {
     public static partial class TMDataManager
     {

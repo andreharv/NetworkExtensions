@@ -268,12 +268,7 @@ namespace Transit.Addon.TM.AI {
 		internal static TMVehicleType? DetermineVehicleTypeFromVehicle(ushort vehicleId, ref Vehicle vehicleData) {
 			if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) != Vehicle.Flags.None)
 				return TMVehicleType.Emergency;
-			/*else {
-				VehiclePosition vehiclePos = TrafficPriority.GetVehiclePosition(vehicleId);
-				if (vehiclePos != null && vehiclePos.Valid && vehiclePos.VehicleType != ExtVehicleType.Emergency)
-					return vehiclePos.VehicleType;
-			}*/
-
+			
 			VehicleAI ai = vehicleData.Info.m_vehicleAI;
 			return DetermineVehicleTypeFromAIType(ai, false);
 		}

@@ -2,7 +2,7 @@
 using Transit.Addon.TM.Data;
 using Transit.Addon.TM.Traffic;
 
-namespace Transit.Addon.TM.PathFindingFeatures
+namespace Transit.Addon.TM.Data
 {
     public static partial class TMDataManager
     {
