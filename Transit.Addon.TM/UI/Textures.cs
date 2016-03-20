@@ -5,6 +5,7 @@ using System.Reflection;
 using Transit.Addon.TM.Traffic;
 using Transit.Addon.TM.UI;
 using Transit.Addon.TM.Data;
+using Transit.Addon.TM.PathFindingFeatures;
 using UnityEngine;
 
 namespace Transit.Addon.TM.UI
@@ -102,7 +103,7 @@ namespace Transit.Addon.TM.UI
 			ClockTestTexture2D = LoadDllResource("clock_test.png", 512, 512);
 
 			SpeedLimitTextures = new Dictionary<ushort, Texture2D>();
-			foreach (ushort speedLimit in SpeedLimitManager.AvailableSpeedLimits) {
+			foreach (ushort speedLimit in TAMSpeedLimitManager.instance.AvailableSpeedLimits) {
 				SpeedLimitTextures.Add(speedLimit, LoadDllResource(speedLimit.ToString() + ".png", 200, 200));
 			}
 

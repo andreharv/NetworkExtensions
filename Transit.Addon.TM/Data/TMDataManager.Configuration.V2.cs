@@ -71,12 +71,6 @@ namespace Transit.Addon.TM.Data {
 					if (((NetLane.Flags)netManager.m_lanes.m_buffer[laneConf.laneId].m_flags & NetLane.Flags.Created) == NetLane.Flags.None)
 						continue;
 
-					if (laneConf.speedLimit != null) {
-						// load speed limit
-						Log._Debug($"Loading lane speed limit: lane {laneConf.laneId} = {laneConf.speedLimit}");
-						Flags.setLaneSpeedLimit(laneConf.laneId, (ushort)laneConf.speedLimit);
-					}
-
 					if (laneConf.directions != null) {
                         // load lane arrows
                         TMLaneRoutingManager.instance.LoadLaneDirection(laneConf.laneId, (TMLaneDirection)(laneConf.directions));
@@ -327,17 +321,6 @@ namespace Transit.Addon.TM.Data {
 						laneConfs[laneId] = new TMConfigurationV2.LaneConf(laneId);
 
 					laneConfs[laneId].directions = laneArrows;
-				}
-
-				ushort? speedLimit = Flags.getLaneSpeedLimit(laneId);
-				if (speedLimit != null) {
-					// save speed limit
-
-					Log._Debug($"Saving speed limit of lane {laneId}: {speedLimit}");
-					if (!laneConfs.ContainsKey(laneId))
-						laneConfs[laneId] = new TMConfigurationV2.LaneConf(laneId);
-
-					laneConfs[laneId].speedLimit = speedLimit;
 				}
 			}
 

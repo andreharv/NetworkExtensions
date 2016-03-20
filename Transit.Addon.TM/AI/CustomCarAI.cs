@@ -9,6 +9,7 @@ using Transit.Addon.TM.TrafficLight;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using Transit.Addon.TM.Data;
+using Transit.Addon.TM.PathFindingFeatures;
 using Transit.Framework;
 
 namespace Transit.Addon.TM.AI {
@@ -398,7 +399,7 @@ namespace Transit.Addon.TM.AI {
 															var info3 = netManager.m_segments.m_buffer[position.m_segment].Info;
 															if (info3.m_lanes != null && info3.m_lanes.Length > position.m_lane) {
 																//maxSpeed = CalculateTargetSpeed(vehicleId, ref vehicleData, info3.m_lanes[position.m_lane].m_speedLimit, netManager.m_lanes.m_buffer[(int)((UIntPtr)laneID)].m_curve) * 0.8f;
-																maxSpeed = CalculateTargetSpeed(vehicleId, ref vehicleData, SpeedLimitManager.GetLockFreeGameSpeedLimit(position.m_segment, position.m_lane, laneID, info3.m_lanes[position.m_lane]), netManager.m_lanes.m_buffer[(int)((UIntPtr)laneID)].m_curve);
+																maxSpeed = CalculateTargetSpeed(vehicleId, ref vehicleData, TAMSpeedLimitManager.instance.GetLaneSpeedLimit(position.m_segment, position.m_lane, laneID, info3.m_lanes[position.m_lane]), netManager.m_lanes.m_buffer[(int)((UIntPtr)laneID)].m_curve);
 															} else {
 																maxSpeed = CalculateTargetSpeed(vehicleId, ref vehicleData, 1f, 0f);
 															}
@@ -431,7 +432,7 @@ namespace Transit.Addon.TM.AI {
 
 			var info2 = netManager.m_segments.m_buffer[position.m_segment].Info;
 			if (info2.m_lanes != null && info2.m_lanes.Length > position.m_lane) {
-				var laneSpeedLimit = SpeedLimitManager.GetLockFreeGameSpeedLimit(position.m_segment, position.m_lane, laneID, info2.m_lanes[position.m_lane]); // info2.m_lanes[position.m_lane].m_speedLimit;
+				var laneSpeedLimit = TAMSpeedLimitManager.instance.GetLaneSpeedLimit(position.m_segment, position.m_lane, laneID, info2.m_lanes[position.m_lane]); // info2.m_lanes[position.m_lane].m_speedLimit;
 
 #if DEBUG
 				/*if (position.m_segment == 275) {
@@ -544,7 +545,7 @@ namespace Transit.Addon.TM.AI {
 				out pos, out dir);
 			var info = netManager.m_segments.m_buffer[position.m_segment].Info;
 			if (info.m_lanes != null && info.m_lanes.Length > position.m_lane) {
-				var laneSpeedLimit = SpeedLimitManager.GetLockFreeGameSpeedLimit(position.m_segment, position.m_lane, laneId, info.m_lanes[position.m_lane]); //info.m_lanes[position.m_lane].m_speedLimit;
+				var laneSpeedLimit = TAMSpeedLimitManager.instance.GetLaneSpeedLimit(position.m_segment, position.m_lane, laneId, info.m_lanes[position.m_lane]); //info.m_lanes[position.m_lane].m_speedLimit;
 				maxSpeed = CalculateTargetSpeed(vehicleId, ref vehicleData, laneSpeedLimit,	netManager.m_lanes.m_buffer[(int)((UIntPtr)laneId)].m_curve);
 			} else {
 				maxSpeed = CalculateTargetSpeed(vehicleId, ref vehicleData, 1f, 0f);

@@ -16,6 +16,33 @@ namespace Transit.Addon.TM
 {
     public partial class ToolModuleV2 : ModuleBase
     {
+        public override void OnCreated(ILoading loading)
+        {
+            //SelfDestruct.DestructOldInstances(this);
+
+            base.OnCreated(loading);
+
+            TAMRestrictionManager.instance.Init();
+            TAMSpeedLimitManager.instance.Init();
+            TMLaneRoutingManager.instance.Init();
+            TPPLaneRoutingManager.instance.Init();
+
+            ToolMode = Mode.Disabled;
+            Detours = new List<Detour>();
+            DetourInited = false;
+        }
+
+        public override void OnReleased()
+        {
+            base.OnReleased();
+
+            if (ToolMode != Mode.Disabled)
+            {
+                ToolMode = Mode.Disabled;
+                DestroyTool();
+            }
+        }
+
         public override void OnLevelLoaded(LoadMode mode)
         {
             base.OnLevelLoaded(mode);
@@ -56,10 +83,10 @@ namespace Transit.Addon.TM
             revertDetours();
             gameLoaded = false;
 
-            TAMRoadRestrictionManager.instance.Reset();
+            TAMRestrictionManager.instance.Reset();
+            TAMSpeedLimitManager.instance.Reset();
             TMLaneRoutingManager.instance.Reset();
             TPPLaneRoutingManager.instance.Reset();
-            TPPLaneSpeedManager.instance.Reset();
 
             Object.Destroy(UI);
             UI = null;
@@ -82,30 +109,6 @@ namespace Transit.Addon.TM
             {
                 Log.Error("Exception unloading mod. " + e.Message);
                 // ignored - prevents collision with other mods
-            }
-        }
-
-        public override void OnCreated(ILoading loading)
-        {
-            //SelfDestruct.DestructOldInstances(this);
-
-            base.OnCreated(loading);
-
-            TAMRoadRestrictionManager.instance.Init();
-
-            ToolMode = Mode.Disabled;
-            Detours = new List<Detour>();
-            DetourInited = false;
-        }
-
-        public override void OnReleased()
-        {
-            base.OnReleased();
-
-            if (ToolMode != Mode.Disabled)
-            {
-                ToolMode = Mode.Disabled;
-                DestroyTool();
             }
         }
     }

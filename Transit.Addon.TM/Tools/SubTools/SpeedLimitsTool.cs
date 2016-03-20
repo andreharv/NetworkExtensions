@@ -5,6 +5,7 @@ using Transit.Addon.TM.Traffic;
 using Transit.Addon.TM.UI;
 using UnityEngine;
 using Transit.Addon.TM.Data;
+using Transit.Addon.TM.PathFindingFeatures;
 using Transit.Framework;
 
 namespace Transit.Addon.TM.Tools.SubTools {
@@ -94,10 +95,10 @@ namespace Transit.Addon.TM.Tools.SubTools {
 			GUILayout.BeginHorizontal();
 
 			Color oldColor = GUI.color;
-			for (int i = 0; i < SpeedLimitManager.AvailableSpeedLimits.Count; ++i) {
+			for (int i = 0; i < TAMSpeedLimitManager.instance.AvailableSpeedLimits.Count; ++i) {
 				if (curSpeedLimitIndex != i)
 					GUI.color = Color.gray;
-				if (GUILayout.Button(Textures.SpeedLimitTextures[SpeedLimitManager.AvailableSpeedLimits[i]], GUILayout.Width(100), GUILayout.Height(100))) {
+				if (GUILayout.Button(Textures.SpeedLimitTextures[TAMSpeedLimitManager.instance.AvailableSpeedLimits[i]], GUILayout.Width(100), GUILayout.Height(100))) {
 					curSpeedLimitIndex = i;
 				}
 				GUI.color = oldColor;
@@ -162,16 +163,16 @@ namespace Transit.Addon.TM.Tools.SubTools {
 				GUI.color = guiColor;
 
 				try {
-					GUI.DrawTexture(boundingBox, Textures.SpeedLimitTextures[SpeedLimitManager.GetCustomSpeedLimit(segmentId, e.Key)]);
+					GUI.DrawTexture(boundingBox, Textures.SpeedLimitTextures[TAMSpeedLimitManager.instance.GetCustomSpeedLimit(segmentId, e.Key)]);
 				} catch (Exception ex) {
-					Log.Error("segment " + segmentId + " limit: " + SpeedLimitManager.GetCustomSpeedLimit(segmentId, e.Key) + ", ex: " + ex.ToString());
+					Log.Error("segment " + segmentId + " limit: " + TAMSpeedLimitManager.instance.GetCustomSpeedLimit(segmentId, e.Key) + ", ex: " + ex.ToString());
 				}
 
 				if (hoveredHandle && Input.GetMouseButton(0)) {
 					// change the speed limit to the selected one
-					ushort speedLimitToSet = SpeedLimitManager.AvailableSpeedLimits[curSpeedLimitIndex];
+					ushort speedLimitToSet = TAMSpeedLimitManager.instance.AvailableSpeedLimits[curSpeedLimitIndex];
 					//Log._Debug($"Setting speed limit of segment {segmentId}, dir {e.Key.ToString()} to {speedLimitToSet}");
-					SpeedLimitManager.SetSpeedLimit(segmentId, e.Key, speedLimitToSet);
+					TAMSpeedLimitManager.instance.SetSegmentSpeedLimit(segmentId, e.Key, speedLimitToSet);
 					//mouseClickProcessed = true;
 				}
 

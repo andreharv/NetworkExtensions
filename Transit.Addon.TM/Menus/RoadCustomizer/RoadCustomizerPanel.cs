@@ -11,22 +11,11 @@ namespace Transit.Addon.TM.Menus.RoadCustomizer
 {
     class RoadCustomizerPanel : MonoBehaviour
     {
-        public enum Panel
-        {
-            Unset,
-
-            VehicleRestrictions,
-            SpeedRestrictions
-        }
-
         private static readonly string kItemTemplate = "PlaceableItemTemplate";
 
         public UITextureAtlas m_atlas;
         private UIScrollablePanel m_scrollablePanel;
         private int m_objectIndex, m_selectedIndex;
-        private Panel m_panelType;
-        static int m_panelIndex = 0;
-
 
         private void Awake()
         {
@@ -37,7 +26,6 @@ namespace Transit.Addon.TM.Menus.RoadCustomizer
             if (scrollbar != null)
                 scrollbar.incrementAmount = 109;
             this.m_objectIndex = m_selectedIndex = 0;
-            this.m_panelType = Panel.Unset;
         }
 
         public void AttachLaneCustomizationEvents(RoadCustomizerTool tool)
@@ -51,66 +39,42 @@ namespace Transit.Addon.TM.Menus.RoadCustomizer
             this.RefreshPanel();
         }
 
-        void Update()
-        {
-            if (this.m_panelType == Panel.SpeedRestrictions && this.m_scrollablePanel.isVisible)
-            {
-                (this.m_scrollablePanel.components[m_selectedIndex] as UIButton).state = UIButton.ButtonState.Focused;
-            }
-        }
-
-        public void SetPanel(Panel panel)
-        {
-            this.m_panelType = panel;
-            //OnEnable();
-        }
-
         void EnableIcons()
         {
             RoadCustomizerTool rct = ToolsModifierControl.GetCurrentTool<RoadCustomizerTool>();
             if (rct != null)
             {
                 ExtendedUnitType restrictions = rct.GetCurrentVehicleRestrictions();
-                float speed = rct.GetCurrentSpeedRestrictions()*50f;
                 
                 for (int i = 0; i < this.m_scrollablePanel.components.Count; i++)
                 {
                     UIButton btn = this.m_scrollablePanel.components[i] as UIButton;
+                    ExtendedUnitType vehicleType = (ExtendedUnitType)btn.objectUserData;
 
-                    if (this.m_panelType == Panel.VehicleRestrictions)
+                    if ((vehicleType & restrictions) == vehicleType)
                     {
-                        ExtendedUnitType vehicleType = (ExtendedUnitType)btn.objectUserData;
-
-                        if ((vehicleType & restrictions) == vehicleType)
-                        {
-                            btn.stringUserData = "Selected";
-                            btn.normalFgSprite = btn.name;
-                            btn.focusedFgSprite = btn.name;
-                            btn.hoveredFgSprite = btn.name + "90%";
-                            btn.pressedFgSprite = btn.name + "80%";
-                        }
-                        else if (vehicleType == ExtendedUnitType.EmergencyVehicle && (restrictions & ExtendedUnitType.Emergency) == ExtendedUnitType.Emergency)
-                        {
-                            btn.stringUserData = "Emergency";
-                            btn.hoveredFgSprite = btn.name + "90%";
-                            btn.pressedFgSprite = btn.name + "80%";
-                            StartCoroutine("EmergencyLights", btn);
-                        }
-                        else
-                        {
-                            btn.stringUserData = null;
-                            btn.normalFgSprite = btn.name + "Deselected";
-                            btn.focusedFgSprite = btn.name + "Deselected";
-                            btn.hoveredFgSprite = btn.name + "80%";
-                            btn.pressedFgSprite = btn.name + "90%";
-                        }
-                        btn.state = UIButton.ButtonState.Normal;
+                        btn.stringUserData = "Selected";
+                        btn.normalFgSprite = btn.name;
+                        btn.focusedFgSprite = btn.name;
+                        btn.hoveredFgSprite = btn.name + "90%";
+                        btn.pressedFgSprite = btn.name + "80%";
                     }
-                    else if (this.m_panelType == Panel.SpeedRestrictions)
+                    else if (vehicleType == ExtendedUnitType.EmergencyVehicle && (restrictions & ExtendedUnitType.Emergency) == ExtendedUnitType.Emergency)
                     {
-                        if (Mathf.Approximately((int)btn.objectUserData, speed))
-                            m_selectedIndex = i;
+                        btn.stringUserData = "Emergency";
+                        btn.hoveredFgSprite = btn.name + "90%";
+                        btn.pressedFgSprite = btn.name + "80%";
+                        StartCoroutine("EmergencyLights", btn);
                     }
+                    else
+                    {
+                        btn.stringUserData = null;
+                        btn.normalFgSprite = btn.name + "Deselected";
+                        btn.focusedFgSprite = btn.name + "Deselected";
+                        btn.hoveredFgSprite = btn.name + "80%";
+                        btn.pressedFgSprite = btn.name + "90%";
+                    }
+                    btn.state = UIButton.ButtonState.Normal;
 
                     btn.isEnabled = true;
                 }
@@ -137,35 +101,12 @@ namespace Transit.Addon.TM.Menus.RoadCustomizer
         public void PopulateAssets()
         {
             this.m_objectIndex = 0;
-            //if (this.m_panelType == Panel.VehicleRestrictions)
-            if (m_panelIndex == 0)
-            {
-                this.m_panelType = Panel.VehicleRestrictions;
-                this.SpawnEntry("PassengerCar", "PassengerCar", null, null, false, false).objectUserData = ExtendedUnitType.PassengerCar;
-                this.SpawnEntry("Bus", "Bus", null, null, false, false).objectUserData = ExtendedUnitType.Bus;
-                this.SpawnEntry("CargoTruck", "CargoTruck", null, null, false, false).objectUserData = ExtendedUnitType.CargoTruck;
-                this.SpawnEntry("GarbageTruck", "GarbageTruck", null, null, false, false).objectUserData = ExtendedUnitType.GarbageTruck;
-                this.SpawnEntry("Hearse", "Hearse", null, null, false, false).objectUserData = ExtendedUnitType.Hearse;
-                this.SpawnEntry("Emergency", "Emergency", null, null, false, false).objectUserData = ExtendedUnitType.EmergencyVehicle;
-            }
-            //else if (this.m_panelType == Panel.SpeedRestrictions)
-            else if (m_panelIndex == 1)
-            {
-                this.m_panelType = Panel.SpeedRestrictions;
-                this.SpawnEntry("15", "15 km/h", null, null, false, true).objectUserData = 15;
-                this.SpawnEntry("30", "30 km/h", null, null, false, true).objectUserData = 30;
-                this.SpawnEntry("40", "40 km/h", null, null, false, true).objectUserData = 40;
-                this.SpawnEntry("50", "50 km/h", null, null, false, true).objectUserData = 50;
-                this.SpawnEntry("60", "60 km/h", null, null, false, true).objectUserData = 60;
-                this.SpawnEntry("70", "70 km/h", null, null, false, true).objectUserData = 70;
-                this.SpawnEntry("80", "80 km/h", null, null, false, true).objectUserData = 80;
-                this.SpawnEntry("90", "90 km/h", null, null, false, true).objectUserData = 90;
-                this.SpawnEntry("100", "100 km/h", null, null, false, true).objectUserData = 100;
-                this.SpawnEntry("120", "120 km/h", null, null, false, true).objectUserData = 120;
-                this.SpawnEntry("140", "140 km/h", null, null, false, true).objectUserData = 140;
-            }
-
-            m_panelIndex = (m_panelIndex + 1) % 2; 
+            this.SpawnEntry("PassengerCar", "PassengerCar", null, null, false, false).objectUserData = ExtendedUnitType.PassengerCar;
+            this.SpawnEntry("Bus", "Bus", null, null, false, false).objectUserData = ExtendedUnitType.Bus;
+            this.SpawnEntry("CargoTruck", "CargoTruck", null, null, false, false).objectUserData = ExtendedUnitType.CargoTruck;
+            this.SpawnEntry("GarbageTruck", "GarbageTruck", null, null, false, false).objectUserData = ExtendedUnitType.GarbageTruck;
+            this.SpawnEntry("Hearse", "Hearse", null, null, false, false).objectUserData = ExtendedUnitType.Hearse;
+            this.SpawnEntry("Emergency", "Emergency", null, null, false, false).objectUserData = ExtendedUnitType.EmergencyVehicle;
         }
 
         protected UIButton SpawnEntry(string name, string tooltip, string thumbnail, UITextureAtlas atlas, bool enabled, bool grouped)
@@ -205,17 +146,7 @@ namespace Transit.Addon.TM.Menus.RoadCustomizer
             if (atlas != null)
             {
                 btn.atlas = atlas;
-                switch (m_panelType)
-                {
-                    case Panel.VehicleRestrictions:
-                        SetVehicleButtonsThumbnails(btn);
-                        break;
-                    case Panel.SpeedRestrictions:
-                        SetSpeedButtonsThumbnails(btn);
-                        break;
-                    default:
-                        break;
-                }
+                SetVehicleButtonsThumbnails(btn);
 
             }
             if (index != -1)
@@ -284,72 +215,46 @@ namespace Transit.Addon.TM.Menus.RoadCustomizer
 
         }
 
-        protected void SetSpeedButtonsThumbnails(UIButton btn)
-        {
-            string iconName = btn.name;
-
-            btn.normalBgSprite = "SpeedSignBackground";
-            btn.disabledBgSprite = "SpeedSignBackgroundDisabled";
-            btn.focusedBgSprite = "SpeedSignBackgroundFocused";
-            btn.hoveredBgSprite = btn.pressedBgSprite = "SpeedSignBackgroundHovered";
-
-            btn.normalFgSprite = iconName;
-            btn.focusedFgSprite = iconName;
-            btn.hoveredFgSprite = iconName;
-            btn.pressedFgSprite = iconName;
-            btn.disabledFgSprite = iconName;
-        }
-
         protected void OnButtonClicked(UIButton btn)
         {
-            if (m_panelType == Panel.VehicleRestrictions)
+            ExtendedUnitType vehicleType = (ExtendedUnitType)btn.objectUserData;
+            if (vehicleType != ExtendedUnitType.None)
             {
-                ExtendedUnitType vehicleType = (ExtendedUnitType)btn.objectUserData;
-                if (vehicleType != ExtendedUnitType.None)
+                if (String.IsNullOrEmpty(btn.stringUserData))
                 {
-                    if (String.IsNullOrEmpty(btn.stringUserData))
-                    {
-                        btn.stringUserData = "Selected";
-                        btn.normalFgSprite = btn.name;
-                        btn.focusedFgSprite = btn.name;
-                        btn.hoveredFgSprite = btn.name + "90%";
-                        btn.pressedFgSprite = btn.name + "80%";
-                    }
-                    else if (vehicleType == ExtendedUnitType.EmergencyVehicle && btn.stringUserData != "Emergency")
-                    {
-                        btn.stringUserData = "Emergency";
-                        StartCoroutine("EmergencyLights", btn);
-                    }
-                    else
-                    {
-                        if (vehicleType == ExtendedUnitType.EmergencyVehicle)
-                            StopCoroutine("EmergencyLights");
-
-                        btn.stringUserData = null;
-                        btn.normalFgSprite = btn.name + "Deselected";
-                        btn.focusedFgSprite = btn.name + "Deselected";
-                        btn.hoveredFgSprite = btn.name + "80%";
-                        btn.pressedFgSprite = btn.name + "90%";
-                    }
-
-                    RoadCustomizerTool rct = ToolsModifierControl.GetCurrentTool<RoadCustomizerTool>();
-                    if (rct != null)
-                    {
-                        if (btn.stringUserData == "Emergency")
-                            rct.ToggleRestriction(vehicleType ^ ExtendedUnitType.Emergency);
-                        else if (vehicleType == ExtendedUnitType.EmergencyVehicle && btn.stringUserData == null)
-                            rct.ToggleRestriction(ExtendedUnitType.Emergency);
-                        else
-                            rct.ToggleRestriction(vehicleType);		
-                    }
-                        
+                    btn.stringUserData = "Selected";
+                    btn.normalFgSprite = btn.name;
+                    btn.focusedFgSprite = btn.name;
+                    btn.hoveredFgSprite = btn.name + "90%";
+                    btn.pressedFgSprite = btn.name + "80%";
                 }
-            }
-            else if (m_panelType == Panel.SpeedRestrictions)
-            {
+                else if (vehicleType == ExtendedUnitType.EmergencyVehicle && btn.stringUserData != "Emergency")
+                {
+                    btn.stringUserData = "Emergency";
+                    StartCoroutine("EmergencyLights", btn);
+                }
+                else
+                {
+                    if (vehicleType == ExtendedUnitType.EmergencyVehicle)
+                        StopCoroutine("EmergencyLights");
+
+                    btn.stringUserData = null;
+                    btn.normalFgSprite = btn.name + "Deselected";
+                    btn.focusedFgSprite = btn.name + "Deselected";
+                    btn.hoveredFgSprite = btn.name + "80%";
+                    btn.pressedFgSprite = btn.name + "90%";
+                }
+
                 RoadCustomizerTool rct = ToolsModifierControl.GetCurrentTool<RoadCustomizerTool>();
                 if (rct != null)
-                    rct.SetSpeedRestrictions((int)btn.objectUserData);
+                {
+                    if (btn.stringUserData == "Emergency")
+                        rct.ToggleRestriction(vehicleType ^ ExtendedUnitType.Emergency);
+                    else if (vehicleType == ExtendedUnitType.EmergencyVehicle && btn.stringUserData == null)
+                        rct.ToggleRestriction(ExtendedUnitType.Emergency);
+                    else
+                        rct.ToggleRestriction(vehicleType);		
+                }
             }
         }
 

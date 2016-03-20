@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Transit.Addon.TM.Data;
+using Transit.Addon.TM.PathFindingFeatures;
 using Transit.Addon.TM.Traffic;
 using Transit.Framework;
 using UnityEngine;
@@ -168,7 +169,7 @@ namespace Transit.Addon.TM.AI {
 			NetInfo info = instance.m_segments.m_buffer[(int)position.m_segment].Info;
 			if (info.m_lanes != null && info.m_lanes.Length > (int)position.m_lane) {
 				//maxSpeed = this.CalculateTargetSpeed(vehicleID, ref vehicleData, info.m_lanes[(int)position.m_lane].m_speedLimit, instance.m_lanes.m_buffer[(int)((UIntPtr)laneID)].m_curve);
-				maxSpeed = CalculateTargetSpeed(vehicleID, ref vehicleData, SpeedLimitManager.GetLockFreeGameSpeedLimit(position.m_segment, position.m_lane, laneID, info.m_lanes[position.m_lane]), instance.m_lanes.m_buffer[laneID].m_curve);
+				maxSpeed = CalculateTargetSpeed(vehicleID, ref vehicleData, TAMSpeedLimitManager.instance.GetLaneSpeedLimit(position.m_segment, position.m_lane, laneID, info.m_lanes[position.m_lane]), instance.m_lanes.m_buffer[laneID].m_curve);
 			} else {
 				maxSpeed = this.CalculateTargetSpeed(vehicleID, ref vehicleData, 1f, 0f);
 			}
@@ -180,7 +181,7 @@ namespace Transit.Addon.TM.AI {
 			NetInfo info = instance.m_segments.m_buffer[(int)position.m_segment].Info;
 			if (info.m_lanes != null && info.m_lanes.Length > (int)position.m_lane) {
 				//maxSpeed = this.CalculateTargetSpeed(vehicleID, ref vehicleData, info.m_lanes[(int)position.m_lane].m_speedLimit, instance.m_lanes.m_buffer[(int)((UIntPtr)laneID)].m_curve);
-				maxSpeed = this.CalculateTargetSpeed(vehicleID, ref vehicleData, SpeedLimitManager.GetLockFreeGameSpeedLimit(position.m_segment, position.m_lane, laneID, info.m_lanes[position.m_lane]), instance.m_lanes.m_buffer[laneID].m_curve);
+				maxSpeed = this.CalculateTargetSpeed(vehicleID, ref vehicleData, TAMSpeedLimitManager.instance.GetLaneSpeedLimit(position.m_segment, position.m_lane, laneID, info.m_lanes[position.m_lane]), instance.m_lanes.m_buffer[laneID].m_curve);
 			} else {
 				maxSpeed = this.CalculateTargetSpeed(vehicleID, ref vehicleData, 1f, 0f);
 			}

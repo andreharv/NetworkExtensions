@@ -12,18 +12,26 @@ namespace Transit.Addon.TM.PathFindingFeatures
         private TAMLaneRoute[] _laneRoutes = null;
         private readonly uint[] NO_CONNECTIONS = new uint[0];
 
-        public void Init(TAMLaneRoute[] laneRoutes)
+        public void Init()
         {
-            _laneRoutes = laneRoutes;
-            if (_laneRoutes == null)
+            _laneRoutes = new TAMLaneRoute[NetManager.MAX_LANE_COUNT];
+        }
+
+        public void Load(TAMLaneRoute[] laneRoutes)
+        {
+            if (laneRoutes == null)
             {
-                _laneRoutes = new TAMLaneRoute[NetManager.MAX_LANE_COUNT];
+                return;
             }
 
-            foreach (TAMLaneRoute laneRoute in _laneRoutes)
+            for (int i = 0; i < laneRoutes.Length; i++)
             {
+                TAMLaneRoute laneRoute = laneRoutes[i];
+
                 if (laneRoute == null)
                     continue;
+
+                _laneRoutes[i] = laneRoutes[i];
 
                 laneRoute.UpdateArrows();
             }

@@ -10,12 +10,21 @@ namespace Transit.Addon.TM.Data
 {
     public static class LaneVehicleTypesExtensions
     {
-        public static TAMLaneRestriction ConvertToRestriction(this Configuration.LaneVehicleTypes laneVehicleTypes)
+        public static TAMLaneRestriction ConvertToTAM(this Configuration.LaneVehicleTypes laneVehicleTypes)
         {
             return new TAMLaneRestriction()
             {
                 LaneId = laneVehicleTypes.laneId,
                 UnitTypes = laneVehicleTypes.vehicleTypes.ConvertToUnitType()
+            };
+        }
+
+        public static TAMLaneSpeedLimit ConvertToTAM(this Configuration.LaneSpeedLimit laneSpeedLimit)
+        {
+            return new TAMLaneSpeedLimit()
+            {
+                LaneId = laneSpeedLimit.laneId,
+                SpeedLimit = laneSpeedLimit.speedLimit
             };
         }
     }

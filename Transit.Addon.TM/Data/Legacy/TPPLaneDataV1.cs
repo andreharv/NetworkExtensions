@@ -24,10 +24,17 @@ namespace Transit.Addon.TM.Data.Legacy
 
         public TAMLaneSpeedLimit ConvertToSpeedLimit()
         {
+            ushort? speedInKmH = (ushort) Math.Round(m_speed * 50, -1, MidpointRounding.AwayFromZero);
+
+            if (speedInKmH == 0 || speedInKmH > 130)
+            {
+                speedInKmH = null;
+            }
+
             return new TAMLaneSpeedLimit()
             {
                 LaneId = m_laneId,
-                SpeedLimit = m_speed,
+                SpeedLimit = speedInKmH,
             };
         }
 

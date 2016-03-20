@@ -71,7 +71,7 @@ namespace Transit.Addon.TM.Data {
 			if (configuration.LaneAllowedVehicleTypes != null) {
 				Log.Info($"Loading lane vehicle restriction data. {configuration.LaneAllowedVehicleTypes.Count} elements");
 				foreach (Configuration.LaneVehicleTypes laneVehicleTypes in configuration.LaneAllowedVehicleTypes) {
-                    TAMRoadRestrictionManager.instance.Load(laneVehicleTypes.ConvertToRestriction(), true);
+                    TAMRestrictionManager.instance.Load(laneVehicleTypes.ConvertToTAM());
 				}
 			} else {
 				Log.Warning("Lane speed limit structure undefined!");
@@ -334,7 +334,8 @@ namespace Transit.Addon.TM.Data {
 				Log.Info($"Loading lane speed limit data. {configuration.LaneSpeedLimits.Count} elements");
 				foreach (Configuration.LaneSpeedLimit laneSpeedLimit in configuration.LaneSpeedLimits) {
 					Log._Debug($"Loading lane speed limit: lane {laneSpeedLimit.laneId} = {laneSpeedLimit.speedLimit}");
-					Flags.setLaneSpeedLimit(laneSpeedLimit.laneId, laneSpeedLimit.speedLimit);
+
+                    TAMSpeedLimitManager.instance.Load(laneSpeedLimit.ConvertToTAM());
 				}
 			} else {
 				Log.Warning("Lane speed limit structure undefined!");

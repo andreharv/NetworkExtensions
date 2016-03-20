@@ -54,9 +54,9 @@ namespace Transit.Addon.TM.DataSerialization
                 }
             }
 
-            TAMRoadRestrictionManager.instance.Load(restrictionData, true);
-            TPPLaneRoutingManager.instance.Init(routeData);
-            TPPLaneSpeedManager.instance.Init(speedLimitData);
+            TAMRestrictionManager.instance.Load(restrictionData);
+            TAMSpeedLimitManager.instance.Load(speedLimitData);
+            TPPLaneRoutingManager.instance.Load(routeData);
         }
 
         public override void OnSaveData()
@@ -73,13 +73,13 @@ namespace Transit.Addon.TM.DataSerialization
             {
                 new DataSerializer<TAMLaneRoute[], TPPDataSerializationBinder>().SerializeData(serializableDataManager, TAM_ROUTEDATA_ID, TPPLaneRoutingManager.instance.GetAllRoutes());
             }
-            if (TAMRoadRestrictionManager.instance.IsLoaded())
+            if (TAMRestrictionManager.instance.IsLoaded())
             {
-                new DataSerializer<TAMLaneRestriction[], TPPDataSerializationBinder>().SerializeData(serializableDataManager, TAM_RSTRICTIONDATA_ID, TAMRoadRestrictionManager.instance.GetAllLaneRestrictions());
+                new DataSerializer<TAMLaneRestriction[], TPPDataSerializationBinder>().SerializeData(serializableDataManager, TAM_RSTRICTIONDATA_ID, TAMRestrictionManager.instance.GetAllLaneRestrictions());
             }
-            if (TPPLaneSpeedManager.instance.IsLoaded())
+            if (TAMSpeedLimitManager.instance.IsLoaded())
             {
-                new DataSerializer<TAMLaneSpeedLimit[], TPPDataSerializationBinder>().SerializeData(serializableDataManager, TAM_SPEEDLIMITDATA_ID, TPPLaneSpeedManager.instance.GetAllLaneData());
+                new DataSerializer<TAMLaneSpeedLimit[], TPPDataSerializationBinder>().SerializeData(serializableDataManager, TAM_SPEEDLIMITDATA_ID, TAMSpeedLimitManager.instance.GetAllLaneData());
             }
         }
     }

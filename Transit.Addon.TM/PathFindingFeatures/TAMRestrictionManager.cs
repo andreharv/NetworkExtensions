@@ -9,7 +9,7 @@ using Transit.Framework.Network;
 
 namespace Transit.Addon.TM.PathFindingFeatures
 {
-    public class TAMRoadRestrictionManager : Singleton<TAMRoadRestrictionManager>,  IRoadRestrictionManager
+    public class TAMRestrictionManager : Singleton<TAMRestrictionManager>,  IRoadRestrictionManager
     {
         private TAMLaneRestriction[] _laneRestrictions = null;
 
@@ -18,33 +18,22 @@ namespace Transit.Addon.TM.PathFindingFeatures
             _laneRestrictions = new TAMLaneRestriction[NetManager.MAX_LANE_COUNT];
         }
 
-        public void Load(TAMLaneRestriction[] laneRestrictions, bool overrideIfExist)
+        public void Load(TAMLaneRestriction[] restrictions)
         {
-            if (laneRestrictions != null)
+            if (restrictions != null)
             {
-                foreach (var restriction in laneRestrictions)
+                foreach (var restriction in restrictions)
                 {
-                    Load(restriction, overrideIfExist);
+                    Load(restriction);
                 }
             }
         }
 
-        public void Load(TAMLaneRestriction restriction, bool overrideIfExist)
+        public void Load(TAMLaneRestriction restriction)
         {
             if (restriction != null)
             {
-                if (overrideIfExist)
-                {
-                    _laneRestrictions[restriction.LaneId] = restriction;
-                }
-                else
-                {
-                    if (_laneRestrictions[restriction.LaneId] == null ||
-                        _laneRestrictions[restriction.LaneId].UnitTypes == null)
-                    {
-                        _laneRestrictions[restriction.LaneId] = restriction;
-                    }
-                }
+                _laneRestrictions[restriction.LaneId] = restriction;
             }
         }
 

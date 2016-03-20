@@ -113,7 +113,7 @@ namespace Transit.Addon.TM.Tools
 
 	    private IEnumerator LoadMarkers()
 	    {
-            while (!TPPLaneSpeedManager.instance.IsLoaded())
+            while (!TPPLaneRoutingManager.instance.IsLoaded())
             {
                 yield return new WaitForEndOfFrame();
             }
@@ -723,7 +723,7 @@ namespace Transit.Addon.TM.Tools
 			if (!AnyLaneSelected)
 				return ExtendedUnitType.None;
 
-            return TAMRoadRestrictionManager.instance.GetRestrictions(m_selectedLaneMarkers[0].m_lane, ExtendedUnitType.RoadVehicle);
+            return TAMRestrictionManager.instance.GetRestrictions(m_selectedLaneMarkers[0].m_lane, ExtendedUnitType.RoadVehicle);
 		}
 
 		public ExtendedUnitType ToggleRestriction(ExtendedUnitType vehicleType)
@@ -731,31 +731,14 @@ namespace Transit.Addon.TM.Tools
 			if (!AnyLaneSelected)
 				return ExtendedUnitType.None;
 
-			var restrictions = TAMRoadRestrictionManager.instance.GetRestrictions(m_selectedLaneMarkers[0].m_lane, ExtendedUnitType.RoadVehicle);
+			var restrictions = TAMRestrictionManager.instance.GetRestrictions(m_selectedLaneMarkers[0].m_lane, ExtendedUnitType.RoadVehicle);
 
             restrictions ^= vehicleType;
 
 			foreach (SegmentLaneMarker lane in m_selectedLaneMarkers)
-                TAMRoadRestrictionManager.instance.SetRestrictions(lane.m_lane, restrictions);
+                TAMRestrictionManager.instance.SetRestrictions(lane.m_lane, restrictions);
 
 			return restrictions;
-		}
-
-		public float GetCurrentSpeedRestrictions()
-		{
-			if (!AnyLaneSelected)
-				return -1f;
-
-			return TPPLaneSpeedManager.instance.GetLaneSpeedRestriction(m_selectedLaneMarkers[0].m_lane);
-		}
-
-		public void SetSpeedRestrictions(int speed)
-		{
-			if (!AnyLaneSelected)
-				return;
-
-			foreach (SegmentLaneMarker lane in m_selectedLaneMarkers)
-				TPPLaneSpeedManager.instance.SetLaneSpeedRestriction(lane.m_lane, speed);
 		}
 
 		#endregion

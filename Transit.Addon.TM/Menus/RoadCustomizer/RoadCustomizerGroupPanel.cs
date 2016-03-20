@@ -40,7 +40,6 @@ namespace Transit.Addon.TM.Menus.RoadCustomizer
             this.m_objectIndex = 0;
 
             this.SpawnEntry("Vehicle Restrictions", null, null, "", true).stringUserData = "VehicleRestrictions";
-            this.SpawnEntry("Speed Restrictions", null, null, "", true).stringUserData = "SpeedRestrictions";
         }
 
         protected UIButton SpawnEntry(string name, string localeID, string unlockText, string spriteBase, bool enabled)

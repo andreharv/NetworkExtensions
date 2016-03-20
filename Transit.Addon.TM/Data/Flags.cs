@@ -19,19 +19,9 @@ namespace Transit.Addon.TM.Data {
 		private static bool?[] nodeTrafficLightFlag = null;
 
 		/// <summary>
-		/// For each lane: Defines the currently set speed limit
-		/// </summary>
-		private static Dictionary<uint, ushort> laneSpeedLimit = new Dictionary<uint, ushort>();
-
-		internal static ushort?[][] laneSpeedLimitArray; // for faster, lock-free access, 1st index: segment id, 2nd index: lane index
-
-		/// <summary>
 		/// For each segment and node: Defines additional flags for segments at a node
 		/// </summary>
 		private static TMConfigurationV2.SegmentEndFlags[][] segmentNodeFlags = null;
-
-		private static object laneSpeedLimitLock = new object();
-		private static object laneAllowedVehicleTypesLock = new object();
 
 		private static bool initDone = false;
 
@@ -97,114 +87,6 @@ namespace Transit.Addon.TM.Data {
 				return false;
 
 			return nodeTrafficLightFlag[nodeId];
-		}
-
-		public static void setLaneSpeedLimit(uint laneId, ushort speedLimit) {
-			if (laneId <= 0)
-				return;
-			if (((NetLane.Flags)Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags & NetLane.Flags.Created) == NetLane.Flags.None)
-				return;
-
-			ushort segmentId = Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_segment;
-			if (segmentId <= 0)
-				return;
-			if ((Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].m_flags & NetSegment.Flags.Created) == NetSegment.Flags.None)
-				return;
-
-			NetInfo segmentInfo = Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].Info;
-			uint curLaneId = Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].m_lanes;
-			uint laneIndex = 0;
-			while (laneIndex < segmentInfo.m_lanes.Length && curLaneId != 0u) {
-				if (curLaneId == laneId) {
-					setLaneSpeedLimit(segmentId, laneIndex, laneId, speedLimit);
-					return;
-				}
-				laneIndex++;
-				curLaneId = Singleton<NetManager>.instance.m_lanes.m_buffer[curLaneId].m_nextLane;
-			}
-		}
-
-		public static void setLaneSpeedLimit(ushort segmentId, uint laneIndex, ushort speedLimit) {
-			if (segmentId <= 0 || laneIndex < 0)
-				return;
-			if ((Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].m_flags & NetSegment.Flags.Created) == NetSegment.Flags.None) {
-				return;
-			}
-			NetInfo segmentInfo = Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].Info;
-			if (laneIndex >= segmentInfo.m_lanes.Length) {
-				return;
-			}
-
-			// find the lane id
-			uint laneId = Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].m_lanes;
-			for (int i = 0; i < laneIndex; ++i) {
-				if (laneId == 0)
-					return; // no valid lane found
-				laneId = Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_nextLane;
-			}
-
-			setLaneSpeedLimit(segmentId, laneIndex, laneId, speedLimit);
-		}
-
-		public static void setLaneSpeedLimit(ushort segmentId, uint laneIndex, uint laneId, ushort speedLimit) {
-			if (segmentId <= 0 || laneIndex < 0 || laneId <= 0)
-				return;
-			if ((Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].m_flags & NetSegment.Flags.Created) == NetSegment.Flags.None) {
-				return;
-			}
-			if (((NetLane.Flags)Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags & NetLane.Flags.Created) == NetLane.Flags.None)
-				return;
-			NetInfo segmentInfo = Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].Info;
-			if (laneIndex >= segmentInfo.m_lanes.Length) {
-				return;
-			}
-
-			try {
-				Monitor.Enter(laneSpeedLimitLock);
-				Log._Debug($"Flags.setLaneSpeedLimit: setting speed limit of lane index {laneIndex} @ seg. {segmentId} to {speedLimit}");
-
-				laneSpeedLimit[laneId] = speedLimit;
-
-				// save speed limit into the fast-access array.
-				// (1) ensure that the array is defined and large enough
-				if (laneSpeedLimitArray[segmentId] == null) {
-					laneSpeedLimitArray[segmentId] = new ushort?[segmentInfo.m_lanes.Length];
-				} else if (laneSpeedLimitArray[segmentId].Length < segmentInfo.m_lanes.Length) {
-					var oldArray = laneSpeedLimitArray[segmentId];
-					laneSpeedLimitArray[segmentId] = new ushort?[segmentInfo.m_lanes.Length];
-					Array.Copy(oldArray, laneSpeedLimitArray[segmentId], oldArray.Length);
-				}
-				// (2) insert the custom speed limit
-				laneSpeedLimitArray[segmentId][laneIndex] = speedLimit;
-			} finally {
-				Monitor.Exit(laneSpeedLimitLock);
-			}
-		}
-
-		public static ushort? getLaneSpeedLimit(uint laneId) {
-			try {
-				Monitor.Enter(laneSpeedLimitLock);
-
-				if (laneId <= 0 || !laneSpeedLimit.ContainsKey(laneId))
-					return null;
-
-				return laneSpeedLimit[laneId];
-			} finally {
-				Monitor.Exit(laneSpeedLimitLock);
-			}
-		}
-
-		internal static Dictionary<uint, ushort> getAllLaneSpeedLimits() {
-			Dictionary<uint, ushort> ret = new Dictionary<uint, ushort>();
-			try {
-				Monitor.Enter(laneSpeedLimitLock);
-
-				ret = new Dictionary<uint, ushort>(laneSpeedLimit);
-
-			} finally {
-				Monitor.Exit(laneSpeedLimitLock);
-			}
-			return ret;
 		}
 
 		public static bool getUTurnAllowed(ushort segmentId, bool startNode) {
@@ -330,34 +212,13 @@ namespace Transit.Addon.TM.Data {
 			initDone = false;
 
 			nodeTrafficLightFlag = null;
-
-			try {
-				Monitor.Enter(laneSpeedLimitLock);
-				laneSpeedLimitArray = null;
-				laneSpeedLimit.Clear();
-			} finally {
-				Monitor.Exit(laneSpeedLimitLock);
-			}
-
-			try {
-				Monitor.Enter(laneAllowedVehicleTypesLock);
-				//laneAllowedVehicleTypesArray = null;
-				//laneAllowedVehicleTypes.Clear();
-			} finally {
-				Monitor.Exit(laneAllowedVehicleTypesLock);
-			}
-            
-            TMLaneRoutingManager.instance.Reset();
 			segmentNodeFlags = null;
 		}
 
 		public static void OnBeforeLoadData() {
 			if (initDone)
 				return;
-
-		    TMLaneRoutingManager.instance.Init();
-
-            laneSpeedLimitArray = new ushort?[Singleton<NetManager>.instance.m_segments.m_size][];
+            
 			//laneAllowedVehicleTypesArray = new ExtendedUnitType?[Singleton<NetManager>.instance.m_segments.m_size][];
 			nodeTrafficLightFlag = new bool?[Singleton<NetManager>.instance.m_nodes.m_size];
 			segmentNodeFlags = new TMConfigurationV2.SegmentEndFlags[Singleton<NetManager>.instance.m_segments.m_size][];

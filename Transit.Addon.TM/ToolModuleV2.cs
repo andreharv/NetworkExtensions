@@ -42,14 +42,11 @@ namespace Transit.Addon.TM
             }
 
             TAMPathFindManager.instance.DefinePathFinding<TAMImprovedPathFind>();
-            TAMPathFindFeatureManager.instance.DefineRoadRestrictionManager(TAMRoadRestrictionManager.instance);
+            TAMPathFindFeatureManager.instance.DefineRoadRestrictionManager(TAMRestrictionManager.instance);
+            TAMPathFindFeatureManager.instance.DefineRoadSpeedManager(TAMSpeedLimitManager.instance);
 
             // TODO: Convert TM LaneArrows into TPP routes
             TAMPathFindFeatureManager.instance.DefineLaneRoutingManager(TPPLaneRoutingManager.instance);
-
-            // TODO: Convert TPP data into TMRoadSpeedManager
-            //TAMPathFindFeatureManager.instance.DefineRoadSpeedManager<TPPRoadSpeedManager>();
-            TAMPathFindFeatureManager.instance.DefineRoadSpeedManager<TMRoadSpeedManager>();
 
             Log.Info("TrafficManagerMod took over path finding helper services");
         }
@@ -66,10 +63,10 @@ namespace Transit.Addon.TM
             }
 
             TAMPathFindManager.instance.ResetPathFinding<TAMImprovedPathFind>();
-            TAMPathFindFeatureManager.instance.ResetRoadRestrictionManager<TAMRoadRestrictionManager>();
+            TAMPathFindFeatureManager.instance.ResetRoadRestrictionManager<TAMRestrictionManager>();
+            TAMPathFindFeatureManager.instance.ResetRoadSpeedManager<TAMSpeedLimitManager>();
 
             TAMPathFindFeatureManager.instance.ResetLaneRoutingManager<TPPLaneRoutingManager>();
-            TAMPathFindFeatureManager.instance.ResetRoadSpeedManager<TMRoadSpeedManager>();
 
             Log.Info("TrafficManagerMod released path finding helper services");
         }

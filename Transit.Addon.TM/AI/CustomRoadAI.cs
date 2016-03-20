@@ -8,6 +8,7 @@ using ColossalFramework.Math;
 using System.Threading;
 using Transit.Addon.TM.UI;
 using Transit.Addon.TM.Data;
+using Transit.Addon.TM.PathFindingFeatures;
 using Transit.Addon.TM.Tools;
 using Transit.Framework;
 
@@ -101,7 +102,7 @@ namespace Transit.Addon.TM.AI {
 								uint currentSpeeds = currentLaneSpeeds[curLaneId];
 
 								if (!InStartupPhase) {
-									currentMeanSpeed = (byte)Math.Min(100u, ((currentSpeeds * 100u) / buf) / ((uint)(Math.Max(SpeedLimitManager.GetLockFreeGameSpeedLimit(segmentID, laneIndex, curLaneId, data.Info.m_lanes[laneIndex]) * 8f, 1f)))); // 0 .. 100, m_speedLimit of highway is 2, actual max. vehicle speed on highway is 16, that's why we use x*8 == x<<3 (don't ask why CO uses different units for velocity)
+									currentMeanSpeed = (byte)Math.Min(100u, ((currentSpeeds * 100u) / buf) / ((uint)(Math.Max(TAMSpeedLimitManager.instance.GetLaneSpeedLimit(segmentID, laneIndex, curLaneId, data.Info.m_lanes[laneIndex]) * 8f, 1f)))); // 0 .. 100, m_speedLimit of highway is 2, actual max. vehicle speed on highway is 16, that's why we use x*8 == x<<3 (don't ask why CO uses different units for velocity)
 								}
 							} else {
 								if (!InStartupPhase) {
