@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{98128597-13A2-4C17-96C9-4DFAC0CA0828}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Transit.Addon.ToolsV3</RootNamespace>
+    <AssemblyName>Transit.Addon.ToolsV3</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\References\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ColossalManaged">
+      <HintPath>..\References\ColossalManaged.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ICities">
+      <HintPath>..\References\ICities.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="UnityEngine">
+      <HintPath>..\References\UnityEngine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\TAMToolBase.cs" />
+    <Compile Include="Tools\LaneRouting\Data\_Extensions\NodeRoutingDataExtensions.Arrows.cs" />
+    <Compile Include="UI\Toolbar\RoadEditor\RoadEditorMainCategoryInfo.cs" />
+    <Compile Include="ToolModuleV3.Install.Tools.cs" />
+    <Compile Include="Tools\LaneRouting\LaneRoutingManager.cs" />
+    <Compile Include="Tools\LaneRouting\LaneRoutingSerializationHandler.cs" />
+    <Compile Include="Tools\LaneRouting\DataLegacy\TPP\_Extensions\TPPLaneDataExtensions.cs" />
+    <Compile Include="Tools\LaneRouting\Data\LaneRoutingData.cs" />
+    <Compile Include="Tools\LaneRouting\Data\NodeRoutingData.cs" />
+    <Compile Include="Tools\LaneRouting\Data\NodeRoutingDataSerializationBinder.cs" />
+    <Compile Include="Tools\LaneRouting\Data\_Extensions\LaneRoutingDataExtensions.cs" />
+    <Compile Include="Tools\LaneRouting\Data\_Extensions\NodeRoutingDataExtensions.cs" />
+    <Compile Include="Tools\LaneRouting\LaneRoutingTool.cs" />
+    <Compile Include="Tools\LaneRouting\LaneRoutingToolBuilder.cs" />
+    <Compile Include="Tools\LaneRouting\Markers\LaneAnchorMarker.cs" />
+    <Compile Include="Tools\LaneRouting\Markers\NodeRoutingMarker.cs" />
+    <Compile Include="UI\Toolbar\RoadEditor\RoadEditorToolbarItemInfo.cs" />
+    <Compile Include="UI\Toolbar\RoadEditor\Textures\ToolsAtlasBuilder.cs" />
+    <Compile Include="UI\Toolbar\RoadEditor\Textures\ToolsMenuAtlasBuilder.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools\LaneRouting\DataLegacy\TPP\TPPLaneData.cs" />
+    <Compile Include="Tools\LaneRouting\DataLegacy\TPP\TPPLaneDataSerializationBinder.cs" />
+    <Compile Include="Tools\LaneRouting\DataLegacy\TPP\TPPVehicleType.cs" />
+    <Compile Include="_Extensions\Color32Extensions.cs" />
+    <Compile Include="_Extensions\NetManagerExtensions.cs" />
+    <Compile Include="_Extensions\NetNodeExtensions.cs" />
+    <Compile Include="_Extensions\OverlayEffectExtensions.cs" />
+    <Compile Include="ToolModuleV3.cs" />
+    <Compile Include="ToolModuleV3.Install.cs" />
+    <Compile Include="ToolModuleV3.Settings.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Tools\LaneRouting\infotooltip.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\LaneRouting\thumbnails.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\Toolbar\RoadEditor\Textures\Tools.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\Toolbar\RoadEditor\Textures\ToolsMenu.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Transit.Framework.ExtensionPoints\Transit.Framework.ExtensionPoints.csproj">
+      <Project>{2e44eca3-d750-4115-b16b-fca94c49bba0}</Project>
+      <Name>Transit.Framework.ExtensionPoints</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Transit.Framework\Transit.Framework.csproj">
+      <Project>{8891467e-c88e-46b0-96f9-4413df6dc205}</Project>
+      <Name>Transit.Framework</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
