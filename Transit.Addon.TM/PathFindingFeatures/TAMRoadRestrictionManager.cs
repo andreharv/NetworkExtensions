@@ -9,7 +9,7 @@ using Transit.Framework.Network;
 
 namespace Transit.Addon.TM.PathFindingFeatures
 {
-    public partial class TAMRoadRestrictionManager : Singleton<TAMRoadRestrictionManager>,  IRoadRestrictionManager
+    public class TAMRoadRestrictionManager : Singleton<TAMRoadRestrictionManager>,  IRoadRestrictionManager
     {
         private TAMLaneRestriction[] _laneRestrictions = null;
 
@@ -33,8 +33,6 @@ namespace Transit.Addon.TM.PathFindingFeatures
         {
             if (restriction != null)
             {
-                Log.Info(">>>>>> Loading " + restriction);
-
                 if (overrideIfExist)
                 {
                     _laneRestrictions[restriction.LaneId] = restriction;
@@ -120,63 +118,93 @@ namespace Transit.Addon.TM.PathFindingFeatures
             GetOrCreateLaneRestriction(laneId).UnitTypes ^= vehicleType;
         }
 
+        public static bool IsAllowed(ExtendedUnitType? allowedTypes, ExtendedUnitType vehicleType)
+        {
+            return allowedTypes == null || ((ExtendedUnitType)allowedTypes & vehicleType) != ExtendedUnitType.None;
+        }
+
+        public static bool IsBicycleAllowed(ExtendedUnitType? allowedTypes)
+        {
+            return IsAllowed(allowedTypes, ExtendedUnitType.Bicycle);
+        }
+
+        public static bool IsBusAllowed(ExtendedUnitType? allowedTypes)
+        {
+            return IsAllowed(allowedTypes, ExtendedUnitType.Bus);
+        }
+
+        public static bool IsCargoTrainAllowed(ExtendedUnitType? allowedTypes)
+        {
+            return IsAllowed(allowedTypes, ExtendedUnitType.CargoTrain);
+        }
+
+        public static bool IsCargoTruckAllowed(ExtendedUnitType? allowedTypes)
+        {
+            return IsAllowed(allowedTypes, ExtendedUnitType.CargoTruck);
+        }
+
+        public static bool IsEmergencyAllowed(ExtendedUnitType? allowedTypes)
+        {
+            return IsAllowed(allowedTypes, ExtendedUnitType.Emergency);
+        }
+
+        public static bool IsPassengerCarAllowed(ExtendedUnitType? allowedTypes)
+        {
+            return IsAllowed(allowedTypes, ExtendedUnitType.PassengerCar);
+        }
+
+        public static bool IsPassengerTrainAllowed(ExtendedUnitType? allowedTypes)
+        {
+            return IsAllowed(allowedTypes, ExtendedUnitType.PassengerTrain);
+        }
+
+        public static bool IsServiceAllowed(ExtendedUnitType? allowedTypes)
+        {
+            return IsAllowed(allowedTypes, ExtendedUnitType.ServiceVehicle);
+        }
+
+        public static bool IsTaxiAllowed(ExtendedUnitType? allowedTypes)
+        {
+            return IsAllowed(allowedTypes, ExtendedUnitType.Taxi);
+        }
+
+        public static bool IsTramAllowed(ExtendedUnitType? allowedTypes)
+        {
+            return IsAllowed(allowedTypes, ExtendedUnitType.Tram);
+        }
+
+        public static bool IsRailVehicleAllowed(ExtendedUnitType? allowedTypes)
+        {
+            return IsAllowed(allowedTypes, ExtendedUnitType.Train);
+        }
+
+        public static bool IsRoadVehicleAllowed(ExtendedUnitType? allowedTypes)
+        {
+            return IsAllowed(allowedTypes, ExtendedUnitType.RoadVehicle);
+        }
+
         public bool CanUseLane(ushort segmentId, NetInfo segmentInfo, byte laneIndex, uint laneId, NetInfo.Lane laneInfo, ExtendedUnitType unitType)
         {
-            if (/*((unitType & ExtendedUnitType.Bus) == ExtendedUnitType.Bus) &&*/ (laneId == 181631 || laneId == 434))
+            if ((unitType & TAMSupported.UNITS) == 0)
             {
-                Log.Info(laneId + ">>>>>>>> unitType " + unitType);
-
-                if ((unitType & TAMSupported.UNITS) == 0)
-                {
-                    Log.Info(laneId + ">>>>>>>> Unsupported");
-                    // unsupported type. allow.
-                    return true;
-                }
-
-                if (laneInfo == null)
-                {
-                    Log.Info(laneId + ">>>>>>>> laneInfo null");
-                    return true;
-                }
-
-                var laneUnitType = laneInfo.GetUnitType();
-                if (laneUnitType == ExtendedUnitType.None)
-                {
-                    Log.Info(laneId + ">>>>>>>> laneUnitType none");
-                    return true;
-                }
-
-                var restrictions = GetRestrictions(laneId, laneUnitType);
-                Log.Info(laneId + ">>>>>>>> Restrictions " + restrictions);
-
-
-                Log.Info(laneId + ">>>>>>>> CanUse " + ((restrictions & unitType) != ExtendedUnitType.None));
-
-                return (restrictions & unitType) != ExtendedUnitType.None;
+                // unsupported type. allow.
+                return true;
             }
 
+            if (laneInfo == null)
             {
-                if ((unitType & TAMSupported.UNITS) == 0)
-                {
-                    // unsupported type. allow.
-                    return true;
-                }
-
-                if (laneInfo == null)
-                {
-                    return true;
-                }
-
-                var laneUnitType = laneInfo.GetUnitType();
-                if (laneUnitType == ExtendedUnitType.None)
-                {
-                    return true;
-                }
-
-                var restrictions = GetRestrictions(laneId, laneUnitType);
-
-                return (restrictions & unitType) != ExtendedUnitType.None;
+                return true;
             }
+
+            var laneUnitType = laneInfo.GetUnitType();
+            if (laneUnitType == ExtendedUnitType.None)
+            {
+                return true;
+            }
+
+            var restrictions = GetRestrictions(laneId, laneUnitType);
+
+            return (restrictions & unitType) != ExtendedUnitType.None;
         }
     }
 }

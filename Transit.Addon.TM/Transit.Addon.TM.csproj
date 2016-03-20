@@ -139,7 +139,6 @@
     <Compile Include="Traffic\TrafficSegment.cs" />
     <Compile Include="Traffic\VehicleJunctionTransitState.cs" />
     <Compile Include="Traffic\VehiclePosition.cs" />
-    <Compile Include="PathFindingFeatures\TAMRoadRestrictionManager.TM.cs" />
     <Compile Include="UI\CameraCtrl.cs" />
     <Compile Include="Tools\SubTool.cs" />
     <Compile Include="Tools\SubTools\LaneArrowTool.cs" />

@@ -332,11 +332,6 @@ namespace Transit.Addon.TM.Tools
 
 					m_selectedLaneMarkers.AddRange(hoveredMarkers);
 
-				    foreach (var lane in m_selectedLaneMarkers)
-				    {
-				        Log.Info(">>>>>> Editing lane " + lane.m_lane);
-				    }
-
 					if (firstLane)
 						OnStartLaneCustomization();
 				}
