@@ -11,32 +11,13 @@ namespace Transit.Addon.TM
     {
         static ToolModuleV2()
         {
-            ActiveOptions = Options.RoadCustomizerTool | Options.NoDespawn;
+            ActiveOptions = Options.NoDespawn;
         }
 
         public static Options ActiveOptions { get; private set; }
 
         public override void OnSettingsUI(UIHelperBase helper)
         {
-            helper.AddCheckbox(
-                "Road Customizer Tool",
-                "Allows you to customize entry and exit points in junctions / restrict vehicle and speed usage on lanes.",
-                ActiveOptions.IsFlagSet(Options.RoadCustomizerTool),
-                isChecked =>
-                {
-                    if (isChecked)
-                    {
-                        ActiveOptions |= Options.RoadCustomizerTool;
-                    }
-                    else
-                    {
-                        ActiveOptions &= ~Options.RoadCustomizerTool;
-                    }
-
-                    FireSaveSettingsNeeded();
-                },
-                true);
-
             helper.AddCheckbox(
                 "No Despawn by CBeTHaX",
                 null,

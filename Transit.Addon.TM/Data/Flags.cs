@@ -5,6 +5,7 @@ using ColossalFramework;
 using Transit.Addon.TM.PathFindingFeatures;
 using Transit.Addon.TM.Traffic;
 using Transit.Framework;
+using Transit.Framework.Network;
 
 namespace Transit.Addon.TM.Data {
 
@@ -23,13 +24,6 @@ namespace Transit.Addon.TM.Data {
 		private static Dictionary<uint, ushort> laneSpeedLimit = new Dictionary<uint, ushort>();
 
 		internal static ushort?[][] laneSpeedLimitArray; // for faster, lock-free access, 1st index: segment id, 2nd index: lane index
-
-		/// <summary>
-		/// For each lane: Defines the allowed vehicle types
-		/// </summary>
-		private static Dictionary<uint, TMVehicleType> laneAllowedVehicleTypes = new Dictionary<uint, TMVehicleType>();
-
-		internal static TMVehicleType?[][] laneAllowedVehicleTypesArray; // for faster, lock-free access, 1st index: segment id, 2nd index: lane index
 
 		/// <summary>
 		/// For each segment and node: Defines additional flags for segments at a node
@@ -187,66 +181,6 @@ namespace Transit.Addon.TM.Data {
 			}
 		}
 
-		public static void setLaneAllowedVehicleTypes(uint laneId, TMVehicleType vehicleTypes) {
-			if (laneId <= 0)
-				return;
-			if (((NetLane.Flags)Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags & NetLane.Flags.Created) == NetLane.Flags.None)
-				return;
-
-			ushort segmentId = Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_segment;
-			if (segmentId <= 0)
-				return;
-			if ((Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].m_flags & NetSegment.Flags.Created) == NetSegment.Flags.None)
-				return;
-
-			NetInfo segmentInfo = Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].Info;
-			uint curLaneId = Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].m_lanes;
-			uint laneIndex = 0;
-			while (laneIndex < segmentInfo.m_lanes.Length && curLaneId != 0u) {
-				if (curLaneId == laneId) {
-					setLaneAllowedVehicleTypes(segmentId, laneIndex, laneId, vehicleTypes);
-					return;
-				}
-				laneIndex++;
-				curLaneId = Singleton<NetManager>.instance.m_lanes.m_buffer[curLaneId].m_nextLane;
-			}
-		}
-
-		public static void setLaneAllowedVehicleTypes(ushort segmentId, uint laneIndex, uint laneId, TMVehicleType vehicleTypes) {
-			if (segmentId <= 0 || laneIndex < 0 || laneId <= 0)
-				return;
-			if ((Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].m_flags & NetSegment.Flags.Created) == NetSegment.Flags.None) {
-				return;
-			}
-			if (((NetLane.Flags)Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags & NetLane.Flags.Created) == NetLane.Flags.None)
-				return;
-			NetInfo segmentInfo = Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].Info;
-			if (laneIndex >= segmentInfo.m_lanes.Length) {
-				return;
-			}
-
-			try {
-				Monitor.Enter(laneAllowedVehicleTypesLock);
-				Log._Debug($"Flags.setLaneAllowedVehicleTypes: setting allowed vehicles of lane index {laneIndex} @ seg. {segmentId} to {vehicleTypes.ToString()}");
-
-				laneAllowedVehicleTypes[laneId] = vehicleTypes;
-
-				// save allowed vehicle types into the fast-access array.
-				// (1) ensure that the array is defined and large enough
-				if (laneAllowedVehicleTypesArray[segmentId] == null) {
-					laneAllowedVehicleTypesArray[segmentId] = new TMVehicleType?[segmentInfo.m_lanes.Length];
-				} else if (laneAllowedVehicleTypesArray[segmentId].Length < segmentInfo.m_lanes.Length) {
-					var oldArray = laneAllowedVehicleTypesArray[segmentId];
-					laneAllowedVehicleTypesArray[segmentId] = new TMVehicleType?[segmentInfo.m_lanes.Length];
-					Array.Copy(oldArray, laneAllowedVehicleTypesArray[segmentId], oldArray.Length);
-				}
-				// (2) insert the custom speed limit
-				laneAllowedVehicleTypesArray[segmentId][laneIndex] = vehicleTypes;
-			} finally {
-				Monitor.Exit(laneAllowedVehicleTypesLock);
-			}
-		}
-
 		public static ushort? getLaneSpeedLimit(uint laneId) {
 			try {
 				Monitor.Enter(laneSpeedLimitLock);
@@ -269,32 +203,6 @@ namespace Transit.Addon.TM.Data {
 
 			} finally {
 				Monitor.Exit(laneSpeedLimitLock);
-			}
-			return ret;
-		}
-
-		public static TMVehicleType? getLaneAllowedVehicleTypes(uint laneId) {
-			try {
-				Monitor.Enter(laneAllowedVehicleTypesLock);
-
-				if (laneId <= 0 || !laneAllowedVehicleTypes.ContainsKey(laneId))
-					return null;
-
-				return laneAllowedVehicleTypes[laneId];
-			} finally {
-				Monitor.Exit(laneAllowedVehicleTypesLock);
-			}
-		}
-
-		internal static Dictionary<uint, TMVehicleType> getAllLaneAllowedVehicleTypes() {
-			Dictionary<uint, TMVehicleType> ret = new Dictionary<uint, TMVehicleType>();
-			try {
-				Monitor.Enter(laneAllowedVehicleTypesLock);
-
-				ret = new Dictionary<uint, TMVehicleType>(laneAllowedVehicleTypes);
-
-			} finally {
-				Monitor.Exit(laneAllowedVehicleTypesLock);
 			}
 			return ret;
 		}
@@ -433,8 +341,8 @@ namespace Transit.Addon.TM.Data {
 
 			try {
 				Monitor.Enter(laneAllowedVehicleTypesLock);
-				laneAllowedVehicleTypesArray = null;
-				laneAllowedVehicleTypes.Clear();
+				//laneAllowedVehicleTypesArray = null;
+				//laneAllowedVehicleTypes.Clear();
 			} finally {
 				Monitor.Exit(laneAllowedVehicleTypesLock);
 			}
@@ -450,7 +358,7 @@ namespace Transit.Addon.TM.Data {
 		    TMLaneRoutingManager.instance.Init();
 
             laneSpeedLimitArray = new ushort?[Singleton<NetManager>.instance.m_segments.m_size][];
-			laneAllowedVehicleTypesArray = new TMVehicleType?[Singleton<NetManager>.instance.m_segments.m_size][];
+			//laneAllowedVehicleTypesArray = new ExtendedUnitType?[Singleton<NetManager>.instance.m_segments.m_size][];
 			nodeTrafficLightFlag = new bool?[Singleton<NetManager>.instance.m_nodes.m_size];
 			segmentNodeFlags = new TMConfigurationV2.SegmentEndFlags[Singleton<NetManager>.instance.m_segments.m_size][];
 			for (int i = 0; i < segmentNodeFlags.Length; ++i) {

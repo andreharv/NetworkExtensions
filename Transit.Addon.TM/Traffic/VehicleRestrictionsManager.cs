@@ -7,7 +7,9 @@ using Transit.Addon.TM.Data;
 using Transit.Framework;
 
 namespace Transit.Addon.TM.Traffic {
-	class VehicleRestrictionsManager {
+
+    // TODO: Legacy, to be replaced by TAMRoadRestrictionManager when TMVehicleType becomes ExtendedUnitType
+    class VehicleRestrictionsManager {
 		/// <summary>
 		/// For each segment id and lane index: Holds the default set of vehicle types allowed for the lane
 		/// </summary>
@@ -78,8 +80,9 @@ namespace Transit.Addon.TM.Traffic {
 		/// <param name="laneInfo"></param>
 		/// <returns></returns>
 		internal static TMVehicleType GetAllowedVehicleTypes(ushort segmentId, NetInfo segmentInfo, uint laneIndex, NetInfo.Lane laneInfo) {
-			if (Flags.IsInitDone()) {
-				TMVehicleType?[] fastArray = Flags.laneAllowedVehicleTypesArray[segmentId];
+			if (Flags.IsInitDone())
+			{
+			    TMVehicleType?[] fastArray = null; // TODO: Review this feature ->>> Flags.laneAllowedVehicleTypesArray[segmentId];
 				if (fastArray != null) {
 					if (laneIndex < fastArray.Length && fastArray[laneIndex] != null) {
 						return (TMVehicleType)fastArray[laneIndex];
@@ -164,79 +167,79 @@ namespace Transit.Addon.TM.Traffic {
 			return TMVehicleType.None;
 		}
 
-		/// <summary>
-		/// Sets the allowed vehicle types for the given segment and lane.
-		/// </summary>
-		/// <param name="segmentId"></param>
-		/// <param name="laneIndex"></param>
-		/// <param name="laneId"></param>
-		/// <param name="allowedTypes"></param>
-		/// <returns></returns>
-		internal static bool SetAllowedVehicleTypes(ushort segmentId, NetInfo segmentInfo, uint laneIndex, NetInfo.Lane laneInfo, uint laneId, TMVehicleType allowedTypes) {
-			if (segmentId == 0)
-				return false;
-			if ((Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].m_flags & NetSegment.Flags.Created) == NetSegment.Flags.None)
-				return false;
-			if (((NetLane.Flags)Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags & NetLane.Flags.Created) == NetLane.Flags.None)
-				return false;
+		///// <summary>
+		///// Sets the allowed vehicle types for the given segment and lane.
+		///// </summary>
+		///// <param name="segmentId"></param>
+		///// <param name="laneIndex"></param>
+		///// <param name="laneId"></param>
+		///// <param name="allowedTypes"></param>
+		///// <returns></returns>
+		//internal static bool SetAllowedVehicleTypes(ushort segmentId, NetInfo segmentInfo, uint laneIndex, NetInfo.Lane laneInfo, uint laneId, TMVehicleType allowedTypes) {
+		//	if (segmentId == 0)
+		//		return false;
+		//	if ((Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].m_flags & NetSegment.Flags.Created) == NetSegment.Flags.None)
+		//		return false;
+		//	if (((NetLane.Flags)Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags & NetLane.Flags.Created) == NetLane.Flags.None)
+		//		return false;
 
-			allowedTypes &= GetBaseMask(segmentInfo.m_lanes[laneIndex]); // ensure default base mask
-			Flags.setLaneAllowedVehicleTypes(segmentId, laneIndex, laneId, allowedTypes);
-			return true;
-		}
+		//	allowedTypes &= GetBaseMask(segmentInfo.m_lanes[laneIndex]); // ensure default base mask
+		//	Flags.setLaneAllowedVehicleTypes(segmentId, laneIndex, laneId, allowedTypes);
+		//	return true;
+		//}
 
-		/// <summary>
-		/// Adds the given vehicle type to the set of allowed vehicles at the specified lane
-		/// </summary>
-		/// <param name="segmentId"></param>
-		/// <param name="laneIndex"></param>
-		/// <param name="laneId"></param>
-		/// <param name="laneInfo"></param>
-		/// <param name="road"></param>
-		/// <param name="vehicleType"></param>
-		public static void AddAllowedType(ushort segmentId, NetInfo segmentInfo, uint laneIndex, uint laneId, NetInfo.Lane laneInfo, TMVehicleType vehicleType) {
-			if (segmentId == 0)
-				return;
-			if ((Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].m_flags & NetSegment.Flags.Created) == NetSegment.Flags.None)
-				return;
-			if (((NetLane.Flags)Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags & NetLane.Flags.Created) == NetLane.Flags.None)
-				return;
+		///// <summary>
+		///// Adds the given vehicle type to the set of allowed vehicles at the specified lane
+		///// </summary>
+		///// <param name="segmentId"></param>
+		///// <param name="laneIndex"></param>
+		///// <param name="laneId"></param>
+		///// <param name="laneInfo"></param>
+		///// <param name="road"></param>
+		///// <param name="vehicleType"></param>
+		//public static void AddAllowedType(ushort segmentId, NetInfo segmentInfo, uint laneIndex, uint laneId, NetInfo.Lane laneInfo, TMVehicleType vehicleType) {
+		//	if (segmentId == 0)
+		//		return;
+		//	if ((Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].m_flags & NetSegment.Flags.Created) == NetSegment.Flags.None)
+		//		return;
+		//	if (((NetLane.Flags)Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags & NetLane.Flags.Created) == NetLane.Flags.None)
+		//		return;
 
-			TMVehicleType allowedTypes = GetAllowedVehicleTypes(segmentId, segmentInfo, laneIndex, laneInfo);
-			allowedTypes |= vehicleType;
-			allowedTypes &= GetBaseMask(segmentInfo.m_lanes[laneIndex]); // ensure default base mask
-			Flags.setLaneAllowedVehicleTypes(segmentId, laneIndex, laneId, allowedTypes);
-		}
+		//	TMVehicleType allowedTypes = GetAllowedVehicleTypes(segmentId, segmentInfo, laneIndex, laneInfo);
+		//	allowedTypes |= vehicleType;
+		//	allowedTypes &= GetBaseMask(segmentInfo.m_lanes[laneIndex]); // ensure default base mask
+		//	Flags.setLaneAllowedVehicleTypes(segmentId, laneIndex, laneId, allowedTypes);
+		//}
 
-		/// <summary>
-		/// Removes the given vehicle type from the set of allowed vehicles at the specified lane
-		/// </summary>
-		/// <param name="segmentId"></param>
-		/// <param name="laneIndex"></param>
-		/// <param name="laneId"></param>
-		/// <param name="laneInfo"></param>
-		/// <param name="road"></param>
-		/// <param name="vehicleType"></param>
-		public static void RemoveAllowedType(ushort segmentId, NetInfo segmentInfo, uint laneIndex, uint laneId, NetInfo.Lane laneInfo, TMVehicleType vehicleType) {
-			if (segmentId == 0)
-				return;
-			if ((Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].m_flags & NetSegment.Flags.Created) == NetSegment.Flags.None)
-				return;
-			if (((NetLane.Flags)Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags & NetLane.Flags.Created) == NetLane.Flags.None)
-				return;
+		///// <summary>
+		///// Removes the given vehicle type from the set of allowed vehicles at the specified lane
+		///// </summary>
+		///// <param name="segmentId"></param>
+		///// <param name="laneIndex"></param>
+		///// <param name="laneId"></param>
+		///// <param name="laneInfo"></param>
+		///// <param name="road"></param>
+		///// <param name="vehicleType"></param>
+		//public static void RemoveAllowedType(ushort segmentId, NetInfo segmentInfo, uint laneIndex, uint laneId, NetInfo.Lane laneInfo, TMVehicleType vehicleType) {
+		//	if (segmentId == 0)
+		//		return;
+		//	if ((Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].m_flags & NetSegment.Flags.Created) == NetSegment.Flags.None)
+		//		return;
+		//	if (((NetLane.Flags)Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags & NetLane.Flags.Created) == NetLane.Flags.None)
+		//		return;
 
-			TMVehicleType allowedTypes = GetAllowedVehicleTypes(segmentId, segmentInfo, laneIndex, laneInfo);
-			allowedTypes &= ~vehicleType;
-			allowedTypes &= GetBaseMask(segmentInfo.m_lanes[laneIndex]); // ensure default base mask
-			Flags.setLaneAllowedVehicleTypes(segmentId, laneIndex, laneId, allowedTypes);
-		}
+		//	TMVehicleType allowedTypes = GetAllowedVehicleTypes(segmentId, segmentInfo, laneIndex, laneInfo);
+		//	allowedTypes &= ~vehicleType;
+		//	allowedTypes &= GetBaseMask(segmentInfo.m_lanes[laneIndex]); // ensure default base mask
+		//	Flags.setLaneAllowedVehicleTypes(segmentId, laneIndex, laneId, allowedTypes);
+		//}
 
-		public static void ToggleAllowedType(ushort segmentId, NetInfo segmentInfo, uint laneIndex, uint laneId, NetInfo.Lane laneInfo, TMVehicleType vehicleType, bool add) {
-			if (add)
-				AddAllowedType(segmentId, segmentInfo, laneIndex, laneId, laneInfo, vehicleType);
-			else
-				RemoveAllowedType(segmentId, segmentInfo, laneIndex, laneId, laneInfo, vehicleType);
-		}
+		//public static void ToggleAllowedType(ushort segmentId, NetInfo segmentInfo, uint laneIndex, uint laneId, NetInfo.Lane laneInfo, TMVehicleType vehicleType, bool add) {
+		//	if (add)
+		//		AddAllowedType(segmentId, segmentInfo, laneIndex, laneId, laneInfo, vehicleType);
+		//	else
+		//		RemoveAllowedType(segmentId, segmentInfo, laneIndex, laneId, laneInfo, vehicleType);
+		//}
 
 		/// <summary>
 		/// Determines the maximum allowed set of vehicles (the base mask) for a given lane

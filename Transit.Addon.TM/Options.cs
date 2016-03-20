@@ -7,7 +7,6 @@ namespace Transit.Addon.TM
     {
         None = 0,
         UseRealisticSpeeds = 8,
-        NoDespawn = 16,
-        RoadCustomizerTool = 1L << 55,
+        NoDespawn = 16
     }
 }

@@ -7,6 +7,7 @@ using Transit.Addon.TM.PathFindingFeatures;
 using Transit.Addon.TM.Traffic;
 using Transit.Addon.TM.TrafficLight;
 using Transit.Framework;
+using Transit.Framework.Network;
 
 namespace Transit.Addon.TM.Data {
 	public static partial class TMDataManager {
@@ -70,9 +71,7 @@ namespace Transit.Addon.TM.Data {
 			if (configuration.LaneAllowedVehicleTypes != null) {
 				Log.Info($"Loading lane vehicle restriction data. {configuration.LaneAllowedVehicleTypes.Count} elements");
 				foreach (Configuration.LaneVehicleTypes laneVehicleTypes in configuration.LaneAllowedVehicleTypes) {
-					uint maskedType = (uint)laneVehicleTypes.vehicleTypes & (uint)VehicleRestrictionsManager.GetBaseMask(laneVehicleTypes.laneId);
-					Log._Debug($"Loading lane vehicle restriction: lane {laneVehicleTypes.laneId} = {laneVehicleTypes.vehicleTypes}, masked = {maskedType}");
-					Flags.setLaneAllowedVehicleTypes(laneVehicleTypes.laneId, (TMVehicleType) maskedType);
+                    TAMRoadRestrictionManager.instance.Load(laneVehicleTypes.ConvertToRestriction(), true);
 				}
 			} else {
 				Log.Warning("Lane speed limit structure undefined!");

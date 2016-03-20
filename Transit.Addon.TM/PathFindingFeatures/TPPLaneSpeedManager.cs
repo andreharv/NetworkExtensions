@@ -116,11 +116,6 @@ namespace Transit.Addon.TM.PathFindingFeatures
         // TODO: deprecate this
         public float GetLaneSpeed(uint laneId, NetInfo.Lane laneInfo)
         {
-            if ((ToolModuleV2.ActiveOptions & Options.RoadCustomizerTool) != Options.RoadCustomizerTool)
-            {
-                return laneInfo.m_speedLimit;
-            }
-
             TAMLaneSpeedLimit lane = GetLaneData(laneId);
 			if (lane == null)
 				return laneInfo.m_speedLimit;

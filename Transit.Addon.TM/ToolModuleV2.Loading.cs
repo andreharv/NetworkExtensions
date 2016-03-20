@@ -9,14 +9,7 @@ using Transit.Addon.TM.TrafficLight;
 using Transit.Addon.TM.UI;
 using Transit.Framework;
 using Transit.Framework.Modularity;
-using System.Reflection;
-using ColossalFramework;
-using UnityEngine;
 using Object = UnityEngine.Object;
-using ColossalFramework.UI;
-using ColossalFramework.Math;
-using Transit.Framework.Redirection;
-using Transit.Addon.TM;
 using Transit.Addon.TM.Data;
 
 namespace Transit.Addon.TM
@@ -26,15 +19,14 @@ namespace Transit.Addon.TM
         public override void OnLevelLoaded(LoadMode mode)
         {
             base.OnLevelLoaded(mode);
-
+            
             Instance = this;
             gameLoaded = false;
             if (mode == LoadMode.NewGame || mode == LoadMode.LoadGame)
             {
                 gameLoaded = true;
 
-                if ((ActiveOptions & Options.RoadCustomizerTool) == Options.RoadCustomizerTool)
-                    ToolsModifierControl.toolController.AddTool<RoadCustomizerTool>();
+                ToolsModifierControl.toolController.AddTool<RoadCustomizerTool>();
 
                 if ((ActiveOptions & Options.UseRealisticSpeeds) == Options.UseRealisticSpeeds)
                     UnitRealisticSpeedManager.Activate();
@@ -56,8 +48,7 @@ namespace Transit.Addon.TM
             if (Instance == null)
                 Instance = this;
 
-            if ((ActiveOptions & Options.RoadCustomizerTool) == Options.RoadCustomizerTool)
-                ToolsModifierControl.toolController.RemoveTool<RoadCustomizerTool>();
+            ToolsModifierControl.toolController.RemoveTool<RoadCustomizerTool>();
 
             if ((ActiveOptions & Options.UseRealisticSpeeds) == Options.UseRealisticSpeeds)
                 UnitRealisticSpeedManager.Deactivate();
@@ -65,9 +56,9 @@ namespace Transit.Addon.TM
             revertDetours();
             gameLoaded = false;
 
+            TAMRoadRestrictionManager.instance.Reset();
             TMLaneRoutingManager.instance.Reset();
             TPPLaneRoutingManager.instance.Reset();
-            TPPRoadRestrictionManager.instance.Reset();
             TPPLaneSpeedManager.instance.Reset();
 
             Object.Destroy(UI);
@@ -80,7 +71,7 @@ namespace Transit.Addon.TM
                 CustomRoadAI.OnLevelUnloading();
                 CustomTrafficLights.OnLevelUnloading();
                 TrafficLightSimulation.OnLevelUnloading();
-                VehicleRestrictionsManager.OnLevelUnloading();
+                //VehicleRestrictionsManager.OnLevelUnloading();
                 Flags.OnLevelUnloading();
                 Translation.OnLevelUnloading();
 
@@ -99,6 +90,8 @@ namespace Transit.Addon.TM
             //SelfDestruct.DestructOldInstances(this);
 
             base.OnCreated(loading);
+
+            TAMRoadRestrictionManager.instance.Init();
 
             ToolMode = Mode.Disabled;
             Detours = new List<Detour>();

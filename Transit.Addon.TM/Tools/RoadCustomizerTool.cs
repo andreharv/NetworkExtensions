@@ -332,6 +332,11 @@ namespace Transit.Addon.TM.Tools
 
 					m_selectedLaneMarkers.AddRange(hoveredMarkers);
 
+				    foreach (var lane in m_selectedLaneMarkers)
+				    {
+				        Log.Info(">>>>>> Editing lane " + lane.m_lane);
+				    }
+
 					if (firstLane)
 						OnStartLaneCustomization();
 				}
@@ -723,7 +728,7 @@ namespace Transit.Addon.TM.Tools
 			if (!AnyLaneSelected)
 				return ExtendedUnitType.None;
 
-			return TPPRoadRestrictionManager.instance.GetRestrictions(m_selectedLaneMarkers[0].m_lane);
+            return TAMRoadRestrictionManager.instance.GetRestrictions(m_selectedLaneMarkers[0].m_lane, ExtendedUnitType.RoadVehicle);
 		}
 
 		public ExtendedUnitType ToggleRestriction(ExtendedUnitType vehicleType)
@@ -731,13 +736,14 @@ namespace Transit.Addon.TM.Tools
 			if (!AnyLaneSelected)
 				return ExtendedUnitType.None;
 
-			ExtendedUnitType vehicleRestrictions = TPPRoadRestrictionManager.instance.GetRestrictions(m_selectedLaneMarkers[0].m_lane);
-			vehicleRestrictions ^= vehicleType;
+			var restrictions = TAMRoadRestrictionManager.instance.GetRestrictions(m_selectedLaneMarkers[0].m_lane, ExtendedUnitType.RoadVehicle);
+
+            restrictions ^= vehicleType;
 
 			foreach (SegmentLaneMarker lane in m_selectedLaneMarkers)
-                TPPRoadRestrictionManager.instance.SetRestrictions(lane.m_lane, vehicleRestrictions);
+                TAMRoadRestrictionManager.instance.SetRestrictions(lane.m_lane, restrictions);
 
-			return vehicleRestrictions;
+			return restrictions;
 		}
 
 		public float GetCurrentSpeedRestrictions()

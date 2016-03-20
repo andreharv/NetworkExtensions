@@ -1,11 +1,12 @@
 ﻿using ColossalFramework;
+using TrafficManager.Traffic;
 using Transit.Framework.Network;
 
 namespace Transit.Addon.TM.Data
 {
-    public static class TMVehicleTypeExtensions
+    public static class ExtVehicleTypeExtensions
     {
-        public static ExtendedUnitType ConvertToUnitType(this TMVehicleType vehicleType)
+        public static ExtendedUnitType ConvertToUnitType(this ExtVehicleType vehicleType)
         {
             var result = ExtendedUnitType.None;
 
@@ -13,34 +14,34 @@ namespace Transit.Addon.TM.Data
             {
                 switch (vehicleTypes)
                 {
-                    case TMVehicleType.Bicycle:
+                    case ExtVehicleType.Bicycle:
                         result |= ExtendedUnitType.Bicycle;
                         break;
-                    case TMVehicleType.Bus:
+                    case ExtVehicleType.Bus:
                         result |= ExtendedUnitType.Bus;
                         break;
-                    case TMVehicleType.CargoTrain:
+                    case ExtVehicleType.CargoTrain:
                         result |= ExtendedUnitType.CargoTrain;
                         break;
-                    case TMVehicleType.CargoTruck:
+                    case ExtVehicleType.CargoTruck:
                         result |= ExtendedUnitType.CargoTruck;
                         break;
-                    case TMVehicleType.Emergency:
+                    case ExtVehicleType.Emergency:
                         result |= ExtendedUnitType.Emergency;
                         break;
-                    case TMVehicleType.PassengerCar:
+                    case ExtVehicleType.PassengerCar:
                         result |= ExtendedUnitType.PassengerCar;
                         break;
-                    case TMVehicleType.PassengerTrain:
+                    case ExtVehicleType.PassengerTrain:
                         result |= ExtendedUnitType.PassengerTrain;
                         break;
-                    case TMVehicleType.Service:
+                    case ExtVehicleType.Service:
                         result |= ExtendedUnitType.ServiceVehicle;
                         break;
-                    case TMVehicleType.Taxi:
+                    case ExtVehicleType.Taxi:
                         result |= ExtendedUnitType.Taxi;
                         break;
-                    case TMVehicleType.Tram:
+                    case ExtVehicleType.Tram:
                         result |= ExtendedUnitType.Tram;
                         break;
                 }

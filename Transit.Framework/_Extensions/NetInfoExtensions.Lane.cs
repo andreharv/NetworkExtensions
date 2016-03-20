@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Transit.Framework.Network;
 using UnityEngine;
 
 namespace Transit.Framework
@@ -22,6 +23,26 @@ namespace Transit.Framework
             newLane.m_laneProps = templateLane.m_laneProps.Clone(newName);
 
             return newLane;
+        }
+
+        public static ExtendedUnitType GetUnitType(this NetInfo.Lane laneInfo)
+        {
+            if (IsRoadLane(laneInfo))
+                return ExtendedUnitType.RoadVehicle;
+            else if (IsRailLane(laneInfo))
+                return ExtendedUnitType.Train;
+            else
+                return ExtendedUnitType.None;
+        }
+
+        public static bool IsRailLane(this NetInfo.Lane laneInfo)
+        {
+            return (laneInfo.m_vehicleType & VehicleInfo.VehicleType.Train) != VehicleInfo.VehicleType.None;
+        }
+
+        public static bool IsRoadLane(this NetInfo.Lane laneInfo)
+        {
+            return (laneInfo.m_vehicleType & VehicleInfo.VehicleType.Car) != VehicleInfo.VehicleType.None;
         }
     }
 }

@@ -1,14 +1,17 @@
 ﻿using System.Collections.Generic;
 using ColossalFramework;
 using Transit.Addon.TM.Data;
+using Transit.Addon.TM.PathFindingFeatures;
 using Transit.Addon.TM.Traffic;
 using Transit.Addon.TM.UI;
+using Transit.Framework;
+using Transit.Framework.Network;
 using UnityEngine;
 
 namespace Transit.Addon.TM.Tools.SubTools {
 	public class VehicleRestrictionsTool : SubTool {
-		private static TMVehicleType[] roadVehicleTypes = new TMVehicleType[] { TMVehicleType.PassengerCar, TMVehicleType.Bus, TMVehicleType.Taxi, TMVehicleType.CargoTruck, TMVehicleType.Service, TMVehicleType.Emergency };
-		private static TMVehicleType[] railVehicleTypes = new TMVehicleType[] { TMVehicleType.PassengerTrain, TMVehicleType.CargoTrain };
+		private static ExtendedUnitType[] roadVehicleTypes = new ExtendedUnitType[] { ExtendedUnitType.PassengerCar, ExtendedUnitType.Bus, ExtendedUnitType.Taxi, ExtendedUnitType.CargoTruck, ExtendedUnitType.ServiceVehicle, ExtendedUnitType.Emergency };
+		private static ExtendedUnitType[] railVehicleTypes = new ExtendedUnitType[] { ExtendedUnitType.PassengerTrain, ExtendedUnitType.CargoTrain };
 		private static float vehicleRestrictionsSignSize = 80f;
 		private bool _cursorInSecondaryPanel;
 		private bool overlayHandleHovered;
@@ -112,14 +115,15 @@ namespace Transit.Addon.TM.Tools.SubTools {
 					uint laneIndex = (uint)laneData[2];
 					NetInfo.Lane laneInfo = selectedSegmentInfo.m_lanes[laneIndex];
 
-					TMVehicleType baseMask = VehicleRestrictionsManager.GetBaseMask(laneInfo);
+					ExtendedUnitType baseMask = laneInfo.GetUnitType();
 
-					if (baseMask == TMVehicleType.None)
+					if (baseMask == ExtendedUnitType.None)
 						continue;
 
-					TMVehicleType allowedTypes = VehicleRestrictionsManager.GetAllowedVehicleTypes(SelectedSegmentId, selectedSegmentInfo, laneIndex, laneInfo);
-					allowedTypes = ~allowedTypes & baseMask;
-					VehicleRestrictionsManager.SetAllowedVehicleTypes(SelectedSegmentId, selectedSegmentInfo, laneIndex, laneInfo, laneId, allowedTypes);
+					ExtendedUnitType restrictions = TAMRoadRestrictionManager.instance.GetRestrictions(laneId, baseMask);
+
+                    restrictions = restrictions & baseMask;
+                    TAMRoadRestrictionManager.instance.SetRestrictions(laneId, restrictions);
 				}
 			}
 
@@ -134,12 +138,12 @@ namespace Transit.Addon.TM.Tools.SubTools {
 					uint laneIndex = (uint)laneData[2];
 					NetInfo.Lane laneInfo = selectedSegmentInfo.m_lanes[laneIndex];
 
-					TMVehicleType baseMask = VehicleRestrictionsManager.GetBaseMask(laneInfo);
+					ExtendedUnitType baseMask = laneInfo.GetUnitType();
 
-					if (baseMask == TMVehicleType.None)
+					if (baseMask == ExtendedUnitType.None)
 						continue;
 
-					VehicleRestrictionsManager.SetAllowedVehicleTypes(SelectedSegmentId, selectedSegmentInfo, laneIndex, laneInfo, laneId, baseMask);
+					TAMRoadRestrictionManager.instance.SetRestrictions(laneId, baseMask);
 				}
 			}
 
@@ -153,17 +157,17 @@ namespace Transit.Addon.TM.Tools.SubTools {
 					uint laneIndex = (uint)laneData[2];
 					NetInfo.Lane laneInfo = selectedSegmentInfo.m_lanes[laneIndex];
 
-					TMVehicleType baseMask = TMVehicleType.None;
-					if (VehicleRestrictionsManager.IsRoadLane(laneInfo)) {
-						baseMask = TMVehicleType.RoadVehicle;
-					} else if (VehicleRestrictionsManager.IsRailLane(laneInfo)) {
-						baseMask = TMVehicleType.RailVehicle;
+					ExtendedUnitType baseMask = ExtendedUnitType.None;
+					if (NetInfoExtensions.IsRoadLane(laneInfo)) {
+						baseMask = ExtendedUnitType.RoadVehicle;
+					} else if (NetInfoExtensions.IsRailLane(laneInfo)) {
+						baseMask = ExtendedUnitType.Train;
 					}
 
-					if (baseMask == TMVehicleType.None)
+					if (baseMask == ExtendedUnitType.None)
 						continue;
 
-					VehicleRestrictionsManager.SetAllowedVehicleTypes(SelectedSegmentId, selectedSegmentInfo, laneIndex, laneInfo, laneId, TMVehicleType.None);
+					TAMRoadRestrictionManager.instance.SetRestrictions(laneId, ExtendedUnitType.None);
 				}
 			}
 			GUILayout.EndHorizontal();
@@ -218,8 +222,10 @@ namespace Transit.Addon.TM.Tools.SubTools {
 								uint laneIndex = (uint)laneData[2];
 								NetInfo.Lane laneInfo = segmentInfo.m_lanes[laneIndex];
 
-								// apply restrictions of selected segment & lane
-								VehicleRestrictionsManager.SetAllowedVehicleTypes(segmentId, segmentInfo, laneIndex, laneInfo, laneId, VehicleRestrictionsManager.GetAllowedVehicleTypes(SelectedSegmentId, selectedSegmentInfo, selectedLaneIndex, selectedLaneInfo));
+                                // apply restrictions of selected segment & lane
+                                ExtendedUnitType restrictions = TAMRoadRestrictionManager.instance.GetRestrictions(laneId, laneInfo.GetUnitType());
+
+                                TAMRoadRestrictionManager.instance.SetRestrictions(laneId, restrictions);
 							}
 
 							// add nodes to explore
@@ -296,19 +302,19 @@ namespace Transit.Addon.TM.Tools.SubTools {
 					directions.Add(laneInfo.m_direction);
 				}
 
-				TMVehicleType[] possibleVehicleTypes = null;
-				if (VehicleRestrictionsManager.IsRoadLane(laneInfo)) {
+				ExtendedUnitType[] possibleVehicleTypes = null;
+				if (laneInfo.IsRoadLane()) {
 					possibleVehicleTypes = roadVehicleTypes;
-				} else if (VehicleRestrictionsManager.IsRailLane(laneInfo)) {
+				} else if (laneInfo.IsRailLane()) {
 					possibleVehicleTypes = railVehicleTypes;
 				} else {
 					++x;
 					continue;
 				}
+                
+                ExtendedUnitType restrictions = TAMRoadRestrictionManager.instance.GetRestrictions(laneId, laneInfo.GetUnitType());
 
-				TMVehicleType allowedTypes = VehicleRestrictionsManager.GetAllowedVehicleTypes(segmentId, segmentInfo, laneIndex, laneInfo);
-
-				uint y = 0;
+                uint y = 0;
 #if DEBUGx
 				Vector3 labelCenter = zero + f * (float)x * xu + f * (float)y * yu; // in game coordinates
 
@@ -327,20 +333,20 @@ namespace Transit.Addon.TM.Tools.SubTools {
 
 				++y;
 #endif
-				foreach (TMVehicleType vehicleType in possibleVehicleTypes) {
-					bool allowed = VehicleRestrictionsManager.IsAllowed(allowedTypes, vehicleType);
+				foreach (ExtendedUnitType vehicleType in possibleVehicleTypes) {
+					bool allowed = TAMRoadRestrictionManager.IsAllowed(restrictions, vehicleType);
 					if (allowed && viewOnly)
 						continue; // do not draw allowed vehicles in view-only mode
 
 					bool hoveredHandle;
-					DrawRestrictionsSign(viewOnly, camPos, out diff, xu, yu, f, zero, x, y, ref guiColor, Textures.VehicleRestrictionTextures[vehicleType][allowed], out hoveredHandle);
+					DrawRestrictionsSign(viewOnly, camPos, out diff, xu, yu, f, zero, x, y, ref guiColor, TexturesV2.VehicleRestrictionTextures[vehicleType][allowed], out hoveredHandle);
 					if (hoveredHandle)
 						hovered = true;
 
 					if (hoveredHandle && MainTool.CheckClicked()) {
 						// toggle vehicle restrictions
 						//Log._Debug($"Setting vehicle restrictions of segment {segmentId}, lane idx {laneIndex}, {vehicleType.ToString()} to {!allowed}");
-						VehicleRestrictionsManager.ToggleAllowedType(segmentId, segmentInfo, laneIndex, laneId, laneInfo, vehicleType, !allowed);
+						TAMRoadRestrictionManager.instance.ToggleRestrictions(laneId, vehicleType);
 					}
 
 					++y;

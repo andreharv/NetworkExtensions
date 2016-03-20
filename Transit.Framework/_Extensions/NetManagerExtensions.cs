@@ -33,7 +33,12 @@
 			return netManager.m_segments.m_buffer[netManager.m_lanes.m_buffer[laneId].m_segment].Info;
         }
 
-		// TODO Delete this method if not used. It should never be called due to performance considerations.
+		/// <summary>
+        /// Use with care, this method is cause perfe issues
+        /// </summary>
+        /// <param name="netManager"></param>
+        /// <param name="laneId"></param>
+        /// <returns></returns>
 		public static NetInfo.Lane GetLaneInfo(this NetManager netManager, uint laneId)
         {
 			if (((NetLane.Flags)netManager.m_lanes.m_buffer[laneId].m_flags & NetLane.Flags.Created) == NetLane.Flags.None)

@@ -21,7 +21,7 @@ using UnityEngine;
 
 namespace Transit.Addon.TM.PathFinding
 {
-	public class ImprovedPathFind : IPathFind
+	public class TAMImprovedPathFind : IPathFind
 	{
 		public TAMPathFindFacade Facade { get; set; }
 
@@ -1895,8 +1895,8 @@ namespace Transit.Addon.TM.PathFinding
 			}
 
 			// check for vehicle restrictions
-			//if (!this.GetFeatures().RoadRestriction.CanUseLane(item.m_position.m_segment, prevSegmentInfo, item.m_position.m_lane, item.m_laneID, prevLaneInfo, _unitType)) {
-			if (false) {
+			if (!this.GetFeatures().RoadRestriction.CanUseLane(item.m_position.m_segment, prevSegmentInfo, item.m_position.m_lane, item.m_laneID, prevLaneInfo, _unitType)) {
+			//if (false) {
 #if DEBUGPF
 				if (Options.disableSomething1 && debug) {
 					Log._Debug($"Vehicle {_unitType} must not use lane {item.m_position.m_lane} @ seg. {item.m_position.m_segment}, null? {prevLaneInfo == null}");

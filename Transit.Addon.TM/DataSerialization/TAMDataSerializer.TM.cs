@@ -9,16 +9,16 @@ using Transit.Framework;
 using Transit.Framework.Serialization;
 
 namespace Transit.Addon.TM.DataSerialization {
-	public class TMDataSerializer : SerializableDataExtensionBase {
+	public partial class TAMDataSerializer {
 		private const string DATAV1_ID = "TrafficManager_v1.0";
 		private const string DATAV2_ID = "TrafficManager_v2.0";
 		private const string OPTIONS_DATAV1_ID = "TMPE_Options";
 
-		public static bool StateLoading = false;
+		public static bool Loading = false;
 
-		public override void OnLoadData() {
+		private void LoadTMData() {
 			Log.Info("Loading Traffic Manager: PE Data!");
-			StateLoading = true;
+			Loading = true;
 			try {
 				TMConfigurationV2 configuration = new DataSerializer<TMConfigurationV2>().DeserializeData(serializableDataManager, DATAV2_ID);
 				if (configuration != null) {
@@ -43,14 +43,14 @@ namespace Transit.Addon.TM.DataSerialization {
 			} catch (Exception e) {
 				Log.Error($"OnLoadData: {e.ToString()}");
 			} finally {
-				StateLoading = false;
+				Loading = false;
 			}
 
 			Log.Info("OnLoadData completed.");
 		}
 
-		public override void OnSaveData() {
-			Log.Info("Saving Mod Data.");
+        private void SaveTMData() {
+			Log.Info("Saving Traffic Manager: PE Data.");
 			TMConfigurationV2 configuration = TMDataManager.CreateConfiguration();
 
 			var binaryFormatter = new BinaryFormatter();

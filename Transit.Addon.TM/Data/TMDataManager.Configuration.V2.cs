@@ -71,13 +71,6 @@ namespace Transit.Addon.TM.Data {
 					if (((NetLane.Flags)netManager.m_lanes.m_buffer[laneConf.laneId].m_flags & NetLane.Flags.Created) == NetLane.Flags.None)
 						continue;
 
-					if (laneConf.vehicleTypes != null) {
-						// load vehicle restrictions
-						TMVehicleType maskedType = (TMVehicleType)laneConf.vehicleTypes & VehicleRestrictionsManager.GetBaseMask(laneConf.laneId);
-						Log._Debug($"Loading lane vehicle restriction: lane {laneConf.laneId} = {laneConf.vehicleTypes}, masked = {maskedType}");
-						Flags.setLaneAllowedVehicleTypes(laneConf.laneId, maskedType);
-					}
-
 					if (laneConf.speedLimit != null) {
 						// load speed limit
 						Log._Debug($"Loading lane speed limit: lane {laneConf.laneId} = {laneConf.speedLimit}");
@@ -345,17 +338,6 @@ namespace Transit.Addon.TM.Data {
 						laneConfs[laneId] = new TMConfigurationV2.LaneConf(laneId);
 
 					laneConfs[laneId].speedLimit = speedLimit;
-				}
-
-				TMVehicleType? allowedTypes = Flags.getLaneAllowedVehicleTypes(laneId);
-				if (allowedTypes != null) {
-					// save vehicle restrictions
-
-					Log._Debug($"Saving vehicle restrictions of lane {laneId}: {allowedTypes}");
-					if (!laneConfs.ContainsKey(laneId))
-						laneConfs[laneId] = new TMConfigurationV2.LaneConf(laneId);
-
-					laneConfs[laneId].vehicleTypes = allowedTypes;
 				}
 			}
 

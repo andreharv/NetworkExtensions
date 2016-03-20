@@ -96,7 +96,7 @@ namespace Transit.Addon.TM {
 		}
 
 		private static bool checkGameLoaded() {
-			if (!TMDataSerializer.StateLoading && !ToolModuleV2.IsGameLoaded()) {
+			if (!TAMDataSerializer.Loading && !ToolModuleV2.IsGameLoaded()) {
 				UIView.library.ShowModal<ExceptionPanel>("ExceptionPanel").SetMessage("Nope!", Translation.GetString("Settings_are_defined_for_each_savegame_separately") + ". https://www.viathinksoft.de/tmpe/#options", false);
 				return false;
 			}

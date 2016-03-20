@@ -66,36 +66,39 @@
     <Compile Include="AI\CustomVehicleAI.cs" />
     <Compile Include="AI\TPPCargoTruckAI.cs" />
     <Compile Include="AI\TPPPassengerCarAI.cs" />
+    <Compile Include="DataSerialization\TAMDataSerializationBinder.cs" />
     <Compile Include="Data\TMLaneDirection.cs" />
     <Compile Include="Data\TMConfigurationV2.Options.cs" />
     <Compile Include="Data\TMConfigurationV2.NodeConf.cs" />
     <Compile Include="Data\TMConfigurationV2.SegmentEndFlags.cs" />
     <Compile Include="DataSerialization\TPPDataSerializationBinder.cs" />
-    <Compile Include="DataSerialization\TPPDataSerializer.cs" />
+    <Compile Include="DataSerialization\TAMDataSerializer.cs" />
     <Compile Include="Data\Legacy\TPPLaneDataV1.cs" />
     <Compile Include="Data\TMDataManager.Configuration.V1.cs" />
     <Compile Include="Data\TAMLaneRestriction.cs" />
     <Compile Include="Data\TAMLaneSpeedLimit.cs" />
     <Compile Include="Data\TAMLaneRoute.cs" />
     <Compile Include="Data\Legacy\TPPVehicleType.cs" />
+    <Compile Include="Data\_Extensions\ExtVehicleTypeExtensions.cs" />
+    <Compile Include="Data\_Extensions\LaneVehicleTypesExtensions.cs" />
     <Compile Include="Data\_Extensions\TPPVehicleTypeExtensions.cs" />
     <Compile Include="Menus\RoadCustomizer\RoadCustomizerGroupPanel.cs" />
     <Compile Include="Menus\RoadCustomizer\RoadCustomizerPanel.cs" />
     <Compile Include="Menus\RoadCustomizer\Textures\RoadCustomizerAtlasBuilder.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="PathFindingFeatures\TMLaneRoutingManager.cs" />
-    <Compile Include="PathFindingFeatures\TPPRoadRestrictionManager.cs" />
+    <Compile Include="PathFindingFeatures\TAMRoadRestrictionManager.cs" />
+    <Compile Include="PathFindingFeatures\TAMSupported.cs" />
     <Compile Include="PathFindingFeatures\UnitRealisticSpeedManager.cs" />
     <Compile Include="Data\TMDataManager.Configuration.V2.cs" />
     <Compile Include="Data\TMDataManager.cs" />
-    <Compile Include="PathFindingFeatures\TMRoadRestrictionManager.cs" />
     <Compile Include="PathFindingFeatures\TMRoadSpeedManager.cs" />
     <Compile Include="PathFindingFeatures\TMSupported.cs" />
     <Compile Include="PathFindingFeatures\TPPLaneSpeedManager.cs" />
     <Compile Include="PathFindingFeatures\TPPLaneRoutingManager.cs" />
     <Compile Include="PathFindingFeatures\TPPRoadSpeedManager.cs" />
     <Compile Include="PathFindingFeatures\TPPSupported.cs" />
-    <Compile Include="PathFinding\ImprovedPathFind.cs" />
+    <Compile Include="PathFinding\TAMImprovedPathFind.cs" />
     <Compile Include="Data\TMConfigurationV2.CustomSegmentLight.cs" />
     <Compile Include="Data\TMConfigurationV2.CustomSegmentLights.cs" />
     <Compile Include="Data\TMConfigurationV2.SegmentEndConf.cs" />
@@ -113,8 +116,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Data\TMConfigurationV2.cs" />
     <Compile Include="Data\Flags.cs" />
+    <Compile Include="Traffic\VehicleRestrictionsManager.cs" />
+    <Compile Include="UI\TexturesV2.cs" />
     <Compile Include="UI\TMOptionsUI.cs" />
-    <Compile Include="DataSerialization\TMDataSerializer.cs" />
+    <Compile Include="DataSerialization\TAMDataSerializer.TM.cs" />
     <Compile Include="ThreadingExtension.cs" />
     <Compile Include="TrafficLight\CustomSegment.cs" />
     <Compile Include="TrafficLight\CustomSegmentLight.cs" />
@@ -134,7 +139,7 @@
     <Compile Include="Traffic\TrafficSegment.cs" />
     <Compile Include="Traffic\VehicleJunctionTransitState.cs" />
     <Compile Include="Traffic\VehiclePosition.cs" />
-    <Compile Include="Traffic\VehicleRestrictionsManager.cs" />
+    <Compile Include="PathFindingFeatures\TAMRoadRestrictionManager.TM.cs" />
     <Compile Include="UI\CameraCtrl.cs" />
     <Compile Include="Tools\SubTool.cs" />
     <Compile Include="Tools\SubTools\LaneArrowTool.cs" />
@@ -443,6 +448,8 @@
     <Content Include="Menus\RoadCustomizer\Textures\Thumbnails.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Resources\servicevehicle_allowed.png" />
+    <EmbeddedResource Include="Resources\servicevehicle_forbidden.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
