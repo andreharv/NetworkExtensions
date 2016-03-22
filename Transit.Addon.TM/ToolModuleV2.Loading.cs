@@ -52,8 +52,8 @@ namespace Transit.Addon.TM
             if (mode == LoadMode.NewGame || mode == LoadMode.LoadGame)
             {
                 gameLoaded = true;
-
-                ToolsModifierControl.toolController.AddTool<RoadCustomizerTool>();
+                
+                InstallTools();
 
                 if ((ActiveOptions & Options.UseRealisticSpeeds) == Options.UseRealisticSpeeds)
                     UnitRealisticSpeedManager.Activate();
@@ -75,7 +75,7 @@ namespace Transit.Addon.TM
             if (Instance == null)
                 Instance = this;
 
-            ToolsModifierControl.toolController.RemoveTool<RoadCustomizerTool>();
+            UninstallTools();
 
             if ((ActiveOptions & Options.UseRealisticSpeeds) == Options.UseRealisticSpeeds)
                 UnitRealisticSpeedManager.Deactivate();

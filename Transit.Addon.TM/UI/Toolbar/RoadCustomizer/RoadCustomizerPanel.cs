@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections;
 using ColossalFramework.UI;
-using Transit.Addon.TM.Menus.RoadCustomizer.Textures;
 using Transit.Addon.TM.Tools;
+using Transit.Addon.TM.Tools.RoadCustomizer;
+using Transit.Addon.TM.UI.Toolbar.RoadCustomizer.Textures;
 using Transit.Framework;
 using Transit.Framework.Network;
 using UnityEngine;
 
-namespace Transit.Addon.TM.Menus.RoadCustomizer
+namespace Transit.Addon.TM.UI.Toolbar.RoadCustomizer
 {
     class RoadCustomizerPanel : MonoBehaviour
     {

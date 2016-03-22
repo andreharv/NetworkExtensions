@@ -14,9 +14,16 @@ namespace Transit.Framework.ExtensionPoints.UI
             s_toolbarItems = new List<IToolbarItemInfo>();
         }
 
+        public static bool IsToolbarItemInstalled<T>()
+            where T : IToolbarItemInfo
+        {
+            return s_toolbarItems.OfType<T>().Any();
+        }
+
         public static void AddToolbarItem<T>()
             where T : IToolbarItemInfo, new()
         {
+            Log.Info("TFW: Adding toolbar item of type " + typeof (T));
             s_toolbarItems.Add(new T());
         }
 

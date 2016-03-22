@@ -4,7 +4,7 @@ using Transit.Framework;
 using Transit.Framework.Builders;
 using UnityEngine;
 
-namespace Transit.Addon.TM.Menus.RoadCustomizer.Textures
+namespace Transit.Addon.TM.UI.Toolbar.RoadCustomizer.Textures
 {
     public class RoadCustomizerAtlasBuilder : IAtlasBuilder
     {
@@ -75,7 +75,7 @@ namespace Transit.Addon.TM.Menus.RoadCustomizer.Textures
                 return null;
             }
 
-            var atlasTexture = AssetManager.instance.GetTexture(@"Menus\RoadCustomizer\Textures\Thumbnails.png", TextureType.UI);
+            var atlasTexture = AssetManager.instance.GetTexture(@"UI\Toolbar\RoadCustomizer\Textures\Thumbnails.png", TextureType.UI);
             atlasTexture.FixTransparency();
 
             var atlasMaterial = new Material(shader);

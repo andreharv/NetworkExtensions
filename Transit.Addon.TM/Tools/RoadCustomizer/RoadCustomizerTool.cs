@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using ColossalFramework.Math;
 using ColossalFramework.UI;
-using Transit.Addon.TM.Menus.RoadCustomizer;
-using Transit.Addon.TM.Menus.RoadCustomizer.Textures;
 using Transit.Addon.TM.PathFindingFeatures;
+using Transit.Addon.TM.UI.Toolbar.RoadCustomizer;
+using Transit.Addon.TM.UI.Toolbar.RoadCustomizer.Textures;
 using Transit.Framework;
 using Transit.Framework.Network;
 using UnityEngine;
 
-namespace Transit.Addon.TM.Tools
+namespace Transit.Addon.TM.Tools.RoadCustomizer
 {
+    // TODO: Split that in 2 different tools: Routing, Restriction
 	class RoadCustomizerTool : ToolBase
 	{
 		const NetNode.Flags CUSTOMIZED_NODE_FLAG = (NetNode.Flags)(1 << 28);

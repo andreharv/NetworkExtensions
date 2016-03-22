@@ -1,10 +1,10 @@
 ﻿using ColossalFramework.Globalization;
 using ColossalFramework.UI;
-using Transit.Addon.TM.Menus.RoadCustomizer.Textures;
+using Transit.Addon.TM.UI.Toolbar.RoadCustomizer.Textures;
 using Transit.Framework;
 using UnityEngine;
 
-namespace Transit.Addon.TM.Menus.RoadCustomizer
+namespace Transit.Addon.TM.UI.Toolbar.RoadCustomizer
 {
     class RoadCustomizerGroupPanel : MonoBehaviour
     {

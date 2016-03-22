@@ -35,7 +35,7 @@ namespace Transit.Mod
 
         public override PrerequisiteType Requirements
         {
-            get { return PrerequisiteType.PathFinding; }
+            get { return PrerequisiteType.PathFinding | PrerequisiteType.UI; }
         }
     }
 }

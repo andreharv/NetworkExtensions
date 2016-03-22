@@ -82,9 +82,6 @@
     <Compile Include="Data\_Extensions\ExtVehicleTypeExtensions.cs" />
     <Compile Include="Data\_Extensions\ConfigurationExtensions.cs" />
     <Compile Include="Data\_Extensions\TPPVehicleTypeExtensions.cs" />
-    <Compile Include="Menus\RoadCustomizer\RoadCustomizerGroupPanel.cs" />
-    <Compile Include="Menus\RoadCustomizer\RoadCustomizerPanel.cs" />
-    <Compile Include="Menus\RoadCustomizer\Textures\RoadCustomizerAtlasBuilder.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="PathFindingFeatures\TMLaneRoutingManager.cs" />
     <Compile Include="PathFindingFeatures\TAMRestrictionManager.cs" />
@@ -108,11 +105,15 @@
     <Compile Include="ToolModuleV2.Localization.cs" />
     <Compile Include="ToolModuleV2.cs" />
     <Compile Include="ToolModuleV2.Settings.cs" />
-    <Compile Include="Tools\RoadCustomizerTool.cs" />
+    <Compile Include="ToolModuleV2.Install.Tools.cs" />
+    <Compile Include="ToolModuleV2.Install.cs" />
+    <Compile Include="Tools\LaneRouting\LaneRoutingToolBuilder.cs" />
+    <Compile Include="Tools\LaneRouting\LaneRoutingTool.cs" />
     <Compile Include="ToolModuleV2.Detours.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Data\TMConfigurationV2.cs" />
     <Compile Include="Data\Flags.cs" />
+    <Compile Include="Tools\RoadCustomizer\RoadCustomizerTool.cs" />
     <Compile Include="Traffic\VehicleRestrictionsManager.cs" />
     <Compile Include="UI\TexturesV2.cs" />
     <Compile Include="UI\TMOptionsUI.cs" />
@@ -137,17 +138,24 @@
     <Compile Include="Traffic\VehicleJunctionTransitState.cs" />
     <Compile Include="Traffic\VehiclePosition.cs" />
     <Compile Include="UI\CameraCtrl.cs" />
-    <Compile Include="Tools\SubTool.cs" />
-    <Compile Include="Tools\SubTools\LaneArrowTool.cs" />
-    <Compile Include="Tools\SubTools\ManualTrafficLightsTool.cs" />
-    <Compile Include="Tools\SubTools\PrioritySignsTool.cs" />
-    <Compile Include="Tools\SubTools\SpeedLimitsTool.cs" />
-    <Compile Include="Tools\SubTools\TimedTrafficLightsTool.cs" />
-    <Compile Include="Tools\SubTools\ToggleTrafficLightsTool.cs" />
-    <Compile Include="Tools\SubTools\VehicleRestrictionsTool.cs" />
-    <Compile Include="Tools\TrafficManagerToolMode.cs" />
+    <Compile Include="Tools\TrafficManager\SubTool.cs" />
+    <Compile Include="Tools\TrafficManager\SubTools\LaneArrowTool.cs" />
+    <Compile Include="Tools\TrafficManager\SubTools\ManualTrafficLightsTool.cs" />
+    <Compile Include="Tools\TrafficManager\SubTools\PrioritySignsTool.cs" />
+    <Compile Include="Tools\TrafficManager\SubTools\SpeedLimitsTool.cs" />
+    <Compile Include="Tools\TrafficManager\SubTools\TimedTrafficLightsTool.cs" />
+    <Compile Include="Tools\TrafficManager\SubTools\ToggleTrafficLightsTool.cs" />
+    <Compile Include="Tools\TrafficManager\SubTools\VehicleRestrictionsTool.cs" />
+    <Compile Include="Tools\TrafficManager\TrafficManagerToolMode.cs" />
     <Compile Include="UI\Textures.cs" />
-    <Compile Include="Tools\TrafficManagerTool.cs" />
+    <Compile Include="Tools\TrafficManager\TrafficManagerTool.cs" />
+    <Compile Include="UI\Toolbar\RoadCustomizer\RoadCustomizerGroupPanel.cs" />
+    <Compile Include="UI\Toolbar\RoadCustomizer\RoadCustomizerPanel.cs" />
+    <Compile Include="UI\Toolbar\RoadCustomizer\Textures\RoadCustomizerAtlasBuilder.cs" />
+    <Compile Include="UI\Toolbar\RoadEditor\RoadEditorMainCategoryInfo.cs" />
+    <Compile Include="UI\Toolbar\RoadEditor\RoadEditorToolbarItemInfo.cs" />
+    <Compile Include="UI\Toolbar\RoadEditor\Textures\ToolsAtlasBuilder.cs" />
+    <Compile Include="UI\Toolbar\RoadEditor\Textures\ToolsMenuAtlasBuilder.cs" />
     <Compile Include="UI\Translation.cs" />
     <Compile Include="UI\TMBaseUI.cs" />
     <Compile Include="UI\TMMenuUI.cs" />
@@ -441,7 +449,19 @@
     <EmbeddedResource Include="Resources\lang_nl.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Menus\RoadCustomizer\Textures\Thumbnails.png">
+    <Content Include="Tools\LaneRouting\infotooltip.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\LaneRouting\thumbnails.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\Toolbar\RoadCustomizer\Textures\Thumbnails.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\Toolbar\RoadEditor\Textures\Tools.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\Toolbar\RoadEditor\Textures\ToolsMenu.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <EmbeddedResource Include="Resources\servicevehicle_allowed.png" />
