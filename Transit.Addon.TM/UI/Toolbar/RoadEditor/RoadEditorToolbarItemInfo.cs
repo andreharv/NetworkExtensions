@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Transit.Framework.UI.Toolbar.Items;
 using Transit.Framework.UI.Toolbar.Menus;
 
@@ -10,19 +11,14 @@ namespace Transit.Addon.TM.UI.Toolbar.RoadEditor
 
         public string Name { get { return NAME; } }
         public int Order { get { return 11; } }
-        public Type PanelType { get { return typeof(RoadEditorToolbarPanel); } }
+        public Type PanelType { get { return typeof(RoadEditorMainPanel); } }
     }
 
-    public class RoadEditorToolbarPanel : CustomGroupPanelBase
+    public class RoadEditorMainPanel : CustomGroupPanelBase
     {
         protected override void Initialize()
         {
-            //var options = ToolModuleV3.TrafficToolsOptions;
-
-            //if (options.IsFlagSet(ToolModuleV3.ModOptions.LaneRoutingTool))
-            {
-                SpawnCategory<RoadEditorMainCategoryPanel>("RoadEditorMain", null, "SubBar", null, true);
-            }
+            SpawnCategory(typeof(RoadEditorMainCategoryPanel), RoadEditorMainCategoryInfo.NAME, null, "SubBar", null, true);
         }
     }
 }

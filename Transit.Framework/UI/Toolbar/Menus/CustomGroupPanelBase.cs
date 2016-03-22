@@ -26,11 +26,8 @@ namespace Transit.Framework.UI.Toolbar.Menus
 
         protected abstract void Initialize();
 
-        protected virtual UIButton SpawnCategory<T>(string category, string localeID, string spriteBase, string unlockText, bool enabled)
-            where T : GeneratedScrollPanel
+        protected virtual UIButton SpawnCategory(Type panelType, string category, string localeID, string spriteBase, string unlockText, bool enabled)
         {
-
-            var panelType = typeof(T);
 
             int objectIndex = (int)typeof(GeneratedGroupPanel).GetField("m_ObjectIndex", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(this);
 

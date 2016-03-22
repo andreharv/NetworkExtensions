@@ -22,7 +22,7 @@ namespace Transit.Addon.ToolsV3.UI.Toolbar.RoadEditor
 
             if (options.IsFlagSet(ToolModuleV3.ModOptions.LaneRoutingTool))
             {
-                SpawnCategory<RoadEditorMainPanel>("IntersectionEditors", null, "SubBar", null, true);
+                SpawnCategory(typeof(RoadEditorMainPanel), "IntersectionEditors", null, "SubBar", null, true);
             }
         }
     }
