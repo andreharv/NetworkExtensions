@@ -837,8 +837,12 @@ namespace Transit.Addon.TM.Tools.RoadCustomizer
 			UITabstrip tabstrip = mainToolStrip.GetComponent<UITabstrip>();
 			if (tabstrip == null)
 				return null;
+            if (tabstrip.tabs == null)
+                return null;
+            if (!tabstrip.tabs.Any())
+                return null;
 
-			UIButton roadsButton = (UIButton)tabstrip.tabs.First();
+            UIButton roadsButton = (UIButton)tabstrip.tabs.First();
 
 			UIButton btn = mainToolStrip.GetComponent<UIComponent>().AddUIComponent<UIButton>();
 			

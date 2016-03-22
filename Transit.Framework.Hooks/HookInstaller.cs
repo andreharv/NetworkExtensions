@@ -14,7 +14,7 @@ namespace Transit.Framework.Hooks
                 return;
             }
 
-            Log.Info("TFW: Installing requirements of type(s) " + type);
+            Log.Info("TFW: Installing Requirements of type(s) " + type);
 
             Redirector.PerformRedirections((ulong) type);
         }
@@ -26,7 +26,7 @@ namespace Transit.Framework.Hooks
                 return;
             }
 
-            Log.Info("TFW: Uninstalling requirements of type(s) " + type);
+            Log.Info("TFW: Uninstalling Requirements of type(s) " + type);
 
             Redirector.RevertRedirections((ulong)type);
 

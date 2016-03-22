@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Transit.Framework.ExtensionPoints.UI;
+using Transit.Framework.Prerequisites;
 using Transit.Framework.Redirection;
 using Transit.Framework.UI.Toolbar.Items;
 
@@ -30,7 +31,7 @@ namespace Transit.Framework.Hooks.UI
 
         #region Redirected Methods
 
-        [RedirectFrom(typeof(GameMainToolbar))]
+        [RedirectFrom(typeof(GameMainToolbar), (ulong)PrerequisiteType.UI)]
         internal new void RefreshPanel()
         {
             m_IsRefreshing = true;
@@ -171,35 +172,35 @@ namespace Transit.Framework.Hooks.UI
         #region Proxy Methods
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        [RedirectTo(typeof(GameMainToolbar))]
+        [RedirectTo(typeof(GameMainToolbar), (ulong)PrerequisiteType.UI)]
         private string GetUnlockText(ItemClass.Service service)
         {
             throw new NotImplementedException("GetUnlockText is target of redirection and is not implemented.");
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        [RedirectTo(typeof(GameMainToolbar))]
+        [RedirectTo(typeof(GameMainToolbar), (ulong)PrerequisiteType.UI)]
         private string GetUnlockText(UnlockManager.Feature feature)
         {
             throw new NotImplementedException("GetUnlockText is target of redirection and is not implemented.");
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        [RedirectTo(typeof(GameMainToolbar))]
+        [RedirectTo(typeof(GameMainToolbar), (ulong)PrerequisiteType.UI)]
         private void ShowHidePoliciesPanel(UIComponent comp, bool visible)
         {
             throw new NotImplementedException("ShowHidePoliciesPanel is target of redirection and is not implemented.");
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        [RedirectTo(typeof(GameMainToolbar))]
+        [RedirectTo(typeof(GameMainToolbar), (ulong)PrerequisiteType.UI)]
         private void ShowHideEconomyPanel(UIComponent comp, bool visible)
         {
             throw new NotImplementedException("ShowHideEconomyPanel is target of redirection and is not implemented.");
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        [RedirectTo(typeof(MainToolbar))]
+        [RedirectTo(typeof(MainToolbar), (ulong)PrerequisiteType.UI)]
         private string GetBackgroundSprite(UIButton button, string spriteBase, string name, string state)
         {
             throw new NotImplementedException("GetBackgroundSprite is target of redirection and is not implemented.");
