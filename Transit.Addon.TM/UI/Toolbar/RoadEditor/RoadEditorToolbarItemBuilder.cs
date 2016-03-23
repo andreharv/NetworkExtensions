@@ -1,20 +1,20 @@
 ﻿using System;
-using Transit.Framework.UI.Toolbar.Infos;
+using Transit.Framework.Builders;
 
 namespace Transit.Addon.TM.UI.Toolbar.RoadEditor
 {
-    public class RoadEditorToolbarItemInfo : IToolbarItemInfo
+    public class RoadEditorToolbarItemBuilder : IToolbarItemBuilder
     {
         public const string NAME = "RoadEditor";
 
         public string Name { get { return NAME; } }
         public string Description { get { return NAME; } }
         public int Order { get { return 11; } }
-        public IMenuInfo MenuInfo { get; private set; }
+        public IMenuBuilder MenuBuilder { get; private set; }
 
-        public RoadEditorToolbarItemInfo()
+        public RoadEditorToolbarItemBuilder()
         {
-            MenuInfo = new RoadEditorMenuInfo();
+            MenuBuilder = new RoadEditorMenuBuilder();
         }
     }
 }

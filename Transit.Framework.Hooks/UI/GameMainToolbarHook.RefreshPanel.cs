@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Transit.Framework.ExtensionPoints.UI;
+using Transit.Framework.ExtensionPoints.UI.Toolbar;
 using Transit.Framework.Prerequisites;
 using Transit.Framework.Redirection;
 
@@ -50,9 +51,9 @@ namespace Transit.Framework.Hooks.UI
                 if (i == 0)
                 {
                     // TAM Modification
-                    var items = TAMGameToolbarItemManager
+                    var items = MenuManager
                         .instance
-                        .Items
+                        .ToolbarItems
                         .OrderBy(e => e.Order)
                         .ToArray();
 

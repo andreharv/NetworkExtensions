@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Xml;
+using ColossalFramework.Globalization;
 using ICities;
 using Transit.Framework.Interfaces;
 using UnityEngine;
@@ -34,7 +35,7 @@ namespace Transit.Framework.Modularity
 
         event SaveSettingsNeededEventHandler SaveSettingsNeeded;
 
-        void OnInstallingLocalization();
+        void OnInstallingLocalization(Locale locale);
 
         void OnInstallingAssets();
 

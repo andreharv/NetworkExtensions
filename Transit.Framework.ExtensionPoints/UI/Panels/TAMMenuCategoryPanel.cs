@@ -1,10 +1,10 @@
-﻿using ColossalFramework;
+﻿using System.Collections.Generic;
+using ColossalFramework;
 using ColossalFramework.UI;
-using System.Collections.Generic;
 using Transit.Framework.Builders;
 using Transit.Framework.Interfaces;
 
-namespace Transit.Framework.UI.Toolbar.Panels
+namespace Transit.Framework.ExtensionPoints.UI.Toolbar.Panels
 {
     public class TAMMenuCategoryPanel : GeneratedScrollPanel
     {

@@ -56,7 +56,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Compatibility\RoadColorChanger.cs" />
-    <Compile Include="Menus\Roads\RExExtendedMenus.cs" />
     <Compile Include="Compatibility\TrafficPlusPlus.cs" />
     <Compile Include="Compatibility\TrafficPlusPlus\ITrafficPlusPlusPart.cs" />
     <Compile Include="Props\MediumAvenueSideLightBuilder.cs" />
@@ -69,9 +68,7 @@
     <Compile Include="Roads\Common\RoadModels.8m.2mSW.cs" />
     <Compile Include="Roads\Common\RoadModels.8m.1p5mSW.cs" />
     <Compile Include="Roads\Common\RoadModels.32m.3mSW2mMdn.cs" />
-    <Compile Include="RExModule.Install.Menu.cs" />
     <Compile Include="RExModule.Install.Roads.cs" />
-    <Compile Include="Menus\Roads\Textures\RExExtendedSubBarAtlasBuilder.cs" />
     <Compile Include="Roads\TinyRoads\TinyRoadMenuModifier.cs" />
     <Compile Include="Roads\TinyRoads\Alley2L\Alley2LBuilder.cs" />
     <Compile Include="Roads\Common\CenterLaneType.cs" />
@@ -121,6 +118,8 @@
     <Compile Include="Roads\TinyRoads\OneWay1L\OneWay1LBuilder.cs" />
     <Compile Include="SomeRoads\PlanningRoadLargeBuilder.cs" />
     <Compile Include="SomeRoads\PlanningRoadSmallBuilder.cs" />
+    <Compile Include="UI\Toolbar\Roads\ExtendedCategories.cs" />
+    <Compile Include="UI\Toolbar\Roads\Textures\RExCategoriesAtlasBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway1L\Textures\Elevated_NodeLOD__APRMap.png">
@@ -661,9 +660,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\Highways\HighwayRamp\thumbnails.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Menus\Roads\Textures\RExExtendedSubBar.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\TinyRoads\Alley2L\thumbnails.png">
@@ -1826,6 +1822,9 @@
     </Content>
     <Content Include="SomeRoads\Textures\planning_road_2_lanes.png" />
     <Content Include="SomeRoads\thumbnail_atlas.png" />
+    <Content Include="UI\Toolbar\Roads\Textures\RExCategories.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="Buildings\BridgePillar.CableStay32m.crp">

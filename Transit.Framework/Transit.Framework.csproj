@@ -55,10 +55,14 @@
     <Compile Include="Activable.cs" />
     <Compile Include="AtlasManager.cs" />
     <Compile Include="Builders\IAtlasBuilder.cs" />
+    <Compile Include="Builders\IMenuCategoryBuilder.cs" />
+    <Compile Include="Builders\IMenuBuilder.cs" />
+    <Compile Include="Builders\IToolbarItemBuilder.cs" />
     <Compile Include="Builders\IToolBuilder.cs" />
     <Compile Include="Builders\ToolBuilder.cs" />
     <Compile Include="Extensibility.cs" />
     <Compile Include="Log.cs" />
+    <Compile Include="MenuManager.cs" />
     <Compile Include="Modularity\ModuleBase.Install.cs" />
     <Compile Include="Modularity\ModuleManager.cs" />
     <Compile Include="Mod\ITransitMod.cs" />
@@ -72,6 +76,8 @@
     <Compile Include="Prerequisites\PrerequisiteType.cs" />
     <Compile Include="Serialization\DataSerializer.cs" />
     <Compile Include="Serialization\IDataSerializer.cs" />
+    <Compile Include="MenuManager.Category.cs" />
+    <Compile Include="MenuManager.Toolbar.cs" />
     <Compile Include="Texturing\ITextureBlenderComponent.cs" />
     <Compile Include="Texturing\PathTextureProvider.cs" />
     <Compile Include="Texturing\Point.cs" />
@@ -110,13 +116,6 @@
     <Compile Include="Interfaces\IShortDescriptor.cs" />
     <Compile Include="UI\Ingame\UIMarker.cs" />
     <Compile Include="UI\Ingame\UIState.cs" />
-    <Compile Include="UI\Toolbar\Infos\IMenuInfo.cs" />
-    <Compile Include="UI\Toolbar\Infos\IMenuCategoryInfo.cs" />
-    <Compile Include="UI\Toolbar\Panels\TAMMenuPanel.cs" />
-    <Compile Include="UI\Toolbar\Panels\TAMMenuCategoryPanel.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="UI\Toolbar\Infos\IToolbarItemInfo.cs" />
     <Compile Include="UI\MouseKeyCode.cs" />
     <Compile Include="_Extensions\AssetManagerExtensions.cs" />
     <Compile Include="_Extensions\CloningExtensions.cs" />

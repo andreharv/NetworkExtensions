@@ -31,6 +31,17 @@ namespace Transit.Framework.Mod
             }
         }
 
+        private void InstallMenus()
+        {
+            foreach (IModule module in this.GetOrCreateModules())
+            {
+                foreach (var type in module.GetType().Assembly.GetImplementations<IMenuCategoryBuilder>())
+                {
+                    MenuManager.instance.RegisterCategory(type);
+                }
+            }
+        }
+
         [UsedImplicitly]
         private class AssetsInstaller : Installer<TransitModBase>
         {
@@ -92,6 +103,20 @@ namespace Transit.Framework.Mod
                     catch (Exception ex)
                     {
                         Log.Error("TFW: Crashed-AtlasInstaller");
+                        Log.Error("TFW: " + ex.Message);
+                        Log.Error("TFW: " + ex.ToString());
+                    }
+                });
+
+                Loading.QueueAction(() =>
+                {
+                    try
+                    {
+                        host.InstallMenus();
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error("TFW: Crashed-MenusInstaller");
                         Log.Error("TFW: " + ex.Message);
                         Log.Error("TFW: " + ex.ToString());
                     }

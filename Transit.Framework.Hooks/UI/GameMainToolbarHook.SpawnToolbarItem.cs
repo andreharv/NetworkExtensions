@@ -3,15 +3,15 @@ using System.Linq;
 using ColossalFramework.Globalization;
 using ColossalFramework.UI;
 using System.Reflection;
-using Transit.Framework.UI.Toolbar.Infos;
-using Transit.Framework.UI.Toolbar.Panels;
+using Transit.Framework.Builders;
+using Transit.Framework.ExtensionPoints.UI.Toolbar.Panels;
 using UnityEngine;
 
 namespace Transit.Framework.Hooks.UI
 {
     public partial class GameMainToolbarHook
     {
-        private UIButton SpawnToolbarItem(IToolbarItemInfo info, UITabstrip strip, string unlockText, string spriteBase, bool enabled)
+        private UIButton SpawnToolbarItem(IToolbarItemBuilder info, UITabstrip strip, string unlockText, string spriteBase, bool enabled)
         {
             string name = info.Name;
             Type panelType = typeof(TAMMenuPanel);
@@ -34,7 +34,7 @@ namespace Transit.Framework.Hooks.UI
             TAMMenuPanel panel = strip.GetComponentInContainer(uIButton, panelType) as TAMMenuPanel;
             if (panel != null)
             {
-                panel.CategoryInfos = info.MenuInfo.CategoryInfos;
+                panel.CategoryInfos = info.MenuBuilder.CategoryBuilders;
                 panel.component.isInteractive = true;
                 panel.m_OptionsBar = this.m_OptionsBar;
                 panel.m_DefaultInfoTooltipAtlas = this.m_DefaultInfoTooltipAtlas;

@@ -14,10 +14,10 @@ namespace Transit.Framework.Mod
 {
     public partial class TransitModBase
     {
-        public virtual void OnInstallLocalization()
+        public virtual void OnInstallLocalization(Locale locale)
         {
             foreach (IModule module in this.GetOrCreateModules())
-                module.OnInstallingLocalization();
+                module.OnInstallingLocalization(locale);
         }
 
         [UsedImplicitly]
@@ -50,6 +50,22 @@ namespace Transit.Framework.Mod
                 }
 
                 _modLoaded.Add(host.WorkshopId);
+
+                var locale = SingletonLite<LocaleManager>.instance.GetLocale();
+
+                Loading.QueueAction(() =>
+                {
+                    try
+                    {
+                        MenuManager.instance.InstallLocalization(locale);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error("TFW: Crashed-Menu Localization");
+                        Log.Error("TFW: " + ex.Message);
+                        Log.Error("TFW: " + ex.ToString());
+                    }
+                });
 
                 Loading.QueueAction(() =>
                 {
