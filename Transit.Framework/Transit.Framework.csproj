@@ -117,9 +117,7 @@
     <Compile Include="UI\Toolbar\Menus\CustomScrollPanelBase.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\Toolbar\Items\IToolbarItemInfo.cs" />
     <Compile Include="UI\Toolbar\Items\IToolbarMenuItemInfo.cs" />
-    <Compile Include="UI\Toolbar\Items\ToolbarSeparatorItemInfo.cs" />
     <Compile Include="UI\MouseKeyCode.cs" />
     <Compile Include="_Extensions\AssetManagerExtensions.cs" />
     <Compile Include="_Extensions\CloningExtensions.cs" />

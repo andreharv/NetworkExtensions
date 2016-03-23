@@ -105,8 +105,7 @@
     <Compile Include="ToolModuleV2.Localization.cs" />
     <Compile Include="ToolModuleV2.cs" />
     <Compile Include="ToolModuleV2.Settings.cs" />
-    <Compile Include="ToolModuleV2.Install.Tools.cs" />
-    <Compile Include="ToolModuleV2.Install.cs" />
+    <Compile Include="ToolModuleV2.Loading.Tools.cs" />
     <Compile Include="Tools\LaneRouting\LaneRoutingToolBuilder.cs" />
     <Compile Include="Tools\LaneRouting\LaneRoutingTool.cs" />
     <Compile Include="ToolModuleV2.Detours.cs" />

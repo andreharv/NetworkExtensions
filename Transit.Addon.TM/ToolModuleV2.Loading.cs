@@ -11,6 +11,8 @@ using Transit.Framework;
 using Transit.Framework.Modularity;
 using Object = UnityEngine.Object;
 using Transit.Addon.TM.Data;
+using Transit.Addon.TM.UI.Toolbar.RoadEditor;
+using Transit.Framework.ExtensionPoints.UI;
 
 namespace Transit.Addon.TM
 {
@@ -21,6 +23,9 @@ namespace Transit.Addon.TM
             //SelfDestruct.DestructOldInstances(this);
 
             base.OnCreated(loading);
+
+            // TODO: Add RoadEditorToolbarItemInfo only if needed
+            TAMGameToolbarItemManager.instance.AddItem<RoadEditorToolbarItemInfo>();
 
             TAMRestrictionManager.instance.Init();
             TAMSpeedLimitManager.instance.Init();
@@ -87,6 +92,8 @@ namespace Transit.Addon.TM
             TAMSpeedLimitManager.instance.Reset();
             TMLaneRoutingManager.instance.Reset();
             TPPLaneRoutingManager.instance.Reset();
+
+            TAMGameToolbarItemManager.instance.RemoveItem<RoadEditorToolbarItemInfo>();
 
             Object.Destroy(UI);
             UI = null;

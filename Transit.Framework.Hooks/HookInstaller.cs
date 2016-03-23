@@ -29,9 +29,6 @@ namespace Transit.Framework.Hooks
             Log.Info("TFW: Uninstalling Requirements of type(s) " + type);
 
             Redirector.RevertRedirections((ulong)type);
-
-            // TODO: do this every time the mod is "Released" instead of "Disabled"
-            GameMenuManager.Reset();
         }
     }
 }

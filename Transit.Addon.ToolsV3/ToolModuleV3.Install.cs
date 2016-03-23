@@ -13,11 +13,7 @@ namespace Transit.Addon.ToolsV3
         {
             base.OnInstallingContent();
 
-            if (TrafficToolsOptions != ModOptions.None)
-            {
-                GameMenuManager.AddToolbarItem<RoadEditorToolbarItemInfo>();
-                GameMenuManager.AddBigSeparator(12);
-            }
+            TAMGameToolbarItemManager.instance.AddItem<RoadEditorToolbarItemInfo>();
         }
 
         public override void OnReleased()

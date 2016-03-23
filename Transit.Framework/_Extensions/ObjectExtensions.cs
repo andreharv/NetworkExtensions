@@ -49,7 +49,6 @@ namespace Transit.Framework
         }
 
         public static T GetFieldValue<T>(this object target, string fieldName, bool crashOnNotFound = true) 
-            where T : class
         {
             var field = target.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
 
@@ -65,7 +64,7 @@ namespace Transit.Framework
                 }
             }
 
-            return field.GetValue(target) as T;
+            return (T)field.GetValue(target);
         }
 
         public static void SetFieldValue(this object target, string fieldName, object value, bool crashOnNotFound = true)

@@ -15,161 +15,105 @@ namespace Transit.Framework.Hooks.UI
 {
     public partial class GameMainToolbarHook : MainToolbar
     {
-        private class VanillaToolbarItemInfo : IToolbarItemInfo
-        {
-            public string Name { get; set; }
-            public string UnlockText { get; set; }
-            public bool Enabled { get; set; }
-            public int Order { get; set; }
-        }
-
-        private static int s_lastSelection = -1;
-
         private static readonly PositionData<ItemClass.Service>[] kServices = Utils.GetOrderedEnumData<ItemClass.Service>("Game");
         private const string kMainToolbarButtonTemplate = "MainToolbarButtonTemplate";
         private const string kScrollableSubPanelTemplate = "ScrollableSubPanelTemplate";
 
-        #region Redirected Methods
-
         [RedirectFrom(typeof(GameMainToolbar), (ulong)PrerequisiteType.UI)]
-        internal new void RefreshPanel()
+        public override void RefreshPanel()
         {
-            m_IsRefreshing = true;
-
-            UITabstrip uiTabstrip = mainToolbar.component as UITabstrip;
-            s_lastSelection = uiTabstrip.selectedIndex;
-            uiTabstrip.selectedIndex = -1;
-
+            GeneratedPanel.m_IsRefreshing = true;
+            UITabstrip uITabstrip = ToolsModifierControl.mainToolbar.component as UITabstrip;
+            this.SetFieldValue("m_LastSelection", uITabstrip.selectedIndex);
+            uITabstrip.selectedIndex = -1;
             base.RefreshPanel();
-
-            string unlockText = GetUnlockText(UnlockManager.Feature.Bulldozer);
+            string unlockText = this.GetUnlockText(UnlockManager.Feature.Bulldozer);
             if (unlockText != null)
             {
-                m_BulldozerButton.tooltip = Locale.Get("MAIN_TOOL", "Bulldozer") + " - " + unlockText;
+                this.m_BulldozerButton.tooltip = Locale.Get("MAIN_TOOL", "Bulldozer") + " - " + unlockText;
             }
-
-            var items = new List<IToolbarItemInfo>
+            int[] array = new int[]
             {
-                new VanillaToolbarItemInfo
-                {
-                    Name = "Zoning",
-                    UnlockText = GetUnlockText(UnlockManager.Feature.Zoning),
-                    Enabled = ZoningPanel.IsZoningPossible(),
-                    Order = 20
-                },
-                new VanillaToolbarItemInfo
-                {
-                    Name = "District",
-                    UnlockText = GetUnlockText(UnlockManager.Feature.Districts),
-                    Enabled = IsUnlocked(UnlockManager.Feature.Districts),
-                    Order = 30
-                },
-                new ToolbarBigSeparatorItemInfo(40)
+                3,
+                3,
+                3,
+                2,
+                3,
+                2
             };
-
-            int[] format = { 3, 6, 8 };
-            int formatIndex = 0, orderCount = 1;
-            for (int i = 0; i < kServices.Length; i++)
+            int num = 1;
+            int i = 0;
+            int num2 = 0;
+            while (i < kServices.Length)
             {
-                items.Add(new VanillaToolbarItemInfo
+                bool enabled = ToolsModifierControl.IsUnlocked(kServices[i].enumValue);
+                base.SpawnSubEntry(uITabstrip, kServices[i].enumName, "MAIN_TOOL", this.GetUnlockText(kServices[i].enumValue), "ToolbarIcon", enabled);
+                if (i == 0)
                 {
-                    Name = kServices[i].enumName,
-                    UnlockText = GetUnlockText(kServices[i].enumValue),
-                    Enabled = IsUnlocked(kServices[i].enumValue),
-                    Order = orderCount * 10
-                });
+                    // TAM Modification
+                    var items = TAMGameToolbarItemManager
+                        .instance
+                        .Items
+                        .OrderBy(e => e.Order)
+                        .ToArray();
 
-                if (orderCount == 1)
-                {
-                    orderCount = 5;
+                    if (items.Any())
+                    {
+                        foreach (var info in items)
+                        {
+                            SpawnSubEntry(uITabstrip, info.Name, "MAIN_TOOL", string.Empty, "ToolbarIcon", true, info.PanelType);
+                        }
+                        base.SpawnSmallSeparator(uITabstrip);
+                    }
+                    // TAM Modification end
+                    base.SpawnSubEntry(uITabstrip, "Zoning", "MAIN_TOOL", this.GetUnlockText(UnlockManager.Feature.Zoning), "ToolbarIcon", ZoningPanel.IsZoningPossible());
+                    base.SpawnSubEntry(uITabstrip, "District", "MAIN_TOOL", this.GetUnlockText(UnlockManager.Feature.Districts), "ToolbarIcon", ToolsModifierControl.IsUnlocked(UnlockManager.Feature.Districts));
+                    base.SpawnSeparator(uITabstrip);
                 }
-
-                if (format.Length > formatIndex && format[formatIndex] == i)
+                else if (num2 % array[num] == 0)
                 {
-                    items.Add(new ToolbarSmallSeparatorItemInfo(++orderCount * 10));
-                    ++formatIndex;
+                    base.SpawnSmallSeparator(uITabstrip);
+                    num++;
+                    num2 = 0;
                 }
-
-                ++orderCount;
+                i++;
+                num2++;
             }
-
-            items.Add(new VanillaToolbarItemInfo
+            base.SpawnSubEntry(uITabstrip, "Wonders", "MAIN_TOOL", this.GetUnlockText(UnlockManager.Feature.Wonders), "ToolbarIcon", ToolsModifierControl.IsUnlocked(UnlockManager.Feature.Wonders));
+            base.SpawnSeparator(uITabstrip);
+            base.SpawnSubEntry(uITabstrip, "Landscaping", "MAIN_TOOL", this.GetUnlockText(UnlockManager.Feature.Landscaping), "ToolbarIcon", ToolsModifierControl.IsUnlocked(UnlockManager.Feature.Landscaping));
+            base.SpawnSeparator(uITabstrip);
+            if (ToolsModifierControl.policiesPanel.m_DockingPosition == PoliciesPanel.DockingPosition.Left)
             {
-                Name = "Wonders",
-                UnlockText = GetUnlockText(UnlockManager.Feature.Wonders),
-                Enabled = IsUnlocked(UnlockManager.Feature.Wonders),
-                Order = 180
-            });
-
-            items.Add(new ToolbarBigSeparatorItemInfo(190));
-            items.AddRange(GameMenuManager.ToolbarItems);
-
-            foreach (var entry in items.OrderBy(e => e.Order))
-            {
-                if (entry is ToolbarSmallSeparatorItemInfo)
-                {
-                    SpawnSmallSeparator(uiTabstrip);
-                }
-                else if (entry is ToolbarBigSeparatorItemInfo)
-                {
-                    SpawnSeparator(uiTabstrip);
-                }
-                else if (entry is VanillaToolbarItemInfo)
-                {
-                    var info = entry as VanillaToolbarItemInfo;
-
-                    SpawnSubEntry(uiTabstrip, info.Name, "MAIN_TOOL", info.UnlockText, "ToolbarIcon", info.Enabled);
-                }
-                else if (entry is IToolbarMenuItemInfo)
-                {
-                    var info = entry as IToolbarMenuItemInfo;
-
-                    SpawnSubEntry(uiTabstrip, info.Name, "MAIN_TOOL", string.Empty, "ToolbarIcon", true, info.PanelType);
-                }
-            }
-
-            int policiesIndex, economyIndex;
-            if (policiesPanel.m_DockingPosition == PoliciesPanel.DockingPosition.Left)
-            {
-                UIButton uIButton = SpawnButtonEntry(uiTabstrip, "Policies", "MAIN_TOOL", GetUnlockText(UnlockManager.Feature.Policies), "ToolbarIcon", IsUnlocked(UnlockManager.Feature.Policies));
-                policiesIndex = uIButton.zOrder;
-                policiesPanel.SetParentButton(uIButton);
-                UIButton uIButton2 = SpawnButtonEntry(uiTabstrip, "Money", "MAIN_TOOL", GetUnlockText(UnlockManager.Feature.Economy), "ToolbarIcon", IsUnlocked(UnlockManager.Feature.Economy));
-                economyIndex = uIButton2.zOrder;
-                economyPanel.SetParentButton(uIButton2);
+                UIButton uIButton = base.SpawnButtonEntry(uITabstrip, "Policies", "MAIN_TOOL", this.GetUnlockText(UnlockManager.Feature.Policies), "ToolbarIcon", ToolsModifierControl.IsUnlocked(UnlockManager.Feature.Policies));
+                this.SetFieldValue("m_PoliciesIndex", uIButton.zOrder);
+                ToolsModifierControl.policiesPanel.SetParentButton(uIButton);
+                UIButton uIButton2 = base.SpawnButtonEntry(uITabstrip, "Money", "MAIN_TOOL", this.GetUnlockText(UnlockManager.Feature.Economy), "ToolbarIcon", ToolsModifierControl.IsUnlocked(UnlockManager.Feature.Economy));
+                this.SetFieldValue("m_EconomyIndex", uIButton2.zOrder);
+                ToolsModifierControl.economyPanel.SetParentButton(uIButton2);
             }
             else
             {
-                UIButton uIButton3 = SpawnButtonEntry(uiTabstrip, "Money", "MAIN_TOOL", GetUnlockText(UnlockManager.Feature.Economy), "ToolbarIcon", IsUnlocked(UnlockManager.Feature.Economy));
-                economyIndex = uIButton3.zOrder;
+                UIButton uIButton3 = base.SpawnButtonEntry(uITabstrip, "Money", "MAIN_TOOL", this.GetUnlockText(UnlockManager.Feature.Economy), "ToolbarIcon", ToolsModifierControl.IsUnlocked(UnlockManager.Feature.Economy));
+                this.SetFieldValue("m_EconomyIndex", uIButton3.zOrder);
                 ToolsModifierControl.economyPanel.SetParentButton(uIButton3);
-                UIButton uIButton4 = SpawnButtonEntry(uiTabstrip, "Policies", "MAIN_TOOL", GetUnlockText(UnlockManager.Feature.Policies), "ToolbarIcon", IsUnlocked(UnlockManager.Feature.Policies));
-                policiesIndex = uIButton4.zOrder;
+                UIButton uIButton4 = base.SpawnButtonEntry(uITabstrip, "Policies", "MAIN_TOOL", this.GetUnlockText(UnlockManager.Feature.Policies), "ToolbarIcon", ToolsModifierControl.IsUnlocked(UnlockManager.Feature.Policies));
+                this.SetFieldValue("m_PoliciesIndex", uIButton4.zOrder);
                 ToolsModifierControl.policiesPanel.SetParentButton(uIButton4);
             }
-
-            FieldInfo m_eventsRegistered = typeof(GameMainToolbar).GetField("m_EventsRegistered", BindingFlags.Instance | BindingFlags.NonPublic);
-            if (!(bool)m_eventsRegistered.GetValue(this))
+            if (!this.GetFieldValue<bool>("m_EventsRegistered"))
             {
-                uiTabstrip.tabPages.components[policiesIndex].eventVisibilityChanged += this.ShowHidePoliciesPanel;
-                uiTabstrip.tabPages.components[economyIndex].eventVisibilityChanged += this.ShowHideEconomyPanel;
+                uITabstrip.tabPages.components[this.GetFieldValue<int>("m_PoliciesIndex")].eventVisibilityChanged += new PropertyChangedEventHandler<bool>(this.ShowHidePoliciesPanel);
+                uITabstrip.tabPages.components[this.GetFieldValue<int>("m_EconomyIndex")].eventVisibilityChanged += new PropertyChangedEventHandler<bool>(this.ShowHideEconomyPanel);
             }
-            m_eventsRegistered.SetValue(this, true);
-
-            if (s_lastSelection != -1)
+            this.SetFieldValue("m_EventsRegistered", true);
+            if (this.GetFieldValue<int>("m_LastSelection") != -1)
             {
-                uiTabstrip.selectedIndex = s_lastSelection;
+                uITabstrip.selectedIndex = this.GetFieldValue<int>("m_LastSelection");
             }
-            s_lastSelection = -1;
-
-            // set m_PoliciesIndex and m_EconomyIndex
-            typeof(GameMainToolbar).GetField("m_PoliciesIndex", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(this, policiesIndex);
-            typeof(GameMainToolbar).GetField("m_EconomyIndex", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(this, economyIndex);
-
-            m_IsRefreshing = false;
+            this.SetFieldValue("m_LastSelection", -1);
+            GeneratedPanel.m_IsRefreshing = false;
         }
-
-        #region Proxy Methods
 
         [MethodImpl(MethodImplOptions.NoInlining)]
         [RedirectTo(typeof(GameMainToolbar), (ulong)PrerequisiteType.UI)]
@@ -205,9 +149,5 @@ namespace Transit.Framework.Hooks.UI
         {
             throw new NotImplementedException("GetBackgroundSprite is target of redirection and is not implemented.");
         }
-
-        #endregion
-
-        #endregion
     }
 }

@@ -75,7 +75,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\RoadCategoryOrderManager.cs" />
     <Compile Include="UI\ExtendedMenuManager.cs" />
-    <Compile Include="UI\GameMenuManager.cs" />
+    <Compile Include="UI\TAMGameToolbarItemManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Transit.Framework\Transit.Framework.csproj">
