@@ -3,26 +3,19 @@ using System.Linq;
 using ColossalFramework.Globalization;
 using ColossalFramework.UI;
 using System.Reflection;
+using Transit.Framework.UI.Toolbar.Infos;
+using Transit.Framework.UI.Toolbar.Panels;
 using UnityEngine;
 
 namespace Transit.Framework.Hooks.UI
 {
     public partial class GameMainToolbarHook
     {
-// ReSharper disable once ParameterHidesMember
-        private UIButton SpawnSubEntry(UITabstrip strip, string name, string localeID, string unlockText, string spriteBase, bool enabled, Type type)
+        private UIButton SpawnToolbarItem(IToolbarItemInfo info, UITabstrip strip, string unlockText, string spriteBase, bool enabled)
         {
-            int objectIndex = (int)typeof(MainToolbar).GetField("m_ObjectIndex", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(this);
-          
-            if (type != null && !type.IsSubclassOf(typeof(GeneratedGroupPanel)))
-            {
-                type = null;
-            }
-
-            if (type == null)
-            {
-                return null;
-            }
+            string name = info.Name;
+            Type panelType = typeof(TAMMenuPanel);
+            int objectIndex = this.GetFieldValue<int>("m_ObjectIndex");
 
             UIButton uIButton;
             if (strip.childCount > objectIndex)
@@ -33,30 +26,29 @@ namespace Transit.Framework.Hooks.UI
             {
                 GameObject asGameObject = UITemplateManager.GetAsGameObject(kMainToolbarButtonTemplate);
                 GameObject asGameObject2 = UITemplateManager.GetAsGameObject(kScrollableSubPanelTemplate);
-                uIButton = (strip.AddTab(name, asGameObject, asGameObject2, new Type[] { type }) as UIButton);
+                uIButton = (strip.AddTab(name, asGameObject, asGameObject2, new Type[] { panelType }) as UIButton);
             }
 
             uIButton.isEnabled = enabled;
             uIButton.gameObject.GetComponent<TutorialUITag>().tutorialTag = name;
-            GeneratedGroupPanel generatedGroupPanel = strip.GetComponentInContainer(uIButton, type) as GeneratedGroupPanel;
-            if (generatedGroupPanel != null)
+            TAMMenuPanel panel = strip.GetComponentInContainer(uIButton, panelType) as TAMMenuPanel;
+            if (panel != null)
             {
-                generatedGroupPanel.component.isInteractive = true;
-                generatedGroupPanel.m_OptionsBar = this.m_OptionsBar;
-                generatedGroupPanel.m_DefaultInfoTooltipAtlas = this.m_DefaultInfoTooltipAtlas;
+                panel.CategoryInfos = info.MenuInfo.CategoryInfos;
+                panel.component.isInteractive = true;
+                panel.m_OptionsBar = this.m_OptionsBar;
+                panel.m_DefaultInfoTooltipAtlas = this.m_DefaultInfoTooltipAtlas;
                 if (enabled)
                 {
-                    generatedGroupPanel.RefreshPanel();
+                    panel.RefreshPanel();
                 }
             }
 
-            // TAM Edit Start
             var customAtlas = AtlasManager.instance.GetAtlas(name);
             if (customAtlas != null)
             {
                 uIButton.atlas = customAtlas;
             }
-            // TAM Edit End
 
             uIButton.normalBgSprite = this.GetBackgroundSprite(uIButton, spriteBase, name, "Normal");
             uIButton.focusedBgSprite = this.GetBackgroundSprite(uIButton, spriteBase, name, "Focused");
@@ -69,17 +61,9 @@ namespace Transit.Framework.Hooks.UI
             uIButton.hoveredFgSprite = text + "Hovered";
             uIButton.pressedFgSprite = text + "Pressed";
             uIButton.disabledFgSprite = text + "Disabled";
+            uIButton.tooltip = info.Description;
 
-            if (unlockText != null)
-            {
-                uIButton.tooltip = Locale.Get(localeID, name) + " - " + unlockText;
-            }
-            else
-            {
-                uIButton.tooltip = Locale.Get(localeID, name);
-            }
-
-            typeof(MainToolbar).GetField("m_ObjectIndex", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(this, objectIndex + 1);
+            this.SetFieldValue("m_ObjectIndex", objectIndex + 1);
             return uIButton;
         }
     }

@@ -1,21 +1,10 @@
 ﻿using ICities;
-using Transit.Addon.ToolsV3.UI.Toolbar.RoadEditor;
-using Transit.Addon.ToolsV3.UI.Toolbar.RoadEditor.Textures;
-using Transit.Framework;
-using Transit.Framework.ExtensionPoints.UI;
 using Transit.Framework.Modularity;
 
 namespace Transit.Addon.ToolsV3
 {
     public partial class ToolModuleV3 : ModuleBase
     {
-        public override void OnInstallingContent()
-        {
-            base.OnInstallingContent();
-
-            TAMGameToolbarItemManager.instance.AddItem<RoadEditorToolbarItemInfo>();
-        }
-
         public override void OnReleased()
         {
             base.OnReleased();

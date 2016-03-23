@@ -1,22 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using ColossalFramework;
-using Transit.Framework.UI.Toolbar.Items;
+using Transit.Framework.UI.Toolbar.Infos;
 
 namespace Transit.Framework.ExtensionPoints.UI
 {
     public class TAMGameToolbarItemManager : Singleton<TAMGameToolbarItemManager>
     {
-        private ICollection<IToolbarMenuItemInfo> _items = new List<IToolbarMenuItemInfo>();
-        public IEnumerable<IToolbarMenuItemInfo> Items { get { return _items.ToArray(); } }
+        private ICollection<IToolbarItemInfo> _items = new List<IToolbarItemInfo>();
+        public IEnumerable<IToolbarItemInfo> Items { get { return _items.ToArray(); } }
 
         public void Reset()
         {
-            _items = new List<IToolbarMenuItemInfo>();
+            _items = new List<IToolbarItemInfo>();
         }
 
         public void RemoveItem<T>()
-            where T : IToolbarMenuItemInfo
+            where T : IToolbarItemInfo
         {
             var items = _items.OfType<T>().ToArray();
 
@@ -32,7 +32,7 @@ namespace Transit.Framework.ExtensionPoints.UI
         }
 
         public void AddItem<T>()
-            where T : IToolbarMenuItemInfo, new()
+            where T : IToolbarItemInfo, new()
         {
             if (!_items.OfType<T>().Any())
             {

@@ -11,7 +11,7 @@ namespace Transit.Addon.TM.Tools.LaneRouting
         public string Name { get { return "Lane Routing"; } }
         public string DisplayName { get { return Name; } }
         public string Description { get { return "Allows you to customize entry and exit points in intersections and junctions."; } }
-        public string UICategory { get { return RoadEditorMainCategoryInfo.NAME; } }
+        public string UICategory { get { return RoadEditorMenuMainCategoryInfo.NAME; } }
 
         public string ThumbnailsPath { get { return @"Tools\LaneRouting\thumbnails.png"; } }
         public string InfoTooltipPath { get { return @"Tools\LaneRouting\infotooltip.png"; } }

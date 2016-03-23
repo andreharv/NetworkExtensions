@@ -52,7 +52,6 @@
   <ItemGroup>
     <Compile Include="Common\TAMToolBase.cs" />
     <Compile Include="Tools\LaneRouting\Data\_Extensions\NodeRoutingDataExtensions.Arrows.cs" />
-    <Compile Include="UI\Toolbar\RoadEditor\RoadEditorMainCategoryInfo.cs" />
     <Compile Include="ToolModuleV3.Install.Tools.cs" />
     <Compile Include="Tools\LaneRouting\LaneRoutingManager.cs" />
     <Compile Include="Tools\LaneRouting\LaneRoutingSerializationHandler.cs" />
@@ -63,12 +62,8 @@
     <Compile Include="Tools\LaneRouting\Data\_Extensions\LaneRoutingDataExtensions.cs" />
     <Compile Include="Tools\LaneRouting\Data\_Extensions\NodeRoutingDataExtensions.cs" />
     <Compile Include="Tools\LaneRouting\LaneRoutingTool.cs" />
-    <Compile Include="Tools\LaneRouting\LaneRoutingToolBuilder.cs" />
     <Compile Include="Tools\LaneRouting\Markers\LaneAnchorMarker.cs" />
     <Compile Include="Tools\LaneRouting\Markers\NodeRoutingMarker.cs" />
-    <Compile Include="UI\Toolbar\RoadEditor\RoadEditorToolbarItemInfo.cs" />
-    <Compile Include="UI\Toolbar\RoadEditor\Textures\ToolsAtlasBuilder.cs" />
-    <Compile Include="UI\Toolbar\RoadEditor\Textures\ToolsMenuAtlasBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\LaneRouting\DataLegacy\TPP\TPPLaneData.cs" />
     <Compile Include="Tools\LaneRouting\DataLegacy\TPP\TPPLaneDataSerializationBinder.cs" />
@@ -86,12 +81,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Tools\LaneRouting\thumbnails.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="UI\Toolbar\RoadEditor\Textures\Tools.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="UI\Toolbar\RoadEditor\Textures\ToolsMenu.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

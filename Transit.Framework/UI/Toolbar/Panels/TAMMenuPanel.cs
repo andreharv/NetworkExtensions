@@ -1,35 +1,36 @@
-﻿using ColossalFramework.Globalization;
-using ColossalFramework.UI;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using ColossalFramework.Globalization;
+using ColossalFramework.UI;
+using Transit.Framework.UI.Toolbar.Infos;
 using UnityEngine;
 
-namespace Transit.Framework.UI.Toolbar.Menus
+namespace Transit.Framework.UI.Toolbar.Panels
 {
-    public abstract class CustomGroupPanelBase : GeneratedGroupPanel
+    public class TAMMenuPanel : GeneratedGroupPanel
     {
-        private bool _panelRefreshed;
-
-        protected UITabstrip _modesBar;
+        public IEnumerable<IMenuCategoryInfo> CategoryInfos { get; set; }
 
         protected sealed override bool CustomRefreshPanel()
         {
-            if (_panelRefreshed)
-                return true;
+            if (CategoryInfos != null)
+            {
+                foreach (var info in CategoryInfos.OrderBy(c => c.Order))
+                {
+                    SpawnCategory(info, null, "SubBar", null, true);
+                }
+            }
 
-            Initialize();
-
-            _panelRefreshed = true;
             return true;
         }
 
-        protected abstract void Initialize();
-
-        protected virtual UIButton SpawnCategory(Type panelType, string category, string localeID, string spriteBase, string unlockText, bool enabled)
+        protected virtual UIButton SpawnCategory(IMenuCategoryInfo categoryInfo, string localeID, string spriteBase, string unlockText, bool enabled)
         {
-
-            int objectIndex = (int)typeof(GeneratedGroupPanel).GetField("m_ObjectIndex", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(this);
+            Type panelType = typeof (TAMMenuCategoryPanel);
+            string category = categoryInfo.Name;
+            int objectIndex = this.GetFieldValue<int>("m_ObjectIndex");
 
             UIButton uiButton = null;
             if (m_Strip.childCount > objectIndex)
@@ -48,17 +49,18 @@ namespace Transit.Framework.UI.Toolbar.Menus
             uiButton.gameObject.GetComponent<TutorialUITag>().tutorialTag = category;
             uiButton.group = m_Strip;
 
-            GeneratedScrollPanel generatedScrollPanel = m_Strip.GetComponentInContainer(uiButton, panelType) as GeneratedScrollPanel;
-            if (generatedScrollPanel != null)
+            TAMMenuCategoryPanel panel = m_Strip.GetComponentInContainer(uiButton, panelType) as TAMMenuCategoryPanel;
+            if (panel != null)
             {
-                generatedScrollPanel.name = category;
-                generatedScrollPanel.component.isInteractive = true;
-                generatedScrollPanel.m_OptionsBar = this.m_OptionsBar;
-                generatedScrollPanel.m_DefaultInfoTooltipAtlas = this.m_DefaultInfoTooltipAtlas;
+                panel.ToolBuilders = categoryInfo.ToolBuilders;
+                panel.name = category;
+                panel.component.isInteractive = true;
+                panel.m_OptionsBar = this.m_OptionsBar;
+                panel.m_DefaultInfoTooltipAtlas = this.m_DefaultInfoTooltipAtlas;
                 if (enabled)
                 {
-                    generatedScrollPanel.category = category ?? string.Empty;
-                    generatedScrollPanel.RefreshPanel();
+                    panel.category = category ?? string.Empty;
+                    panel.RefreshPanel();
                 }
             }
 
@@ -78,8 +80,7 @@ namespace Transit.Framework.UI.Toolbar.Menus
                 uiButton.tooltip = Locale.Get(localeID, category);
             }
 
-            typeof(GeneratedGroupPanel).GetField("m_ObjectIndex", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(this, objectIndex + 1);
-            
+            this.SetFieldValue("m_ObjectIndex", objectIndex + 1);
             return uiButton;
         }
     }

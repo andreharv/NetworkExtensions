@@ -24,9 +24,6 @@ namespace Transit.Addon.TM
 
             base.OnCreated(loading);
 
-            // TODO: Add RoadEditorToolbarItemInfo only if needed
-            TAMGameToolbarItemManager.instance.AddItem<RoadEditorToolbarItemInfo>();
-
             TAMRestrictionManager.instance.Init();
             TAMSpeedLimitManager.instance.Init();
             TMLaneRoutingManager.instance.Init();
@@ -92,8 +89,6 @@ namespace Transit.Addon.TM
             TAMSpeedLimitManager.instance.Reset();
             TMLaneRoutingManager.instance.Reset();
             TPPLaneRoutingManager.instance.Reset();
-
-            TAMGameToolbarItemManager.instance.RemoveItem<RoadEditorToolbarItemInfo>();
 
             Object.Destroy(UI);
             UI = null;

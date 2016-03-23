@@ -9,7 +9,6 @@ using System.Runtime.CompilerServices;
 using Transit.Framework.ExtensionPoints.UI;
 using Transit.Framework.Prerequisites;
 using Transit.Framework.Redirection;
-using Transit.Framework.UI.Toolbar.Items;
 
 namespace Transit.Framework.Hooks.UI
 {
@@ -61,7 +60,7 @@ namespace Transit.Framework.Hooks.UI
                     {
                         foreach (var info in items)
                         {
-                            SpawnSubEntry(uITabstrip, info.Name, "MAIN_TOOL", string.Empty, "ToolbarIcon", true, info.PanelType);
+                            SpawnToolbarItem(info, uITabstrip, "MAIN_TOOL", "ToolbarIcon", true);
                         }
                         base.SpawnSmallSeparator(uITabstrip);
                     }

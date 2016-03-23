@@ -110,14 +110,13 @@
     <Compile Include="Interfaces\IShortDescriptor.cs" />
     <Compile Include="UI\Ingame\UIMarker.cs" />
     <Compile Include="UI\Ingame\UIState.cs" />
-    <Compile Include="UI\Toolbar\Menus\CustomGroupPanelBase.cs" />
-    <Compile Include="UI\Toolbar\Menus\MultiModeGroupPanel.cs">
+    <Compile Include="UI\Toolbar\Infos\IMenuInfo.cs" />
+    <Compile Include="UI\Toolbar\Infos\IMenuCategoryInfo.cs" />
+    <Compile Include="UI\Toolbar\Panels\TAMMenuPanel.cs" />
+    <Compile Include="UI\Toolbar\Panels\TAMMenuCategoryPanel.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\Toolbar\Menus\CustomScrollPanelBase.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="UI\Toolbar\Items\IToolbarMenuItemInfo.cs" />
+    <Compile Include="UI\Toolbar\Infos\IToolbarItemInfo.cs" />
     <Compile Include="UI\MouseKeyCode.cs" />
     <Compile Include="_Extensions\AssetManagerExtensions.cs" />
     <Compile Include="_Extensions\CloningExtensions.cs" />
