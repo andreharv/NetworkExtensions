@@ -9,8 +9,9 @@ namespace Transit.Framework.Mod
         private bool _isReleased = true;
         private GameObject _container = null;
 
+        private MenuInstaller _menuInstaller = null;
         private LocalizationInstaller _localizationInstaller = null;
-        private AssetsInstaller _assetsInstaller = null;
+        private AssetInstaller _assetInstaller = null;
 
         public override void OnCreated(ILoading loading)
         {
@@ -25,11 +26,14 @@ namespace Transit.Framework.Mod
                     foreach (IModule module in this.GetOrCreateModules())
                         module.OnCreated(loading);
 
+                    _menuInstaller = _container.AddInstallerComponent<MenuInstaller>();
+                    _menuInstaller.Host = this;
+
                     _localizationInstaller = _container.AddInstallerComponent<LocalizationInstaller>();
                     _localizationInstaller.Host = this;
 
-                    _assetsInstaller = _container.AddInstallerComponent<AssetsInstaller>();
-                    _assetsInstaller.Host = this;
+                    _assetInstaller = _container.AddInstallerComponent<AssetInstaller>();
+                    _assetInstaller.Host = this;
 
                     foreach (IModule module in this.GetOrCreateModules())
                         module.OnInstallingContent();
@@ -51,16 +55,22 @@ namespace Transit.Framework.Mod
             foreach (IModule module in this.GetModules())
                 module.OnReleased();
 
+            if (_menuInstaller != null)
+            {
+                Object.Destroy(_menuInstaller);
+                _menuInstaller = null;
+            }
+
             if (_localizationInstaller != null)
             {
                 Object.Destroy(_localizationInstaller);
                 _localizationInstaller = null;
             }
 
-            if (_assetsInstaller != null)
+            if (_assetInstaller != null)
             {
-                Object.Destroy(_assetsInstaller);
-                _assetsInstaller = null;
+                Object.Destroy(_assetInstaller);
+                _assetInstaller = null;
             }
 
             if (_container != null)

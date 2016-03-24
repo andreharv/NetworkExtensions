@@ -22,6 +22,24 @@ namespace Transit.Framework
             }, label);
         }
 
+        public static void CreateTutorialTitleLocalizedString(this Locale locale, string key, string label)
+        {
+            locale.AddLocalizedString(new Locale.Key
+            {
+                m_Identifier = "TUTORIAL_ADVISER_TITLE",
+                m_Key = key
+            }, label);
+        }
+
+        public static void CreateTutorialContentLocalizedString(this Locale locale, string key, string label)
+        {
+            locale.AddLocalizedString(new Locale.Key
+            {
+                m_Identifier = "TUTORIAL_ADVISER",
+                m_Key = key
+            }, label);
+        }
+
         public static void CreateNetDescriptionLocalizedString(this Locale locale, string key, string label)
         {
             locale.AddLocalizedString(new Locale.Key

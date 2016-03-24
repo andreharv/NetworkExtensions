@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 using Transit.Framework.ExtensionPoints.UI;
 using Transit.Framework.Prerequisites;
 using Transit.Framework.Redirection;
+using Transit.Framework.UI;
 using UnityEngine;
 
 namespace Transit.Framework.Hooks.UI
@@ -185,9 +186,9 @@ namespace Transit.Framework.Hooks.UI
                 }
             }
 
-            foreach (var cat in ExtendedMenuManager.GetNewCategories(GroupFilter.Net, service))
+            foreach (var cat in MenuManager.instance.GetAdditionalCategories(GroupFilter.Net, service))
             {
-                yield return cat;
+                yield return cat.Name;
             }
         }
 

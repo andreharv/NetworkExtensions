@@ -53,7 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activable.cs" />
-    <Compile Include="AtlasManager.cs" />
+    <Compile Include="Assets\AtlasManager.cs" />
     <Compile Include="Builders\IAtlasBuilder.cs" />
     <Compile Include="Builders\IMenuCategoryBuilder.cs" />
     <Compile Include="Builders\IMenuBuilder.cs" />
@@ -62,7 +62,8 @@
     <Compile Include="Builders\ToolBuilder.cs" />
     <Compile Include="Extensibility.cs" />
     <Compile Include="Log.cs" />
-    <Compile Include="MenuManager.cs" />
+    <Compile Include="Mod\TransitModBase.Install.Menus.cs" />
+    <Compile Include="UI\MenuManager.Localization.cs" />
     <Compile Include="Modularity\ModuleBase.Install.cs" />
     <Compile Include="Modularity\ModuleManager.cs" />
     <Compile Include="Mod\ITransitMod.cs" />
@@ -76,19 +77,19 @@
     <Compile Include="Prerequisites\PrerequisiteType.cs" />
     <Compile Include="Serialization\DataSerializer.cs" />
     <Compile Include="Serialization\IDataSerializer.cs" />
-    <Compile Include="MenuManager.Category.cs" />
-    <Compile Include="MenuManager.Toolbar.cs" />
-    <Compile Include="Texturing\ITextureBlenderComponent.cs" />
-    <Compile Include="Texturing\PathTextureProvider.cs" />
-    <Compile Include="Texturing\Point.cs" />
-    <Compile Include="Texturing\TextureBlender.Component.XOffset.cs" />
-    <Compile Include="Texturing\TextureBlender.cs" />
-    <Compile Include="Texturing\TextureBlender.Component.Color.cs" />
-    <Compile Include="Texturing\TextureBlender.Component.Alpha.cs" />
-    <Compile Include="Texturing\TextureBlender.Component.cs" />
-    <Compile Include="Texturing\TextureBlender.Component.Texture.cs" />
-    <Compile Include="Texturing\ITextureProvider.cs" />
-    <Compile Include="Texturing\TextureHelper.cs" />
+    <Compile Include="UI\MenuManager.Category.cs" />
+    <Compile Include="UI\MenuManager.Toolbar.cs" />
+    <Compile Include="Assets\Texturing\ITextureBlenderComponent.cs" />
+    <Compile Include="Assets\Texturing\PathTextureProvider.cs" />
+    <Compile Include="Assets\Texturing\Point.cs" />
+    <Compile Include="Assets\Texturing\TextureBlender.Component.XOffset.cs" />
+    <Compile Include="Assets\Texturing\TextureBlender.cs" />
+    <Compile Include="Assets\Texturing\TextureBlender.Component.Color.cs" />
+    <Compile Include="Assets\Texturing\TextureBlender.Component.Alpha.cs" />
+    <Compile Include="Assets\Texturing\TextureBlender.Component.cs" />
+    <Compile Include="Assets\Texturing\TextureBlender.Component.Texture.cs" />
+    <Compile Include="Assets\Texturing\ITextureProvider.cs" />
+    <Compile Include="Assets\Texturing\TextureHelper.cs" />
     <Compile Include="Builders\INetInfoLateBuilder.cs" />
     <Compile Include="Installer.cs" />
     <Compile Include="Interfaces\IDescriptor.cs" />
@@ -111,7 +112,7 @@
     <Compile Include="Mod\TransitModBase.Settings.cs" />
     <Compile Include="Network\NetInfoVersion.cs" />
     <Compile Include="Notification.cs" />
-    <Compile Include="Assets.cs" />
+    <Compile Include="Assets\Assets.cs" />
     <Compile Include="Builders\MenuItemBuilder.cs" />
     <Compile Include="Interfaces\IShortDescriptor.cs" />
     <Compile Include="UI\Ingame\UIMarker.cs" />
@@ -132,7 +133,7 @@
     <Compile Include="_Extensions\EnumerableExtensions.cs" />
     <Compile Include="_Extensions\PrefabInfoExtensions.cs" />
     <Compile Include="_Extensions\TextureExtensions.cs" />
-    <Compile Include="AssetManager.cs" />
+    <Compile Include="Assets\AssetManager.cs" />
     <Compile Include="_Extensions\EnumExtensions.cs" />
     <Compile Include="_Extensions\ExpressionExtensions.cs" />
     <Compile Include="_Extensions\ItemClassExtensions.cs" />
@@ -151,7 +152,7 @@
     <Compile Include="Builders\INetInfoModifier.cs" />
     <Compile Include="Loading.cs" />
     <Compile Include="Selector.cs" />
-    <Compile Include="Texturing\TextureSet.cs" />
+    <Compile Include="Assets\Texturing\TextureSet.cs" />
     <Compile Include="Prefabs.cs" />
     <Compile Include="Tools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

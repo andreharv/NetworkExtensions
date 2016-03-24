@@ -4,31 +4,39 @@ using System.Linq;
 using ColossalFramework.Globalization;
 using ColossalFramework.UI;
 using Transit.Framework.Builders;
+using Transit.Framework.ExtensionPoints.UI.Toolbar.Panels;
 using UnityEngine;
 
-namespace Transit.Framework.ExtensionPoints.UI.Toolbar.Panels
+namespace Transit.Framework.ExtensionPoints.UI.Panels
 {
     public class TAMMenuPanel : GeneratedGroupPanel
     {
-        public IEnumerable<IMenuCategoryBuilder> CategoryInfos { get; set; }
+        public IEnumerable<IMenuCategoryBuilder> CategoryBuilders { get; set; }
 
         protected sealed override bool CustomRefreshPanel()
         {
-            if (CategoryInfos != null)
+            if (CategoryBuilders != null)
             {
-                foreach (var info in CategoryInfos.OrderBy(c => c.Order))
+                foreach (var info in CategoryBuilders.OrderBy(c => c.Order))
                 {
-                    SpawnCategory(info, null, "SubBar", null, true);
+                    if (info is IToolMenuCategoryBuilder)
+                    {
+                        SpawnCategory((IToolMenuCategoryBuilder)info, null, "SubBar", null, true);
+                    }
+                    else
+                    {
+                        throw new NotImplementedException("TAMMenuPanel only support IToolMenuCategoryBuilder (for now)");
+                    }
                 }
             }
 
             return true;
         }
 
-        protected virtual UIButton SpawnCategory(IMenuCategoryBuilder categoryInfo, string localeID, string spriteBase, string unlockText, bool enabled)
+        protected virtual UIButton SpawnCategory(IToolMenuCategoryBuilder categoryBuilder, string localeID, string spriteBase, string unlockText, bool enabled)
         {
             Type panelType = typeof (TAMMenuCategoryPanel);
-            string category = categoryInfo.Name;
+            string category = categoryBuilder.Name;
             int objectIndex = this.GetFieldValue<int>("m_ObjectIndex");
 
             UIButton uiButton = null;
@@ -51,7 +59,7 @@ namespace Transit.Framework.ExtensionPoints.UI.Toolbar.Panels
             TAMMenuCategoryPanel panel = m_Strip.GetComponentInContainer(uiButton, panelType) as TAMMenuCategoryPanel;
             if (panel != null)
             {
-                panel.ToolBuilders = categoryInfo.ToolBuilders;
+                panel.ToolBuilders = categoryBuilder.ToolBuilders;
                 panel.name = category;
                 panel.component.isInteractive = true;
                 panel.m_OptionsBar = this.m_OptionsBar;

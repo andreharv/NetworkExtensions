@@ -4,11 +4,7 @@ using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using Transit.Framework.Modularity;
-using UnityEngine;
-
-#if DEBUG
-using Transit.Framework;
-#endif
+using Transit.Framework.UI;
 
 namespace Transit.Framework.Mod
 {
@@ -71,7 +67,7 @@ namespace Transit.Framework.Mod
                 {
                     try
                     {
-                        host.OnInstallLocalization();
+                        host.OnInstallLocalization(locale);
                     }
                     catch (Exception ex)
                     {

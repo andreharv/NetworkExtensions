@@ -31,6 +31,23 @@ namespace Transit.Framework
 		public static FieldInfo GetFieldByName(this Type type, string name)
 		{
 			return type.GetAllFieldsFromType().FirstOrDefault(p => p.Name == name);
-		}
-	}
+        }
+
+        public static FieldInfo GetFieldRecursive(this Type type, string fieldName, BindingFlags flags)
+        {
+            if (type == typeof (object) || type == null)
+            {
+                return null;
+            }
+
+            var field = type.GetField(fieldName, flags);
+
+            if (field != null)
+            {
+                return field;
+            }
+
+            return GetFieldRecursive(type.BaseType, fieldName, flags);
+        }
+    }
 }

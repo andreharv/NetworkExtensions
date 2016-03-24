@@ -28,11 +28,9 @@ namespace Transit.Addon.RoadExtensions
 
         private IEnumerable<Action> _lateOperations;
 
-        public override void OnInstallingLocalization()
+        public override void OnInstallingLocalization(Locale locale)
         {
-            base.OnInstallingLocalization();
-
-            var locale = SingletonLite<LocaleManager>.instance.GetLocale();
+            base.OnInstallingLocalization(locale);
 
             var menuItemBuilders = new List<IMenuItemBuilder>();
             menuItemBuilders.AddRange(Parts.OfType<IMenuItemBuilder>());

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Transit.Framework.Builders;
 
-namespace Transit.Framework
+namespace Transit.Framework.UI
 {
     public partial class MenuManager
     {

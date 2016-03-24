@@ -4,6 +4,7 @@ using ColossalFramework.Globalization;
 using ColossalFramework.UI;
 using System.Reflection;
 using Transit.Framework.Builders;
+using Transit.Framework.ExtensionPoints.UI.Panels;
 using Transit.Framework.ExtensionPoints.UI.Toolbar.Panels;
 using UnityEngine;
 
@@ -34,7 +35,7 @@ namespace Transit.Framework.Hooks.UI
             TAMMenuPanel panel = strip.GetComponentInContainer(uIButton, panelType) as TAMMenuPanel;
             if (panel != null)
             {
-                panel.CategoryInfos = info.MenuBuilder.CategoryBuilders;
+                panel.CategoryBuilders = info.MenuBuilder.CategoryBuilders;
                 panel.component.isInteractive = true;
                 panel.m_OptionsBar = this.m_OptionsBar;
                 panel.m_DefaultInfoTooltipAtlas = this.m_DefaultInfoTooltipAtlas;
@@ -61,7 +62,7 @@ namespace Transit.Framework.Hooks.UI
             uIButton.hoveredFgSprite = text + "Hovered";
             uIButton.pressedFgSprite = text + "Pressed";
             uIButton.disabledFgSprite = text + "Disabled";
-            uIButton.tooltip = info.Description;
+            uIButton.tooltip = info.DisplayName;
 
             this.SetFieldValue("m_ObjectIndex", objectIndex + 1);
             return uIButton;

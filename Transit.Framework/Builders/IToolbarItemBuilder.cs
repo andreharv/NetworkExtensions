@@ -2,8 +2,9 @@
 
 namespace Transit.Framework.Builders
 {
-    public interface IToolbarItemBuilder : IIdentifiable, IOrderable, IDescriptor
+    public interface IToolbarItemBuilder : IIdentifiable, IDisplayable, IOrderable, IDescriptor
     {
+        string Tutorial { get; }
         IMenuBuilder MenuBuilder { get; }
     }
 }

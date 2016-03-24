@@ -118,7 +118,7 @@
     <Compile Include="Roads\TinyRoads\OneWay1L\OneWay1LBuilder.cs" />
     <Compile Include="SomeRoads\PlanningRoadLargeBuilder.cs" />
     <Compile Include="SomeRoads\PlanningRoadSmallBuilder.cs" />
-    <Compile Include="UI\Toolbar\Roads\ExtendedCategories.cs" />
+    <Compile Include="UI\Toolbar\Roads\RoadAdditionalCategories.cs" />
     <Compile Include="UI\Toolbar\Roads\Textures\RExCategoriesAtlasBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
