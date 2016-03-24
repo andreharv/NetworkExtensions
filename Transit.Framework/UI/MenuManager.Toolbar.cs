@@ -9,7 +9,6 @@ namespace Transit.Framework.UI
     public partial class MenuManager : Singleton<MenuManager>
     {
         private readonly ICollection<IToolbarItemBuilder> _toolbarItems = new List<IToolbarItemBuilder>();
-        public IEnumerable<IToolbarItemBuilder> ToolbarItems { get { return _toolbarItems.ToArray(); } }
 
         public void RegisterToolbarItem(Type toolbarItemBuilderType)
         {
@@ -27,6 +26,35 @@ namespace Transit.Framework.UI
 
             Log.Info("TFW: Adding toolbar item of type " + toolbarItemBuilderType);
             _toolbarItems.Add(toolbarItemBuilder);
+
+            foreach (var cat in toolbarItemBuilder.CategoryBuilders)
+            {
+                RegisterCategoryInstance(cat);
+            }
+        }
+
+        private bool IsToolbarItemRequired(IToolbarItemBuilder item)
+        {
+            foreach (var cat in item.CategoryBuilders)
+            {
+                if (IsCategoryRequired(cat))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public IEnumerable<IToolbarItemBuilder> GetRequiredToolbarItems()
+        {
+            foreach (var item in _toolbarItems)
+            {
+                if (IsToolbarItemRequired(item))
+                {
+                    yield return item;
+                }
+            }
         }
     }
 }

@@ -56,13 +56,13 @@
     <Compile Include="Assets\AtlasManager.cs" />
     <Compile Include="Builders\IAtlasBuilder.cs" />
     <Compile Include="Builders\IMenuCategoryBuilder.cs" />
-    <Compile Include="Builders\IMenuBuilder.cs" />
     <Compile Include="Builders\IToolbarItemBuilder.cs" />
     <Compile Include="Builders\IToolBuilder.cs" />
     <Compile Include="Builders\ToolBuilder.cs" />
     <Compile Include="Extensibility.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Mod\TransitModBase.Install.Menus.cs" />
+    <Compile Include="UI\MenuManager.Tools.cs" />
     <Compile Include="UI\MenuManager.Localization.cs" />
     <Compile Include="Modularity\ModuleBase.Install.cs" />
     <Compile Include="Modularity\ModuleManager.cs" />
@@ -77,7 +77,7 @@
     <Compile Include="Prerequisites\PrerequisiteType.cs" />
     <Compile Include="Serialization\DataSerializer.cs" />
     <Compile Include="Serialization\IDataSerializer.cs" />
-    <Compile Include="UI\MenuManager.Category.cs" />
+    <Compile Include="UI\MenuManager.Categories.cs" />
     <Compile Include="UI\MenuManager.Toolbar.cs" />
     <Compile Include="Assets\Texturing\ITextureBlenderComponent.cs" />
     <Compile Include="Assets\Texturing\PathTextureProvider.cs" />

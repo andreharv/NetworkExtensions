@@ -1,18 +1,29 @@
 ﻿using System;
 using System.Linq;
 using Transit.Addon.TM.Tools.RoadCustomizer;
-using Transit.Addon.TM.UI.Toolbar.RoadEditor;
 using Transit.Framework;
 using Transit.Framework.Builders;
-using Transit.Framework.ExtensionPoints.UI;
-using Transit.Framework.ExtensionPoints.UI.Toolbar;
 using Transit.Framework.UI;
-using UnityEngine;
 
 namespace Transit.Addon.TM
 {
     public partial class ToolModuleV2
     {
+        public override void OnInstallingMenus()
+        {
+            base.OnInstallingMenus();
+
+            var tBuilders = Parts
+                .OfType<IToolBuilder>()
+                //.WhereActivated()
+                .ToArray();
+
+            foreach (var tBuilder in tBuilders)
+            {
+                MenuManager.instance.RegisterTool(tBuilder);
+            }
+        }
+
         private void InstallTools()
         {
             var tBuilders = Parts
@@ -58,6 +69,8 @@ namespace Transit.Addon.TM
                     ToolsModifierControl.toolController.RemoveTool(tBuilder.ToolType);
                     tBuilder.IsInstalled = false;
                 }
+
+                MenuManager.instance.UnregisterTool(tBuilder);
             }
 
             // TODO: legacy to be removed

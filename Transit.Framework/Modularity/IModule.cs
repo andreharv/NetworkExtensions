@@ -35,6 +35,8 @@ namespace Transit.Framework.Modularity
 
         event SaveSettingsNeededEventHandler SaveSettingsNeeded;
 
+        void OnInstallingMenus();
+
         void OnInstallingLocalization(Locale locale);
 
         void OnInstallingAssets();

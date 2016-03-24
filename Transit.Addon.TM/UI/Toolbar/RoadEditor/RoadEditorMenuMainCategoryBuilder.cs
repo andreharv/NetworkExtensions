@@ -4,7 +4,7 @@ using Transit.Framework.Builders;
 
 namespace Transit.Addon.TM.UI.Toolbar.RoadEditor
 {
-    public class RoadEditorMenuMainCategoryBuilder : IToolMenuCategoryBuilder
+    public class RoadEditorMenuMainCategoryBuilder : IMenuCategoryBuilder
     {
         public const string NAME = "RoadEditorMainCategory";
 
@@ -13,15 +13,5 @@ namespace Transit.Addon.TM.UI.Toolbar.RoadEditor
         public int Order { get { return 10; } }
         public GeneratedGroupPanel.GroupFilter? Group { get { return null; } }
         public ItemClass.Service? Service { get { return null; } }
-        public IEnumerable<IToolBuilder> ToolBuilders { get; private set; }
-
-        public RoadEditorMenuMainCategoryBuilder()
-        {
-            // TODO: invert that dependency, RoadEditorMainCategoryInfo should fetch the ToolBuilder from the module
-            ToolBuilders = new[]
-            {
-                new LaneRoutingToolBuilder(), 
-            };
-        }
     }
 }

@@ -4,7 +4,7 @@ using ColossalFramework.UI;
 using Transit.Framework.Builders;
 using Transit.Framework.Interfaces;
 
-namespace Transit.Framework.ExtensionPoints.UI.Toolbar.Panels
+namespace Transit.Framework.ExtensionPoints.UI.Panels
 {
     public class TAMMenuCategoryPanel : GeneratedScrollPanel
     {

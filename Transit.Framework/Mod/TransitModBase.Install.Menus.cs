@@ -8,6 +8,12 @@ namespace Transit.Framework.Mod
 {
     public partial class TransitModBase
     {
+        public virtual void OnInstallMenus()
+        {
+            foreach (IModule module in this.GetOrCreateModules())
+                module.OnInstallingMenus();
+        }
+
         private void InstallMenus()
         {
             foreach (IModule module in this.GetOrCreateModules())
@@ -43,6 +49,20 @@ namespace Transit.Framework.Mod
                     catch (Exception ex)
                     {
                         Log.Error("TFW: Crashed-MenusInstaller");
+                        Log.Error("TFW: " + ex.Message);
+                        Log.Error("TFW: " + ex.ToString());
+                    }
+                });
+
+                Loading.QueueAction(() =>
+                {
+                    try
+                    {
+                        host.OnInstallMenus();
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error("TFW: Crashed-MenusInstaller-Modules");
                         Log.Error("TFW: " + ex.Message);
                         Log.Error("TFW: " + ex.ToString());
                     }

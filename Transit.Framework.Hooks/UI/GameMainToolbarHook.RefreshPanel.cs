@@ -2,12 +2,8 @@
 using ColossalFramework.Globalization;
 using ColossalFramework.UI;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.CompilerServices;
-using Transit.Framework.ExtensionPoints.UI;
-using Transit.Framework.ExtensionPoints.UI.Toolbar;
 using Transit.Framework.Prerequisites;
 using Transit.Framework.Redirection;
 using Transit.Framework.UI;
@@ -54,7 +50,7 @@ namespace Transit.Framework.Hooks.UI
                     // TAM Modification
                     var items = MenuManager
                         .instance
-                        .ToolbarItems
+                        .GetRequiredToolbarItems()
                         .OrderBy(e => e.Order)
                         .ToArray();
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Transit.Framework.Builders;
 
 namespace Transit.Addon.TM.UI.Toolbar.RoadEditor
@@ -24,11 +25,15 @@ namespace Transit.Addon.TM.UI.Toolbar.RoadEditor
                     "\n\nUse PageUp/PageDown to toggle Underground View.";
             }
         }
-        public IMenuBuilder MenuBuilder { get; private set; }
+
+        public IEnumerable<IMenuCategoryBuilder> CategoryBuilders { get; private set; }
 
         public RoadEditorToolbarItemBuilder()
         {
-            MenuBuilder = new RoadEditorMenuBuilder();
+            CategoryBuilders = new[]
+            {
+                new RoadEditorMenuMainCategoryBuilder()
+            };
         }
     }
 }

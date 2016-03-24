@@ -9,9 +9,4 @@ namespace Transit.Framework.Builders
         GeneratedGroupPanel.GroupFilter? Group { get; }
         ItemClass.Service? Service { get; }
     }
-
-    public interface IToolMenuCategoryBuilder : IMenuCategoryBuilder
-    {
-        IEnumerable<IToolBuilder> ToolBuilders { get; }
-    }
 }

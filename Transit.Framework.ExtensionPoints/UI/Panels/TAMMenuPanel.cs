@@ -4,7 +4,7 @@ using System.Linq;
 using ColossalFramework.Globalization;
 using ColossalFramework.UI;
 using Transit.Framework.Builders;
-using Transit.Framework.ExtensionPoints.UI.Toolbar.Panels;
+using Transit.Framework.UI;
 using UnityEngine;
 
 namespace Transit.Framework.ExtensionPoints.UI.Panels
@@ -19,21 +19,14 @@ namespace Transit.Framework.ExtensionPoints.UI.Panels
             {
                 foreach (var info in CategoryBuilders.OrderBy(c => c.Order))
                 {
-                    if (info is IToolMenuCategoryBuilder)
-                    {
-                        SpawnCategory((IToolMenuCategoryBuilder)info, null, "SubBar", null, true);
-                    }
-                    else
-                    {
-                        throw new NotImplementedException("TAMMenuPanel only support IToolMenuCategoryBuilder (for now)");
-                    }
+                    SpawnCategory(info, null, "SubBar", null, true);
                 }
             }
 
             return true;
         }
 
-        protected virtual UIButton SpawnCategory(IToolMenuCategoryBuilder categoryBuilder, string localeID, string spriteBase, string unlockText, bool enabled)
+        protected virtual UIButton SpawnCategory(IMenuCategoryBuilder categoryBuilder, string localeID, string spriteBase, string unlockText, bool enabled)
         {
             Type panelType = typeof (TAMMenuCategoryPanel);
             string category = categoryBuilder.Name;
@@ -59,7 +52,7 @@ namespace Transit.Framework.ExtensionPoints.UI.Panels
             TAMMenuCategoryPanel panel = m_Strip.GetComponentInContainer(uiButton, panelType) as TAMMenuCategoryPanel;
             if (panel != null)
             {
-                panel.ToolBuilders = categoryBuilder.ToolBuilders;
+                panel.ToolBuilders = MenuManager.instance.GetToolsForCategory(categoryBuilder);
                 panel.name = category;
                 panel.component.isInteractive = true;
                 panel.m_OptionsBar = this.m_OptionsBar;

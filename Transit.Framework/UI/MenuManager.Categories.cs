@@ -22,9 +22,17 @@ namespace Transit.Framework.UI
                 return;
             }
 
-            var menuCategoryBuilder = (IMenuCategoryBuilder) Activator.CreateInstance(menuCategoryBuilderType);
+            RegisterCategoryInstance((IMenuCategoryBuilder) Activator.CreateInstance(menuCategoryBuilderType));
+        }
 
-            _categoryBuilders[menuCategoryBuilderType] = menuCategoryBuilder;
+        public void RegisterCategoryInstance(IMenuCategoryBuilder menuCategoryBuilder)
+        {
+            if (_categoryBuilders.ContainsKey(menuCategoryBuilder.GetType()))
+            {
+                throw new Exception(string.Format("Type {0} is allready registered in the MenuManager", menuCategoryBuilder.GetType()));
+            }
+
+            _categoryBuilders[menuCategoryBuilder.GetType()] = menuCategoryBuilder;
             _categoryOrders[menuCategoryBuilder.Name] = menuCategoryBuilder.Order;
 
             if (menuCategoryBuilder.Group != null && menuCategoryBuilder.Service != null)
@@ -40,7 +48,7 @@ namespace Transit.Framework.UI
             }
         }
 
-        public int? GetOrder(string category)
+        public int? GetCategoryOrder(string category)
         {
             if (!_categoryOrders.ContainsKey(category))
             {
@@ -60,6 +68,30 @@ namespace Transit.Framework.UI
             }
 
             return _categoryByServices[id];
+        }
+
+        private bool IsCategoryRequired(IMenuCategoryBuilder menuCategoryBuilder)
+        {
+            foreach (var tool in _toolBuilders)
+            {
+                if (tool.UICategory == menuCategoryBuilder.Name)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public IEnumerable<IMenuCategoryBuilder> GetRequiredCategories(IToolbarItemBuilder item)
+        {
+            foreach (var cat in item.CategoryBuilders)
+            {
+                if (IsCategoryRequired(cat))
+                {
+                    yield return cat;
+                }
+            }
         }
     }
 }
