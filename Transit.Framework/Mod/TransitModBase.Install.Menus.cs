@@ -3,6 +3,7 @@ using JetBrains.Annotations;
 using Transit.Framework.Builders;
 using Transit.Framework.Modularity;
 using Transit.Framework.UI;
+using Transit.Framework.UI.Infos;
 
 namespace Transit.Framework.Mod
 {
@@ -18,12 +19,12 @@ namespace Transit.Framework.Mod
         {
             foreach (IModule module in this.GetOrCreateModules())
             {
-                foreach (var type in module.GetType().Assembly.GetImplementations<IToolbarItemBuilder>())
+                foreach (var type in module.GetType().Assembly.GetImplementations<IMenuToolbarItemInfo>())
                 {
                     MenuManager.instance.RegisterToolbarItem(type);
                 }
 
-                foreach (var type in module.GetType().Assembly.GetImplementations<IMenuCategoryBuilder>())
+                foreach (var type in module.GetType().Assembly.GetImplementations<IMenuCategoryInfo>())
                 {
                     MenuManager.instance.RegisterCategory(type);
                 }

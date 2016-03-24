@@ -1,8 +1,9 @@
 ﻿using Transit.Framework.Builders;
+using Transit.Framework.UI.Infos;
 
 namespace Transit.Addon.RoadExtensions.UI.Toolbar.Roads
 {
-    public class TinyRoadsCategoryBuilder : IMenuCategoryBuilder
+    public class TinyRoadsCategoryInfo : IMenuCategoryInfo
     {
         public const string NAME = "RoadsTiny";
 
@@ -13,7 +14,7 @@ namespace Transit.Addon.RoadExtensions.UI.Toolbar.Roads
         public ItemClass.Service? Service { get { return ItemClass.Service.Road; } }
     }
 
-    public class SmallHeavyRoadsCategoryBuilder : IMenuCategoryBuilder
+    public class SmallHeavyRoadsCategoryInfo : IMenuCategoryInfo
     {
         public const string NAME = "RoadsSmallHV";
 
@@ -24,7 +25,7 @@ namespace Transit.Addon.RoadExtensions.UI.Toolbar.Roads
         public ItemClass.Service? Service { get { return ItemClass.Service.Road; } }
     }
 
-    public class BusRoadsCategoryBuilder : IMenuCategoryBuilder
+    public class BusRoadsCategoryInfo : IMenuCategoryInfo
     {
         public const string NAME = "RoadsBusways";
 
@@ -35,7 +36,7 @@ namespace Transit.Addon.RoadExtensions.UI.Toolbar.Roads
         public ItemClass.Service? Service { get { return ItemClass.Service.Road; } }
     }
 
-    public class PedestriansRoadsCategoryBuilder : IMenuCategoryBuilder
+    public class PedestriansRoadsCategoryInfo : IMenuCategoryInfo
     {
         public const string NAME = "RoadsPedestrians";
 

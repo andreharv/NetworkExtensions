@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Transit.Framework.Builders;
+﻿using System.Collections.Generic;
+using Transit.Framework.UI.Infos;
 
 namespace Transit.Addon.TM.UI.Toolbar.RoadEditor
 {
-    public class RoadEditorToolbarItemBuilder : IToolbarItemBuilder
+    public class RoadEditorMenuToolbarItemInfo : IMenuToolbarItemInfo
     {
         public const string NAME = "RoadEditor";
 
@@ -26,13 +25,13 @@ namespace Transit.Addon.TM.UI.Toolbar.RoadEditor
             }
         }
 
-        public IEnumerable<IMenuCategoryBuilder> CategoryBuilders { get; private set; }
+        public IEnumerable<IMenuCategoryInfo> Categories { get; private set; }
 
-        public RoadEditorToolbarItemBuilder()
+        public RoadEditorMenuToolbarItemInfo()
         {
-            CategoryBuilders = new[]
+            Categories = new[]
             {
-                new RoadEditorMenuMainCategoryBuilder()
+                new RoadEditorMenuMainCategoryInfo()
             };
         }
     }

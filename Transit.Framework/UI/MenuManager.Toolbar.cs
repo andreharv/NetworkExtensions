@@ -3,39 +3,40 @@ using System.Collections.Generic;
 using System.Linq;
 using ColossalFramework;
 using Transit.Framework.Builders;
+using Transit.Framework.UI.Infos;
 
 namespace Transit.Framework.UI
 {
     public partial class MenuManager : Singleton<MenuManager>
     {
-        private readonly ICollection<IToolbarItemBuilder> _toolbarItems = new List<IToolbarItemBuilder>();
+        private readonly ICollection<IMenuToolbarItemInfo> _toolbarItems = new List<IMenuToolbarItemInfo>();
 
-        public void RegisterToolbarItem(Type toolbarItemBuilderType)
+        public void RegisterToolbarItem(Type menuToolbarItemInfo)
         {
-            if (!typeof(IToolbarItemBuilder).IsAssignableFrom(toolbarItemBuilderType))
+            if (!typeof(IMenuToolbarItemInfo).IsAssignableFrom(menuToolbarItemInfo))
             {
-                throw new Exception(string.Format("Type {0} is not supported by the MenuManager", toolbarItemBuilderType));
+                throw new Exception(string.Format("Type {0} is not supported by the MenuManager", menuToolbarItemInfo));
             }
 
-            if (_toolbarItems.Any(i => i.GetType() == toolbarItemBuilderType))
+            if (_toolbarItems.Any(i => i.GetType() == menuToolbarItemInfo))
             {
                 return;
             }
 
-            var toolbarItemBuilder = (IToolbarItemBuilder)Activator.CreateInstance(toolbarItemBuilderType);
+            var toolbarItemBuilder = (IMenuToolbarItemInfo)Activator.CreateInstance(menuToolbarItemInfo);
 
-            Log.Info("TFW: Adding toolbar item of type " + toolbarItemBuilderType);
+            Log.Info("TFW: Registering menu toolbar item of type " + menuToolbarItemInfo);
             _toolbarItems.Add(toolbarItemBuilder);
 
-            foreach (var cat in toolbarItemBuilder.CategoryBuilders)
+            foreach (var cat in toolbarItemBuilder.Categories)
             {
                 RegisterCategoryInstance(cat);
             }
         }
 
-        private bool IsToolbarItemRequired(IToolbarItemBuilder item)
+        private bool IsToolbarItemRequired(IMenuToolbarItemInfo item)
         {
-            foreach (var cat in item.CategoryBuilders)
+            foreach (var cat in item.Categories)
             {
                 if (IsCategoryRequired(cat))
                 {
@@ -46,7 +47,7 @@ namespace Transit.Framework.UI
             return false;
         }
 
-        public IEnumerable<IToolbarItemBuilder> GetRequiredToolbarItems()
+        public IEnumerable<IMenuToolbarItemInfo> GetRequiredToolbarItems()
         {
             foreach (var item in _toolbarItems)
             {

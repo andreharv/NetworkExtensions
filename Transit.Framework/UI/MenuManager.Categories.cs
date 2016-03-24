@@ -1,50 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
 using Transit.Framework.Builders;
+using Transit.Framework.UI.Infos;
 
 namespace Transit.Framework.UI
 {
     public partial class MenuManager
     {
-        private readonly IDictionary<Type, IMenuCategoryBuilder> _categoryBuilders = new Dictionary<Type, IMenuCategoryBuilder>();
+        private readonly IDictionary<Type, IMenuCategoryInfo> _categories = new Dictionary<Type, IMenuCategoryInfo>();
         private readonly IDictionary<string, int> _categoryOrders = new Dictionary<string, int>(StringComparer.InvariantCultureIgnoreCase);
-        private readonly IDictionary<string, ICollection<IMenuCategoryBuilder>> _categoryByServices = new Dictionary<string, ICollection<IMenuCategoryBuilder>>(StringComparer.InvariantCultureIgnoreCase);       
-        
-        public void RegisterCategory(Type menuCategoryBuilderType)
+        private readonly IDictionary<string, ICollection<IMenuCategoryInfo>> _categoryByServices = new Dictionary<string, ICollection<IMenuCategoryInfo>>(StringComparer.InvariantCultureIgnoreCase);
+
+        public void RegisterCategory(Type menuCategoryInfoType)
         {
-            if (!typeof(IMenuCategoryBuilder).IsAssignableFrom(menuCategoryBuilderType))
+            if (!typeof(IMenuCategoryInfo).IsAssignableFrom(menuCategoryInfoType))
             {
-                throw new Exception(string.Format("Type {0} is not supported by the MenuManager", menuCategoryBuilderType));
+                throw new Exception(string.Format("Type {0} is not supported by the MenuManager", menuCategoryInfoType));
             }
 
-            if (_categoryBuilders.ContainsKey(menuCategoryBuilderType))
+            if (_categories.ContainsKey(menuCategoryInfoType))
             {
                 return;
             }
 
-            RegisterCategoryInstance((IMenuCategoryBuilder) Activator.CreateInstance(menuCategoryBuilderType));
+            RegisterCategoryInstance((IMenuCategoryInfo)Activator.CreateInstance(menuCategoryInfoType));
         }
 
-        public void RegisterCategoryInstance(IMenuCategoryBuilder menuCategoryBuilder)
+        private void RegisterCategoryInstance(IMenuCategoryInfo menuCategoryInfo)
         {
-            if (_categoryBuilders.ContainsKey(menuCategoryBuilder.GetType()))
+            if (_categories.ContainsKey(menuCategoryInfo.GetType()))
             {
-                throw new Exception(string.Format("Type {0} is allready registered in the MenuManager", menuCategoryBuilder.GetType()));
+                throw new Exception(string.Format("Type {0} is allready registered in the MenuManager", menuCategoryInfo.GetType()));
             }
 
-            _categoryBuilders[menuCategoryBuilder.GetType()] = menuCategoryBuilder;
-            _categoryOrders[menuCategoryBuilder.Name] = menuCategoryBuilder.Order;
+            Log.Info("TFW: Registering menu category of type " + menuCategoryInfo.GetType());
+            _categories[menuCategoryInfo.GetType()] = menuCategoryInfo;
+            _categoryOrders[menuCategoryInfo.Name] = menuCategoryInfo.Order;
 
-            if (menuCategoryBuilder.Group != null && menuCategoryBuilder.Service != null)
+            if (menuCategoryInfo.Group != null && menuCategoryInfo.Service != null)
             {
-                var id = menuCategoryBuilder.Group + "." + menuCategoryBuilder.Service;
+                var id = menuCategoryInfo.Group + "." + menuCategoryInfo.Service;
 
                 if (!_categoryByServices.ContainsKey(id))
                 {
-                    _categoryByServices[id] = new HashSet<IMenuCategoryBuilder>();
+                    _categoryByServices[id] = new HashSet<IMenuCategoryInfo>();
                 }
 
-                _categoryByServices[id].Add(menuCategoryBuilder);
+                _categoryByServices[id].Add(menuCategoryInfo);
             }
         }
 
@@ -58,19 +60,19 @@ namespace Transit.Framework.UI
             return _categoryOrders[category];
         }
 
-        public IEnumerable<IMenuCategoryBuilder> GetAdditionalCategories(GeneratedGroupPanel.GroupFilter group, ItemClass.Service service)
+        public IEnumerable<IMenuCategoryInfo> GetAdditionalCategories(GeneratedGroupPanel.GroupFilter group, ItemClass.Service service)
         {
             var id = group + "." + service;
 
             if (!_categoryByServices.ContainsKey(id))
             {
-                return new IMenuCategoryBuilder[0];
+                return new IMenuCategoryInfo[0];
             }
 
             return _categoryByServices[id];
         }
 
-        private bool IsCategoryRequired(IMenuCategoryBuilder menuCategoryBuilder)
+        private bool IsCategoryRequired(IMenuCategoryInfo menuCategoryBuilder)
         {
             foreach (var tool in _toolBuilders)
             {
@@ -83,9 +85,9 @@ namespace Transit.Framework.UI
             return false;
         }
 
-        public IEnumerable<IMenuCategoryBuilder> GetRequiredCategories(IToolbarItemBuilder item)
+        public IEnumerable<IMenuCategoryInfo> GetRequiredCategories(IMenuToolbarItemInfo item)
         {
-            foreach (var cat in item.CategoryBuilders)
+            foreach (var cat in item.Categories)
             {
                 if (IsCategoryRequired(cat))
                 {

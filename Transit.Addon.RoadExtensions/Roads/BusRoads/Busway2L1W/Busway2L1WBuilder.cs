@@ -24,7 +24,7 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L1W
             {
                 yield return new MenuItemBuilder
                 {
-                    UICategory = BusRoadsCategoryBuilder.NAME,
+                    UICategory = BusRoadsCategoryInfo.NAME,
                     UIOrder = 20,
                     Name = "Small Busway OneWay",
                     DisplayName = "[BETA] OneWay Busway",
@@ -34,7 +34,7 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L1W
                 };
                 yield return new MenuItemBuilder
                 {
-                    UICategory = BusRoadsCategoryBuilder.NAME,
+                    UICategory = BusRoadsCategoryInfo.NAME,
                     UIOrder = 21,
                     Name = "Small Busway OneWay Decoration Grass",
                     DisplayName = "[BETA] OneWay Busway with Grass",
@@ -44,7 +44,7 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L1W
                 };
                 yield return new MenuItemBuilder
                 {
-                    UICategory = BusRoadsCategoryBuilder.NAME,
+                    UICategory = BusRoadsCategoryInfo.NAME,
                     UIOrder = 22,
                     Name = "Small Busway OneWay Decoration Trees",
                     DisplayName = "[BETA] OneWay Busway with Trees",

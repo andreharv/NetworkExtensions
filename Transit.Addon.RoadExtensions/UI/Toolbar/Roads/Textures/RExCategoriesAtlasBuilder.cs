@@ -12,10 +12,10 @@ namespace Transit.Addon.RoadExtensions.UI.Toolbar.Roads.Textures
         {
             get
             {
-                yield return TinyRoadsCategoryBuilder.NAME;
-                yield return PedestriansRoadsCategoryBuilder.NAME;
-                yield return SmallHeavyRoadsCategoryBuilder.NAME;
-                yield return BusRoadsCategoryBuilder.NAME;
+                yield return TinyRoadsCategoryInfo.NAME;
+                yield return PedestriansRoadsCategoryInfo.NAME;
+                yield return SmallHeavyRoadsCategoryInfo.NAME;
+                yield return BusRoadsCategoryInfo.NAME;
             }
         }
 
@@ -31,10 +31,10 @@ namespace Transit.Addon.RoadExtensions.UI.Toolbar.Roads.Textures
             const string PATH = @"UI\Toolbar\Roads\Textures\RExCategories.png";
 
             const string BASE = "SubBarButtonBase";
-            const string ROADS_TINY_SUBBAR = "SubBar" + TinyRoadsCategoryBuilder.NAME;
-            const string ROADS_SMALL_HV_SUBBAR = "SubBar" + SmallHeavyRoadsCategoryBuilder.NAME;
-            const string ROADS_BUSWAYS_SUBBAR = "SubBar" + BusRoadsCategoryBuilder.NAME;
-            const string ROADS_PED_SUBBAR = "SubBar" + PedestriansRoadsCategoryBuilder.NAME;
+            const string ROADS_TINY_SUBBAR = "SubBar" + TinyRoadsCategoryInfo.NAME;
+            const string ROADS_SMALL_HV_SUBBAR = "SubBar" + SmallHeavyRoadsCategoryInfo.NAME;
+            const string ROADS_BUSWAYS_SUBBAR = "SubBar" + BusRoadsCategoryInfo.NAME;
+            const string ROADS_PED_SUBBAR = "SubBar" + PedestriansRoadsCategoryInfo.NAME;
 
             var versions = new[] { "", "Disabled", "Focused", "Hovered", "Pressed" };
 

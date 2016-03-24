@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Transit.Framework.Builders;
+using Transit.Framework.UI.Infos;
 
 namespace Transit.Framework.UI
 {
@@ -18,7 +19,7 @@ namespace Transit.Framework.UI
             _toolBuilders.RemoveIfAny(toolBuilder);
         }
 
-        public IEnumerable<IToolBuilder> GetToolsForCategory(IMenuCategoryBuilder menuCategoryBuilder)
+        public IEnumerable<IToolBuilder> GetToolsForCategory(IMenuCategoryInfo menuCategoryBuilder)
         {
             foreach (var tool in _toolBuilders)
             {

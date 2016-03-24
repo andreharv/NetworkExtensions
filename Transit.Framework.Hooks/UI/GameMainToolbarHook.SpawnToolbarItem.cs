@@ -6,13 +6,14 @@ using System.Reflection;
 using Transit.Framework.Builders;
 using Transit.Framework.ExtensionPoints.UI.Panels;
 using Transit.Framework.UI;
+using Transit.Framework.UI.Infos;
 using UnityEngine;
 
 namespace Transit.Framework.Hooks.UI
 {
     public partial class GameMainToolbarHook
     {
-        private UIButton SpawnToolbarItem(IToolbarItemBuilder item, UITabstrip strip, string unlockText, string spriteBase, bool enabled)
+        private UIButton SpawnToolbarItem(IMenuToolbarItemInfo item, UITabstrip strip, string unlockText, string spriteBase, bool enabled)
         {
             string name = item.Name;
             Type panelType = typeof(TAMMenuPanel);

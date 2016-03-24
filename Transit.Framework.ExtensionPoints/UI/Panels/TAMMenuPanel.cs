@@ -5,13 +5,14 @@ using ColossalFramework.Globalization;
 using ColossalFramework.UI;
 using Transit.Framework.Builders;
 using Transit.Framework.UI;
+using Transit.Framework.UI.Infos;
 using UnityEngine;
 
 namespace Transit.Framework.ExtensionPoints.UI.Panels
 {
     public class TAMMenuPanel : GeneratedGroupPanel
     {
-        public IEnumerable<IMenuCategoryBuilder> CategoryBuilders { get; set; }
+        public IEnumerable<IMenuCategoryInfo> CategoryBuilders { get; set; }
 
         protected sealed override bool CustomRefreshPanel()
         {
@@ -26,7 +27,7 @@ namespace Transit.Framework.ExtensionPoints.UI.Panels
             return true;
         }
 
-        protected virtual UIButton SpawnCategory(IMenuCategoryBuilder categoryBuilder, string localeID, string spriteBase, string unlockText, bool enabled)
+        protected virtual UIButton SpawnCategory(IMenuCategoryInfo categoryBuilder, string localeID, string spriteBase, string unlockText, bool enabled)
         {
             Type panelType = typeof (TAMMenuCategoryPanel);
             string category = categoryBuilder.Name;

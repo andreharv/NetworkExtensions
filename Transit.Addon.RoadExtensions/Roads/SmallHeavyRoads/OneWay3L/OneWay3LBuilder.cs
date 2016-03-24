@@ -17,7 +17,7 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.OneWay3L
         public string DisplayName { get { return "Three-Lane Oneway"; } }
         public string Description { get { return "A three-lane one-way road without parkings spaces. Supports medium traffic."; } }
         public string ShortDescription { get { return "No parking, zoneable, medium traffic"; } }
-        public string UICategory { get { return SmallHeavyRoadsCategoryBuilder.NAME; } }
+        public string UICategory { get { return SmallHeavyRoadsCategoryInfo.NAME; } }
 
         public string ThumbnailsPath { get { return @"Roads\SmallHeavyRoads\OneWay3L\thumbnails.png"; } }
         public string InfoTooltipPath { get { return @"Roads\SmallHeavyRoads\OneWay3L\infotooltip.png"; } }

@@ -10,7 +10,7 @@ namespace Transit.Framework.UI
 
         public void InstallLocalization(Locale locale)
         {
-            foreach (var kvp in _categoryBuilders)
+            foreach (var kvp in _categories)
             {
                 if (!_installedLocCatKeys.Contains(kvp.Value.Name))
                 {

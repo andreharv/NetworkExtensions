@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using Transit.Addon.TM.Tools.LaneRouting;
-using Transit.Framework.Builders;
+﻿using Transit.Framework.UI.Infos;
 
 namespace Transit.Addon.TM.UI.Toolbar.RoadEditor
 {
-    public class RoadEditorMenuMainCategoryBuilder : IMenuCategoryBuilder
+    public class RoadEditorMenuMainCategoryInfo : IMenuCategoryInfo
     {
         public const string NAME = "RoadEditorMainCategory";
 

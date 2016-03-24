@@ -10,7 +10,7 @@ namespace Transit.Addon.TM.UI.Toolbar.RoadEditor.Textures
     {
         public IEnumerable<string> Keys
         {
-            get { yield return RoadEditorToolbarItemBuilder.NAME; }
+            get { yield return RoadEditorMenuToolbarItemInfo.NAME; }
         }
 
         public UITextureAtlas Build()
