@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Transit.Framework.Builders;
 using Transit.Framework.UI.Infos;
 
 namespace Transit.Framework.UI
@@ -72,11 +71,11 @@ namespace Transit.Framework.UI
             return _categoryByServices[id];
         }
 
-        private bool IsCategoryRequired(IMenuCategoryInfo menuCategoryBuilder)
+        private bool IsCategoryRequired(IMenuCategoryInfo menuCategoryInfo)
         {
             foreach (var tool in _toolBuilders)
             {
-                if (tool.UICategory == menuCategoryBuilder.Name)
+                if (tool.UICategory == menuCategoryInfo.Name)
                 {
                     return true;
                 }

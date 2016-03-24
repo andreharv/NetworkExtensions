@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Transit.Framework.Builders;
 using Transit.Framework.UI.Infos;
 
@@ -19,11 +18,11 @@ namespace Transit.Framework.UI
             _toolBuilders.RemoveIfAny(toolBuilder);
         }
 
-        public IEnumerable<IToolBuilder> GetToolsForCategory(IMenuCategoryInfo menuCategoryBuilder)
+        public IEnumerable<IToolBuilder> GetToolsForCategory(IMenuCategoryInfo menuCategoryInfo)
         {
             foreach (var tool in _toolBuilders)
             {
-                if (tool.UICategory == menuCategoryBuilder.Name)
+                if (tool.UICategory == menuCategoryInfo.Name)
                 {
                     yield return tool;
                 }

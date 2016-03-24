@@ -1,8 +1,7 @@
-﻿using System;
+﻿using ColossalFramework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using ColossalFramework;
-using Transit.Framework.Builders;
 using Transit.Framework.UI.Infos;
 
 namespace Transit.Framework.UI

@@ -12,13 +12,13 @@ namespace Transit.Framework.ExtensionPoints.UI.Panels
 {
     public class TAMMenuPanel : GeneratedGroupPanel
     {
-        public IEnumerable<IMenuCategoryInfo> CategoryBuilders { get; set; }
+        public IEnumerable<IMenuCategoryInfo> Categories { get; set; }
 
         protected sealed override bool CustomRefreshPanel()
         {
-            if (CategoryBuilders != null)
+            if (Categories != null)
             {
-                foreach (var info in CategoryBuilders.OrderBy(c => c.Order))
+                foreach (var info in Categories.OrderBy(c => c.Order))
                 {
                     SpawnCategory(info, null, "SubBar", null, true);
                 }
@@ -27,10 +27,10 @@ namespace Transit.Framework.ExtensionPoints.UI.Panels
             return true;
         }
 
-        protected virtual UIButton SpawnCategory(IMenuCategoryInfo categoryBuilder, string localeID, string spriteBase, string unlockText, bool enabled)
+        protected virtual UIButton SpawnCategory(IMenuCategoryInfo menuCategoryInfo, string localeID, string spriteBase, string unlockText, bool enabled)
         {
             Type panelType = typeof (TAMMenuCategoryPanel);
-            string category = categoryBuilder.Name;
+            string category = menuCategoryInfo.Name;
             int objectIndex = this.GetFieldValue<int>("m_ObjectIndex");
 
             UIButton uiButton = null;
@@ -53,7 +53,7 @@ namespace Transit.Framework.ExtensionPoints.UI.Panels
             TAMMenuCategoryPanel panel = m_Strip.GetComponentInContainer(uiButton, panelType) as TAMMenuCategoryPanel;
             if (panel != null)
             {
-                panel.ToolBuilders = MenuManager.instance.GetToolsForCategory(categoryBuilder);
+                panel.ToolBuilders = MenuManager.instance.GetToolsForCategory(menuCategoryInfo);
                 panel.name = category;
                 panel.component.isInteractive = true;
                 panel.m_OptionsBar = this.m_OptionsBar;

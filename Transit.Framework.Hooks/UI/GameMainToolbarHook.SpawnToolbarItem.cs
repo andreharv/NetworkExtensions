@@ -36,7 +36,7 @@ namespace Transit.Framework.Hooks.UI
             TAMMenuPanel panel = strip.GetComponentInContainer(uIButton, panelType) as TAMMenuPanel;
             if (panel != null)
             {
-                panel.CategoryBuilders = MenuManager.instance.GetRequiredCategories(item);
+                panel.Categories = MenuManager.instance.GetRequiredCategories(item);
                 panel.component.isInteractive = true;
                 panel.m_OptionsBar = this.m_OptionsBar;
                 panel.m_DefaultInfoTooltipAtlas = this.m_DefaultInfoTooltipAtlas;
