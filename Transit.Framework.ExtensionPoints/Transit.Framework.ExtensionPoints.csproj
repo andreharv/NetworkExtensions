@@ -73,7 +73,7 @@
     <Compile Include="PathFindingFeatures\TAMPathFindFeatureManager.LaneRouting.cs" />
     <Compile Include="PathFindingFeatures\TAMPathFindFeatureManager.RoadSpeed.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI\Panels\TAMMenuCategoryPanel.cs" />
+    <Compile Include="UI\Panels\TAMToolPanel.cs" />
     <Compile Include="UI\Panels\TAMMenuPanel.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -29,7 +29,7 @@ namespace Transit.Framework.ExtensionPoints.UI.Panels
 
         protected virtual UIButton SpawnCategory(IMenuCategoryInfo menuCategoryInfo, string localeID, string spriteBase, string unlockText, bool enabled)
         {
-            Type panelType = typeof (TAMMenuCategoryPanel);
+            Type panelType = typeof (TAMToolPanel);
             string category = menuCategoryInfo.Name;
             int objectIndex = this.GetFieldValue<int>("m_ObjectIndex");
 
@@ -50,7 +50,7 @@ namespace Transit.Framework.ExtensionPoints.UI.Panels
             uiButton.gameObject.GetComponent<TutorialUITag>().tutorialTag = category;
             uiButton.group = m_Strip;
 
-            TAMMenuCategoryPanel panel = m_Strip.GetComponentInContainer(uiButton, panelType) as TAMMenuCategoryPanel;
+            TAMToolPanel panel = m_Strip.GetComponentInContainer(uiButton, panelType) as TAMToolPanel;
             if (panel != null)
             {
                 panel.ToolBuilders = MenuManager.instance.GetToolsForCategory(menuCategoryInfo);

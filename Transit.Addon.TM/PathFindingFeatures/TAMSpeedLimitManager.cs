@@ -370,7 +370,7 @@ namespace Transit.Addon.TM.PathFindingFeatures
             {
                 Monitor.Enter(_laneSpeedLimitsLock);
 
-                if (laneId <= 0 || !_laneSpeedLimits.ContainsKey(laneId))
+                if (laneId <= 0 || _laneSpeedLimits == null || !_laneSpeedLimits.ContainsKey(laneId))
                     return null;
 
                 return _laneSpeedLimits[laneId];
