@@ -29,70 +29,6 @@ namespace Transit.Addon.TM.Tools.LaneRouting
             }
         }
 
-        private class SegmentLaneMarker
-        {
-            public uint LaneId { get; set; }
-            public int LaneIndex { get; set; }
-            public float Size { get; set; }
-            public Bezier3 Bezier { get; set; }
-            public Bounds[] Bounds { get; set; }
-
-            public SegmentLaneMarker()
-            {
-                Size = 1f;
-            }
-
-            public bool IntersectRay(Ray ray)
-            {
-                if (Bounds == null)
-                    CalculateBounds();
-
-                foreach (Bounds bounds in Bounds)
-                {
-                    if (bounds.IntersectRay(ray))
-                        return true;
-                }
-
-                return false;
-            }
-
-            void CalculateBounds()
-            {
-                float angle = Vector3.Angle(Bezier.a, Bezier.b);
-                if (Mathf.Approximately(angle, 0f) || Mathf.Approximately(angle, 180f))
-                {
-                    angle = Vector3.Angle(Bezier.b, Bezier.c);
-                    if (Mathf.Approximately(angle, 0f) || Mathf.Approximately(angle, 180f))
-                    {
-                        angle = Vector3.Angle(Bezier.c, Bezier.d);
-                        if (Mathf.Approximately(angle, 0f) || Mathf.Approximately(angle, 180f))
-                        {
-                            // linear bezier
-                            Bounds bounds = Bezier.GetBounds();
-                            bounds.Expand(1f);
-                            Bounds = new Bounds[] { bounds };
-                            return;
-                        }
-                    }
-                }
-
-                // split bezier in 10 parts to correctly raycast curves
-                Bezier3 bezier;
-                int amount = 10;
-                Bounds = new Bounds[amount];
-                float size = 1f / amount;
-                for (int i = 0; i < amount; i++)
-                {
-                    bezier = Bezier.Cut(i * size, (i + 1) * size);
-
-                    Bounds bounds = bezier.GetBounds();
-                    bounds.Expand(1f);
-                    Bounds[i] = bounds;
-                }
-
-            }
-        }
-
         private struct Segment
         {
             public ushort SegmentId { get; set; }
@@ -105,9 +41,6 @@ namespace Transit.Addon.TM.Tools.LaneRouting
         private NodeLaneMarker m_selectedMarker;
         private readonly Dictionary<ushort, FastList<NodeLaneMarker>> m_nodeMarkers = new Dictionary<ushort, FastList<NodeLaneMarker>>();
         private readonly Dictionary<ushort, Segment> m_segments = new Dictionary<ushort, Segment>();
-        private readonly Dictionary<int, FastList<SegmentLaneMarker>> m_hoveredLaneMarkers = new Dictionary<int, FastList<SegmentLaneMarker>>();
-        private readonly List<SegmentLaneMarker> m_selectedLaneMarkers = new List<SegmentLaneMarker>();
-        private int m_hoveredLanes;
 
         protected override void Awake()
         {
@@ -155,21 +88,9 @@ namespace Transit.Addon.TM.Tools.LaneRouting
                 return;
             }
 
-            if (m_hoveredSegment != 0)
-            {
-                HandleLaneCustomization();
-            }
-
             if (!RayCastSegmentAndNode(out m_hoveredSegment, out m_hoveredNode))
             {
-                // clear lanes
-                if (Input.GetMouseButtonUp(1))
-                {
-                    m_selectedLaneMarkers.Clear();
-                }
-
                 m_segments.Clear();
-                m_hoveredLaneMarkers.Clear();
                 return;
             }
 
@@ -215,11 +136,6 @@ namespace Transit.Addon.TM.Tools.LaneRouting
                         SetLaneMarkers();
                     }
                 }
-                else if (Input.GetMouseButtonUp(1))
-                {
-                    // clear lane selection
-                    m_selectedLaneMarkers.Clear();
-                }
 
             }
             else if (m_hoveredNode != 0 && NetManager.instance.m_nodes.m_buffer[m_hoveredNode].CountSegments() < 2)
@@ -230,7 +146,6 @@ namespace Transit.Addon.TM.Tools.LaneRouting
             if (m_hoveredSegment == 0)
             {
                 m_segments.Clear();
-                m_hoveredLaneMarkers.Clear();
             }
 
             if (Input.GetMouseButtonUp(0))
@@ -294,52 +209,6 @@ namespace Transit.Addon.TM.Tools.LaneRouting
             }
         }
 
-        private void HandleLaneCustomization()
-        {
-            // Handle lane settings
-            Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-            m_hoveredLanes = ushort.MaxValue;
-            foreach (FastList<SegmentLaneMarker> laneMarkers in m_hoveredLaneMarkers.Values)
-            {
-                if (laneMarkers.m_size == 0)
-                    continue;
-
-                for (int i = 0; i < laneMarkers.m_size; i++)
-                {
-                    SegmentLaneMarker marker = laneMarkers.m_buffer[i];
-                    if (NetManager.instance.m_lanes.m_buffer[marker.LaneId].m_segment != m_hoveredSegment)
-                        continue;
-
-                    if (marker.IntersectRay(mouseRay))
-                    {
-                        m_hoveredLanes = marker.LaneIndex;
-                        break;
-                    }
-                }
-
-                if (m_hoveredLanes != ushort.MaxValue)
-                    break;
-            }
-
-            if (m_hoveredLanes != ushort.MaxValue && Input.GetMouseButtonUp(0))
-            {
-                SegmentLaneMarker[] hoveredMarkers = m_hoveredLaneMarkers[m_hoveredLanes].ToArray();
-                HashSet<uint> hoveredLanes = new HashSet<uint>(hoveredMarkers.Select(m => m.LaneId));
-                if (m_selectedLaneMarkers.RemoveAll(m => hoveredLanes.Contains(m.LaneId)) == 0)
-                {
-                    bool firstLane = false;
-                    if (m_selectedLaneMarkers.Count == 0)
-                        firstLane = true;
-
-                    m_selectedLaneMarkers.AddRange(hoveredMarkers);
-                }
-            }
-            else if (Input.GetMouseButtonUp(1))
-            {
-                m_selectedLaneMarkers.Clear();
-            }
-        }
-
         private float _time = 0;
         protected override void OnEnable()
         {
@@ -355,9 +224,7 @@ namespace Transit.Addon.TM.Tools.LaneRouting
             m_hoveredNode = m_hoveredSegment = 0;
             m_selectedNode = 0;
             m_selectedMarker = null;
-            m_selectedLaneMarkers.Clear();
             m_segments.Clear();
-            m_hoveredLaneMarkers.Clear();
         }
 
         protected override void OnDisable()
@@ -469,7 +336,6 @@ namespace Transit.Addon.TM.Tools.LaneRouting
 
         private void SetLaneMarkers()
         {
-            m_hoveredLaneMarkers.Clear();
             if (m_segments.Count == 0)
                 return;
 
@@ -478,9 +344,6 @@ namespace Transit.Addon.TM.Tools.LaneRouting
             int laneCount = info.m_lanes.Length;
             bool bothWays = info.m_hasBackwardVehicleLanes && info.m_hasForwardVehicleLanes;
             bool isInverted = false;
-
-            for (ushort i = 0; i < laneCount; i++)
-                m_hoveredLaneMarkers[i] = new FastList<SegmentLaneMarker>();
 
             foreach (Segment seg in m_segments.Values)
             {
@@ -507,13 +370,6 @@ namespace Transit.Addon.TM.Tools.LaneRouting
                         int index = j;
                         if (bothWays && isInverted)
                             index += (j % 2 == 0) ? 1 : -1;
-
-                        m_hoveredLaneMarkers[index].Add(new SegmentLaneMarker()
-                        {
-                            Bezier = bezier,
-                            LaneId = laneId,
-                            LaneIndex = index
-                        });
                     }
 
                     laneId = lane.m_nextLane;
@@ -606,26 +462,6 @@ namespace Transit.Addon.TM.Tools.LaneRouting
                     }
                 }
             }
-            else
-            {
-                foreach (KeyValuePair<int, FastList<SegmentLaneMarker>> keyValuePair in m_hoveredLaneMarkers)
-                {
-                    bool renderBig = false;
-                    if (m_hoveredLanes == keyValuePair.Key)
-                        renderBig = true;
-
-                    FastList<SegmentLaneMarker> laneMarkers = keyValuePair.Value;
-                    for (int i = 0; i < laneMarkers.m_size; i++)
-                    {
-                        RenderManager.instance.OverlayEffect.DrawBezier(cameraInfo, new Color(0f, 0f, 1f, 0.75f), laneMarkers.m_buffer[i].Bezier, renderBig ? 2f : laneMarkers.m_buffer[i].Size, 0, 0, Mathf.Min(laneMarkers.m_buffer[i].Bezier.a.y, laneMarkers.m_buffer[i].Bezier.d.y) - 1f, Mathf.Max(laneMarkers.m_buffer[i].Bezier.a.y, laneMarkers.m_buffer[i].Bezier.d.y) + 1f, true, false);
-                    }
-                }
-
-                foreach (SegmentLaneMarker marker in m_selectedLaneMarkers)
-                {
-                    RenderManager.instance.OverlayEffect.DrawBezier(cameraInfo, new Color(0f, 1f, 0f, 0.75f), marker.Bezier, 2f, 0, 0, Mathf.Min(marker.Bezier.a.y, marker.Bezier.d.y) - 1f, Mathf.Max(marker.Bezier.a.y, marker.Bezier.d.y) + 1f, true, false);
-                }
-            }
 
             foreach (ushort node in m_nodeMarkers.Keys)
             {
@@ -696,35 +532,6 @@ namespace Transit.Addon.TM.Tools.LaneRouting
             netNode = 0;
             return false;
         }
-
-        #region Road Customizer
-
-        private bool AnyLaneSelected { get { return m_selectedLaneMarkers.Count > 0; } }
-
-        public ExtendedUnitType GetCurrentVehicleRestrictions()
-        {
-            if (!AnyLaneSelected)
-                return ExtendedUnitType.None;
-
-            return TAMRestrictionManager.instance.GetRestrictions(m_selectedLaneMarkers[0].LaneId, ExtendedUnitType.RoadVehicle);
-        }
-
-        public ExtendedUnitType ToggleRestriction(ExtendedUnitType vehicleType)
-        {
-            if (!AnyLaneSelected)
-                return ExtendedUnitType.None;
-
-            var restrictions = TAMRestrictionManager.instance.GetRestrictions(m_selectedLaneMarkers[0].LaneId, ExtendedUnitType.RoadVehicle);
-
-            restrictions ^= vehicleType;
-
-            foreach (SegmentLaneMarker lane in m_selectedLaneMarkers)
-                TAMRestrictionManager.instance.SetRestrictions(lane.LaneId, restrictions);
-
-            return restrictions;
-        }
-
-        #endregion
 
         private static readonly Color32[] colors = new Color32[]
 		{
