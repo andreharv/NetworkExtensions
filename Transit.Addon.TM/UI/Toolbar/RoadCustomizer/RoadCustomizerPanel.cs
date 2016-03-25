@@ -2,7 +2,7 @@
 using System.Collections;
 using ColossalFramework.UI;
 using Transit.Addon.TM.Tools;
-using Transit.Addon.TM.Tools.RoadCustomizer;
+using Transit.Addon.TM.Tools.LaneRestriction;
 using Transit.Addon.TM.UI.Toolbar.RoadCustomizer.Textures;
 using Transit.Framework;
 using Transit.Framework.Network;
@@ -29,7 +29,7 @@ namespace Transit.Addon.TM.UI.Toolbar.RoadCustomizer
             this.m_objectIndex = m_selectedIndex = 0;
         }
 
-        public void AttachLaneCustomizationEvents(RoadCustomizerTool tool)
+        public void AttachLaneCustomizationEvents(LaneRestrictionTool tool)
         {
             tool.OnStartLaneCustomization += EnableIcons;
             tool.OnEndLaneCustomization += DisableIcons;
@@ -42,7 +42,7 @@ namespace Transit.Addon.TM.UI.Toolbar.RoadCustomizer
 
         void EnableIcons()
         {
-            RoadCustomizerTool rct = ToolsModifierControl.GetCurrentTool<RoadCustomizerTool>();
+            LaneRestrictionTool rct = ToolsModifierControl.GetCurrentTool<LaneRestrictionTool>();
             if (rct != null)
             {
                 ExtendedUnitType restrictions = rct.GetCurrentVehicleRestrictions();
@@ -246,7 +246,7 @@ namespace Transit.Addon.TM.UI.Toolbar.RoadCustomizer
                     btn.pressedFgSprite = btn.name + "90%";
                 }
 
-                RoadCustomizerTool rct = ToolsModifierControl.GetCurrentTool<RoadCustomizerTool>();
+                LaneRestrictionTool rct = ToolsModifierControl.GetCurrentTool<LaneRestrictionTool>();
                 if (rct != null)
                 {
                     if (btn.stringUserData == "Emergency")

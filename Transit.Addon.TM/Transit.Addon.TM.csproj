@@ -112,7 +112,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Data\TMConfigurationV2.cs" />
     <Compile Include="Data\Flags.cs" />
-    <Compile Include="Tools\RoadCustomizer\RoadCustomizerTool.cs" />
+    <Compile Include="Tools\LaneRestriction\LaneRestrictionTool.cs" />
     <Compile Include="Traffic\VehicleRestrictionsManager.cs" />
     <Compile Include="UI\TexturesV2.cs" />
     <Compile Include="UI\TMOptionsUI.cs" />

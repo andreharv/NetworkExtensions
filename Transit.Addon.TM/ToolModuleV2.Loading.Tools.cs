@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Transit.Addon.TM.Tools.RoadCustomizer;
+using Transit.Addon.TM.Tools.LaneRestriction;
 using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.UI;
@@ -50,7 +50,7 @@ namespace Transit.Addon.TM
             }
 
             // TODO: legacy to be removed
-            ToolsModifierControl.toolController.AddTool<RoadCustomizerTool>();
+            ToolsModifierControl.toolController.AddTool<LaneRestrictionTool>();
         }
 
         private void UninstallTools()
@@ -74,7 +74,7 @@ namespace Transit.Addon.TM
             }
 
             // TODO: legacy to be removed
-            ToolsModifierControl.toolController.RemoveTool<RoadCustomizerTool>();
+            ToolsModifierControl.toolController.RemoveTool<LaneRestrictionTool>();
         }
     }
 }

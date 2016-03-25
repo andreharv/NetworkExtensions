@@ -15,7 +15,7 @@ namespace Transit.Addon.TM.DataSerialization
     {
         private const string TPPLEGACY_LANEDATA_ID = "Traffic++_RoadManager_Lanes";
         private const string TAM_ROUTEDATA_ID = "TAM_Routes_V1.0";
-        private const string TAM_RSTRICTIONDATA_ID = "TAM_Restrictions_V1.0";
+        private const string TAM_RESTRICTIONDATA_ID = "TAM_Restrictions_V1.0";
         private const string TAM_SPEEDLIMITDATA_ID = "TAM_SpeedLimits_V1.0";
 
         public override void OnLoadData()
@@ -27,7 +27,7 @@ namespace Transit.Addon.TM.DataSerialization
         private void LoadTAMData()
         {
             var routeData = new DataSerializer<TAMLaneRoute[], TAMDataSerializationBinder>().DeserializeData(serializableDataManager, TAM_ROUTEDATA_ID);
-            var restrictionData = new DataSerializer<TAMLaneRestriction[], TAMDataSerializationBinder>().DeserializeData(serializableDataManager, TAM_RSTRICTIONDATA_ID);
+            var restrictionData = new DataSerializer<TAMLaneRestriction[], TAMDataSerializationBinder>().DeserializeData(serializableDataManager, TAM_RESTRICTIONDATA_ID);
             var speedLimitData = new DataSerializer<TAMLaneSpeedLimit[], TAMDataSerializationBinder>().DeserializeData(serializableDataManager, TAM_SPEEDLIMITDATA_ID);
 
             if (routeData != null || 
@@ -75,7 +75,7 @@ namespace Transit.Addon.TM.DataSerialization
             }
             if (TAMRestrictionManager.instance.IsLoaded())
             {
-                new DataSerializer<TAMLaneRestriction[], TPPDataSerializationBinder>().SerializeData(serializableDataManager, TAM_RSTRICTIONDATA_ID, TAMRestrictionManager.instance.GetAllLaneRestrictions());
+                new DataSerializer<TAMLaneRestriction[], TPPDataSerializationBinder>().SerializeData(serializableDataManager, TAM_RESTRICTIONDATA_ID, TAMRestrictionManager.instance.GetAllLaneRestrictions());
             }
             if (TAMSpeedLimitManager.instance.IsLoaded())
             {
