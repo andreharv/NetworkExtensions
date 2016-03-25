@@ -1,23 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using ColossalFramework.Globalization;
 using ColossalFramework.UI;
-using Transit.Framework.UI.Toolbar.Infos;
+using Transit.Framework.Builders;
+using Transit.Framework.UI;
+using Transit.Framework.UI.Infos;
 using UnityEngine;
 
-namespace Transit.Framework.UI.Toolbar.Panels
+namespace Transit.Framework.ExtensionPoints.UI.Panels
 {
     public class TAMMenuPanel : GeneratedGroupPanel
     {
-        public IEnumerable<IMenuCategoryInfo> CategoryInfos { get; set; }
+        public IEnumerable<IMenuCategoryInfo> Categories { get; set; }
 
         protected sealed override bool CustomRefreshPanel()
         {
-            if (CategoryInfos != null)
+            if (Categories != null)
             {
-                foreach (var info in CategoryInfos.OrderBy(c => c.Order))
+                foreach (var info in Categories.OrderBy(c => c.Order))
                 {
                     SpawnCategory(info, null, "SubBar", null, true);
                 }
@@ -26,10 +27,10 @@ namespace Transit.Framework.UI.Toolbar.Panels
             return true;
         }
 
-        protected virtual UIButton SpawnCategory(IMenuCategoryInfo categoryInfo, string localeID, string spriteBase, string unlockText, bool enabled)
+        protected virtual UIButton SpawnCategory(IMenuCategoryInfo menuCategoryInfo, string localeID, string spriteBase, string unlockText, bool enabled)
         {
-            Type panelType = typeof (TAMMenuCategoryPanel);
-            string category = categoryInfo.Name;
+            Type panelType = typeof (TAMToolPanel);
+            string category = menuCategoryInfo.Name;
             int objectIndex = this.GetFieldValue<int>("m_ObjectIndex");
 
             UIButton uiButton = null;
@@ -49,10 +50,10 @@ namespace Transit.Framework.UI.Toolbar.Panels
             uiButton.gameObject.GetComponent<TutorialUITag>().tutorialTag = category;
             uiButton.group = m_Strip;
 
-            TAMMenuCategoryPanel panel = m_Strip.GetComponentInContainer(uiButton, panelType) as TAMMenuCategoryPanel;
+            TAMToolPanel panel = m_Strip.GetComponentInContainer(uiButton, panelType) as TAMToolPanel;
             if (panel != null)
             {
-                panel.ToolBuilders = categoryInfo.ToolBuilders;
+                panel.ToolBuilders = MenuManager.instance.GetToolsForCategory(menuCategoryInfo);
                 panel.name = category;
                 panel.component.isInteractive = true;
                 panel.m_OptionsBar = this.m_OptionsBar;

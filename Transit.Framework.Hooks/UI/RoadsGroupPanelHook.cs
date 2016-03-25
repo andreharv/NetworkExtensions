@@ -1,6 +1,7 @@
 ﻿using Transit.Framework.ExtensionPoints.UI;
 using Transit.Framework.Prerequisites;
 using Transit.Framework.Redirection;
+using Transit.Framework.UI;
 
 namespace Transit.Framework.Hooks.UI
 {
@@ -9,7 +10,7 @@ namespace Transit.Framework.Hooks.UI
         [RedirectFrom(typeof(RoadsGroupPanel), (ulong)PrerequisiteType.UI)]
         protected override int GetCategoryOrder(string name)
         {
-            int? order = RoadCategoryOrderManager.GetOrder(name);
+            int? order = MenuManager.instance.GetCategoryOrder(name);
 
             if (order != null)
             {

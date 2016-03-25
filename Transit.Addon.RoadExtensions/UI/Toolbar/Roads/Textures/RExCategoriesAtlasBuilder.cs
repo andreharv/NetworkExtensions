@@ -4,18 +4,18 @@ using Transit.Framework;
 using Transit.Framework.Builders;
 using UnityEngine;
 
-namespace Transit.Addon.RoadExtensions.Menus.Roads.Textures
+namespace Transit.Addon.RoadExtensions.UI.Toolbar.Roads.Textures
 {
-    public class RExExtendedSubBarAtlasBuilder : IAtlasBuilder
+    public class RExCategoriesAtlasBuilder : IAtlasBuilder
     {
         public IEnumerable<string> Keys
         {
             get
             {
-                yield return RExExtendedMenus.ROADS_TINY;
-                yield return RExExtendedMenus.ROADS_PEDESTRIANS;
-                yield return RExExtendedMenus.ROADS_SMALL_HV;
-                yield return RExExtendedMenus.ROADS_BUSWAYS;
+                yield return TinyRoadsCategoryInfo.NAME;
+                yield return PedestriansRoadsCategoryInfo.NAME;
+                yield return SmallHeavyRoadsCategoryInfo.NAME;
+                yield return BusRoadsCategoryInfo.NAME;
             }
         }
 
@@ -28,13 +28,13 @@ namespace Transit.Addon.RoadExtensions.Menus.Roads.Textures
             var shader = Shader.Find("UI/Default UI Shader");
             if (shader != null) thumbnailAtlas.material = new Material(shader);
 
-            const string PATH = @"Menus\Roads\Textures\RExExtendedSubBar.png";
+            const string PATH = @"UI\Toolbar\Roads\Textures\RExCategories.png";
 
             const string BASE = "SubBarButtonBase";
-            const string ROADS_TINY_SUBBAR = "SubBar" + RExExtendedMenus.ROADS_TINY;
-            const string ROADS_SMALL_HV_SUBBAR = "SubBar" + RExExtendedMenus.ROADS_SMALL_HV;
-            const string ROADS_BUSWAYS_SUBBAR = "SubBar" + RExExtendedMenus.ROADS_BUSWAYS;
-            const string ROADS_PED_SUBBAR = "SubBar" + RExExtendedMenus.ROADS_PEDESTRIANS;
+            const string ROADS_TINY_SUBBAR = "SubBar" + TinyRoadsCategoryInfo.NAME;
+            const string ROADS_SMALL_HV_SUBBAR = "SubBar" + SmallHeavyRoadsCategoryInfo.NAME;
+            const string ROADS_BUSWAYS_SUBBAR = "SubBar" + BusRoadsCategoryInfo.NAME;
+            const string ROADS_PED_SUBBAR = "SubBar" + PedestriansRoadsCategoryInfo.NAME;
 
             var versions = new[] { "", "Disabled", "Focused", "Hovered", "Pressed" };
 

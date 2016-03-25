@@ -152,8 +152,7 @@
     <Compile Include="UI\Toolbar\RoadCustomizer\RoadCustomizerPanel.cs" />
     <Compile Include="UI\Toolbar\RoadCustomizer\Textures\RoadCustomizerAtlasBuilder.cs" />
     <Compile Include="UI\Toolbar\RoadEditor\RoadEditorMenuMainCategoryInfo.cs" />
-    <Compile Include="UI\Toolbar\RoadEditor\RoadEditorMenuInfo.cs" />
-    <Compile Include="UI\Toolbar\RoadEditor\RoadEditorToolbarItemInfo.cs" />
+    <Compile Include="UI\Toolbar\RoadEditor\RoadEditorMenuToolbarItemInfo.cs" />
     <Compile Include="UI\Toolbar\RoadEditor\Textures\ToolsAtlasBuilder.cs" />
     <Compile Include="UI\Toolbar\RoadEditor\Textures\ToolsMenuAtlasBuilder.cs" />
     <Compile Include="UI\Translation.cs" />

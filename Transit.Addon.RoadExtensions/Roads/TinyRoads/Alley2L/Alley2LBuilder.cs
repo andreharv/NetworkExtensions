@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Linq;
-using Transit.Addon.RoadExtensions.Menus;
-using Transit.Addon.RoadExtensions.Menus.Roads;
 using Transit.Addon.RoadExtensions.Roads.Common;
+using Transit.Addon.RoadExtensions.UI.Toolbar.Roads;
 using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.Network;
@@ -23,7 +22,7 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.Alley2L
         public string CodeName { get { return "Alley_2L"; } }
         public string Description { get { return "A two-lane, tight Alley suitable for neighborhood traffic."; } }
         public string ShortDescription { get { return "No parking, zoneable, neighborhood traffic"; } }
-        public string UICategory { get { return RExExtendedMenus.ROADS_TINY; } }
+        public string UICategory { get { return TinyRoadsCategoryInfo.NAME; } }
 
         public string ThumbnailsPath { get { return @"Roads\TinyRoads\Alley2L\thumbnails.png"; } }
         public string InfoTooltipPath { get { return @"Roads\TinyRoads\Alley2L\infotooltip.png"; } }

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Transit.Addon.RoadExtensions.Menus.Roads;
+using Transit.Addon.RoadExtensions.UI.Toolbar.Roads;
 using Transit.Framework;
 using Transit.Framework.Network;
 using Transit.Framework.Texturing;
@@ -11,7 +11,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
     public abstract class ZonablePedestrianBuilderBase : Activable
     {
         public string BasedPrefabName { get { return NetInfos.Vanilla.PED_GRAVEL; } }
-        public string UICategory { get { return RExExtendedMenus.ROADS_PEDESTRIANS; } }
+        public string UICategory { get { return PedestriansRoadsCategoryInfo.NAME; } }
 
         public virtual void BuildUp(NetInfo info, NetInfoVersion version)
         {

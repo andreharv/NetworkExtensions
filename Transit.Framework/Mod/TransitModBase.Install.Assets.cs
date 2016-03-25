@@ -4,6 +4,7 @@ using System.Linq;
 using JetBrains.Annotations;
 using Transit.Framework.Builders;
 using Transit.Framework.Modularity;
+using Transit.Framework.UI;
 using UnityEngine;
 
 #if DEBUG
@@ -32,7 +33,7 @@ namespace Transit.Framework.Mod
         }
 
         [UsedImplicitly]
-        private class AssetsInstaller : Installer<TransitModBase>
+        private class AssetInstaller : Installer<TransitModBase>
         {
             private static readonly ICollection<string> _pathsLoaded = new HashSet<string>(); // Only one Assets installation per paths throughout the application
 

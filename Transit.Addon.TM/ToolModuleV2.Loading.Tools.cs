@@ -1,16 +1,29 @@
 ﻿using System;
 using System.Linq;
 using Transit.Addon.TM.Tools.RoadCustomizer;
-using Transit.Addon.TM.UI.Toolbar.RoadEditor;
 using Transit.Framework;
 using Transit.Framework.Builders;
-using Transit.Framework.ExtensionPoints.UI;
-using UnityEngine;
+using Transit.Framework.UI;
 
 namespace Transit.Addon.TM
 {
     public partial class ToolModuleV2
     {
+        public override void OnInstallingMenus()
+        {
+            base.OnInstallingMenus();
+
+            var tBuilders = Parts
+                .OfType<IToolBuilder>()
+                //.WhereActivated()
+                .ToArray();
+
+            foreach (var tBuilder in tBuilders)
+            {
+                MenuManager.instance.RegisterTool(tBuilder);
+            }
+        }
+
         private void InstallTools()
         {
             var tBuilders = Parts
@@ -38,18 +51,6 @@ namespace Transit.Addon.TM
 
             // TODO: legacy to be removed
             ToolsModifierControl.toolController.AddTool<RoadCustomizerTool>();
-
-            // TODO: Add RoadEditorToolbarItemInfo only if needed
-            TAMGameToolbarItemManager.instance.AddItem<RoadEditorToolbarItemInfo>();
-
-            var toolbar = Resources
-                .FindObjectsOfTypeAll<GameMainToolbar>()
-                .FirstOrDefault();
-
-            if (toolbar != null)
-            {
-                toolbar.RefreshPanel();
-            }
         }
 
         private void UninstallTools()
@@ -68,12 +69,12 @@ namespace Transit.Addon.TM
                     ToolsModifierControl.toolController.RemoveTool(tBuilder.ToolType);
                     tBuilder.IsInstalled = false;
                 }
+
+                MenuManager.instance.UnregisterTool(tBuilder);
             }
 
             // TODO: legacy to be removed
             ToolsModifierControl.toolController.RemoveTool<RoadCustomizerTool>();
-
-            TAMGameToolbarItemManager.instance.RemoveItem<RoadEditorToolbarItemInfo>();
         }
     }
 }

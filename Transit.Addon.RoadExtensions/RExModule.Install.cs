@@ -1,19 +1,18 @@
-﻿using System.Linq;
-using ColossalFramework;
+﻿using ColossalFramework;
 using ColossalFramework.Globalization;
 using ICities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Transit.Addon.RoadExtensions.AI;
-using Transit.Addon.RoadExtensions.Menus;
-using Transit.Addon.RoadExtensions.Menus.Roads;
-using Transit.Addon.RoadExtensions.Menus.Roads.Textures;
 using Transit.Addon.RoadExtensions.Roads.TinyRoads.Alley2L;
 using Transit.Addon.RoadExtensions.Roads.TinyRoads.OneWay1L;
+using Transit.Addon.RoadExtensions.UI.Toolbar.Roads;
 using Transit.Framework;
 using Transit.Framework.Builders;
-using Transit.Framework.ExtensionPoints.AI;
 using Transit.Framework.ExtensionPoints.AI.Networks;
+using Transit.Framework.ExtensionPoints.UI;
+using Transit.Framework.Modularity;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -26,20 +25,12 @@ namespace Transit.Addon.RoadExtensions
         private PropCollection _props = null;
 
         private RoadsInstaller _roadsInstaller = null;
-        private MenuInstaller _menuInstaller = null;
 
         private IEnumerable<Action> _lateOperations;
 
-        public override void OnInstallingLocalization()
+        public override void OnInstallingLocalization(Locale locale)
         {
-            base.OnInstallingLocalization();
-
-            var locale = SingletonLite<LocaleManager>.instance.GetLocale();
-
-            locale.CreateMenuTitleLocalizedString(RExExtendedMenus.ROADS_TINY, "Tiny Roads");
-            locale.CreateMenuTitleLocalizedString(RExExtendedMenus.ROADS_SMALL_HV, "Small Heavy Roads");
-            locale.CreateMenuTitleLocalizedString(RExExtendedMenus.ROADS_BUSWAYS, "Buslane Roads");
-            locale.CreateMenuTitleLocalizedString(RExExtendedMenus.ROADS_PEDESTRIANS, "Pedestrian Roads");
+            base.OnInstallingLocalization(locale);
 
             var menuItemBuilders = new List<IMenuItemBuilder>();
             menuItemBuilders.AddRange(Parts.OfType<IMenuItemBuilder>());
@@ -61,9 +52,6 @@ namespace Transit.Addon.RoadExtensions
 
             RoadSnappingModeManager.RegisterCustomSnapping<TinyRoadSnappingMode>(Alley2LBuilder.NAME);
             RoadSnappingModeManager.RegisterCustomSnapping<TinyRoadSnappingMode>(OneWay1LBuilder.NAME);
-
-            _menuInstaller = _container.AddInstallerComponent<MenuInstaller>();
-            _menuInstaller.Host = this;
 
             _roadsInstaller = _container.AddInstallerComponent<RoadsInstaller>();
             _roadsInstaller.Host = this;
@@ -87,12 +75,6 @@ namespace Transit.Addon.RoadExtensions
         public override void OnReleased()
         {
             base.OnReleased();
-
-            if (_menuInstaller != null)
-            {
-                Object.Destroy(_menuInstaller);
-                _menuInstaller = null;
-            }
 
             if (_roadsInstaller != null)
             {

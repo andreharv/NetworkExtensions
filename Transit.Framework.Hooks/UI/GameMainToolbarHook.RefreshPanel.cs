@@ -2,13 +2,11 @@
 using ColossalFramework.Globalization;
 using ColossalFramework.UI;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.CompilerServices;
-using Transit.Framework.ExtensionPoints.UI;
 using Transit.Framework.Prerequisites;
 using Transit.Framework.Redirection;
+using Transit.Framework.UI;
 
 namespace Transit.Framework.Hooks.UI
 {
@@ -50,9 +48,9 @@ namespace Transit.Framework.Hooks.UI
                 if (i == 0)
                 {
                     // TAM Modification
-                    var items = TAMGameToolbarItemManager
+                    var items = MenuManager
                         .instance
-                        .Items
+                        .GetRequiredToolbarItems()
                         .OrderBy(e => e.Order)
                         .ToArray();
 

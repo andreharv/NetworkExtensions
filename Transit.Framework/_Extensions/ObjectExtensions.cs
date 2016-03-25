@@ -50,13 +50,13 @@ namespace Transit.Framework
 
         public static T GetFieldValue<T>(this object target, string fieldName, bool crashOnNotFound = true) 
         {
-            var field = target.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
+            var field = target.GetType().GetFieldRecursive(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
 
             if (field == null)
             {
                 if (crashOnNotFound)
                 {
-                    throw new Exception(string.Format("TFW: Field \"{0}\" not found", fieldName));
+                    throw new Exception(string.Format("TFW: Field \"{0}\" not found on object {1}", fieldName, target.GetType()));
                 }
                 else
                 {
@@ -69,13 +69,13 @@ namespace Transit.Framework
 
         public static void SetFieldValue(this object target, string fieldName, object value, bool crashOnNotFound = true)
         {
-            var field = target.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
+            var field = target.GetType().GetFieldRecursive(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
 
             if (field == null)
             {
                 if (crashOnNotFound)
                 {
-                    throw new Exception(string.Format("TFW: Field \"{0}\" not found", fieldName));
+                    throw new Exception(string.Format("TFW: Field \"{0}\" not found on object {1}", fieldName, target.GetType()));
                 }
                 else
                 {

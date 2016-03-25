@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Transit.Addon.RoadExtensions.Compatibility;
-using Transit.Addon.RoadExtensions.Menus;
-using Transit.Addon.RoadExtensions.Menus.Roads;
+using Transit.Addon.RoadExtensions.UI.Toolbar.Roads;
 using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.Network;
@@ -25,7 +24,7 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L
             {
                 yield return new MenuItemBuilder
                 {
-                    UICategory = RExExtendedMenus.ROADS_BUSWAYS,
+                    UICategory = BusRoadsCategoryInfo.NAME,
                     UIOrder = 10,
                     Name = "Small Busway",
                     DisplayName = "[BETA] Busway",
@@ -35,7 +34,7 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L
                 };
                 yield return new MenuItemBuilder
                 {
-                    UICategory = RExExtendedMenus.ROADS_BUSWAYS,
+                    UICategory = BusRoadsCategoryInfo.NAME,
                     UIOrder = 11,
                     Name = "Small Busway Decoration Grass",
                     DisplayName = "[BETA] Busway with Grass",
@@ -45,7 +44,7 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L
                 };
                 yield return new MenuItemBuilder
                 {
-                    UICategory = RExExtendedMenus.ROADS_BUSWAYS,
+                    UICategory = BusRoadsCategoryInfo.NAME,
                     UIOrder = 12,
                     Name = "Small Busway Decoration Trees",
                     DisplayName = "[BETA] Busway with Trees",

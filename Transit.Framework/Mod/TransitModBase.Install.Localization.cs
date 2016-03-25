@@ -4,20 +4,16 @@ using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using Transit.Framework.Modularity;
-using UnityEngine;
-
-#if DEBUG
-using Transit.Framework;
-#endif
+using Transit.Framework.UI;
 
 namespace Transit.Framework.Mod
 {
     public partial class TransitModBase
     {
-        public virtual void OnInstallLocalization()
+        public virtual void OnInstallLocalization(Locale locale)
         {
             foreach (IModule module in this.GetOrCreateModules())
-                module.OnInstallingLocalization();
+                module.OnInstallingLocalization(locale);
         }
 
         [UsedImplicitly]
@@ -51,11 +47,27 @@ namespace Transit.Framework.Mod
 
                 _modLoaded.Add(host.WorkshopId);
 
+                var locale = SingletonLite<LocaleManager>.instance.GetLocale();
+
                 Loading.QueueAction(() =>
                 {
                     try
                     {
-                        host.OnInstallLocalization();
+                        MenuManager.instance.InstallLocalization(locale);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error("TFW: Crashed-Menu Localization");
+                        Log.Error("TFW: " + ex.Message);
+                        Log.Error("TFW: " + ex.ToString());
+                    }
+                });
+
+                Loading.QueueAction(() =>
+                {
+                    try
+                    {
+                        host.OnInstallLocalization(locale);
                     }
                     catch (Exception ex)
                     {

@@ -3,17 +3,19 @@ using System.Linq;
 using ColossalFramework.Globalization;
 using ColossalFramework.UI;
 using System.Reflection;
-using Transit.Framework.UI.Toolbar.Infos;
-using Transit.Framework.UI.Toolbar.Panels;
+using Transit.Framework.Builders;
+using Transit.Framework.ExtensionPoints.UI.Panels;
+using Transit.Framework.UI;
+using Transit.Framework.UI.Infos;
 using UnityEngine;
 
 namespace Transit.Framework.Hooks.UI
 {
     public partial class GameMainToolbarHook
     {
-        private UIButton SpawnToolbarItem(IToolbarItemInfo info, UITabstrip strip, string unlockText, string spriteBase, bool enabled)
+        private UIButton SpawnToolbarItem(IMenuToolbarItemInfo item, UITabstrip strip, string unlockText, string spriteBase, bool enabled)
         {
-            string name = info.Name;
+            string name = item.Name;
             Type panelType = typeof(TAMMenuPanel);
             int objectIndex = this.GetFieldValue<int>("m_ObjectIndex");
 
@@ -34,7 +36,7 @@ namespace Transit.Framework.Hooks.UI
             TAMMenuPanel panel = strip.GetComponentInContainer(uIButton, panelType) as TAMMenuPanel;
             if (panel != null)
             {
-                panel.CategoryInfos = info.MenuInfo.CategoryInfos;
+                panel.Categories = MenuManager.instance.GetRequiredCategories(item);
                 panel.component.isInteractive = true;
                 panel.m_OptionsBar = this.m_OptionsBar;
                 panel.m_DefaultInfoTooltipAtlas = this.m_DefaultInfoTooltipAtlas;
@@ -61,7 +63,7 @@ namespace Transit.Framework.Hooks.UI
             uIButton.hoveredFgSprite = text + "Hovered";
             uIButton.pressedFgSprite = text + "Pressed";
             uIButton.disabledFgSprite = text + "Disabled";
-            uIButton.tooltip = info.Description;
+            uIButton.tooltip = item.DisplayName;
 
             this.SetFieldValue("m_ObjectIndex", objectIndex + 1);
             return uIButton;

@@ -9,17 +9,14 @@ namespace Transit.Addon.TM
 {
     public partial class ToolModuleV2 : ModuleBase
     {
-        public override void OnInstallingLocalization()
+        public override void OnInstallingLocalization(Locale locale)
         {
+            base.OnInstallingLocalization(locale);
+
             Log.Info("Updating Localization.");
 
             try
             {
-                // Localization
-                Locale locale = (Locale)typeof(LocaleManager).GetFieldByName("m_Locale").GetValue(SingletonLite<LocaleManager>.instance);
-                if (locale == null)
-                    throw new KeyNotFoundException("Locale is null");
-
                 // Road Customizer Tool Advisor
                 Locale.Key k = new Locale.Key()
                 {
