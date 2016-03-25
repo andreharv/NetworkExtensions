@@ -3,7 +3,7 @@ using Transit.Framework.Network;
 
 namespace Transit.Framework.ExtensionPoints.PathFindingFeatures.Implementations
 {
-    public class VanillaRoadSpeedManager : IRoadSpeedManager
+    public class VanillaSpeedLimitManager : ISpeedLimitManager
     {
         public float GetLaneSpeedLimit(ushort segmentId, uint laneIndex, uint laneId, NetInfo.Lane laneInfo, ExtendedUnitType unitType)
         {

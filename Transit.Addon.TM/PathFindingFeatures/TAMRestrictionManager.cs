@@ -9,7 +9,7 @@ using Transit.Framework.Network;
 
 namespace Transit.Addon.TM.PathFindingFeatures
 {
-    public class TAMRestrictionManager : Singleton<TAMRestrictionManager>,  IRoadRestrictionManager
+    public class TAMRestrictionManager : Singleton<TAMRestrictionManager>,  IRestrictionManager
     {
         private TAMLaneRestriction[] _laneRestrictions = null;
 

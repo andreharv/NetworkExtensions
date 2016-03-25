@@ -43,8 +43,8 @@ namespace Transit.Addon.TM
             }
 
             TAMPathFindManager.instance.DefinePathFinding<TAMImprovedPathFind>();
-            TAMPathFindFeatureManager.instance.DefineRoadRestrictionManager(TAMRestrictionManager.instance);
-            TAMPathFindFeatureManager.instance.DefineRoadSpeedManager(TAMSpeedLimitManager.instance);
+            TAMPathFindFeatureManager.instance.DefineRestrictionManager(TAMRestrictionManager.instance);
+            TAMPathFindFeatureManager.instance.DefineSpeedLimitManager(TAMSpeedLimitManager.instance);
 
             // TODO: Convert TM LaneArrows into TPP routes
             TAMPathFindFeatureManager.instance.DefineLaneRoutingManager(TPPLaneRoutingManager.instance);
@@ -64,8 +64,8 @@ namespace Transit.Addon.TM
             }
 
             TAMPathFindManager.instance.ResetPathFinding<TAMImprovedPathFind>();
-            TAMPathFindFeatureManager.instance.ResetRoadRestrictionManager<TAMRestrictionManager>();
-            TAMPathFindFeatureManager.instance.ResetRoadSpeedManager<TAMSpeedLimitManager>();
+            TAMPathFindFeatureManager.instance.ResetRestrictionManager<TAMRestrictionManager>();
+            TAMPathFindFeatureManager.instance.ResetSpeedLimitManager<TAMSpeedLimitManager>();
 
             TAMPathFindFeatureManager.instance.ResetLaneRoutingManager<TPPLaneRoutingManager>();
 

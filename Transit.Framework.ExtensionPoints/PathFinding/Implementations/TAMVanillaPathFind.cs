@@ -740,17 +740,17 @@ namespace Transit.Framework.ExtensionPoints.PathFinding.Implementations
             NetInfo.Direction direction = ((segment.m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None) ? laneInfo.m_finalDirection : NetInfo.InvertDirection(laneInfo.m_finalDirection);
             if ((byte)(direction & NetInfo.Direction.Avoid) == 0)
             {
-                return this.GetFeatures().RoadSpeed.GetLaneSpeedLimit(segmentID, laneIndex, m_unitType);
+                return this.GetFeatures().SpeedLimits.GetLaneSpeedLimit(segmentID, laneIndex, m_unitType);
             }
             if (endOffset > startOffset && direction == NetInfo.Direction.AvoidForward)
             {
-                return this.GetFeatures().RoadSpeed.GetLaneSpeedLimit(segmentID, laneIndex, m_unitType) * 0.1f;
+                return this.GetFeatures().SpeedLimits.GetLaneSpeedLimit(segmentID, laneIndex, m_unitType) * 0.1f;
             }
             if (endOffset < startOffset && direction == NetInfo.Direction.AvoidBackward)
             {
-                return this.GetFeatures().RoadSpeed.GetLaneSpeedLimit(segmentID, laneIndex, m_unitType) * 0.1f;
+                return this.GetFeatures().SpeedLimits.GetLaneSpeedLimit(segmentID, laneIndex, m_unitType) * 0.1f;
             }
-            return this.GetFeatures().RoadSpeed.GetLaneSpeedLimit(segmentID, laneIndex, m_unitType) * 0.2f;
+            return this.GetFeatures().SpeedLimits.GetLaneSpeedLimit(segmentID, laneIndex, m_unitType) * 0.2f;
         }
 
         protected virtual void ProcessItem(BufferItem item, ushort targetNode, bool targetDisabled, ushort segmentID, ref NetSegment segment, uint lane, byte offset, byte connectOffset)
@@ -774,7 +774,7 @@ namespace Transit.Framework.ExtensionPoints.PathFinding.Implementations
             if ((int)item.m_position.m_lane < info2.m_lanes.Length)
             {
                 NetInfo.Lane lane2 = info2.m_lanes[(int)item.m_position.m_lane];
-                num3 = this.GetFeatures().RoadSpeed.GetLaneSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, m_unitType);
+                num3 = this.GetFeatures().SpeedLimits.GetLaneSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, m_unitType);
                 laneType = lane2.m_laneType;
                 if ((byte)(laneType & (NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle)) != 0)
                 {
@@ -811,7 +811,7 @@ namespace Transit.Framework.ExtensionPoints.PathFinding.Implementations
                         }
                         if (lane3.m_laneType != NetInfo.LaneType.Pedestrian || item2.m_methodDistance < 1000f)
                         {
-                            item2.m_comparisonValue = num7 + num9 / ((num3 + this.GetFeatures().RoadSpeed.GetLaneSpeedLimit(item2.m_position.m_segment, item2.m_position.m_lane, m_unitType)) * 0.5f * this.m_maxLength);
+                            item2.m_comparisonValue = num7 + num9 / ((num3 + this.GetFeatures().SpeedLimits.GetLaneSpeedLimit(item2.m_position.m_segment, item2.m_position.m_lane, m_unitType)) * 0.5f * this.m_maxLength);
                             if ((segment.m_flags & NetSegment.Flags.Invert) != NetSegment.Flags.None)
                             {
                                 item2.m_direction = NetInfo.InvertDirection(lane3.m_finalDirection);
@@ -902,13 +902,13 @@ namespace Transit.Framework.ExtensionPoints.PathFinding.Implementations
             {
                 NetInfo.Lane lane = info2.m_lanes[(int)item.m_position.m_lane];
 				// NON-STOCK CODE START
-				if (!this.GetFeatures().RoadRestriction.CanUseLane(item.m_position.m_segment, info2, item.m_position.m_lane, item.m_laneID, lane, this.m_unitType)) {
+				if (!this.GetFeatures().Restrictions.CanUseLane(item.m_position.m_segment, info2, item.m_position.m_lane, item.m_laneID, lane, this.m_unitType)) {
 					return false;
 				}
 				// NON-STOCK CODE END
 				laneType = lane.m_laneType;
                 vehicleType = lane.m_vehicleType;
-                num5 = this.GetFeatures().RoadSpeed.GetLaneSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, m_unitType);
+                num5 = this.GetFeatures().SpeedLimits.GetLaneSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, m_unitType);
                 num6 = this.CalculateLaneSpeed(connectOffset, item.m_position.m_offset, item.m_position.m_segment, ref instance.m_segments.m_buffer[(int)item.m_position.m_segment], item.m_position.m_lane, lane);
             }
             float num7 = instance.m_segments.m_buffer[(int)item.m_position.m_segment].m_averageLength;
@@ -959,7 +959,7 @@ namespace Transit.Framework.ExtensionPoints.PathFinding.Implementations
                 NetInfo.Lane lane2 = info.m_lanes[num12];
                 if ((byte)(lane2.m_finalDirection & direction2) != 0 &&
                     this.GetFeatures().LaneRouting.CanLanesConnect(targetNode, segmentID, (byte)num12, num2, item.m_position.m_segment, item.m_position.m_lane, item.m_laneID, this.m_unitType) &&
-                    this.GetFeatures().RoadRestriction.CanUseLane(segmentID, info, (byte)num12, num2, lane2, this.m_unitType))
+                    this.GetFeatures().Restrictions.CanUseLane(segmentID, info, (byte)num12, num2, lane2, this.m_unitType))
                 {
                     if (lane2.CheckType(laneType2, vehicleType2) && (segmentID != item.m_position.m_segment || num12 != (int)item.m_position.m_lane) && (byte)(lane2.m_finalDirection & direction2) != 0)
                     {
@@ -977,7 +977,7 @@ namespace Transit.Framework.ExtensionPoints.PathFinding.Implementations
                         {
                             num13 *= 2f;
                         }
-                        float num14 = num13 / ((num5 + this.GetFeatures().RoadSpeed.GetLaneSpeedLimit(segmentID, (uint)num12, m_unitType)) * 0.5f * this.m_maxLength);
+                        float num14 = num13 / ((num5 + this.GetFeatures().SpeedLimits.GetLaneSpeedLimit(segmentID, (uint)num12, m_unitType)) * 0.5f * this.m_maxLength);
                         BufferItem item2;
                         item2.m_position.m_segment = segmentID;
                         item2.m_position.m_lane = (byte)num12;
@@ -1031,11 +1031,11 @@ namespace Transit.Framework.ExtensionPoints.PathFinding.Implementations
                                 int lastTarget = (int)instance.m_lanes.m_buffer[(int)((UIntPtr)num2)].m_lastTarget;
                                 if (currentTargetIndex < firstTarget || currentTargetIndex >= lastTarget)
                                 {
-                                    item2.m_comparisonValue += Mathf.Max(1f, num13 * 3f - 3f) / ((num5 + this.GetFeatures().RoadSpeed.GetLaneSpeedLimit(segmentID, (uint)num12, m_unitType)) * 0.5f * this.m_maxLength);
+                                    item2.m_comparisonValue += Mathf.Max(1f, num13 * 3f - 3f) / ((num5 + this.GetFeatures().SpeedLimits.GetLaneSpeedLimit(segmentID, (uint)num12, m_unitType)) * 0.5f * this.m_maxLength);
                                 }
                                 if (!this.m_transportVehicle && lane2.m_laneType == NetInfo.LaneType.TransportVehicle)
                                 {
-                                    item2.m_comparisonValue += 20f / ((num5 + this.GetFeatures().RoadSpeed.GetLaneSpeedLimit(segmentID, (uint)num12, m_unitType)) * 0.5f * this.m_maxLength);
+                                    item2.m_comparisonValue += 20f / ((num5 + this.GetFeatures().SpeedLimits.GetLaneSpeedLimit(segmentID, (uint)num12, m_unitType)) * 0.5f * this.m_maxLength);
                                 }
                             }
                             this.AddBufferItem(item2, item.m_position);
@@ -1097,7 +1097,7 @@ namespace Transit.Framework.ExtensionPoints.PathFinding.Implementations
             if ((int)item.m_position.m_lane < info2.m_lanes.Length)
             {
                 NetInfo.Lane lane2 = info2.m_lanes[(int)item.m_position.m_lane];
-                num3 = this.GetFeatures().RoadSpeed.GetLaneSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, m_unitType);
+                num3 = this.GetFeatures().SpeedLimits.GetLaneSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, m_unitType);
                 laneType = lane2.m_laneType;
                 if ((byte)(laneType & (NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle)) != 0)
                 {
@@ -1130,7 +1130,7 @@ namespace Transit.Framework.ExtensionPoints.PathFinding.Implementations
                 }
                 if (lane3.m_laneType != NetInfo.LaneType.Pedestrian || item2.m_methodDistance < 1000f)
                 {
-                    item2.m_comparisonValue = num7 + num2 / ((num3 + this.GetFeatures().RoadSpeed.GetLaneSpeedLimit(segmentID, (uint)laneIndex, m_unitType)) * 0.25f * this.m_maxLength);
+                    item2.m_comparisonValue = num7 + num2 / ((num3 + this.GetFeatures().SpeedLimits.GetLaneSpeedLimit(segmentID, (uint)laneIndex, m_unitType)) * 0.25f * this.m_maxLength);
                     if ((segment.m_flags & NetSegment.Flags.Invert) != NetSegment.Flags.None)
                     {
                         item2.m_direction = NetInfo.InvertDirection(lane3.m_finalDirection);

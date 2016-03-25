@@ -9,7 +9,7 @@ using Transit.Framework.Network;
 
 namespace Transit.Addon.TM.PathFindingFeatures
 {
-    public class TAMSpeedLimitManager : Singleton<TAMSpeedLimitManager>, IRoadSpeedManager
+    public class TAMSpeedLimitManager : Singleton<TAMSpeedLimitManager>, ISpeedLimitManager
     {
         public List<ushort> AvailableSpeedLimits { get; private set; }
 

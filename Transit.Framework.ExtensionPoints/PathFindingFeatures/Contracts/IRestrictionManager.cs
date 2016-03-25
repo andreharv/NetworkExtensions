@@ -2,7 +2,7 @@
 
 namespace Transit.Framework.ExtensionPoints.PathFindingFeatures.Contracts
 {
-    public interface IRoadRestrictionManager : IPathFindFeature
+    public interface IRestrictionManager : IPathFindFeature
     {
 		/// Determines if the lane with the given lane index and segment id may be used by the unit with the given type.
 		/// 
