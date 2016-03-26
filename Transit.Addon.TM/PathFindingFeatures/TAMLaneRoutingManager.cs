@@ -4,10 +4,11 @@ using Transit.Addon.TM.Data;
 using Transit.Framework;
 using Transit.Framework.ExtensionPoints.PathFindingFeatures.Contracts;
 using Transit.Framework.Network;
+using System.Linq;
 
 namespace Transit.Addon.TM.PathFindingFeatures
 {
-    public class TPPLaneRoutingManager : Singleton<TPPLaneRoutingManager>, ILaneRoutingManager
+    public partial class TAMLaneRoutingManager : Singleton<TAMLaneRoutingManager>, ILaneRoutingManager
     {
         private TAMLaneRoute[] _laneRoutes = null;
         private readonly uint[] NO_CONNECTIONS = new uint[0];
@@ -24,17 +25,27 @@ namespace Transit.Addon.TM.PathFindingFeatures
                 return;
             }
 
-            for (int i = 0; i < laneRoutes.Length; i++)
+            foreach (var route in laneRoutes)
             {
-                TAMLaneRoute laneRoute = laneRoutes[i];
-
-                if (laneRoute == null)
-                    continue;
-
-                _laneRoutes[i] = laneRoutes[i];
-
-                laneRoute.UpdateArrows();
+                Load(route);
             }
+        }
+
+        public void Load(TAMLaneRoute route)
+        {
+            if (route == null)
+            {
+                return;
+            }
+
+            if (!ScrubRoute(route))
+            {
+                return;
+            }
+
+            _laneRoutes[route.LaneId] = route;
+            
+            UpdateLaneArrows(route.LaneId, route.NodeId);
         }
 
         public void Reset()
@@ -54,9 +65,16 @@ namespace Transit.Addon.TM.PathFindingFeatures
 
         private TAMLaneRoute CreateLaneRoute(uint laneId)
         {
+            var foundNodeId = NetManager.instance.FindLaneNode(laneId);
+            if (foundNodeId == null)
+            {
+                throw new Exception(string.Format("Cannot create route, node for laneid {0} has not been found", laneId));
+            }
+
             var laneRoute = new TAMLaneRoute()
             {
-                LaneId = laneId
+                LaneId = laneId,
+                NodeId = foundNodeId.Value
             };
 
             _laneRoutes[laneId] = laneRoute;
@@ -93,19 +111,25 @@ namespace Transit.Addon.TM.PathFindingFeatures
 
         public bool AddLaneConnection(uint fromLaneId, uint toLaneId)
         {
-            TAMLaneRoute lane = GetOrCreateRoute(fromLaneId);
+            TAMLaneRoute route = GetOrCreateRoute(fromLaneId);
             GetOrCreateRoute(toLaneId); // makes sure lane information is stored
 
-            return lane.AddConnection(toLaneId);
+            var succeeded = route.AddConnection(toLaneId);
+
+            UpdateLaneArrows(route.LaneId, route.NodeId);
+            return succeeded;
         }
 
         public bool RemoveLaneConnection(uint laneId, uint connectionId)
         {
-            TAMLaneRoute lane = GetRoute(laneId);
-            if (lane == null)
+            TAMLaneRoute route = GetRoute(laneId);
+            if (route == null)
                 return false;
 
-            return lane.RemoveConnection(connectionId);
+            var succeeded = route.RemoveConnection(connectionId);
+
+            UpdateLaneArrows(route.LaneId, route.NodeId);
+            return succeeded;
         }
 
         public uint[] GetLaneConnections(uint laneId)
@@ -150,7 +174,23 @@ namespace Transit.Addon.TM.PathFindingFeatures
 			if (route == null)
 				return true;
 
-			return route.ConnectsTo(destinationLaneId);
+            while (true)
+            {
+                try
+                {
+                    if (route.Connections.Length <= 0)
+                        return true; // default
+
+                    return route.Connections.Contains(destinationLaneId);
+                }
+                catch (Exception e)
+                {
+                    // we might get an IndexOutOfBounds here since we are not locking
+#if DEBUG
+						Log.Warning("ConnectsTo: " + e.ToString());
+#endif
+                }
+            }
 		}
 	}
 }

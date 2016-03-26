@@ -14,17 +14,17 @@ namespace Transit.Addon.TM.PathFindingFeatures
         /// <summary>
         /// For each lane: Defines the lane arrows which are set
         /// </summary>
-        private TMLaneDirection?[] _laneDirections = null;
+        private TAMLaneDirection?[] _laneDirections = null;
 
         /// <summary>
         /// For each lane: Defines the lane arrows which are set in highway rule mode (they are not saved)
         /// </summary>
-        private TMLaneDirection?[] _highwayLaneDirections = null;
+        private TAMLaneDirection?[] _highwayLaneDirections = null;
 
         public void Init()
         {
-            _laneDirections = new TMLaneDirection?[Singleton<NetManager>.instance.m_lanes.m_size];
-            _highwayLaneDirections = new TMLaneDirection?[Singleton<NetManager>.instance.m_lanes.m_size];
+            _laneDirections = new TAMLaneDirection?[Singleton<NetManager>.instance.m_lanes.m_size];
+            _highwayLaneDirections = new TAMLaneDirection?[Singleton<NetManager>.instance.m_lanes.m_size];
         }
 
         public void Reset()
@@ -33,17 +33,17 @@ namespace Transit.Addon.TM.PathFindingFeatures
             _highwayLaneDirections = null;
         }
 
-        public TMLaneDirection? GetLaneDirection(uint laneId)
+        public TAMLaneDirection? GetLaneDirection(uint laneId)
         {
             return _laneDirections[laneId];
         }
 
-        public TMLaneDirection? GetHighwayLaneDirection(uint laneId)
+        public TAMLaneDirection? GetHighwayLaneDirection(uint laneId)
         {
             return _highwayLaneDirections[laneId];
         }
 
-        public void LoadLaneDirection(uint laneId, TMLaneDirection direction)
+        public void LoadLaneDirection(uint laneId, TAMLaneDirection direction)
         {
             if (!MayHaveLaneDirection(laneId))
             {
@@ -58,7 +58,7 @@ namespace Transit.Addon.TM.PathFindingFeatures
             ApplyLaneDirection(laneId, false);
         }
 
-        public void SetHighwayLaneDirection(uint laneId, TMLaneDirection direction, bool check = true)
+        public void SetHighwayLaneDirection(uint laneId, TAMLaneDirection direction, bool check = true)
         {
             if (check && !MayHaveLaneDirection(laneId))
             {
@@ -70,7 +70,7 @@ namespace Transit.Addon.TM.PathFindingFeatures
             ApplyLaneDirection(laneId, false);
         }
 
-        public bool ToggleLaneDirection(uint laneId, TMLaneDirection flags)
+        public bool ToggleLaneDirection(uint laneId, TAMLaneDirection flags)
         {
             if (!MayHaveLaneDirection(laneId))
             {
@@ -81,13 +81,13 @@ namespace Transit.Addon.TM.PathFindingFeatures
             if (_highwayLaneDirections[laneId] != null)
                 return false; // disallow custom lane arrows in highway rule mode
 
-            TMLaneDirection? arrows = _laneDirections[laneId];
+            TAMLaneDirection? arrows = _laneDirections[laneId];
             if (arrows == null)
             {
                 // read currently defined arrows
                 uint laneFlags = (uint) Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags;
                 laneFlags &= Flags.lfr; // filter arrows
-                arrows = (TMLaneDirection) laneFlags;
+                arrows = (TAMLaneDirection) laneFlags;
             }
 
             arrows ^= flags;
@@ -164,8 +164,8 @@ namespace Transit.Addon.TM.PathFindingFeatures
             if (check && !MayHaveLaneDirection(laneId))
                 return false;
 
-            TMLaneDirection? hwArrows = _highwayLaneDirections[laneId];
-            TMLaneDirection? arrows = _laneDirections[laneId];
+            TAMLaneDirection? hwArrows = _highwayLaneDirections[laneId];
+            TAMLaneDirection? arrows = _laneDirections[laneId];
 
             if (hwArrows != null)
             {
@@ -174,7 +174,7 @@ namespace Transit.Addon.TM.PathFindingFeatures
             }
             else if (arrows != null)
             {
-                TMLaneDirection flags = (TMLaneDirection) arrows;
+                TAMLaneDirection flags = (TAMLaneDirection) arrows;
                 laneFlags &= ~Flags.lfr; // remove all arrows
                 laneFlags |= (uint) flags; // add desired arrows
             }

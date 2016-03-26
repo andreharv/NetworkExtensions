@@ -51,13 +51,13 @@ namespace Transit.Addon.TM.Tools.LaneRouting
 
         private IEnumerator LoadMarkers()
         {
-            while (!TPPLaneRoutingManager.instance.IsLoaded())
+            while (!TAMLaneRoutingManager.instance.IsLoaded())
             {
                 yield return new WaitForEndOfFrame();
             }
 
             var nodesList = new HashSet<ushort>();
-            foreach (var route in TPPLaneRoutingManager.instance.GetAllRoutes())
+            foreach (var route in TAMLaneRoutingManager.instance.GetAllRoutes())
             {
                 if (route == null)
                     continue;
@@ -189,11 +189,11 @@ namespace Transit.Addon.TM.Tools.LaneRouting
                     {
                         m_selectedMarker = hoveredMarker;
                     }
-                    else if (TPPLaneRoutingManager.instance.RemoveLaneConnection(m_selectedMarker.LaneId, hoveredMarker.LaneId))
+                    else if (TAMLaneRoutingManager.instance.RemoveLaneConnection(m_selectedMarker.LaneId, hoveredMarker.LaneId))
                     {
                         m_selectedMarker.Connections.Remove(hoveredMarker);
                     }
-                    else if (TPPLaneRoutingManager.instance.AddLaneConnection(m_selectedMarker.LaneId, hoveredMarker.LaneId))
+                    else if (TAMLaneRoutingManager.instance.AddLaneConnection(m_selectedMarker.LaneId, hoveredMarker.LaneId))
                     {
                         m_selectedMarker.Connections.Add(hoveredMarker);
                     }
@@ -319,7 +319,7 @@ namespace Transit.Addon.TM.Tools.LaneRouting
                 if (!nodeMarkers.m_buffer[i].IsSource)
                     continue;
 
-                uint[] connections = TPPLaneRoutingManager.instance.GetLaneConnections(nodeMarkers.m_buffer[i].LaneId);
+                uint[] connections = TAMLaneRoutingManager.instance.GetLaneConnections(nodeMarkers.m_buffer[i].LaneId);
                 if (connections == null || connections.Length == 0)
                     continue;
 

@@ -73,7 +73,7 @@ namespace Transit.Addon.TM.Data {
 
 					if (laneConf.directions != null) {
                         // load lane arrows
-                        TMLaneRoutingManager.instance.LoadLaneDirection(laneConf.laneId, (TMLaneDirection)(laneConf.directions));
+                        TMLaneRoutingManager.instance.LoadLaneDirection(laneConf.laneId, (TAMLaneDirection)(laneConf.directions));
 					}
 				}
 			} else {
@@ -312,7 +312,7 @@ namespace Transit.Addon.TM.Data {
 
 			// Assemble lane configuration
 			for (uint laneId = 0; laneId < NetManager.MAX_LANE_COUNT; laneId++) {
-				TMLaneDirection? laneArrows = TMLaneRoutingManager.instance.GetLaneDirection(laneId);
+				TAMLaneDirection? laneArrows = TMLaneRoutingManager.instance.GetLaneDirection(laneId);
 				if (laneArrows != null) {
 					// save lane arrows
 

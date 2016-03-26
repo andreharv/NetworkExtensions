@@ -1322,18 +1322,18 @@ namespace Transit.Addon.TM.PathFinding
 								/*if (Options.disableSomething1)
 									Log._Debug($"THREAD #{Thread.CurrentThread.ManagedThreadId} PF {_pathFindIndex}: Setting highway arrows @ lane {nextLaneId}: START");*/
 #endif
-								TMLaneDirection? prevHighwayArrows = TMLaneRoutingManager.instance.GetHighwayLaneDirection(nextLaneId);
-								TMLaneDirection newHighwayArrows = TMLaneDirection.None;
+								TAMLaneDirection? prevHighwayArrows = TMLaneRoutingManager.instance.GetHighwayLaneDirection(nextLaneId);
+								TAMLaneDirection newHighwayArrows = TAMLaneDirection.None;
 								if (prevHighwayArrows != null)
-									newHighwayArrows = (TMLaneDirection)prevHighwayArrows;
+									newHighwayArrows = (TAMLaneDirection)prevHighwayArrows;
 								if (isIncomingRight)
-									newHighwayArrows |= TMLaneDirection.Left;
+									newHighwayArrows |= TAMLaneDirection.Left;
 								else if (isIncomingLeft)
-									newHighwayArrows |= TMLaneDirection.Right;
+									newHighwayArrows |= TAMLaneDirection.Right;
 								else if (isIncomingStraight)
-									newHighwayArrows |= TMLaneDirection.Forward;
+									newHighwayArrows |= TAMLaneDirection.Forward;
 
-								if (newHighwayArrows != prevHighwayArrows && newHighwayArrows != TMLaneDirection.None)
+								if (newHighwayArrows != prevHighwayArrows && newHighwayArrows != TAMLaneDirection.None)
                                     TMLaneRoutingManager.instance.SetHighwayLaneDirection(nextLaneId, newHighwayArrows, false);
 #if DEBUGPF
 								/*if (Options.disableSomething1)

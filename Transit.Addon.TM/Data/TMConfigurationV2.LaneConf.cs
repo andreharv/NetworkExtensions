@@ -5,7 +5,7 @@ namespace Transit.Addon.TM.Data {
 		[Serializable]
 		public class LaneConf {
 			public uint laneId;
-			public TMLaneDirection? directions = null;
+			public TAMLaneDirection? directions = null;
 
 			public LaneConf() {
 			}

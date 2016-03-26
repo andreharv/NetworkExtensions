@@ -128,15 +128,15 @@ namespace Transit.Addon.TM.Tools.SubTools {
                     TMLaneRoutingManager.instance.RemoveLaneDirection((uint)laneList[i][0]);
 				}
 				if (GUILayout.Button("←", ((flags & NetLane.Flags.Left) == NetLane.Flags.Left ? style1 : style2), GUILayout.Width(35), GUILayout.Height(25))) {
-					if (!TMLaneRoutingManager.instance.ToggleLaneDirection((uint)laneList[i][0], TMLaneDirection.Left) && SelectedNodeId > 0)
+					if (!TMLaneRoutingManager.instance.ToggleLaneDirection((uint)laneList[i][0], TAMLaneDirection.Left) && SelectedNodeId > 0)
 						MainTool.ShowTooltip(Translation.GetString("Lane_Arrow_Changer_Disabled"), Singleton<NetManager>.instance.m_nodes.m_buffer[SelectedNodeId].m_position);
 				}
 				if (GUILayout.Button("↑", ((flags & NetLane.Flags.Forward) == NetLane.Flags.Forward ? style1 : style2), GUILayout.Width(25), GUILayout.Height(35))) {
-					if (!TMLaneRoutingManager.instance.ToggleLaneDirection((uint)laneList[i][0], TMLaneDirection.Forward) && SelectedNodeId > 0)
+					if (!TMLaneRoutingManager.instance.ToggleLaneDirection((uint)laneList[i][0], TAMLaneDirection.Forward) && SelectedNodeId > 0)
 						MainTool.ShowTooltip(Translation.GetString("Lane_Arrow_Changer_Disabled"), Singleton<NetManager>.instance.m_nodes.m_buffer[SelectedNodeId].m_position);
 				}
 				if (GUILayout.Button("→", ((flags & NetLane.Flags.Right) == NetLane.Flags.Right ? style1 : style2), GUILayout.Width(35), GUILayout.Height(25))) {
-					if (!TMLaneRoutingManager.instance.ToggleLaneDirection((uint)laneList[i][0], TMLaneDirection.Right) && SelectedNodeId > 0)
+					if (!TMLaneRoutingManager.instance.ToggleLaneDirection((uint)laneList[i][0], TAMLaneDirection.Right) && SelectedNodeId > 0)
 						MainTool.ShowTooltip(Translation.GetString("Lane_Arrow_Changer_Disabled"), Singleton<NetManager>.instance.m_nodes.m_buffer[SelectedNodeId].m_position);
 				}
 				GUILayout.EndHorizontal();

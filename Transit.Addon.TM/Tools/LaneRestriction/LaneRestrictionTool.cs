@@ -90,27 +90,8 @@ namespace Transit.Addon.TM.Tools.LaneRestriction
         protected override void Awake()
         {
             base.Awake();
-
-            StartCoroutine(LoadMarkers());
+            
             StartCoroutine(CreateToolButton());
-        }
-
-	    private IEnumerator LoadMarkers()
-	    {
-            while (!TPPLaneRoutingManager.instance.IsLoaded())
-            {
-                yield return new WaitForEndOfFrame();
-            }
-
-            var nodesList = new HashSet<ushort>();
-            foreach (var lane in TPPLaneRoutingManager.instance.GetAllRoutes())
-            {
-                if (lane == null)
-                    continue;
-                
-                if (lane.Connections.Any())
-                    nodesList.Add(lane.NodeId);
-            }
         }
 
         protected override void OnToolUpdate()

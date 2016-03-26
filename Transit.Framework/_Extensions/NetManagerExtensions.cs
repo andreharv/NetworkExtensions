@@ -117,5 +117,40 @@
 
             return null;
         }
+
+        /// <summary>
+        /// Return the node in which the lane is pointing toward
+        /// </summary>
+        public static ushort? FindLaneNode(this NetManager netManager, uint laneId)
+        {
+            var lane = netManager.m_lanes.m_buffer[laneId];
+
+            if (((NetLane.Flags)lane.m_flags & NetLane.Flags.Created) == NetLane.Flags.None)
+                return null;
+
+            var segment = netManager.m_segments.m_buffer[lane.m_segment];
+            var segmentLaneId = segment.m_lanes;
+            var info = segment.Info;
+            var laneCount = info.m_lanes.Length;
+            var laneIndex = 0;
+            for (; laneIndex < laneCount && segmentLaneId != 0; laneIndex++)
+            {
+                if (segmentLaneId == laneId)
+                    break;
+                segmentLaneId = netManager.m_lanes.m_buffer[segmentLaneId].m_nextLane;
+            }
+
+            if (laneIndex < laneCount)
+            {
+                NetInfo.Direction laneDir = ((segment.m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None) ? info.m_lanes[laneIndex].m_finalDirection : NetInfo.InvertDirection(info.m_lanes[laneIndex].m_finalDirection);
+
+                if ((laneDir & (NetInfo.Direction.Forward | NetInfo.Direction.Avoid)) == NetInfo.Direction.Forward)
+                    return segment.m_endNode;
+                if ((laneDir & (NetInfo.Direction.Backward | NetInfo.Direction.Avoid)) == NetInfo.Direction.Backward)
+                    return segment.m_startNode;
+            }
+
+            return null;
+        }
     }
 }

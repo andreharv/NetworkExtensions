@@ -306,7 +306,8 @@ namespace Transit.Addon.TM.Data {
 							if (flags > ushort.MaxValue)
 								continue;
 
-							if ((Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags & (ushort)NetLane.Flags.Created) == 0 || Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_segment == 0)
+							if ((Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags & (ushort)NetLane.Flags.Created) == 0 || 
+                                Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_segment == 0)
 								continue;
 
 							//Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags = fixLaneFlags(Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags);
@@ -319,7 +320,7 @@ namespace Transit.Addon.TM.Data {
 								Log._Debug("Flags for lane " + laneId + " are original (" + ((NetLane.Flags)(origFlags)).ToString() + ")");
 							}
 #endif
-                            TMLaneRoutingManager.instance.LoadLaneDirection(laneId, (TMLaneDirection)(laneArrowFlags));
+                            TMLaneRoutingManager.instance.LoadLaneDirection(laneId, (TAMLaneDirection)(laneArrowFlags));
 						} catch (Exception e) {
 							Log.Error($"Error loading Lane Split data. Length: {split.Length} value: {split}\nError: {e.Message}");
 						}

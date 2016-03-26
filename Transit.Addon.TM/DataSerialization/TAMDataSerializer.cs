@@ -56,7 +56,7 @@ namespace Transit.Addon.TM.DataSerialization
 
             TAMRestrictionManager.instance.Load(restrictionData);
             TAMSpeedLimitManager.instance.Load(speedLimitData);
-            TPPLaneRoutingManager.instance.Load(routeData);
+            TAMLaneRoutingManager.instance.Load(routeData);
         }
 
         public override void OnSaveData()
@@ -69,9 +69,9 @@ namespace Transit.Addon.TM.DataSerialization
         {
             Log.Info("Saving TAM data!");
 
-            if (TPPLaneRoutingManager.instance.IsLoaded())
+            if (TAMLaneRoutingManager.instance.IsLoaded())
             {
-                new DataSerializer<TAMLaneRoute[], TPPDataSerializationBinder>().SerializeData(serializableDataManager, TAM_ROUTEDATA_ID, TPPLaneRoutingManager.instance.GetAllRoutes());
+                new DataSerializer<TAMLaneRoute[], TPPDataSerializationBinder>().SerializeData(serializableDataManager, TAM_ROUTEDATA_ID, TAMLaneRoutingManager.instance.GetAllRoutes());
             }
             if (TAMRestrictionManager.instance.IsLoaded())
             {

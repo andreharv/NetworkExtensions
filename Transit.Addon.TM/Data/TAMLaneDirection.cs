@@ -6,7 +6,7 @@ using System.Text;
 namespace Transit.Addon.TM.Data
 {
     [Flags]
-    public enum TMLaneDirection
+    public enum TAMLaneDirection
     {
         // compatible with NetLane.Flags
         None = 0,
