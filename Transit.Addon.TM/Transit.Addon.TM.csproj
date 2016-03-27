@@ -64,8 +64,6 @@
     <Compile Include="AI\CustomTrainAI.cs" />
     <Compile Include="AI\CustomTramBaseAI.cs" />
     <Compile Include="AI\CustomVehicleAI.cs" />
-    <Compile Include="AI\TPPCargoTruckAI.cs" />
-    <Compile Include="AI\TPPPassengerCarAI.cs" />
     <Compile Include="DataSerialization\TAMDataSerializationBinder.cs" />
     <Compile Include="Data\TAMLaneDirection.cs" />
     <Compile Include="Data\TMConfigurationV2.Options.cs" />
@@ -81,6 +79,7 @@
     <Compile Include="Data\Legacy\TPPVehicleType.cs" />
     <Compile Include="Data\_Extensions\ExtVehicleTypeExtensions.cs" />
     <Compile Include="Data\_Extensions\ConfigurationExtensions.cs" />
+    <Compile Include="Data\_Extensions\TPPLaneDataExtensions.cs" />
     <Compile Include="Data\_Extensions\TPPVehicleTypeExtensions.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="PathFindingFeatures\TAMLaneRoutingManager.LaneArrows.cs" />
@@ -92,7 +91,6 @@
     <Compile Include="Data\TMDataManager.cs" />
     <Compile Include="PathFindingFeatures\TMSupported.cs" />
     <Compile Include="PathFindingFeatures\TAMLaneRoutingManager.cs" />
-    <Compile Include="PathFindingFeatures\TPPSupported.cs" />
     <Compile Include="PathFinding\TAMImprovedPathFind.cs" />
     <Compile Include="Data\TMConfigurationV2.CustomSegmentLight.cs" />
     <Compile Include="Data\TMConfigurationV2.CustomSegmentLights.cs" />

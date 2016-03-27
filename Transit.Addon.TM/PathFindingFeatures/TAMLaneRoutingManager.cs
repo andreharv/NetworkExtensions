@@ -142,7 +142,7 @@ namespace Transit.Addon.TM.PathFindingFeatures
         }
 
         public bool CanLanesConnect(ushort nodeId, ushort originSegmentId, byte originLaneIndex, uint originLaneId, ushort destinationSegmentId, byte destinationLaneIndex, uint destinationLaneId, ExtendedUnitType unitType) {
-			if ((unitType & TPPSupported.UNITS) == 0) {
+			if ((unitType & TAMSupported.UNITS) == 0) {
 				// unit type not supported
 				return true;
 			}
@@ -154,7 +154,7 @@ namespace Transit.Addon.TM.PathFindingFeatures
 				return true;
 			}
 
-			if ((originLaneInfo.m_vehicleType & TPPSupported.VEHICLETYPES) == 0) {
+			if ((originLaneInfo.m_vehicleType & TAMSupported.VEHICLETYPES) == 0) {
 				// vehicle type not supported
 				return true;
 			}
@@ -165,7 +165,7 @@ namespace Transit.Addon.TM.PathFindingFeatures
 				return true;
 			}
 
-			if ((destinationLane.m_vehicleType & TPPSupported.VEHICLETYPES) == 0) {
+			if ((destinationLane.m_vehicleType & TAMSupported.VEHICLETYPES) == 0) {
 				// vehicle type not supported
 				return true;
 			}

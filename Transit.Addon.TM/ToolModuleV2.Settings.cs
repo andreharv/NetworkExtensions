@@ -11,32 +11,13 @@ namespace Transit.Addon.TM
     {
         static ToolModuleV2()
         {
-            ActiveOptions = Options.NoDespawn;
+            ActiveOptions = Options.None;
         }
 
         public static Options ActiveOptions { get; private set; }
 
         public override void OnSettingsUI(UIHelperBase helper)
         {
-            helper.AddCheckbox(
-                "No Despawn by CBeTHaX",
-                null,
-                ActiveOptions.IsFlagSet(Options.NoDespawn),
-                isChecked =>
-                {
-                    if (isChecked)
-                    {
-                        ActiveOptions |= Options.NoDespawn;
-                    }
-                    else
-                    {
-                        ActiveOptions &= ~Options.NoDespawn;
-                    }
-
-                    FireSaveSettingsNeeded();
-                },
-                true);
-
             helper.AddCheckbox(
                 "Realistic Speeds",
                 null,
