@@ -1,6 +1,6 @@
-﻿namespace Transit.Addon.TM.PathFindingFeatures
+﻿namespace Transit.Addon.RealisticSpeed
 {
-    public static class UnitRealisticSpeedManager
+    public static class RealisticSpeedManager
     {
         public static void Activate()
         {

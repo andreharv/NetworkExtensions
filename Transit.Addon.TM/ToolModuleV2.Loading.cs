@@ -58,9 +58,6 @@ namespace Transit.Addon.TM
                 
                 InstallTools();
 
-                if ((ActiveOptions & Options.UseRealisticSpeeds) == Options.UseRealisticSpeeds)
-                    UnitRealisticSpeedManager.Activate();
-
                 TrafficPriority.OnLevelLoading();
 
                 Log.Info("Adding Controls to UI.");
@@ -79,9 +76,6 @@ namespace Transit.Addon.TM
                 Instance = this;
 
             UninstallTools();
-
-            if ((ActiveOptions & Options.UseRealisticSpeeds) == Options.UseRealisticSpeeds)
-                UnitRealisticSpeedManager.Deactivate();
 
             revertDetours();
             gameLoaded = false;

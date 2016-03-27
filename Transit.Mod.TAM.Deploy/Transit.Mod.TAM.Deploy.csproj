@@ -35,6 +35,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Transit.Addon.RealisticSpeed\Transit.Addon.RealisticSpeed.csproj">
+      <Project>{47afd7a3-89da-4569-8f81-1b4fa8eff159}</Project>
+      <Name>Transit.Addon.RealisticSpeed</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Transit.Addon.TMLegacy\Transit.Addon.TMLegacy.csproj">
       <Project>{c6fb53c5-223f-4cee-863d-63f3237f058a}</Project>
       <Name>Transit.Addon.TMLegacy</Name>

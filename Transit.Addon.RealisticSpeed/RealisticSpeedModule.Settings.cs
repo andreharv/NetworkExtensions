@@ -5,11 +5,11 @@ using ColossalFramework;
 using ICities;
 using Transit.Framework;
 
-namespace Transit.Addon.TM
+namespace Transit.Addon.RealisticSpeed
 {
-    public partial class ToolModuleV2
+    public partial class RealisticSpeedModule
     {
-        static ToolModuleV2()
+        static RealisticSpeedModule()
         {
             ActiveOptions = Options.None;
         }
@@ -18,7 +18,24 @@ namespace Transit.Addon.TM
 
         public override void OnSettingsUI(UIHelperBase helper)
         {
-            OptionManager.makeSettings(helper);
+            helper.AddCheckbox(
+                "Use realistic speeds",
+                null,
+                ActiveOptions.IsFlagSet(Options.UseRealisticSpeeds),
+                isChecked =>
+                {
+                    if (isChecked)
+                    {
+                        ActiveOptions |= Options.UseRealisticSpeeds;
+                    }
+                    else
+                    {
+                        ActiveOptions &= ~Options.UseRealisticSpeeds;
+                    }
+
+                    FireSaveSettingsNeeded();
+                },
+                true);
         }
 
         public override void OnLoadSettings(XmlElement moduleElement)
@@ -47,7 +64,14 @@ namespace Transit.Addon.TM
                 if (isEnabled == null)
                 {
                     // Default
-                    isEnabled = true;
+                    if (option == Options.UseRealisticSpeeds)
+                    {
+                        isEnabled = false;
+                    }
+                    else
+                    {
+                        isEnabled = true;
+                    }
                 }
 
                 if (isEnabled.Value)

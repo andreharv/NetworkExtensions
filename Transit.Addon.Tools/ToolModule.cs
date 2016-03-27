@@ -7,7 +7,12 @@ namespace Transit.Addon.Tools
     {
         public override string Name
         {
-            get { return "Tools"; }
+            get { return "Zoning Tools"; }
+        }
+
+        public override int Order
+        {
+            get { return 90; }
         }
 
         // Hack For FileManager, deprecated

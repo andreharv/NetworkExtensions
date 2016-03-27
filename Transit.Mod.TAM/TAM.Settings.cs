@@ -1,5 +1,6 @@
 ﻿using ColossalFramework.UI;
 using ICities;
+using Transit.Framework;
 using Transit.Framework.Mod;
 using Transit.Framework.Modularity;
 using UnityEngine;
@@ -39,7 +40,7 @@ namespace Transit.Mod
             strip.tabPages = container;
 
             int tabIndex = 0;
-            foreach (IModule module in this.GetOrCreateModules())
+            foreach (IModule module in this.GetOrCreateModules().OrderOrderables())
             {
                 strip.AddTab(module.Name, tabTemplate, true);
                 strip.selectedIndex = tabIndex;
