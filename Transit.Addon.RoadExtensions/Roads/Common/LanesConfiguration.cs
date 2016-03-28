@@ -12,6 +12,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
         public float BusStopOffset { get; set; }
         public CenterLaneType CenterLane { get; set; }
         public float CenterLaneWidth { get; set; }
+        public AsymLaneType AsymLT { get; set; }
 
         public LanesConfiguration()
         {
@@ -24,6 +25,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             BusStopOffset = 1.5f;
             CenterLane = CenterLaneType.None;
             CenterLaneWidth = 3.0f;
+            AsymLT = AsymLaneType.L0R0;
         }
     }
 }

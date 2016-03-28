@@ -1,11 +1,14 @@
-﻿using Transit.Framework;
+﻿using System.Collections.Generic;
+using Transit.Framework;
+using UnityEngine;
+using Transit.Addon.RoadExtensions.Roads.Common;
 using Transit.Framework.Network;
 
 namespace Transit.Addon.RoadExtensions.Roads.Common
 {
     public static partial class RoadModels
     {
-        public static NetInfo Setup16m3mSWMesh(this NetInfo info, NetInfoVersion version)
+        public static NetInfo Setup16m3mSWMesh(this NetInfo info, NetInfoVersion version, AsymLaneType asymLaneType = AsymLaneType.L0R0)
         {
             var highwayInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L);
             var highwaySlopeInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L_SLOPE);
@@ -13,6 +16,23 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
 
             switch (version)
             {
+                case NetInfoVersion.Ground:
+                    {
+                        var segments0 = info.m_segments[0];
+                        var segments1 = info.m_segments[1];
+                        var segments2 = info.m_segments[2];
+                        var segments3 = info.m_segments[1].ShallowClone();
+
+                        segments3.SetMeshes(
+                            @"Roads\Common\Meshes\16m\3mSW\BusStopInv.obj");
+                        if (asymLaneType != AsymLaneType.L0R0)
+                            RoadHelper.HandleAsymComplementarySegmentsFlags(segments1, segments3, asymLaneType);
+
+                        segments0.HandleAsymSegmentFlags(asymLaneType);
+                        segments2.HandleAsymSegmentFlags(asymLaneType);
+                        info.m_segments = new[] { segments0, segments1, segments2, segments3 };
+                        break;
+                    }
                 case NetInfoVersion.Elevated:
                 case NetInfoVersion.Bridge:
                     {
@@ -20,7 +40,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                         var nodes0 = info.m_nodes[0];
 
                         segments0
-                            .SetFlagsDefault()
                             .SetMeshes
                                 (@"Roads\Common\Meshes\16m\3mSW\Elevated.obj",
                                 @"Roads\Common\Meshes\16m\3mSW\Elevated_LOD.obj");
@@ -29,6 +48,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                             (@"Roads\Common\Meshes\16m\3mSW\Elevated_Node.obj",
                             @"Roads\Common\Meshes\16m\3mSW\Elevated_Node_LOD.obj");
 
+                        segments0.HandleAsymSegmentFlags(asymLaneType);
                         info.m_segments = new[] { segments0 };
                         info.m_nodes = new[] { nodes0 };
                         break;
@@ -42,12 +62,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                         var node0 = info.m_nodes[0];
                         var node1 = info.m_nodes[1];
                         var node2 = node0.ShallowClone();
-                        //segment0
-                        //    .SetFlagsDefault()
-                        //    **ToDo
 
                         segment2
-                            .SetFlagsDefault()
                             .SetMeshes
                             (@"Roads\Common\Meshes\16m\3mSW\Slope.obj",
                             @"Roads\Common\Meshes\16m\3mSW\Slope_LOD.obj");
@@ -72,29 +88,29 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                     }
                 case NetInfoVersion.Tunnel:
                     {
-                        var segment0 = info.m_segments[0];
-                        var segment1 = segment0.ShallowClone();
+                        var segments0 = info.m_segments[0];
+                        var segments1 = segments0.ShallowClone();
 
-                        var node0 = info.m_nodes[0];
-                        var node1 = node0.ShallowClone();
+                        var nodes0 = info.m_nodes[0];
+                        var nodes1 = nodes0.ShallowClone();
 
-                        segment1
-                            .SetFlagsDefault()
+                        segments1
                             .SetMeshes
                             (@"Roads\Common\Meshes\16m\3mSW\Tunnel.obj",
                             @"Roads\Common\Meshes\16m\3mSW\Tunnel_LOD.obj");
 
-                        node1
-                            .SetFlags(NetNode.Flags.None,NetNode.Flags.None)
+                        nodes1
+                            .SetFlags(NetNode.Flags.None, NetNode.Flags.None)
                             .SetMeshes
                             (@"Roads\Common\Meshes\16m\3mSW\Tunnel_Node.obj",
                             @"Roads\Common\Meshes\16m\3mSW\Tunnel_Node_LOD.obj");
 
-                        segment1.m_material = defaultMaterial;
-                        node1.m_material = defaultMaterial;
+                        segments1.HandleAsymSegmentFlags(asymLaneType);
+                        segments1.m_material = defaultMaterial;
+                        nodes1.m_material = defaultMaterial;
 
-                        info.m_segments = new[] { segment0, segment1 };
-                        info.m_nodes = new[] { node0, node1 };
+                        info.m_segments = new[] { segments0, segments1 };
+                        info.m_nodes = new[] { nodes0, nodes1 };
 
                         break;
                     }
