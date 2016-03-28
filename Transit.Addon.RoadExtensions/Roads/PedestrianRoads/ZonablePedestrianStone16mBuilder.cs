@@ -21,7 +21,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
         public string ShortDescription { get { return "No Passenger Vehicles, zoneable"; } }
         public string UICategory { get { return RExExtendedMenus.ROADS_PEDESTRIANS; } }
 
-        public string ThumbnailsPath { get { return @"Roads\Highways\Highway1L\thumbnails.png"; } }
+        public string ThumbnailsPath { get { return @"Roads\PedestrianRoads\thumbnails_16m_bike.png"; } }
         public string InfoTooltipPath { get { return @"Roads\Highways\Highway1L\infotooltip.png"; } }
 
         public NetInfoVersion SupportedVersions

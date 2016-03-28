@@ -769,6 +769,12 @@
     <Content Include="Roads\PedestrianRoads\Textures\Stone8m\Ground_Trans__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Roads\PedestrianRoads\thumbnails_16m_bike.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\PedestrianRoads\thumbnails_8m.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Roads\TinyRoads\Alley2L\thumbnails.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
