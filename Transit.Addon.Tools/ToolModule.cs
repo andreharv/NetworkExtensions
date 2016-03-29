@@ -14,9 +14,5 @@ namespace Transit.Addon.Tools
         {
             get { return 90; }
         }
-
-        // Hack For FileManager, deprecated
-        public override string AssetPath { get { return InternalAssetPath; } set { InternalAssetPath = value; } }
-        internal static string InternalAssetPath { get; private set; }
     }
 }

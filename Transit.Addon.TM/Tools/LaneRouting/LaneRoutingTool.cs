@@ -208,33 +208,15 @@ namespace Transit.Addon.TM.Tools.LaneRouting
                     m_selectedNode = 0;
             }
         }
-
-        private float _time = 0;
+        
         protected override void OnEnable()
         {
             base.OnEnable();
-
-            // hack to stop bug that disables and enables this tool the first time the panel is clicked
-            if (Time.realtimeSinceStartup - _time < 0.2f)
-            {
-                _time = 0;
-                return;
-            }
 
             m_hoveredNode = m_hoveredSegment = 0;
             m_selectedNode = 0;
             m_selectedMarker = null;
             m_segments.Clear();
-        }
-
-        protected override void OnDisable()
-        {
-            base.OnDisable();
-
-            _time = Time.realtimeSinceStartup;
-            //m_selectedLaneMarkers.Clear();
-            //if (OnEndLaneCustomization != null)
-            //	OnEndLaneCustomization();
         }
 
         private bool IsActive(NodeLaneMarker marker)
