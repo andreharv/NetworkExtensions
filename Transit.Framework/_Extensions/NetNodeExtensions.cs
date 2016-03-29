@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Transit.Addon.ToolsV3
+namespace Transit.Framework
 {
     public static class NetNodeExtensions
     {
-        public static IEnumerable<ushort> GetSegments(this NetNode node)
+        public static IEnumerable<ushort> GetSegmentIds(this NetNode node)
         {
             for (int i = 0; i < 8; i++)
             {

@@ -97,7 +97,6 @@
     <Compile Include="Data\TMConfigurationV2.SegmentConf.cs" />
     <Compile Include="Data\TMConfigurationV2.TimedTrafficLightsStep.cs" />
     <Compile Include="Data\TMConfigurationV2.TimedTrafficLights.cs" />
-    <Compile Include="Data\TMConfigurationV2.LaneConf.cs" />
     <Compile Include="ToolModuleV2.Tool.cs" />
     <Compile Include="ToolModuleV2.Loading.cs" />
     <Compile Include="ToolModuleV2.Localization.cs" />

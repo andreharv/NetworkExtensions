@@ -17,11 +17,6 @@ namespace Transit.Addon.TM.Data
 		public List<SegmentConf> SegmentConfs = new List<SegmentConf>();
 
 		/// <summary>
-		/// Stored lane speed limits
-		/// </summary>
-		public List<LaneConf> LaneConfs = new List<LaneConf>();
-
-		/// <summary>
 		/// Options
 		/// </summary>
 		public Options Opt = new Options();

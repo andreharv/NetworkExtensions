@@ -70,7 +70,6 @@
     <Compile Include="Tools\LaneRouting\DataLegacy\TPP\TPPVehicleType.cs" />
     <Compile Include="_Extensions\Color32Extensions.cs" />
     <Compile Include="_Extensions\NetManagerExtensions.cs" />
-    <Compile Include="_Extensions\NetNodeExtensions.cs" />
     <Compile Include="_Extensions\OverlayEffectExtensions.cs" />
     <Compile Include="ToolModuleV3.cs" />
     <Compile Include="ToolModuleV3.Install.cs" />

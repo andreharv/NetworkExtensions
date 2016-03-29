@@ -13,21 +13,9 @@ namespace Transit.Addon.TM.PathFindingFeatures
         private TAMLaneRoute[] _laneRoutes = null;
         private readonly uint[] NO_CONNECTIONS = new uint[0];
 
-        /// <summary>
-        /// For each lane: Defines the lane arrows which are set
-        /// </summary>
-        private TAMLaneDirection?[] _laneDirections = null;
-
-        /// <summary>
-        /// For each lane: Defines the lane arrows which are set in highway rule mode (they are not saved)
-        /// </summary>
-        private TAMLaneDirection?[] _highwayLaneDirections = null;
-
         public void Init()
         {
             _laneRoutes = new TAMLaneRoute[NetManager.MAX_LANE_COUNT];
-            _laneDirections = new TAMLaneDirection?[Singleton<NetManager>.instance.m_lanes.m_size];
-            _highwayLaneDirections = new TAMLaneDirection?[Singleton<NetManager>.instance.m_lanes.m_size];
         }
 
         public void Load(TAMLaneRoute[] laneRoutes)
@@ -60,11 +48,14 @@ namespace Transit.Addon.TM.PathFindingFeatures
             UpdateLaneArrows(route.LaneId, route.NodeId);
         }
 
+        public void LoadLaneDirection(uint laneId, TAMLaneDirection direction)
+        {
+            Load(TransformToRoute(laneId, direction));
+        }
+
         public void Reset()
         {
             _laneRoutes = null;
-            _laneDirections = null;
-            _highwayLaneDirections = null;
         }
 
         public bool IsLoaded()

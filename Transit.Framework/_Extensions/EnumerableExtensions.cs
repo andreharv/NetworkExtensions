@@ -7,7 +7,6 @@ namespace Transit.Framework
     public static class EnumerableExtensions
     {
         public static IEnumerable<T> TrimNull<T>(this IEnumerable<T> enumerable)
-            where T: class
         {
             return enumerable
                 .Where(element => element != null)
@@ -15,13 +14,11 @@ namespace Transit.Framework
         }
 
         public static IEnumerable<T> Except<T>(this IEnumerable<T> enumerable, T other)
-            where T : class
         {
             return enumerable.Except(new[] { other });
         }
 
         public static IEnumerable<T> Union<T>(this IEnumerable<T> enumerable, T other)
-            where T : class
         {
             return enumerable.Union(new [] { other });
         }

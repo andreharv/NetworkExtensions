@@ -64,22 +64,6 @@ namespace Transit.Addon.TM.Data {
 				Log.Warning("Segment data structure undefined!");
 			}
 
-			// Load lane configuration
-			if (configuration.LaneConfs != null) {
-				Log.Info($"Loading lane configuration data. {configuration.LaneConfs.Count} elements");
-				foreach (TMConfigurationV2.LaneConf laneConf in configuration.LaneConfs) {
-					if (((NetLane.Flags)netManager.m_lanes.m_buffer[laneConf.laneId].m_flags & NetLane.Flags.Created) == NetLane.Flags.None)
-						continue;
-
-					if (laneConf.directions != null) {
-                        // load lane arrows
-                        TAMLaneRoutingManager.instance.LoadLaneDirection(laneConf.laneId, (TAMLaneDirection)(laneConf.directions));
-					}
-				}
-			} else {
-				Log.Warning("Lane configuration structure undefined!");
-			}
-
 			// Load node configuration
 			if (configuration.NodeConfs != null) {
 				Log.Info($"Loading {configuration.NodeConfs.Count()} timed traffic lights (new method)");
@@ -162,7 +146,6 @@ namespace Transit.Addon.TM.Data {
 
 			Dictionary<ushort, TMConfigurationV2.NodeConf> nodeConfs = new Dictionary<ushort, TMConfigurationV2.NodeConf>();
 			Dictionary<ushort, TMConfigurationV2.SegmentConf> segmentConfs = new Dictionary<ushort, TMConfigurationV2.SegmentConf>();
-			Dictionary<uint, TMConfigurationV2.LaneConf> laneConfs = new Dictionary<uint, TMConfigurationV2.LaneConf>();
 
 			// Assemble segment configuration
 			for (ushort segmentId = 0; segmentId < NetManager.MAX_SEGMENT_COUNT; segmentId++) {
@@ -310,23 +293,8 @@ namespace Transit.Addon.TM.Data {
 				}
 			}
 
-			// Assemble lane configuration
-			for (uint laneId = 0; laneId < NetManager.MAX_LANE_COUNT; laneId++) {
-				TAMLaneDirection? laneArrows = TAMLaneRoutingManager.instance.GetLaneDirection(laneId);
-				if (laneArrows != null) {
-					// save lane arrows
-
-					Log._Debug($"Saving lane data for lane {laneId}, setting to {laneArrows.ToString()}");
-					if (!laneConfs.ContainsKey(laneId))
-						laneConfs[laneId] = new TMConfigurationV2.LaneConf(laneId);
-
-					laneConfs[laneId].directions = laneArrows;
-				}
-			}
-
 			configuration.NodeConfs = new List<TMConfigurationV2.NodeConf>(nodeConfs.Values);
 			configuration.SegmentConfs = new List<TMConfigurationV2.SegmentConf>(segmentConfs.Values);
-			configuration.LaneConfs = new List<TMConfigurationV2.LaneConf>(laneConfs.Values);
 
 			return configuration;
 		}

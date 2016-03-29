@@ -186,7 +186,7 @@ namespace Transit.Addon.TM.Data {
 				applyNodeTrafficLightFlag(i);
 			}
 
-		    TAMLaneRoutingManager.instance.ApplyAll();
+		    TAMLaneRoutingManager.instance.ApplyAllDirections();
 		}
 
 		public static void applyNodeTrafficLightFlag(ushort nodeId) {
