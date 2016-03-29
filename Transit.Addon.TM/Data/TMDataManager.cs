@@ -16,7 +16,6 @@ namespace Transit.Addon.TM.Data {
 		}
 
 		private static void OnAfterLoad() {
-            TAMLaneRoutingManager.instance.ClearAllHighwayDirections();
 			Flags.applyAllFlags();
 			TrafficPriority.HandleAllVehicles();
 		}

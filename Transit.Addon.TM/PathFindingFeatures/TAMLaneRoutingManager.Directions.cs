@@ -1,9 +1,7 @@
 ﻿using ColossalFramework;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Transit.Addon.TM.Data;
-using Transit.Addon.TM.Traffic;
 using Transit.Framework;
 using UnityEngine;
 
@@ -35,17 +33,19 @@ namespace Transit.Addon.TM.PathFindingFeatures
 
             foreach (var otherSegmentId in otherSegmentIds)
             {
-                var otherSegment = NetManager.instance.m_segments.m_buffer[segmentId];
+                var otherSegment = NetManager.instance.m_segments.m_buffer[otherSegmentId];
                 var otherSegmentDir = otherSegment.GetDirection(nodeId.Value);
 
-                var relDirection = GetRelativeDirection(segmentDir, otherSegmentDir);
+                var relativeDirection = GetRelativeDirection(segmentDir, otherSegmentDir);
 
-                if ((relDirection & direction) != 0)
+                if ((relativeDirection & direction) != 0)
                 {
                     // Good direction
-                    foreach (var item in otherSegment.GetL)
+                    foreach (var otherLaneId in NetManager.instance.GetSegmentLaneIds(otherSegmentId))
                     {
+                        // TODO: check outbound lane only and sametype
 
+                        connections.Add(otherLaneId);
                     }
                 }
             }
@@ -83,6 +83,20 @@ namespace Transit.Addon.TM.PathFindingFeatures
             }
         }
 
+        private TAMLaneDirection GetRouteDirection(uint sourceLaneId, uint destinationLaneId, ushort nodeId)
+        {
+            var sourceLane = NetManager.instance.m_lanes.m_buffer[sourceLaneId];
+            var sourceSegmentId = sourceLane.m_segment;
+            var sourceSegment = NetManager.instance.m_segments.m_buffer[sourceSegmentId];
+            var sourceSegmentDirection = sourceSegment.GetDirection(nodeId);
+
+            var destinationLane = NetManager.instance.m_lanes.m_buffer[destinationLaneId];
+            var destinationSegmentId = destinationLane.m_segment;
+            var destinationSegment = NetManager.instance.m_segments.m_buffer[destinationSegmentId];
+            var destinationSegmentDirection = destinationSegment.GetDirection(nodeId);
+
+            return GetRelativeDirection(sourceSegmentDirection, destinationSegmentDirection);
+        }
 
         public bool ToggleLaneDirection(uint laneId, TAMLaneDirection flags)
         {
@@ -91,9 +105,6 @@ namespace Transit.Addon.TM.PathFindingFeatures
                 RemoveLaneDirection(laneId);
                 return false;
             }
-
-            if (_highwayLaneDirections[laneId] != null)
-                return false; // disallow custom lane arrows in highway rule mode
 
             TAMLaneDirection? arrows = _laneDirections[laneId];
             if (arrows == null)
@@ -123,9 +134,6 @@ namespace Transit.Addon.TM.PathFindingFeatures
         {
             if (laneId <= 0)
                 return;
-
-            if (_highwayLaneDirections[laneId] != null)
-                return; // modification of arrows in highway rule mode is forbidden
 
             _laneDirections[laneId] = null;
             uint laneFlags = (uint)Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags;

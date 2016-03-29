@@ -111,29 +111,31 @@ namespace Transit.Addon.TM.PathFindingFeatures
         private void UpdateLaneRoutedArrows(TAMLaneRoute route)
         {
             var lane = NetManager.instance.m_lanes.m_buffer[route.LaneId];
-            var segment = NetManager.instance.m_segments.m_buffer[lane.m_segment];
             var flags = (NetLane.Flags)lane.m_flags;
             flags &= ~(NetLane.Flags.LeftForwardRight);
 
-            var segmentDir = segment.GetDirection(route.NodeId);
+            //var segment = NetManager.instance.m_segments.m_buffer[lane.m_segment];
+            //var segmentDir = segment.GetDirection(route.NodeId);
             foreach (var connLaneId in route.Connections)
             {
-                var connSegmentId = NetManager.instance.m_lanes.m_buffer[connLaneId].m_segment;
-                var connSegmentDir = NetManager.instance.m_segments.m_buffer[connSegmentId].GetDirection(route.NodeId);
-                if (Vector3.Angle(segmentDir, connSegmentDir) > 150f)
-                {
-                    flags |= NetLane.Flags.Forward;
-                }
-                else
-                {
-                    if (Vector3.Dot(Vector3.Cross(segmentDir, -connSegmentDir), Vector3.up) > 0f)
-                        flags |= NetLane.Flags.Right;
-                    else
-                        flags |= NetLane.Flags.Left;
-                }
+                flags |= (NetLane.Flags) (int)GetRouteDirection(route.LaneId, connLaneId, route.NodeId);
+
+                //var connSegmentId = NetManager.instance.m_lanes.m_buffer[connLaneId].m_segment;
+                //var connSegmentDir = NetManager.instance.m_segments.m_buffer[connSegmentId].GetDirection(route.NodeId);
+                //if (Vector3.Angle(segmentDir, connSegmentDir) > 150f)
+                //{
+                //    flags |= NetLane.Flags.Forward;
+                //}
+                //else
+                //{
+                //    if (Vector3.Dot(Vector3.Cross(segmentDir, -connSegmentDir), Vector3.up) > 0f)
+                //        flags |= NetLane.Flags.Right;
+                //    else
+                //        flags |= NetLane.Flags.Left;
+                //}
             }
 
-            NetManager.instance.m_lanes.m_buffer[route.LaneId].m_flags = (ushort)flags;
+            lane.m_flags = (ushort)flags;
         }
     }
 }
