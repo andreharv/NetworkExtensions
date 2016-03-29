@@ -1,38 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ColossalFramework;
+﻿using ColossalFramework;
+using System;
 using Transit.Addon.TM.Data;
 using Transit.Addon.TM.Traffic;
 using Transit.Framework;
 
 namespace Transit.Addon.TM.PathFindingFeatures
 {
-    public class TMLaneRoutingManager : Singleton<TMLaneRoutingManager>
+    public partial class TAMLaneRoutingManager
     {
-        /// <summary>
-        /// For each lane: Defines the lane arrows which are set
-        /// </summary>
-        private TAMLaneDirection?[] _laneDirections = null;
-
-        /// <summary>
-        /// For each lane: Defines the lane arrows which are set in highway rule mode (they are not saved)
-        /// </summary>
-        private TAMLaneDirection?[] _highwayLaneDirections = null;
-
-        public void Init()
-        {
-            _laneDirections = new TAMLaneDirection?[Singleton<NetManager>.instance.m_lanes.m_size];
-            _highwayLaneDirections = new TAMLaneDirection?[Singleton<NetManager>.instance.m_lanes.m_size];
-        }
-
-        public void Reset()
-        {
-            _laneDirections = null;
-            _highwayLaneDirections = null;
-        }
-
         public TAMLaneDirection? GetLaneDirection(uint laneId)
         {
             return _laneDirections[laneId];

@@ -1051,7 +1051,7 @@ namespace Transit.Addon.TM.Traffic {
 				CustomRoadAI.GetSegmentGeometry(segmentId).VerifySegmentsByCount();
 
             // update route
-		    TMLaneRoutingManager.instance.ScrubSegment(segmentId);
+		    TAMLaneRoutingManager.instance.ScrubSegment(segmentId);
 
 			/*if (PrioritySegments[segmentId] == null)
 				return;

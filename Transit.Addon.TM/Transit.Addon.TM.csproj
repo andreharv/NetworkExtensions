@@ -83,7 +83,7 @@
     <Compile Include="Data\_Extensions\TPPVehicleTypeExtensions.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="PathFindingFeatures\TAMLaneRoutingManager.LaneArrows.cs" />
-    <Compile Include="PathFindingFeatures\TMLaneRoutingManager.cs" />
+    <Compile Include="PathFindingFeatures\TAMLaneRoutingManager.Directions.cs" />
     <Compile Include="PathFindingFeatures\TAMRestrictionManager.cs" />
     <Compile Include="PathFindingFeatures\TAMSupported.cs" />
     <Compile Include="Data\TMDataManager.Configuration.V2.cs" />

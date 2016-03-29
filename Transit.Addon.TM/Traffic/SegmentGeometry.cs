@@ -1244,7 +1244,7 @@ namespace Transit.Addon.TM.Traffic {
 				}
 
                 // reset highway lane arrows
-                TMLaneRoutingManager.instance.RemoveHighwayLaneDirectionAtSegment(segmentId); // TODO refactor
+                TAMLaneRoutingManager.instance.RemoveHighwayLaneDirectionAtSegment(segmentId); // TODO refactor
 
 				// clear default vehicle type cache
 				VehicleRestrictionsManager.ClearCache(segmentId);
@@ -1346,7 +1346,7 @@ namespace Transit.Addon.TM.Traffic {
 				}
 
                 // reset highway lane arrows
-                TMLaneRoutingManager.instance.RemoveHighwayLaneDirectionAtSegment(otherSegmentId); // TODO refactor
+                TAMLaneRoutingManager.instance.RemoveHighwayLaneDirectionAtSegment(otherSegmentId); // TODO refactor
 
 				nodeSegments.Add(otherSegmentId);
 			}

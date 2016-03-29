@@ -1322,7 +1322,7 @@ namespace Transit.Addon.TM.PathFinding
 								/*if (Options.disableSomething1)
 									Log._Debug($"THREAD #{Thread.CurrentThread.ManagedThreadId} PF {_pathFindIndex}: Setting highway arrows @ lane {nextLaneId}: START");*/
 #endif
-								TAMLaneDirection? prevHighwayArrows = TMLaneRoutingManager.instance.GetHighwayLaneDirection(nextLaneId);
+								TAMLaneDirection? prevHighwayArrows = TAMLaneRoutingManager.instance.GetHighwayLaneDirection(nextLaneId);
 								TAMLaneDirection newHighwayArrows = TAMLaneDirection.None;
 								if (prevHighwayArrows != null)
 									newHighwayArrows = (TAMLaneDirection)prevHighwayArrows;
@@ -1334,7 +1334,7 @@ namespace Transit.Addon.TM.PathFinding
 									newHighwayArrows |= TAMLaneDirection.Forward;
 
 								if (newHighwayArrows != prevHighwayArrows && newHighwayArrows != TAMLaneDirection.None)
-                                    TMLaneRoutingManager.instance.SetHighwayLaneDirection(nextLaneId, newHighwayArrows, false);
+                                    TAMLaneRoutingManager.instance.SetHighwayLaneDirection(nextLaneId, newHighwayArrows, false);
 #if DEBUGPF
 								/*if (Options.disableSomething1)
 									Log._Debug($"THREAD #{Thread.CurrentThread.ManagedThreadId} PF {_pathFindIndex}: Setting highway arrows @ lane {nextLaneId} to {newHighwayArrows.ToString()}: END");*/

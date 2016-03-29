@@ -320,7 +320,7 @@ namespace Transit.Addon.TM.Data {
 								Log._Debug("Flags for lane " + laneId + " are original (" + ((NetLane.Flags)(origFlags)).ToString() + ")");
 							}
 #endif
-                            TMLaneRoutingManager.instance.LoadLaneDirection(laneId, (TAMLaneDirection)(laneArrowFlags));
+                            TAMLaneRoutingManager.instance.LoadLaneDirection(laneId, (TAMLaneDirection)(laneArrowFlags));
 						} catch (Exception e) {
 							Log.Error($"Error loading Lane Split data. Length: {split.Length} value: {split}\nError: {e.Message}");
 						}

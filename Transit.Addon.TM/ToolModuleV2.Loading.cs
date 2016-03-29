@@ -27,7 +27,6 @@ namespace Transit.Addon.TM
 
             TAMRestrictionManager.instance.Init();
             TAMSpeedLimitManager.instance.Init();
-            TMLaneRoutingManager.instance.Init();
             TAMLaneRoutingManager.instance.Init();
 
             ToolMode = Mode.Disabled;
@@ -82,7 +81,6 @@ namespace Transit.Addon.TM
 
             TAMRestrictionManager.instance.Reset();
             TAMSpeedLimitManager.instance.Reset();
-            TMLaneRoutingManager.instance.Reset();
             TAMLaneRoutingManager.instance.Reset();
 
             Object.Destroy(UI);

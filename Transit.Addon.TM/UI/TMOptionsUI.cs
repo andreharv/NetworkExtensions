@@ -229,7 +229,7 @@ namespace Transit.Addon.TM {
 
 			Log._Debug($"Highway rules changed to {newHighwayRules}");
 			TMDataManager.Options.highwayRules = newHighwayRules;
-            TMLaneRoutingManager.instance.ClearAllHighwayDirections();
+            TAMLaneRoutingManager.instance.ClearAllHighwayDirections();
 			Flags.applyAllFlags();
 			if (newHighwayRules)
 				setAdvancedAI(true);
