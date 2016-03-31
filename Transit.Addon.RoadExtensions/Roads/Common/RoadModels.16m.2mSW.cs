@@ -18,6 +18,10 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                         var segment0 = info.m_segments[0];
                         var segment1 = info.m_segments[1];
                         var segment2 = info.m_segments[2];
+                        var segment3 = info.m_segments[1].ShallowClone();
+
+                        if (asymLaneType != AsymLaneType.L0R0)
+                            RoadHelper.HandleAsymComplementarySegmentsFlags(segment1, segment3, asymLaneType);
                         var node0 = info.m_nodes[0];
 
                         segment0
@@ -32,6 +36,10 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                             .SetMeshes
                                 (@"Roads\Common\Meshes\16m\2mSW\Ground.obj",
                                 @"Roads\Common\Meshes\16m\2mSW\Ground_LOD.obj");
+                        segment3
+                            .SetMeshes
+                                (@"Roads\Common\Meshes\16m\2mSW\Ground.obj",
+                                @"Roads\Common\Meshes\16m\2mSW\Ground_LOD.obj");
                         node0
                             .SetMeshes
                                 (@"Roads\Common\Meshes\16m\2mSW\Ground_Node.obj",
@@ -39,7 +47,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
 
                         segment0.HandleAsymSegmentFlags(asymLaneType);
                         segment2.HandleAsymSegmentFlags(asymLaneType);
-                        info.m_segments = new[] { segment0, segment1, segment2 };
+                        info.m_segments = new[] { segment0, segment1, segment2, segment3 };
                         info.m_nodes = new[] { node0 };
 
                         break;
@@ -96,6 +104,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                             (@"Roads\Common\Meshes\16m\2mSW\Slope_U_Node.obj",
                             @"Roads\Common\Meshes\16m\2mSW\Slope_U_Node_LOD.obj");
 
+                        segment2.HandleAsymSegmentFlags(asymLaneType);
                         node2.m_material = defaultMaterial;
 
                         info.m_segments = new[] { segment0, segment1, segment2 };

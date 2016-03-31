@@ -79,6 +79,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                             (@"Roads\Common\Meshes\16m\3mSW\Slope_U_Node.obj",
                             @"Roads\Common\Meshes\16m\3mSW\Slope_U_Node_LOD.obj");
 
+                        segment2.HandleAsymSegmentFlags(asymLaneType);
                         node2.m_material = defaultMaterial;
 
                         info.m_segments = new[] { segment0, segment1, segment2 };

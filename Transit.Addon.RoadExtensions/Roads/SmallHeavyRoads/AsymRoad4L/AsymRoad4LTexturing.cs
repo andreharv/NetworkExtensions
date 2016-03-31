@@ -11,28 +11,59 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.AsymRoad4L
             switch (version)
             {
                 case NetInfoVersion.Ground:
-                    info.SetAllSegmentsTexture(
-                        new TextureSet
-                            (@"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Ground_Segment__MainTex.png",
-                            @"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Ground_Segment__AlphaMap.png"),
-                        new LODTextureSet
-                            (@"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Ground_SegmentLOD__MainTex.png",
-                            @"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Ground_SegmentLOD__AlphaMap.png",
-                            @"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Ground_SegmentLOD__XYS.png"));
+                    for (int i = 0; i < info.m_segments.Length; i++)
+                    {
+                        if (asymLaneType != AsymLaneType.L0R0)
+                        {
+                            var inverted = string.Empty;
+                            if ((asymLaneType == AsymLaneType.L1R3 && ((info.m_segments[i].m_backwardForbidden & NetSegment.Flags.Invert) == 0))
+                                || (asymLaneType == AsymLaneType.L3R1 && ((info.m_segments[i].m_backwardForbidden & NetSegment.Flags.Invert) != 0)))
+                            {
+                                inverted = "_Inverted";
+                            }
+
+                            info.m_segments[i].SetTextures(
+                                new TextureSet
+                                    (string.Format(@"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Ground_Segment{0}__MainTex.png", inverted),
+                                    string.Format(@"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Ground_Segment{0}__AlphaMap.png", inverted)),
+                                new LODTextureSet
+                                    (string.Format(@"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Ground_SegmentLOD{0}__MainTex.png", inverted),
+                                    string.Format(@"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Ground_SegmentLOD{0}__AlphaMap.png", inverted),
+                                    @"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Ground_SegmentLOD__XYS.png"));
+                        }
+                    }
                     break;
                 case NetInfoVersion.Elevated:
                 case NetInfoVersion.Bridge:
-                    info.SetAllSegmentsTexture(
+                    for (int i = 0; i < info.m_segments.Length; i++)
+                    {
+                        if (info.m_segments[i].m_mesh.name == "Elevated" || info.m_segments[i].m_mesh.name == "Bridge")
+                        {
+                            var inverted = (asymLaneType == AsymLaneType.L1R3 ? "_Inverted" : string.Empty);
+                            info.m_segments[i].SetTextures(
+                            new TextureSet
+                                (string.Format(@"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Elevated{0}__MainTex.png", inverted),
+                                string.Format(@"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Elevated_Segment{0}__APRMap.png", inverted)),
+                            new LODTextureSet
+                                (string.Format(@"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Elevated_LOD{0}__MainTex.png", inverted),
+                                string.Format(@"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Elevated_SegmentLOD{0}__APRMap.png", inverted),
+                                @"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Elevated_LOD__XYSMap.png"));
+                        }
+                        else
+                        {
+                            info.m_segments[i].SetTextures(
                         new TextureSet
-                            (@"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Elevated_MainTex.png",
+                            (@"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Elevated__MainTex.png",
                             @"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Elevated_Segment__APRMap.png"),
-						new LODTextureSet
-							(@"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Elevated_LOD__MainTex.png",
-							@"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Elevated_SegmentLOD__APRMap.png",
-							@"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Elevated_LOD__XYSMap.png"));
-					info.SetAllNodesTexture(
+                        new LODTextureSet
+                            (@"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Elevated_LOD__MainTex.png",
+                            @"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Elevated_SegmentLOD__APRMap.png",
+                            @"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Elevated_LOD__XYSMap.png"));
+                        }
+                    }
+                    info.SetAllNodesTexture(
                         new TextureSet
-                            (@"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Elevated_MainTex.png",
+                            (@"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Elevated__MainTex.png",
                             @"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Elevated_Node__APRMap.png"),
                         new LODTextureSet
                             (@"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Elevated_LOD__MainTex.png",
@@ -44,7 +75,7 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.AsymRoad4L
                     {
                         if (info.m_segments[i].m_mesh.name == "Slope")
                         {
-                            var inverted = (asymLaneType == AsymLaneType.L3R1 ? "_Inverted" : string.Empty);
+                            var inverted = (asymLaneType == AsymLaneType.L1R3 ? "_Inverted" : string.Empty);
                             info.m_segments[i].SetTextures(
                                 new TextureSet(
                                     string.Format(@"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Ground_Segment{0}__MainTex.png", inverted),
@@ -91,25 +122,43 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.AsymRoad4L
                                     @"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Tunnel_LOD__XYSMap.png"));
                         }
                     }
-                        //info.SetAllNodesTexture(
-                        //new TextureSet
-                        //    (@"Roads\Highways\Highway4L\Textures\Slope_Node__MainTex.png",
-                        //    @"Roads\Highways\Highway4L\Textures\Ground_Node__APRMap.png"),
-                        //new LODTextureSet
-                        //    (@"Roads\Highways\Highway4L\Textures\Ground_NodeLOD__MainTex.png",
-                        //    @"Roads\Highways\Highway4L\Textures\Ground_NodeLOD__APRMap.png",
-                        //    @"Roads\Highways\Highway4L\Textures\Ground_LOD__XYSMap.png"));
+                    //info.SetAllNodesTexture(
+                    //new TextureSet
+                    //    (@"Roads\Highways\Highway4L\Textures\Slope_Node__MainTex.png",
+                    //    @"Roads\Highways\Highway4L\Textures\Ground_Node__APRMap.png"),
+                    //new LODTextureSet
+                    //    (@"Roads\Highways\Highway4L\Textures\Ground_NodeLOD__MainTex.png",
+                    //    @"Roads\Highways\Highway4L\Textures\Ground_NodeLOD__APRMap.png",
+                    //    @"Roads\Highways\Highway4L\Textures\Ground_LOD__XYSMap.png"));
                     break;
                 case NetInfoVersion.Tunnel:
                     {
-                        info.SetAllSegmentsTexture(
-                            new TextureSet
-                                (@"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Tunnel_Segment__MainTex.png",
-                                @"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Tunnel_Segment__APRMap.png"),
-                            new LODTextureSet
-                                (@"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Tunnel_NodeLOD__MainTex.png",
-                                @"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Tunnel_LOD__APRMap.png",
-                                @"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Tunnel_LOD__XYSMap.png"));
+                        for (int i = 0; i < info.m_segments.Length; i++)
+                        {
+                            if (info.m_segments[i].m_mesh.name == "Tunnel")
+                            {
+                                var inverted = (asymLaneType == AsymLaneType.L1R3 ? "_Inverted" : string.Empty);
+                                info.m_segments[i].SetTextures(
+                                new TextureSet
+                                    (string.Format(@"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Tunnel_Segment{0}__MainTex.png", inverted),
+                                    string.Format(@"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Tunnel_Segment{0}__APRMap.png", inverted)),
+                                new LODTextureSet
+                                    (@"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Tunnel_NodeLOD__MainTex.png",
+                                    @"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Tunnel_LOD__APRMap.png",
+                                    @"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Tunnel_LOD__XYSMap.png"));
+                            }
+                            else
+                            {
+                                info.m_segments[i].SetTextures(
+                                    new TextureSet
+                                    (@"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Tunnel_Segment__MainTex.png",
+                                    @"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Tunnel_Segment__APRMap.png"),
+                                    new LODTextureSet
+                                    (@"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Tunnel_NodeLOD__MainTex.png",
+                                    @"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Tunnel_LOD__APRMap.png",
+                                    @"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Tunnel_LOD__XYSMap.png"));
+                            }
+                        }
                         info.SetAllNodesTexture(
                             new TextureSet
                                 (@"Roads\SmallHeavyRoads\AsymRoad4L\Textures\Tunnel_Segment__MainTex.png",
