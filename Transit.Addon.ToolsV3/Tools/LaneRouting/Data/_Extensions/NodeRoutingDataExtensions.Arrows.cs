@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Transit.Framework;
 using UnityEngine;
 
 namespace Transit.Addon.ToolsV3.LaneRouting.Data
@@ -25,7 +26,7 @@ namespace Transit.Addon.ToolsV3.LaneRouting.Data
                 return;
             }
 
-            foreach (var segmentId in node.Value.GetSegments())
+            foreach (var segmentId in node.Value.GetSegmentIds())
             {
                 var segment = NetManager.instance.GetSegment(segmentId);
                 if (segment == null)

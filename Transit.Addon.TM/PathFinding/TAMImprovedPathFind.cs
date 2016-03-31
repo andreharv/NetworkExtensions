@@ -1315,32 +1315,6 @@ namespace Transit.Addon.TM.PathFinding
 								logBuf.Add($"Exploring path from {nextSegmentId} ({nextDir}) to {item.m_position.m_segment}, lane id {item.m_position.m_lane}, {prevRightSimilarLaneIndex} from right: nextLaneIndex={nextLaneIndex} nextLaneId={nextLaneId}");
 #endif
 
-							if (applyHighwayRulesAtSegment)
-							{
-								// update highway mode lane arrows
-#if DEBUGPF
-								/*if (Options.disableSomething1)
-									Log._Debug($"THREAD #{Thread.CurrentThread.ManagedThreadId} PF {_pathFindIndex}: Setting highway arrows @ lane {nextLaneId}: START");*/
-#endif
-								TAMLaneDirection? prevHighwayArrows = TAMLaneRoutingManager.instance.GetHighwayLaneDirection(nextLaneId);
-								TAMLaneDirection newHighwayArrows = TAMLaneDirection.None;
-								if (prevHighwayArrows != null)
-									newHighwayArrows = (TAMLaneDirection)prevHighwayArrows;
-								if (isIncomingRight)
-									newHighwayArrows |= TAMLaneDirection.Left;
-								else if (isIncomingLeft)
-									newHighwayArrows |= TAMLaneDirection.Right;
-								else if (isIncomingStraight)
-									newHighwayArrows |= TAMLaneDirection.Forward;
-
-								if (newHighwayArrows != prevHighwayArrows && newHighwayArrows != TAMLaneDirection.None)
-                                    TAMLaneRoutingManager.instance.SetHighwayLaneDirection(nextLaneId, newHighwayArrows, false);
-#if DEBUGPF
-								/*if (Options.disableSomething1)
-									Log._Debug($"THREAD #{Thread.CurrentThread.ManagedThreadId} PF {_pathFindIndex}: Setting highway arrows @ lane {nextLaneId} to {newHighwayArrows.ToString()}: END");*/
-#endif
-							}
-
 							if (ProcessItemCosts(true, debug, item, nextNodeId, nextSegmentId, ref netManager.m_segments.m_buffer[nextSegmentId], ref similarLaneIndexFromLeft, connectOffset, true, nextIsBeautificationNode, nextLaneIndex, nextLaneId, out foundForced))
 							{
 								mayTurnAround = true;

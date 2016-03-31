@@ -125,9 +125,9 @@ namespace Transit.Addon.TM.Tools.SubTools
 				GUILayout.Label(Translation.GetString("Lane") + " " + (i + 1), laneTitleStyle);
 				GUILayout.BeginVertical();
 				GUILayout.BeginHorizontal();
-				if (!TAMLaneRoutingManager.instance.ApplyLaneDirection((uint)laneList[i][0])) {
-                    TAMLaneRoutingManager.instance.RemoveLaneDirection((uint)laneList[i][0]);
-				}
+				//if (!TAMLaneRoutingManager.instance.ApplyLaneDirection((uint)laneList[i][0])) {
+    //                TAMLaneRoutingManager.instance.RemoveLaneDirection((uint)laneList[i][0]);
+				//}
 				if (GUILayout.Button("←", ((flags & NetLane.Flags.Left) == NetLane.Flags.Left ? style1 : style2), GUILayout.Width(35), GUILayout.Height(25))) {
 					if (!TAMLaneRoutingManager.instance.ToggleLaneDirection((uint)laneList[i][0], TAMLaneDirection.Left) && SelectedNodeId > 0)
 						MainTool.ShowTooltip(Translation.GetString("Lane_Arrow_Changer_Disabled"), Singleton<NetManager>.instance.m_nodes.m_buffer[SelectedNodeId].m_position);

@@ -1243,9 +1243,6 @@ namespace Transit.Addon.TM.Traffic {
 					endNodeIncomingStraightSegmentsArray[i] = 0;
 				}
 
-                // reset highway lane arrows
-                TAMLaneRoutingManager.instance.RemoveHighwayLaneDirectionAtSegment(segmentId); // TODO refactor
-
 				// clear default vehicle type cache
 				VehicleRestrictionsManager.ClearCache(segmentId);
 			} finally {
@@ -1344,9 +1341,6 @@ namespace Transit.Addon.TM.Traffic {
 						outgoingStraight.Add(otherSegmentId);
 					}
 				}
-
-                // reset highway lane arrows
-                TAMLaneRoutingManager.instance.RemoveHighwayLaneDirectionAtSegment(otherSegmentId); // TODO refactor
 
 				nodeSegments.Add(otherSegmentId);
 			}

@@ -54,9 +54,38 @@ namespace Transit.Addon.TM.DataSerialization
                 }
             }
 
-            TAMRestrictionManager.instance.Load(restrictionData);
-            TAMSpeedLimitManager.instance.Load(speedLimitData);
-            TAMLaneRoutingManager.instance.Load(routeData);
+            try
+            {
+                TAMRestrictionManager.instance.Load(restrictionData);
+            }
+            catch (Exception ex)
+            {
+                Log.Error("TAM: Crashed-Loading TAMRestrictionManager");
+                Log.Error("TAM: " + ex.Message);
+                Log.Error("TAM: " + ex.ToString());
+            }
+
+            try
+            {
+                TAMSpeedLimitManager.instance.Load(speedLimitData);
+            }
+            catch (Exception ex)
+            {
+                Log.Error("TAM: Crashed-Loading TAMSpeedLimitManager");
+                Log.Error("TAM: " + ex.Message);
+                Log.Error("TAM: " + ex.ToString());
+            }
+
+            try
+            {
+                TAMLaneRoutingManager.instance.Load(routeData);
+            }
+            catch (Exception ex)
+            {
+                Log.Error("TAM: Crashed-Loading TAMLaneRoutingManager");
+                Log.Error("TAM: " + ex.Message);
+                Log.Error("TAM: " + ex.ToString());
+            }
         }
 
         public override void OnSaveData()

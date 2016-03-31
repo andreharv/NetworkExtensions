@@ -12,12 +12,16 @@ namespace Transit.Addon.TM.PathFindingFeatures
         {
             if (route.NodeId == 0)
             {
+                Log.Info(string.Format("LaneRoute {0} doesn't specify the related NodeId searching...", route.LaneId));
+
                 var foundNodeId = NetManager.instance.FindLaneNode(route.LaneId);
-                if (foundNodeId == null)
+                if (foundNodeId == null || foundNodeId.Value == 0)
                 {
+                    Log.Info(string.Format("LaneRoute {0} has not found it's related NodeId, forgetting route", route.LaneId));
                     return false;
                 }
 
+                Log.Info(string.Format("LaneRoute {0} is related to NodeId {1}", route.LaneId, foundNodeId.Value));
                 route.NodeId = foundNodeId.Value;
             }
 

@@ -44,7 +44,7 @@ namespace Transit.Addon.TM.PathFindingFeatures
             }
 
             _laneRoutes[route.LaneId] = route;
-            
+
             UpdateLaneArrows(route.LaneId, route.NodeId);
         }
 
