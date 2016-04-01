@@ -1910,7 +1910,13 @@
     <None Include="PublicTransport\SubwayUtils\Meshes\10m\Ground_Pavement.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="PublicTransport\SubwayUtils\Meshes\10m\Ground_Pavement_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="PublicTransport\SubwayUtils\Meshes\10m\Ground_Pavement_Node.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="PublicTransport\SubwayUtils\Meshes\10m\Ground_Pavement_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="PublicTransport\SubwayUtils\Meshes\10m\Ground_Power.obj">

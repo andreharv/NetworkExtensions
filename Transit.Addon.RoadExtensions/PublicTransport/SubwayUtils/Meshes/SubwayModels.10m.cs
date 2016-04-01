@@ -40,7 +40,8 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.SubwayUtils
                         segments0
                             .SetFlagsDefault()
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Pavement.obj");
+                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Pavement.obj",
+                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Pavement_LOD.obj");
 
                         segments1
                             .SetFlagsDefault()
@@ -53,7 +54,8 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.SubwayUtils
 
                         nodes0
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Pavement_Node.obj");
+                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Pavement_Node.obj",
+                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Pavement_Node_LOD.obj");
 
                         nodes1
                             .SetMeshes
