@@ -70,7 +70,7 @@ namespace Transit.Addon.TM.PathFindingFeatures
 
         private TAMLaneRoute CreateLaneRoute(uint laneId)
         {
-            var foundNodeId = NetManager.instance.FindLaneNode(laneId);
+            var foundNodeId = NetManager.instance.FindLaneNodeId(laneId);
             if (foundNodeId == null)
             {
                 throw new Exception(string.Format("Cannot create route, node for laneid {0} has not been found", laneId));

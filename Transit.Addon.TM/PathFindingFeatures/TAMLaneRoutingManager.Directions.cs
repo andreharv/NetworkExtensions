@@ -18,7 +18,7 @@ namespace Transit.Addon.TM.PathFindingFeatures
             var lane = NetManager.instance.m_lanes.m_buffer[laneId];
             var segmentId = lane.m_segment;
             var segment = NetManager.instance.m_segments.m_buffer[segmentId];
-            var nodeId = NetManager.instance.FindLaneNode(laneId);
+            var nodeId = NetManager.instance.FindLaneNodeId(laneId);
 
             if (nodeId == null)
             {
@@ -37,15 +37,48 @@ namespace Transit.Addon.TM.PathFindingFeatures
 
                 var relativeDirection = GetRelativeDirection(segmentDir, otherSegmentDir);
 
-                if ((relativeDirection & direction) != 0)
+                if ((relativeDirection & direction) == 0)
                 {
-                    // Good direction
-                    foreach (var otherLaneId in NetManager.instance.GetSegmentLaneIds(otherSegmentId))
-                    {
-                        // TODO: check outbound lane only and sametype
+                    continue; // Wrong direction
+                }
 
-                        connections.Add(otherLaneId);
+                foreach (var otherLaneId in NetManager.instance.GetSegmentLaneIds(otherSegmentId))
+                {
+                    var otherLaneIndex = NetManager.instance.GetLaneIndex(otherLaneId);
+                    if (otherLaneIndex == null)
+                    {
+                        continue; // Lane not found
                     }
+
+                    var otherLaneInfo = NetManager.instance.GetLaneInfo(otherSegmentId, otherLaneIndex.Value);
+                    if (otherLaneInfo == null)
+                    {
+                        continue; // Lane info not found
+                    }
+
+                    if ((otherLaneInfo.m_vehicleType & VehicleInfo.VehicleType.Car) == VehicleInfo.VehicleType.None)
+                    {
+                        continue; // VehicleType is not car
+                    }
+
+                    if ((otherLaneInfo.m_laneType & 
+                       (NetInfo.LaneType.Vehicle | 
+                        NetInfo.LaneType.PublicTransport | 
+                        NetInfo.LaneType.TransportVehicle |
+                        NetInfo.LaneType.CargoVehicle)) == NetInfo.LaneType.None)
+                    {
+                        continue; // LaneType is not road Vehicle
+                    }
+
+                    var otherNodeId = NetManager.instance.FindLaneNodeId(otherSegmentId, otherLaneIndex.Value);
+                    if (otherNodeId == null || 
+                        otherNodeId == nodeId)
+                    {
+                        continue; // Inbound lane - Pointing toward the same node
+                    }
+
+                    Log.Info(string.Format("Adding lane route from {0} to {1}", laneId, otherLaneId));
+                    connections.Add(otherLaneId);
                 }
             }
 
@@ -64,7 +97,6 @@ namespace Transit.Addon.TM.PathFindingFeatures
 
         private TAMLaneDirection GetRelativeDirection(Vector3 source, Vector3 destination)
         {
-            // TODO: Validate that
             if (Vector3.Angle(source, destination) > 150f)
             {
                 return TAMLaneDirection.Forward;

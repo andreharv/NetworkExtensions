@@ -123,6 +123,8 @@
     <Compile Include="_Extensions\CollectionExtensions.cs" />
     <Compile Include="_Extensions\NetLanePropsExtensions.cs" />
     <Compile Include="_Extensions\NetManagerExtensions.cs" />
+    <Compile Include="_Extensions\NetLaneExtensions.cs" />
+    <Compile Include="_Extensions\NetSegmentExtensions.cs" />
     <Compile Include="_Extensions\NetNodeExtensions.cs" />
     <Compile Include="_Extensions\ObjectExtensions.cs" />
     <Compile Include="Builders\_Extensions\PrefabBuilderExtensions.cs" />
