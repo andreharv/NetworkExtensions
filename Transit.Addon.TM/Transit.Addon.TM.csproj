@@ -103,8 +103,12 @@
     <Compile Include="ToolModuleV2.cs" />
     <Compile Include="ToolModuleV2.Settings.cs" />
     <Compile Include="ToolModuleV2.Loading.Tools.cs" />
-    <Compile Include="Tools\LaneRouting\LaneRoutingToolBuilder.cs" />
-    <Compile Include="Tools\LaneRouting\LaneRoutingTool.cs" />
+    <Compile Include="Tools\LaneDirectionEditor\LaneDirectionEditor.UI.cs" />
+    <Compile Include="Tools\LaneDirectionEditor\LaneDirectionEditor.Overlay.cs" />
+    <Compile Include="Tools\LaneDirectionEditor\LaneDirectionEditorBuilder.cs" />
+    <Compile Include="Tools\LaneRoutingEditor\LaneRoutingEditor.Overlay.cs" />
+    <Compile Include="Tools\LaneRoutingEditor\LaneRoutingEditorBuilder.cs" />
+    <Compile Include="Tools\LaneRoutingEditor\LaneRoutingEditor.cs" />
     <Compile Include="ToolModuleV2.Detours.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Data\TMConfigurationV2.cs" />
@@ -135,7 +139,7 @@
     <Compile Include="Traffic\VehiclePosition.cs" />
     <Compile Include="UI\CameraCtrl.cs" />
     <Compile Include="Tools\TrafficManager\SubTool.cs" />
-    <Compile Include="Tools\TrafficManager\SubTools\LaneArrowTool.cs" />
+    <Compile Include="Tools\LaneDirectionEditor\LaneDirectionEditor.cs" />
     <Compile Include="Tools\TrafficManager\SubTools\ManualTrafficLightsTool.cs" />
     <Compile Include="Tools\TrafficManager\SubTools\PrioritySignsTool.cs" />
     <Compile Include="Tools\TrafficManager\SubTools\SpeedLimitsTool.cs" />
@@ -445,10 +449,16 @@
     <EmbeddedResource Include="Resources\lang_nl.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Tools\LaneRouting\infotooltip.png">
+    <Content Include="Tools\LaneDirectionEditor\infotooltip.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Tools\LaneRouting\thumbnails.png">
+    <Content Include="Tools\LaneDirectionEditor\thumbnails.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\LaneRoutingEditor\infotooltip.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\LaneRoutingEditor\thumbnails.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="UI\Toolbar\RoadCustomizer\Textures\Thumbnails.png">

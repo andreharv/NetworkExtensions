@@ -8,7 +8,6 @@ namespace Transit.Addon.TM.Tools
         ManualSwitch = 3,
         TimedLightsSelectNode = 4,
         TimedLightsShowLights = 5,
-        LaneChange = 6,
 		TimedLightsAddNode = 7,
 		TimedLightsRemoveNode = 8,
 		SpeedLimits = 9,

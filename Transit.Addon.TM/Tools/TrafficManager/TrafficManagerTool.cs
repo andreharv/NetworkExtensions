@@ -7,6 +7,7 @@ using ColossalFramework.UI;
 using JetBrains.Annotations;
 using Transit.Addon.TM.AI;
 using Transit.Addon.TM.Data;
+using Transit.Addon.TM.Tools.LaneDirectionEditor;
 using Transit.Addon.TM.Tools.SubTools;
 using Transit.Addon.TM.Traffic;
 using Transit.Addon.TM.UI;
@@ -80,7 +81,6 @@ namespace Transit.Addon.TM.Tools {
 				subTools[(int)TrafficManagerToolMode.TimedLightsShowLights] = timedLightsTool;
 				subTools[(int)TrafficManagerToolMode.VehicleRestrictions] = new VehicleRestrictionsTool(this);
 				subTools[(int)TrafficManagerToolMode.SpeedLimits] = new SpeedLimitsTool(this);
-				subTools[(int)TrafficManagerToolMode.LaneChange] = new LaneArrowTool(this);
 				Log.Info("TrafficManagerTool: Awake - Initialization completed.");
 				initDone = true;
 			} else {

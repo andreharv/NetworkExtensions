@@ -17,7 +17,7 @@ namespace Transit.Addon.TM.UI {
 		private static UIButton _buttonPrioritySigns;
 		private static UIButton _buttonManualControl;
 		private static UIButton _buttonTimedMain;
-		private static UIButton _buttonLaneChange;
+		//private static UIButton _buttonLaneChange;
 		private static UIButton _buttonVehicleRestrictions;
 		private static UIButton _buttonSpeedLimits;
 		private static UIButton _buttonClearTraffic;
@@ -70,8 +70,8 @@ namespace Transit.Addon.TM.UI {
             if (TrafficManagerModule.IsPathManagerCompatible)
 #endif
             {
-				_buttonLaneChange = _createButton(Translation.GetString("Change_lane_arrows"), y, clickChangeLanes);
-				y += 40;
+				//_buttonLaneChange = _createButton(Translation.GetString("Change_lane_arrows"), y, clickChangeLanes);
+				//y += 40;
 
 				_buttonSpeedLimits = _createButton(Translation.GetString("Speed_limits"), y, clickSpeedLimits);
 				y += 40;
@@ -251,8 +251,8 @@ namespace Transit.Addon.TM.UI {
 				_buttonManualControl.focusedBgSprite = "ButtonMenu";
 			if (_buttonTimedMain != null)
 				_buttonTimedMain.focusedBgSprite = "ButtonMenu";
-			if (_buttonLaneChange != null)
-				_buttonLaneChange.focusedBgSprite = "ButtonMenu";
+			//if (_buttonLaneChange != null)
+			//	_buttonLaneChange.focusedBgSprite = "ButtonMenu";
 			//_buttonLaneRestrictions.focusedBgSprite = "ButtonMenu";
 			if (_buttonClearTraffic != null)
 				_buttonClearTraffic.focusedBgSprite = "ButtonMenu";
@@ -285,15 +285,15 @@ namespace Transit.Addon.TM.UI {
 			}
 		}
 
-		private void clickChangeLanes(UIComponent component, UIMouseEventParameter eventParam) {
-			if (TrafficManagerTool.GetToolMode() != TrafficManagerToolMode.LaneChange) {
-				_buttonLaneChange.focusedBgSprite = "ButtonMenuFocused";
-				TrafficManagerTool.SetToolMode(TrafficManagerToolMode.LaneChange);
-			} else {
-				_buttonLaneChange.focusedBgSprite = "ButtonMenu";
-				TrafficManagerTool.SetToolMode(TrafficManagerToolMode.None);
-			}
-		}
+		//private void clickChangeLanes(UIComponent component, UIMouseEventParameter eventParam) {
+		//	if (TrafficManagerTool.GetToolMode() != TrafficManagerToolMode.LaneChange) {
+		//		_buttonLaneChange.focusedBgSprite = "ButtonMenuFocused";
+		//		TrafficManagerTool.SetToolMode(TrafficManagerToolMode.LaneChange);
+		//	} else {
+		//		_buttonLaneChange.focusedBgSprite = "ButtonMenu";
+		//		TrafficManagerTool.SetToolMode(TrafficManagerToolMode.None);
+		//	}
+		//}
 
 		/*protected virtual void ClickLaneRestrictions(UIComponent component, UIMouseEventParameter eventParam) {
 			if (TrafficLightTool.getToolMode() != ToolMode.LaneRestrictions) {
