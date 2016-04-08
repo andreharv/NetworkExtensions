@@ -121,6 +121,7 @@
     <Compile Include="_Extensions\AssetManagerExtensions.cs" />
     <Compile Include="_Extensions\CloningExtensions.cs" />
     <Compile Include="_Extensions\CollectionExtensions.cs" />
+    <Compile Include="_Extensions\Color32Extensions.cs" />
     <Compile Include="_Extensions\NetLanePropsExtensions.cs" />
     <Compile Include="_Extensions\NetManagerExtensions.cs" />
     <Compile Include="_Extensions\NetLaneExtensions.cs" />
@@ -134,6 +135,7 @@
     <Compile Include="_Extensions\NetInfoExtensions.Segment.cs" />
     <Compile Include="_Extensions\NetInfoExtensions.Node.cs" />
     <Compile Include="_Extensions\EnumerableExtensions.cs" />
+    <Compile Include="_Extensions\OverlayEffectExtensions.cs" />
     <Compile Include="_Extensions\PrefabInfoExtensions.cs" />
     <Compile Include="_Extensions\TextureExtensions.cs" />
     <Compile Include="Assets\AssetManager.cs" />

@@ -39,7 +39,7 @@ namespace Transit.Addon.TM.Tools.LaneDirectionEditor
 
             if (_selectedNodeId == 0 || _selectedSegmentId == 0) return;
             
-            int numLanes = NetManager.instance.GetInboundLanesAtNode(_selectedSegmentId, _selectedNodeId).Count();
+            var numLanes = NetManager.instance.GetInboundLanesAtNode(_selectedSegmentId, _selectedNodeId).Count();
             if (numLanes <= 0)
             {
                 _selectedNodeId = 0;

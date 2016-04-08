@@ -1,82 +1,95 @@
 ﻿using ColossalFramework.Math;
+using Transit.Framework;
 using UnityEngine;
 
 namespace Transit.Addon.TM.Tools.LaneRoutingEditor
 {
     public partial class LaneRoutingEditor
     {
+        private const float ROUTE_WIDTH = 0.25f;
+
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {
             base.RenderOverlay(cameraInfo);
 
-            if (m_selectedNode != 0)
+            if (_selectedNode != null)
             {
-                FastList<NodeLaneMarker> nodeMarkers;
-                if (m_nodeMarkers.TryGetValue(m_selectedNode, out nodeMarkers))
+                var nodePos = NetManager.instance.m_nodes.m_buffer[_selectedNode.Value].m_position;
+
+                if (_selectedAnchor == null)
                 {
-                    Vector3 nodePos = NetManager.instance.m_nodes.m_buffer[m_selectedNode].m_position;
-                    for (int i = 0; i < nodeMarkers.m_size; i++)
+                    foreach (var anchor in _nodeAnchors[_selectedNode.Value])
                     {
-                        NodeLaneMarker laneMarker = nodeMarkers.m_buffer[i];
-
-                        for (int j = 0; j < laneMarker.Connections.m_size; j++)
-                            RenderRoute(cameraInfo, laneMarker.Position, laneMarker.Connections.m_buffer[j].Position, nodePos, laneMarker.Color);
-
-                        if (m_selectedMarker != laneMarker && !IsActive(laneMarker))
-                            continue;
-
-                        if (m_selectedMarker == laneMarker)
+                        if (anchor.IsOrigin)
                         {
-                            RaycastOutput output;
-                            if (RayCastSegmentAndNode(out output))
+                            if (anchor.IsEnabled)
                             {
-                                RenderRoute(cameraInfo, m_selectedMarker.Position, output.m_hitPos, nodePos, m_selectedMarker.Color);
-                                m_selectedMarker.Size = 2f;
+                                foreach (var connection in anchor.Connections)
+                                {
+                                    RenderManager.instance.OverlayEffect.DrawRouting(cameraInfo, anchor.Position, connection.Position, nodePos, anchor.Color, ROUTE_WIDTH);
+                                }
                             }
                         }
 
-                        RenderManager.instance.OverlayEffect.DrawCircle(cameraInfo, laneMarker.Color, laneMarker.Position, laneMarker.Size, laneMarker.Position.y - 1f, laneMarker.Position.y + 1f, true, true);
+                        anchor.Render(cameraInfo);
                     }
                 }
-            }
-
-            foreach (ushort node in m_nodeMarkers.Keys)
-            {
-                if (node == m_selectedNode || (NetManager.instance.m_nodes.m_buffer[node].m_flags & CUSTOMIZED_NODE_FLAG) != CUSTOMIZED_NODE_FLAG)
-                    continue;
-
-                FastList<NodeLaneMarker> list = m_nodeMarkers[node];
-                Vector3 nodePos = NetManager.instance.m_nodes.m_buffer[node].m_position;
-                for (int i = 0; i < list.m_size; i++)
+                else
                 {
-                    NodeLaneMarker laneMarker = list.m_buffer[i];
-                    Color color = laneMarker.Color;
-                    color.a = 0.75f;
-
-                    for (int j = 0; j < laneMarker.Connections.m_size; j++)
+                    foreach (var anchor in _nodeAnchors[_selectedNode.Value])
                     {
-                        if (((NetLane.Flags)NetManager.instance.m_lanes.m_buffer[laneMarker.Connections.m_buffer[j].LaneId].m_flags & NetLane.Flags.Created) == NetLane.Flags.Created)
-                            RenderRoute(cameraInfo, laneMarker.Position, laneMarker.Connections.m_buffer[j].Position, nodePos, color);
-                    }
+                        if (anchor.IsOrigin)
+                        {
+                            if (anchor == _selectedAnchor)
+                            {
+                                RaycastOutput output;
+                                if (RayCastSegmentAndNode(out output))
+                                {
+                                    RenderManager.instance.OverlayEffect.DrawRouting(cameraInfo, anchor.Position, output.m_hitPos, nodePos, anchor.Color, ROUTE_WIDTH);
+                                }
 
+                                foreach (var connection in anchor.Connections)
+                                {
+                                    RenderManager.instance.OverlayEffect.DrawRouting(cameraInfo, anchor.Position, connection.Position, nodePos, anchor.Color, ROUTE_WIDTH);
+                                }
+                            }
+                            else
+                            {
+                                foreach (var connection in anchor.Connections)
+                                {
+                                    RenderManager.instance.OverlayEffect.DrawRouting(cameraInfo, anchor.Position, connection.Position, nodePos, anchor.Color.Dim(75), ROUTE_WIDTH);
+                                }
+                            }
+                        }
+
+                        anchor.Render(cameraInfo);
+                    }
+                }
+            }
+            else
+            {
+                foreach (var kvp in _nodeAnchors)
+                {
+                    var nodePos = NetManager.instance.m_nodes.m_buffer[kvp.Key].m_position;
+
+                    foreach (var anchor in kvp.Value)
+                    {
+                        if (anchor.IsOrigin)
+                        {
+                            foreach (var connection in anchor.Connections)
+                            {
+                                RenderManager.instance.OverlayEffect.DrawRouting(cameraInfo, anchor.Position, connection.Position, nodePos, anchor.Color, ROUTE_WIDTH);
+                            }
+                        }
+                    }
                 }
             }
 
-            if (m_hoveredNode != 0)
+            if (_hoveredNode != null && _hoveredNode != _selectedNode)
             {
-                NetNode node = NetManager.instance.m_nodes.m_buffer[m_hoveredNode];
+                NetNode node = NetManager.instance.m_nodes.m_buffer[_hoveredNode.Value];
                 RenderManager.instance.OverlayEffect.DrawCircle(cameraInfo, new Color(0f, 0f, 0.5f, 0.75f), node.m_position, 15f, node.m_position.y - 1f, node.m_position.y + 1f, true, true);
             }
-        }
-
-        private void RenderRoute(RenderManager.CameraInfo cameraInfo, Vector3 start, Vector3 end, Vector3 middlePoint, Color color, float size = 0.1f)
-        {
-            Bezier3 bezier;
-            bezier.a = start;
-            bezier.d = end;
-            NetSegment.CalculateMiddlePoints(bezier.a, (middlePoint - bezier.a).normalized, bezier.d, (middlePoint - bezier.d).normalized, false, false, out bezier.b, out bezier.c);
-
-            RenderManager.instance.OverlayEffect.DrawBezier(cameraInfo, color, bezier, size, 0, 0, Mathf.Min(bezier.a.y, bezier.d.y) - 1f, Mathf.Max(bezier.a.y, bezier.d.y) + 1f, true, true);
         }
     }
 }

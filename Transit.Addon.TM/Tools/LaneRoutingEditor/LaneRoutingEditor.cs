@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using ColossalFramework.Math;
 using Transit.Addon.TM.PathFindingFeatures;
+using Transit.Addon.TM.Tools.LaneRoutingEditor.Markers;
+using Transit.Framework;
+using Transit.Framework.UI;
 using UnityEngine;
 
 namespace Transit.Addon.TM.Tools.LaneRoutingEditor
@@ -10,36 +12,12 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor
     public partial class LaneRoutingEditor : ToolBase
     {
         private const NetNode.Flags CUSTOMIZED_NODE_FLAG = (NetNode.Flags)(1 << 28);
-
-        private class NodeLaneMarker
-        {
-            public ushort NodeId { get; set; }
-            public Vector3 Position { get; set; }
-            public bool IsSource { get; set; }
-            public uint LaneId { get; set; }
-            public float Size { get; set; }
-            public Color Color { get; set; }
-            public FastList<NodeLaneMarker> Connections { get; private set; }
-
-            public NodeLaneMarker()
-            {
-                Size = 1f;
-                Connections = new FastList<NodeLaneMarker>();
-            }
-        }
-
-        private struct Segment
-        {
-            public ushort SegmentId { get; set; }
-            public ushort TargetNodeId { get; set; }
-        }
-
-        private ushort m_hoveredSegment;
-        private ushort m_hoveredNode;
-        private ushort m_selectedNode;
-        private NodeLaneMarker m_selectedMarker;
-        private readonly Dictionary<ushort, FastList<NodeLaneMarker>> m_nodeMarkers = new Dictionary<ushort, FastList<NodeLaneMarker>>();
-        private readonly Dictionary<ushort, Segment> m_segments = new Dictionary<ushort, Segment>();
+        
+        private ushort? _hoveredNode;
+        private ushort? _selectedNode;
+        private LaneAnchorMarker _hoveredAnchor;
+        private LaneAnchorMarker _selectedAnchor;
+        private readonly Dictionary<ushort, IEnumerable<LaneAnchorMarker>> _nodeAnchors = new Dictionary<ushort, IEnumerable<LaneAnchorMarker>>();
 
         protected override void Awake()
         {
@@ -66,7 +44,7 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor
             }
 
             foreach (var nodeId in nodesList)
-                SetNodeMarkers(nodeId);
+                CreateNodeAnchors(nodeId);
         }
 
         protected override void OnToolUpdate()
@@ -81,130 +59,186 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor
             if (m_toolController.IsInsideUI)
                 return;
 
-            if (m_selectedNode != 0)
+            _hoveredNode = RayCastNodeWithMoreThanOneSegment();
+
+            UpdateNodeAnchors(_selectedNode, _hoveredNode);
+
+            if (Input.GetMouseButtonUp((int)MouseKeyCode.LeftButton))
             {
-                HandleIntersectionRouting();
-                return;
-            }
-
-            if (!RayCastSegmentAndNode(out m_hoveredSegment, out m_hoveredNode))
-            {
-                m_segments.Clear();
-                return;
-            }
-
-
-            if (m_hoveredSegment != 0)
-            {
-                NetSegment segment = NetManager.instance.m_segments.m_buffer[m_hoveredSegment];
-                NetNode startNode = NetManager.instance.m_nodes.m_buffer[segment.m_startNode];
-                NetNode endNode = NetManager.instance.m_nodes.m_buffer[segment.m_endNode];
-                Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-                if (startNode.CountSegments() > 1)
+                if (_hoveredNode != null && _hoveredNode != _selectedNode)
                 {
-                    Bounds bounds = startNode.m_bounds;
-                    if (m_hoveredNode != 0)
-                        bounds.extents /= 2f;
-                    if (bounds.IntersectRay(mouseRay))
-                    {
-                        m_hoveredSegment = 0;
-                        m_hoveredNode = segment.m_startNode;
-                    }
+                    SelectNode(_hoveredNode.Value);
+                    return;
                 }
 
-                if (m_hoveredSegment != 0 && endNode.CountSegments() > 1)
+                if (_hoveredAnchor != null && 
+                    _hoveredAnchor != _selectedAnchor)
                 {
-                    Bounds bounds = endNode.m_bounds;
-                    if (m_hoveredNode != 0)
-                        bounds.extents /= 2f;
-                    if (bounds.IntersectRay(mouseRay))
+                    if (_hoveredAnchor.IsOrigin)
                     {
-                        m_hoveredSegment = 0;
-                        m_hoveredNode = segment.m_endNode;
+                        SelectAnchor(_hoveredAnchor);
+                        return;
+                    }
+                    else
+                    {
+                        if (_selectedAnchor != null)
+                        {
+                            ToggleRoute(_selectedAnchor, _hoveredAnchor);
+                            return;
+                        }
                     }
                 }
+            }
 
-                if (m_hoveredSegment != 0)
+            if (Input.GetMouseButtonUp((int)MouseKeyCode.RightButton))
+            {
+                if (_selectedAnchor != null)
                 {
-                    m_hoveredNode = 0;
-                    if (!m_segments.ContainsKey(m_hoveredSegment))
-                    {
-                        m_segments.Clear();
-                        SetSegments(m_hoveredSegment);
-                        SetLaneMarkers();
-                    }
+                    UnselectAnchor(_selectedAnchor);
+                    return;
                 }
 
-            }
-            else if (m_hoveredNode != 0 && NetManager.instance.m_nodes.m_buffer[m_hoveredNode].CountSegments() < 2)
-            {
-                m_hoveredNode = 0;
-            }
-
-            if (m_hoveredSegment == 0)
-            {
-                m_segments.Clear();
-            }
-
-            if (Input.GetMouseButtonUp(0))
-            {
-                m_selectedNode = m_hoveredNode;
-                m_hoveredNode = 0;
-
-                if (m_selectedNode != 0)
-                    SetNodeMarkers(m_selectedNode, true);
+                if (_selectedNode != null)
+                {
+                    UnselectNode(_selectedNode.Value);
+                    return;
+                }
             }
         }
 
-        private void HandleIntersectionRouting()
+        private void SelectNode(ushort nodeId)
         {
-            FastList<NodeLaneMarker> nodeMarkers;
-            if (m_nodeMarkers.TryGetValue(m_selectedNode, out nodeMarkers))
+            if (_selectedNode != null)
             {
-                Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-                NodeLaneMarker hoveredMarker = null;
-                Bounds bounds = new Bounds(Vector3.zero, Vector3.one);
-                for (int i = 0; i < nodeMarkers.m_size; i++)
+                UnselectNode(_selectedNode.Value);
+            }
+
+            if (!_nodeAnchors.ContainsKey(nodeId))
+            {
+                CreateNodeAnchors(nodeId);
+            }
+
+            foreach (var anchor in _nodeAnchors[nodeId])
+            {
+                anchor.SetEnable(anchor.IsOrigin);
+            }
+
+            _selectedNode = nodeId;
+        }
+
+        private void UnselectNode(ushort nodeId)
+        {
+            foreach (var anchor in _nodeAnchors[nodeId])
+            {
+                anchor.Disable();
+            }
+
+            _selectedNode = null;
+        }
+
+        private void SelectAnchor(LaneAnchorMarker anchor)
+        {
+            if (_selectedAnchor != null)
+            {
+                UnselectAnchor(_selectedAnchor);
+            }
+
+            foreach (var otherAnchor in _nodeAnchors[_selectedNode.Value].Except(anchor))
+            {
+                otherAnchor.SetEnable(!otherAnchor.IsOrigin && otherAnchor.SegmentId != anchor.SegmentId);
+            }
+
+            _selectedAnchor = anchor;
+            _selectedAnchor.Select();
+        }
+
+        private void UnselectAnchor(LaneAnchorMarker anchor)
+        {
+            anchor.Unselect();
+
+            foreach (var otherAnchor in _nodeAnchors[_selectedNode.Value])
+            {
+                otherAnchor.SetEnable(otherAnchor.IsOrigin);
+            }
+
+            _selectedAnchor = null;
+        }
+
+        private void ToggleRoute(LaneAnchorMarker originAnchor, LaneAnchorMarker destinationAnchor)
+        {
+            if (TAMLaneRoutingManager.instance.RemoveLaneConnection(originAnchor.LaneId, destinationAnchor.LaneId))
+            {
+                originAnchor.Connections.Remove(destinationAnchor);
+            }
+            else if (TAMLaneRoutingManager.instance.AddLaneConnection(originAnchor.LaneId, destinationAnchor.LaneId))
+            {
+                originAnchor.Connections.Add(destinationAnchor);
+            }
+        }
+
+        private void UpdateNodeAnchors(ushort? selectedNode, ushort? hoveredNode)
+        {
+            if (_hoveredAnchor != null)
+            {
+                if (selectedNode == null || 
+                    hoveredNode == null || 
+                    selectedNode != hoveredNode)
                 {
-                    NodeLaneMarker marker = nodeMarkers.m_buffer[i];
-
-                    if (!IsActive(marker))
-                        continue;
-
-                    bounds.center = marker.Position;
-                    if (bounds.IntersectRay(mouseRay))
-                    {
-                        hoveredMarker = marker;
-                        marker.Size = 2f;
-                    }
-                    else
-                        marker.Size = 1f;
-                }
-
-                if (hoveredMarker != null && Input.GetMouseButtonUp(0))
-                {
-                    if (m_selectedMarker == null)
-                    {
-                        m_selectedMarker = hoveredMarker;
-                    }
-                    else if (TAMLaneRoutingManager.instance.RemoveLaneConnection(m_selectedMarker.LaneId, hoveredMarker.LaneId))
-                    {
-                        m_selectedMarker.Connections.Remove(hoveredMarker);
-                    }
-                    else if (TAMLaneRoutingManager.instance.AddLaneConnection(m_selectedMarker.LaneId, hoveredMarker.LaneId))
-                    {
-                        m_selectedMarker.Connections.Add(hoveredMarker);
-                    }
+                    _hoveredAnchor.HoveringEnded();
+                    _hoveredAnchor = null;
                 }
             }
 
-            if (Input.GetMouseButtonUp(1))
+            if (selectedNode == null)
             {
-                if (m_selectedMarker != null)
-                    m_selectedMarker = null;
+                return;
+            }
+
+            if (!_nodeAnchors.ContainsKey(selectedNode.Value))
+            {
+                return;
+            }
+
+            var anchors = _nodeAnchors[selectedNode.Value];
+
+            var mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            var bounds = new Bounds(Vector3.zero, Vector3.one);
+
+            foreach (var anchor in anchors.Where(a => a.IsEnabled))
+            {
+                bounds.center = anchor.Position;
+                if (bounds.IntersectRay(mouseRay))
+                {
+                    if (!anchor.IsHovered)
+                    {
+                        anchor.HoveringStarted();
+                    }
+                    else
+                    {
+                        anchor.Hovering();
+                    }
+
+                    if (_hoveredAnchor != anchor)
+                    {
+                        if (_hoveredAnchor != null)
+                        {
+                            _hoveredAnchor.HoveringEnded();
+                        }
+                        _hoveredAnchor = anchor;
+                    }
+                }
                 else
-                    m_selectedNode = 0;
+                {
+                    if (anchor.IsHovered)
+                    {
+                        anchor.HoveringEnded();
+                    }
+
+                    if (_hoveredAnchor == anchor)
+                    {
+                        _hoveredAnchor = null;
+                    }
+                }
             }
         }
         
@@ -212,42 +246,38 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor
         {
             base.OnEnable();
 
-            m_hoveredNode = m_hoveredSegment = 0;
-            m_selectedNode = 0;
-            m_selectedMarker = null;
-            m_segments.Clear();
+            _hoveredNode = null;
+            _selectedNode = null;
+            _selectedAnchor = null;
         }
 
-        private bool IsActive(NodeLaneMarker marker)
+        protected override void OnDisable()
         {
-            if (m_selectedMarker != null && (marker.IsSource || NetManager.instance.m_lanes.m_buffer[m_selectedMarker.LaneId].m_segment == NetManager.instance.m_lanes.m_buffer[marker.LaneId].m_segment))
-                return false;
-            if (m_selectedMarker == null && !marker.IsSource)
-                return false;
+            base.OnDisable();
 
-            return true;
-        }
-
-        public void SetNodeMarkers(ushort nodeId, bool overwrite = false)
-        {
-            if (nodeId == 0)
-                return;
-
-            if (!m_nodeMarkers.ContainsKey(nodeId) || (NetManager.instance.m_nodes.m_buffer[nodeId].m_flags & CUSTOMIZED_NODE_FLAG) != CUSTOMIZED_NODE_FLAG || overwrite)
+            if (_selectedAnchor != null)
             {
-                FastList<NodeLaneMarker> nodeMarkers = new FastList<NodeLaneMarker>();
-                SetNodeMarkers(nodeId, nodeMarkers);
-                m_nodeMarkers[nodeId] = nodeMarkers;
+                _selectedAnchor.Unselect();
+                _selectedAnchor = null;
+            }
+        }
 
+        private void CreateNodeAnchors(ushort nodeId)
+        {
+            if (!_nodeAnchors.ContainsKey(nodeId))
+            {
+                _nodeAnchors[nodeId] = CreateAnchors(nodeId);
                 NetManager.instance.m_nodes.m_buffer[nodeId].m_flags |= CUSTOMIZED_NODE_FLAG;
             }
         }
 
-        private void SetNodeMarkers(ushort nodeId, FastList<NodeLaneMarker> nodeMarkers)
+        private static IEnumerable<LaneAnchorMarker> CreateAnchors(ushort nodeId)
         {
-            NetNode node = NetManager.instance.m_nodes.m_buffer[nodeId];
-            int offsetMultiplier = node.CountSegments() <= 2 ? 3 : 1;
-            ushort segmentId = node.m_segment0;
+            var anchors = new List<LaneAnchorMarker>();
+
+            var node = NetManager.instance.m_nodes.m_buffer[nodeId];
+            var offsetMultiplier = node.CountSegments() <= 2 ? 3 : 1;
+            var segmentId = node.m_segment0;
             for (int i = 0; i < 8 && segmentId != 0; i++)
             {
                 NetSegment segment = NetManager.instance.m_segments.m_buffer[segmentId];
@@ -277,14 +307,7 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor
                             pos = NetManager.instance.m_lanes.m_buffer[laneId].m_bezier.a;
                         }
 
-                        nodeMarkers.Add(new NodeLaneMarker()
-                        {
-                            LaneId = laneId,
-                            NodeId = nodeId,
-                            Position = pos + offset,
-                            Color = colors[nodeMarkers.m_size],
-                            IsSource = isSource,
-                        });
+                        anchors.Add(new LaneAnchorMarker(laneId, segmentId, nodeId, pos + offset, isSource, isSource? i: (int?) null));
                     }
 
                     laneId = NetManager.instance.m_lanes.m_buffer[laneId].m_nextLane;
@@ -295,201 +318,22 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor
                     segmentId = 0;
             }
 
-            for (int i = 0; i < nodeMarkers.m_size; i++)
+            foreach (var anchor in anchors.Where(a => a.IsOrigin))
             {
-                if (!nodeMarkers.m_buffer[i].IsSource)
-                    continue;
-
-                uint[] connections = TAMLaneRoutingManager.instance.GetLaneConnections(nodeMarkers.m_buffer[i].LaneId);
+                var connections = TAMLaneRoutingManager.instance.GetLaneConnections(anchor.LaneId);
                 if (connections == null || connections.Length == 0)
                     continue;
 
-                for (int j = 0; j < nodeMarkers.m_size; j++)
+                foreach (var anchorDestination in anchors.Where(a => !a.IsOrigin))
                 {
-                    if (nodeMarkers.m_buffer[j].IsSource)
-                        continue;
-
-                    if (connections.Contains(nodeMarkers.m_buffer[j].LaneId))
-                        nodeMarkers.m_buffer[i].Connections.Add(nodeMarkers.m_buffer[j]);
-                }
-            }
-        }
-
-        private void SetLaneMarkers()
-        {
-            if (m_segments.Count == 0)
-                return;
-
-            NetSegment segment = NetManager.instance.m_segments.m_buffer[m_segments.Values.First().SegmentId];
-            NetInfo info = segment.Info;
-            int laneCount = info.m_lanes.Length;
-            bool bothWays = info.m_hasBackwardVehicleLanes && info.m_hasForwardVehicleLanes;
-            bool isInverted = false;
-
-            foreach (Segment seg in m_segments.Values)
-            {
-                segment = NetManager.instance.m_segments.m_buffer[seg.SegmentId];
-                uint laneId = segment.m_lanes;
-
-                if (bothWays)
-                {
-                    isInverted = seg.TargetNodeId == segment.m_startNode;
-                    if ((segment.m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.Invert)
-                        isInverted = !isInverted;
-                }
-
-                for (int j = 0; j < laneCount && laneId != 0; j++)
-                {
-                    NetLane lane = NetManager.instance.m_lanes.m_buffer[laneId];
-
-                    //if ((info.m_lanes[j].m_laneType & (NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle)) != NetInfo.LaneType.None)
-                    if ((info.m_lanes[j].m_laneType & NetInfo.LaneType.Vehicle) == NetInfo.LaneType.Vehicle)
+                    if (connections.Contains(anchorDestination.LaneId))
                     {
-                        Bezier3 bezier = lane.m_bezier;
-                        bezier.GetBounds().Expand(1f);
-
-                        int index = j;
-                        if (bothWays && isInverted)
-                            index += (j % 2 == 0) ? 1 : -1;
+                        anchor.Connections.Add(anchorDestination);
                     }
-
-                    laneId = lane.m_nextLane;
                 }
             }
+
+            return anchors;
         }
-
-        private void SetSegments(ushort segmentId)
-        {
-            NetSegment segment = NetManager.instance.m_segments.m_buffer[segmentId];
-            Segment seg = new Segment()
-            {
-                SegmentId = segmentId,
-                TargetNodeId = segment.m_endNode
-            };
-
-            m_segments[segmentId] = seg;
-
-            ushort infoIndex = segment.m_infoIndex;
-            NetNode node = NetManager.instance.m_nodes.m_buffer[segment.m_startNode];
-            if (node.CountSegments() == 2)
-                SetSegments(node.m_segment0 == segmentId ? node.m_segment1 : node.m_segment0, infoIndex, ref seg);
-
-            node = NetManager.instance.m_nodes.m_buffer[segment.m_endNode];
-            if (node.CountSegments() == 2)
-                SetSegments(node.m_segment0 == segmentId ? node.m_segment1 : node.m_segment0, infoIndex, ref seg);
-        }
-
-        private void SetSegments(ushort segmentId, ushort infoIndex, ref Segment previousSeg)
-        {
-            NetSegment segment = NetManager.instance.m_segments.m_buffer[segmentId];
-
-            if (segment.m_infoIndex != infoIndex || m_segments.ContainsKey(segmentId))
-                return;
-
-            Segment seg = default(Segment);
-            seg.SegmentId = segmentId;
-
-            NetSegment previousSegment = NetManager.instance.m_segments.m_buffer[previousSeg.SegmentId];
-            ushort nextNode;
-            if ((segment.m_startNode == previousSegment.m_endNode) || (segment.m_startNode == previousSegment.m_startNode))
-            {
-                nextNode = segment.m_endNode;
-                seg.TargetNodeId = segment.m_startNode == previousSeg.TargetNodeId ? segment.m_endNode : segment.m_startNode;
-            }
-            else
-            {
-                nextNode = segment.m_startNode;
-                seg.TargetNodeId = segment.m_endNode == previousSeg.TargetNodeId ? segment.m_startNode : segment.m_endNode;
-            }
-
-            m_segments[segmentId] = seg;
-
-            NetNode node = NetManager.instance.m_nodes.m_buffer[nextNode];
-            if (node.CountSegments() == 2)
-                SetSegments(node.m_segment0 == segmentId ? node.m_segment1 : node.m_segment0, infoIndex, ref seg);
-        }
-
-        private bool RayCastSegmentAndNode(out RaycastOutput output)
-        {
-            RaycastInput input = new RaycastInput(Camera.main.ScreenPointToRay(Input.mousePosition), Camera.main.farClipPlane);
-            input.m_netService.m_service = ItemClass.Service.Road;
-            input.m_netService.m_itemLayers = ItemClass.Layer.Default | ItemClass.Layer.MetroTunnels;
-            input.m_ignoreSegmentFlags = NetSegment.Flags.None;
-            input.m_ignoreNodeFlags = NetNode.Flags.None;
-            input.m_ignoreTerrain = true;
-
-            return RayCast(input, out output);
-        }
-
-        private bool RayCastSegmentAndNode(out ushort netSegment, out ushort netNode)
-        {
-            RaycastOutput output;
-            if (RayCastSegmentAndNode(out output))
-            {
-                netSegment = output.m_netSegment;
-                netNode = output.m_netNode;
-
-                if (NetManager.instance.m_segments.m_buffer[netSegment].Info.m_lanes.FirstOrDefault(l => (l.m_vehicleType & VehicleInfo.VehicleType.Car) == VehicleInfo.VehicleType.Car) == null)
-                    netSegment = 0;
-
-                return true;
-            }
-
-            netSegment = 0;
-            netNode = 0;
-            return false;
-        }
-
-        private static readonly Color32[] colors = 
-        {
-			new Color32(161, 64, 206, 255), 
-			new Color32(79, 251, 8, 255), 
-			new Color32(243, 96, 44, 255), 
-			new Color32(45, 106, 105, 255), 
-			new Color32(253, 165, 187, 255), 
-			new Color32(90, 131, 14, 255), 
-			new Color32(58, 20, 70, 255), 
-			new Color32(248, 246, 183, 255), 
-			new Color32(255, 205, 29, 255), 
-			new Color32(91, 50, 18, 255), 
-			new Color32(76, 239, 155, 255), 
-			new Color32(241, 25, 130, 255), 
-			new Color32(125, 197, 240, 255), 
-			new Color32(57, 102, 187, 255), 
-			new Color32(160, 27, 61, 255), 
-			new Color32(167, 251, 107, 255), 
-			new Color32(165, 94, 3, 255), 
-			new Color32(204, 18, 161, 255), 
-			new Color32(208, 136, 237, 255), 
-			new Color32(232, 211, 202, 255), 
-			new Color32(45, 182, 15, 255), 
-			new Color32(8, 40, 47, 255), 
-			new Color32(249, 172, 142, 255), 
-			new Color32(248, 99, 101, 255), 
-			new Color32(180, 250, 208, 255), 
-			new Color32(126, 25, 77, 255), 
-			new Color32(243, 170, 55, 255), 
-			new Color32(47, 69, 126, 255), 
-			new Color32(50, 105, 70, 255), 
-			new Color32(156, 49, 1, 255), 
-			new Color32(233, 231, 255, 255), 
-			new Color32(107, 146, 253, 255), 
-			new Color32(127, 35, 26, 255), 
-			new Color32(240, 94, 222, 255), 
-			new Color32(58, 28, 24, 255), 
-			new Color32(165, 179, 240, 255), 
-			new Color32(239, 93, 145, 255), 
-			new Color32(47, 110, 138, 255), 
-			new Color32(57, 195, 101, 255), 
-			new Color32(124, 88, 213, 255), 
-			new Color32(252, 220, 144, 255), 
-			new Color32(48, 106, 224, 255), 
-			new Color32(90, 109, 28, 255), 
-			new Color32(56, 179, 208, 255), 
-			new Color32(239, 73, 177, 255), 
-			new Color32(84, 60, 2, 255), 
-			new Color32(169, 104, 238, 255), 
-			new Color32(97, 201, 238, 255), 
-		};
     }
 }
