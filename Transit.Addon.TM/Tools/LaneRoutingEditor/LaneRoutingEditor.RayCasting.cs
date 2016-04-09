@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Transit.Addon.TM.Tools.LaneRoutingEditor
 {
-    public partial class LaneRoutingEditor : ToolBase
+    public partial class LaneRoutingEditor
     {
         private static ushort? RayCastNodeWithMoreThanOneSegment()
         {

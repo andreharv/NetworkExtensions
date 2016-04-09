@@ -14,11 +14,9 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor
 
             if (_selectedNode != null)
             {
-                var nodePos = NetManager.instance.m_nodes.m_buffer[_selectedNode.Value].m_position;
-
                 if (_selectedAnchor == null)
                 {
-                    foreach (var anchor in _nodeAnchors[_selectedNode.Value])
+                    foreach (var anchor in _selectedNode.Anchors)
                     {
                         if (anchor.IsOrigin)
                         {
@@ -26,7 +24,7 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor
                             {
                                 foreach (var connection in anchor.Connections)
                                 {
-                                    RenderManager.instance.OverlayEffect.DrawRouting(cameraInfo, anchor.Position, connection.Position, nodePos, anchor.Color, ROUTE_WIDTH);
+                                    RenderManager.instance.OverlayEffect.DrawRouting(cameraInfo, anchor.Position, connection.Position, _selectedNode.Position, anchor.Color, ROUTE_WIDTH);
                                 }
                             }
                         }
@@ -36,7 +34,7 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor
                 }
                 else
                 {
-                    foreach (var anchor in _nodeAnchors[_selectedNode.Value])
+                    foreach (var anchor in _selectedNode.Anchors)
                     {
                         if (anchor.IsOrigin)
                         {
@@ -45,19 +43,19 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor
                                 RaycastOutput output;
                                 if (RayCastSegmentAndNode(out output))
                                 {
-                                    RenderManager.instance.OverlayEffect.DrawRouting(cameraInfo, anchor.Position, output.m_hitPos, nodePos, anchor.Color, ROUTE_WIDTH);
+                                    RenderManager.instance.OverlayEffect.DrawRouting(cameraInfo, anchor.Position, output.m_hitPos, _selectedNode.Position, anchor.Color, ROUTE_WIDTH);
                                 }
 
                                 foreach (var connection in anchor.Connections)
                                 {
-                                    RenderManager.instance.OverlayEffect.DrawRouting(cameraInfo, anchor.Position, connection.Position, nodePos, anchor.Color, ROUTE_WIDTH);
+                                    RenderManager.instance.OverlayEffect.DrawRouting(cameraInfo, anchor.Position, connection.Position, _selectedNode.Position, anchor.Color, ROUTE_WIDTH);
                                 }
                             }
                             else
                             {
                                 foreach (var connection in anchor.Connections)
                                 {
-                                    RenderManager.instance.OverlayEffect.DrawRouting(cameraInfo, anchor.Position, connection.Position, nodePos, anchor.Color.Dim(75), ROUTE_WIDTH);
+                                    RenderManager.instance.OverlayEffect.DrawRouting(cameraInfo, anchor.Position, connection.Position, _selectedNode.Position, anchor.Color.Dim(75), ROUTE_WIDTH);
                                 }
                             }
                         }
@@ -68,11 +66,11 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor
             }
             else
             {
-                foreach (var kvp in _nodeAnchors)
+                foreach (var kvp in _editedNodes)
                 {
                     var nodePos = NetManager.instance.m_nodes.m_buffer[kvp.Key].m_position;
 
-                    foreach (var anchor in kvp.Value)
+                    foreach (var anchor in kvp.Value.Anchors)
                     {
                         if (anchor.IsOrigin)
                         {
@@ -85,9 +83,10 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor
                 }
             }
 
-            if (_hoveredNode != null && _hoveredNode != _selectedNode)
+            var selectedNodeId = _selectedNode == null ? (ushort?)null : _selectedNode.NodeId;
+            if (_hoveredNodeId != null && _hoveredNodeId != selectedNodeId)
             {
-                NetNode node = NetManager.instance.m_nodes.m_buffer[_hoveredNode.Value];
+                NetNode node = NetManager.instance.m_nodes.m_buffer[_hoveredNodeId.Value];
                 RenderManager.instance.OverlayEffect.DrawCircle(cameraInfo, new Color(0f, 0f, 0.5f, 0.75f), node.m_position, 15f, node.m_position.y - 1f, node.m_position.y + 1f, true, true);
             }
         }

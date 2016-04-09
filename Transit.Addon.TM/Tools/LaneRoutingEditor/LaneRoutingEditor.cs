@@ -11,13 +11,11 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor
 {
     public partial class LaneRoutingEditor : ToolBase
     {
-        private const NetNode.Flags CUSTOMIZED_NODE_FLAG = (NetNode.Flags)(1 << 28);
-        
-        private ushort? _hoveredNode;
-        private ushort? _selectedNode;
+        private ushort? _hoveredNodeId;
+        private NodeRoutesMarker _selectedNode;
         private LaneAnchorMarker _hoveredAnchor;
         private LaneAnchorMarker _selectedAnchor;
-        private readonly Dictionary<ushort, IEnumerable<LaneAnchorMarker>> _nodeAnchors = new Dictionary<ushort, IEnumerable<LaneAnchorMarker>>();
+        private readonly Dictionary<ushort, NodeRoutesMarker> _editedNodes = new Dictionary<ushort, NodeRoutesMarker>();
 
         protected override void Awake()
         {
@@ -44,7 +42,9 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor
             }
 
             foreach (var nodeId in nodesList)
-                CreateNodeAnchors(nodeId);
+            {
+                _editedNodes[nodeId] = new NodeRoutesMarker(nodeId);
+            }
         }
 
         protected override void OnToolUpdate()
@@ -59,15 +59,16 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor
             if (m_toolController.IsInsideUI)
                 return;
 
-            _hoveredNode = RayCastNodeWithMoreThanOneSegment();
+            _hoveredNodeId = RayCastNodeWithMoreThanOneSegment();
+            var selectedNodeId = _selectedNode == null ? (ushort?) null : _selectedNode.NodeId;
 
-            UpdateNodeAnchors(_selectedNode, _hoveredNode);
+            UpdateNodeAnchors(selectedNodeId, _hoveredNodeId);
 
             if (Input.GetMouseButtonUp((int)MouseKeyCode.LeftButton))
             {
-                if (_hoveredNode != null && _hoveredNode != _selectedNode)
+                if (_hoveredNodeId != null && _hoveredNodeId != selectedNodeId)
                 {
-                    SelectNode(_hoveredNode.Value);
+                    SelectNode(_hoveredNodeId.Value);
                     return;
                 }
 
@@ -100,7 +101,7 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor
 
                 if (_selectedNode != null)
                 {
-                    UnselectNode(_selectedNode.Value);
+                    UnselectNode(_selectedNode);
                     return;
                 }
             }
@@ -110,25 +111,30 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor
         {
             if (_selectedNode != null)
             {
-                UnselectNode(_selectedNode.Value);
+                UnselectNode(_selectedNode);
             }
 
-            if (!_nodeAnchors.ContainsKey(nodeId))
+            if (!_editedNodes.ContainsKey(nodeId))
             {
-                CreateNodeAnchors(nodeId);
+                _editedNodes[nodeId] = new NodeRoutesMarker(nodeId);
             }
 
-            foreach (var anchor in _nodeAnchors[nodeId])
+            SelectNode(_editedNodes[nodeId]);
+        }
+
+        private void SelectNode(NodeRoutesMarker node)
+        {
+            foreach (var anchor in node.Anchors)
             {
                 anchor.SetEnable(anchor.IsOrigin);
             }
 
-            _selectedNode = nodeId;
+            _selectedNode = node;
         }
 
-        private void UnselectNode(ushort nodeId)
+        private void UnselectNode(NodeRoutesMarker node)
         {
-            foreach (var anchor in _nodeAnchors[nodeId])
+            foreach (var anchor in node.Anchors)
             {
                 anchor.Disable();
             }
@@ -143,7 +149,7 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor
                 UnselectAnchor(_selectedAnchor);
             }
 
-            foreach (var otherAnchor in _nodeAnchors[_selectedNode.Value].Except(anchor))
+            foreach (var otherAnchor in _selectedNode.Anchors.Except(anchor))
             {
                 otherAnchor.SetEnable(!otherAnchor.IsOrigin && otherAnchor.SegmentId != anchor.SegmentId);
             }
@@ -156,7 +162,7 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor
         {
             anchor.Unselect();
 
-            foreach (var otherAnchor in _nodeAnchors[_selectedNode.Value])
+            foreach (var otherAnchor in _selectedNode.Anchors)
             {
                 otherAnchor.SetEnable(otherAnchor.IsOrigin);
             }
@@ -194,12 +200,12 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor
                 return;
             }
 
-            if (!_nodeAnchors.ContainsKey(selectedNode.Value))
+            if (!_editedNodes.ContainsKey(selectedNode.Value))
             {
                 return;
             }
 
-            var anchors = _nodeAnchors[selectedNode.Value];
+            var anchors = _editedNodes[selectedNode.Value].Anchors;
 
             var mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
             var bounds = new Bounds(Vector3.zero, Vector3.one);
@@ -246,7 +252,7 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor
         {
             base.OnEnable();
 
-            _hoveredNode = null;
+            _hoveredNodeId = null;
             _selectedNode = null;
             _selectedAnchor = null;
         }
@@ -260,80 +266,6 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor
                 _selectedAnchor.Unselect();
                 _selectedAnchor = null;
             }
-        }
-
-        private void CreateNodeAnchors(ushort nodeId)
-        {
-            if (!_nodeAnchors.ContainsKey(nodeId))
-            {
-                _nodeAnchors[nodeId] = CreateAnchors(nodeId);
-                NetManager.instance.m_nodes.m_buffer[nodeId].m_flags |= CUSTOMIZED_NODE_FLAG;
-            }
-        }
-
-        private static IEnumerable<LaneAnchorMarker> CreateAnchors(ushort nodeId)
-        {
-            var anchors = new List<LaneAnchorMarker>();
-
-            var node = NetManager.instance.m_nodes.m_buffer[nodeId];
-            var offsetMultiplier = node.CountSegments() <= 2 ? 3 : 1;
-            var segmentId = node.m_segment0;
-            for (int i = 0; i < 8 && segmentId != 0; i++)
-            {
-                NetSegment segment = NetManager.instance.m_segments.m_buffer[segmentId];
-                bool isEndNode = segment.m_endNode == nodeId;
-                Vector3 offset = segment.FindDirection(segmentId, nodeId) * offsetMultiplier;
-                NetInfo.Lane[] lanes = segment.Info.m_lanes;
-                uint laneId = segment.m_lanes;
-                for (int j = 0; j < lanes.Length && laneId != 0; j++)
-                {
-                    //if ((lanes[j].m_laneType & (NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle)) != NetInfo.LaneType.None)
-                    if ((lanes[j].m_laneType & NetInfo.LaneType.Vehicle) == NetInfo.LaneType.Vehicle)
-                    {
-                        Vector3 pos = Vector3.zero;
-                        NetInfo.Direction laneDir = ((segment.m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None) ? lanes[j].m_finalDirection : NetInfo.InvertDirection(lanes[j].m_finalDirection);
-
-                        bool isSource = false;
-                        if (isEndNode)
-                        {
-                            if ((laneDir & (NetInfo.Direction.Forward | NetInfo.Direction.Avoid)) == NetInfo.Direction.Forward)
-                                isSource = true;
-                            pos = NetManager.instance.m_lanes.m_buffer[laneId].m_bezier.d;
-                        }
-                        else
-                        {
-                            if ((laneDir & (NetInfo.Direction.Backward | NetInfo.Direction.Avoid)) == NetInfo.Direction.Backward)
-                                isSource = true;
-                            pos = NetManager.instance.m_lanes.m_buffer[laneId].m_bezier.a;
-                        }
-
-                        anchors.Add(new LaneAnchorMarker(laneId, segmentId, nodeId, pos + offset, isSource, isSource? i: (int?) null));
-                    }
-
-                    laneId = NetManager.instance.m_lanes.m_buffer[laneId].m_nextLane;
-                }
-
-                segmentId = segment.GetRightSegment(nodeId);
-                if (segmentId == node.m_segment0)
-                    segmentId = 0;
-            }
-
-            foreach (var anchor in anchors.Where(a => a.IsOrigin))
-            {
-                var connections = TAMLaneRoutingManager.instance.GetLaneConnections(anchor.LaneId);
-                if (connections == null || connections.Length == 0)
-                    continue;
-
-                foreach (var anchorDestination in anchors.Where(a => !a.IsOrigin))
-                {
-                    if (connections.Contains(anchorDestination.LaneId))
-                    {
-                        anchor.Connections.Add(anchorDestination);
-                    }
-                }
-            }
-
-            return anchors;
         }
     }
 }
