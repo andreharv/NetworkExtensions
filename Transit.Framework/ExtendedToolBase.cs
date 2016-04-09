@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using UnityEngine;
 
-namespace Transit.Addon.TM.Tools.LaneRoutingEditor
+namespace Transit.Framework
 {
-    public partial class LaneRoutingEditor
+    public class ExtendedToolBase : ToolBase
     {
-        private static ushort? RayCastNodeWithMoreThanOneSegment()
+        public static ushort? RayCastNodeWithMoreThanOneSegment()
         {
             var node = RayCastNode();
 
@@ -22,7 +22,7 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor
             return node;
         }
 
-        private static ushort? RayCastNode()
+        public static ushort? RayCastNode()
         {
             ushort? hoveredSegment;
             ushort? hoveredNode;
@@ -70,7 +70,7 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor
             return null;
         }
 
-        private static bool RayCastSegmentAndNode(out RaycastOutput output)
+        public static bool RayCastSegmentAndNode(out RaycastOutput output)
         {
             RaycastInput input = new RaycastInput(Camera.main.ScreenPointToRay(Input.mousePosition), Camera.main.farClipPlane);
             input.m_netService.m_service = ItemClass.Service.Road;
@@ -82,7 +82,7 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor
             return RayCast(input, out output);
         }
 
-        private static bool RayCastSegmentAndNode(out ushort? netSegment, out ushort? netNode)
+        public static bool RayCastSegmentAndNode(out ushort? netSegment, out ushort? netNode)
         {
             RaycastOutput output;
             if (RayCastSegmentAndNode(out output))

@@ -106,8 +106,6 @@
     <Compile Include="Tools\LaneDirectionEditor\LaneDirectionEditor.UI.cs" />
     <Compile Include="Tools\LaneDirectionEditor\LaneDirectionEditor.Overlay.cs" />
     <Compile Include="Tools\LaneDirectionEditor\LaneDirectionEditorBuilder.cs" />
-    <Compile Include="Tools\LaneRoutingEditor\LaneRoutingEditor.RayCasting.cs" />
-    <Compile Include="Tools\LaneRoutingEditor\LaneRoutingEditor.Overlay.cs" />
     <Compile Include="Tools\LaneRoutingEditor\LaneRoutingEditorBuilder.cs" />
     <Compile Include="Tools\LaneRoutingEditor\LaneRoutingEditor.cs" />
     <Compile Include="ToolModuleV2.Detours.cs" />

@@ -1,4 +1,5 @@
 ﻿using ColossalFramework;
+using UnityEngine;
 
 namespace Transit.Framework.UI.Ingame
 {
@@ -84,6 +85,11 @@ namespace Transit.Framework.UI.Ingame
                 return;
             }
 
+            if (!IsHovered)
+            {
+                HoveringStarted();
+            }
+
             OnHovering();
         }
 
@@ -130,11 +136,46 @@ namespace Transit.Framework.UI.Ingame
 
         protected virtual void OnUnselected() { }
 
-        public void Render(RenderManager.CameraInfo camera)
+        /// <summary>
+        /// </summary>
+        public bool LeftClick()
         {
-            OnRendered(camera);
+            if (!IsEnabled)
+            {
+                return false;
+            }
+
+            return OnLeftClick();
         }
 
-        protected abstract void OnRendered(RenderManager.CameraInfo camera);
+        protected virtual bool OnLeftClick() { return false; }
+
+        /// <summary>
+        /// </summary>
+        public bool RightClick()
+        {
+            if (!IsEnabled)
+            {
+                return false;
+            }
+
+            return OnRightClick();
+        }
+
+        protected virtual bool OnRightClick() { return false; }
+
+        public void Update(Ray mouseRay)
+        {
+            OnUpdate(mouseRay);
+        }
+
+        protected virtual void OnUpdate(Ray mouseRay) { }
+
+        public void Render(RenderManager.CameraInfo cameraInfo)
+        {
+            OnRendered(cameraInfo);
+        }
+
+        protected abstract void OnRendered(RenderManager.CameraInfo cameraInfo);
     }
 }

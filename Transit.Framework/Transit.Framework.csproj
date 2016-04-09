@@ -55,6 +55,7 @@
     <Compile Include="Activable.cs" />
     <Compile Include="Assets\AtlasManager.cs" />
     <Compile Include="Builders\IAtlasBuilder.cs" />
+    <Compile Include="ExtendedToolBase.cs" />
     <Compile Include="UI\Infos\IMenuCategoryInfo.cs" />
     <Compile Include="UI\Infos\IMenuToolbarItemInfo.cs" />
     <Compile Include="Builders\IToolBuilder.cs" />

@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using Transit.Addon.TM.PathFindingFeatures;
 using Transit.Addon.TM.Tools.LaneRoutingEditor.Markers;
+using Transit.Framework;
 using Transit.Framework.UI;
 using UnityEngine;
 
 namespace Transit.Addon.TM.Tools.LaneRoutingEditor
 {
-    public partial class LaneRoutingEditor : ToolBase
+    public class LaneRoutingEditor : ExtendedToolBase
     {
         private ushort? _hoveredNodeId;
-        private NodeRoutesMarker _selectedNode;
-        private LaneAnchorMarker _hoveredAnchor;
-        private LaneAnchorMarker _selectedAnchor;
-        private readonly Dictionary<ushort, NodeRoutesMarker> _editedNodes = new Dictionary<ushort, NodeRoutesMarker>();
+        private NodeRoutesMarker _selectedNodeMarker;
+        private readonly Dictionary<ushort, NodeRoutesMarker> _nodeMarkers = new Dictionary<ushort, NodeRoutesMarker>();
 
         protected override void Awake()
         {
@@ -42,7 +41,7 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor
 
             foreach (var nodeId in nodesList)
             {
-                _editedNodes[nodeId] = new NodeRoutesMarker(nodeId);
+                _nodeMarkers[nodeId] = new NodeRoutesMarker(nodeId);
             }
         }
 
@@ -59,178 +58,78 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor
                 return;
 
             _hoveredNodeId = RayCastNodeWithMoreThanOneSegment();
-            var selectedNodeId = _selectedNode == null ? (ushort?) null : _selectedNode.NodeId;
+            var selectedNodeId = _selectedNodeMarker == null ? (ushort?) null : _selectedNodeMarker.NodeId;
 
-            UpdateNodeAnchors(selectedNodeId, _hoveredNodeId);
 
+            // -------------------------------------------------
+            // Mouse moves
+            var mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (_hoveredNodeId != null)
+            {
+                if (_nodeMarkers.ContainsKey(_hoveredNodeId.Value))
+                {
+                    _nodeMarkers[_hoveredNodeId.Value].Update(mouseRay);
+                }
+            }
+
+            if (_selectedNodeMarker != null &&
+                _hoveredNodeId != selectedNodeId)
+            {
+                _selectedNodeMarker.Update(mouseRay);
+            }
+
+
+            // -------------------------------------------------
+            // Mouse left clicks
             if (Input.GetMouseButtonUp((int)MouseKeyCode.LeftButton))
             {
                 if (_hoveredNodeId != null && _hoveredNodeId != selectedNodeId)
                 {
-                    SelectNode(_hoveredNodeId.Value);
+                    if (_selectedNodeMarker != null)
+                    {
+                        _selectedNodeMarker.Unselect();
+                        _selectedNodeMarker = null;
+                    }
+
+                    if (!_nodeMarkers.ContainsKey(_hoveredNodeId.Value))
+                    {
+                        _nodeMarkers[_hoveredNodeId.Value] = new NodeRoutesMarker(_hoveredNodeId.Value);
+                    }
+
+                    var node = _nodeMarkers[_hoveredNodeId.Value];
+
+                    _selectedNodeMarker = node;
+                    _selectedNodeMarker.Select();
                     return;
                 }
 
-                if (_selectedNode != null)
+                if (_selectedNodeMarker != null)
                 {
-                    if (_hoveredAnchor != null && 
-                        _hoveredAnchor != _selectedAnchor)
+                    if (_selectedNodeMarker.LeftClick())
                     {
-                        if (_hoveredAnchor.IsOrigin)
-                        {
-                            SelectAnchor(_hoveredAnchor);
-                            return;
-                        }
-                        else
-                        {
-                            if (_selectedAnchor != null)
-                            {
-                                _selectedNode.ToggleRoute(_selectedAnchor, _hoveredAnchor);
-                                return;
-                            }
-                        }
+                        return;
                     }
                 }
             }
 
+
+            // -------------------------------------------------
+            // Mouse right clicks
             if (Input.GetMouseButtonUp((int)MouseKeyCode.RightButton))
             {
-                if (_selectedAnchor != null)
+                if (_selectedNodeMarker != null)
                 {
-                    UnselectCurrentAnchor();
+                    if (_selectedNodeMarker.RightClick())
+                    {
+                        return;
+                    }
+                }
+
+                if (_selectedNodeMarker != null)
+                {
+                    _selectedNodeMarker.Unselect();
+                    _selectedNodeMarker = null;
                     return;
-                }
-
-                if (_selectedNode != null)
-                {
-                    UnselectCurrentNode();
-                    return;
-                }
-            }
-        }
-
-        private void SelectNode(ushort nodeId)
-        {
-            if (_selectedNode != null)
-            {
-                UnselectCurrentNode();
-            }
-
-            if (!_editedNodes.ContainsKey(nodeId))
-            {
-                _editedNodes[nodeId] = new NodeRoutesMarker(nodeId);
-            }
-
-            SelectNode(_editedNodes[nodeId]);
-        }
-
-        private void SelectNode(NodeRoutesMarker node)
-        {
-            _selectedNode = node;
-            _selectedNode.Select();
-        }
-
-        private void UnselectCurrentNode()
-        {
-            if (_selectedNode != null)
-            {
-                _selectedNode.Unselect();
-                _selectedNode = null;
-            }
-        }
-
-        private void SelectAnchor(LaneAnchorMarker anchor)
-        {
-            if (_selectedAnchor != null)
-            {
-                UnselectCurrentAnchor();
-            }
-
-            if (_selectedNode != null)
-            {
-                _selectedNode.EnableDestinationAnchors(anchor);
-            }
-
-            _selectedAnchor = anchor;
-            _selectedAnchor.Select();
-        }
-
-        private void UnselectCurrentAnchor()
-        {
-            if (_selectedAnchor != null)
-            {
-                _selectedAnchor.Unselect();
-                _selectedAnchor = null;
-
-                if (_selectedNode != null)
-                {
-                    _selectedNode.EnableOriginAnchors();
-                }
-            }
-        }
-
-        private void UpdateNodeAnchors(ushort? selectedNode, ushort? hoveredNode)
-        {
-            if (_hoveredAnchor != null)
-            {
-                if (selectedNode == null || 
-                    hoveredNode == null || 
-                    selectedNode != hoveredNode)
-                {
-                    _hoveredAnchor.HoveringEnded();
-                    _hoveredAnchor = null;
-                }
-            }
-
-            if (selectedNode == null)
-            {
-                return;
-            }
-
-            if (!_editedNodes.ContainsKey(selectedNode.Value))
-            {
-                return;
-            }
-
-            var anchors = _editedNodes[selectedNode.Value].Anchors;
-
-            var mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-            var bounds = new Bounds(Vector3.zero, Vector3.one);
-
-            foreach (var anchor in anchors.Where(a => a.IsEnabled))
-            {
-                bounds.center = anchor.Position;
-                if (bounds.IntersectRay(mouseRay))
-                {
-                    if (!anchor.IsHovered)
-                    {
-                        anchor.HoveringStarted();
-                    }
-                    else
-                    {
-                        anchor.Hovering();
-                    }
-
-                    if (_hoveredAnchor != anchor)
-                    {
-                        if (_hoveredAnchor != null)
-                        {
-                            _hoveredAnchor.HoveringEnded();
-                        }
-                        _hoveredAnchor = anchor;
-                    }
-                }
-                else
-                {
-                    if (anchor.IsHovered)
-                    {
-                        anchor.HoveringEnded();
-                    }
-
-                    if (_hoveredAnchor == anchor)
-                    {
-                        _hoveredAnchor = null;
-                    }
                 }
             }
         }
@@ -252,18 +151,35 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor
         private void Reset()
         {
             _hoveredNodeId = null;
-            _hoveredAnchor = null;
 
-            if (_selectedAnchor != null)
+            if (_selectedNodeMarker != null)
             {
-                _selectedAnchor.Unselect();
-                _selectedAnchor = null;
+                _selectedNodeMarker.Unselect();
+                _selectedNodeMarker = null;
+            }
+        }
+
+        public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
+        {
+            base.RenderOverlay(cameraInfo);
+
+            if (_selectedNodeMarker != null)
+            {
+                _selectedNodeMarker.Render(cameraInfo);
+            }
+            else
+            {
+                foreach (var kvp in _nodeMarkers)
+                {
+                    kvp.Value.Render(cameraInfo);
+                }
             }
 
-            if (_selectedNode != null)
+            var selectedNodeId = _selectedNodeMarker == null ? (ushort?)null : _selectedNodeMarker.NodeId;
+            if (_hoveredNodeId != null && _hoveredNodeId != selectedNodeId)
             {
-                _selectedNode.Unselect();
-                _selectedNode = null;
+                NetNode node = NetManager.instance.m_nodes.m_buffer[_hoveredNodeId.Value];
+                RenderManager.instance.OverlayEffect.DrawCircle(cameraInfo, new Color(0f, 0f, 0.5f, 0.75f), node.m_position, 15f, node.m_position.y - 1f, node.m_position.y + 1f, true, true);
             }
         }
     }

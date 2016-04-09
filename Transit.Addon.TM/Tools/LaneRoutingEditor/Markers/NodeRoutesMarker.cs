@@ -9,15 +9,20 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor.Markers
 {
     public class NodeRoutesMarker : UIMarker
     {
+        private const float ROUTE_WIDTH = 0.25f;
+
         public ushort NodeId { get; private set; }
         public Vector3 Position { get; set; }
-        public IEnumerable<LaneAnchorMarker> Anchors { get; private set; }
+
+        private readonly IEnumerable<LaneAnchorMarker> _anchors;
+        private LaneAnchorMarker _hoveredAnchor;
+        private LaneAnchorMarker _selectedAnchor;
 
         public NodeRoutesMarker(ushort nodeId)
         {
             NodeId = nodeId;
             Position = NetManager.instance.m_nodes.m_buffer[nodeId].m_position;
-            Anchors = new List<LaneAnchorMarker>(CreateAnchors(nodeId));
+            _anchors = new List<LaneAnchorMarker>(CreateAnchors(nodeId));
         }
 
         private static IEnumerable<LaneAnchorMarker> CreateAnchors(ushort nodeId)
@@ -86,7 +91,7 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor.Markers
 
         public void EnableDestinationAnchors(LaneAnchorMarker origin)
         {
-            foreach (var otherAnchor in Anchors.Except(origin))
+            foreach (var otherAnchor in _anchors.Except(origin))
             {
                 otherAnchor.SetEnable(!otherAnchor.IsOrigin && otherAnchor.SegmentId != origin.SegmentId);
             }
@@ -94,7 +99,7 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor.Markers
 
         public void EnableOriginAnchors()
         {
-            foreach (var anchor in Anchors)
+            foreach (var anchor in _anchors)
             {
                 anchor.SetEnable(anchor.IsOrigin);
             }
@@ -102,9 +107,33 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor.Markers
 
         public void DisableAnchors()
         {
-            foreach (var anchor in Anchors)
+            foreach (var anchor in _anchors)
             {
                 anchor.Disable();
+            }
+        }
+
+        private void SelectAnchor(LaneAnchorMarker anchor)
+        {
+            if (_selectedAnchor != null)
+            {
+                UnselectCurrentAnchor();
+            }
+
+            EnableDestinationAnchors(anchor);
+
+            _selectedAnchor = anchor;
+            _selectedAnchor.Select();
+        }
+
+        private void UnselectCurrentAnchor()
+        {
+            if (_selectedAnchor != null)
+            {
+                _selectedAnchor.Unselect();
+                _selectedAnchor = null;
+
+                EnableOriginAnchors();
             }
         }
 
@@ -120,6 +149,50 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor.Markers
             }
         }
 
+        protected override bool OnLeftClick()
+        {
+            if (!IsSelected)
+            {
+                return false;
+            }
+
+            if (_hoveredAnchor != null &&
+                _hoveredAnchor != _selectedAnchor)
+            {
+                if (_hoveredAnchor.IsOrigin)
+                {
+                    SelectAnchor(_hoveredAnchor);
+                    return true;
+                }
+                else
+                {
+                    if (_selectedAnchor != null)
+                    {
+                        ToggleRoute(_selectedAnchor, _hoveredAnchor);
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        protected override bool OnRightClick()
+        {
+            if (!IsSelected)
+            {
+                return false;
+            }
+
+            if (_selectedAnchor != null)
+            {
+                UnselectCurrentAnchor();
+                return true;
+            }
+
+            return false;
+        }
+
         protected override void OnSelected()
         {
             EnableOriginAnchors();
@@ -127,11 +200,118 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor.Markers
 
         protected override void OnUnselected()
         {
+            _hoveredAnchor = null;
+            _selectedAnchor = null;
             DisableAnchors();
         }
 
-        protected override void OnRendered(RenderManager.CameraInfo camera)
+        protected override void OnUpdate(Ray mouseRay)
         {
+            if (!IsSelected)
+            {
+                return;
+            }
+            
+            var bounds = new Bounds(Vector3.zero, Vector3.one);
+
+            foreach (var anchor in _anchors.Where(a => a.IsEnabled))
+            {
+                bounds.center = anchor.Position;
+                if (bounds.IntersectRay(mouseRay))
+                {
+                    anchor.Hovering();
+
+                    if (_hoveredAnchor != anchor)
+                    {
+                        if (_hoveredAnchor != null)
+                        {
+                            _hoveredAnchor.HoveringEnded();
+                        }
+                        _hoveredAnchor = anchor;
+                    }
+                }
+                else
+                {
+                    if (anchor.IsHovered)
+                    {
+                        anchor.HoveringEnded();
+                    }
+
+                    if (_hoveredAnchor == anchor)
+                    {
+                        _hoveredAnchor = null;
+                    }
+                }
+            }
+        }
+
+        protected override void OnRendered(RenderManager.CameraInfo cameraInfo)
+        {
+            if (IsSelected)
+            {
+                if (_selectedAnchor == null)
+                {
+                    foreach (var anchor in _anchors)
+                    {
+                        if (anchor.IsOrigin)
+                        {
+                            if (anchor.IsEnabled)
+                            {
+                                foreach (var connection in anchor.Connections)
+                                {
+                                    RenderManager.instance.OverlayEffect.DrawRouting(cameraInfo, anchor.Position, connection.Position, Position, anchor.Color, ROUTE_WIDTH);
+                                }
+                            }
+                        }
+
+                        anchor.Render(cameraInfo);
+                    }
+                }
+                else
+                {
+                    foreach (var anchor in _anchors)
+                    {
+                        if (anchor.IsOrigin)
+                        {
+                            if (anchor == _selectedAnchor)
+                            {
+                                ToolBase.RaycastOutput output;
+                                if (ExtendedToolBase.RayCastSegmentAndNode(out output))
+                                {
+                                    RenderManager.instance.OverlayEffect.DrawRouting(cameraInfo, anchor.Position, output.m_hitPos, Position, anchor.Color, ROUTE_WIDTH);
+                                }
+
+                                foreach (var connection in anchor.Connections)
+                                {
+                                    RenderManager.instance.OverlayEffect.DrawRouting(cameraInfo, anchor.Position, connection.Position, Position, anchor.Color, ROUTE_WIDTH);
+                                }
+                            }
+                            else
+                            {
+                                foreach (var connection in anchor.Connections)
+                                {
+                                    RenderManager.instance.OverlayEffect.DrawRouting(cameraInfo, anchor.Position, connection.Position, Position, anchor.Color.Dim(75), ROUTE_WIDTH);
+                                }
+                            }
+                        }
+
+                        anchor.Render(cameraInfo);
+                    }
+                }
+            }
+            else
+            {
+                foreach (var anchor in _anchors)
+                {
+                    if (anchor.IsOrigin)
+                    {
+                        foreach (var connection in anchor.Connections)
+                        {
+                            RenderManager.instance.OverlayEffect.DrawRouting(cameraInfo, anchor.Position, connection.Position, Position, anchor.Color, ROUTE_WIDTH);
+                        }
+                    }
+                }
+            }
         }
 
         public override int GetHashCode()
