@@ -1,6 +1,9 @@
 ﻿using System.Linq;
 using ColossalFramework;
 using ColossalFramework.UI;
+using Transit.Addon.TM.Overlays.LaneRouting;
+using Transit.Framework;
+using Transit.Framework.UI;
 using UnityEngine;
 
 namespace Transit.Addon.TM.Tools.LaneDirectionEditor
@@ -43,11 +46,13 @@ namespace Transit.Addon.TM.Tools.LaneDirectionEditor
         // Overridden to disable base class behavior
         protected override void OnEnable()
         {
+            NodeRoutesOverlay.instance.Enable();
         }
 
         // Overridden to disable base class behavior
         protected override void OnDisable()
         {
+            NodeRoutesOverlay.instance.Disable();
         }
 
         public override void RenderGeometry(RenderManager.CameraInfo cameraInfo)
@@ -73,6 +78,8 @@ namespace Transit.Addon.TM.Tools.LaneDirectionEditor
             }
             else if (Input.GetKeyUp(KeyCode.PageUp))
                 InfoManager.instance.SetCurrentMode(InfoManager.InfoMode.None, InfoManager.SubInfoMode.Default);
+
+            NodeRoutesOverlay.instance.Update(InputEvent.None);
 
             _mouseDown = Input.GetMouseButton(0);
 

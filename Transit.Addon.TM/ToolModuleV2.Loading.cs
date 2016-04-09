@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using ICities;
 using Transit.Addon.TM.AI;
 using Transit.Addon.TM.PathFindingFeatures;
-using Transit.Addon.TM.Tools;
 using Transit.Addon.TM.Traffic;
 using Transit.Addon.TM.TrafficLight;
 using Transit.Addon.TM.UI;
@@ -11,9 +10,6 @@ using Transit.Framework;
 using Transit.Framework.Modularity;
 using Object = UnityEngine.Object;
 using Transit.Addon.TM.Data;
-using Transit.Addon.TM.UI.Toolbar.RoadEditor;
-using Transit.Framework.ExtensionPoints.UI;
-using Transit.Framework.UI;
 
 namespace Transit.Addon.TM
 {
@@ -54,7 +50,8 @@ namespace Transit.Addon.TM
             if (mode == LoadMode.NewGame || mode == LoadMode.LoadGame)
             {
                 gameLoaded = true;
-                
+
+                InstallOverlays();
                 InstallTools();
 
                 TrafficPriority.OnLevelLoading();
@@ -75,6 +72,7 @@ namespace Transit.Addon.TM
                 Instance = this;
 
             UninstallTools();
+            UninstallOverlays();
 
             revertDetours();
             gameLoaded = false;

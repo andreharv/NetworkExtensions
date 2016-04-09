@@ -1,5 +1,4 @@
 ﻿using Transit.Addon.TM.Overlays.LaneRouting;
-using Transit.Framework;
 using Transit.Framework.UI;
 using UnityEngine;
 
@@ -7,13 +6,6 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor
 {
     public class LaneRoutingEditor : ToolBase
     {
-        protected override void Awake()
-        {
-            base.Awake();
-
-            StartCoroutine(NodeRoutesOverlay.instance.LoadMarkers());
-        }
-
         protected override void OnToolUpdate()
         {
             base.OnToolUpdate();

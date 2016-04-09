@@ -17,7 +17,12 @@ namespace Transit.Addon.TM.Tools.LaneDirectionEditor
     {
         protected override void OnToolGUI(Event e)
         {
-            //Log._Debug($"OnToolGUI");
+            Log.Info("OnToolGUI");
+
+            if (!isActiveAndEnabled)
+            {
+                return;
+            }
 
             try
             {
@@ -25,7 +30,7 @@ namespace Transit.Addon.TM.Tools.LaneDirectionEditor
                 guiColor.a = 0.9f;
                 GUI.color = guiColor;
 
-                DrawEditPanel(e);
+                DrawEditPanel();
             }
             catch (Exception ex)
             {
@@ -33,7 +38,7 @@ namespace Transit.Addon.TM.Tools.LaneDirectionEditor
             }
         }
 
-        private void DrawEditPanel(Event e)
+        private void DrawEditPanel()
         {
             _cursorInSecondaryPanel = false;
 
@@ -82,8 +87,8 @@ namespace Transit.Addon.TM.Tools.LaneDirectionEditor
         {
             var info = Singleton<NetManager>.instance.m_segments.m_buffer[_selectedSegmentId].Info;
 
-            List<object[]> laneList = TrafficManagerTool.GetSortedVehicleLanes(_selectedSegmentId, info, _selectedNodeId);
-            SegmentGeometry geometry = CustomRoadAI.GetSegmentGeometry(_selectedSegmentId);
+            var laneList = TrafficManagerTool.GetSortedVehicleLanes(_selectedSegmentId, info, _selectedNodeId);
+            var geometry = CustomRoadAI.GetSegmentGeometry(_selectedSegmentId);
 
             GUILayout.BeginHorizontal();
 

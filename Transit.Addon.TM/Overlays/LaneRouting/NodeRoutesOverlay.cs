@@ -14,15 +14,10 @@ namespace Transit.Addon.TM.Overlays.LaneRouting
     {
         private ushort? _hoveredNodeId;
         private NodeRoutesMarker _selectedNodeMarker;
-        private Dictionary<ushort, NodeRoutesMarker> _nodeMarkers = new Dictionary<ushort, NodeRoutesMarker>();
+        private Dictionary<ushort, NodeRoutesMarker> _nodeMarkers = null;
 
-        public IEnumerator LoadMarkers()
-        {
-            while (!TAMLaneRoutingManager.instance.IsLoaded())
-            {
-                yield return new WaitForEndOfFrame();
-            }
-
+        public void LoadMarkers()
+        { 
             _nodeMarkers = new Dictionary<ushort, NodeRoutesMarker>();
             var nodesList = new HashSet<ushort>();
             foreach (var route in TAMLaneRoutingManager.instance.GetAllRoutes())
@@ -38,6 +33,18 @@ namespace Transit.Addon.TM.Overlays.LaneRouting
             {
                 _nodeMarkers[nodeId] = new NodeRoutesMarker(nodeId);
             }
+        }
+
+        public void Reset()
+        {
+            _hoveredNodeId = null;
+            _selectedNodeMarker = null;
+            _nodeMarkers = null;
+        }
+
+        public bool IsLoaded()
+        {
+            return _nodeMarkers != null;
         }
 
         public void Update(InputEvent inputEvent)

@@ -1,4 +1,8 @@
-﻿using ColossalFramework;
+﻿using System;
+using ColossalFramework;
+using Transit.Addon.TM.Overlays.LaneRouting;
+using Transit.Framework;
+using UnityEngine;
 
 namespace Transit.Addon.TM.Tools.LaneDirectionEditor
 {
@@ -19,9 +23,12 @@ namespace Transit.Addon.TM.Tools.LaneDirectionEditor
                 }
             }
 
-            if (_selectedSegmentId == 0) return;
+            if (_selectedSegmentId != 0)
+            {
+                NetTool.RenderOverlay(cameraInfo, ref Singleton<NetManager>.instance.m_segments.m_buffer[_selectedSegmentId], GetToolColor(true, false), GetToolColor(true, false));
+            }
 
-            NetTool.RenderOverlay(cameraInfo, ref Singleton<NetManager>.instance.m_segments.m_buffer[_selectedSegmentId], GetToolColor(true, false), GetToolColor(true, false));
+            NodeRoutesOverlay.instance.Render(cameraInfo);
         }
     }
 }
