@@ -1,15 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Transit.Addon.TM.PathFindingFeatures;
+using Transit.Framework;
+using Transit.Framework.UI.Ingame;
 using UnityEngine;
 
 namespace Transit.Addon.TM.Tools.LaneRoutingEditor.Markers
 {
-    public class NodeRoutesMarker
+    public class NodeRoutesMarker : UIMarker
     {
         public ushort NodeId { get; private set; }
         public Vector3 Position { get; set; }
-        public ICollection<LaneAnchorMarker> Anchors { get; private set; }
+        public IEnumerable<LaneAnchorMarker> Anchors { get; private set; }
 
         public NodeRoutesMarker(ushort nodeId)
         {
@@ -27,18 +29,17 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor.Markers
             var segmentId = node.m_segment0;
             for (int i = 0; i < 8 && segmentId != 0; i++)
             {
-                NetSegment segment = NetManager.instance.m_segments.m_buffer[segmentId];
-                bool isEndNode = segment.m_endNode == nodeId;
-                Vector3 offset = segment.FindDirection(segmentId, nodeId) * offsetMultiplier;
-                NetInfo.Lane[] lanes = segment.Info.m_lanes;
-                uint laneId = segment.m_lanes;
+                var segment = NetManager.instance.m_segments.m_buffer[segmentId];
+                var isEndNode = segment.m_endNode == nodeId;
+                var offset = segment.FindDirection(segmentId, nodeId) * offsetMultiplier;
+                var lanes = segment.Info.m_lanes;
+                var laneId = segment.m_lanes;
                 for (int j = 0; j < lanes.Length && laneId != 0; j++)
                 {
-                    //if ((lanes[j].m_laneType & (NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle)) != NetInfo.LaneType.None)
                     if ((lanes[j].m_laneType & NetInfo.LaneType.Vehicle) == NetInfo.LaneType.Vehicle)
                     {
-                        Vector3 pos = Vector3.zero;
-                        NetInfo.Direction laneDir = ((segment.m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None) ? lanes[j].m_finalDirection : NetInfo.InvertDirection(lanes[j].m_finalDirection);
+                        var pos = Vector3.zero;
+                        var laneDir = ((segment.m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None) ? lanes[j].m_finalDirection : NetInfo.InvertDirection(lanes[j].m_finalDirection);
 
                         bool isSource = false;
                         if (isEndNode)
@@ -81,6 +82,56 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor.Markers
             }
 
             return anchors;
+        }
+
+        public void EnableDestinationAnchors(LaneAnchorMarker origin)
+        {
+            foreach (var otherAnchor in Anchors.Except(origin))
+            {
+                otherAnchor.SetEnable(!otherAnchor.IsOrigin && otherAnchor.SegmentId != origin.SegmentId);
+            }
+        }
+
+        public void EnableOriginAnchors()
+        {
+            foreach (var anchor in Anchors)
+            {
+                anchor.SetEnable(anchor.IsOrigin);
+            }
+        }
+
+        public void DisableAnchors()
+        {
+            foreach (var anchor in Anchors)
+            {
+                anchor.Disable();
+            }
+        }
+
+        public void ToggleRoute(LaneAnchorMarker originAnchor, LaneAnchorMarker destinationAnchor)
+        {
+            if (TAMLaneRoutingManager.instance.RemoveLaneConnection(originAnchor.LaneId, destinationAnchor.LaneId))
+            {
+                originAnchor.Connections.Remove(destinationAnchor);
+            }
+            else if (TAMLaneRoutingManager.instance.AddLaneConnection(originAnchor.LaneId, destinationAnchor.LaneId))
+            {
+                originAnchor.Connections.Add(destinationAnchor);
+            }
+        }
+
+        protected override void OnSelected()
+        {
+            EnableOriginAnchors();
+        }
+
+        protected override void OnUnselected()
+        {
+            DisableAnchors();
+        }
+
+        protected override void OnRendered(RenderManager.CameraInfo camera)
+        {
         }
 
         public override int GetHashCode()

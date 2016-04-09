@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Transit.Addon.TM.PathFindingFeatures;
 using Transit.Addon.TM.Tools.LaneRoutingEditor.Markers;
-using Transit.Framework;
 using Transit.Framework.UI;
 using UnityEngine;
 
@@ -72,20 +71,23 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor
                     return;
                 }
 
-                if (_hoveredAnchor != null && 
-                    _hoveredAnchor != _selectedAnchor)
+                if (_selectedNode != null)
                 {
-                    if (_hoveredAnchor.IsOrigin)
+                    if (_hoveredAnchor != null && 
+                        _hoveredAnchor != _selectedAnchor)
                     {
-                        SelectAnchor(_hoveredAnchor);
-                        return;
-                    }
-                    else
-                    {
-                        if (_selectedAnchor != null)
+                        if (_hoveredAnchor.IsOrigin)
                         {
-                            ToggleRoute(_selectedAnchor, _hoveredAnchor);
+                            SelectAnchor(_hoveredAnchor);
                             return;
+                        }
+                        else
+                        {
+                            if (_selectedAnchor != null)
+                            {
+                                _selectedNode.ToggleRoute(_selectedAnchor, _hoveredAnchor);
+                                return;
+                            }
                         }
                     }
                 }
@@ -95,13 +97,13 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor
             {
                 if (_selectedAnchor != null)
                 {
-                    UnselectAnchor(_selectedAnchor);
+                    UnselectCurrentAnchor();
                     return;
                 }
 
                 if (_selectedNode != null)
                 {
-                    UnselectNode(_selectedNode);
+                    UnselectCurrentNode();
                     return;
                 }
             }
@@ -111,7 +113,7 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor
         {
             if (_selectedNode != null)
             {
-                UnselectNode(_selectedNode);
+                UnselectCurrentNode();
             }
 
             if (!_editedNodes.ContainsKey(nodeId))
@@ -124,61 +126,46 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor
 
         private void SelectNode(NodeRoutesMarker node)
         {
-            foreach (var anchor in node.Anchors)
-            {
-                anchor.SetEnable(anchor.IsOrigin);
-            }
-
             _selectedNode = node;
+            _selectedNode.Select();
         }
 
-        private void UnselectNode(NodeRoutesMarker node)
+        private void UnselectCurrentNode()
         {
-            foreach (var anchor in node.Anchors)
+            if (_selectedNode != null)
             {
-                anchor.Disable();
+                _selectedNode.Unselect();
+                _selectedNode = null;
             }
-
-            _selectedNode = null;
         }
 
         private void SelectAnchor(LaneAnchorMarker anchor)
         {
             if (_selectedAnchor != null)
             {
-                UnselectAnchor(_selectedAnchor);
+                UnselectCurrentAnchor();
             }
 
-            foreach (var otherAnchor in _selectedNode.Anchors.Except(anchor))
+            if (_selectedNode != null)
             {
-                otherAnchor.SetEnable(!otherAnchor.IsOrigin && otherAnchor.SegmentId != anchor.SegmentId);
+                _selectedNode.EnableDestinationAnchors(anchor);
             }
 
             _selectedAnchor = anchor;
             _selectedAnchor.Select();
         }
 
-        private void UnselectAnchor(LaneAnchorMarker anchor)
+        private void UnselectCurrentAnchor()
         {
-            anchor.Unselect();
-
-            foreach (var otherAnchor in _selectedNode.Anchors)
+            if (_selectedAnchor != null)
             {
-                otherAnchor.SetEnable(otherAnchor.IsOrigin);
-            }
+                _selectedAnchor.Unselect();
+                _selectedAnchor = null;
 
-            _selectedAnchor = null;
-        }
-
-        private void ToggleRoute(LaneAnchorMarker originAnchor, LaneAnchorMarker destinationAnchor)
-        {
-            if (TAMLaneRoutingManager.instance.RemoveLaneConnection(originAnchor.LaneId, destinationAnchor.LaneId))
-            {
-                originAnchor.Connections.Remove(destinationAnchor);
-            }
-            else if (TAMLaneRoutingManager.instance.AddLaneConnection(originAnchor.LaneId, destinationAnchor.LaneId))
-            {
-                originAnchor.Connections.Add(destinationAnchor);
+                if (_selectedNode != null)
+                {
+                    _selectedNode.EnableOriginAnchors();
+                }
             }
         }
 
@@ -252,19 +239,31 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor
         {
             base.OnEnable();
 
-            _hoveredNodeId = null;
-            _selectedNode = null;
-            _selectedAnchor = null;
+            Reset();
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
 
+            Reset();
+        }
+
+        private void Reset()
+        {
+            _hoveredNodeId = null;
+            _hoveredAnchor = null;
+
             if (_selectedAnchor != null)
             {
                 _selectedAnchor.Unselect();
                 _selectedAnchor = null;
+            }
+
+            if (_selectedNode != null)
+            {
+                _selectedNode.Unselect();
+                _selectedNode = null;
             }
         }
     }
