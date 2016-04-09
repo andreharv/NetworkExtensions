@@ -137,6 +137,7 @@ namespace Transit.Framework.UI.Ingame
         protected virtual void OnUnselected() { }
 
         /// <summary>
+        /// Returns true if left click has been handled
         /// </summary>
         public bool LeftClick()
         {
@@ -151,6 +152,7 @@ namespace Transit.Framework.UI.Ingame
         protected virtual bool OnLeftClick() { return false; }
 
         /// <summary>
+        /// Returns true if right click has been handled
         /// </summary>
         public bool RightClick()
         {

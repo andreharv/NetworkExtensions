@@ -5,7 +5,7 @@ using Transit.Framework;
 using Transit.Framework.UI.Ingame;
 using UnityEngine;
 
-namespace Transit.Addon.TM.Tools.LaneRoutingEditor.Markers
+namespace Transit.Addon.TM.Overlays.LaneRouting.Markers
 {
     public class NodeRoutesMarker : UIMarker
     {
@@ -141,10 +141,12 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor.Markers
         {
             if (TAMLaneRoutingManager.instance.RemoveLaneConnection(originAnchor.LaneId, destinationAnchor.LaneId))
             {
+                Log.Info(">>>>>> Removing route from {0} to {1}", originAnchor.LaneId, destinationAnchor.LaneId);
                 originAnchor.Connections.Remove(destinationAnchor);
             }
             else if (TAMLaneRoutingManager.instance.AddLaneConnection(originAnchor.LaneId, destinationAnchor.LaneId))
             {
+                Log.Info(">>>>>> Adding route from {0} to {1}", originAnchor.LaneId, destinationAnchor.LaneId);
                 originAnchor.Connections.Add(destinationAnchor);
             }
         }
@@ -186,6 +188,7 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor.Markers
 
             if (_selectedAnchor != null)
             {
+                Log.Info(">>>>>> UnselectingCurrentAnchor");
                 UnselectCurrentAnchor();
                 return true;
             }

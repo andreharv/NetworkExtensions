@@ -82,6 +82,7 @@
     <Compile Include="Data\_Extensions\TPPLaneDataExtensions.cs" />
     <Compile Include="Data\_Extensions\TPPVehicleTypeExtensions.cs" />
     <Compile Include="Options.cs" />
+    <Compile Include="Overlays\LaneRouting\NodeRoutesOverlay.cs" />
     <Compile Include="PathFindingFeatures\TAMLaneRoutingManager.LaneArrows.cs" />
     <Compile Include="PathFindingFeatures\TAMLaneRoutingManager.Directions.cs" />
     <Compile Include="PathFindingFeatures\TAMRestrictionManager.cs" />
@@ -113,8 +114,8 @@
     <Compile Include="Data\TMConfigurationV2.cs" />
     <Compile Include="Data\Flags.cs" />
     <Compile Include="Tools\LaneRestriction\LaneRestrictionTool.cs" />
-    <Compile Include="Tools\LaneRoutingEditor\Markers\LaneAnchorMarker.cs" />
-    <Compile Include="Tools\LaneRoutingEditor\Markers\NodeRoutesMarker.cs" />
+    <Compile Include="Overlays\LaneRouting\Markers\LaneAnchorMarker.cs" />
+    <Compile Include="Overlays\LaneRouting\Markers\NodeRoutesMarker.cs" />
     <Compile Include="Traffic\VehicleRestrictionsManager.cs" />
     <Compile Include="UI\TexturesV2.cs" />
     <Compile Include="UI\TMOptionsUI.cs" />

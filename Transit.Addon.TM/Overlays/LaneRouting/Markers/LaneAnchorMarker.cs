@@ -1,7 +1,7 @@
 ﻿using Transit.Framework.UI.Ingame;
 using UnityEngine;
 
-namespace Transit.Addon.TM.Tools.LaneRoutingEditor.Markers
+namespace Transit.Addon.TM.Overlays.LaneRouting.Markers
 {
     public class LaneAnchorMarker : UIMarker
     {

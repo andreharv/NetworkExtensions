@@ -68,6 +68,11 @@ namespace Transit.Framework
             }
         }
 
+        public static void Info(string s, params object[] args)
+        {
+            Info(string.Format(s, args));
+        }
+
         public static void Error(string s)
         {
             try

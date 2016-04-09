@@ -63,6 +63,7 @@
     <Compile Include="Extensibility.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Mod\TransitModBase.Install.Menus.cs" />
+    <Compile Include="UI\InputEvent.cs" />
     <Compile Include="UI\MenuManager.Tools.cs" />
     <Compile Include="UI\MenuManager.Localization.cs" />
     <Compile Include="Modularity\ModuleBase.Install.cs" />
