@@ -267,7 +267,7 @@ namespace TrafficManager.UI {
 			}
 		}
 
-		protected override void OnToolGUI() {
+		protected void OnToolGUI() {
 			Log._Debug($"OnToolGUI");
 
 			try {

@@ -15,7 +15,7 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.Subway
         public int Order { get { return 7; } }
         public int UIOrder { get { return 9; } }
 
-        public string BasedPrefabName { get { return "Train Track"; } }
+        public string BasedPrefabName { get { return NetInfos.Vanilla.TRAINTRACK; } }
         public string Name { get { return "SubwayPlus"; } }
         public string DisplayName { get { return "Metro"; } }
         public string Description { get { return "A rapid transit solution offering above and underground urban transportation solutions."; } }
@@ -36,7 +36,9 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.Subway
             // Template              //
             ///////////////////////////
             //var highwayInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L_SLOPE);
-            var railInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.TRAINTRACK);
+            var railVersionName = string.Format("{0} {1}", NetInfos.Vanilla.TRAINTRACK, (version == NetInfoVersion.Ground ? string.Empty : version.ToString())).Trim();
+            var railInfo = Prefabs.Find<NetInfo>(railVersionName);
+            Framework.Debug.Log("this is " + railVersionName);
             //var owRoadTunnelInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ONEWAY_2L_TUNNEL);
 
             ///////////////////////////
@@ -54,7 +56,16 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.Subway
             ///////////////////////////
             info.m_hasParkingSpaces = false;
             //info.m_class = roadInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL3L_ROAD);
-            info.m_halfWidth = 3;//(version != NetInfoVersion.Slope && version != NetInfoVersion.Tunnel ? 8 : 11);
+            if (version == NetInfoVersion.Slope || version == NetInfoVersion.Tunnel)
+            {
+                info.m_halfWidth = 4;
+                info.m_pavementWidth = 2;
+            }
+            else
+            {
+                info.m_halfWidth = 3;
+            }
+            
             if (version == NetInfoVersion.Tunnel)
             {
                 info.m_setVehicleFlags = Vehicle.Flags.Transition;
@@ -89,7 +100,14 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.Subway
             //info.m_nodes[1].m_connectGroup = (NetInfo.ConnectGroup)9; 
             railInfo.m_connectGroup = NetInfo.ConnectGroup.NarrowTram;
             railInfo.m_nodeConnectGroups = NetInfo.ConnectGroup.NarrowTram;
-            railInfo.m_nodes[1].m_connectGroup = NetInfo.ConnectGroup.NarrowTram;
+            if (railInfo.m_nodes.Length > 1)
+            {
+                railInfo.m_nodes[1].m_connectGroup = NetInfo.ConnectGroup.NarrowTram;
+            }
+            else
+            {
+                Framework.Debug.Log(version + " skipped!");
+            }
             info.m_class = railInfo.m_class.Clone("NExtSingleTrack");
             var owPlayerNetAI = railInfo.GetComponent<PlayerNetAI>();
             var playerNetAI = info.GetComponent<PlayerNetAI>();
@@ -114,6 +132,7 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.Subway
             {
                 plPropInfo = PrefabCollection<PropInfo>.FindLoaded("478820060.Rail1LPowerLine_Data");
             }
+
             var oldPlPropInfo = Prefabs.Find<PropInfo>("RailwayPowerline");
             info.ReplaceProps(plPropInfo, oldPlPropInfo);
             for (int i = 0; i < info.m_lanes.Count(); i++)
@@ -123,6 +142,28 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.Subway
                 {
                     powerLineProp[j].m_position = new Vector3(2.4f, -0.15f, 0);
                     powerLineProp[j].m_angle = 180;
+                }
+            }
+
+            if (version == NetInfoVersion.Elevated)
+            {
+                var epPropInfo = PrefabCollection<BuildingInfo>.FindLoaded("478820060.Rail1LElevatedPillar_Data");
+
+                if (epPropInfo == null)
+                {
+                    epPropInfo = PrefabCollection<BuildingInfo>.FindLoaded("Rail1LElevatedPillar.Rail1LElevatedPillar_Data");
+                }
+
+                if (epPropInfo != null)
+                {
+                    var bridgeAI = info.GetComponent<TrainTrackBridgeAI>();
+                    if (bridgeAI != null)
+                    {
+                        bridgeAI.m_doubleLength = false;
+                        bridgeAI.m_bridgePillarInfo = epPropInfo;
+                        bridgeAI.m_bridgePillarOffset = 1;
+                        bridgeAI.m_middlePillarInfo = null;
+                    }
                 }
             }
         }

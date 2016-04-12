@@ -36,7 +36,7 @@ namespace Transit.Framework.Network
 
             public const string PED_GRAVEL = ROAD_2L_GRAVEL; // Quick fix for the Pedestian zonable roads
             public const string PED_PAVEMENT = "Pedestrian Pavement";
-            
+            public const string PED_PAVEMENT_SLOPE = "Pedestrian Slope";
             public const string TRAINTRACK = "Train Track";
 
             public static string GetPrefabName(string groundName, NetInfoVersion version)
@@ -125,13 +125,19 @@ namespace Transit.Framework.Network
                             default:
                                 throw new NotImplementedException();
                         }
+
                     case TRAINTRACK:
                         switch (version)
                         {
                             case NetInfoVersion.Ground:
                                 return groundName;
-                            default:
+                            case NetInfoVersion.Elevated:
+                            case NetInfoVersion.Bridge:
+                            case NetInfoVersion.Slope:
+                            case NetInfoVersion.Tunnel:
                                 return groundName + " " + version;
+                            default:
+                                throw new NotImplementedException();
                         }
                     default:
                         throw new NotImplementedException();
