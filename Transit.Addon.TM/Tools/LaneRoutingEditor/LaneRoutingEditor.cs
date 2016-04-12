@@ -69,56 +69,58 @@ namespace Transit.Addon.TM.Tools.LaneRoutingEditor
 
         private void HandleMouseClicks(InputEvent inputEvent)
         {
-            if (inputEvent.MouseKeyCode != null)
+            if (inputEvent.MouseKeyCode == null)
             {
-                // Left clicks
-                if (inputEvent.MouseKeyCode == MouseKeyCode.LeftButton)
+                return;
+            }
+
+            // Left clicks
+            if (inputEvent.MouseKeyCode == MouseKeyCode.LeftButton)
+            {
+                if (_hoveredNodeId != null && 
+                    _hoveredNodeId != _editedNodeId)
                 {
-                    if (_hoveredNodeId != null && 
-                        _hoveredNodeId != _editedNodeId)
-                    {
-                        if (_editedNodeId != null)
-                        {
-                            _overlay.UnselectMarker(_editedNodeId.Value);
-                            _editedNodeId = null;
-                        }
-
-                        _overlay.SelectMarker(_hoveredNodeId.Value);
-                        _editedNodeId = _hoveredNodeId;
-                        return;
-                    }
-
                     if (_editedNodeId != null)
                     {
-                        var marker = _overlay.GetMarker(_editedNodeId.Value);
-                        if (marker != null)
+                        _overlay.UnselectMarker(_editedNodeId.Value);
+                        _editedNodeId = null;
+                    }
+
+                    _overlay.SelectMarker(_hoveredNodeId.Value);
+                    _editedNodeId = _hoveredNodeId;
+                    return;
+                }
+
+                if (_editedNodeId != null)
+                {
+                    var marker = _overlay.GetMarker(_editedNodeId.Value);
+                    if (marker != null)
+                    {
+                        if (marker.LeftClick())
                         {
-                            if (marker.LeftClick())
-                            {
-                                return;
-                            }
+                            return;
                         }
                     }
                 }
+            }
 
 
-                // Right clicks
-                if (inputEvent.MouseKeyCode == MouseKeyCode.RightButton)
+            // Right clicks
+            if (inputEvent.MouseKeyCode == MouseKeyCode.RightButton)
+            {
+                if (_editedNodeId != null)
                 {
-                    if (_editedNodeId != null)
+                    var marker = _overlay.GetMarker(_editedNodeId.Value);
+                    if (marker != null)
                     {
-                        var marker = _overlay.GetMarker(_editedNodeId.Value);
-                        if (marker != null)
+                        if (marker.RightClick())
                         {
-                            if (marker.RightClick())
-                            {
-                                return; // Handled by marker
-                            }
-                            else
-                            {
-                                StopEdit();
-                                return;
-                            }
+                            return; // Handled by marker
+                        }
+                        else
+                        {
+                            StopEdit();
+                            return;
                         }
                     }
                 }

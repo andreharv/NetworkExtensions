@@ -36,7 +36,7 @@ namespace Transit.Addon.TM.Tools.LaneDirectionEditor
 
         private void DrawEditPanel()
         {
-            _cursorInSecondaryPanel = false;
+            _cursorIsInEditPanel = false;
 
             if (_selectedNodeId == 0 || _selectedSegmentId == 0) return;
             
@@ -76,7 +76,7 @@ namespace Transit.Addon.TM.Tools.LaneDirectionEditor
             int width = Math.Max(3 * 128 + 20, numLanes * 128);
             var windowRect3 = new Rect(screenPos.x - width / 2, screenPos.y - 70, width, 130);
             GUILayout.Window(250, windowRect3, DrawEditPanelInternal, "", style);
-            _cursorInSecondaryPanel = windowRect3.Contains(Event.current.mousePosition);
+            _cursorIsInEditPanel = windowRect3.Contains(Event.current.mousePosition);
         }
 
         private void DrawEditPanelInternal(int num)
