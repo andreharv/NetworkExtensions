@@ -36,11 +36,14 @@ namespace Transit.Addon.TM.Tools.LaneDirectionEditor
 
         private void DrawEditPanel()
         {
-            _cursorIsInEditPanel = false;
+            _isCursorInEditPanel = false;
 
-            if (_selectedNodeId == 0 || _selectedSegmentId == 0) return;
+            if (_selectedNodeId == null || _selectedSegmentId == null)
+            {
+                return;
+            }
             
-            var numLanes = NetManager.instance.GetInboundLanesAtNode(_selectedSegmentId, _selectedNodeId).Count();
+            var numLanes = NetManager.instance.GetInboundLanesAtNode(_selectedSegmentId.Value, _selectedNodeId.Value).Count();
             if (numLanes <= 0)
             {
                 _selectedNodeId = 0;
@@ -61,7 +64,7 @@ namespace Transit.Addon.TM.Tools.LaneDirectionEditor
                 }
             };
 
-            Vector3 nodePos = Singleton<NetManager>.instance.m_nodes.m_buffer[_selectedNodeId].m_position;
+            Vector3 nodePos = Singleton<NetManager>.instance.m_nodes.m_buffer[_selectedNodeId.Value].m_position;
             var screenPos = Camera.main.WorldToScreenPoint(nodePos);
             screenPos.y = Screen.height - screenPos.y;
             //Log._Debug($"node pos of {SelectedNodeId}: {nodePos.ToString()} {screenPos.ToString()}");
@@ -76,21 +79,27 @@ namespace Transit.Addon.TM.Tools.LaneDirectionEditor
             int width = Math.Max(3 * 128 + 20, numLanes * 128);
             var windowRect3 = new Rect(screenPos.x - width / 2, screenPos.y - 70, width, 130);
             GUILayout.Window(250, windowRect3, DrawEditPanelInternal, "", style);
-            _cursorIsInEditPanel = windowRect3.Contains(Event.current.mousePosition);
+            _isCursorInEditPanel = windowRect3.Contains(Event.current.mousePosition);
         }
 
         private void DrawEditPanelInternal(int num)
         {
-            var info = Singleton<NetManager>.instance.m_segments.m_buffer[_selectedSegmentId].Info;
+            if (_selectedNodeId == null || _selectedSegmentId == null)
+            {
+                return;
+            }
 
-            var laneList = TrafficManagerTool.GetSortedVehicleLanes(_selectedSegmentId, info, _selectedNodeId);
-            var geometry = CustomRoadAI.GetSegmentGeometry(_selectedSegmentId);
+            var inboundLaneIds = Singleton<NetManager>.instance
+                .GetInboundLaneIdsAtNode(_selectedSegmentId.Value,  _selectedNodeId.Value)
+                .ToArray();
+            var geometry = CustomRoadAI.GetSegmentGeometry(_selectedSegmentId.Value);
 
             GUILayout.BeginHorizontal();
 
-            for (var i = 0; i < laneList.Count; i++)
+            for (var i = 0; i < inboundLaneIds.Length; i++)
             {
-                var flags = (NetLane.Flags)Singleton<NetManager>.instance.m_lanes.m_buffer[(uint)laneList[i][0]].m_flags;
+                var laneId = inboundLaneIds[i];
+                var flags = (NetLane.Flags)Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags;
 
                 var style1 = new GUIStyle("button");
                 var style2 = new GUIStyle("button")
@@ -117,18 +126,18 @@ namespace Transit.Addon.TM.Tools.LaneDirectionEditor
                 //}
                 if (GUILayout.Button("←", ((flags & NetLane.Flags.Left) == NetLane.Flags.Left ? style1 : style2), GUILayout.Width(35), GUILayout.Height(25)))
                 {
-                    if (!TAMLaneRoutingManager.instance.ToggleLaneDirection((uint)laneList[i][0], TAMLaneDirection.Left) && _selectedNodeId > 0)
-                        ShowTooltip(Translation.GetString("Lane_Arrow_Changer_Disabled"), Singleton<NetManager>.instance.m_nodes.m_buffer[_selectedNodeId].m_position);
+                    if (!TAMLaneRoutingManager.instance.ToggleLaneDirection(laneId, TAMLaneDirection.Left) && _selectedNodeId > 0)
+                        ShowTooltip(Translation.GetString("Lane_Arrow_Changer_Disabled"), Singleton<NetManager>.instance.m_nodes.m_buffer[_selectedNodeId.Value].m_position);
                 }
                 if (GUILayout.Button("↑", ((flags & NetLane.Flags.Forward) == NetLane.Flags.Forward ? style1 : style2), GUILayout.Width(25), GUILayout.Height(35)))
                 {
-                    if (!TAMLaneRoutingManager.instance.ToggleLaneDirection((uint)laneList[i][0], TAMLaneDirection.Forward) && _selectedNodeId > 0)
-                        ShowTooltip(Translation.GetString("Lane_Arrow_Changer_Disabled"), Singleton<NetManager>.instance.m_nodes.m_buffer[_selectedNodeId].m_position);
+                    if (!TAMLaneRoutingManager.instance.ToggleLaneDirection(laneId, TAMLaneDirection.Forward) && _selectedNodeId > 0)
+                        ShowTooltip(Translation.GetString("Lane_Arrow_Changer_Disabled"), Singleton<NetManager>.instance.m_nodes.m_buffer[_selectedNodeId.Value].m_position);
                 }
                 if (GUILayout.Button("→", ((flags & NetLane.Flags.Right) == NetLane.Flags.Right ? style1 : style2), GUILayout.Width(35), GUILayout.Height(25)))
                 {
-                    if (!TAMLaneRoutingManager.instance.ToggleLaneDirection((uint)laneList[i][0], TAMLaneDirection.Right) && _selectedNodeId > 0)
-                        ShowTooltip(Translation.GetString("Lane_Arrow_Changer_Disabled"), Singleton<NetManager>.instance.m_nodes.m_buffer[_selectedNodeId].m_position);
+                    if (!TAMLaneRoutingManager.instance.ToggleLaneDirection(laneId, TAMLaneDirection.Right) && _selectedNodeId > 0)
+                        ShowTooltip(Translation.GetString("Lane_Arrow_Changer_Disabled"), Singleton<NetManager>.instance.m_nodes.m_buffer[_selectedNodeId.Value].m_position);
                 }
                 GUILayout.EndHorizontal();
                 GUILayout.EndVertical();
@@ -139,19 +148,19 @@ namespace Transit.Addon.TM.Tools.LaneDirectionEditor
 
             GUILayout.BeginVertical();
 
-            bool startNode = Singleton<NetManager>.instance.m_segments.m_buffer[_selectedSegmentId].m_startNode == _selectedNodeId;
+            bool startNode = Singleton<NetManager>.instance.m_segments.m_buffer[_selectedSegmentId.Value].m_startNode == _selectedNodeId;
 
             if (!geometry.AreHighwayRulesEnabled(startNode))
             {
                 if (!geometry.IsOneWay())
                 {
-                    Flags.setUTurnAllowed(_selectedSegmentId, startNode, GUILayout.Toggle(Flags.getUTurnAllowed(_selectedSegmentId, startNode), Translation.GetString("Allow_u-turns") + " (BETA feature)", new GUILayoutOption[] { }));
+                    Flags.setUTurnAllowed(_selectedSegmentId.Value, startNode, GUILayout.Toggle(Flags.getUTurnAllowed(_selectedSegmentId.Value, startNode), Translation.GetString("Allow_u-turns") + " (BETA feature)", new GUILayoutOption[] { }));
                 }
-                if (geometry.HasOutgoingStraightSegment(_selectedNodeId))
+                if (geometry.HasOutgoingStraightSegment(_selectedNodeId.Value))
                 {
-                    Flags.setStraightLaneChangingAllowed(_selectedSegmentId, startNode, GUILayout.Toggle(Flags.getStraightLaneChangingAllowed(_selectedSegmentId, startNode), Translation.GetString("Allow_lane_changing_for_vehicles_going_straight"), new GUILayoutOption[] { }));
+                    Flags.setStraightLaneChangingAllowed(_selectedSegmentId.Value, startNode, GUILayout.Toggle(Flags.getStraightLaneChangingAllowed(_selectedSegmentId.Value, startNode), Translation.GetString("Allow_lane_changing_for_vehicles_going_straight"), new GUILayoutOption[] { }));
                 }
-                Flags.setEnterWhenBlockedAllowed(_selectedSegmentId, startNode, GUILayout.Toggle(Flags.getEnterWhenBlockedAllowed(_selectedSegmentId, startNode), Translation.GetString("Allow_vehicles_to_enter_a_blocked_junction"), new GUILayoutOption[] { }));
+                Flags.setEnterWhenBlockedAllowed(_selectedSegmentId.Value, startNode, GUILayout.Toggle(Flags.getEnterWhenBlockedAllowed(_selectedSegmentId.Value, startNode), Translation.GetString("Allow_vehicles_to_enter_a_blocked_junction"), new GUILayoutOption[] { }));
             }
 
             GUILayout.EndVertical();

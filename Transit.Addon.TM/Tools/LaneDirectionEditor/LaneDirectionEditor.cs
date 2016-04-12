@@ -13,13 +13,13 @@ namespace Transit.Addon.TM.Tools.LaneDirectionEditor
         private readonly NodeRoutesOverlay _overlay;
         private readonly Texture2D _secondPanelTexture;
 
-        private bool _cursorIsInEditPanel;
+        private bool _isCursorInEditPanel;
 
-        private ushort _hoveredNodeId;
-        private ushort _hoveredSegmentId;
+        private ushort? _hoveredNodeId;
+        private ushort? _hoveredSegmentId;
 
-        private ushort _selectedNodeId;
-        private ushort _selectedSegmentId;
+        private ushort? _selectedNodeId;
+        private ushort? _selectedSegmentId;
 
         public LaneDirectionEditor()
         {
@@ -64,9 +64,9 @@ namespace Transit.Addon.TM.Tools.LaneDirectionEditor
 
         private void HandleMouseMoves(InputEvent inputEvent)
         {
-            var mouseRayValid = !UIView.IsInsideUI() && Cursor.visible && !_cursorIsInEditPanel;
-            _hoveredSegmentId = 0;
-            _hoveredNodeId = 0;
+            var mouseRayValid = !UIView.IsInsideUI() && Cursor.visible && !_isCursorInEditPanel;
+            _hoveredSegmentId = null;
+            _hoveredNodeId = null;
 
             if (!mouseRayValid)
             {
@@ -104,14 +104,24 @@ namespace Transit.Addon.TM.Tools.LaneDirectionEditor
             {
                 _hoveredSegmentId = segmentOutput.m_netSegment;
 
-                if (_hoveredNodeId <= 0)
+                if (_hoveredSegmentId == 0)
                 {
-                    // alternative way to get a node hit: check distance to start and end nodes of the segment
-                    ushort startNodeId = Singleton<NetManager>.instance.m_segments.m_buffer[_hoveredSegmentId].m_startNode;
-                    ushort endNodeId = Singleton<NetManager>.instance.m_segments.m_buffer[_hoveredSegmentId].m_endNode;
+                    _hoveredSegmentId = null;
+                }
 
-                    float startDist = (segmentOutput.m_hitPos - Singleton<NetManager>.instance.m_nodes.m_buffer[startNodeId].m_position).magnitude;
-                    float endDist = (segmentOutput.m_hitPos - Singleton<NetManager>.instance.m_nodes.m_buffer[endNodeId].m_position).magnitude;
+                if (_hoveredSegmentId != null)
+                {
+                    var hoveredSegment = Singleton<NetManager>.instance.m_segments.m_buffer[_hoveredSegmentId.Value];
+
+                    // alternative way to get a node hit: check distance to start and end nodes of the segment
+                    var startNodeId = hoveredSegment.m_startNode;
+                    var startNode = Singleton<NetManager>.instance.m_nodes.m_buffer[startNodeId];
+                    var endNodeId = hoveredSegment.m_endNode;
+                    var endNode = Singleton<NetManager>.instance.m_nodes.m_buffer[endNodeId];
+
+                    var startDist = (segmentOutput.m_hitPos - startNode.m_position).magnitude;
+                    var endDist = (segmentOutput.m_hitPos - endNode.m_position).magnitude;
+
                     if (startDist < endDist && startDist < 25f)
                         _hoveredNodeId = startNodeId;
                     else if (endDist < startDist && endDist < 25f)
@@ -130,14 +140,15 @@ namespace Transit.Addon.TM.Tools.LaneDirectionEditor
             // Left clicks
             if (inputEvent.MouseKeyCode == MouseKeyCode.LeftButton)
             {
-                if (_hoveredNodeId == 0 || _hoveredSegmentId == 0) return;
+                if (_hoveredNodeId == null || _hoveredSegmentId == null) return;
 
-                var netFlags = Singleton<NetManager>.instance.m_nodes.m_buffer[_hoveredNodeId].m_flags;
+                var hoveredNode = Singleton<NetManager>.instance.m_nodes.m_buffer[_hoveredNodeId.Value];
+                var hoveredSegment = Singleton<NetManager>.instance.m_segments.m_buffer[_hoveredSegmentId.Value];
 
-                if ((netFlags & NetNode.Flags.Junction) == NetNode.Flags.None) return;
+                if ((hoveredNode.m_flags & NetNode.Flags.Junction) == NetNode.Flags.None) return;
 
-                if (Singleton<NetManager>.instance.m_segments.m_buffer[_hoveredSegmentId].m_startNode != _hoveredNodeId &&
-                    Singleton<NetManager>.instance.m_segments.m_buffer[_hoveredSegmentId].m_endNode != _hoveredNodeId)
+                if (hoveredSegment.m_startNode != _hoveredNodeId &&
+                    hoveredSegment.m_endNode != _hoveredNodeId)
                     return;
 
                 _selectedSegmentId = _hoveredSegmentId;
@@ -148,8 +159,8 @@ namespace Transit.Addon.TM.Tools.LaneDirectionEditor
             // Right clicks
             if (inputEvent.MouseKeyCode == MouseKeyCode.RightButton)
             {
-                _selectedSegmentId = 0;
-                _selectedNodeId = 0;
+                _selectedSegmentId = null;
+                _selectedNodeId = null;
             }
         }
     }

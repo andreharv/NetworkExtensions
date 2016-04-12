@@ -229,8 +229,8 @@ namespace Transit.Framework
             var dir3 = isLeftHandDrive ? NetInfo.InvertDirection(dir2) : dir2;
 
             var laneIndex = 0;
-            var num2 = segment.m_lanes;
-            while (laneIndex < info.m_lanes.Length && num2 != 0u)
+            var laneId = segment.m_lanes;
+            while (laneIndex < info.m_lanes.Length && laneId != 0u)
             {
                 var laneInfo = info.m_lanes[laneIndex];
 
@@ -241,9 +241,51 @@ namespace Transit.Framework
                     yield return laneInfo;
                 }
 
-                num2 = netManager.m_lanes.m_buffer[(int)((UIntPtr)num2)].m_nextLane;
+                laneId = netManager.m_lanes.m_buffer[laneId].m_nextLane;
                 laneIndex++;
             }
+        }
+
+        public static IEnumerable<uint> GetInboundLaneIdsAtNode(this NetManager netManager, ushort segmentId, ushort nodeId)
+        { 
+            var segment = netManager.m_segments.m_buffer[segmentId];
+            var info = segment.Info;
+
+            var laneList = new List<object[]>();
+
+            var dir = nodeId == segment.m_startNode ? NetInfo.Direction.Backward : NetInfo.Direction.Forward;
+            var finalDirection = ((segment.m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None) ? dir : NetInfo.InvertDirection((NetInfo.Direction)dir);
+
+            var laneId = netManager.m_segments.m_buffer[segmentId].m_lanes;
+            var laneIndex = 0;
+            while (laneIndex < info.m_lanes.Length && laneId != 0u)
+            {
+                var laneInfo = info.m_lanes[laneIndex];
+
+                if ((laneInfo.m_laneType & (NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle)) != NetInfo.LaneType.None &&
+                    (laneInfo.m_vehicleType & (VehicleInfo.VehicleType.Car | VehicleInfo.VehicleType.Train)) != VehicleInfo.VehicleType.None &&
+                    (laneInfo.m_finalDirection == finalDirection))
+                {
+                    laneList.Add(new object[] { laneId, laneInfo.m_position, laneIndex });
+                }
+
+                laneId = netManager.m_lanes.m_buffer[laneId].m_nextLane;
+                laneIndex++;
+            }
+
+            // sort lanes from left to right
+            laneList.Sort(delegate (object[] x, object[] y) {
+                if ((float)x[1] == (float)y[1])
+                    return 0;
+
+                if ((finalDirection == NetInfo.Direction.Forward) ^ (float)x[1] < (float)y[1])
+                {
+                    return 1;
+                }
+                return -1;
+            });
+
+            return laneList.Select(lane => (uint)lane[0]);
         }
     }
 }
