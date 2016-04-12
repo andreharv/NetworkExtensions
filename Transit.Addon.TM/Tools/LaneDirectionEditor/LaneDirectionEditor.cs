@@ -43,18 +43,6 @@ namespace Transit.Addon.TM.Tools.LaneDirectionEditor
             _selectedNodeId = _hoveredNodeId;
         }
 
-        // Overridden to disable base class behavior
-        protected override void OnEnable()
-        {
-            NodeRoutesOverlay.instance.Enable();
-        }
-
-        // Overridden to disable base class behavior
-        protected override void OnDisable()
-        {
-            NodeRoutesOverlay.instance.Disable();
-        }
-
         public override void RenderGeometry(RenderManager.CameraInfo cameraInfo)
         {
             if (_hoveredNodeId != 0)

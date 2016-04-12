@@ -6,6 +6,7 @@ namespace Transit.Framework.UI
     {
         public KeyCode? KeyCode { get; set; }
         public MouseKeyCode? MouseKeyCode { get; set; }
+        public Ray MouseRay { get; set; }
 
         public static InputEvent None = new InputEvent();
     }
