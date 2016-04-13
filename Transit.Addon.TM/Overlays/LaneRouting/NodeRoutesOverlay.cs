@@ -53,14 +53,19 @@ namespace Transit.Addon.TM.Overlays.LaneRouting
             return null;
         }
 
-        public void SelectMarker(ushort nodeId)
+        public NodeRoutesMarker GetOrCreateMarker(ushort nodeId)
         {
             if (!_nodeMarkers.ContainsKey(nodeId))
             {
                 _nodeMarkers[nodeId] = new NodeRoutesMarker(nodeId);
             }
 
-            _selectedNodeMarker = _nodeMarkers[nodeId];
+            return _nodeMarkers[nodeId];
+        }
+
+        public void SelectMarker(ushort nodeId)
+        {
+            _selectedNodeMarker = GetOrCreateMarker(nodeId);
             _selectedNodeMarker.Select();
         }
 

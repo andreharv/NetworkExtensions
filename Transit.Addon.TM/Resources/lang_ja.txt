@@ -83,7 +83,6 @@ Create_group グループの作成
 Delete_group グループの削除
 Add_zoning 区間の追加
 Remove_zoning 区間の削除
-Lane_Arrow_Changer_Disabled 高速道路ルールシステムを適用しているため、この車線の矢印は変更できません
 Add_junction_to_timed_light この信号に交差点を追加
 Remove_junction_from_timed_light この信号から交差点を削除 
 Select_junction 交差点を選択してください 

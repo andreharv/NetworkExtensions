@@ -83,7 +83,6 @@ Create_group Créer un groupe
 Delete_group Supprimer un groupe
 Add_zoning Ajouter le zonage
 Remove_zoning Retirer le zonage
-Lane_Arrow_Changer_Disabled Le modificateur de directions pour cette voie est désactivé car vous avez activé le système de règles pour autoroutes.
 Add_junction_to_timed_light Ajouter une intersection à ce feu tricolore
 Remove_junction_from_timed_light Retirer une intersection de ce feu tricolore
 Select_junction Sélectionnez une intersection

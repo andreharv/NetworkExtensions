@@ -121,26 +121,21 @@ namespace Transit.Addon.TM.Tools.LaneDirectionEditor
                 GUILayout.Label(Translation.GetString("Lane") + " " + (i + 1), laneTitleStyle);
                 GUILayout.BeginVertical();
                 GUILayout.BeginHorizontal();
-                //if (!TAMLaneRoutingManager.instance.ApplyLaneDirection((uint)laneList[i][0])) {
-                //                TAMLaneRoutingManager.instance.RemoveLaneDirection((uint)laneList[i][0]);
-                //}
+            
                 if (GUILayout.Button("←", ((flags & NetLane.Flags.Left) == NetLane.Flags.Left ? style1 : style2), GUILayout.Width(35), GUILayout.Height(25)))
                 {
-                    if (!TAMLaneRoutingManager.instance.ToggleLaneDirection(laneId, TAMLaneDirection.Left) && _selectedNodeId > 0)
-                        ShowTooltip(Translation.GetString("Lane_Arrow_Changer_Disabled"), Singleton<NetManager>.instance.m_nodes.m_buffer[_selectedNodeId.Value].m_position);
+                    ToggleLaneDirection(_selectedNodeId.Value, laneId, NetLane.Flags.Left);
                 }
                 if (GUILayout.Button("↑", ((flags & NetLane.Flags.Forward) == NetLane.Flags.Forward ? style1 : style2), GUILayout.Width(25), GUILayout.Height(35)))
                 {
-                    if (!TAMLaneRoutingManager.instance.ToggleLaneDirection(laneId, TAMLaneDirection.Forward) && _selectedNodeId > 0)
-                        ShowTooltip(Translation.GetString("Lane_Arrow_Changer_Disabled"), Singleton<NetManager>.instance.m_nodes.m_buffer[_selectedNodeId.Value].m_position);
+                    ToggleLaneDirection(_selectedNodeId.Value, laneId, NetLane.Flags.Forward);
                 }
                 if (GUILayout.Button("→", ((flags & NetLane.Flags.Right) == NetLane.Flags.Right ? style1 : style2), GUILayout.Width(35), GUILayout.Height(25)))
                 {
-                    if (!TAMLaneRoutingManager.instance.ToggleLaneDirection(laneId, TAMLaneDirection.Right) && _selectedNodeId > 0)
-                        ShowTooltip(Translation.GetString("Lane_Arrow_Changer_Disabled"), Singleton<NetManager>.instance.m_nodes.m_buffer[_selectedNodeId.Value].m_position);
+                    ToggleLaneDirection(_selectedNodeId.Value, laneId, NetLane.Flags.Right);
                 }
+
                 GUILayout.EndHorizontal();
-                GUILayout.EndVertical();
                 GUILayout.EndVertical();
             }
 
@@ -164,6 +159,15 @@ namespace Transit.Addon.TM.Tools.LaneDirectionEditor
             }
 
             GUILayout.EndVertical();
+        }
+
+        private void ToggleLaneDirection(ushort nodeId, uint laneId, NetLane.Flags direction)
+        {
+            var marker = _overlay.GetOrCreateMarker(nodeId);
+
+            marker.ToggleRoute(laneId, direction);
+
+            //return TAMLaneRoutingManager.instance.ToggleLaneDirection(laneId, TAMLaneDirection.Left);
         }
 
         private void ShowTooltip(string text, Vector3 position)

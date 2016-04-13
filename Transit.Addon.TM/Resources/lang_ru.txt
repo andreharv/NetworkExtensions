@@ -83,7 +83,6 @@ Create_group Создать группу
 Delete_group Удалить группу
 Add_zoning Добавить зонирование
 Remove_zoning Удалить зонирование
-Lane_Arrow_Changer_Disabled Изменение движения для перекрестка отключено. По причине вашей активации правил на шоссе
 Add_junction_to_timed_light Соединить с данным светофором
 Remove_junction_from_timed_light Не соединять с данным светофором
 Select_junction Выбрать перекресток

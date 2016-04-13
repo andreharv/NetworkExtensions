@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Transit.Addon.TM.Overlays.LaneRouting.Markers
 {
+    // TODO: Pattern ViewModel of TAMLaneRoute ?
     public class LaneAnchorMarker : UIMarker
     {
         public uint LaneId { get; private set; }
@@ -11,7 +12,6 @@ namespace Transit.Addon.TM.Overlays.LaneRouting.Markers
         public Vector3 Position { get; private set; }
         public bool IsOrigin { get; private set; }
         public Color32 Color { get; private set; }
-        public FastList<LaneAnchorMarker> Connections { get; private set; }
 
         public LaneAnchorMarker(uint laneId, ushort segmentId, ushort nodeId, Vector3 position, bool isOrigin, int? colorId)
         {
@@ -20,7 +20,6 @@ namespace Transit.Addon.TM.Overlays.LaneRouting.Markers
             NodeId = nodeId;
             Position = position;
             IsOrigin = isOrigin;
-            Connections = new FastList<LaneAnchorMarker>();
 
             if (colorId != null)
             {

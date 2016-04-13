@@ -83,7 +83,6 @@ Create_group 创建组
 Delete_group 删除组
 Add_zoning 添加分区
 Remove_zoning 删除分区
-Lane_Arrow_Changer_Disabled 因为使用了高速道路规则系统，所以不能改变这条车道的箭头。
 Add_junction_to_timed_light 添加一个路口                  
 Remove_junction_from_timed_light 取消一个路口                       
 Select_junction 选择一个路口

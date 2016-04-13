@@ -83,7 +83,6 @@ Create_group Gruppe aanmaken
 Delete_group Gruppe verwijderen
 Add_zoning Zones activeren
 Remove_zoning Zones verwijderen
-Lane_Arrow_Changer_Disabled Het is niet mogelijk de voorrangspijlen op deze rijstroom te veranderen, omdat je de speciale regels voor snelwegen geactiveerd hebt.
 Add_junction_to_timed_light Kruising aan stoplicht toevoegen
 Remove_junction_from_timed_light Kruising van stoplicht verwijderen
 Select_junction Selecteer een kruising

@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Transit.Addon.TM.Data;
 using Transit.Addon.TM.PathFindingFeatures;
 using Transit.Framework;
 using Transit.Framework.UI.Ingame;
@@ -14,7 +16,9 @@ namespace Transit.Addon.TM.Overlays.LaneRouting.Markers
         public ushort NodeId { get; private set; }
         public Vector3 Position { get; set; }
 
-        private readonly IEnumerable<LaneAnchorMarker> _anchors;
+        private readonly ICollection<LaneAnchorMarker> _anchors;
+        private readonly IDictionary<LaneAnchorMarker, ICollection<LaneAnchorMarker>> _routes = new Dictionary<LaneAnchorMarker, ICollection<LaneAnchorMarker>>();
+
         private LaneAnchorMarker _hoveredAnchor;
         private LaneAnchorMarker _selectedAnchor;
 
@@ -25,7 +29,7 @@ namespace Transit.Addon.TM.Overlays.LaneRouting.Markers
             _anchors = new List<LaneAnchorMarker>(CreateAnchors(nodeId));
         }
 
-        private static IEnumerable<LaneAnchorMarker> CreateAnchors(ushort nodeId)
+        private IEnumerable<LaneAnchorMarker> CreateAnchors(ushort nodeId)
         {
             var anchors = new List<LaneAnchorMarker>();
 
@@ -71,17 +75,17 @@ namespace Transit.Addon.TM.Overlays.LaneRouting.Markers
                     segmentId = 0;
             }
 
-            foreach (var anchor in anchors.Where(a => a.IsOrigin))
+            foreach (var originAnchor in anchors.Where(a => a.IsOrigin))
             {
-                var connections = TAMLaneRoutingManager.instance.GetLaneConnections(anchor.LaneId);
+                var connections = TAMLaneRoutingManager.instance.GetLaneConnections(originAnchor.LaneId);
                 if (connections == null || connections.Length == 0)
                     continue;
 
-                foreach (var anchorDestination in anchors.Where(a => !a.IsOrigin))
+                foreach (var destinationAnchor in anchors.Where(a => !a.IsOrigin))
                 {
-                    if (connections.Contains(anchorDestination.LaneId))
+                    if (connections.Contains(destinationAnchor.LaneId))
                     {
-                        anchor.Connections.Add(anchorDestination);
+                        AddRouteInternal(originAnchor, destinationAnchor);
                     }
                 }
             }
@@ -137,15 +141,127 @@ namespace Transit.Addon.TM.Overlays.LaneRouting.Markers
             }
         }
 
-        public void ToggleRoute(LaneAnchorMarker originAnchor, LaneAnchorMarker destinationAnchor)
+        public void ToggleRoute(uint laneId, NetLane.Flags direction)
         {
-            if (TAMLaneRoutingManager.instance.RemoveLaneConnection(originAnchor.LaneId, destinationAnchor.LaneId))
+        }
+
+        private void ToggleRoute(LaneAnchorMarker origin, LaneAnchorMarker destination)
+        {
+            if (AddRoute(origin, destination))
             {
-                originAnchor.Connections.Remove(destinationAnchor);
+                return;
             }
-            else if (TAMLaneRoutingManager.instance.AddLaneConnection(originAnchor.LaneId, destinationAnchor.LaneId))
+
+            if (RemoveRoute(origin, destination))
             {
-                originAnchor.Connections.Add(destinationAnchor);
+                return;
+            }
+        }
+
+        public bool AddRoute(LaneAnchorMarker origin, LaneAnchorMarker destination)
+        {
+            TAMLaneRoute routeData;
+            if (TAMLaneRoutingManager.instance.AddLaneConnection(origin.LaneId, destination.LaneId, out routeData))
+            {
+                SyncData(origin, routeData);
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool RemoveRoute(LaneAnchorMarker origin, LaneAnchorMarker destination)
+        {
+            TAMLaneRoute routeData;
+            if (TAMLaneRoutingManager.instance.RemoveLaneConnection(origin.LaneId, destination.LaneId, out routeData))
+            {
+                SyncData(origin, routeData);
+                return true;
+            }
+
+            return false;
+        }
+
+        private void AddRouteInternal(LaneAnchorMarker origin, LaneAnchorMarker destination)
+        {
+            if (!_routes.ContainsKey(origin))
+            {
+                _routes[origin] = new HashSet<LaneAnchorMarker>();
+            }
+
+            if (!_routes[origin].Contains(destination))
+            {
+                _routes[origin].Add(destination);
+            }
+        }
+
+        private void RemoveRouteInternal(LaneAnchorMarker origin, LaneAnchorMarker destination)
+        {
+            if (_routes.ContainsKey(origin))
+            {
+                if (_routes[origin].Contains(destination))
+                {
+                    _routes[origin].Remove(destination);
+                }
+
+                if (!_routes[origin].Any())
+                {
+                    _routes.Remove(origin);
+                }
+            }
+        }
+
+        private void SyncData(LaneAnchorMarker origin, TAMLaneRoute data)
+        {
+            if (data == null)
+            {
+                if (_anchors.Contains(origin))
+                {
+                    _anchors.Remove(origin);
+                }
+
+                if (_routes.ContainsKey(origin))
+                {
+                    _routes.Remove(origin);
+                }
+
+                return;
+            }
+
+            var routeSynced = new HashSet<LaneAnchorMarker>();
+
+            foreach (var c in data.Connections)
+            {
+                var destination = _anchors.FirstOrDefault(a => a.LaneId == c);
+
+                if (destination != null)
+                {
+                    AddRouteInternal(origin, destination);
+                    routeSynced.Add(destination);
+                }
+            }
+
+            foreach (var destination in GetAnchorRoutes(origin).ToArray())
+            {
+                if (!routeSynced.Contains(destination))
+                {
+                    RemoveRouteInternal(origin, destination);
+                }
+            }
+        }
+
+        private IEnumerable<LaneAnchorMarker> GetAnchorRoutes(LaneAnchorMarker anchor)
+        {
+            if (!_routes.ContainsKey(anchor))
+            {
+                yield break;
+            }
+            else
+            {
+                foreach (var destination in _routes[anchor])
+                {
+                    yield return destination;
+                }
             }
         }
 
@@ -257,7 +373,7 @@ namespace Transit.Addon.TM.Overlays.LaneRouting.Markers
                         {
                             if (anchor.IsEnabled)
                             {
-                                foreach (var connection in anchor.Connections)
+                                foreach (var connection in GetAnchorRoutes(anchor))
                                 {
                                     RenderManager.instance.OverlayEffect.DrawRouting(cameraInfo, anchor.Position, connection.Position, Position, anchor.Color, ROUTE_WIDTH);
                                 }
@@ -281,14 +397,14 @@ namespace Transit.Addon.TM.Overlays.LaneRouting.Markers
                                     RenderManager.instance.OverlayEffect.DrawRouting(cameraInfo, anchor.Position, output.m_hitPos, Position, anchor.Color, ROUTE_WIDTH);
                                 }
 
-                                foreach (var connection in anchor.Connections)
+                                foreach (var connection in GetAnchorRoutes(anchor))
                                 {
                                     RenderManager.instance.OverlayEffect.DrawRouting(cameraInfo, anchor.Position, connection.Position, Position, anchor.Color, ROUTE_WIDTH);
                                 }
                             }
                             else
                             {
-                                foreach (var connection in anchor.Connections)
+                                foreach (var connection in GetAnchorRoutes(anchor))
                                 {
                                     RenderManager.instance.OverlayEffect.DrawRouting(cameraInfo, anchor.Position, connection.Position, Position, anchor.Color.Dim(75), ROUTE_WIDTH);
                                 }
@@ -305,7 +421,7 @@ namespace Transit.Addon.TM.Overlays.LaneRouting.Markers
                 {
                     if (anchor.IsOrigin)
                     {
-                        foreach (var connection in anchor.Connections)
+                        foreach (var connection in GetAnchorRoutes(anchor))
                         {
                             RenderManager.instance.OverlayEffect.DrawRouting(cameraInfo, anchor.Position, connection.Position, Position, anchor.Color, ROUTE_WIDTH);
                         }

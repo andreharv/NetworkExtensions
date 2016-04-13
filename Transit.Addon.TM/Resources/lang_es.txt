@@ -83,7 +83,6 @@ Create_group Crear Grupo
 Delete_group Borrar Grupo
 Add_zoning Agregar zona
 Remove_zoning Borrar zona
-Lane_Arrow_Changer_Disabled El editor de flechas está desactivado debido a que has activado el control de autopistas.
 Add_junction_to_timed_light Agregar cruce a este conjunto temporizador
 Remove_junction_from_timed_light Remover cruce de este conjunnto temporizador
 Select_junction Seleccionar un cruce

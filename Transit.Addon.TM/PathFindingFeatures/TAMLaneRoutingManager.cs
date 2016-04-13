@@ -114,9 +114,9 @@ namespace Transit.Addon.TM.PathFindingFeatures
             return lane;
         }
 
-        public bool AddLaneConnection(uint fromLaneId, uint toLaneId)
+        public bool AddLaneConnection(uint fromLaneId, uint toLaneId, out TAMLaneRoute route)
         {
-            TAMLaneRoute route = GetOrCreateRoute(fromLaneId);
+            route = GetOrCreateRoute(fromLaneId);
             GetOrCreateRoute(toLaneId); // makes sure lane information is stored
 
             var succeeded = route.AddConnection(toLaneId);
@@ -125,9 +125,9 @@ namespace Transit.Addon.TM.PathFindingFeatures
             return succeeded;
         }
 
-        public bool RemoveLaneConnection(uint laneId, uint connectionId)
+        public bool RemoveLaneConnection(uint laneId, uint connectionId, out TAMLaneRoute route)
         {
-            TAMLaneRoute route = GetRoute(laneId);
+            route = GetRoute(laneId);
             if (route == null)
                 return false;
 
