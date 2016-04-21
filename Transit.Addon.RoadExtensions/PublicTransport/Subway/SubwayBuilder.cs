@@ -166,6 +166,27 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.Subway
                     }
                 }
             }
+            else if (version == NetInfoVersion.Bridge)
+            {
+                var bpPropInfo = PrefabCollection<BuildingInfo>.FindLoaded("478820060.Rail1LBridgePillar_Data");
+
+                if (bpPropInfo == null)
+                {
+                    bpPropInfo = PrefabCollection<BuildingInfo>.FindLoaded("Rail1LBridgePillar.Rail1LBridgePillar_Data");
+                }
+
+                if (bpPropInfo != null)
+                {
+                    var bridgeAI = info.GetComponent<TrainTrackBridgeAI>();
+                    if (bridgeAI != null)
+                    {
+                        //bridgeAI.m_doubleLength = false;
+                        bridgeAI.m_bridgePillarInfo = bpPropInfo;
+                        //bridgeAI.m_bridgePillarOffset = 1;
+                        //bridgeAI.m_middlePillarInfo = null;
+                    }
+                }
+            }
         }
     }
 }
