@@ -1,9 +1,9 @@
 ﻿using Transit.Framework;
 using Transit.Framework.Texturing;
 
-namespace Transit.Addon.RoadExtensions.PublicTransport.Subway
+namespace Transit.Addon.RoadExtensions.PublicTransport.Rail1LStation
 {
-    public partial class SubwayBuilder
+    public partial class Rail1LStationBuilder
     {
         private static void SetupTextures(NetInfo info, NetInfoVersion version)
         {
@@ -16,8 +16,8 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.Subway
                         {
                             info.m_segments[i].SetTextures(
                                 new TextureSet
-                                    (@"PublicTransport\Subway\Textures\Ground_Segment_Pavement__MainTex.png",
-                                    @"PublicTransport\Subway\Textures\Ground_Segment_Pavement__AlphaMap.png"));
+                                    (@"PublicTransport\Rail1LStation\Textures\Ground_Segment_Pavement__MainTex.png",
+                                    @"PublicTransport\Rail1LStation\Textures\Ground_Segment_Pavement__AlphaMap.png"));
                         }
                     }
                     break;
@@ -107,19 +107,19 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.Subway
                         {
                             info.m_segments[i].SetTextures(
                                 new TextureSet
-                                    (@"PublicTransport\Subway\Textures\Slope_Segment__MainTex.png",
-                                    @"PublicTransport\Subway\Textures\Slope_Segment__AlphaMap.png"),
+                                    (@"PublicTransport\Rail1LStation\Textures\Slope_Segment__MainTex.png",
+                                    @"PublicTransport\Rail1LStation\Textures\Slope_Segment__AlphaMap.png"),
                                 new LODTextureSet
-                                    (@"PublicTransport\Subway\Textures\Slope_Cover_LOD__MainTex.png",
-                                    @"PublicTransport\Subway\Textures\Slope_Cover_LOD__AlphaMap.png",
-                                    @"PublicTransport\Subway\Textures\Slope_Cover_LOD__XYSMap.png"));
+                                    (@"PublicTransport\Rail1LStation\Textures\Slope_Cover_LOD__MainTex.png",
+                                    @"PublicTransport\Rail1LStation\Textures\Slope_Cover_LOD__AlphaMap.png",
+                                    @"PublicTransport\Rail1LStation\Textures\Slope_Cover_LOD__XYSMap.png"));
                         }
                         else if (info.m_segments[i].m_mesh.name.Contains("Ground_Pavement"))
                         {
                             info.m_segments[i].SetTextures(
                                 new TextureSet
-                                    (@"PublicTransport\Subway\Textures\Ground_Segment_Pavement__MainTex.png",
-                                    @"PublicTransport\Subway\Textures\Ground_Segment_Pavement__AlphaMap.png",
+                                    (@"PublicTransport\Rail1LStation\Textures\Ground_Segment_Pavement__MainTex.png",
+                                    @"PublicTransport\Rail1LStation\Textures\Ground_Segment_Pavement__AlphaMap.png",
                                     null));
                         }
                     }
@@ -128,12 +128,12 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.Subway
                     {
                         info.SetAllSegmentsTexture(
                             new TextureSet
-                                (@"PublicTransport\Subway\Textures\Tunnel_Segment__MainTex.png",
-                                @"PublicTransport\Subway\Textures\Tunnel_Segment__AlphaMap.png"));
+                                (@"PublicTransport\Rail1LStation\Textures\Tunnel_Segment__MainTex.png",
+                                @"PublicTransport\Rail1LStation\Textures\Tunnel_Segment__AlphaMap.png"));
                         info.SetAllNodesTexture(
                             new TextureSet
-                                (@"PublicTransport\Subway\Textures\Tunnel_Segment__MainTex.png",
-                                @"PublicTransport\Subway\Textures\Tunnel_Segment__AlphaMap.png"));
+                                (@"PublicTransport\Rail1LStation\Textures\Tunnel_Segment__MainTex.png",
+                                @"PublicTransport\Rail1LStation\Textures\Tunnel_Segment__AlphaMap.png"));
                         break;
                     }
             }

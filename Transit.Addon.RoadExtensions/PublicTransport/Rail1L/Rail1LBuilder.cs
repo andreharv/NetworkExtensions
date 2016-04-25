@@ -2,28 +2,28 @@
 using System.Linq;
 using Transit.Framework;
 using Transit.Framework.Builders;
-using Transit.Addon.RoadExtensions.PublicTransport.SubwayUtils;
+using Transit.Addon.RoadExtensions.PublicTransport.RailUtils;
 using System.Collections.Generic;
 using Transit.Framework.Network;
 using Transit.Addon.RoadExtensions.Roads.Common;
 using UnityEngine;
 
-namespace Transit.Addon.RoadExtensions.PublicTransport.Subway
+namespace Transit.Addon.RoadExtensions.PublicTransport.Rail1L
 {
-    public partial class SubwayBuilder : Activable, INetInfoBuilderPart, INetInfoLateBuilder
+    public partial class Rail1LBuilder : Activable, INetInfoBuilderPart, INetInfoLateBuilder
     {
         public int Order { get { return 7; } }
         public int UIOrder { get { return 9; } }
 
         public string BasedPrefabName { get { return NetInfos.Vanilla.TRAINTRACK; } }
-        public string Name { get { return "SubwayPlus"; } }
-        public string DisplayName { get { return "Metro"; } }
-        public string Description { get { return "A rapid transit solution offering above and underground urban transportation solutions."; } }
-        public string ShortDescription { get { return "Inner-City Metro"; } }
+        public string Name { get { return "Rail1L"; } }
+        public string DisplayName { get { return "Single Rail Track"; } }
+        public string Description { get { return "A single one way rail track that can be connected to conventional rail."; } }
+        public string ShortDescription { get { return "Single Rail Track"; } }
         public string UICategory { get { return "PublicTransportTrain"; } }
 
-        public string ThumbnailsPath { get { return @"PublicTransport\Subway\thumbnails.png"; } }
-        public string InfoTooltipPath { get { return @"PublicTransport\Subway\infotooltip.png"; } }
+        public string ThumbnailsPath { get { return @"PublicTransport\Rail1L\thumbnails.png"; } }
+        public string InfoTooltipPath { get { return @"PublicTransport\Rail1L\infotooltip.png"; } }
 
         public NetInfoVersion SupportedVersions
         {
@@ -40,7 +40,7 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.Subway
             var railInfo = Prefabs.Find<NetInfo>(railVersionName);
             Framework.Debug.Log("this is " + railVersionName);
             //var owRoadTunnelInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ONEWAY_2L_TUNNEL);
-
+            info.m_class = railInfo.m_class.Clone("NExtSingleTrack");
             ///////////////////////////
             // 3DModeling            //
             ///////////////////////////
@@ -108,13 +108,13 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.Subway
             {
                 Framework.Debug.Log(version + " skipped!");
             }
-            info.m_class = railInfo.m_class.Clone("NExtSingleTrack");
+            
             var owPlayerNetAI = railInfo.GetComponent<PlayerNetAI>();
             var playerNetAI = info.GetComponent<PlayerNetAI>();
             if (owPlayerNetAI != null && playerNetAI != null)
             {
-                playerNetAI.m_constructionCost = owPlayerNetAI.m_constructionCost * 3 / 2; // Charge by the lane?
-                playerNetAI.m_maintenanceCost = owPlayerNetAI.m_maintenanceCost * 3 / 2; // Charge by the lane?
+                playerNetAI.m_constructionCost = owPlayerNetAI.m_constructionCost * 3 / 2; 
+                playerNetAI.m_maintenanceCost = owPlayerNetAI.m_maintenanceCost * 3 / 2; 
             }
 
             var trainTrackAI = info.GetComponent<TrainTrackAI>();

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using Transit.Framework;
 using Transit.Framework.Network;
 
-namespace Transit.Addon.RoadExtensions.PublicTransport.SubwayUtils
+namespace Transit.Addon.RoadExtensions.PublicTransport.RailUtils
 {
-    public static partial class SubwayModels
+    public static partial class RailModels
     {
         public static void Setup10mMesh(this NetInfo info, NetInfoVersion version)
         {
@@ -41,49 +41,49 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.SubwayUtils
                         segments0
                             .SetFlagsDefault()
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Pavement.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Pavement_LOD.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Ground_Pavement.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Ground_Pavement_LOD.obj");
 
                         segments1
                             .SetFlagsDefault()
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail_LOD.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Ground_Rail.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Ground_Rail_LOD.obj");
 
                         segments2
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Ground_Power.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Ground_Power.obj");
 
                         nodes0
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Pavement_Node.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Pavement_Node_LOD.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Ground_Pavement_Node.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Ground_Pavement_Node_LOD.obj");
 
                         nodes1
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail_Node_LOD.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Ground_Rail.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Ground_Rail_Node_LOD.obj");
                         nodes3
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Ground_Power.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Ground_Power.obj");
                         nodes4
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail_Start.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail_Start_LOD.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Ground_Rail_Start.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Ground_Rail_Start_LOD.obj");
                         nodes5
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail_End.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail_End_LOD.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Ground_Rail_End.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Ground_Rail_End_LOD.obj");
                         nodes6
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power_Start.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power_Start.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Ground_Power_Start.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Ground_Power_Start.obj");
                         nodes7
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power_End.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power_End.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Ground_Power_End.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Ground_Power_End.obj");
 
                         var colors = new List<UnityEngine.Color>();
                         var colors32 = new List<UnityEngine.Color32>();
@@ -141,49 +141,49 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.SubwayUtils
                         segments0
                             .SetFlagsDefault()
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Elevated_Pavement.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Elevated_Pavement_LOD.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Elevated_Pavement.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Elevated_Pavement_LOD.obj");
 
                         segments1
                             .SetFlagsDefault()
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail_LOD.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Ground_Rail.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Ground_Rail_LOD.obj");
 
                         segments2
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Ground_Power.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Ground_Power.obj");
 
                         nodes0
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Elevated_Pavement.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Elevated_Pavement_Node_LOD.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Elevated_Pavement.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Elevated_Pavement_Node_LOD.obj");
 
                         nodes1
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail_Node_LOD.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Ground_Rail.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Ground_Rail_Node_LOD.obj");
                         nodes2
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Ground_Power.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Ground_Power.obj");
                         nodes4
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail_Start.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail_Start_LOD.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Ground_Rail_Start.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Ground_Rail_Start_LOD.obj");
                         nodes5
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail_End.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail_End_LOD.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Ground_Rail_End.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Ground_Rail_End_LOD.obj");
                         nodes6
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power_Start.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power_Start.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Ground_Power_Start.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Ground_Power_Start.obj");
                         nodes7
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power_End.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power_End.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Ground_Power_End.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Ground_Power_End.obj");
 
                         var colors = new List<UnityEngine.Color>();
                         var colors32 = new List<UnityEngine.Color32>();
@@ -240,49 +240,49 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.SubwayUtils
                         segments0
                             .SetFlagsDefault()
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Bridge_Pavement.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Bridge_Pavement_LOD.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Bridge_Pavement.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Bridge_Pavement_LOD.obj");
 
                         segments1
                             .SetFlagsDefault()
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail_LOD.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Ground_Rail.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Ground_Rail_LOD.obj");
 
                         segments2
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Ground_Power.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Ground_Power.obj");
 
                         nodes0
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Elevated_Pavement.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Elevated_Pavement_Node_LOD.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Elevated_Pavement.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Elevated_Pavement_Node_LOD.obj");
 
                         nodes1
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail_Node_LOD.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Ground_Rail.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Ground_Rail_Node_LOD.obj");
                         nodes2
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Ground_Power.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Ground_Power.obj");
                         nodes4
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail_Start.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail_Start_LOD.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Ground_Rail_Start.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Ground_Rail_Start_LOD.obj");
                         nodes5
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail_End.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail_End_LOD.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Ground_Rail_End.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Ground_Rail_End_LOD.obj");
                         nodes6
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power_Start.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power_Start.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Ground_Power_Start.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Ground_Power_Start.obj");
                         nodes7
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power_End.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power_End.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Ground_Power_End.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Ground_Power_End.obj");
 
                         var colors = new List<UnityEngine.Color>();
                         var colors32 = new List<UnityEngine.Color32>();
@@ -385,56 +385,56 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.SubwayUtils
 
                         segments0
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Tunnel.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Tunnel_Node_LOD.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Tunnel.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Tunnel_Node_LOD.obj");
                         segments1
                             .SetFlagsDefault()
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail_LOD.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Ground_Rail.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Ground_Rail_LOD.obj");
 
                         segments2
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Ground_Power.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Ground_Power.obj");
                         segments4
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Pavement.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Pavement_LOD.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Ground_Pavement.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Ground_Pavement_LOD.obj");
 
                         nodes0
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Tunnel_Node.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Tunnel_Node_LOD.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Tunnel_Node.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Tunnel_Node_LOD.obj");
 
                         nodes1
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail_Node_LOD.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Ground_Rail.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Ground_Rail_Node_LOD.obj");
                         nodes2
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Ground_Power.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Ground_Power.obj");
                         nodes3
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Pavement_Node.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Pavement_Node_LOD.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Ground_Pavement_Node.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Ground_Pavement_Node_LOD.obj");
                         nodes5
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail_Start.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail_Start_LOD.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Ground_Rail_Start.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Ground_Rail_Start_LOD.obj");
                         nodes6
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail_End.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Rail_End_LOD.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Ground_Rail_End.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Ground_Rail_End_LOD.obj");
                         nodes7
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power_Start.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power_Start.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Ground_Power_Start.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Ground_Power_Start.obj");
                         nodes8
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power_End.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Ground_Power_End.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Ground_Power_End.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Ground_Power_End.obj");
 
                         var colors = new List<UnityEngine.Color>();
                         var colors32 = new List<UnityEngine.Color32>();
@@ -474,13 +474,13 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.SubwayUtils
 
                         segments0
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Tunnel.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Tunnel_Node_LOD.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Tunnel.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Tunnel_Node_LOD.obj");
 
                         nodes0
                             .SetMeshes
-                            (@"PublicTransport\SubwayUtils\Meshes\10m\Tunnel_Node.obj",
-                            @"PublicTransport\SubwayUtils\Meshes\10m\Tunnel_Node_LOD.obj");
+                            (@"PublicTransport\RailUtils\Meshes\10m\Tunnel_Node.obj",
+                            @"PublicTransport\RailUtils\Meshes\10m\Tunnel_Node_LOD.obj");
 
                         info.m_segments = new[] { segments0 };
                         info.m_nodes = new[] { nodes0 };
