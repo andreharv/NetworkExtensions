@@ -22,7 +22,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
         public string ShortDescription { get { return "No Passenger Vehicles, zoneable"; } }
         public string UICategory { get { return RExExtendedMenus.ROADS_PEDESTRIANS; } }
 
-        public string ThumbnailsPath { get { return @"Roads\Highways\Highway1L\thumbnails.png"; } }
+        public string ThumbnailsPath { get { return @"Roads\PedestrianRoads\thumbnails_8m.png"; } }
         public string InfoTooltipPath { get { return @"Roads\Highways\Highway1L\infotooltip.png"; } }
 
         public NetInfoVersion SupportedVersions
@@ -81,7 +81,8 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
             {
                 IsTwoWay = true,
                 LaneWidth = 2.5f,
-                SpeedLimit = 0.3f
+                SpeedLimit = 0.3f,
+                PedPropOffsetX = -2
             });
 
             var vehicleLanes = new List<NetInfo.Lane>();
@@ -106,14 +107,26 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
             pedLane.m_verticalOffset = 0.05f;
             var tempProps = new List<NetLaneProps.Prop>();
             tempProps = pedLane.m_laneProps.m_props.ToList();
-            tempProps.RemoveProps(new string[] { "random", "bus" });
+            tempProps.RemoveProps(new string[] { "random", "bus", "limit" });
             tempProps.ReplacePropInfo(new KeyValuePair<string, PropInfo>("street light", Prefabs.Find<PropInfo>("StreetLamp02")));
-
+            tempProps.ReplacePropInfo(new KeyValuePair<string, PropInfo>("traffic light 01", Prefabs.Find<PropInfo>("Traffic Light 01 Mirror")));
+            var pedLightProp = tempProps.FirstOrDefault(tp => tp.m_prop.name == "Traffic Light 01 Mirror").ShallowClone();
+            var pedLightPropInfo = Prefabs.Find<PropInfo>("Traffic Light Pedestrian");
+            pedLightProp.m_prop = pedLightPropInfo;
+            pedLightProp.m_position.x = -3.5f;
             var lights = tempProps.Where(tp => tp.m_prop.name == "StreetLamp02").ToList();
             foreach (var light in lights)
             {
                 light.m_position.x = 0;
             }
+            var tLight = tempProps.LastOrDefault(tp => tp.m_prop.name == "Traffic Light 02");
+            tLight.m_position.x = -3.5f;
+            var pedLightProp2 = tempProps.FirstOrDefault(tp => tp.m_prop.name == "Traffic Light 02").ShallowClone();
+            pedLightProp2.m_prop = pedLightPropInfo;
+            pedLightProp2.m_position.x = 3.5f;
+            tempProps.ReplacePropInfo(new KeyValuePair<string, PropInfo>("traffic light 02", Prefabs.Find<PropInfo>("Traffic Light 01 Mirror")));
+            tempProps.Add(pedLightProp);
+            tempProps.Add(pedLightProp2);
             pedLane.m_laneProps.m_props = tempProps.ToArray();
 
             var roadCollection = new List<NetInfo.Lane>();
@@ -144,6 +157,19 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
 
         public void LateBuildUp(NetInfo info, NetInfoVersion version)
         {
+            if (version == NetInfoVersion.Bridge || version == NetInfoVersion.Elevated)
+            {
+                var pillar = Prefabs.Find<BuildingInfo>("Pedestrian Elevated Pillar", false);
+                var bridgeAI = info.GetComponent<RoadBridgeAI>();
+                if (bridgeAI != null)
+                {
+                    bridgeAI.m_doubleLength = false;
+                    bridgeAI.m_bridgePillarInfo = pillar;
+                    bridgeAI.m_middlePillarInfo = null;
+                    bridgeAI.m_bridgePillarOffset = 0;
+                }
+            }
+
             var pedLane = new NetInfo.Lane();
             pedLane = info.m_lanes.First(l => l.m_laneType == NetInfo.LaneType.Pedestrian).ShallowClone();
             var stoneBollard = PrefabCollection<PropInfo>.FindLoaded("478820060.StoneBollard_Data");
