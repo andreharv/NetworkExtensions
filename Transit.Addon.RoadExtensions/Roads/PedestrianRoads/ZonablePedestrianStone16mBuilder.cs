@@ -105,7 +105,6 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
                 tempProps = bikeLanes[i].m_laneProps.m_props.ToList();
                 tempProps.RemoveProps(new string[] { "arrow" });
                 bikeLanes[i].m_laneProps.m_props = tempProps.ToArray();
-                Debug.Log("REx: Bike done");
             }
 
             tempProps = new List<NetLaneProps.Prop>();
@@ -124,7 +123,6 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
                 tempProps = carLanes[i].m_laneProps.m_props.ToList();
                 tempProps.RemoveProps(new string[] { "arrow" });
                 carLanes[i].m_laneProps.m_props = tempProps.ToArray();
-                Debug.Log("REx: Carlane done");
 
             }
             var pedLanes = new List<NetInfo.Lane>();
@@ -136,7 +134,6 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
                 pedLanes[i].m_width = 6;
                 tempProps = pedLanes[i].m_laneProps.m_props.ToList();
                 tempProps.RemoveProps(new string[] { "bus", "random" });
-                Debug.Log("REx: Pedlane done");
                 var tempPropProps = tempProps.Where(tp => tp.m_prop != null);
                 if (tempPropProps.Any(tp => tp.m_prop.name.ToLower().IndexOf("street light") != -1))
                 {
