@@ -3,14 +3,15 @@ using Transit.Framework.Builders;
 using Transit.Framework.Modularity;
 using Transit.Framework.Network;
 
-namespace Transit.Addon.RoadExtensions.Roads.Highways
+namespace Transit.Addon.RoadExtensions
 {
-    public class VanillaHighwayMenuModifier : IModulePart, INetInfoModifier
+    public class VanillaMenuIconModifier : IModulePart, INetInfoModifier
     {
-        public string Name{ get { return "Vanilla Highway Menu Modifier"; } }
+        public string Name{ get { return "Vanilla Menu Icon Modifier"; } }
 
         public void ModifyExistingNetInfo()
         {
+            #region Highway NetInfos
             var highwayRampInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_RAMP, false);
             if (highwayRampInfo != null)
             {
@@ -39,6 +40,19 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways
                 highway3LBarrier.m_Thumbnail = thumbnails.name;
                 highway3LBarrier.ModifyTitle("Three-Lane Highway with Sound Barrier");
             }
+            #endregion
+
+            #region Rail Netinfos
+            var rail2L = Prefabs.Find<NetInfo>(NetInfos.Vanilla.TRAINTRACK, false);
+            if (rail2L != null)
+            {
+                rail2L.m_UIPriority = 12;
+                var thumbnails = AssetManager.instance.GetThumbnails(NetInfos.Vanilla.TRAINTRACK, @"PublicTransport\Rail\Rail2L\thumbnails.png");
+                rail2L.m_Atlas = thumbnails;
+                rail2L.m_Thumbnail = thumbnails.name;
+                rail2L.ModifyTitle("Two Lane Two Way Rail");
+            }
+            #endregion
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Transit.Framework.Builders
             var groundGrassInfo = builder.BuildVersion(NetInfoVersion.GroundGrass, lateOperations);
             var groundTreesInfo = builder.BuildVersion(NetInfoVersion.GroundTrees, lateOperations);
 
-            var groundInfos = new[] {groundInfo, groundGrassInfo, groundTreesInfo};
+            var groundInfos = new[] { groundInfo, groundGrassInfo, groundTreesInfo };
             groundInfos = groundInfos.Where(gi => gi != null).ToArray();
 
             if (!groundInfos.Any())
@@ -80,21 +80,29 @@ namespace Transit.Framework.Builders
             foreach (var mainInfo in groundInfos)
             {
                 var tai = mainInfo.GetComponent<TrainTrackAI>();
-                var rai = mainInfo.GetComponent<RoadAI>();
 
-                if (tai != null)
-                {
-                    tai.m_elevatedInfo = elevatedInfo;
-                    tai.m_bridgeInfo = bridgeInfo;
-                    tai.m_tunnelInfo = tunnelInfo;
-                    tai.m_slopeInfo = slopeInfo;
-                }
-                else
+                var rai = mainInfo.GetComponent<RoadAI>();
+                if (rai != null)
                 {
                     rai.m_elevatedInfo = elevatedInfo;
                     rai.m_bridgeInfo = bridgeInfo;
                     rai.m_tunnelInfo = tunnelInfo;
                     rai.m_slopeInfo = slopeInfo;
+                }
+                else if (tai != null)
+                {
+                    if (elevatedInfo != null)
+                        tai.m_elevatedInfo = elevatedInfo;
+                    if (bridgeInfo != null)
+                        tai.m_bridgeInfo = bridgeInfo;
+                    if (tunnelInfo != null)
+                        tai.m_tunnelInfo = tunnelInfo;
+                    if (slopeInfo != null)
+                        tai.m_slopeInfo = slopeInfo;
+                }
+                else
+                {
+
                 }
             }
 

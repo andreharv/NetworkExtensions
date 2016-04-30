@@ -8,26 +8,26 @@ using Transit.Framework.Network;
 using Transit.Addon.RoadExtensions.Roads.Common;
 using UnityEngine;
 
-namespace Transit.Addon.RoadExtensions.PublicTransport.Rail1L
+namespace Transit.Addon.RoadExtensions.PublicTransport.Rail1LStation
 {
-    public partial class Rail1LBuilder : Activable, INetInfoBuilderPart, INetInfoLateBuilder
+    public partial class Rail1LStationBuilder : Activable, INetInfoBuilderPart, INetInfoLateBuilder
     {
         public int Order { get { return 7; } }
         public int UIOrder { get { return 9; } }
 
-        public string BasedPrefabName { get { return NetInfos.Vanilla.TRAINTRACK; } }
-        public string Name { get { return "Rail1L"; } }
-        public string DisplayName { get { return "Single Rail Track"; } }
+        public string BasedPrefabName { get { return NetInfos.Vanilla.TRAIN_STATION_TRACK; } }
+        public string Name { get { return "Rail1LStation"; } }
+        public string DisplayName { get { return "Single Rail Station Track"; } }
         public string Description { get { return "A single one way rail track that can be connected to conventional rail."; } }
         public string ShortDescription { get { return "Single Rail Track"; } }
         public string UICategory { get { return "PublicTransportTrain"; } }
 
-        public string ThumbnailsPath { get { return @"PublicTransport\Rail1L\thumbnails.png"; } }
-        public string InfoTooltipPath { get { return @"PublicTransport\Rail1L\infotooltip.png"; } }
+        public string ThumbnailsPath { get { return @"PublicTransport\Rail\Rail1LStation\thumbnails.png"; } }
+        public string InfoTooltipPath { get { return @"PublicTransport\Rail\Rail1LStation\infotooltip.png"; } }
 
         public NetInfoVersion SupportedVersions
         {
-            get { return NetInfoVersion.All; }
+            get { return NetInfoVersion.Ground; }
         }
 
         public void BuildUp(NetInfo info, NetInfoVersion version)
@@ -36,15 +36,13 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.Rail1L
             // Template              //
             ///////////////////////////
             //var highwayInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L_SLOPE);
-            var railVersionName = string.Format("{0} {1}", NetInfos.Vanilla.TRAINTRACK, (version == NetInfoVersion.Ground ? string.Empty : version.ToString())).Trim();
-            var railInfo = Prefabs.Find<NetInfo>(railVersionName);
-            Framework.Debug.Log("this is " + railVersionName);
+            var railInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.TRAIN_STATION_TRACK);
             //var owRoadTunnelInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ONEWAY_2L_TUNNEL);
-            info.m_class = railInfo.m_class.Clone("NExtSingleTrack");
+            info.m_class = railInfo.m_class.Clone("NExtSingleStationTrack");
             ///////////////////////////
             // 3DModeling            //
             ///////////////////////////
-            info.Setup10mMesh(version);
+            info.Setup10mStationMesh(version);
 
             ///////////////////////////
             // Texturing             //
@@ -56,59 +54,26 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.Rail1L
             ///////////////////////////
             info.m_hasParkingSpaces = false;
             //info.m_class = roadInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL3L_ROAD);
-            if (version == NetInfoVersion.Slope || version == NetInfoVersion.Tunnel)
-            {
-                info.m_halfWidth = 4;
-                info.m_pavementWidth = 2;
-            }
-            else
-            {
-                info.m_halfWidth = 3;
-            }
-            
-            if (version == NetInfoVersion.Tunnel)
-            {
-                info.m_setVehicleFlags = Vehicle.Flags.Transition;
-                info.m_setCitizenFlags = CitizenInstance.Flags.Transition;
-                //info.m_class = owRoadTunnelInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL3L_ROAD_TUNNEL);
-            }
-            else
-            {
-                //info.m_class = roadInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL3L_ROAD);
-            }
+            info.m_halfWidth = 3;
 
-            //var propLanes = info.m_lanes.Where(l => l.m_laneProps != null && (l.m_laneProps.name.ToLower().Contains("left") || l.m_laneProps.name.ToLower().Contains("right"))).ToList();
-
-            //var remainingLanes = new List<NetInfo.Lane>();
-            //remainingLanes.AddRange(info
-            //    .m_lanes
-            //    .Where(l => l.m_laneType == NetInfo.LaneType.Pedestrian || l.m_laneType == NetInfo.LaneType.None || l.m_laneType == NetInfo.LaneType.Parking));
-            //remainingLanes.AddRange(info
-            //    .m_lanes
-            //    .Where(l => l.m_laneType != NetInfo.LaneType.None)
-            //    .Skip(1));
-            //info.m_lanes = remainingLanes.ToArray();
             info.SetRoadLanes(version, new LanesConfiguration()
             {
                 IsTwoWay = false,
                 LanesToAdd = -1,
             });
 
-            //info.m_class.m_layer = ItemClass.Layer.PublicTransport;
+            var railLane = info.m_lanes.FirstOrDefault(l => l.m_laneType == NetInfo.LaneType.Vehicle);
+            railLane.m_direction = NetInfo.Direction.AvoidBoth;
+
+            var pedLanes = info.m_lanes.Where(l => l.m_laneType == NetInfo.LaneType.Pedestrian).ToList();
+
+            for(int i = 0; i < pedLanes.Count; i++)
+            {
+                pedLanes[i].m_position = (((i - 1) * 2) + 1) * 4;
+            }
             info.m_connectGroup = NetInfo.ConnectGroup.CenterTram;
             info.m_nodeConnectGroups = NetInfo.ConnectGroup.CenterTram | NetInfo.ConnectGroup.NarrowTram;
-            //info.m_nodes[1].m_connectGroup = (NetInfo.ConnectGroup)9; 
-            railInfo.m_connectGroup = NetInfo.ConnectGroup.NarrowTram;
-            railInfo.m_nodeConnectGroups = NetInfo.ConnectGroup.NarrowTram;
-            if (railInfo.m_nodes.Length > 1)
-            {
-                railInfo.m_nodes[1].m_connectGroup = NetInfo.ConnectGroup.NarrowTram;
-            }
-            else
-            {
-                Framework.Debug.Log(version + " skipped!");
-            }
-            
+
             var owPlayerNetAI = railInfo.GetComponent<PlayerNetAI>();
             var playerNetAI = info.GetComponent<PlayerNetAI>();
             if (owPlayerNetAI != null && playerNetAI != null)
@@ -172,7 +137,7 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.Rail1L
 
                 if (bpPropInfo == null)
                 {
-                    bpPropInfo = PrefabCollection<BuildingInfo>.FindLoaded("Rail1LBridgePillar.Rail1LBridgePillar_Data");
+                    bpPropInfo = PrefabCollection<BuildingInfo>.FindLoaded("Rail1LBridgePillar.Rail1LStationBridgePillar_Data");
                 }
 
                 if (bpPropInfo != null)
