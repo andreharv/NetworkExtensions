@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Transit.Addon.RoadExtensions.Menus.Roads;
 using Transit.Addon.RoadExtensions.Roads.Common;
@@ -8,22 +7,22 @@ using Transit.Framework.Builders;
 using Transit.Framework.Network;
 using UnityEngine;
 
-namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
+namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Stone
 {
-    public partial class ZonablePedestrianStone16mBuilder : Activable, INetInfoBuilderPart, INetInfoLateBuilder
+    public partial class ZonablePedestrianStoneRoadBuilder : Activable, INetInfoBuilderPart, INetInfoLateBuilder
     {
-        public int Order { get { return 30; } }
-        public int UIOrder { get { return 10; } }
+        public int Order { get { return 330; } }
+        public int UIOrder { get { return 30; } }
 
         public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_2L; } }
-        public string Name { get { return "Stone Ped Road 16m"; } }
-        public string DisplayName { get { return "Medium Stone Pedestrian Road"; } }
+        public string Name { get { return "Zonable Pedestrian Stone Road"; } }
+        public string DisplayName { get { return "[BETA] Zonable Pedestrian Stone Road"; } }
         public string Description { get { return "Pedestrian Roads are only accessible to pedestrians, cyclists, and emergency vehicles"; } }
-        public string ShortDescription { get { return "No Passenger Vehicles, zoneable"; } }
+        public string ShortDescription { get { return "No Passenger Vehicles, zoneable [Traffic++ V2 required]"; } }
         public string UICategory { get { return RExExtendedMenus.ROADS_PEDESTRIANS; } }
 
-        public string ThumbnailsPath { get { return @"Roads\PedestrianRoads\thumbnails_16m_bike.png"; } }
-        public string InfoTooltipPath { get { return @"Roads\Highways\Highway1L\infotooltip.png"; } }
+        public string ThumbnailsPath { get { return @"Roads\PedestrianRoads\Stone\thumbnails.png"; } }
+        public string InfoTooltipPath { get { return @"Roads\PedestrianRoads\Stone\infotooltip.png"; } }
 
         public NetInfoVersion SupportedVersions
         {
@@ -59,6 +58,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
             info.m_surfaceLevel = 0;
             info.m_createPavement = true;
             info.m_createGravel = false;
+            info.m_canCrossLanes = false;
             //info.m_averageVehicleLaneSpeed = 0.3f;
             info.m_hasParkingSpaces = false;
             info.m_hasPedestrianLanes = true;
@@ -172,11 +172,11 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
                 pedLanes[i].m_laneProps.m_props = tempProps.ToArray();
             }
 
-            var roadCollection = new List<NetInfo.Lane>();
-            roadCollection.AddRange(bikeLanes);
-            roadCollection.AddRange(carLanes);
-            roadCollection.AddRange(pedLanes);
-            info.m_lanes = roadCollection.ToArray();
+            var laneCollection = new List<NetInfo.Lane>();
+            laneCollection.AddRange(bikeLanes);
+            laneCollection.AddRange(carLanes);
+            laneCollection.AddRange(pedLanes);
+            info.m_lanes = laneCollection.ToArray();
             ///////////////////////////
             // AI                    //
             ///////////////////////////

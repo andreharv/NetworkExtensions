@@ -74,10 +74,10 @@
     <Compile Include="RExModule.Install.Menu.cs" />
     <Compile Include="RExModule.Install.Roads.cs" />
     <Compile Include="RExModule.Install.Init.cs" />
-    <Compile Include="Roads\PedestrianRoads\ZonablePedestrianStone8mBuilder.Texturing.cs" />
-    <Compile Include="Roads\PedestrianRoads\ZonablePedestrianStone8mBuilder.cs" />
-    <Compile Include="Roads\PedestrianRoads\ZonablePedestrianStone16mBuilder.cs" />
-    <Compile Include="Roads\PedestrianRoads\ZonablePedestrianStone16mBuilder.Texturing.cs" />
+    <Compile Include="Roads\PedestrianRoads\StoneSmall\ZonablePedestrianStoneSmallRoadBuilder.Texturing.cs" />
+    <Compile Include="Roads\PedestrianRoads\StoneSmall\ZonablePedestrianStoneSmallRoadBuilder.cs" />
+    <Compile Include="Roads\PedestrianRoads\Stone\ZonablePedestrianStoneRoadBuilder.cs" />
+    <Compile Include="Roads\PedestrianRoads\Stone\ZonablePedestrianStoneRoadBuilder.Texturing.cs" />
     <Compile Include="Menus\Roads\Textures\RExExtendedSubBarAtlasBuilder.cs" />
     <Compile Include="Roads\TinyRoads\TinyRoadMenuModifier.cs" />
     <Compile Include="Roads\TinyRoads\Alley2L\Alley2LBuilder.cs" />
@@ -114,8 +114,8 @@
     <Compile Include="RExModule.Install.cs" />
     <Compile Include="Roads\Highways\Highway1L\Highway1LBuilder.cs" />
     <Compile Include="Roads\PedestrianRoads\ZonablePedestrianBuilderBase.cs" />
-    <Compile Include="Roads\PedestrianRoads\ZonablePedestrianGravelBuilder.cs" />
-    <Compile Include="Roads\PedestrianRoads\ZonablePedestrianPavementBuilder.cs" />
+    <Compile Include="Roads\PedestrianRoads\Gravel\ZonablePedestrianGravelBuilder.cs" />
+    <Compile Include="Roads\PedestrianRoads\Pavement\ZonablePedestrianPavementBuilder.cs" />
     <Compile Include="Roads\SmallHeavyRoads\OneWay4L\OneWay4LBuilder.cs" />
     <Compile Include="Roads\SmallHeavyRoads\OneWay4L\OneWay4LBuilder.Texturing.cs" />
     <Compile Include="Roads\SmallHeavyRoads\SmallAvenue4L\SmallAvenue4LBuilder.Texturing.cs" />
@@ -673,106 +673,121 @@
     <Content Include="Menus\Roads\Textures\RExExtendedSubBar.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone16m\Ground_Node__AlphaMap.png">
+    <Content Include="Roads\PedestrianRoads\Common\Textures\Ground_Segment__AlphaMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone16m\Ground_Node__MainTex.png">
+    <Content Include="Roads\PedestrianRoads\Common\Textures\Ground_Trans__AlphaMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone16m\Ground_Node__XYSMap.png">
+    <Content Include="Roads\PedestrianRoads\StoneSmall\infotooltip.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone16m\Ground_Segment__MainTex.png">
+    <Content Include="Roads\PedestrianRoads\Stone\infotooltip.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone16m\Ground_Segment__XYSMap.png">
+    <Content Include="Roads\PedestrianRoads\Stone\Textures\Ground_Node__AlphaMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone16m\Ground_Trans__AlphaMap.png">
+    <Content Include="Roads\PedestrianRoads\Stone\Textures\Ground_Node__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone16m\Ground_Trans__MainTex.png">
+    <Content Include="Roads\PedestrianRoads\Stone\Textures\Ground_Node__XYSMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone8m\Elevated_Node__AlphaMap.png">
+    <Content Include="Roads\PedestrianRoads\Stone\Textures\Ground_Segment__AlphaMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone8m\Elevated_Node__MainTex.png">
+    <Content Include="Roads\PedestrianRoads\Stone\Textures\Ground_Segment__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone8m\Elevated_Segment_LOD__AlphaMap.png">
+    <Content Include="Roads\PedestrianRoads\Stone\Textures\Ground_Segment__XYSMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone8m\Elevated_Segment_LOD__MainTex.png">
+    <Content Include="Roads\PedestrianRoads\Stone\Textures\Ground_Trans__AlphaMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone8m\Elevated_Segment_LOD__XYSMap.png">
+    <Content Include="Roads\PedestrianRoads\Stone\Textures\Ground_Trans__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone8m\Elevated_Segment__AlphaMap.png">
+    <Content Include="Roads\PedestrianRoads\StoneSmall\Textures\Elevated_Node__AlphaMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone8m\Elevated_Segment__MainTex.png">
+    <Content Include="Roads\PedestrianRoads\StoneSmall\Textures\Elevated_Node__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone8m\Elevated_Segment__XYSMap.png">
+    <Content Include="Roads\PedestrianRoads\StoneSmall\Textures\Elevated_Segment_LOD__AlphaMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone8m\Elevated_Trans__AlphaMap.png">
+    <Content Include="Roads\PedestrianRoads\StoneSmall\Textures\Elevated_Segment_LOD__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone8m\Elevated_Trans__MainTex.png">
+    <Content Include="Roads\PedestrianRoads\StoneSmall\Textures\Elevated_Segment_LOD__XYSMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone8m\Ground_Node_LOD__AlphaMap.png">
+    <Content Include="Roads\PedestrianRoads\StoneSmall\Textures\Elevated_Segment__AlphaMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone8m\Ground_Node_LOD__MainTex.png">
+    <Content Include="Roads\PedestrianRoads\StoneSmall\Textures\Elevated_Segment__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone8m\Ground_Node__AlphaMap.png">
+    <Content Include="Roads\PedestrianRoads\StoneSmall\Textures\Elevated_Segment__XYSMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone8m\Ground_Segment_LOD__AlphaMap.png">
+    <Content Include="Roads\PedestrianRoads\StoneSmall\Textures\Elevated_Trans__AlphaMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone8m\Ground_Segment_LOD__MainTex.png">
+    <Content Include="Roads\PedestrianRoads\StoneSmall\Textures\Elevated_Trans__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone8m\Ground_Segment_LOD__XYSMap.png">
+    <Content Include="Roads\PedestrianRoads\StoneSmall\Textures\Ground_Node_LOD__AlphaMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone8m\Ground_Trans_LOD__AlphaMap.png">
+    <Content Include="Roads\PedestrianRoads\StoneSmall\Textures\Ground_Node_LOD__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone8m\Ground_Trans_LOD__MainTex.png">
+    <Content Include="Roads\PedestrianRoads\StoneSmall\Textures\Ground_Node__AlphaMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone8m\Ground_Trans__AlphaMap.png">
+    <Content Include="Roads\PedestrianRoads\StoneSmall\Textures\Ground_Segment_LOD__AlphaMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone8m\Ground_Node__MainTex.png">
+    <Content Include="Roads\PedestrianRoads\StoneSmall\Textures\Ground_Segment_LOD__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone8m\Ground_Node__XYSMap.png">
+    <Content Include="Roads\PedestrianRoads\StoneSmall\Textures\Ground_Segment_LOD__XYSMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone8m\Ground_Segment__AlphaMap.png">
+    <Content Include="Roads\PedestrianRoads\StoneSmall\Textures\Ground_Trans_LOD__AlphaMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone8m\Ground_Segment__MainTex.png">
+    <Content Include="Roads\PedestrianRoads\StoneSmall\Textures\Ground_Trans_LOD__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone8m\Ground_Segment__XYSMap.png">
+    <Content Include="Roads\PedestrianRoads\StoneSmall\Textures\Ground_Trans__AlphaMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone8m\Ground_Trans__MainTex.png">
+    <Content Include="Roads\PedestrianRoads\StoneSmall\Textures\Ground_Node__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\thumbnails_16m_bike.png">
+    <Content Include="Roads\PedestrianRoads\StoneSmall\Textures\Ground_Node__XYSMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\thumbnails_8m.png">
+    <Content Include="Roads\PedestrianRoads\StoneSmall\Textures\Ground_Segment__AlphaMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\PedestrianRoads\StoneSmall\Textures\Ground_Segment__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\PedestrianRoads\StoneSmall\Textures\Ground_Segment__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\PedestrianRoads\StoneSmall\Textures\Ground_Trans__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\PedestrianRoads\Stone\thumbnails.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\PedestrianRoads\StoneSmall\thumbnails.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\TinyRoads\Alley2L\thumbnails.png">
@@ -1804,19 +1819,16 @@
     <Content Include="Roads\Avenues\MediumAvenue4L\Textures\Ground_Segment__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\infotooltip_gravel.png">
+    <Content Include="Roads\PedestrianRoads\Gravel\infotooltip.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\infotooltip_pavement.png">
+    <Content Include="Roads\PedestrianRoads\Pavement\infotooltip.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Textures\Stone16m\Ground_Segment__AlphaMap.png">
+    <Content Include="Roads\PedestrianRoads\Gravel\thumbnails.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\thumbnails_gravel.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\PedestrianRoads\thumbnails_pavement.png">
+    <Content Include="Roads\PedestrianRoads\Pavement\thumbnails.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\SmallHeavyRoads\SmallAvenue4L\infotooltip.png">
@@ -2465,6 +2477,7 @@
       <Name>Transit.Framework</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

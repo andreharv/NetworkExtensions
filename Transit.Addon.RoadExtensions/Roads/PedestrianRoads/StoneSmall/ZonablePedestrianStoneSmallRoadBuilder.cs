@@ -6,24 +6,24 @@ using Transit.Addon.RoadExtensions.Roads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.Network;
-using UnityEngine;
 
-namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
+namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.StoneSmall
 {
-    public partial class ZonablePedestrianStone8mBuilder : Activable, INetInfoBuilderPart, INetInfoLateBuilder
+    public partial class ZonablePedestrianStoneSmallRoadBuilder : Activable, INetInfoBuilderPart, INetInfoLateBuilder
     {
-        public int Order { get { return 30; } }
-        public int UIOrder { get { return 10; } }
-        public const string NAME = "Stone Ped Road 8m";
+        public int Order { get { return 320; } }
+        public int UIOrder { get { return 40; } }
+
+        public const string NAME = "Zonable Pedestrian Small Stone Road";
         public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_2L; } }
         public string Name { get { return NAME; } }
-        public string DisplayName { get { return "Small Stone Pedestrian Road"; } }
-        public string Description { get { return "Small paved pedestrian Roads are only accessible to pedestrians and emergency vehicles"; } }
-        public string ShortDescription { get { return "No Passenger Vehicles, zoneable"; } }
+        public string DisplayName { get { return "[BETA] Zonable Pedestrian Small Stone Road"; } }
+        public string Description { get { return "Small stone pedestrian Roads are only accessible to pedestrians and emergency vehicles"; } }
+        public string ShortDescription { get { return "No Passenger Vehicles, zoneable [Traffic++ V2 required]"; } }
         public string UICategory { get { return RExExtendedMenus.ROADS_PEDESTRIANS; } }
 
-        public string ThumbnailsPath { get { return @"Roads\PedestrianRoads\thumbnails_8m.png"; } }
-        public string InfoTooltipPath { get { return @"Roads\Highways\Highway1L\infotooltip.png"; } }
+        public string ThumbnailsPath { get { return @"Roads\PedestrianRoads\StoneSmall\thumbnails.png"; } }
+        public string InfoTooltipPath { get { return @"Roads\PedestrianRoads\StoneSmall\infotooltip.png"; } }
 
         public NetInfoVersion SupportedVersions
         {
@@ -47,7 +47,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
             ///////////////////////////
             // Texturing             //
             ///////////////////////////
-            SetupTextures(info, version);
+            ZonablePedestrianStoneSmallRoadBuilder.SetupTextures(info, version);
 
             ///////////////////////////
             // Set up                //

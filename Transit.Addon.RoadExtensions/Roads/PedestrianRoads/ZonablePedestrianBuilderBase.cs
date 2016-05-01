@@ -24,11 +24,25 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
                     info.SetAllSegmentsTexture(
                         new TextureSet
                            (null,
-                            @"Roads\PedestrianRoads\Textures\Stone16m\Ground_Segment__AlphaMap.png"));
-                    info.SetAllNodesTexture(
-                        new TextureSet
-                           (null,
-                            @"Roads\PedestrianRoads\Textures\Stone16m\Ground_Segment__AlphaMap.png"));
+                            @"Roads\PedestrianRoads\Common\Textures\Ground_Segment__AlphaMap.png"));
+
+                    foreach (var node in info.m_nodes)
+                    {
+                        if (node.m_flagsRequired == NetNode.Flags.Transition)
+                        {
+                            node.SetTextures(
+                                new TextureSet
+                                   (null,
+                                    @"Roads\PedestrianRoads\Common\Textures\Ground_Trans__AlphaMap.png"));
+                        }
+                        else
+                        {
+                            node.SetTextures(
+                                new TextureSet
+                                   (null,
+                                    @"Roads\PedestrianRoads\Common\Textures\Ground_Segment__AlphaMap.png"));
+                        }
+                    }
                     break;
             }
 

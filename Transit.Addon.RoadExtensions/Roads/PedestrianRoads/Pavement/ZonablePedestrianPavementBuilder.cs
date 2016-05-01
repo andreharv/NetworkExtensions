@@ -3,7 +3,7 @@ using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.Network;
 
-namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
+namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Pavement
 {
     public class ZonablePedestrianPavementBuilder : ZonablePedestrianBuilderBase, INetInfoBuilderPart, ITrafficPlusPlusPart
     {
@@ -11,12 +11,12 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
         public int UIOrder { get { return 20; } }
 
         public string Name { get { return NetInfos.New.ZONEABLE_PED_PAVEMENT; } }
-        public string DisplayName { get { return "[BETA] Zonable Pedestrian Concrete"; } }
+        public string DisplayName { get { return "[BETA] Zonable Pedestrian Concrete Road"; } }
         public string Description { get { return "Paved roads are nicer to walk on than gravel."; } }
         public string ShortDescription { get { return "Parking, zoneable, restricted traffic [Traffic++ V2 required]"; } }
 
-        public string ThumbnailsPath { get { return @"Roads\PedestrianRoads\thumbnails_pavement.png"; } }
-        public string InfoTooltipPath { get { return @"Roads\PedestrianRoads\infotooltip_pavement.png"; } }
+        public string ThumbnailsPath { get { return @"Roads\PedestrianRoads\Pavement\thumbnails.png"; } }
+        public string InfoTooltipPath { get { return @"Roads\PedestrianRoads\Pavement\infotooltip.png"; } }
 
         public NetInfoVersion SupportedVersions
         {
