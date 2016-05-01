@@ -47,7 +47,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.StoneSmall
             ///////////////////////////
             // Texturing             //
             ///////////////////////////
-            ZonablePedestrianStoneSmallRoadBuilder.SetupTextures(info, version);
+            SetupTextures(info, version);
 
             ///////////////////////////
             // Set up                //
@@ -82,6 +82,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.StoneSmall
                 IsTwoWay = true,
                 LaneWidth = 2.5f,
                 SpeedLimit = 0.3f,
+                HasBusStop = false,
                 PedPropOffsetX = -2
             });
 
