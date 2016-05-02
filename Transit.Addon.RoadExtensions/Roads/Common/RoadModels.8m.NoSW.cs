@@ -7,10 +7,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
     {
         public static NetInfo Setup8mNoSWMesh(this NetInfo info, NetInfoVersion version)
         {
-            var highwayInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L);
-            var highwaySlopeInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L_SLOPE);
-            var defaultMaterial = highwayInfo.m_nodes[0].m_material;
-
             switch (version)
             {
                 case NetInfoVersion.Ground:
