@@ -4,7 +4,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
 {
     public static partial class RoadModels
     {
-        public static NetInfo Setup8m1p5mSWMesh(this NetInfo info, NetInfoVersion version)
+        public static NetInfo Setup8m1p5mSWMesh(this NetInfo info, NetInfoVersion version, AsymLaneType asymLt = AsymLaneType.L0R0)
         {
             switch (version)
             {
@@ -31,6 +31,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                             .SetMeshes
                             (@"Roads\Common\Meshes\8m\1p5mSW\Ground_Trans.obj",
                              @"Roads\Common\Meshes\8m\1p5mSW\Ground_Node_LOD.obj");
+
+                        segments0.HandleAsymSegmentFlags(asymLt);
 
                         info.m_segments = new[] { segments0 };
                         info.m_nodes = new[] { nodes0, nodes1 };
