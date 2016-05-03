@@ -24,7 +24,11 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
                     info.SetAllSegmentsTexture(
                         new TextureSet
                            (null,
-                            @"Roads\PedestrianRoads\Common\Textures\Ground_Segment__AlphaMap.png"));
+                            @"Roads\PedestrianRoads\Common\Textures\Ground_Segment__AlphaMap.png"),
+                        new LODTextureSet
+                           (@"Roads\PedestrianRoads\Common\Textures\Ground_Segment_LOD__MainTex.png",
+                            @"Roads\PedestrianRoads\Common\Textures\Ground_Segment_LOD__AlphaMap.png",
+                            @"Roads\PedestrianRoads\Common\Textures\Ground_Segment_LOD__XYSMap.png"));
 
                     foreach (var node in info.m_nodes)
                     {
@@ -33,14 +37,22 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
                             node.SetTextures(
                                 new TextureSet
                                    (null,
-                                    @"Roads\PedestrianRoads\Common\Textures\Ground_Trans__AlphaMap.png"));
+                                    @"Roads\PedestrianRoads\Common\Textures\Ground_Trans__AlphaMap.png"),
+                                new LODTextureSet
+                                   (@"Roads\PedestrianRoads\Common\Textures\Ground_Trans_LOD__MainTex.png",
+                                    @"Roads\PedestrianRoads\Common\Textures\Ground_Trans_LOD__AlphaMap.png",
+                                    @"Roads\PedestrianRoads\Common\Textures\Ground_Trans_LOD__XYSMap.png"));
                         }
                         else
                         {
                             node.SetTextures(
                                 new TextureSet
                                    (null,
-                                    @"Roads\PedestrianRoads\Common\Textures\Ground_Segment__AlphaMap.png"));
+                                    @"Roads\PedestrianRoads\Common\Textures\Ground_Segment__AlphaMap.png"),
+                                new LODTextureSet
+                                   (@"Roads\PedestrianRoads\Common\Textures\Ground_Node_LOD__MainTex.png",
+                                    @"Roads\PedestrianRoads\Common\Textures\Ground_Node_LOD__AlphaMap.png",
+                                    @"Roads\PedestrianRoads\Common\Textures\Ground_Node_LOD__XYSMap.png"));
                         }
                     }
                     break;
@@ -53,11 +65,9 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
             var onewayRoad = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ONEWAY_2L);
             var pedestrianVanilla = Prefabs.Find<NetInfo>(NetInfos.Vanilla.PED_PAVEMENT);
 
-
-            ///////////////////////////
-            // Ground                //
-            ///////////////////////////
             info.m_UnlockMilestone = onewayRoad.m_UnlockMilestone;
+            info.m_class = info.m_class.Clone("NExtPedRoad");
+            info.m_class.m_level = ItemClass.Level.Level5;
 
             switch (version)
             {
@@ -71,18 +81,24 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads
 
                         info.m_lanes[0].m_position = -4f;
                         info.m_lanes[0].m_width = 2f;
+                        info.m_lanes[0].m_laneProps = ScriptableObject.CreateInstance<NetLaneProps>();
 
                         if (pedestrianVanilla != null)
                         {
-                            info.m_lanes[0].m_laneProps = ScriptableObject.CreateInstance<NetLaneProps>();
                             info.m_lanes[0].m_laneProps.m_props = new NetLaneProps.Prop[1];
                             Array.Copy(pedestrianVanilla.m_lanes[0].m_laneProps.m_props, info.m_lanes[0].m_laneProps.m_props, 1);
+                        }
+                        else
+                        {
+                            info.m_lanes[0].m_laneProps.m_props = new NetLaneProps.Prop[0];
                         }
                         info.m_lanes[0].m_laneProps.m_props[0].m_position.x = 0.0f;
                         info.m_lanes[0].m_stopType = VehicleInfo.VehicleType.None;
 
                         info.m_lanes[3].m_position = 4f;
                         info.m_lanes[3].m_width = 2f;
+                        info.m_lanes[3].m_laneProps = ScriptableObject.CreateInstance<NetLaneProps>();
+                        info.m_lanes[3].m_laneProps.m_props = new NetLaneProps.Prop[0];
                         info.m_lanes[3].m_stopType = VehicleInfo.VehicleType.None;
 
                         info.m_lanes[1] = new ExtendedNetInfoLane(info.m_lanes[1], ExtendedVehicleType.ServiceVehicles);

@@ -26,7 +26,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Stone
 
         public NetInfoVersion SupportedVersions
         {
-            get { return NetInfoVersion.Ground | NetInfoVersion.Elevated | NetInfoVersion.Bridge; }
+            get { return NetInfoVersion.Ground; }
         }
 
         public void BuildUp(NetInfo info, NetInfoVersion version)

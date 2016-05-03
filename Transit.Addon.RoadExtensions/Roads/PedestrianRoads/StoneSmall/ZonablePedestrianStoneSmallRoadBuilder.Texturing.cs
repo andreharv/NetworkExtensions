@@ -27,22 +27,22 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.StoneSmall
                             {
                                 node.SetTextures(
                                     new TextureSet
-                                        (@"Roads\PedestrianRoads\StoneSmall\Textures\Ground_Node__MainTex.png",
-                                            @"Roads\PedestrianRoads\StoneSmall\Textures\Ground_Node__AlphaMap.png",
-                                            @"Roads\PedestrianRoads\StoneSmall\Textures\Ground_Node__XYSMap.png"),
+                                       (@"Roads\PedestrianRoads\StoneSmall\Textures\Ground_Node__MainTex.png",
+                                        @"Roads\PedestrianRoads\StoneSmall\Textures\Ground_Node__AlphaMap.png",
+                                        @"Roads\PedestrianRoads\StoneSmall\Textures\Ground_Node__XYSMap.png"),
                                     new LODTextureSet
-                                        (@"Roads\PedestrianRoads\StoneSmall\Textures\Ground_Node_LOD__MainTex.png",
-                                            @"Roads\PedestrianRoads\StoneSmall\Textures\Ground_Node_LOD__AlphaMap.png"));
+                                       (@"Roads\PedestrianRoads\StoneSmall\Textures\Ground_Node_LOD__MainTex.png",
+                                        @"Roads\PedestrianRoads\StoneSmall\Textures\Ground_Node_LOD__AlphaMap.png"));
                             }
                             else
                             {
                                 node.SetTextures(
                                     new TextureSet
-                                        (@"Roads\PedestrianRoads\StoneSmall\Textures\Ground_Trans__MainTex.png",
-                                            @"Roads\PedestrianRoads\StoneSmall\Textures\Ground_Trans__AlphaMap.png"),
+                                       (@"Roads\PedestrianRoads\StoneSmall\Textures\Ground_Trans__MainTex.png",
+                                        @"Roads\PedestrianRoads\StoneSmall\Textures\Ground_Trans__AlphaMap.png"),
                                     new LODTextureSet
-                                        (@"Roads\PedestrianRoads\StoneSmall\Textures\Ground_Trans_LOD__MainTex.png",
-                                            @"Roads\PedestrianRoads\StoneSmall\Textures\Ground_Trans_LOD__AlphaMap.png"));
+                                       (@"Roads\PedestrianRoads\StoneSmall\Textures\Ground_Trans_LOD__MainTex.png",
+                                        @"Roads\PedestrianRoads\StoneSmall\Textures\Ground_Trans_LOD__AlphaMap.png"));
                             }
                         }
 
@@ -67,15 +67,15 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.StoneSmall
                             {
                                 node.SetTextures(
                                     new TextureSet
-                                        (@"Roads\PedestrianRoads\StoneSmall\Textures\Elevated_Node__MainTex.png",
-                                            @"Roads\PedestrianRoads\StoneSmall\Textures\Elevated_Node__AlphaMap.png"));
+                                       (@"Roads\PedestrianRoads\StoneSmall\Textures\Elevated_Node__MainTex.png",
+                                        @"Roads\PedestrianRoads\StoneSmall\Textures\Elevated_Node__AlphaMap.png"));
                             }
                             else
                             {
                                 node.SetTextures(
                                     new TextureSet
-                                        (@"Roads\PedestrianRoads\StoneSmall\Textures\Elevated_Trans__MainTex.png",
-                                            @"Roads\PedestrianRoads\StoneSmall\Textures\Elevated_Trans__AlphaMap.png"));
+                                       (@"Roads\PedestrianRoads\StoneSmall\Textures\Elevated_Trans__MainTex.png",
+                                        @"Roads\PedestrianRoads\StoneSmall\Textures\Elevated_Trans__AlphaMap.png"));
                             }
                         }
 
