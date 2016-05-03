@@ -16,9 +16,13 @@ namespace Transit.Addon.RoadExtensions.Props
         public void BuildUp(PropInfo newProp)
         {
             var newEffect = EffectCollection.FindEffect("Street Light Large Road");
-            for (var i = 0; i < newProp.m_effects.Length; i++)
+
+            if (newEffect != null)
             {
-                newProp.m_effects[i].m_effect = newEffect;
+                for (var i = 0; i < newProp.m_effects.Length; i++)
+                {
+                    newProp.m_effects[i].m_effect = newEffect;
+                }
             }
         }
     }
