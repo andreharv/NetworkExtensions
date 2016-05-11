@@ -150,9 +150,8 @@ namespace TrafficManager.Custom.AI {
 #endif
 			if (addTraffic && vehicleData.m_leadingVehicle == 0 && realTimePositions.Count > 0 && realTimePositions[0].m_segment != 0) {
 				// add traffic to lane
-				uint laneId = PathManager.GetLaneID(realTimePositions[0]);
 				//Log._Debug($"HandleVehicle: adding traffic to segment {realTimePositions[0].m_segment}, lane {realTimePositions[0].m_lane}");
-                CustomRoadAI.AddTraffic(laneId, Singleton<NetManager>.instance.m_segments.m_buffer[realTimePositions[0].m_segment].Info.m_lanes[realTimePositions[0].m_lane], (ushort)Mathf.RoundToInt(vehicleData.CalculateTotalLength(vehicleId)), (ushort)Mathf.RoundToInt(lastFrameData.m_velocity.magnitude), realTraffic);
+				CustomRoadAI.AddTraffic(realTimePositions[0].m_segment, realTimePositions[0].m_lane, (ushort)Mathf.RoundToInt(vehicleData.CalculateTotalLength(vehicleId)), realTraffic ? (ushort?)Mathf.RoundToInt(lastFrameData.m_velocity.magnitude) : null);
 			}
 
 #if DEBUGV

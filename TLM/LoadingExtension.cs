@@ -35,9 +35,8 @@ namespace TrafficManager {
 #endif
 		public static bool IsPathManagerReplaced = false;
 		public CustomPathManager CustomPathManager { get; set; }
-        public bool DetourInited { get; set; }
-        public bool NodeSimulationLoaded { get; set; }
-		public List<Detour> Detours { get; set; }
+        public static bool DetourInited { get; set; }
+		public static List<Detour> Detours { get; set; }
         public TrafficManagerMode ToolMode { get; set; }
         public TrafficManagerTool TrafficManagerTool { get; set; }
 #if !TAM
@@ -50,18 +49,18 @@ namespace TrafficManager {
         }
 
 		public void revertDetours() {
-			if (LoadingExtension.Instance.DetourInited) {
+			if (DetourInited) {
 				Log.Info("Revert detours");
 				foreach (Detour d in Detours) {
 					RedirectionHelper.RevertRedirect(d.OriginalMethod, d.Redirect);
 				}
-				LoadingExtension.Instance.DetourInited = false;
+				DetourInited = false;
 				Detours.Clear();
 			}
 		}
 
 		public void initDetours() {
-			if (!LoadingExtension.Instance.DetourInited) {
+			if (!DetourInited) {
 				Log.Info("Init detours");
 				bool detourFailed = false;
 
@@ -768,7 +767,7 @@ namespace TrafficManager {
 					Log.Info("Detours successful");
 				}
 
-				LoadingExtension.Instance.DetourInited = true;
+				DetourInited = true;
 			}
 		}
 
@@ -832,6 +831,23 @@ namespace TrafficManager {
             switch (mode) {
                 case LoadMode.NewGame:
                 case LoadMode.LoadGame:
+					if (BuildConfig.applicationVersion != BuildConfig.VersionToString(TrafficManagerMod.GameVersion, false)) {
+						string[] majorVersionElms = BuildConfig.applicationVersion.Split('-');
+						string[] versionElms = majorVersionElms[0].Split('.');
+						uint versionA = Convert.ToUInt32(versionElms[0]);
+						uint versionB = Convert.ToUInt32(versionElms[1]);
+						uint versionC = Convert.ToUInt32(versionElms[2]);
+
+						bool isModTooOld = TrafficManagerMod.GameVersionA < versionA ||
+							(TrafficManagerMod.GameVersionA == versionA && TrafficManagerMod.GameVersionB < versionB) ||
+							(TrafficManagerMod.GameVersionA == versionA && TrafficManagerMod.GameVersionB == versionB && TrafficManagerMod.GameVersionC < versionC);
+
+						if (isModTooOld) {
+							UIView.library.ShowModal<ExceptionPanel>("ExceptionPanel").SetMessage("TM:PE has not been updated yet", $"Traffic Manager: President Edition detected that you are running a newer game version ({BuildConfig.applicationVersion}) than TM:PE has been built for ({BuildConfig.VersionToString(TrafficManagerMod.GameVersion, false)}). Please be aware that TM:PE has not been updated for the newest game version yet and thus it is very likely it will not work as expected.", false);
+						} else {
+							UIView.library.ShowModal<ExceptionPanel>("ExceptionPanel").SetMessage("Your game should be updated", $"Traffic Manager: President Edition has been built for game version {BuildConfig.VersionToString(TrafficManagerMod.GameVersion, false)}. You are running game version {BuildConfig.applicationVersion}. Some features of TM:PE will not work with older game versions. Please let Steam update your game.", false);
+						}
+					}
 					gameLoaded = true;
 					break;
 				default:

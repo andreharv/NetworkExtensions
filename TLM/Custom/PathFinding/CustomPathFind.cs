@@ -514,7 +514,8 @@ namespace TrafficManager.Custom.PathFinding {
 				uint laneID = PathManager.GetLaneID(currentPosition);
 				// NON-STOCK CODE START
 				NetInfo.Lane laneInfo = Singleton<NetManager>.instance.m_segments.m_buffer[currentPosition.m_segment].Info.m_lanes[currentPosition.m_lane];
-				CustomRoadAI.AddTraffic(laneID, laneInfo, (ushort)(this._isHeavyVehicle || _extVehicleType == ExtVehicleType.Bus ? 50 : 25), null, false); //SpeedLimitManager.GetLockFreeGameSpeedLimit(currentPosition.m_segment, currentPosition.m_lane, laneID, ref Singleton<NetManager>.instance.m_segments.m_buffer[currentPosition.m_segment].Info.m_lanes[currentPosition.m_lane])
+				if ((laneInfo.m_vehicleType & VehicleInfo.VehicleType.Car) != VehicleInfo.VehicleType.None)
+					CustomRoadAI.AddTraffic(currentPosition.m_segment, currentPosition.m_lane, (ushort)(this._isHeavyVehicle || _extVehicleType == ExtVehicleType.Bus ? 50 : 25), null);
 				// NON-STOCK CODE END
 				currentPosition = this._laneTarget[(int)((UIntPtr)laneID)];
 			}
@@ -732,7 +733,6 @@ namespace TrafficManager.Custom.PathFinding {
 
 				CustomPathManager pathManager = Singleton<CustomPathManager>.instance;
 				bool nextIsJunction = (nextNode.m_flags & NetNode.Flags.Junction) != NetNode.Flags.None;
-				bool nextIsRealJunction = nextNode.CountSegments() > 2;
 				bool nextIsTransition = (nextNode.m_flags & NetNode.Flags.Transition) != NetNode.Flags.None;
 				bool nextIsStartNodeOfPrevSegment = netManager.m_segments.m_buffer[(int)prevSegmentId].m_startNode == nextNodeId;
 				NetInfo.Direction normDirection = TrafficPriority.IsLeftHandDrive() ? NetInfo.Direction.Forward : NetInfo.Direction.Backward; // direction to normalize indices to
@@ -746,6 +746,7 @@ namespace TrafficManager.Custom.PathFinding {
 				// get segment geometry
 				//SegmentGeometry geometry = IsMasterPathFind ? CustomRoadAI.GetSegmentGeometry(prevSegmentId, nextNodeId) : CustomRoadAI.GetSegmentGeometry(prevSegmentId);
 				SegmentGeometry prevGeometry = CustomRoadAI.GetSegmentGeometry(prevSegmentId);
+				bool nextIsRealJunction = prevGeometry.CountOtherSegments(nextNodeId) > 1;
 				bool prevIsOutgoingOneWay = prevGeometry.IsOutgoingOneWay(nextIsStartNodeOfPrevSegment);
 				bool prevIsHighway = prevGeometry.IsHighway();
 				bool nextAreOnlyOneWayHighways = prevGeometry.HasOnlyHighways(nextIsStartNodeOfPrevSegment);
@@ -1626,7 +1627,7 @@ namespace TrafficManager.Custom.PathFinding {
 				} else {
 					prevRightSimilarLaneIndex = prevLaneInfo.m_similarLaneCount - prevLaneInfo.m_similarLaneIndex - 1;
 				}
-				prevSpeed = CustomRoadAI.laneMeanSpeeds[item.m_laneID];
+				prevSpeed = CustomRoadAI.laneMeanSpeeds[item.m_position.m_segment] != null && item.m_position.m_lane < CustomRoadAI.laneMeanSpeeds[item.m_position.m_segment].Length ? CustomRoadAI.laneMeanSpeeds[item.m_position.m_segment][item.m_position.m_lane] : 1f;
 				prevSpeed = (float)Math.Max(0.1f, Math.Round(prevSpeed * 0.1f) / 10f); // 0.01, 0.1, 0.2, ... , 1
 				// NON-STOCK CODE END //
 			}
@@ -1771,8 +1772,8 @@ namespace TrafficManager.Custom.PathFinding {
 						float nextDensity = 0.1f;
 						if (addCustomTrafficCosts && !strictlyAvoidLane) {
 							// calculate current lane density & speed
-							nextSpeed = CustomRoadAI.laneMeanSpeeds[curLaneId];
-							nextDensity = CustomRoadAI.laneMeanDensities[curLaneId];
+							nextSpeed = CustomRoadAI.laneMeanSpeeds[nextSegmentId] != null && laneIndex < CustomRoadAI.laneMeanSpeeds[nextSegmentId].Length ? CustomRoadAI.laneMeanSpeeds[nextSegmentId][laneIndex] : 1f;
+							nextDensity = CustomRoadAI.laneMeanDensities[nextSegmentId] != null && laneIndex < CustomRoadAI.laneMeanDensities[nextSegmentId].Length ? CustomRoadAI.laneMeanDensities[nextSegmentId][laneIndex] : 0f;
 							nextSpeed = (float)Math.Max(0.1f, Math.Round(nextSpeed * 0.1f) / 10f); // 0.1, 0.2, ..., 1
 							nextDensity = (float)Math.Max(0.2f, Math.Round(nextDensity * 0.1f) / 10f); // 0.1, 0.2, ..., 1
 						}

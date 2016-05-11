@@ -2,6 +2,17 @@
 A work-in-progress modification for **Cities: Skylines** to add additional road traffic control
 
 # Changelog
+1.6.17, 04/20/2016
+- Hotfix for reported path-finding problems
+
+1.6.16, 04/19/2016
+- Updated for game patch 1.4.1-f2
+
+1.6.15, 03/22/2016
+- Updated for game path 1.4.0-f3
+- Possible fix for crashes described by @cosminel1982
+- Added traditional Chinese translation
+
 1.6.14, 03/17/2016
 - Bugfix: Cargo trucks did not obey vehicle restrictions (thanks to @ad.vissers for pointing out this problem)
 - Bugfix: When Advanced AI was deactivated, u-turns did not have costs assigned

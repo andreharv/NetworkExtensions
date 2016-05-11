@@ -88,7 +88,7 @@ namespace TrafficManager.State {
 			if ((Singleton<NetManager>.instance.m_nodes.m_buffer[nodeId].m_flags & NetNode.Flags.Junction) == NetNode.Flags.None &&
 				connectionClass.m_service != ItemClass.Service.PublicTransport
 				) {
-				Log._Debug($"Flags: Node {nodeId} may not have a traffic light");
+				//Log._Debug($"Flags: Node {nodeId} may not have a traffic light");
 				return false;
 			}
 

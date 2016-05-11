@@ -336,6 +336,16 @@ namespace TrafficManager.Traffic {
 			return (laneInfo.m_vehicleType & VehicleInfo.VehicleType.Car) != VehicleInfo.VehicleType.None;
 		}
 
+		public static bool IsRailSegment(NetInfo segmentInfo) {
+			ItemClass connectionClass = segmentInfo.GetConnectionClass();
+			return connectionClass.m_service == ItemClass.Service.PublicTransport && connectionClass.m_subService == ItemClass.SubService.PublicTransportTrain;
+		}
+
+		public static bool IsRoadSegment(NetInfo segmentInfo) {
+			ItemClass connectionClass = segmentInfo.GetConnectionClass();
+			return connectionClass.m_service == ItemClass.Service.Road;
+		}
+
 		internal static void ClearCache(ushort segmentId) {
 			if (defaultVehicleTypeCache != null) {
 				defaultVehicleTypeCache[segmentId] = null;

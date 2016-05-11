@@ -451,7 +451,7 @@ namespace TrafficManager.Traffic {
 		/// </summary>
 		/// <param name="nodeId">The node at which other segments shall be counted</param>
 		/// <returns>number of connected segments at the given node</returns>
-		private int CountOtherSegments(ushort nodeId) {
+		public int CountOtherSegments(ushort nodeId) {
 			if ((Singleton<NetManager>.instance.m_nodes.m_buffer[nodeId].m_flags & NetNode.Flags.Created) == NetNode.Flags.None) {
 				return 0;
 			}

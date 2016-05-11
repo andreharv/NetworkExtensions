@@ -345,7 +345,7 @@ namespace TrafficManager.UI {
 		/// <summary>
 		/// Displays lane ids over lanes
 		/// </summary>
-		private void _guiLanes(ref NetSegment segment, ref NetInfo segmentInfo) {
+		private void _guiLanes(ushort segmentId, ref NetSegment segment, ref NetInfo segmentInfo) {
 			GUIStyle _counterStyle = new GUIStyle();
 			Vector3 centerPos = segment.m_bounds.center;
 			var screenPos = Camera.main.WorldToScreenPoint(centerPos);
@@ -370,7 +370,8 @@ namespace TrafficManager.UI {
 				if (curLaneId == 0)
 					break;
 
-				totalDensity += CustomRoadAI.currentLaneDensities[curLaneId];
+				if (CustomRoadAI.currentLaneDensities[segmentId] != null && i < CustomRoadAI.currentLaneDensities[segmentId].Length)
+					totalDensity += CustomRoadAI.currentLaneDensities[segmentId][i];
 
 				curLaneId = Singleton<NetManager>.instance.m_lanes.m_buffer[curLaneId].m_nextLane;
 			}
@@ -390,10 +391,10 @@ namespace TrafficManager.UI {
 				if (CustomRoadAI.InStartupPhase)
 					labelStr += ", in start-up phase";
 				else
-					labelStr += ", avg. speed: " + CustomRoadAI.laneMeanSpeeds[curLaneId] + " %";
-				labelStr += ", avg. density: " + CustomRoadAI.laneMeanDensities[curLaneId] + " %";
+					labelStr += ", avg. speed: " + (CustomRoadAI.laneMeanSpeeds[segmentId] != null && i < CustomRoadAI.laneMeanSpeeds[segmentId].Length ? ""+CustomRoadAI.laneMeanSpeeds[segmentId][i] : "?") + " %";
+				labelStr += ", rel. density: " + (CustomRoadAI.laneMeanDensities[segmentId] != null && i < CustomRoadAI.laneMeanDensities[segmentId].Length ? "" + CustomRoadAI.laneMeanDensities[segmentId][i] : "?") + " %";
 #if DEBUG
-				labelStr += " (" + CustomRoadAI.currentLaneDensities[curLaneId] + "/" + totalDensity + ")";
+				labelStr += " (" + (CustomRoadAI.currentLaneDensities[segmentId] != null && i < CustomRoadAI.currentLaneDensities[segmentId].Length ? "" + CustomRoadAI.currentLaneDensities[segmentId][i] : "?") + "/" + totalDensity + ")";
 #endif
 				labelStr += "\n";
 
@@ -453,9 +454,11 @@ namespace TrafficManager.UI {
 					while (lIndex < segmentInfo.m_lanes.Length && laneId != 0u) {
 						NetInfo.Lane lane = segmentInfo.m_lanes[lIndex];
 						if (lane.CheckType(NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, VehicleInfo.VehicleType.Car)) {
-							if (CustomRoadAI.laneMeanSpeeds[laneId] >= 0) {
-								meanLaneSpeed += (float)CustomRoadAI.laneMeanSpeeds[laneId];
-								++validLanes;
+							if (CustomRoadAI.laneMeanSpeeds[i] != null && lIndex < CustomRoadAI.laneMeanSpeeds[i].Length) {
+								if (CustomRoadAI.laneMeanSpeeds[i][lIndex] >= 0) {
+									meanLaneSpeed += (float)CustomRoadAI.laneMeanSpeeds[i][lIndex];
+									++validLanes;
+								}
 							}
 						}
 						lIndex++;
@@ -481,7 +484,7 @@ namespace TrafficManager.UI {
 					GUI.Label(labelRect, labelStr, _counterStyle);
 
 					if (Options.showLanes)
-						_guiLanes(ref segments.m_buffer[i], ref segmentInfo);
+						_guiLanes((ushort)i, ref segments.m_buffer[i], ref segmentInfo);
 				}
 			}
 		}
