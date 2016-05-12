@@ -34,7 +34,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Stone
             ///////////////////////////
             // Template              //
             ///////////////////////////
-            var roadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_2L);
+            var roadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_2L_TREES);
             var roadTunnelInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_2L_TUNNEL);
             info.m_connectGroup = (NetInfo.ConnectGroup)16;
             info.m_requireDirectRenderers = true;
@@ -44,7 +44,6 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Stone
             // 3DModeling            //
             ///////////////////////////
             info.Setup16mNoSWMesh(version);
-
 
             ///////////////////////////
             // Texturing             //
@@ -105,7 +104,6 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Stone
                 tempProps = bikeLanes[i].m_laneProps.m_props.ToList();
                 tempProps.RemoveProps(new string[] { "arrow" });
                 bikeLanes[i].m_laneProps.m_props = tempProps.ToArray();
-                Debug.Log("REx: Bike done");
             }
 
             tempProps = new List<NetLaneProps.Prop>();
@@ -124,7 +122,6 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Stone
                 tempProps = carLanes[i].m_laneProps.m_props.ToList();
                 tempProps.RemoveProps(new string[] { "arrow" });
                 carLanes[i].m_laneProps.m_props = tempProps.ToArray();
-                Debug.Log("REx: Carlane done");
 
             }
             var pedLanes = new List<NetInfo.Lane>();
@@ -136,7 +133,6 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Stone
                 pedLanes[i].m_width = 6;
                 tempProps = pedLanes[i].m_laneProps.m_props.ToList();
                 tempProps.RemoveProps(new string[] { "bus", "random" });
-                Debug.Log("REx: Pedlane done");
                 var tempPropProps = tempProps.Where(tp => tp.m_prop != null);
                 if (tempPropProps.Any(tp => tp.m_prop.name.ToLower().IndexOf("street light") != -1))
                 {
@@ -162,7 +158,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Stone
 
                 var treeProp = new NetLaneProps.Prop()
                 {
-                    m_tree = Prefabs.Find<TreeInfo>("Tree2variant").ShallowClone(),
+                    m_tree = Prefabs.Find<TreeInfo>("Tree2variant"),
                     m_repeatDistance = 30,
                     m_probability = 100,
                 };

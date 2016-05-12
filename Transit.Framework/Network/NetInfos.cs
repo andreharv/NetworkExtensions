@@ -99,6 +99,7 @@ namespace Transit.Framework.Network
                         }
 
                     case PED_GRAVEL:
+                    case PED_PAVEMENT:
                         switch (version)
                         {
                             case NetInfoVersion.Ground:

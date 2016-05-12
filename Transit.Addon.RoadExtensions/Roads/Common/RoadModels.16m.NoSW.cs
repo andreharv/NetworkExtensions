@@ -31,18 +31,22 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                     segments0
                         .SetFlagsDefault()
                         .SetMeshes(
-                        @"Roads\Common\Meshes\16m\NoSW\Ground.obj");
+                        @"Roads\Common\Meshes\16m\NoSW\Ground.obj",
+                        @"Roads\Common\Meshes\16m\NoSW\Ground_LOD.obj");
 
                     nodes0
                         .SetMeshes(
-                        @"Roads\Common\Meshes\16m\NoSW\Ground_Node.obj");
+                        @"Roads\Common\Meshes\16m\NoSW\Ground_Node.obj",
+                        @"Roads\Common\Meshes\16m\NoSW\Ground_Node_LOD.obj");
 
                     nodes1
                         .SetMeshes(
-                        @"Roads\Common\Meshes\16m\NoSW\Ground_Trans.obj");
+                        @"Roads\Common\Meshes\16m\NoSW\Ground_Trans.obj",
+                        @"Roads\Common\Meshes\16m\NoSW\Ground_Trans_LOD.obj");
 
                     nodes2
                         .SetMeshes(
+                        @"Roads\Common\Meshes\16m\NoSW\Ground_Node_Bike.obj",
                         @"Roads\Common\Meshes\16m\NoSW\Ground_Node_Bike.obj");
 
 

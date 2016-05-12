@@ -10,6 +10,7 @@ using Transit.Addon.RoadExtensions.Menus.Roads;
 using Transit.Addon.RoadExtensions.Menus.Roads.Textures;
 using Transit.Addon.RoadExtensions.Roads.TinyRoads.Alley2L;
 using Transit.Addon.RoadExtensions.Roads.TinyRoads.OneWay1L;
+using Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Pavement;
 using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.ExtensionPoints.AI;
@@ -64,13 +65,18 @@ namespace Transit.Addon.RoadExtensions
         {
             _container = new GameObject(REX_OBJECT_NAME);
 
-            RoadZoneBlocksCreationManager.RegisterCustomCreator<TinyRoadZoneBlocksCreator>(Alley2LBuilder.NAME);
-            RoadZoneBlocksCreationManager.RegisterCustomCreator<TinyRoadZoneBlocksCreator>(OneWay1LBuilder.NAME);
-            RoadZoneBlocksCreationManager.RegisterCustomCreator<TinyRoadZoneBlocksCreator>(ZonablePedestrianStoneSmallRoadBuilder.NAME);
+            var zoneBlockCreatorList = new List<string>() {
+                Alley2LBuilder.NAME,
+                OneWay1LBuilder.NAME,
+                ZonablePedestrianPavementBuilder.NAME,
+                ZonablePedestrianStoneSmallRoadBuilder.NAME
+            };
 
-            RoadSnappingModeManager.RegisterCustomSnapping<TinyRoadSnappingMode>(Alley2LBuilder.NAME);
-            RoadSnappingModeManager.RegisterCustomSnapping<TinyRoadSnappingMode>(OneWay1LBuilder.NAME);
-            RoadSnappingModeManager.RegisterCustomSnapping<TinyRoadSnappingMode>(ZonablePedestrianStoneSmallRoadBuilder.NAME);
+            foreach (var name in zoneBlockCreatorList)
+            {
+                RoadZoneBlocksCreationManager.RegisterCustomCreator<TinyRoadZoneBlocksCreator>(name);
+                RoadSnappingModeManager.RegisterCustomSnapping<TinyRoadSnappingMode>(name);
+            }
 
             _menuInstaller = _container.AddInstallerComponent<MenuInstaller>();
             _menuInstaller.Host = this;
