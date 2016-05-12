@@ -144,7 +144,6 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
                     bridgeAI.m_bridgePillarInfo = pillarInfo;
                     bridgeAI.m_middlePillarInfo = null;
                     bridgeAI.m_bridgePillarOffset = 0;
-                    bridgeAI.
                 }
             }
             if (bollardInfo != null)
