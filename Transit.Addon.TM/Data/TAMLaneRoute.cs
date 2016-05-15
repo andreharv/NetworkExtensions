@@ -4,6 +4,7 @@ using Transit.Framework;
 
 namespace Transit.Addon.TM.Data
 {
+    // TODO: Rename as TAMLaneRouteS since there are many of them in that object
     [Serializable]
     public class TAMLaneRoute
     {

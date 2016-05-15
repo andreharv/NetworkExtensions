@@ -11,7 +11,6 @@ namespace Transit.Addon.TM.PathFindingFeatures
     public partial class TAMLaneRoutingManager : Singleton<TAMLaneRoutingManager>, ILaneRoutingManager
     {
         private TAMLaneRoute[] _laneRoutes = null;
-        private readonly uint[] NO_CONNECTIONS = new uint[0];
 
         public void Init()
         {
@@ -114,70 +113,44 @@ namespace Transit.Addon.TM.PathFindingFeatures
             return lane;
         }
 
-        public bool AddLaneConnection(uint fromLaneId, uint toLaneId, out TAMLaneRoute route)
+        public bool CanLanesConnect(ushort nodeId, ushort originSegmentId, byte originLaneIndex, uint originLaneId, ushort destinationSegmentId, byte destinationLaneIndex, uint destinationLaneId, ExtendedUnitType unitType)
         {
-            route = GetOrCreateRoute(fromLaneId);
-            GetOrCreateRoute(toLaneId); // makes sure lane information is stored
+            if ((unitType & TAMSupported.UNITS) == 0)
+            {
+                // unit type not supported
+                return true;
+            }
 
-            var succeeded = route.AddConnection(toLaneId);
 
-            UpdateLaneArrows(route.LaneId, route.NodeId);
-            return succeeded;
-        }
+            var originLaneInfo = NetManager.instance.GetLaneInfo(originSegmentId, originLaneIndex); // TODO query over segment id and lane index
+            if (originLaneInfo == null)
+            {
+                // no lane info found
+                return true;
+            }
 
-        public bool RemoveLaneConnection(uint laneId, uint connectionId, out TAMLaneRoute route)
-        {
-            route = GetRoute(laneId);
+            if ((originLaneInfo.m_vehicleType & TAMSupported.VEHICLETYPES) == 0)
+            {
+                // vehicle type not supported
+                return true;
+            }
+
+            var destinationLane = NetManager.instance.GetLaneInfo(destinationSegmentId, destinationLaneIndex); // TODO query over segment id and lane index
+            if (destinationLane == null)
+            {
+                // no lane info found
+                return true;
+            }
+
+            if ((destinationLane.m_vehicleType & TAMSupported.VEHICLETYPES) == 0)
+            {
+                // vehicle type not supported
+                return true;
+            }
+
+            TAMLaneRoute route = GetRoute(originLaneId);
             if (route == null)
-                return false;
-
-            var succeeded = route.RemoveConnection(connectionId);
-
-            UpdateLaneArrows(route.LaneId, route.NodeId);
-            return succeeded;
-        }
-
-        public uint[] GetLaneConnections(uint laneId)
-        {
-            TAMLaneRoute lane = GetRoute(laneId);
-
-            if (lane == null)
-                return NO_CONNECTIONS;
-            return lane.Connections;
-        }
-
-        public bool CanLanesConnect(ushort nodeId, ushort originSegmentId, byte originLaneIndex, uint originLaneId, ushort destinationSegmentId, byte destinationLaneIndex, uint destinationLaneId, ExtendedUnitType unitType) {
-			if ((unitType & TAMSupported.UNITS) == 0) {
-				// unit type not supported
-				return true;
-			}
-
-
-			var originLaneInfo = NetManager.instance.GetLaneInfo(originSegmentId, originLaneIndex); // TODO query over segment id and lane index
-			if (originLaneInfo == null) {
-				// no lane info found
-				return true;
-			}
-
-			if ((originLaneInfo.m_vehicleType & TAMSupported.VEHICLETYPES) == 0) {
-				// vehicle type not supported
-				return true;
-			}
-
-			var destinationLane = NetManager.instance.GetLaneInfo(destinationSegmentId, destinationLaneIndex); // TODO query over segment id and lane index
-			if (destinationLane == null) {
-				// no lane info found
-				return true;
-			}
-
-			if ((destinationLane.m_vehicleType & TAMSupported.VEHICLETYPES) == 0) {
-				// vehicle type not supported
-				return true;
-			}
-
-			TAMLaneRoute route = GetRoute(originLaneId);
-			if (route == null)
-				return true;
+                return true;
 
             while (true)
             {
@@ -196,6 +169,6 @@ namespace Transit.Addon.TM.PathFindingFeatures
 #endif
                 }
             }
-		}
-	}
+        }
+    }
 }

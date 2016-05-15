@@ -82,6 +82,7 @@
     <Compile Include="Data\_Extensions\TPPLaneDataExtensions.cs" />
     <Compile Include="Data\_Extensions\TPPVehicleTypeExtensions.cs" />
     <Compile Include="Options.cs" />
+    <Compile Include="Overlays\LaneRouting\Markers\LaneRoutesMarker.cs" />
     <Compile Include="Overlays\LaneRouting\NodeRoutesOverlay.cs" />
     <Compile Include="PathFindingFeatures\TAMLaneRoutingManager.LaneArrows.cs" />
     <Compile Include="PathFindingFeatures\TAMLaneRoutingManager.Directions.cs" />

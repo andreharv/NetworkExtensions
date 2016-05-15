@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace Transit.Addon.TM.Overlays.LaneRouting.Markers
 {
-    // TODO: Pattern ViewModel of TAMLaneRoute ?
     public class LaneAnchorMarker : UIMarker
     {
         public uint LaneId { get; private set; }
