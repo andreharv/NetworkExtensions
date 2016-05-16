@@ -64,7 +64,7 @@ namespace Transit.Addon.TM.Tools.LaneDirectionEditor
                 }
             };
 
-            Vector3 nodePos = Singleton<NetManager>.instance.m_nodes.m_buffer[_selectedNodeId.Value].m_position;
+            var nodePos = Singleton<NetManager>.instance.m_nodes.m_buffer[_selectedNodeId.Value].m_position;
             var screenPos = Camera.main.WorldToScreenPoint(nodePos);
             screenPos.y = Screen.height - screenPos.y;
             //Log._Debug($"node pos of {SelectedNodeId}: {nodePos.ToString()} {screenPos.ToString()}");
@@ -119,19 +119,26 @@ namespace Transit.Addon.TM.Tools.LaneDirectionEditor
 
                 GUILayout.BeginVertical(laneStyle);
                 GUILayout.Label(Translation.GetString("Lane") + " " + (i + 1), laneTitleStyle);
-                GUILayout.BeginVertical();
                 GUILayout.BeginHorizontal();
-            
-                if (GUILayout.Button("←", ((flags & NetLane.Flags.Left) == NetLane.Flags.Left ? style1 : style2), GUILayout.Width(35), GUILayout.Height(25)))
+
+                var currentDirections = flags & NetLane.Flags.LeftForwardRight;
+
+                if (GUILayout.Button("←", ((currentDirections & NetLane.Flags.Left) == NetLane.Flags.Left ? style1 : style2), GUILayout.Width(35), GUILayout.Height(25)))
                 {
+                    var newDirections = ToggleLaneDirection(currentDirections, NetLane.Flags.Left);
+
                     ToggleLaneDirection(_selectedNodeId.Value, laneId, NetLane.Flags.Left);
                 }
-                if (GUILayout.Button("↑", ((flags & NetLane.Flags.Forward) == NetLane.Flags.Forward ? style1 : style2), GUILayout.Width(25), GUILayout.Height(35)))
+                if (GUILayout.Button("↑", ((currentDirections & NetLane.Flags.Forward) == NetLane.Flags.Forward ? style1 : style2), GUILayout.Width(25), GUILayout.Height(35)))
                 {
+                    var newDirections = ToggleLaneDirection(currentDirections, NetLane.Flags.Forward);
+
                     ToggleLaneDirection(_selectedNodeId.Value, laneId, NetLane.Flags.Forward);
                 }
-                if (GUILayout.Button("→", ((flags & NetLane.Flags.Right) == NetLane.Flags.Right ? style1 : style2), GUILayout.Width(35), GUILayout.Height(25)))
+                if (GUILayout.Button("→", ((currentDirections & NetLane.Flags.Right) == NetLane.Flags.Right ? style1 : style2), GUILayout.Width(35), GUILayout.Height(25)))
                 {
+                    var newDirections = ToggleLaneDirection(currentDirections, NetLane.Flags.Right);
+
                     ToggleLaneDirection(_selectedNodeId.Value, laneId, NetLane.Flags.Right);
                 }
 
@@ -161,13 +168,24 @@ namespace Transit.Addon.TM.Tools.LaneDirectionEditor
             GUILayout.EndVertical();
         }
 
-        private void ToggleLaneDirection(ushort nodeId, uint laneId, NetLane.Flags direction)
+        private NetLane.Flags ToggleLaneDirection(NetLane.Flags currentDirections, NetLane.Flags toggledDirection)
+        {
+            var isDirectionActive = (currentDirections & toggledDirection) == toggledDirection;
+
+            if (isDirectionActive)
+            {
+                return currentDirections & ~toggledDirection;
+            }
+            else
+            {
+                return currentDirections | toggledDirection;
+            }
+        }
+
+        private void ToggleLaneDirection(ushort nodeId, uint laneId, NetLane.Flags newDirections)
         {
             var marker = _overlay.GetOrCreateMarker(nodeId);
-
-            marker.ToggleRoute(laneId, direction);
-
-            //return TAMLaneRoutingManager.instance.ToggleLaneDirection(laneId, TAMLaneDirection.Left);
+            marker.SetLaneDirections(laneId, newDirections);
         }
 
         private void ShowTooltip(string text, Vector3 position)

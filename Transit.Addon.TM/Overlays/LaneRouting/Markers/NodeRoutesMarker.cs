@@ -26,11 +26,11 @@ namespace Transit.Addon.TM.Overlays.LaneRouting.Markers
         {
             NodeId = nodeId;
 
-            CreateAnchors();
-            CreateAnchorRoutes();
+            InitAnchorsMarkers();
+            InitLaneRoutesMarkers();
         }
 
-        private void CreateAnchors()
+        private void InitAnchorsMarkers()
         {
             var anchors = new List<LaneAnchorMarker>();
 
@@ -79,7 +79,7 @@ namespace Transit.Addon.TM.Overlays.LaneRouting.Markers
             _anchors = anchors.ToList();
         }
 
-        private void CreateAnchorRoutes()
+        private void InitLaneRoutesMarkers()
         {
             var routes = new List<LaneRoutesMarker>();
 
@@ -109,9 +109,61 @@ namespace Transit.Addon.TM.Overlays.LaneRouting.Markers
             _routes = routes;
         }
 
+        private LaneRoutesMarker CreateLaneRoutesMarker(uint laneId)
+        {
+            var anchor = GetAnchor(laneId);
+            if (anchor == null)
+            {
+                throw new Exception("Anchor not found for lane, do something");
+            }
+
+            return CreateLaneRoutesMarker(anchor);
+        }
+
+        private LaneRoutesMarker CreateLaneRoutesMarker(LaneAnchorMarker anchor)
+        {
+            var laneRoutes = TAMLaneRoutingManager.instance.GetOrCreateRoute(anchor.LaneId);
+            var laneRoutesMarker = new LaneRoutesMarker(laneRoutes, anchor, new LaneAnchorMarker[0]);
+            _routes.Add(laneRoutesMarker);
+
+            return laneRoutesMarker;
+        }
+
+        private IEnumerable<LaneAnchorMarker> GetAnchorRoutes(LaneAnchorMarker anchor)
+        {
+            var laneRoutes = GetLaneRoutes(anchor);
+            if (laneRoutes == null)
+            {
+                yield break;
+            }
+
+            foreach (var destination in laneRoutes.DestinationArchors)
+            {
+                yield return destination;
+            }
+        }
+
         private LaneRoutesMarker GetLaneRoutes(LaneAnchorMarker anchor)
         {
-            return _routes.FirstOrDefault(route => route.OriginArchor == anchor);
+            return _routes.FirstOrDefault(route => route.Model.LaneId == anchor.LaneId);
+        }
+
+        private LaneRoutesMarker GetLaneRoutes(uint laneId)
+        {
+            return _routes.FirstOrDefault(route => route.Model.LaneId == laneId);
+        }
+
+        private LaneAnchorMarker GetAnchor(uint laneId)
+        {
+            foreach (var a in _anchors)
+            {
+                if (a.LaneId == laneId)
+                {
+                    return a;
+                }
+            }
+
+            throw new Exception("Anchor not found for lane, do something");
         }
 
         public void EnableDestinationAnchors(LaneAnchorMarker origin)
@@ -162,8 +214,15 @@ namespace Transit.Addon.TM.Overlays.LaneRouting.Markers
             }
         }
 
-        public void ToggleRoute(uint laneId, NetLane.Flags direction)
+        public void SetLaneDirections(uint laneId, NetLane.Flags directions)
         {
+            var laneRoutesMarker = GetLaneRoutes(laneId);
+            if (laneRoutesMarker == null)
+            {
+                laneRoutesMarker = CreateLaneRoutesMarker(laneId);
+            }
+
+            laneRoutesMarker.SetDestinations(null /*TODO: Funky part*/);
         }
 
         private void ToggleRoute(LaneAnchorMarker origin, LaneAnchorMarker destination)
@@ -184,9 +243,7 @@ namespace Transit.Addon.TM.Overlays.LaneRouting.Markers
             var laneRoutesMarker = GetLaneRoutes(origin);
             if (laneRoutesMarker == null)
             {
-                var laneRoutes = TAMLaneRoutingManager.instance.GetOrCreateRoute(origin.LaneId);
-                laneRoutesMarker = new LaneRoutesMarker(laneRoutes, origin, new LaneAnchorMarker[0]);
-                _routes.Add(laneRoutesMarker);
+                laneRoutesMarker = CreateLaneRoutesMarker(origin);
             }
 
             return laneRoutesMarker.AddDestination(destination);
@@ -201,20 +258,6 @@ namespace Transit.Addon.TM.Overlays.LaneRouting.Markers
             }
 
             return laneRoutesMarker.RemoveDestination(destination);
-        }
-
-        private IEnumerable<LaneAnchorMarker> GetAnchorRoutes(LaneAnchorMarker anchor)
-        {
-            var laneRoutes = GetLaneRoutes(anchor);
-            if (laneRoutes == null)
-            {
-                yield break;
-            }
-
-            foreach (var destination in laneRoutes.DestinationArchors)
-            {
-                yield return destination;
-            }
         }
 
         protected override bool OnLeftClick()
