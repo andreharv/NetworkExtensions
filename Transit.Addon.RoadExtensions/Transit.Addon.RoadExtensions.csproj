@@ -687,36 +687,37 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\PedestrianRoads\Common\Textures\Ground_Node_LOD__AlphaMap.png">
+    <Content Include="Roads\Common\Textures\Plain\Ground_Node_LOD__AlphaMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Common\Textures\Ground_Node_LOD__MainTex.png">
+    <Content Include="Roads\Common\Textures\Plain\Ground_Node_LOD__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Common\Textures\Ground_Node_LOD__XYSMap.png">
+    <Content Include="Roads\Common\Textures\Plain\Ground_Node_LOD__XYSMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Common\Textures\Ground_Segment_LOD__AlphaMap.png">
+    <Content Include="Roads\Common\Textures\Plain\Ground_Segment_LOD__AlphaMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Common\Textures\Ground_Segment_LOD__MainTex.png">
+    <Content Include="Roads\Common\Textures\Plain\Ground_Segment_LOD__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Common\Textures\Ground_Segment_LOD__XYSMap.png">
+    <Content Include="Roads\Common\Textures\Plain\Ground_Segment_LOD__XYSMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Common\Textures\Ground_Segment__AlphaMap.png">
+    <Content Include="Roads\Common\Textures\Plain\Ground_Segment__AlphaMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Common\Textures\Ground_Trans_LOD__AlphaMap.png">
+    <Content Include="Roads\Common\Textures\Plain\Ground_Trans_LOD__AlphaMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Common\Textures\Ground_Trans_LOD__MainTex.png">
+    <Content Include="Roads\Common\Textures\Plain\Ground_Trans_LOD__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Common\Textures\Ground_Trans_LOD__XYSMap.png">
+    <Content Include="Roads\Common\Textures\Plain\Ground_Trans_LOD__XYSMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Common\Textures\Ground_Trans__AlphaMap.png">
+    <Content Include="Roads\Common\Textures\Plain\Ground_Trans__AlphaMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\PedestrianRoads\Gravel\infotooltip.png">
