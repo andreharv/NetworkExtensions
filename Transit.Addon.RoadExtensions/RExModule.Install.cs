@@ -16,8 +16,8 @@ using Transit.Framework.Builders;
 using Transit.Framework.ExtensionPoints.AI;
 using UnityEngine;
 using Object = UnityEngine.Object;
-using Transit.Addon.RoadExtensions.Roads.PedestrianRoads;
-using ZonablePedestrianStoneSmallRoadBuilder = Transit.Addon.RoadExtensions.Roads.PedestrianRoads.StoneSmall.ZonablePedestrianStoneSmallRoadBuilder;
+using Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Gravel;
+using Transit.Addon.RoadExtensions.Roads.PedestrianRoads.StoneSmall;
 
 namespace Transit.Addon.RoadExtensions
 {
@@ -65,14 +65,16 @@ namespace Transit.Addon.RoadExtensions
         {
             _container = new GameObject(REX_OBJECT_NAME);
 
-            var zoneBlockCreatorList = new List<string>() {
+            var tinyZoneBlockCreators = new []
+            {
                 Alley2LBuilder.NAME,
                 OneWay1LBuilder.NAME,
+                ZonablePedestrianGravelBuilder.NAME,
                 ZonablePedestrianPavementBuilder.NAME,
                 ZonablePedestrianStoneSmallRoadBuilder.NAME
             };
 
-            foreach (var name in zoneBlockCreatorList)
+            foreach (var name in tinyZoneBlockCreators)
             {
                 RoadZoneBlocksCreationManager.RegisterCustomCreator<TinyRoadZoneBlocksCreator>(name);
                 RoadSnappingModeManager.RegisterCustomSnapping<TinyRoadSnappingMode>(name);
