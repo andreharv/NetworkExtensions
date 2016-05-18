@@ -1,30 +1,29 @@
-﻿using Transit.Addon.RoadExtensions.Menus.Roads;
-using Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common;
+﻿using Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.Network;
 
-namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.StoneSmall
+namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.PavementTiny
 {
-    public partial class ZonablePedestrianStoneSmallRoadBuilder : Activable, INetInfoBuilderPart, INetInfoLateBuilder
+    public partial class ZonablePedestrianTinyPavedRoadBuilder : Activable, INetInfoBuilderPart, INetInfoLateBuilder
     {
-        public int Order { get { return 320; } }
-        public int UIOrder { get { return 40; } }
+        public int Order { get { return 310; } }
+        public int UIOrder { get { return 20; } }
 
-        public const string NAME = "Zonable Pedestrian Small Stone Road";
-        public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_2L; } }
+        public string BasedPrefabName { get { return ZonablePedestrianHelper.BasedPrefabName; } }
+        public string UICategory { get { return ZonablePedestrianHelper.UICategory; } }
+        public const string NAME = NetInfos.New.ZONEABLE_PED_PAVEMENT;
         public string Name { get { return NAME; } }
-        public string DisplayName { get { return "[BETA] Zonable Pedestrian Small Stone Road"; } }
-        public string Description { get { return "Small stone pedestrian Roads are only accessible to pedestrians and emergency vehicles"; } }
-        public string ShortDescription { get { return "No Passenger Vehicles, zoneable [Traffic++ V2 required]"; } }
-        public string UICategory { get { return RExExtendedMenus.ROADS_PEDESTRIANS; } }
-
-        public string ThumbnailsPath { get { return @"Roads\PedestrianRoads\StoneSmall\thumbnails.png"; } }
-        public string InfoTooltipPath { get { return @"Roads\PedestrianRoads\StoneSmall\infotooltip.png"; } }
+        public string DisplayName { get { return "Zonable Pedestrian Tiny Paved Road"; } }
+        public string Description { get { return "Paved roads are nicer to walk on than gravel."; } }
+        public string ShortDescription { get { return "Zoneable, No Passenger Vehicles [Traffic++ V2 required]"; } }
+    
+        public string ThumbnailsPath { get { return @"Roads\PedestrianRoads\PavementTiny\thumbnails.png"; } }
+        public string InfoTooltipPath { get { return @"Roads\PedestrianRoads\PavementTiny\infotooltip.png"; } }
 
         public NetInfoVersion SupportedVersions
         {
-            get { return NetInfoVersion.Ground | NetInfoVersion.Elevated | NetInfoVersion.Bridge; }
+            get { return NetInfoVersion.Ground | NetInfoVersion.Elevated; }
         }
 
         public void BuildUp(NetInfo info, NetInfoVersion version)
@@ -34,13 +33,19 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.StoneSmall
             ///////////////////////////
             info.m_createGravel = false;
             info.m_createPavement = true;
-            ZPBB.SetInfo(info, version);
+            ZonablePedestrianHelper.SetInfo(info, version);
+
             ///////////////////////////
             // Texturing             //
             ///////////////////////////
-
-            SetupTextures(info, version);
-
+            if (version == NetInfoVersion.Ground)
+            {
+                info.SetNakedGroundTexture(version);
+            }
+            else
+            {
+                SetupTextures(info, version);
+            }
             ///////////////////////////
             // AI                    //
             ///////////////////////////
@@ -64,13 +69,13 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.StoneSmall
 
         public void LateBuildUp(NetInfo info, NetInfoVersion version)
         {
-            var bollardName = "StoneBollard";
+            var bollardName = "RetractBollard";
             var bollardInfo = PrefabCollection<PropInfo>.FindLoaded($"478820060.{bollardName}_Data");
             if (bollardInfo == null)
             {
                 bollardInfo = PrefabCollection<PropInfo>.FindLoaded($"{bollardName}.{bollardName}_Data");
             }
-            ZPBB.LateBuildUpInfo(info, version, bollardInfo);
+            ZonablePedestrianHelper.LateBuildUpInfo(info, version, bollardInfo);
         }
     }
 }
