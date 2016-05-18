@@ -39,9 +39,9 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Gravel
                         }
                     }
                     //new LODTextureSet(
-                    //    @"Roads\PedestrianRoads\Common\Textures\Ground_Segment_LOD__AlphaMap.png",
-                    //    @"Roads\PedestrianRoads\Common\Textures\Ground_Segment_LOD__AlphaMap.png",
-                    //    @"Roads\PedestrianRoads\Common\Textures\Ground_Node_LOD__XYSMap.png"));
+                    //    @"Roads\Common\Textures\PlainGround_Segment_LOD__AlphaMap.png",
+                    //    @"Roads\Common\Textures\PlainGround_Segment_LOD__AlphaMap.png",
+                    //    @"Roads\Common\Textures\PlainGround_Node_LOD__XYSMap.png"));
                     break;
             }
         }

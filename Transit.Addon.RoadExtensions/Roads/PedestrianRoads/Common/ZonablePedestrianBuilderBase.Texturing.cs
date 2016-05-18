@@ -12,12 +12,12 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
                 case NetInfoVersion.Ground:
                     info.SetAllSegmentsTexture(
                 new TextureSet(
-                    @"Roads\PedestrianRoads\Common\Textures\Ground_Segment__AlphaMap.png",
-                    @"Roads\PedestrianRoads\Common\Textures\Ground_Segment__AlphaMap.png"),
+                    @"Roads\Common\Textures\Plain\Ground_Segment__AlphaMap.png",
+                    @"Roads\Common\Textures\Plain\Ground_Segment__AlphaMap.png"),
                 new LODTextureSet(
-                    @"Roads\PedestrianRoads\Common\Textures\Ground_Segment_LOD__AlphaMap.png",
-                    @"Roads\PedestrianRoads\Common\Textures\Ground_Segment_LOD__AlphaMap.png",
-                    @"Roads\PedestrianRoads\Common\Textures\Ground_Node_LOD__XYSMap.png"));
+                    @"Roads\Common\Textures\Plain\Ground_Segment_LOD__AlphaMap.png",
+                    @"Roads\Common\Textures\Plain\Ground_Segment_LOD__AlphaMap.png",
+                    @"Roads\Common\Textures\Plain\Ground_Node_LOD__XYSMap.png"));
 
                     foreach (var node in info.m_nodes)
                     {
@@ -25,8 +25,8 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
                         {
                             node.SetTextures(
                                 new TextureSet(
-                                    @"Roads\PedestrianRoads\Common\Textures\Ground_Segment__AlphaMap.png",
-                                    @"Roads\PedestrianRoads\Common\Textures\Ground_Segment__AlphaMap.png"),
+                                    @"Roads\Common\Textures\Plain\Ground_Segment__AlphaMap.png",
+                                    @"Roads\Common\Textures\Plain\Ground_Segment__AlphaMap.png"),
                                 new LODTextureSet
                                     (@"Roads\PedestrianRoads\StoneSmall\Textures\Ground_Node_LOD__MainTex.png",
                                      @"Roads\PedestrianRoads\StoneSmall\Textures\Ground_Node_LOD__AlphaMap.png",

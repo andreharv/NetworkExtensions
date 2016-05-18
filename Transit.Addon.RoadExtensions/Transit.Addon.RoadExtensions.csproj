@@ -686,7 +686,6 @@
     <Content Include="Roads\PedestrianRoads\BoardwalkSmall\Textures\Elevated_Segment__XYSMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Common\Textures\Ground_Node_LOD__AlphaMap.png">
     <Content Include="Roads\Common\Textures\Plain\Ground_Node_LOD__AlphaMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
