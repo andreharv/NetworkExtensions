@@ -8,7 +8,7 @@ using Transit.Framework.Network;
 
 namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Pavement
 {
-    public class ZonablePedestrianPavementBuilder : Activable, INetInfoBuilderPart, INetInfoLateBuilder
+    public partial class ZonablePedestrianPavementBuilder : Activable, INetInfoBuilderPart, INetInfoLateBuilder
     {
         public int Order { get { return 310; } }
         public int UIOrder { get { return 20; } }
@@ -40,9 +40,14 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Pavement
             ///////////////////////////
             // Texturing             //
             ///////////////////////////
-
-            ZPBBTexture.SetNakedTexture(info, version);
-
+            if (version == NetInfoVersion.Ground)
+            {
+                ZPBBTexture.SetNakedGroundTexture(info, version);
+            }
+            else
+            {
+                SetupTextures(info, version);
+            }
             ///////////////////////////
             // AI                    //
             ///////////////////////////

@@ -80,7 +80,16 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
             pedLane.m_width = 8;
             pedLane.m_verticalOffset = 0.05f;
             var tempProps = new List<NetLaneProps.Prop>();
+            var tempProps2 = new List<NetLaneProps.Prop>();
             tempProps = pedLane.m_laneProps.m_props.ToList();
+            for (int i = 0; i < vehicleLanes.Count; i++)
+            {
+                var temp = new List<NetLaneProps.Prop>();
+                temp = vehicleLanes[i].m_laneProps.m_props.ToList();
+                temp.RemoveProps(new string[] { "arrow", "manhole" });
+                tempProps2.AddRange(temp);
+                vehicleLanes[i].m_laneProps.m_props = tempProps2.ToArray();
+            }
             tempProps.RemoveProps(new string[] { "random", "bus", "limit" });
             tempProps.ReplacePropInfo(new KeyValuePair<string, PropInfo>("street light", Prefabs.Find<PropInfo>("StreetLamp02")));
             tempProps.ReplacePropInfo(new KeyValuePair<string, PropInfo>("traffic light 01", Prefabs.Find<PropInfo>("Traffic Light 01 Mirror")));

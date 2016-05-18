@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Transit.Addon.RoadExtensions.Menus.Roads;
 using Transit.Addon.RoadExtensions.Roads.Common;
@@ -26,7 +27,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Stone
 
         public NetInfoVersion SupportedVersions
         {
-            get { return NetInfoVersion.Ground; }
+            get { return NetInfoVersion.Ground | NetInfoVersion.Elevated; }
         }
 
         public void BuildUp(NetInfo info, NetInfoVersion version)
@@ -64,7 +65,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Stone
             info.m_halfWidth = 8;
             info.m_UnlockMilestone = roadInfo.m_UnlockMilestone;
             info.m_pavementWidth = 2;
-            info.m_requireSurfaceMaps = false;
+            info.m_requireSurfaceMaps = true;
             info.m_dlcRequired = SteamHelper.DLC_BitMask.AfterDarkDLC;
             var pedModdedLanes = info.SetRoadLanes(version, new LanesConfiguration() { PedPropOffsetX = 3.5f, LanesToAdd = 2, SpeedLimit = 0.2f });
 
@@ -127,6 +128,15 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Stone
             var pedLanes = new List<NetInfo.Lane>();
             pedLanes.AddRange(info.m_lanes.Where(l => l.m_laneType == NetInfo.LaneType.Pedestrian).OrderBy(l => l.m_position));
             tempProps = new List<NetLaneProps.Prop>();
+            var tempProps2 = new List<NetLaneProps.Prop>();
+            for (int i = 0; i < vehicleLanes.Count; i++)
+            {
+                var temp = new List<NetLaneProps.Prop>();
+                temp = vehicleLanes[i].m_laneProps.m_props.ToList();
+                temp.RemoveProps(new string[] { "arrow", "manhole" });
+                tempProps2.AddRange(temp);
+                vehicleLanes[i].m_laneProps.m_props = tempProps2.ToArray();
+            }
             for (int i = 0; i < pedLanes.Count; i++)
             {
                 pedLanes[i].m_position = ((i * 2) - 1) * 5;
@@ -155,16 +165,32 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Stone
                     lightProp.m_position.x = ((i * 2) - 1) * -2.5f;
                     tempProps.Add(lightProp);
                 }
-
-                var treeProp = new NetLaneProps.Prop()
+                if (version == NetInfoVersion.Ground)
                 {
-                    m_tree = Prefabs.Find<TreeInfo>("Tree2variant"),
-                    m_repeatDistance = 30,
-                    m_probability = 100,
-                };
-                treeProp.m_position.x = ((i * 2) - 1) * 1.4f;
+                    var treeProp = new NetLaneProps.Prop()
+                    {
+                        m_tree = Prefabs.Find<TreeInfo>("Tree2variant"),
+                        m_repeatDistance = 30,
+                        m_probability = 100,
+                    };
+                    treeProp.m_position.x = ((i * 2) - 1) * 1.4f;
 
-                tempProps.Add(treeProp);
+                    tempProps.Add(treeProp);
+                }
+                else if (version == NetInfoVersion.Elevated || version == NetInfoVersion.Bridge)
+                {
+                    var benchProp1 = new NetLaneProps.Prop()
+                    {
+                        m_prop = Prefabs.Find<PropInfo>("High Bench"),
+                        m_repeatDistance = 80,
+                        m_segmentOffset = (i - 1) * -0.5f,
+                        m_probability = 100,
+                        m_angle = 90 + (i * 180)
+                    };
+                    benchProp1.m_position.x = ((i * 2) - 1)* 1.8f;
+
+                    tempProps.Add(benchProp1);
+                }
                 pedLanes[i].m_laneProps.m_props = tempProps.ToArray();
             }
 
@@ -210,7 +236,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Stone
             {
                 stoneBollard = PrefabCollection<PropInfo>.FindLoaded("StoneBollard.StoneBollard_Data");
             }
-            
+
             for (int i = 0; i < pedLanes.Count; i++)
             {
                 var bollardProp = new NetLaneProps.Prop()

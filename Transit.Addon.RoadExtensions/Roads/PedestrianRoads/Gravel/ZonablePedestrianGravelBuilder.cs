@@ -41,7 +41,15 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Gravel
             // Texturing             //
             ///////////////////////////
             info.Setup8mNoSwWoodMesh(version);
-            SetupTextures(info, version);
+            if (version == NetInfoVersion.Ground)
+            {
+                ZPBBTexture.SetNakedGroundTexture(info, version);
+            }
+            else
+            {
+                SetupTextures(info, version);
+            }
+            
 
             ///////////////////////////
             // AI                    //

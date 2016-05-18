@@ -5,12 +5,11 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
 {
     public static class ZPBBTexture
     {
-        public static void SetNakedTexture(this NetInfo info, NetInfoVersion version)
+        public static void SetNakedGroundTexture(this NetInfo info, NetInfoVersion version)
         {
             switch (version)
             {
                 case NetInfoVersion.Ground:
-                case NetInfoVersion.Elevated:
                     info.SetAllSegmentsTexture(
                 new TextureSet(
                     @"Roads\PedestrianRoads\Common\Textures\Ground_Segment__AlphaMap.png",
@@ -25,10 +24,9 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
                         if (node.m_flagsRequired != NetNode.Flags.Transition)
                         {
                             node.SetTextures(
-                                new TextureSet
-                                    (@"Roads\PedestrianRoads\StoneSmall\Textures\Ground_Node__MainTex.png",
-                                        @"Roads\PedestrianRoads\StoneSmall\Textures\Ground_Node__AlphaMap.png",
-                                        @"Roads\PedestrianRoads\StoneSmall\Textures\Ground_Node__XYSMap.png"),
+                                new TextureSet(
+                                    @"Roads\PedestrianRoads\Common\Textures\Ground_Segment__AlphaMap.png",
+                                    @"Roads\PedestrianRoads\Common\Textures\Ground_Segment__AlphaMap.png"),
                                 new LODTextureSet
                                     (@"Roads\PedestrianRoads\StoneSmall\Textures\Ground_Node_LOD__MainTex.png",
                                      @"Roads\PedestrianRoads\StoneSmall\Textures\Ground_Node_LOD__AlphaMap.png",
