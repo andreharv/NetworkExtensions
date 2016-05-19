@@ -8,13 +8,13 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.PavementTiny
     public partial class ZonablePedestrianTinyPavedRoadBuilder : Activable, INetInfoBuilderPart, INetInfoLateBuilder
     {
         public int Order { get { return 310; } }
-        public int UIOrder { get { return 20; } }
+        public int UIOrder { get { return 15; } }
 
         public string BasedPrefabName { get { return ZonablePedestrianHelper.BasedPrefabName; } }
         public string UICategory { get { return ZonablePedestrianHelper.UICategory; } }
-        public const string NAME = NetInfos.New.ZONEABLE_PED_PAVEMENT;
+        public const string NAME = "Zonable Pedestrian Pavement Tiny";
         public string Name { get { return NAME; } }
-        public string DisplayName { get { return "Zonable Pedestrian Tiny Paved Road"; } }
+        public string DisplayName { get { return "Zonable Pedestrian Paved Tiny Road"; } }
         public string Description { get { return "Paved roads are nicer to walk on than gravel."; } }
         public string ShortDescription { get { return "Zoneable, No Passenger Vehicles [Traffic++ V2 required]"; } }
     

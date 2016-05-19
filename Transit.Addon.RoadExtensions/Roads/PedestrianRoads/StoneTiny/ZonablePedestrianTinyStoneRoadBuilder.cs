@@ -9,12 +9,12 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.StoneTiny
     public partial class ZonablePedestrianTinyStoneRoadBuilder : Activable, INetInfoBuilderPart, INetInfoLateBuilder
     {
         public int Order { get { return 320; } }
-        public int UIOrder { get { return 40; } }
+        public int UIOrder { get { return 25; } }
 
-        public const string NAME = "Zonable Pedestrian Tiny Stone Road";
+        public const string NAME = "Zonable Pedestrian Stone Tiny Road";
         public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_2L; } }
         public string Name { get { return NAME; } }
-        public string DisplayName { get { return "Zonable Pedestrian Tiny Stone Road"; } }
+        public string DisplayName { get { return "Zonable Pedestrian Stone Tiny Road"; } }
         public string Description { get { return "Stone pedestrian Roads are only accessible to pedestrians and emergency vehicles"; } }
         public string ShortDescription { get { return "Zoneable, No Passenger Vehicles [Traffic++ V2 required]"; } }
         public string UICategory { get { return RExExtendedMenus.ROADS_PEDESTRIANS; } }

@@ -75,18 +75,20 @@
     <Compile Include="RExModule.Install.Menu.cs" />
     <Compile Include="RExModule.Install.Roads.cs" />
     <Compile Include="RExModule.Install.Init.cs" />
+    <Compile Include="Roads\PedestrianRoads\Legacy\ZonablePedestrianBuilderBase.cs" />
     <Compile Include="Roads\PedestrianRoads\Common\ZonablePedestrianHelper.Texturing.cs" />
     <Compile Include="Roads\PedestrianRoads\GravelTiny\ZonablePedestrianTinyGravelRoadBuilder.cs" />
     <Compile Include="Roads\PedestrianRoads\GravelTiny\ZonablePedestrianTinyGravelRoadBuilder.Texturing.cs" />
+    <Compile Include="Roads\PedestrianRoads\Legacy\Gravel\ZonablePedestrianGravelRoadBuilder.cs" />
     <Compile Include="Roads\PedestrianRoads\PavementTiny\ZonablePedestrianTinyPavedRoadBuilder.cs" />
     <Compile Include="Roads\PedestrianRoads\PavementTiny\ZonablePedestrianTinyPavedRoadBuilder.Texturing.cs" />
+    <Compile Include="Roads\PedestrianRoads\Legacy\Pavement\ZonablePedestrianPavedRoadBuilder.cs" />
     <Compile Include="Roads\PedestrianRoads\StoneTiny\ZonablePedestrianTinyStoneRoadBuilder.Texturing.cs" />
     <Compile Include="Roads\PedestrianRoads\StoneTiny\ZonablePedestrianTinyStoneRoadBuilder.cs" />
     <Compile Include="Menus\Roads\Textures\RExExtendedSubBarAtlasBuilder.cs" />
     <Compile Include="Roads\PedestrianRoads\Stone\ZonablePedestrianStoneRoadBuilder.cs" />
     <Compile Include="Roads\PedestrianRoads\Stone\ZonablePedestrianStoneRoadBuilder.Texturing.cs" />
     <Compile Include="Roads\PedestrianRoads\Common\ZonablePedestrianHelper.cs" />
-    <Compile Include="Menus\Roads\Textures\RExExtendedSubBarAtlasBuilder.cs" />
     <Compile Include="Roads\TinyRoads\Plain2L\PlainRoadBuilder.cs" />
     <Compile Include="Roads\TinyRoads\Plain2L\PlainRoadBuilder.cs.Texturing.cs" />
     <Compile Include="Roads\TinyRoads\TinyRoadMenuModifier.cs" />
@@ -728,6 +730,12 @@
     <Content Include="Roads\PedestrianRoads\GravelTiny\thumbnails.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Roads\PedestrianRoads\Legacy\Gravel\infotooltip.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\PedestrianRoads\Legacy\Gravel\thumbnails.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Roads\PedestrianRoads\PavementTiny\infotooltip.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -741,6 +749,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\PedestrianRoads\PavementTiny\thumbnails.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\PedestrianRoads\Legacy\Pavement\infotooltip.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\PedestrianRoads\Legacy\Pavement\thumbnails.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\PedestrianRoads\StoneTiny\infotooltip.png">

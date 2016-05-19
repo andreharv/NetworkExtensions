@@ -9,14 +9,14 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.GravelTiny
     public partial class ZonablePedestrianTinyGravelRoadBuilder : Activable, INetInfoBuilderPart, INetInfoLateBuilder
     {
         public int Order { get { return 300; } }
-        public int UIOrder { get { return 10; } }
+        public int UIOrder { get { return 5; } }
 
         public string BasedPrefabName { get { return ZonablePedestrianHelper.BasedPrefabName; } }
         public string UICategory { get { return ZonablePedestrianHelper.UICategory; } }
 
-        public const string NAME = "Zonable Pedestrian Gravel";
+        public const string NAME = "Zonable Pedestrian Gravel Tiny";
         public string Name { get { return NAME; } }
-        public string DisplayName { get { return "Zonable Pedestrian Tiny Gravel Road"; } }
+        public string DisplayName { get { return "Zonable Pedestrian Gravel Tiny Road"; } }
         public string Description { get { return "Gravel roads allow pedestrians to walk fast and easy."; } }
         public string ShortDescription { get { return "Zoneable, No Passenger Vehicles [Traffic++ V2 required]"; } }
 
