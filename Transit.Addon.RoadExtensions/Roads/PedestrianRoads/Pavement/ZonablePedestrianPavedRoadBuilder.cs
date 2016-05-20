@@ -1,9 +1,10 @@
 ﻿using Transit.Addon.RoadExtensions.Compatibility;
+using Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.Network;
 
-namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Legacy.Pavement
+namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Pavement
 {
     public class ZonablePedestrianPavedRoadBuilder : ZonablePedestrianBuilderBase, INetInfoBuilderPart, ITrafficPlusPlusPart
     {
@@ -15,8 +16,8 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Legacy.Pavement
         public string Description { get { return "Paved roads are nicer to walk on than gravel."; } }
         public string ShortDescription { get { return "Zoneable, No Passenger Vehicles [Traffic++ V2 required]"; } }
 
-        public string ThumbnailsPath { get { return @"Roads\PedestrianRoads\Legacy\Pavement\thumbnails.png"; } }
-        public string InfoTooltipPath { get { return @"Roads\PedestrianRoads\Legacy\Pavement\infotooltip.png"; } }
+        public string ThumbnailsPath { get { return @"Roads\PedestrianRoads\Pavement\thumbnails.png"; } }
+        public string InfoTooltipPath { get { return @"Roads\PedestrianRoads\Pavement\infotooltip.png"; } }
 
         public NetInfoVersion SupportedVersions
         {

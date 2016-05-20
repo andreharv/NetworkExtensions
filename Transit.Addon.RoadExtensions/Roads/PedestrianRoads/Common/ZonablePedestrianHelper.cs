@@ -26,7 +26,6 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
             // Template              //
             ///////////////////////////
             var roadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_2L_TREES);
-            var roadTunnelInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_2L_TUNNEL);
 
             ///////////////////////////
             // 3DModeling            //
@@ -46,8 +45,8 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
             info.m_UnlockMilestone = roadInfo.m_UnlockMilestone;
             info.m_pavementWidth = 2;
             info.m_class = roadInfo.m_class.Clone($"NExt {info.name}");
-
             info.m_class.m_level = ItemClass.Level.Level5;
+
             // Setting up lanes
             info.SetRoadLanes(version, new LanesConfiguration
             {

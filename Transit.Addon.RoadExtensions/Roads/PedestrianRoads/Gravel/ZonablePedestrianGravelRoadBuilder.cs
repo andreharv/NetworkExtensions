@@ -1,8 +1,9 @@
 ﻿using Transit.Addon.RoadExtensions.Compatibility;
+using Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
 
-namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Legacy.Gravel
+namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Gravel
 {
     public class ZonablePedestrianGravelRoadBuilder : ZonablePedestrianBuilderBase, INetInfoBuilderPart, ITrafficPlusPlusPart
     {
@@ -14,8 +15,8 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Legacy.Gravel
         public string Description { get { return "Gravel roads allow pedestrians to walk fast and easy."; } }
         public string ShortDescription { get { return "Zoneable, No Passenger Vehicles [Traffic++ V2 required]"; } }
 
-        public string ThumbnailsPath { get { return @"Roads\PedestrianRoads\Legacy\Gravel\thumbnails.png"; } }
-        public string InfoTooltipPath { get { return @"Roads\PedestrianRoads\Legacy\Gravel\infotooltip.png"; } }
+        public string ThumbnailsPath { get { return @"Roads\PedestrianRoads\Gravel\thumbnails.png"; } }
+        public string InfoTooltipPath { get { return @"Roads\PedestrianRoads\Gravel\infotooltip.png"; } }
 
         public NetInfoVersion SupportedVersions
         {

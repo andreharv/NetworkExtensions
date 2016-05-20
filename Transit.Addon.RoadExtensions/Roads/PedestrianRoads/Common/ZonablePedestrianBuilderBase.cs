@@ -6,7 +6,7 @@ using Transit.Framework.Network;
 using Transit.Framework.Texturing;
 using UnityEngine;
 
-namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Legacy
+namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
 {
     public abstract class ZonablePedestrianBuilderBase : Activable
     {
@@ -64,9 +64,10 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Legacy
             ///////////////////////////
             var onewayRoad = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ONEWAY_2L);
             var pedestrianVanilla = Prefabs.Find<NetInfo>(NetInfos.Vanilla.PED_PAVEMENT);
+            var roadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_2L_TREES);
 
             info.m_UnlockMilestone = onewayRoad.m_UnlockMilestone;
-            info.m_class = info.m_class.Clone("NExtPedRoad");
+            info.m_class = roadInfo.m_class.Clone("NExtPedRoad");
             info.m_class.m_level = ItemClass.Level.Level5;
 
             switch (version)
