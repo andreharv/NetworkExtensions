@@ -8,80 +8,20 @@ namespace Transit.Addon.TM.PathFindingFeatures
 {
     public partial class TAMLaneRoutingManager
     {
-        private TAMLaneRoute TransformToRoute(uint laneId, TAMLaneDirection direction)
+        private TAMLaneRoute TransformToRoute(uint laneId, TAMLaneDirection directions)
         {
-            if (direction == TAMLaneDirection.None)
+            if (directions == TAMLaneDirection.None)
             {
                 return null;
             }
 
-            var lane = NetManager.instance.m_lanes.m_buffer[laneId];
-            var segmentId = lane.m_segment;
-            var segment = NetManager.instance.m_segments.m_buffer[segmentId];
             var nodeId = NetManager.instance.FindLaneNodeId(laneId);
-
             if (nodeId == null)
             {
                 return null;
             }
 
-            var segmentDir = segment.GetDirection(nodeId.Value);
-            var node = NetManager.instance.m_nodes.m_buffer[nodeId.Value];
-            var otherSegmentIds = node.GetSegmentIds().Except(segmentId).ToArray();
-            var connections = new List<uint>();
-
-            foreach (var otherSegmentId in otherSegmentIds)
-            {
-                var otherSegment = NetManager.instance.m_segments.m_buffer[otherSegmentId];
-                var otherSegmentDir = otherSegment.GetDirection(nodeId.Value);
-
-                var relativeDirection = GetRelativeDirection(segmentDir, otherSegmentDir);
-
-                if ((relativeDirection & direction) == 0)
-                {
-                    continue; // Wrong direction
-                }
-
-                foreach (var otherLaneId in NetManager.instance.GetSegmentLaneIds(otherSegmentId))
-                {
-                    var otherLaneIndex = NetManager.instance.GetLaneIndex(otherLaneId);
-                    if (otherLaneIndex == null)
-                    {
-                        continue; // Lane not found
-                    }
-
-                    var otherLaneInfo = NetManager.instance.GetLaneInfo(otherSegmentId, otherLaneIndex.Value);
-                    if (otherLaneInfo == null)
-                    {
-                        continue; // Lane info not found
-                    }
-
-                    if ((otherLaneInfo.m_vehicleType & VehicleInfo.VehicleType.Car) == VehicleInfo.VehicleType.None)
-                    {
-                        continue; // VehicleType is not car
-                    }
-
-                    if ((otherLaneInfo.m_laneType & 
-                       (NetInfo.LaneType.Vehicle | 
-                        NetInfo.LaneType.PublicTransport | 
-                        NetInfo.LaneType.TransportVehicle |
-                        NetInfo.LaneType.CargoVehicle)) == NetInfo.LaneType.None)
-                    {
-                        continue; // LaneType is not road Vehicle
-                    }
-
-                    var otherNodeId = NetManager.instance.FindLaneNodeId(otherSegmentId, otherLaneIndex.Value);
-                    if (otherNodeId == null || 
-                        otherNodeId == nodeId)
-                    {
-                        continue; // Inbound lane - Pointing toward the same node
-                    }
-
-                    Log.Info(string.Format("Adding lane route from {0} to {1}", laneId, otherLaneId));
-                    connections.Add(otherLaneId);
-                }
-            }
-
+            var connections = NetManager.instance.GetConnectingLanes(laneId, (NetLane.Flags)directions).ToArray();
             if (!connections.Any())
             {
                 return null;

@@ -127,19 +127,19 @@ namespace Transit.Addon.TM.Tools.LaneDirectionEditor
                 {
                     var newDirections = ToggleLaneDirection(currentDirections, NetLane.Flags.Left);
 
-                    ToggleLaneDirection(_selectedNodeId.Value, laneId, NetLane.Flags.Left);
+                    SetLaneDirections(_selectedNodeId.Value, laneId, newDirections);
                 }
                 if (GUILayout.Button("↑", ((currentDirections & NetLane.Flags.Forward) == NetLane.Flags.Forward ? style1 : style2), GUILayout.Width(25), GUILayout.Height(35)))
                 {
                     var newDirections = ToggleLaneDirection(currentDirections, NetLane.Flags.Forward);
 
-                    ToggleLaneDirection(_selectedNodeId.Value, laneId, NetLane.Flags.Forward);
+                    SetLaneDirections(_selectedNodeId.Value, laneId, newDirections);
                 }
                 if (GUILayout.Button("→", ((currentDirections & NetLane.Flags.Right) == NetLane.Flags.Right ? style1 : style2), GUILayout.Width(35), GUILayout.Height(25)))
                 {
                     var newDirections = ToggleLaneDirection(currentDirections, NetLane.Flags.Right);
 
-                    ToggleLaneDirection(_selectedNodeId.Value, laneId, NetLane.Flags.Right);
+                    SetLaneDirections(_selectedNodeId.Value, laneId, newDirections);
                 }
 
                 GUILayout.EndHorizontal();
@@ -182,7 +182,7 @@ namespace Transit.Addon.TM.Tools.LaneDirectionEditor
             }
         }
 
-        private void ToggleLaneDirection(ushort nodeId, uint laneId, NetLane.Flags newDirections)
+        private void SetLaneDirections(ushort nodeId, uint laneId, NetLane.Flags newDirections)
         {
             var marker = _overlay.GetOrCreateMarker(nodeId);
             marker.SetLaneDirections(laneId, newDirections);

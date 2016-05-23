@@ -222,7 +222,19 @@ namespace Transit.Addon.TM.Overlays.LaneRouting.Markers
                 laneRoutesMarker = CreateLaneRoutesMarker(laneId);
             }
 
-            laneRoutesMarker.SetDestinations(null /*TODO: Funky part*/);
+            var allDestinationAnchors = _anchors.Where(a => !a.IsOrigin).ToDictionary(a => a.LaneId);
+            var destinationAnchors = NetManager
+                .instance
+                .GetConnectingLanes(laneId, directions)
+                .Select(id =>
+                    allDestinationAnchors.ContainsKey(id) ?
+                    allDestinationAnchors[id] :
+                    null)
+                .Where(a => a != null)
+                .Distinct()
+                .ToArray();
+
+            laneRoutesMarker.SetDestinations(destinationAnchors);
         }
 
         private void ToggleRoute(LaneAnchorMarker origin, LaneAnchorMarker destination)

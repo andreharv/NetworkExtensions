@@ -315,7 +315,7 @@ namespace Transit.Addon.TM.Data {
 							uint laneArrowFlags = flags & Flags.lfr;
 							uint origFlags = (Singleton<NetManager>.instance.m_lanes.m_buffer[laneId].m_flags & Flags.lfr);
 #if DEBUG
-							Log._Debug("Setting flags for lane " + laneId + " to " + flags + " (" + ((LaneArrows)(laneArrowFlags)).ToString() + ")");
+							Log._Debug("Setting flags for lane " + laneId + " to " + flags + " (" + ((TAMLaneDirection)(laneArrowFlags)).ToString() + ")");
 							if ((origFlags | laneArrowFlags) == origFlags) { // only load if setting differs from default
 								Log._Debug("Flags for lane " + laneId + " are original (" + ((NetLane.Flags)(origFlags)).ToString() + ")");
 							}

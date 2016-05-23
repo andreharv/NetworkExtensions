@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace Transit.Framework
 {
@@ -286,6 +287,99 @@ namespace Transit.Framework
             });
 
             return laneList.Select(lane => (uint)lane[0]);
+        }
+
+        public static IEnumerable<uint> GetConnectingLanes(this NetManager netManager, uint laneId, NetLane.Flags directions)
+        {
+            if (directions == NetLane.Flags.None)
+            {
+                yield break;
+            }
+
+            var lane = netManager.m_lanes.m_buffer[laneId];
+            var segmentId = lane.m_segment;
+            var segment = netManager.m_segments.m_buffer[segmentId];
+            var nodeId = netManager.FindLaneNodeId(laneId);
+
+            if (nodeId == null)
+            {
+                yield break;
+            }
+
+            var segmentDir = segment.GetDirection(nodeId.Value);
+            var node = netManager.m_nodes.m_buffer[nodeId.Value];
+            var otherSegmentIds = node.GetSegmentIds().Except(segmentId).ToArray();
+
+            foreach (var otherSegmentId in otherSegmentIds)
+            {
+                var otherSegment = netManager.m_segments.m_buffer[otherSegmentId];
+                var otherSegmentDir = otherSegment.GetDirection(nodeId.Value);
+
+                var relativeDirection = GetRelativeDirection(segmentDir, otherSegmentDir);
+
+                if ((relativeDirection & directions) == NetLane.Flags.None)
+                {
+                    continue; // Wrong direction
+                }
+
+                foreach (var otherLaneId in netManager.GetSegmentLaneIds(otherSegmentId))
+                {
+                    var otherLaneIndex = netManager.GetLaneIndex(otherLaneId);
+                    if (otherLaneIndex == null)
+                    {
+                        continue; // Lane not found
+                    }
+
+                    var otherLaneInfo = netManager.GetLaneInfo(otherSegmentId, otherLaneIndex.Value);
+                    if (otherLaneInfo == null)
+                    {
+                        continue; // Lane info not found
+                    }
+
+                    if ((otherLaneInfo.m_vehicleType & VehicleInfo.VehicleType.Car) == VehicleInfo.VehicleType.None)
+                    {
+                        continue; // VehicleType is not car
+                    }
+
+                    if ((otherLaneInfo.m_laneType &
+                       (NetInfo.LaneType.Vehicle |
+                        NetInfo.LaneType.PublicTransport |
+                        NetInfo.LaneType.TransportVehicle |
+                        NetInfo.LaneType.CargoVehicle)) == NetInfo.LaneType.None)
+                    {
+                        continue; // LaneType is not road Vehicle
+                    }
+
+                    var otherNodeId = netManager.FindLaneNodeId(otherSegmentId, otherLaneIndex.Value);
+                    if (otherNodeId == null ||
+                        otherNodeId == nodeId)
+                    {
+                        continue; // Inbound lane - Pointing toward the same node
+                    }
+
+                    Log.Info(string.Format("Adding lane route from {0} to {1}", laneId, otherLaneId));
+                    yield return otherLaneId;
+                }
+            }
+        }
+
+        private static NetLane.Flags GetRelativeDirection(Vector3 source, Vector3 destination)
+        {
+            if (Vector3.Angle(source, destination) > 150f)
+            {
+                return NetLane.Flags.Forward;
+            }
+            else
+            {
+                if (Vector3.Dot(Vector3.Cross(source, -destination), Vector3.up) > 0f)
+                {
+                    return NetLane.Flags.Right;
+                }
+                else
+                {
+                    return NetLane.Flags.Left;
+                }
+            }
         }
     }
 }
