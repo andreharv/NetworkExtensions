@@ -5,7 +5,7 @@ using Transit.Framework.Builders;
 
 namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Gravel
 {
-    public class ZonablePedestrianGravelRoadBuilder : ZonablePedestrianBuilderBase, INetInfoBuilderPart, ITrafficPlusPlusPart
+    public class ZonablePedestrianGravelRoadBuilder : ZonablePedestrianBuilderBase, INetInfoBuilderPart
     {
         public int Order { get { return 305; } }
         public int UIOrder { get { return 10; } }

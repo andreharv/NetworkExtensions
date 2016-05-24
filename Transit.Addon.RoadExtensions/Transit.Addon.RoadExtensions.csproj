@@ -57,8 +57,6 @@
   <ItemGroup>
     <Compile Include="Compatibility\RoadColorChanger.cs" />
     <Compile Include="Menus\Roads\RExExtendedMenus.cs" />
-    <Compile Include="Compatibility\TrafficPlusPlus.cs" />
-    <Compile Include="Compatibility\TrafficPlusPlus\ITrafficPlusPlusPart.cs" />
     <Compile Include="Props\MediumAvenueSideLightBuilder.cs" />
     <Compile Include="Props\LargeAvenueMedianLightBuilder.cs" />
     <Compile Include="Roads\Common\RoadModels.8m.NoSW.Wood.cs" />

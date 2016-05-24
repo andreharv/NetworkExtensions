@@ -6,7 +6,7 @@ using Transit.Framework.Network;
 
 namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Pavement
 {
-    public class ZonablePedestrianPavedRoadBuilder : ZonablePedestrianBuilderBase, INetInfoBuilderPart, ITrafficPlusPlusPart
+    public class ZonablePedestrianPavedRoadBuilder : ZonablePedestrianBuilderBase, INetInfoBuilderPart
     {
         public int Order { get { return 315; } }
         public int UIOrder { get { return 20; } }

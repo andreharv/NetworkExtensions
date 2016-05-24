@@ -10,7 +10,7 @@ using Transit.Framework.Texturing;
 
 namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway6L
 {
-    public class Busway6LBuilder : Activable, IMultiNetInfoBuilderPart, ITrafficPlusPlusPart
+    public class Busway6LBuilder : Activable, IMultiNetInfoBuilderPart
     {
         public string Name { get { return NetInfos.New.BUSWAY_6L; } }
         public string DisplayName { get { return "[BETA] Bus Lanes for Six-Lane Road"; } }
