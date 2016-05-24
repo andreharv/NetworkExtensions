@@ -78,7 +78,7 @@ namespace Transit.Addon.TM.PathFindingFeatures
         /// <returns></returns>
         private TAMLaneRestriction GetOrCreateLaneRestriction(uint laneId)
         {
-            TAMLaneRestriction lane = _laneRestrictions[laneId];
+            var lane = _laneRestrictions[laneId];
             if (lane == null)
                 lane = CreateLaneRestriction(laneId);
 

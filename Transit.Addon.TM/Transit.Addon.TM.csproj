@@ -81,6 +81,8 @@
     <Compile Include="Data\_Extensions\ConfigurationExtensions.cs" />
     <Compile Include="Data\_Extensions\TPPLaneDataExtensions.cs" />
     <Compile Include="Data\_Extensions\TPPVehicleTypeExtensions.cs" />
+    <Compile Include="Events\Managers\NetEventManager.cs" />
+    <Compile Include="Events\NetNodesUpdated.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Overlays\LaneRouting\Markers\LaneRoutesMarker.cs" />
     <Compile Include="Overlays\LaneRouting\NodeRoutesOverlay.cs" />
@@ -99,6 +101,8 @@
     <Compile Include="Data\TMConfigurationV2.SegmentConf.cs" />
     <Compile Include="Data\TMConfigurationV2.TimedTrafficLightsStep.cs" />
     <Compile Include="Data\TMConfigurationV2.TimedTrafficLights.cs" />
+    <Compile Include="ThreadingExtensions\NodeUpdatedThreadingExtension.cs" />
+    <Compile Include="ToolModuleV2.Loading.Events.cs" />
     <Compile Include="ToolModuleV2.Loading.Overlays.cs" />
     <Compile Include="ToolModuleV2.Tool.cs" />
     <Compile Include="ToolModuleV2.Loading.cs" />
@@ -122,7 +126,7 @@
     <Compile Include="UI\TexturesV2.cs" />
     <Compile Include="UI\TMOptionsUI.cs" />
     <Compile Include="DataSerialization\TAMDataSerializer.TM.cs" />
-    <Compile Include="ThreadingExtension.cs" />
+    <Compile Include="ThreadingExtensions\EnsureUIClosedThreadingExtension.cs" />
     <Compile Include="TrafficLight\CustomSegment.cs" />
     <Compile Include="TrafficLight\CustomSegmentLight.cs" />
     <Compile Include="TrafficLight\CustomSegmentLights.cs" />

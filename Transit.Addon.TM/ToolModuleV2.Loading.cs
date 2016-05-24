@@ -53,6 +53,7 @@ namespace Transit.Addon.TM
 
                 InstallOverlays();
                 InstallTools();
+                InstallEventHandlers();
 
                 TrafficPriority.OnLevelLoading();
 
@@ -73,6 +74,7 @@ namespace Transit.Addon.TM
 
             UninstallTools();
             UninstallOverlays();
+            UninstallEventHandlers();
 
             revertDetours();
             gameLoaded = false;
