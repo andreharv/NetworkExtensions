@@ -363,6 +363,21 @@ namespace Transit.Framework
             }
         }
 
+        public static NetLane.Flags GetRelativeDirection(this NetManager netManager, uint sourceLaneId, uint destinationLaneId, ushort nodeId)
+        {
+            var sourceLane = netManager.m_lanes.m_buffer[sourceLaneId];
+            var sourceSegmentId = sourceLane.m_segment;
+            var sourceSegment = netManager.m_segments.m_buffer[sourceSegmentId];
+            var sourceSegmentDirection = sourceSegment.GetDirection(nodeId);
+
+            var destinationLane = netManager.m_lanes.m_buffer[destinationLaneId];
+            var destinationSegmentId = destinationLane.m_segment;
+            var destinationSegment = netManager.m_segments.m_buffer[destinationSegmentId];
+            var destinationSegmentDirection = destinationSegment.GetDirection(nodeId);
+
+            return GetRelativeDirection(sourceSegmentDirection, destinationSegmentDirection);
+        }
+
         private static NetLane.Flags GetRelativeDirection(Vector3 source, Vector3 destination)
         {
             if (Vector3.Angle(source, destination) > 150f)

@@ -161,7 +161,7 @@ namespace Transit.Addon.TM.PathFindingFeatures
 
             foreach (var connLaneId in route.Connections)
             {
-                directions |= (NetLane.Flags) (int)GetRouteDirection(route.LaneId, connLaneId, route.NodeId);
+                directions |= NetManager.instance.GetRelativeDirection(route.LaneId, connLaneId, route.NodeId);
             }
             
             Log.Info(string.Format("UpdateLaneRoutedArrows to {0}", directions));
