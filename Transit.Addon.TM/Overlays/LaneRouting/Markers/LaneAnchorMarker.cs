@@ -30,6 +30,13 @@ namespace Transit.Addon.TM.Overlays.LaneRouting.Markers
             }
         }
 
+        public void CopyFromOtherMarker(LaneAnchorMarker other)
+        {
+            this.Position = other.Position;
+            this.IsOrigin = other.IsOrigin;
+            this.Color = other.Color;
+        }
+
         protected override void OnRendered(RenderManager.CameraInfo camera)
         {
             if (IsOrigin)

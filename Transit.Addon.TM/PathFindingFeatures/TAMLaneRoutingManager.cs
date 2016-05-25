@@ -67,7 +67,7 @@ namespace Transit.Addon.TM.PathFindingFeatures
             return _laneRoutes;
         }
 
-        private TAMLaneRoute CreateLaneRoute(uint laneId)
+        private TAMLaneRoute CreateRoute(uint laneId)
         {
             var foundNodeId = NetManager.instance.FindLaneNodeId(laneId);
             if (foundNodeId == null)
@@ -106,11 +106,26 @@ namespace Transit.Addon.TM.PathFindingFeatures
         /// <returns></returns>
         public TAMLaneRoute GetOrCreateRoute(uint laneId)
         {
-            TAMLaneRoute lane = _laneRoutes[laneId];
+            var lane = _laneRoutes[laneId];
             if (lane == null)
-                lane = CreateLaneRoute(laneId);
+            {
+                lane = CreateRoute(laneId);
+            }
 
             return lane;
+        }
+
+        public void DestroyRoute(TAMLaneRoute route)
+        {
+            if (_laneRoutes == null)
+            {
+                return;
+            }
+
+            if (_laneRoutes[route.NodeId] == route)
+            {
+                _laneRoutes[route.NodeId] = null;
+            }
         }
 
         public bool CanLanesConnect(ushort nodeId, ushort originSegmentId, byte originLaneIndex, uint originLaneId, ushort destinationSegmentId, byte destinationLaneIndex, uint destinationLaneId, ExtendedUnitType unitType)

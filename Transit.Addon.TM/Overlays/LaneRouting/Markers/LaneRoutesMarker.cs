@@ -18,11 +18,11 @@ namespace Transit.Addon.TM.Overlays.LaneRouting.Markers
         public LaneAnchorMarker OriginArchor { get; private set; }
         public ICollection<LaneAnchorMarker> DestinationArchors { get; private set; }
 
-        public LaneRoutesMarker(TAMLaneRoute model, LaneAnchorMarker originArchor, IEnumerable<LaneAnchorMarker> destinationArchors)
+        public LaneRoutesMarker(TAMLaneRoute model, LaneAnchorMarker originArchor)
         {
             Model = model;
             OriginArchor = originArchor;
-            DestinationArchors = new HashSet<LaneAnchorMarker>(destinationArchors);
+            DestinationArchors = new HashSet<LaneAnchorMarker>();
         }
 
         public bool AddDestination(LaneAnchorMarker destination)
@@ -53,16 +53,55 @@ namespace Transit.Addon.TM.Overlays.LaneRouting.Markers
             return succeeded;
         }
 
-        public void SetDestinations(IEnumerable<LaneAnchorMarker> destinationArchors)
+        public void SetDestinations(NetLane.Flags directions, IEnumerable<LaneAnchorMarker> allAnchors)
         {
-            DestinationArchors = destinationArchors.ToList();
-
-            Model.Connections = DestinationArchors
-                .Select(a => a.LaneId)
+            Model.Connections = NetManager
+                .instance
+                .GetConnectingLanes(Model.LaneId, directions)
                 .Distinct()
                 .ToArray();
 
+            SyncDestinations(allAnchors);
+
             TAMLaneRoutingManager.instance.UpdateLaneArrows(Model.LaneId, Model.NodeId);
+        }
+
+        public void SyncDestinations(IEnumerable<LaneAnchorMarker> allAnchors)
+        {
+            var allDestinationTable = allAnchors
+                .Where(a => !a.IsOrigin)
+                .Where(a => a != OriginArchor)
+                .ToDictionary(a => a.LaneId);
+
+            var destinationAnchors = Model
+                .Connections
+                .Select(id =>
+                    allDestinationTable.ContainsKey(id) ?
+                    allDestinationTable[id] :
+                    null)
+                .Where(a => a != null)
+                .Distinct()
+                .ToArray();
+
+            DestinationArchors = new HashSet<LaneAnchorMarker>(destinationAnchors);
+        }
+
+        /// <summary>
+        /// Returns true if is still relevant
+        /// N.B. Will cause a desync of DestinationArchors with the Model, use SyncDestinations afterward
+        /// </summary>
+        public bool Scrub()
+        {
+            if (TAMLaneRoutingManager.instance.ScrubRoute(Model))
+            {
+                TAMLaneRoutingManager.instance.UpdateLaneArrows(Model.LaneId, Model.NodeId);
+                return true;
+            }
+            else
+            {
+                TAMLaneRoutingManager.instance.DestroyRoute(Model);
+                return false;
+            }
         }
 
         protected override void OnRendered(RenderManager.CameraInfo cameraInfo)

@@ -6,9 +6,9 @@ namespace Transit.Addon.TM.Events
 
     public class NetNodesUpdatedEventArgs : EventArgs
     {
-        public ulong[] NodeIds { get; private set; }
+        public ushort[] NodeIds { get; private set; }
 
-        public NetNodesUpdatedEventArgs(ulong[] nodeIds)
+        public NetNodesUpdatedEventArgs(ushort[] nodeIds)
         {
             NodeIds = nodeIds;
         }

@@ -3,6 +3,7 @@ using System.Linq;
 using ColossalFramework;
 using Transit.Addon.TM.Overlays.LaneRouting.Markers;
 using Transit.Addon.TM.PathFindingFeatures;
+using Transit.Framework;
 using Transit.Framework.UI;
 using UnityEngine;
 
@@ -41,6 +42,33 @@ namespace Transit.Addon.TM.Overlays.LaneRouting
         public bool IsLoaded()
         {
             return _nodeMarkers != null;
+        }
+
+        public void ScrubMarker(ushort nodeId)
+        {
+            if (_nodeMarkers == null)
+            {
+                return;
+            }
+
+            if (!_nodeMarkers.ContainsKey(nodeId))
+            {
+                return;
+            }
+
+            Log.Info("Scrubbing Node Marker " + nodeId);
+            var toScrub = _nodeMarkers[nodeId];
+
+            if (!toScrub.Scrub())
+            {
+                Log.Info("Node Marker " + nodeId + " is not relevant anymore");
+                _nodeMarkers.Remove(nodeId);
+
+                if (_selectedNodeMarker == toScrub)
+                {
+                    _selectedNodeMarker = null;
+                }
+            }
         }
 
         public NodeRoutesMarker GetMarker(ushort nodeId)
@@ -109,6 +137,11 @@ namespace Transit.Addon.TM.Overlays.LaneRouting
                     InfoManager.instance.SetCurrentMode(InfoManager.InfoMode.None, InfoManager.SubInfoMode.Default);
                 }
             }
+        }
+
+        public void Update()
+        {
+            // Do nothing, for unity
         }
 
         public void Render(RenderManager.CameraInfo cameraInfo)

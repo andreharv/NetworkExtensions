@@ -396,5 +396,24 @@ namespace Transit.Framework
                 }
             }
         }
+
+        public static IEnumerable<ushort> GetUpdatedNodeIds(this NetManager netManager)
+        {
+            var num = netManager.m_updatedNodes.Length;
+            for (var j = 0; j < num; j++)
+            {
+                var num2 = netManager.m_updatedNodes[j];
+                if (num2 != 0uL)
+                {
+                    for (var k = 0; k < 64; k++)
+                    {
+                        if ((num2 & 1uL << k) != 0uL)
+                        {
+                            yield return (ushort)(j << 6 | k);
+                        }
+                    }
+                }
+            }
+        }
     }
 }

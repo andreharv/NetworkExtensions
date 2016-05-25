@@ -1,5 +1,6 @@
 ﻿using Transit.Addon.TM.Events;
 using Transit.Addon.TM.Events.Managers;
+using Transit.Addon.TM.Overlays.LaneRouting;
 using Transit.Framework;
 
 namespace Transit.Addon.TM
@@ -18,11 +19,12 @@ namespace Transit.Addon.TM
 
         private void NetEventManager_NetNodesUpdated(NetNodesUpdatedEventArgs e)
         {
-            Log.Info(">>>>> NetNodesUpdated");
-
-            foreach (var nodeId in e.NodeIds)
+            if (NodeRoutesOverlay.instance.IsLoaded())
             {
-                Log.Info(">>>>> NetNode " + nodeId);
+                foreach (var nodeId in e.NodeIds)
+                {
+                    NodeRoutesOverlay.instance.ScrubMarker(nodeId);
+                }
             }
         }
     }

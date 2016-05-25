@@ -9,6 +9,9 @@ namespace Transit.Addon.TM.PathFindingFeatures
 {
     public partial class TAMLaneRoutingManager
     {
+        /// <summary>
+        /// Returns true if is still relevant
+        /// </summary>
         public bool ScrubRoute(TAMLaneRoute route)
         {
             if (route.LaneId == 0)
@@ -96,42 +99,34 @@ namespace Transit.Addon.TM.PathFindingFeatures
             return true;
         }
 
-        public void UpdateNodeArrows(ushort nodeId)
-        {
-            var node = NetManager.instance.m_nodes.m_buffer[nodeId];
-
-            for (int i = 0; i < 8; i++)
-            {
-                var segmentId = node.GetSegment(i);
-                if (segmentId == 0)
-                {
-                    continue;
-                }
-
-                var segment = NetManager.instance.m_segments.m_buffer[segmentId];
-                var laneId = segment.m_lanes;
-                var netInfo = segment.Info;
-                var laneCount = netInfo.m_lanes.Length;
-                for (var laneIndex = 0; laneIndex < laneCount && laneId != 0; laneIndex++)
-                {
-                    UpdateLaneArrows(laneId, nodeId);
-
-                    laneId = NetManager.instance.m_lanes.m_buffer[laneId].m_nextLane;
-                }
-            }
-        }
-
         public void UpdateLaneArrows(uint laneId, ushort nodeId)
         {
             Log.Info(string.Format("UpdateLaneArrows NodeId:{0} LaneId:{1}", nodeId, laneId));
 
             if (nodeId == 0)
             {
-                throw new Exception("NodeId has not been set");
+                return;
+            }
+
+            if (laneId == 0)
+            {
+                return;
+            }
+
+            if (!NetManager.instance.m_nodes.m_buffer[nodeId].IsCreated())
+            {
+                return;
+            }
+
+            if (!NetManager.instance.m_lanes.m_buffer[laneId].IsCreated())
+            {
+                return;
             }
 
             if (NetManager.instance.m_nodes.m_buffer[nodeId].CountSegments() <= 2)
+            {
                 return;
+            }
             
             var route = GetRoute(laneId);
 

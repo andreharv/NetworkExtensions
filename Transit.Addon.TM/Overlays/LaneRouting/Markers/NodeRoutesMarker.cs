@@ -14,9 +14,10 @@ namespace Transit.Addon.TM.Overlays.LaneRouting.Markers
         private const float ROUTE_WIDTH = 0.25f;
 
         public ushort NodeId { get; private set; }
-        public Vector3 Position { get { return NetManager.instance.m_nodes.m_buffer[NodeId].m_position; } }
+        public NetNode Node { get { return NetManager.instance.m_nodes.m_buffer[NodeId]; } }
+        public Vector3 Position { get { return Node.m_position; } }
 
-        private ICollection<LaneAnchorMarker> _anchors;
+        private LaneAnchorMarker[] _anchors;
         private ICollection<LaneRoutesMarker> _routes;
 
         private LaneAnchorMarker _hoveredAnchor;
@@ -32,9 +33,30 @@ namespace Transit.Addon.TM.Overlays.LaneRouting.Markers
 
         private void InitAnchorsMarkers()
         {
-            var anchors = new List<LaneAnchorMarker>();
+            _anchors = CreateAllAnchors().ToArray();
+        }
 
-            var node = NetManager.instance.m_nodes.m_buffer[NodeId];
+        private void InitLaneRoutesMarkers()
+        {
+            var routes = new List<LaneRoutesMarker>();
+
+            foreach (var originAnchor in _anchors.Where(a => a.IsOrigin))
+            {
+                var laneRoutes = TAMLaneRoutingManager.instance.GetRoute(originAnchor.LaneId);
+                if (laneRoutes == null)
+                    continue;
+
+                var laneRoutesMarker = new LaneRoutesMarker(laneRoutes, originAnchor);
+                laneRoutesMarker.SyncDestinations(_anchors);
+                routes.Add(laneRoutesMarker);
+            }
+
+            _routes = routes;
+        }
+
+        private IEnumerable<LaneAnchorMarker> CreateAllAnchors()
+        {
+            var node = Node;
             var offsetMultiplier = node.CountSegments() <= 2 ? 3 : 1;
             var segmentId = node.m_segment0;
             for (int i = 0; i < 8 && segmentId != 0; i++)
@@ -65,7 +87,7 @@ namespace Transit.Addon.TM.Overlays.LaneRouting.Markers
                             pos = NetManager.instance.m_lanes.m_buffer[laneId].m_bezier.a;
                         }
 
-                        anchors.Add(new LaneAnchorMarker(laneId, segmentId, NodeId, pos + offset, isSource, isSource ? i : (int?)null));
+                        yield return new LaneAnchorMarker(laneId, segmentId, NodeId, pos + offset, isSource, isSource ? i : (int?)null);
                     }
 
                     laneId = NetManager.instance.m_lanes.m_buffer[laneId].m_nextLane;
@@ -75,38 +97,31 @@ namespace Transit.Addon.TM.Overlays.LaneRouting.Markers
                 if (segmentId == node.m_segment0)
                     segmentId = 0;
             }
-
-            _anchors = anchors.ToList();
         }
 
-        private void InitLaneRoutesMarkers()
+        private void UpdateAllAnchors()
         {
-            var routes = new List<LaneRoutesMarker>();
+            var newAnchors = CreateAllAnchors().ToArray();
+            var oldAnchorsTable = _anchors.ToDictionary(a => a.LaneId);
 
-            var originAnchors = _anchors.Where(a => a.IsOrigin).ToArray();
-            var destinationAnchors = _anchors.Where(a => !a.IsOrigin).ToDictionary(a => a.LaneId);
+            var updatedAnchors = new List<LaneAnchorMarker>();
 
-            foreach (var originAnchor in originAnchors)
+            foreach (var newAnchor in newAnchors)
             {
-                var laneRoutes = TAMLaneRoutingManager.instance.GetRoute(originAnchor.LaneId);
-                if (laneRoutes == null)
-                    continue;
+                if (oldAnchorsTable.ContainsKey(newAnchor.LaneId))
+                {
+                    var oldAnchor = oldAnchorsTable[newAnchor.LaneId];
+                    oldAnchor.CopyFromOtherMarker(newAnchor);
 
-                var laneDestinations = laneRoutes
-                    .Connections
-                    .Select(id => 
-                        destinationAnchors.ContainsKey(id) ? 
-                        destinationAnchors[id] : 
-                        null)
-                    .Where(a => a != null)
-                    .Distinct()
-                    .ToArray();
-
-                var laneRoutesMarker = new LaneRoutesMarker(laneRoutes, originAnchor, laneDestinations);
-                routes.Add(laneRoutesMarker);
+                    updatedAnchors.Add(oldAnchor);
+                }
+                else
+                {
+                    updatedAnchors.Add(newAnchor);
+                }
             }
 
-            _routes = routes;
+            _anchors = updatedAnchors.ToArray();
         }
 
         private LaneRoutesMarker CreateLaneRoutesMarker(uint laneId)
@@ -123,7 +138,8 @@ namespace Transit.Addon.TM.Overlays.LaneRouting.Markers
         private LaneRoutesMarker CreateLaneRoutesMarker(LaneAnchorMarker anchor)
         {
             var laneRoutes = TAMLaneRoutingManager.instance.GetOrCreateRoute(anchor.LaneId);
-            var laneRoutesMarker = new LaneRoutesMarker(laneRoutes, anchor, new LaneAnchorMarker[0]);
+            var laneRoutesMarker = new LaneRoutesMarker(laneRoutes, anchor);
+            laneRoutesMarker.SyncDestinations(_anchors);
             _routes.Add(laneRoutesMarker);
 
             return laneRoutesMarker;
@@ -222,19 +238,7 @@ namespace Transit.Addon.TM.Overlays.LaneRouting.Markers
                 laneRoutesMarker = CreateLaneRoutesMarker(laneId);
             }
 
-            var allDestinationAnchors = _anchors.Where(a => !a.IsOrigin).ToDictionary(a => a.LaneId);
-            var destinationAnchors = NetManager
-                .instance
-                .GetConnectingLanes(laneId, directions)
-                .Select(id =>
-                    allDestinationAnchors.ContainsKey(id) ?
-                    allDestinationAnchors[id] :
-                    null)
-                .Where(a => a != null)
-                .Distinct()
-                .ToArray();
-
-            laneRoutesMarker.SetDestinations(destinationAnchors);
+            laneRoutesMarker.SetDestinations(directions, _anchors);
         }
 
         private void ToggleRoute(LaneAnchorMarker origin, LaneAnchorMarker destination)
@@ -270,6 +274,35 @@ namespace Transit.Addon.TM.Overlays.LaneRouting.Markers
             }
 
             return laneRoutesMarker.RemoveDestination(destination);
+        }
+
+        /// <summary>
+        /// Returns true if is still relevant
+        /// </summary>
+        public bool Scrub()
+        {
+            var isRelevant = Node.IsCreated();
+
+            if (isRelevant)
+            {
+                UpdateAllAnchors();
+            }
+
+            var oneRouteIsRelevant = false;
+            foreach (var route in _routes.ToArray())
+            {
+                if (route.Scrub())
+                {
+                    oneRouteIsRelevant = true;
+                    route.SyncDestinations(_anchors);
+                }
+                else
+                {
+                    _routes.Remove(route);
+                }
+            }
+
+            return isRelevant && oneRouteIsRelevant;
         }
 
         protected override bool OnLeftClick()

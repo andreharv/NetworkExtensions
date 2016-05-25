@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using ICities;
 using Transit.Addon.TM.Events;
 using Transit.Addon.TM.Events.Managers;
@@ -16,8 +17,7 @@ namespace Transit.Addon.TM.ThreadingExtensions
             {
                 var updatedNodeIds = NetManager
                     .instance
-                    .m_updatedNodes
-                    .Where(x => x != 0)
+                    .GetUpdatedNodeIds()
                     .Distinct()
                     .ToArray();
 
