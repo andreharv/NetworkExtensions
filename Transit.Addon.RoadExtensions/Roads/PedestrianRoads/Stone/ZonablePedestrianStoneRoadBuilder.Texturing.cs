@@ -32,7 +32,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Stone
                                 new LODTextureSet
                                     (@"Roads\PedestrianRoads\Stone\Textures\Ground_Node_LOD__MainTex.png",
                                     @"Roads\PedestrianRoads\Stone\Textures\Ground_Trans_LOD__AlphaMap.png",
-                                    @"Roads\PedestrianRoads\StoneSmall\Textures\Ground_Node_LOD__XYSMap.png"));
+                                    @"Roads\PedestrianRoads\Common\Textures\Ground_Node_LOD__XYSMap.png"));
                         }
                         else
                         {
@@ -44,7 +44,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Stone
                                 new LODTextureSet
                                     (@"Roads\PedestrianRoads\Stone\Textures\Ground_Node_LOD__MainTex.png",
                                     @"Roads\PedestrianRoads\Stone\Textures\Ground_Node_LOD__AlphaMap.png",
-                                    @"Roads\PedestrianRoads\StoneSmall\Textures\Ground_Node_LOD__XYSMap.png"));
+                                    @"Roads\PedestrianRoads\Common\Textures\Ground_Node_LOD__XYSMap.png"));
                         }
                     }
                     break;

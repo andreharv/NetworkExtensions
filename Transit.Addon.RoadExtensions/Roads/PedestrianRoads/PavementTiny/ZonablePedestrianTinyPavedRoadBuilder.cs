@@ -1,4 +1,5 @@
 ﻿using Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common;
+using Transit.Addon.RoadExtensions.Roads.PedestrianRoads.PavementTiny;
 using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.Network;

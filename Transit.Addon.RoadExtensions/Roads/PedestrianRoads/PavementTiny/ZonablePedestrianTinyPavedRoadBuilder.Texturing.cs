@@ -1,7 +1,7 @@
 ﻿using Transit.Framework;
 using Transit.Framework.Texturing;
 
-namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.PavementTinyTiny
+namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.PavementTiny
 {
     public partial class ZonablePedestrianTinyPavedRoadBuilder
     {
@@ -9,8 +9,8 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.PavementTinyTiny
         {
             info.SetAllSegmentsTexture(
                 new TextureSet
-                   (@"Roads\PedestrianRoads\PavementTinyTiny\Textures\Elevated_Segment__MainTex.png",
-                    @"Roads\PedestrianRoads\PavementTinyTiny\Textures\Elevated_Segment__AlphaMap.png",
+                   (@"Roads\PedestrianRoads\PavementTiny\Textures\Elevated_Segment__MainTex.png",
+                    @"Roads\PedestrianRoads\PavementTiny\Textures\Elevated_Segment__AlphaMap.png",
                     @"Roads\PedestrianRoads\Common\Textures\Elevated_Segment__XYSMap.png"),
                 new LODTextureSet
                    (@"Roads\PedestrianRoads\PavementTiny\Textures\Elevated_Segment_LOD__MainTex.png",
