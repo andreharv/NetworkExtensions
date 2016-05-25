@@ -61,6 +61,10 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                         var nodes1 = info.m_nodes[0].ShallowClone();
                         var nodes2 = info.m_nodes[0].ShallowClone();
 
+                        nodes0.m_emptyTransparent = true;
+                        nodes0.m_requireSurfaceMaps = true;
+                        nodes0.m_connectGroup = (NetInfo.ConnectGroup)16;
+
                         nodes0.m_flagsRequired = NetNode.Flags.None;
                         nodes0.m_flagsForbidden = NetNode.Flags.Transition;
                         //nodes0.m_requireSurfaceMaps = true;

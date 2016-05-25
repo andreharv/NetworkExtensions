@@ -67,7 +67,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                         nodes1
                             .SetMeshes(
                             @"Roads\Common\Meshes\8m\NoSW\Elevated_Trans.obj",
-                            @"Roads\Common\Meshes\8m\NoSW\Elevated_Node_LOD.obj");
+                            @"Roads\Common\Meshes\8m\NoSW\Elevated_Trans_LOD.obj");
 
                         info.m_segments = new[] { segments0 };
                         info.m_nodes = new[] { nodes0, nodes1 };
