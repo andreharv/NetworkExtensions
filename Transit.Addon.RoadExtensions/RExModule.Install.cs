@@ -10,14 +10,14 @@ using Transit.Addon.RoadExtensions.Menus.Roads;
 using Transit.Addon.RoadExtensions.Menus.Roads.Textures;
 using Transit.Addon.RoadExtensions.Roads.TinyRoads.Alley2L;
 using Transit.Addon.RoadExtensions.Roads.TinyRoads.OneWay1L;
-using Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Pavement;
 using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.ExtensionPoints.AI;
 using UnityEngine;
 using Object = UnityEngine.Object;
-using Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Gravel;
-using Transit.Addon.RoadExtensions.Roads.PedestrianRoads.StoneSmall;
+using ZonablePedestrianTinyGravelRoadBuilder = Transit.Addon.RoadExtensions.Roads.PedestrianRoads.GravelTiny.ZonablePedestrianTinyGravelRoadBuilder;
+using ZonablePedestrianTinyPavedRoadBuilder = Transit.Addon.RoadExtensions.Roads.PedestrianRoads.PavementTiny.ZonablePedestrianTinyPavedRoadBuilder;
+using ZonablePedestrianTinyStoneRoadBuilder = Transit.Addon.RoadExtensions.Roads.PedestrianRoads.StoneTiny.ZonablePedestrianTinyStoneRoadBuilder;
 
 namespace Transit.Addon.RoadExtensions
 {
@@ -69,9 +69,9 @@ namespace Transit.Addon.RoadExtensions
             {
                 Alley2LBuilder.NAME,
                 OneWay1LBuilder.NAME,
-                ZonablePedestrianGravelBuilder.NAME,
-                ZonablePedestrianPavementBuilder.NAME,
-                ZonablePedestrianStoneSmallRoadBuilder.NAME
+                ZonablePedestrianTinyGravelRoadBuilder.NAME,
+                ZonablePedestrianTinyPavedRoadBuilder.NAME,
+                ZonablePedestrianTinyStoneRoadBuilder.NAME
             };
 
             foreach (var name in tinyZoneBlockCreators)

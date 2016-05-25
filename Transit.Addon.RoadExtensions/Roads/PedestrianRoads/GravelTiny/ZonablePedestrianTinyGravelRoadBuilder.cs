@@ -1,28 +1,27 @@
-﻿using Transit.Addon.RoadExtensions.Compatibility;
-using Transit.Addon.RoadExtensions.Roads.Common;
+﻿using Transit.Addon.RoadExtensions.Roads.Common;
 using Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.Network;
 
-namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Gravel
+namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.GravelTiny
 {
-    public partial class ZonablePedestrianGravelBuilder :Activable, INetInfoBuilderPart, INetInfoLateBuilder
+    public partial class ZonablePedestrianTinyGravelRoadBuilder : Activable, INetInfoBuilderPart, INetInfoLateBuilder
     {
         public int Order { get { return 300; } }
-        public int UIOrder { get { return 10; } }
+        public int UIOrder { get { return 5; } }
 
-        public string BasedPrefabName { get { return ZPBB.GetBasedPrefabName(); } }
-        public string UICategory { get { return ZPBB.GetUICategory(); } }
+        public string BasedPrefabName { get { return ZonablePedestrianHelper.BasedPrefabName; } }
+        public string UICategory { get { return ZonablePedestrianHelper.UICategory; } }
 
-        public const string NAME = "Zonable Pedestrian Gravel";
+        public const string NAME = "Zonable Pedestrian Gravel Tiny";
         public string Name { get { return NAME; } }
-        public string DisplayName { get { return "[BETA] Zonable Pedestrian Gravel Road"; } }
+        public string DisplayName { get { return "Zonable Pedestrian Gravel Tiny Road"; } }
         public string Description { get { return "Gravel roads allow pedestrians to walk fast and easy."; } }
-        public string ShortDescription { get { return "Parking, zoneable, restricted traffic [Traffic++ V2 required]"; } }
+        public string ShortDescription { get { return "Zoneable, No Passenger Vehicles [Traffic++ V2 required]"; } }
 
-        public string ThumbnailsPath { get { return @"Roads\PedestrianRoads\Gravel\thumbnails.png"; } }
-        public string InfoTooltipPath { get { return @"Roads\PedestrianRoads\Gravel\infotooltip.png"; } }
+        public string ThumbnailsPath { get { return @"Roads\PedestrianRoads\GravelTiny\thumbnails.png"; } }
+        public string InfoTooltipPath { get { return @"Roads\PedestrianRoads\GravelTiny\infotooltip.png"; } }
 
         public NetInfoVersion SupportedVersions
         {
@@ -36,14 +35,21 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Gravel
             ///////////////////////////
             info.m_createGravel = true;
             info.m_createPavement = false;
-            ZPBB.SetInfo(info, version, false);
+            ZonablePedestrianHelper.SetInfo(info, version, false);
+
+            if (version == NetInfoVersion.Ground)
+            {
+                info.m_setVehicleFlags = Vehicle.Flags.OnGravel;
+            }
+
             ///////////////////////////
             // Texturing             //
             ///////////////////////////
             info.Setup8mNoSwWoodMesh(version);
+
             if (version == NetInfoVersion.Ground)
             {
-                ZPBBTexture.SetNakedGroundTexture(info, version);
+                info.SetNakedGroundTexture(version);
             }
             else
             {
@@ -91,7 +97,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Gravel
                     pillarInfo = PrefabCollection<BuildingInfo>.FindLoaded($"{pillarName}.{pillarName}_Data");
                 }
             }
-            ZPBB.LateBuildUpInfo(info, version, bollardInfo, pillarInfo );
+            ZonablePedestrianHelper.LateBuildUpInfo(info, version, bollardInfo, pillarInfo );
         }
     }
 }

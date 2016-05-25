@@ -17,9 +17,9 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Stone
 
         public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_2L; } }
         public string Name { get { return "Zonable Pedestrian Stone Road"; } }
-        public string DisplayName { get { return "[BETA] Zonable Pedestrian Stone Road"; } }
+        public string DisplayName { get { return "Zonable Pedestrian Stone Road"; } }
         public string Description { get { return "Pedestrian Roads are only accessible to pedestrians, cyclists, and emergency vehicles"; } }
-        public string ShortDescription { get { return "No Passenger Vehicles, zoneable [Traffic++ V2 required]"; } }
+        public string ShortDescription { get { return "Zoneable, No Passenger Vehicles [Traffic++ V2 required]"; } }
         public string UICategory { get { return RExExtendedMenus.ROADS_PEDESTRIANS; } }
 
         public string ThumbnailsPath { get { return @"Roads\PedestrianRoads\Stone\thumbnails.png"; } }

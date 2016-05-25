@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Transit.Framework;
+﻿using Transit.Framework;
 using Transit.Framework.Texturing;
 
-namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Gravel
+namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.GravelTiny
 {
-    public partial class ZonablePedestrianGravelBuilder
+    public partial class ZonablePedestrianTinyGravelRoadBuilder
     {
         private static void SetupTextures(NetInfo info, NetInfoVersion version)
         {
@@ -44,7 +40,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Gravel
                         {
                             node.SetTextures(
                                 new TextureSet
-                                    (@"Roads\PedestrianRoads\StoneSmall\Textures\Elevated_Trans__MainTex.png",
+                                    (@"Roads\PedestrianRoads\Common\Textures\Elevated_Trans__MainTex.png",
                                     @"Roads\PedestrianRoads\Pavement\Textures\Elevated_Trans__AlphaMap.png"),
                                 new LODTextureSet
                                     (@"Roads\PedestrianRoads\Stone\Textures\Elevated_Trans_LOD__MainTex.png",

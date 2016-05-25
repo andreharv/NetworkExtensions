@@ -4,23 +4,23 @@ using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.Network;
 
-namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.StoneSmall
+namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.StoneTiny
 {
-    public partial class ZonablePedestrianStoneSmallRoadBuilder : Activable, INetInfoBuilderPart, INetInfoLateBuilder
+    public partial class ZonablePedestrianTinyStoneRoadBuilder : Activable, INetInfoBuilderPart, INetInfoLateBuilder
     {
         public int Order { get { return 320; } }
-        public int UIOrder { get { return 40; } }
+        public int UIOrder { get { return 25; } }
 
-        public const string NAME = "Zonable Pedestrian Small Stone Road";
+        public const string NAME = "Zonable Pedestrian Stone Tiny Road";
         public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_2L; } }
         public string Name { get { return NAME; } }
-        public string DisplayName { get { return "[BETA] Zonable Pedestrian Small Stone Road"; } }
-        public string Description { get { return "Small stone pedestrian Roads are only accessible to pedestrians and emergency vehicles"; } }
-        public string ShortDescription { get { return "No Passenger Vehicles, zoneable [Traffic++ V2 required]"; } }
+        public string DisplayName { get { return "Zonable Pedestrian Stone Tiny Road"; } }
+        public string Description { get { return "Stone pedestrian Roads are only accessible to pedestrians and emergency vehicles"; } }
+        public string ShortDescription { get { return "Zoneable, No Passenger Vehicles [Traffic++ V2 required]"; } }
         public string UICategory { get { return RExExtendedMenus.ROADS_PEDESTRIANS; } }
 
-        public string ThumbnailsPath { get { return @"Roads\PedestrianRoads\StoneSmall\thumbnails.png"; } }
-        public string InfoTooltipPath { get { return @"Roads\PedestrianRoads\StoneSmall\infotooltip.png"; } }
+        public string ThumbnailsPath { get { return @"Roads\PedestrianRoads\StoneTiny\thumbnails.png"; } }
+        public string InfoTooltipPath { get { return @"Roads\PedestrianRoads\StoneTiny\infotooltip.png"; } }
 
         public NetInfoVersion SupportedVersions
         {
@@ -34,7 +34,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.StoneSmall
             ///////////////////////////
             info.m_createGravel = false;
             info.m_createPavement = true;
-            ZPBB.SetInfo(info, version);
+            ZonablePedestrianHelper.SetInfo(info, version);
             ///////////////////////////
             // Texturing             //
             ///////////////////////////
@@ -70,7 +70,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.StoneSmall
             {
                 bollardInfo = PrefabCollection<PropInfo>.FindLoaded($"{bollardName}.{bollardName}_Data");
             }
-            ZPBB.LateBuildUpInfo(info, version, bollardInfo);
+            ZonablePedestrianHelper.LateBuildUpInfo(info, version, bollardInfo);
         }
     }
 }
