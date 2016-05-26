@@ -896,10 +896,10 @@
     <Content Include="Roads\PedestrianRoads\Stone\Textures\Elevated_Segment__XYSMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Stone\Textures\Elevated_Trans_LOD__AlphaMap.png">
+    <Content Include="Roads\PedestrianRoads\Common\Textures\Elevated_Trans_LOD__AlphaMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Stone\Textures\Elevated_Trans_LOD__MainTex.png">
+    <Content Include="Roads\PedestrianRoads\Common\Textures\Elevated_Trans_LOD__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\PedestrianRoads\Stone\Textures\Elevated_Trans__AlphaMap.png">
@@ -2693,9 +2693,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Roads\Common\Meshes\8m\2mSW_Wood\" />
-    <Folder Include="Roads\PedestrianRoads\BoardwalkSmall\Textures\" />
     <Folder Include="Roads\PedestrianRoads\Pavement\Textures\" />
-    <Folder Include="Roads\PedestrianRoads\StoneSmall\Textures\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -85,8 +85,8 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.StoneTiny
                                         (@"Roads\PedestrianRoads\Common\Textures\Elevated_Trans__MainTex.png",
                                         @"Roads\PedestrianRoads\Common\Textures\Elevated_Trans__AlphaMap.png"),
                                     new LODTextureSet
-                                        (@"Roads\PedestrianRoads\Stone\Textures\Elevated_Trans_LOD__MainTex.png",
-                                        @"Roads\PedestrianRoads\Stone\Textures\Elevated_Trans_LOD__AlphaMap.png",
+                                        (@"Roads\PedestrianRoads\Common\Textures\Elevated_Trans_LOD__MainTex.png",
+                                        @"Roads\PedestrianRoads\Common\Textures\Elevated_Trans_LOD__AlphaMap.png",
                                         @"Roads\PedestrianRoads\Common\Textures\Elevated_Node_LOD__XYSMap.png")
                                     );
                             }

@@ -43,8 +43,8 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.GravelTiny
                                     (@"Roads\PedestrianRoads\Common\Textures\Elevated_Trans__MainTex.png",
                                     @"Roads\PedestrianRoads\PavementTiny\Textures\Elevated_Trans__AlphaMap.png"),
                                 new LODTextureSet
-                                    (@"Roads\PedestrianRoads\Stone\Textures\Elevated_Trans_LOD__MainTex.png",
-                                    @"Roads\PedestrianRoads\Stone\Textures\Elevated_Trans_LOD__AlphaMap.png",
+                                    (@"Roads\PedestrianRoads\Common\Textures\Elevated_Trans_LOD__MainTex.png",
+                                    @"Roads\PedestrianRoads\Common\Textures\Elevated_Trans_LOD__AlphaMap.png",
                                     @"Roads\PedestrianRoads\PavementTiny\Textures\Elevated_Segment_LOD__XYSMap.png")
                                 );
                         }
