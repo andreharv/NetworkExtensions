@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Transit.Addon.RoadExtensions.Menus.Roads;
+using Transit.Addon.RoadExtensions.Roads.Common;
 using Transit.Framework;
 using Transit.Framework.Network;
 using Transit.Framework.Texturing;
@@ -16,59 +17,36 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
         public virtual void BuildUp(NetInfo info, NetInfoVersion version)
         {
             ///////////////////////////
-            // Texturing             //
-            ///////////////////////////
-            switch (version)
-            {
-                case NetInfoVersion.Ground:
-                    info.SetAllSegmentsTexture(
-                        new TextureSet
-                           (null,
-                            @"Roads\Common\Textures\Plain\Ground_Segment__AlphaMap.png"),
-                        new LODTextureSet
-                           (@"Roads\Common\Textures\Plain\Ground_Segment_LOD__MainTex.png",
-                            @"Roads\Common\Textures\Plain\Ground_Segment_LOD__AlphaMap.png",
-                            @"Roads\Common\Textures\Plain\Ground_Segment_LOD__XYSMap.png"));
-
-                    foreach (var node in info.m_nodes)
-                    {
-                        if (node.m_flagsRequired == NetNode.Flags.Transition)
-                        {
-                            node.SetTextures(
-                                new TextureSet
-                                   (null,
-                                    @"Roads\Common\Textures\Plain\Ground_Trans__AlphaMap.png"),
-                                new LODTextureSet
-                                   (@"Roads\Common\Textures\Plain\Ground_Trans_LOD__MainTex.png",
-                                    @"Roads\Common\Textures\Plain\Ground_Trans_LOD__AlphaMap.png",
-                                    @"Roads\Common\Textures\Plain\Ground_Trans_LOD__XYSMap.png"));
-                        }
-                        else
-                        {
-                            node.SetTextures(
-                                new TextureSet
-                                   (null,
-                                    @"Roads\Common\Textures\Plain\Ground_Segment__AlphaMap.png"),
-                                new LODTextureSet
-                                   (@"Roads\Common\Textures\Plain\Ground_Node_LOD__MainTex.png",
-                                    @"Roads\Common\Textures\Plain\Ground_Node_LOD__AlphaMap.png",
-                                    @"Roads\Common\Textures\Plain\Ground_Node_LOD__XYSMap.png"));
-                        }
-                    }
-                    break;
-            }
-
-
-            ///////////////////////////
             // Templates             //
             ///////////////////////////
             var onewayRoad = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ONEWAY_2L);
             var pedestrianVanilla = Prefabs.Find<NetInfo>(NetInfos.Vanilla.PED_PAVEMENT);
             var roadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_2L_TREES);
 
+            ///////////////////////////
+            // 3DModeling            //
+            ///////////////////////////
+            info.Setup8mNoSWMesh(version);
+
+            ///////////////////////////
+            // Texturing             //
+            ///////////////////////////
+            if (version == NetInfoVersion.Ground)
+            {
+                info.SetNakedGroundTexture(version);
+            }
+
+            ///////////////////////////
+            // Set up                //
+            ///////////////////////////
+            info.m_availableIn = ItemClass.Availability.All;
+            info.m_surfaceLevel = 0;
             info.m_UnlockMilestone = onewayRoad.m_UnlockMilestone;
             info.m_class = roadInfo.m_class.Clone("NExtPedRoad");
             info.m_class.m_level = ItemClass.Level.Level5;
+            info.m_halfWidth = 4;
+            info.m_UnlockMilestone = roadInfo.m_UnlockMilestone;
+            info.m_pavementWidth = 2;
 
             switch (version)
             {

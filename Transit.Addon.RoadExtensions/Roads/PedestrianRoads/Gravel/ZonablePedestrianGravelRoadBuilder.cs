@@ -5,7 +5,7 @@ using Transit.Framework.Builders;
 
 namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Gravel
 {
-    public class ZonablePedestrianGravelRoadBuilder : ZonablePedestrianBuilderBase, INetInfoBuilderPart
+    public class ZonablePedestrianGravelRoadBuilder : ZonablePedestrianBuilderBase, INetInfoBuilderPart, INetInfoLateBuilder
     {
         public int Order { get { return 305; } }
         public int UIOrder { get { return 10; } }
@@ -29,6 +29,11 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Gravel
             info.m_createPavement = false;
 
             base.BuildUp(info, version);
+        }
+
+        public void LateBuildUp(NetInfo info, NetInfoVersion version)
+        {
+            info.AddWoodBollards(version);
         }
     }
 }

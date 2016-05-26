@@ -6,7 +6,7 @@ using Transit.Framework.Network;
 
 namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Pavement
 {
-    public class ZonablePedestrianPavedRoadBuilder : ZonablePedestrianBuilderBase, INetInfoBuilderPart
+    public class ZonablePedestrianPavedRoadBuilder : ZonablePedestrianBuilderBase, INetInfoBuilderPart, INetInfoLateBuilder
     {
         public int Order { get { return 315; } }
         public int UIOrder { get { return 20; } }
@@ -48,6 +48,11 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Pavement
                 playerNetAI.m_constructionCost = vanillaplayerNetAI.m_constructionCost * 2;
                 playerNetAI.m_maintenanceCost = vanillaplayerNetAI.m_maintenanceCost * 2;
             }
+        }
+
+        public void LateBuildUp(NetInfo info, NetInfoVersion version)
+        {
+            info.AddRetractBollard(version);
         }
     }
 }

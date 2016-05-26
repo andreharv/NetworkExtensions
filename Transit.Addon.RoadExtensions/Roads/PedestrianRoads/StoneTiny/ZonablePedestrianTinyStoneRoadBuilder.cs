@@ -64,13 +64,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.StoneTiny
 
         public void LateBuildUp(NetInfo info, NetInfoVersion version)
         {
-            var bollardName = "StoneBollard";
-            var bollardInfo = PrefabCollection<PropInfo>.FindLoaded($"478820060.{bollardName}_Data");
-            if (bollardInfo == null)
-            {
-                bollardInfo = PrefabCollection<PropInfo>.FindLoaded($"{bollardName}.{bollardName}_Data");
-            }
-            ZonablePedestrianHelper.LateBuildUpInfo(info, version, bollardInfo);
+            info.AddStoneBollard(version);
         }
     }
 }

@@ -74,6 +74,7 @@
     <Compile Include="RExModule.Install.Roads.cs" />
     <Compile Include="RExModule.Install.Init.cs" />
     <Compile Include="Roads\PedestrianRoads\Common\ZonablePedestrianBuilderBase.cs" />
+    <Compile Include="Roads\PedestrianRoads\Common\ZonablePedestrianHelper.Props.cs" />
     <Compile Include="Roads\PedestrianRoads\Common\ZonablePedestrianHelper.Texturing.cs" />
     <Compile Include="Roads\PedestrianRoads\GravelTiny\ZonablePedestrianTinyGravelRoadBuilder.cs" />
     <Compile Include="Roads\PedestrianRoads\GravelTiny\ZonablePedestrianTinyGravelRoadBuilder.Texturing.cs" />
@@ -2122,11 +2123,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Buildings\Wood8mEPillar.crp" />
-    <None Include="Props\RetractBollard.crp" />
+    <None Include="Props\RetractBollard.crp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Props\StoneBollard.crp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Props\WoodBollard.crp" />
+    <None Include="Props\WoodBollard.crp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Roads\Common\Meshes\16m\NoSw\Elevated.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

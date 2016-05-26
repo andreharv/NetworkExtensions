@@ -47,6 +47,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.PavementTiny
             {
                 SetupTextures(info, version);
             }
+
             ///////////////////////////
             // AI                    //
             ///////////////////////////
@@ -70,13 +71,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.PavementTiny
 
         public void LateBuildUp(NetInfo info, NetInfoVersion version)
         {
-            var bollardName = "RetractBollard";
-            var bollardInfo = PrefabCollection<PropInfo>.FindLoaded($"478820060.{bollardName}_Data");
-            if (bollardInfo == null)
-            {
-                bollardInfo = PrefabCollection<PropInfo>.FindLoaded($"{bollardName}.{bollardName}_Data");
-            }
-            ZonablePedestrianHelper.LateBuildUpInfo(info, version, bollardInfo);
+            info.AddRetractBollard(version);
         }
     }
 }

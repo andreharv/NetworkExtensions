@@ -80,24 +80,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.GravelTiny
 
         public void LateBuildUp(NetInfo info, NetInfoVersion version)
         {
-            var bollardName = "WoodBollard";
-            var bollardInfo = PrefabCollection<PropInfo>.FindLoaded($"478820060.{bollardName}_Data");
-            if (bollardInfo == null)
-            {
-                bollardInfo = PrefabCollection<PropInfo>.FindLoaded($"{bollardName}.{bollardName}_Data");
-            }
-
-            BuildingInfo pillarInfo = null;
-            if (version == NetInfoVersion.Elevated || version == NetInfoVersion.Bridge)
-            {
-                var pillarName = "Wood8mEPillar";
-                pillarInfo = PrefabCollection<BuildingInfo>.FindLoaded($"478820060.{pillarName}_Data");
-                if (pillarInfo == null)
-                {
-                    pillarInfo = PrefabCollection<BuildingInfo>.FindLoaded($"{pillarName}.{pillarName}_Data");
-                }
-            }
-            ZonablePedestrianHelper.LateBuildUpInfo(info, version, bollardInfo, pillarInfo );
+            info.AddWoodBollards(version);
         }
     }
 }
