@@ -29,6 +29,11 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Gravel
             info.m_createPavement = false;
 
             base.BuildUp(info, version);
+
+            if (version == NetInfoVersion.Ground)
+            {
+                info.m_setVehicleFlags = Vehicle.Flags.OnGravel;
+            }
         }
 
         public void LateBuildUp(NetInfo info, NetInfoVersion version)

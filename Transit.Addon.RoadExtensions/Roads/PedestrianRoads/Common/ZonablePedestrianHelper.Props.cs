@@ -101,12 +101,15 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
                 var bollardProp6 = bollardProp2.ShallowClone();
                 bollardProp6.m_position.x = 0;
 
-                var pedLane = new NetInfo.Lane();
-                pedLane = info.m_lanes.First(l => l.m_laneType == NetInfo.LaneType.Pedestrian).ShallowClone();
+                var propPedLane = info
+                    .m_lanes
+                    .First(l => l.m_position == 0f && l.m_laneType == NetInfo.LaneType.Pedestrian);
 
-                var tempProps = pedLane.m_laneProps.m_props.ToList();
-                tempProps.AddRange(new List<NetLaneProps.Prop> { bollardProp1, bollardProp2, bollardProp3, bollardProp4, bollardProp5, bollardProp6 });
-                pedLane.m_laneProps.m_props = tempProps.ToArray();
+                propPedLane.m_laneProps.m_props =  propPedLane
+                    .m_laneProps
+                    .m_props
+                    .Union(new[] { bollardProp1, bollardProp2, bollardProp3, bollardProp4, bollardProp5, bollardProp6})
+                    .ToArray();
             }
         }
     }

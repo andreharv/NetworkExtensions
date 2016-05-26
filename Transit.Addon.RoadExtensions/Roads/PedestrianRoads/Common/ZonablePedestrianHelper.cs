@@ -72,18 +72,15 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
                     m_verticalOffset = 0.05f
                 };
             }
-            var pedLane = new NetInfo.Lane();
-            pedLane = info.m_lanes.FirstOrDefault(l => l.m_laneType == NetInfo.LaneType.Pedestrian);
+            var pedLane = info.m_lanes.First(l => l.m_laneType == NetInfo.LaneType.Pedestrian);
             pedLane.m_position = 0;
             pedLane.m_width = 8;
             pedLane.m_verticalOffset = 0.05f;
-            var tempProps = new List<NetLaneProps.Prop>();
+            var tempProps = pedLane.m_laneProps.m_props.ToList();
             var tempProps2 = new List<NetLaneProps.Prop>();
-            tempProps = pedLane.m_laneProps.m_props.ToList();
             for (int i = 0; i < vehicleLanes.Count; i++)
             {
-                var temp = new List<NetLaneProps.Prop>();
-                temp = vehicleLanes[i].m_laneProps.m_props.ToList();
+                var temp = vehicleLanes[i].m_laneProps.m_props.ToList();
                 temp.RemoveProps(new string[] { "arrow", "manhole" });
                 tempProps2.AddRange(temp);
                 vehicleLanes[i].m_laneProps.m_props = tempProps2.ToArray();

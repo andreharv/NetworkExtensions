@@ -91,6 +91,13 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
                         info.m_lanes[2].m_speedLimit = 0.3f;
                         info.m_lanes[2].m_stopType = VehicleInfo.VehicleType.None;
                         info.m_lanes[2].m_laneType = NetInfo.LaneType.Vehicle;
+
+                        var centerLane = info.m_lanes[3].ShallowClone();
+                        centerLane.m_laneProps = ScriptableObject.CreateInstance<NetLaneProps>();
+                        centerLane.m_laneProps.m_props = new NetLaneProps.Prop[0];
+                        centerLane.m_position = 0f;
+
+                        info.m_lanes = info.m_lanes.Union(centerLane).ToArray();
                     }
                     break;
 
