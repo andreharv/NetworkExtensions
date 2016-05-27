@@ -31,10 +31,7 @@ namespace Transit.Framework.Network
             public const string HIGHWAY_3L_SLOPE = "Highway Slope";
             public const string HIGHWAY_3L_TUNNEL = "Highway Tunnel";
             public const string HIGHWAY_3L_BARRIER = "Highway Barrier";
-
-            public const string LARGE_ROAD_BRIDGE_SUSPENSION_PILLAR = "LargeRoadBridgeSuspensionPillar";
-
-            public const string PED_GRAVEL = ROAD_2L_GRAVEL; // Quick fix for the Pedestian zonable roads
+            
             public const string PED_PAVEMENT = "Pedestrian Pavement";
             
             public static string GetPrefabName(string groundName, NetInfoVersion version)
@@ -42,9 +39,9 @@ namespace Transit.Framework.Network
                 switch (groundName)
                 {
                     case ROAD_2L:
-                    case ROAD_6L:
-
+                    case ROAD_2L_GRAVEL:
                     case ROAD_4L:
+                    case ROAD_6L:
 
                     case ONEWAY_2L:
 
@@ -94,19 +91,6 @@ namespace Transit.Framework.Network
                                 return groundName + " " + NetInfoVersion.Tunnel;
                             case NetInfoVersion.Slope:
                                 return groundName + " " + NetInfoVersion.Slope;
-                            default:
-                                throw new NotImplementedException();
-                        }
-
-                    case PED_GRAVEL:
-                    case PED_PAVEMENT:
-                        switch (version)
-                        {
-                            case NetInfoVersion.Ground:
-                                return groundName;
-                            case NetInfoVersion.Elevated:
-                            case NetInfoVersion.Bridge:
-                                return "Pedestrian Elevated";
                             default:
                                 throw new NotImplementedException();
                         }

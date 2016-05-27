@@ -10,16 +10,6 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
 {
     public static partial class ZonablePedestrianHelper
     {
-        public static string BasedPrefabName
-        {
-            get { return NetInfos.Vanilla.ROAD_2L; }
-        }
-
-        public static string UICategory
-        {
-            get { return RExExtendedMenus.ROADS_PEDESTRIANS; }
-        }
-
         public static void SetInfo(NetInfo info, NetInfoVersion version, bool useDefaultMeshes = true)
         {
             ///////////////////////////

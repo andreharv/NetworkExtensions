@@ -1,4 +1,5 @@
-﻿using Transit.Addon.RoadExtensions.Roads.Common;
+﻿using Transit.Addon.RoadExtensions.Menus.Roads;
+using Transit.Addon.RoadExtensions.Roads.Common;
 using Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
@@ -11,8 +12,8 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.GravelTiny
         public int Order { get { return 300; } }
         public int UIOrder { get { return 5; } }
 
-        public string BasedPrefabName { get { return ZonablePedestrianHelper.BasedPrefabName; } }
-        public string UICategory { get { return ZonablePedestrianHelper.UICategory; } }
+        public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_2L; } }
+        public string UICategory { get { return RExExtendedMenus.ROADS_PEDESTRIANS; } }
 
         public const string NAME = "Zonable Pedestrian Gravel Tiny";
         public string Name { get { return NAME; } }

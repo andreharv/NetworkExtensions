@@ -11,7 +11,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
 {
     public abstract class ZonablePedestrianBuilderBase : Activable
     {
-        public string BasedPrefabName { get { return NetInfos.Vanilla.PED_GRAVEL; } }
+        public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_2L_GRAVEL; } }
         public string UICategory { get { return RExExtendedMenus.ROADS_PEDESTRIANS; } }
 
         public virtual void BuildUp(NetInfo info, NetInfoVersion version)
