@@ -199,20 +199,28 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Stone
             laneCollection.AddRange(carLanes);
             laneCollection.AddRange(pedLanes);
             info.m_lanes = laneCollection.ToArray();
+
             ///////////////////////////
             // AI                    //
             ///////////////////////////
-            var hwPlayerNetAI = roadInfo.GetComponent<PlayerNetAI>();
-            var playerNetAI = info.GetComponent<PlayerNetAI>();
-
-            if (hwPlayerNetAI != null && playerNetAI != null)
+            var pedestrianVanilla = Prefabs.Find<NetInfo>(NetInfos.Vanilla.PED_PAVEMENT);
+            switch (version)
             {
-                playerNetAI.m_constructionCost = hwPlayerNetAI.m_constructionCost * 1 / 2;
-                playerNetAI.m_maintenanceCost = hwPlayerNetAI.m_maintenanceCost * 1 / 2;
+                case NetInfoVersion.Ground:
+                    {
+                        var vanillaplayerNetAI = pedestrianVanilla.GetComponent<PlayerNetAI>();
+                        var playerNetAI = info.GetComponent<PlayerNetAI>();
+
+                        if (playerNetAI != null)
+                        {
+                            playerNetAI.m_constructionCost = vanillaplayerNetAI.m_constructionCost * 2;
+                            playerNetAI.m_maintenanceCost = vanillaplayerNetAI.m_maintenanceCost * 2;
+                        }
+                    }
+                    break;
             }
 
             var roadBaseAI = info.GetComponent<RoadBaseAI>();
-
             if (roadBaseAI != null)
             {
                 roadBaseAI.m_trafficLights = false;

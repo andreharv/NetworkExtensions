@@ -1,4 +1,5 @@
 ﻿using Transit.Addon.RoadExtensions.Menus.Roads;
+using Transit.Addon.RoadExtensions.Roads.Common;
 using Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
@@ -30,16 +31,21 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.StoneTiny
         public void BuildUp(NetInfo info, NetInfoVersion version)
         {
             ///////////////////////////
+            // 3DModeling            //
+            ///////////////////////////
+            info.Setup8mNoSWMesh(version);
+
+            ///////////////////////////
+            // Texturing             //
+            ///////////////////////////
+            SetupTextures(info, version);
+
+            ///////////////////////////
             // Set up                //
             ///////////////////////////
             info.m_createGravel = false;
             info.m_createPavement = true;
-            ZonablePedestrianHelper.SetInfo(info, version);
-            ///////////////////////////
-            // Texturing             //
-            ///////////////////////////
-
-            SetupTextures(info, version);
+            info.SetupTinyPed(version);
 
             ///////////////////////////
             // AI                    //
@@ -54,8 +60,8 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.StoneTiny
 
                         if (playerNetAI != null)
                         {
-                            playerNetAI.m_constructionCost = vanillaplayerNetAI.m_constructionCost * 2;
-                            playerNetAI.m_maintenanceCost = vanillaplayerNetAI.m_maintenanceCost * 2;
+                            playerNetAI.m_constructionCost = vanillaplayerNetAI.m_constructionCost * 7 / 4;
+                            playerNetAI.m_maintenanceCost = vanillaplayerNetAI.m_maintenanceCost * 7 / 4;
                         }
                     }
                     break;

@@ -19,13 +19,13 @@ namespace Transit.Framework.Builders
         void BuildUp(NetInfo info, NetInfoVersion version);
     }
 
-    public interface INetInfoCustomBaseBuilder : INetInfoBuilder
+    public interface INetInfoSpecificBaseBuilder : INetInfoBuilder
     {
-        string GetBasedPrefabName(NetInfoVersion version);
+        string GetSpecificBasedPrefabName(NetInfoVersion version);
     }
 
-    public interface INetInfoCustomNameBuilder : INetInfoBuilder
+    public interface INetInfoSpecificNameBuilder : INetInfoBuilder
     {
-        string GetCustomName(NetInfoVersion version);
+        string GetSpecificBuiltPrefabName(NetInfoVersion version);
     }
 }

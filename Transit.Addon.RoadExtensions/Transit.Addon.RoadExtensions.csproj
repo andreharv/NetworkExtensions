@@ -73,14 +73,11 @@
     <Compile Include="RExModule.Install.Menu.cs" />
     <Compile Include="RExModule.Install.Roads.cs" />
     <Compile Include="RExModule.Install.Init.cs" />
-    <Compile Include="Roads\PedestrianRoads\Common\ZonablePedestrianBuilderBase.cs" />
     <Compile Include="Roads\PedestrianRoads\Common\ZonablePedestrianHelper.Props.cs" />
     <Compile Include="Roads\PedestrianRoads\Common\ZonablePedestrianHelper.Texturing.cs" />
     <Compile Include="Roads\PedestrianRoads\GravelTiny\ZonablePedestrianTinyGravelRoadBuilder.cs" />
-    <Compile Include="Roads\PedestrianRoads\GravelTiny\ZonablePedestrianTinyGravelRoadBuilder.Texturing.cs" />
     <Compile Include="Roads\PedestrianRoads\Gravel\ZonablePedestrianGravelRoadBuilder.cs" />
     <Compile Include="Roads\PedestrianRoads\PavementTiny\ZonablePedestrianTinyPavedRoadBuilder.cs" />
-    <Compile Include="Roads\PedestrianRoads\PavementTiny\ZonablePedestrianTinyPavedRoadBuilder.Texturing.cs" />
     <Compile Include="Roads\PedestrianRoads\Pavement\ZonablePedestrianPavedRoadBuilder.cs" />
     <Compile Include="Roads\PedestrianRoads\StoneTiny\ZonablePedestrianTinyStoneRoadBuilder.Texturing.cs" />
     <Compile Include="Roads\PedestrianRoads\StoneTiny\ZonablePedestrianTinyStoneRoadBuilder.cs" />
@@ -750,25 +747,25 @@
     <Content Include="Roads\PedestrianRoads\PavementTiny\infotooltip.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\PavementTiny\Textures\Elevated_Segment_LOD__AlphaMap.png">
+    <Content Include="Roads\Common\Textures\Plain\Elevated_Segment_LOD__AlphaMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\PavementTiny\Textures\Elevated_Segment_LOD__MainTex.png">
+    <Content Include="Roads\Common\Textures\Plain\Elevated_Segment_LOD__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\PedestrianRoads\Common\Textures\Elevated_Node_LOD__XYSMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\PavementTiny\Textures\Elevated_Segment_LOD__XYSMap.png">
+    <Content Include="Roads\Common\Textures\Plain\Elevated_Segment_LOD__XYSMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\PavementTiny\Textures\Elevated_Segment__AlphaMap.png">
+    <Content Include="Roads\Common\Textures\Plain\Elevated_Segment__AlphaMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\PavementTiny\Textures\Elevated_Segment__MainTex.png">
+    <Content Include="Roads\Common\Textures\Plain\Elevated_Segment__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\PavementTiny\Textures\Elevated_Trans__AlphaMap.png">
+    <Content Include="Roads\Common\Textures\Plain\Elevated_Trans__AlphaMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\PedestrianRoads\PavementTiny\thumbnails.png">
@@ -2698,7 +2695,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Roads\Common\Meshes\8m\2mSW_Wood\" />
-    <Folder Include="Roads\PedestrianRoads\Pavement\Textures\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

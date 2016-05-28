@@ -32,31 +32,33 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.GravelTiny
         public void BuildUp(NetInfo info, NetInfoVersion version)
         {
             ///////////////////////////
+            // 3DModeling            //
+            ///////////////////////////
+            info.Setup8mNoSwWoodMesh(version);
+
+            ///////////////////////////
+            // Texturing             //
+            ///////////////////////////
+            if (version == NetInfoVersion.Ground)
+            {
+                info.SetupGroundNakedTextures(version);
+            }
+            else
+            {
+                info.SetupElevatedBoardWalkTextures(version);
+            }
+
+            ///////////////////////////
             // Set up                //
             ///////////////////////////
             info.m_createGravel = true;
             info.m_createPavement = false;
-            ZonablePedestrianHelper.SetInfo(info, version, false);
+            info.SetupTinyPed(version);
 
             if (version == NetInfoVersion.Ground)
             {
                 info.m_setVehicleFlags = Vehicle.Flags.OnGravel;
             }
-
-            ///////////////////////////
-            // Texturing             //
-            ///////////////////////////
-            info.Setup8mNoSwWoodMesh(version);
-
-            if (version == NetInfoVersion.Ground)
-            {
-                info.SetNakedGroundTexture(version);
-            }
-            else
-            {
-                SetupTextures(info, version);
-            }
-            
 
             ///////////////////////////
             // AI                    //
@@ -71,8 +73,8 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.GravelTiny
 
                         if (playerNetAI != null)
                         {
-                            playerNetAI.m_constructionCost = vanillaplayerNetAI.m_constructionCost * 2;
-                            playerNetAI.m_maintenanceCost = vanillaplayerNetAI.m_maintenanceCost * 2;
+                            playerNetAI.m_constructionCost = vanillaplayerNetAI.m_constructionCost;
+                            playerNetAI.m_maintenanceCost = vanillaplayerNetAI.m_maintenanceCost;
                         }
                     }
                     break;

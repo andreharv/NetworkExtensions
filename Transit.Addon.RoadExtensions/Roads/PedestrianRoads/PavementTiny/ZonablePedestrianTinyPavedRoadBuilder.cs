@@ -1,4 +1,5 @@
 ﻿using Transit.Addon.RoadExtensions.Menus.Roads;
+using Transit.Addon.RoadExtensions.Roads.Common;
 using Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
@@ -6,7 +7,7 @@ using Transit.Framework.Network;
 
 namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.PavementTiny
 {
-    public partial class ZonablePedestrianTinyPavedRoadBuilder : Activable, INetInfoBuilderPart, INetInfoLateBuilder
+    public class ZonablePedestrianTinyPavedRoadBuilder : Activable, INetInfoBuilderPart, INetInfoLateBuilder
     {
         public int Order { get { return 310; } }
         public int UIOrder { get { return 15; } }
@@ -31,23 +32,28 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.PavementTiny
         public void BuildUp(NetInfo info, NetInfoVersion version)
         {
             ///////////////////////////
-            // Set up                //
+            // 3DModeling            //
             ///////////////////////////
-            info.m_createGravel = false;
-            info.m_createPavement = true;
-            ZonablePedestrianHelper.SetInfo(info, version);
+            info.Setup8mNoSWMesh(version);
 
             ///////////////////////////
             // Texturing             //
             ///////////////////////////
             if (version == NetInfoVersion.Ground)
             {
-                info.SetNakedGroundTexture(version);
+                info.SetupGroundNakedTextures(version);
             }
             else
             {
-                SetupTextures(info, version);
+                info.SetupElevatedPavedTextures(version);
             }
+
+            ///////////////////////////
+            // Set up                //
+            ///////////////////////////
+            info.m_createGravel = false;
+            info.m_createPavement = true;
+            info.SetupTinyPed(version);
 
             ///////////////////////////
             // AI                    //
@@ -62,8 +68,8 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.PavementTiny
 
                         if (playerNetAI != null)
                         {
-                            playerNetAI.m_constructionCost = vanillaplayerNetAI.m_constructionCost * 2;
-                            playerNetAI.m_maintenanceCost = vanillaplayerNetAI.m_maintenanceCost * 2;
+                            playerNetAI.m_constructionCost = vanillaplayerNetAI.m_constructionCost * 3 / 2;
+                            playerNetAI.m_maintenanceCost = vanillaplayerNetAI.m_maintenanceCost * 3 / 2;
                         }
                     }
                     break;
