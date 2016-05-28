@@ -61,7 +61,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
                 }
 
                 var bridgeAI = info.GetComponent<RoadBridgeAI>();
-                if (bridgeAI != null)
+                if (pillarInfo != null && bridgeAI != null)
                 {
                     bridgeAI.m_doubleLength = false;
                     bridgeAI.m_bridgePillarInfo = pillarInfo;

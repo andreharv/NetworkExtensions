@@ -6,24 +6,23 @@ using Transit.Addon.RoadExtensions.Roads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.Network;
-using UnityEngine;
 
-namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Stone
+namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Promenade
 {
-    public partial class ZonablePedestrianStoneRoadBuilder : Activable, INetInfoBuilderPart, INetInfoLateBuilder
+    public partial class ZonablePedestrianPromenadeBuilder : Activable, INetInfoBuilderPart, INetInfoLateBuilder
     {
         public int Order { get { return 330; } }
         public int UIOrder { get { return 30; } }
 
         public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_2L; } }
-        public string Name { get { return "Zonable Pedestrian Stone Road"; } }
-        public string DisplayName { get { return "Zonable Pedestrian Stone Road"; } }
-        public string Description { get { return "Pedestrian Roads are only accessible to pedestrians, cyclists, and emergency vehicles"; } }
+        public string Name { get { return "Zonable Promenade"; } }
+        public string DisplayName { get { return "Zonable Promenade"; } }
+        public string Description { get { return "Promenade is only accessible to pedestrians, cyclists, and emergency vehicles"; } }
         public string ShortDescription { get { return "Zoneable, No Passenger Vehicles [Traffic++ V2 required]"; } }
         public string UICategory { get { return RExExtendedMenus.ROADS_PEDESTRIANS; } }
 
-        public string ThumbnailsPath { get { return @"Roads\PedestrianRoads\Stone\thumbnails.png"; } }
-        public string InfoTooltipPath { get { return @"Roads\PedestrianRoads\Stone\infotooltip.png"; } }
+        public string ThumbnailsPath { get { return @"Roads\PedestrianRoads\Promenade\thumbnails.png"; } }
+        public string InfoTooltipPath { get { return @"Roads\PedestrianRoads\Promenade\infotooltip.png"; } }
 
         public NetInfoVersion SupportedVersions
         {
@@ -91,8 +90,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Stone
 
             var carLanes = new List<NetInfo.Lane>();
             carLanes.AddRange(vehicleLanes.Skip(2));
-
-            var tempProps = new List<NetLaneProps.Prop>();
+            
             for (int i = 0; i < bikeLanes.Count; i++)
             {
                 bikeLanes[i].m_vehicleType = VehicleInfo.VehicleType.Bicycle;
@@ -102,12 +100,11 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Stone
                 bikeLanes[i].m_direction = bikeLanes[i].m_position > 0 ? NetInfo.Direction.Forward : NetInfo.Direction.Backward;
                 bikeLanes[i].m_speedLimit = 0.8f;
                 bikeLanes[i].m_stopType = VehicleInfo.VehicleType.None;
-                tempProps = bikeLanes[i].m_laneProps.m_props.ToList();
-                tempProps.RemoveProps(new string[] { "arrow" });
+                var tempProps = bikeLanes[i].m_laneProps.m_props.ToList();
+                tempProps.RemoveProps("arrow");
                 bikeLanes[i].m_laneProps.m_props = tempProps.ToArray();
             }
-
-            tempProps = new List<NetLaneProps.Prop>();
+            
             for (int i = 0; i < carLanes.Count; i++)
             {
                 carLanes[i].m_verticalOffset = 0.05f;
@@ -120,20 +117,20 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Stone
                     m_direction = position > 0 ? NetInfo.Direction.Forward : NetInfo.Direction.Backward
                 };
                 carLanes[i] = niLane;
-                tempProps = carLanes[i].m_laneProps.m_props.ToList();
-                tempProps.RemoveProps(new string[] { "arrow" });
+                var tempProps = carLanes[i].m_laneProps.m_props.ToList();
+                tempProps.RemoveProps("arrow");
                 carLanes[i].m_laneProps.m_props = tempProps.ToArray();
 
             }
             var pedLanes = new List<NetInfo.Lane>();
             pedLanes.AddRange(info.m_lanes.Where(l => l.m_laneType == NetInfo.LaneType.Pedestrian).OrderBy(l => l.m_position));
-            tempProps = new List<NetLaneProps.Prop>();
+
             var tempProps2 = new List<NetLaneProps.Prop>();
             for (int i = 0; i < vehicleLanes.Count; i++)
             {
                 var temp = new List<NetLaneProps.Prop>();
                 temp = vehicleLanes[i].m_laneProps.m_props.ToList();
-                temp.RemoveProps(new string[] { "arrow", "manhole" });
+                temp.RemoveProps("arrow", "manhole");
                 tempProps2.AddRange(temp);
                 vehicleLanes[i].m_laneProps.m_props = tempProps2.ToArray();
             }
@@ -141,10 +138,10 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Stone
             {
                 pedLanes[i].m_position = ((i * 2) - 1) * 5;
                 pedLanes[i].m_width = 6;
-                tempProps = pedLanes[i].m_laneProps.m_props.ToList();
-                tempProps.RemoveProps(new string[] { "bus", "random" });
+                var tempProps = pedLanes[i].m_laneProps.m_props.ToList();
+                tempProps.RemoveProps("bus", "random");
                 var tempPropProps = tempProps.Where(tp => tp.m_prop != null);
-                if (tempPropProps.Any(tp => tp.m_prop.name.ToLower().IndexOf("street light") != -1))
+                if (tempPropProps.Any(tp => tp.m_prop.name.ToLower().IndexOf("street light", StringComparison.Ordinal) != -1))
                 {
                     tempProps.ReplacePropInfo(new KeyValuePair<string, PropInfo>("street light", Prefabs.Find<PropInfo>("StreetLamp02")));
                     var lightProp = tempProps.First(tp => tp.m_prop.name == "StreetLamp02");
@@ -229,7 +226,6 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Stone
             }
 
             var roadAI = info.GetComponent<RoadAI>();
-
             if (roadAI != null)
             {
                 roadAI.m_enableZoning = true;
@@ -238,14 +234,19 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Stone
 
         public void LateBuildUp(NetInfo info, NetInfoVersion version)
         {
-            var pedLanes = info.m_lanes.Where(pl => pl.m_laneType == NetInfo.LaneType.Pedestrian).ToList();
             var stoneBollard = PrefabCollection<PropInfo>.FindLoaded("478820060.StoneBollard_Data");
             if (stoneBollard == null)
             {
                 stoneBollard = PrefabCollection<PropInfo>.FindLoaded("StoneBollard.StoneBollard_Data");
             }
 
-            for (int i = 0; i < pedLanes.Count; i++)
+            if (stoneBollard == null)
+            {
+                return;
+            }
+
+            var pedLanes = info.m_lanes.Where(pl => pl.m_laneType == NetInfo.LaneType.Pedestrian).ToArray();
+            for (var i = 0; i < pedLanes.Length; i++)
             {
                 var bollardProp = new NetLaneProps.Prop()
                 {
