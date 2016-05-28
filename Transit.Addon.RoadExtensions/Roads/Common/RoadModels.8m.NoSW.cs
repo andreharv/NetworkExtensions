@@ -7,16 +7,12 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
     {
         public static NetInfo Setup8mNoSWMesh(this NetInfo info, NetInfoVersion version)
         {
-            var highwayInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L);
-            var highwaySlopeInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L_SLOPE);
-            var defaultMaterial = highwayInfo.m_nodes[0].m_material;
-
             switch (version)
             {
                 case NetInfoVersion.Ground:
                     {
                         var segments0 = info.m_segments[0];
-                        var nodes0 = info.m_nodes[0];
+                        var nodes0 = info.m_nodes[0].ShallowClone();
                         var nodes1 = info.m_nodes[0].ShallowClone();
 
                         nodes0.m_flagsRequired = NetNode.Flags.None;
@@ -29,16 +25,16 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                             .SetFlagsDefault()
                             .SetMeshes(
                             @"Roads\Common\Meshes\8m\NoSW\Ground.obj",
-                            @"Roads\Common\Meshes\8m\1p5mSW\Ground_LOD.obj");
+                            @"Roads\Common\Meshes\8m\NoSW\Ground_LOD.obj");
 
                         nodes0
                             .SetMeshes(
                             @"Roads\Common\Meshes\8m\NoSW\Ground_Node.obj",
-                            @"Roads\Common\Meshes\8m\1p5mSW\Ground_Node_LOD.obj");
+                            @"Roads\Common\Meshes\8m\NoSW\Ground_Node_LOD.obj");
                         nodes1
                             .SetMeshes(
                             @"Roads\Common\Meshes\8m\NoSW\Ground_Trans.obj",
-                            @"Roads\Common\Meshes\8m\1p5mSW\Ground_Node_LOD.obj");
+                            @"Roads\Common\Meshes\8m\NoSW\Ground_Trans_LOD.obj");
 
                         info.m_segments = new[] { segments0 };
                         info.m_nodes = new[] { nodes0, nodes1 };
@@ -71,7 +67,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                         nodes1
                             .SetMeshes(
                             @"Roads\Common\Meshes\8m\NoSW\Elevated_Trans.obj",
-                            @"Roads\Common\Meshes\8m\NoSW\Elevated_Node_LOD.obj");
+                            @"Roads\Common\Meshes\8m\NoSW\Elevated_Trans_LOD.obj");
 
                         info.m_segments = new[] { segments0 };
                         info.m_nodes = new[] { nodes0, nodes1 };

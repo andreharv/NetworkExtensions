@@ -31,10 +31,7 @@ namespace Transit.Framework.Network
             public const string HIGHWAY_3L_SLOPE = "Highway Slope";
             public const string HIGHWAY_3L_TUNNEL = "Highway Tunnel";
             public const string HIGHWAY_3L_BARRIER = "Highway Barrier";
-
-            public const string LARGE_ROAD_BRIDGE_SUSPENSION_PILLAR = "LargeRoadBridgeSuspensionPillar";
-
-            public const string PED_GRAVEL = ROAD_2L_GRAVEL; // Quick fix for the Pedestian zonable roads
+            
             public const string PED_PAVEMENT = "Pedestrian Pavement";
             public const string PED_PAVEMENT_SLOPE = "Pedestrian Slope";
 
@@ -46,9 +43,9 @@ namespace Transit.Framework.Network
                 switch (groundName)
                 {
                     case ROAD_2L:
-                    case ROAD_6L:
-
+                    case ROAD_2L_GRAVEL:
                     case ROAD_4L:
+                    case ROAD_6L:
 
                     case ONEWAY_2L:
 
@@ -102,18 +99,6 @@ namespace Transit.Framework.Network
                                 throw new NotImplementedException();
                         }
 
-                    case PED_GRAVEL:
-                        switch (version)
-                        {
-                            case NetInfoVersion.Ground:
-                                return groundName;
-                            case NetInfoVersion.Elevated:
-                            case NetInfoVersion.Bridge:
-                                return "Pedestrian Elevated";
-                            default:
-                                throw new NotImplementedException();
-                        }
-
                     case ROAD_2L_BIKE:
                         var template = "Basic Road {0} Bike";
                         switch (version)
@@ -161,7 +146,6 @@ namespace Transit.Framework.Network
         {
             // Legacy from T++
             public const string BUSWAY_6L = "Large Road With Bus Lanes";
-            public const string ZONEABLE_PED_PAVEMENT = "Zonable Pedestrian Pavement";
 
             public static string GetPrefabName(string groundName, NetInfoVersion version)
             {
@@ -178,18 +162,6 @@ namespace Transit.Framework.Network
                             return "Large Road Decoration Trees With Bus Lanes";
                         default:
                             return string.Format("Large Road {0} With Bus Lanes", version);
-                    }
-                }
-
-                // Legacy from T++
-                if (groundName == ZONEABLE_PED_PAVEMENT)
-                {
-                    switch (version)
-                    {
-                        case NetInfoVersion.Ground:
-                            return groundName;
-                        default:
-                            return string.Format("Zonable Pedestrian {0}", version);
                     }
                 }
 
