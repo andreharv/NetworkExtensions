@@ -63,7 +63,7 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.Rail1LStation
             });
 
             var railLane = info.m_lanes.FirstOrDefault(l => l.m_laneType == NetInfo.LaneType.Vehicle);
-            railLane.m_direction = NetInfo.Direction.AvoidBoth;
+            railLane.m_direction = NetInfo.Direction.AvoidBackward | NetInfo.Direction.AvoidForward;
 
             var pedLanes = info.m_lanes.Where(l => l.m_laneType == NetInfo.LaneType.Pedestrian).ToList();
 
