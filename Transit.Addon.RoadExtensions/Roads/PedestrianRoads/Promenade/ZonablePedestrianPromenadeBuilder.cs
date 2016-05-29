@@ -5,12 +5,15 @@ using Transit.Addon.RoadExtensions.Menus.Roads;
 using Transit.Addon.RoadExtensions.Roads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
+using Transit.Framework.Interfaces;
 using Transit.Framework.Network;
 
 namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Promenade
 {
-    public partial class ZonablePedestrianPromenadeBuilder : Activable, INetInfoBuilderPart, INetInfoLateBuilder
+    public partial class ZonablePedestrianPromenadeBuilder : Activable, INetInfoBuilderPart, INetInfoLateBuilder, IDLCRequired
     {
+        public SteamHelper.DLC RequiredDLC { get { return SteamHelper.DLC.AfterDarkDLC; } }
+
         public int Order { get { return 330; } }
         public int UIOrder { get { return 30; } }
 
@@ -18,7 +21,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Promenade
         public string Name { get { return "Zonable Promenade"; } }
         public string DisplayName { get { return "Zonable Promenade"; } }
         public string Description { get { return "Promenade is only accessible to pedestrians, cyclists, and emergency vehicles"; } }
-        public string ShortDescription { get { return "Zoneable, No Passenger Vehicles [Traffic++ V2 required]"; } }
+        public string ShortDescription { get { return "Zoneable, No Passenger Vehicles [AfterDark DLC AND Traffic++ V2 required]"; } }
         public string UICategory { get { return RExExtendedMenus.ROADS_PEDESTRIANS; } }
 
         public string ThumbnailsPath { get { return @"Roads\PedestrianRoads\Promenade\thumbnails.png"; } }
