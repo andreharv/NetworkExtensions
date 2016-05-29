@@ -5,15 +5,15 @@ using Transit.Framework.Network;
 
 namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.Plain2L
 {
-    public partial class PlainRoadBuilder : Activable, INetInfoBuilderPart
+    public partial class PlainStreetBuilder : Activable, INetInfoBuilderPart
     {
         public int Order { get { return 2; } }
         public int UIOrder { get { return 1; } }
 
         public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_2L_GRAVEL; } }
-        public string Name { get { return "PlainRoad2L"; } }
-        public string DisplayName { get { return "Plain Road"; } }
-        public string Description { get { return "A plain two lane road without sidewalks, but with available parking spaces. Supports local traffic."; } }
+        public string Name { get { return "PlainStreet2L"; } }
+        public string DisplayName { get { return "Plain Street"; } }
+        public string Description { get { return "A two lane plain street without sidewalks, but with available parking spaces. Supports local traffic."; } }
         public string ShortDescription { get { return "Parking, zoneable, low traffic"; } }
         public string UICategory { get { return RExExtendedMenus.ROADS_TINY; } }
 

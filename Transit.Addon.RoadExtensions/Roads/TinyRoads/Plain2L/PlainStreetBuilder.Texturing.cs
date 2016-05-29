@@ -3,7 +3,7 @@ using Transit.Framework.Texturing;
 
 namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.Plain2L
 {
-    public partial class PlainRoadBuilder
+    public partial class PlainStreetBuilder
     {
         private static void SetupTextures(NetInfo info, NetInfoVersion version)
         {
