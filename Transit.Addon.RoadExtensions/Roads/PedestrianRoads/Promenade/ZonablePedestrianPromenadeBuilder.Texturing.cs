@@ -30,9 +30,9 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Promenade
                                      @"Roads\PedestrianRoads\Promenade\Textures\Ground_Trans__AlphaMap.png",
                                      @"Roads\PedestrianRoads\Promenade\Textures\Ground_Node__XYSMap.png"),
                                 new LODTextureSet
-                                    (@"Roads\PedestrianRoads\Promenade\Textures\Ground_Node_LOD__MainTex.png",
-                                    @"Roads\PedestrianRoads\Promenade\Textures\Ground_Trans_LOD__AlphaMap.png",
-                                    @"Roads\PedestrianRoads\Common\Textures\Ground_Node_LOD__XYSMap.png"));
+                                    (@"Roads\PedestrianRoads\Common\Textures\Ground_Trans_LOD__MainTex.png",
+                                     @"Roads\PedestrianRoads\Common\Textures\Ground_Trans_LOD__AlphaMap.png",
+                                     @"Roads\PedestrianRoads\Common\Textures\Ground_Node_LOD__XYSMap.png"));
                         }
                         else
                         {
@@ -61,7 +61,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Promenade
 
                     for (int i = 0; i < info.m_nodes.Length; i++)
                     {
-                        if (info.m_nodes[i].m_mesh.name.ToLower().Contains("trans"))
+                        if (info.m_nodes[i].m_flagsRequired == NetNode.Flags.Transition)
                         {
                             info.m_nodes[i].SetTextures(
                                 new TextureSet
