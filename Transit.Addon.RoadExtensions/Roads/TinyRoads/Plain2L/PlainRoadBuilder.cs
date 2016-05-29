@@ -46,8 +46,8 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.Plain2L
 
             if (playerNetAI != null)
             {
-                playerNetAI.m_constructionCost = playerNetAI.m_constructionCost*2;
-                playerNetAI.m_maintenanceCost = playerNetAI.m_maintenanceCost*2;
+                playerNetAI.m_constructionCost = playerNetAI.m_constructionCost * 3 / 2;
+                playerNetAI.m_maintenanceCost = playerNetAI.m_maintenanceCost * 3 / 2;
             }
         }
     }

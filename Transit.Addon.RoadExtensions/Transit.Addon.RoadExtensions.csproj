@@ -86,7 +86,7 @@
     <Compile Include="Roads\PedestrianRoads\Promenade\ZonablePedestrianPromenadeBuilder.Texturing.cs" />
     <Compile Include="Roads\PedestrianRoads\Common\ZonablePedestrianHelper.cs" />
     <Compile Include="Roads\TinyRoads\Plain2L\PlainRoadBuilder.cs" />
-    <Compile Include="Roads\TinyRoads\Plain2L\PlainRoadBuilder.cs.Texturing.cs" />
+    <Compile Include="Roads\TinyRoads\Plain2L\PlainRoadBuilder.Texturing.cs" />
     <Compile Include="Roads\TinyRoads\TinyRoadMenuModifier.cs" />
     <Compile Include="Roads\TinyRoads\Alley2L\Alley2LBuilder.cs" />
     <Compile Include="Roads\Common\CenterLaneType.cs" />
