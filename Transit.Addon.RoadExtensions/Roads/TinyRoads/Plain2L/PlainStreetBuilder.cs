@@ -12,8 +12,8 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.Plain2L
 
         public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_2L_GRAVEL; } }
         public string Name { get { return "PlainStreet2L"; } }
-        public string DisplayName { get { return "Plain Street"; } }
-        public string Description { get { return "A two lane plain street without sidewalks, but with available parking spaces. Supports local traffic."; } }
+        public string DisplayName { get { return "Two-Lane Plain Street"; } }
+        public string Description { get { return "A two-lane plain street without sidewalks, but with available parking spaces. Supports local traffic."; } }
         public string ShortDescription { get { return "Parking, zoneable, low traffic"; } }
         public string UICategory { get { return RExExtendedMenus.ROADS_TINY; } }
 
