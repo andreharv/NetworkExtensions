@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Transit.Framework.Network;
+using Transit.Framework.AI;
 
 namespace Transit.Framework.Builders
 {
@@ -80,7 +81,11 @@ namespace Transit.Framework.Builders
             foreach (var mainInfo in groundInfos)
             {
                 var tai = mainInfo.GetComponent<TrainTrackAI>();
-
+                CustomMetroTrackAI mai = null;
+                if (mainInfo.name.ToLower().Contains("rail1L"))
+                {
+                    mai = mainInfo.GetComponent<CustomMetroTrackAI>();
+                }
                 var rai = mainInfo.GetComponent<RoadAI>();
                 if (rai != null)
                 {
@@ -100,10 +105,17 @@ namespace Transit.Framework.Builders
                     if (slopeInfo != null)
                         tai.m_slopeInfo = slopeInfo;
                 }
-                else
-                {
-
-                }
+                //else if (mai != null)
+                //{
+                //    if (elevatedInfo != null)
+                //        mai.m_elevatedInfo = elevatedInfo;
+                //    if (bridgeInfo != null)
+                //        mai.m_bridgeInfo = bridgeInfo;
+                //    if (tunnelInfo != null)
+                //        mai.m_tunnelInfo = tunnelInfo;
+                //    if (slopeInfo != null)
+                //        mai.m_slopeInfo = slopeInfo;
+                //}
             }
 
             // Returning

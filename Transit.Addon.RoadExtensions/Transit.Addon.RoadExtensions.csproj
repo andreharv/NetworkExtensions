@@ -3156,6 +3156,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TLM\TLM.csproj">
+      <Project>{7422AE58-8B0A-401C-9404-F4A438EFFE10}</Project>
+      <Name>TLM</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Transit.Framework.ExtensionPoints\Transit.Framework.ExtensionPoints.csproj">
       <Project>{2E44ECA3-D750-4115-B16B-FCA94C49BBA0}</Project>
       <Name>Transit.Framework.ExtensionPoints</Name>

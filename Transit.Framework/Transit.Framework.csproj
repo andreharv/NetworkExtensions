@@ -53,6 +53,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activable.cs" />
+    <Compile Include="AI\CustomMetroTrackAI.cs" />
+    <Compile Include="AI\CustomMetroTrackBaseAI.cs" />
+    <Compile Include="AI\CustomMetroTrackBridgeAI.cs" />
+    <Compile Include="AI\CustomMetroTrackTunnelAI.cs" />
+    <Compile Include="AI\PropCop.cs" />
     <Compile Include="AtlasManager.cs" />
     <Compile Include="Builders\IAtlasBuilder.cs" />
     <Compile Include="Builders\IToolBuilder.cs" />
@@ -148,6 +153,10 @@
     <ProjectReference Include="..\ObjUnity3D\ObjUnity3D.csproj">
       <Project>{97D70503-6567-41A1-92FC-66D813A53370}</Project>
       <Name>ObjUnity3D</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TLM\TLM.csproj">
+      <Project>{7422AE58-8B0A-401C-9404-F4A438EFFE10}</Project>
+      <Name>TLM</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

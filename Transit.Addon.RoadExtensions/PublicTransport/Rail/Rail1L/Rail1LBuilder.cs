@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using Transit.Framework.Network;
 using Transit.Addon.RoadExtensions.Roads.Common;
 using UnityEngine;
+using Transit.Framework.AI;
+using ColossalFramework;
 
 namespace Transit.Addon.RoadExtensions.PublicTransport.Rail1L
 {
@@ -27,7 +29,7 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.Rail1L
 
         public NetInfoVersion SupportedVersions
         {
-            get { return NetInfoVersion.All; }
+            get { return NetInfoVersion.Ground; }
         }
 
         public void BuildUp(NetInfo info, NetInfoVersion version)
@@ -65,7 +67,7 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.Rail1L
             {
                 info.m_halfWidth = 3;
             }
-            
+
             if (version == NetInfoVersion.Tunnel)
             {
                 info.m_setVehicleFlags = Vehicle.Flags.Transition;
@@ -76,7 +78,12 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.Rail1L
             {
                 //info.m_class = roadInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL3L_ROAD);
             }
-
+            var hi = railInfo.GetComponent<TrainTrackAI>();
+            var hey = info.GetComponent<TrainTrackAI>();
+            if (hi != null)
+            {
+                info.compon
+            }
             //var propLanes = info.m_lanes.Where(l => l.m_laneProps != null && (l.m_laneProps.name.ToLower().Contains("left") || l.m_laneProps.name.ToLower().Contains("right"))).ToList();
 
             //var remainingLanes = new List<NetInfo.Lane>();
@@ -108,25 +115,21 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.Rail1L
             {
                 Framework.Debug.Log(version + " skipped!");
             }
-            
+
             var owPlayerNetAI = railInfo.GetComponent<PlayerNetAI>();
             var playerNetAI = info.GetComponent<PlayerNetAI>();
             if (owPlayerNetAI != null && playerNetAI != null)
             {
-                playerNetAI.m_constructionCost = owPlayerNetAI.m_constructionCost * 3 / 2; 
-                playerNetAI.m_maintenanceCost = owPlayerNetAI.m_maintenanceCost * 3 / 2; 
+                playerNetAI.m_constructionCost = owPlayerNetAI.m_constructionCost * 3 / 2;
+                playerNetAI.m_maintenanceCost = owPlayerNetAI.m_maintenanceCost * 3 / 2;
             }
 
-            var trainTrackAI = info.GetComponent<TrainTrackAI>();
-
-            if (trainTrackAI != null)
-            {
-
-            }
         }
 
         public void LateBuildUp(NetInfo info, NetInfoVersion version)
         {
+            var railVersionName = string.Format("{0} {1}", NetInfos.Vanilla.TRAINTRACK, (version == NetInfoVersion.Ground ? string.Empty : version.ToString())).Trim();
+            var railInfo = Prefabs.Find<NetInfo>(railVersionName);
             var plPropInfo = PrefabCollection<PropInfo>.FindLoaded("Rail1LPowerLine.Rail1LPowerLine_Data");
             if (plPropInfo == null)
             {
@@ -145,48 +148,48 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.Rail1L
                 }
             }
 
-            if (version == NetInfoVersion.Elevated)
-            {
-                var epPropInfo = PrefabCollection<BuildingInfo>.FindLoaded("478820060.Rail1LElevatedPillar_Data");
+            //if (version == NetInfoVersion.Elevated)
+            //{
+            //    var epPropInfo = PrefabCollection<BuildingInfo>.FindLoaded("478820060.Rail1LElevatedPillar_Data");
 
-                if (epPropInfo == null)
-                {
-                    epPropInfo = PrefabCollection<BuildingInfo>.FindLoaded("Rail1LElevatedPillar.Rail1LElevatedPillar_Data");
-                }
+            //    if (epPropInfo == null)
+            //    {
+            //        epPropInfo = PrefabCollection<BuildingInfo>.FindLoaded("Rail1LElevatedPillar.Rail1LElevatedPillar_Data");
+            //    }
 
-                if (epPropInfo != null)
-                {
-                    var bridgeAI = info.GetComponent<TrainTrackBridgeAI>();
-                    if (bridgeAI != null)
-                    {
-                        bridgeAI.m_doubleLength = false;
-                        bridgeAI.m_bridgePillarInfo = epPropInfo;
-                        bridgeAI.m_bridgePillarOffset = 1;
-                        bridgeAI.m_middlePillarInfo = null;
-                    }
-                }
-            }
-            else if (version == NetInfoVersion.Bridge)
-            {
-                var bpPropInfo = PrefabCollection<BuildingInfo>.FindLoaded("478820060.Rail1LBridgePillar_Data");
+            //    if (epPropInfo != null)
+            //    {
+            //        var bridgeAI = info.GetComponent<TrainTrackBridgeAI>();
+            //        if (bridgeAI != null)
+            //        {
+            //            bridgeAI.m_doubleLength = false;
+            //            bridgeAI.m_bridgePillarInfo = epPropInfo;
+            //            bridgeAI.m_bridgePillarOffset = 1;
+            //            bridgeAI.m_middlePillarInfo = null;
+            //        }
+            //    }
+            //}
+            //else if (version == NetInfoVersion.Bridge)
+            //{
+            //    var bpPropInfo = PrefabCollection<BuildingInfo>.FindLoaded("478820060.Rail1LBridgePillar_Data");
 
-                if (bpPropInfo == null)
-                {
-                    bpPropInfo = PrefabCollection<BuildingInfo>.FindLoaded("Rail1LBridgePillar.Rail1LBridgePillar_Data");
-                }
+            //    if (bpPropInfo == null)
+            //    {
+            //        bpPropInfo = PrefabCollection<BuildingInfo>.FindLoaded("Rail1LBridgePillar.Rail1LBridgePillar_Data");
+            //    }
 
-                if (bpPropInfo != null)
-                {
-                    var bridgeAI = info.GetComponent<TrainTrackBridgeAI>();
-                    if (bridgeAI != null)
-                    {
-                        //bridgeAI.m_doubleLength = false;
-                        bridgeAI.m_bridgePillarInfo = bpPropInfo;
-                        //bridgeAI.m_bridgePillarOffset = 1;
-                        //bridgeAI.m_middlePillarInfo = null;
-                    }
-                }
-            }
+            //    if (bpPropInfo != null)
+            //    {
+            //        var bridgeAI = info.GetComponent<TrainTrackBridgeAI>();
+            //        if (bridgeAI != null)
+            //        {
+            //            //bridgeAI.m_doubleLength = false;
+            //            bridgeAI.m_bridgePillarInfo = bpPropInfo;
+            //            //bridgeAI.m_bridgePillarOffset = 1;
+            //            //bridgeAI.m_middlePillarInfo = null;
+            //        }
+            //    }
+            //}
         }
     }
 }

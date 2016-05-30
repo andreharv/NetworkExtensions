@@ -70,6 +70,7 @@
     <Compile Include="Custom\AI\CustomTransportLineAI.cs" />
     <Compile Include="Custom\AI\CustomTramBaseAI.cs" />
     <Compile Include="Custom\AI\CustomVehicleAI.cs" />
+    <Compile Include="Custom\AI\MetroRef.cs" />
     <Compile Include="TrafficLight\CustomSegmentLights.cs" />
     <Compile Include="Traffic\ExtVehicleType.cs" />
     <Compile Include="Traffic\VehicleRestrictionsManager.cs" />
