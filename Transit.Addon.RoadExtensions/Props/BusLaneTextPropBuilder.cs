@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Transit.Addon.RoadExtensions.Props
 {
-    public class BusLaneTextPropBuilder : IPrefabBuilder<PropInfo>, ITrafficPlusPlusPart, IModulePart, IIdentifiable
+    public class BusLaneTextPropBuilder : IPrefabBuilder<PropInfo>, IModulePart, IIdentifiable
     {
         public string Name { get { return "BusLaneText"; } }
         public string BasedPrefabName { get { return "Road Arrow F"; } }

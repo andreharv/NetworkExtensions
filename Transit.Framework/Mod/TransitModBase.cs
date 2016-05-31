@@ -4,6 +4,7 @@ using ColossalFramework.Steamworks;
 using ICities;
 using Transit.Framework;
 using Transit.Framework.Modularity;
+using Transit.Framework.Prerequisites;
 using UnityEngine;
 
 #if DEBUG
@@ -12,7 +13,7 @@ using Debug = Transit.Framework.Debug;
 
 namespace Transit.Framework.Mod
 {
-    public abstract partial class TransitModBase : IUserMod
+    public abstract partial class TransitModBase : ITransitMod
     {
         public abstract ulong WorkshopId { get; }
 
@@ -26,6 +27,8 @@ namespace Transit.Framework.Mod
         {
             get { return Name; }
         }
+
+        public virtual PrerequisiteType Requirements { get { return PrerequisiteType.None; } }
 
         private string _assetPath;
         public virtual string AssetPath

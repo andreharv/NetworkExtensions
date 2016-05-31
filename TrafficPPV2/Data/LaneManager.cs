@@ -6,7 +6,7 @@ namespace CSL_Traffic
 {
     public static class LaneManager
     {
-        internal static Lane[] sm_lanes = new Lane[NetManager.MAX_LANE_COUNT];
+        internal static Lane[] sm_lanes = null;
 
         public static Lane CreateLane(uint laneId)
         {
@@ -149,7 +149,7 @@ namespace CSL_Traffic
 
         public static float GetLaneSpeed(uint laneId, NetInfo.Lane lane)
         {
-            if ((TrafficMod.Options & OptionsManager.ModOptions.RoadCustomizerTool) != OptionsManager.ModOptions.RoadCustomizerTool)
+            if ((Mod.Options & ModOptions.RoadCustomizerTool) != ModOptions.RoadCustomizerTool)
             {
                 return lane.m_speedLimit;
             }

@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
+using Transit.Framework.Builders;
 using Transit.Framework.Modularity;
 using UnityEngine;
 
@@ -17,10 +20,38 @@ namespace Transit.Framework.Mod
                 module.OnInstallingAssets();
         }
 
+        private void InstallAtlases()
+        {
+            var atlasBuilderType = typeof(IAtlasBuilder);
+
+            var atlasBuilderTypes = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(a =>
+                {
+                    try
+                    {
+                        return a.GetTypes();
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.Log("TFW: InstallAtlas looking into assembly " + a.FullName);
+                        Debug.Log("TFW: " + ex.Message);
+                        Debug.Log("TFW: " + ex.ToString());
+                        return new Type[] {};
+                    }
+                })
+                .Where(t => !t.IsAbstract && !t.IsInterface)
+                .Where(t => atlasBuilderType.IsAssignableFrom(t));
+
+            foreach (var type in atlasBuilderTypes)
+            {
+                AtlasManager.instance.Include(type);
+            }
+        }
+
         [UsedImplicitly]
         private class AssetsInstaller : Installer<TransitModBase>
         {
-            private static bool Done { get; set; } // Only one Assets installation throughout the application
+            private static readonly ICollection<string> _pathsLoaded = new HashSet<string>(); // Only one Assets installation per paths throughout the application
 
             protected override bool ValidatePrerequisites()
             {
@@ -29,11 +60,13 @@ namespace Transit.Framework.Mod
 
             protected override void Install(TransitModBase host)
             {
-                if (Done) // Only one Assets installation throughout the application
+                if (_pathsLoaded.Contains(host.AssetPath)) // Only one Assets installation per paths throughout the application
                 {
                     return;
                 }
-                
+
+                _pathsLoaded.Add(host.AssetPath);
+
                 foreach (var action in AssetManager.instance.CreateLoadingSequence(host.AssetPath))
                 {
                     var localAction = action;
@@ -52,7 +85,7 @@ namespace Transit.Framework.Mod
                         }
                     });
                 }
-                
+
                 Loading.QueueAction(() =>
                 {
                     try
@@ -67,7 +100,19 @@ namespace Transit.Framework.Mod
                     }
                 });
 
-                Done = true;
+                Loading.QueueAction(() =>
+                {
+                    try
+                    {
+                        host.InstallAtlases();
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.Log("TFW: Crashed-AtlasInstaller");
+                        Debug.Log("TFW: " + ex.Message);
+                        Debug.Log("TFW: " + ex.ToString());
+                    }
+                });
             }
         }
     }
