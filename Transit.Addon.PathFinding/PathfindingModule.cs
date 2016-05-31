@@ -7,7 +7,7 @@ namespace Transit.Addon.PathFinding
     {
         public override string Name
         {
-            get { return "Pathfinding"; }
+            get { return "PathFinding"; }
         }
     }
 }
