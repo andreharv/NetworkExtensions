@@ -57,6 +57,7 @@
     <Compile Include="Builders\IAtlasBuilder.cs" />
     <Compile Include="Builders\IToolBuilder.cs" />
     <Compile Include="Builders\ToolBuilder.cs" />
+    <Compile Include="Interfaces\IDLCRequired.cs" />
     <Compile Include="Modularity\ModuleBase.Install.cs" />
     <Compile Include="Mod\ITransitMod.cs" />
     <Compile Include="Mod\TransitModBase.Install.Assets.cs" />
