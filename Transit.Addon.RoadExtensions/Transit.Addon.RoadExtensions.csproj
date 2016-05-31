@@ -2473,6 +2473,9 @@
     <None Include="Buildings\BridgePillar.CableStay32m.crp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Buildings\Rail1LBridgePillar.crp" />
+    <None Include="Buildings\Rail1LElevatedPillar.crp" />
+    <None Include="Props\Rail1LPowerLine.crp" />
     <None Include="Roads\Common\Meshes\16m\3mSW\BusStopInv.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
