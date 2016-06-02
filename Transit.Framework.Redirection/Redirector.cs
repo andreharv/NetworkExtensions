@@ -72,15 +72,13 @@ namespace Transit.Framework.Redirection
 
             private MethodInfo _originalMethod;
             private readonly RedirectCallsState _callsState;
-            public Assembly RedirectionSource { get; private set; }
-            public ulong BitSetRequiredOption { get; private set; }
+            public Assembly RedirectionSource { get; set; }
 
-            public MethodRedirection(MethodInfo originalMethod, MethodInfo newMethod, Assembly redirectionSource, ulong bitSetOption)
+            public MethodRedirection(MethodInfo originalMethod, MethodInfo newMethod, Assembly redirectionSource)
             {
                 _originalMethod = originalMethod;
                 _callsState = RedirectionHelper.RedirectCalls(_originalMethod, newMethod);
                 RedirectionSource = redirectionSource;
-                BitSetRequiredOption = bitSetOption;
             }
 
             public void Dispose()
@@ -149,7 +147,7 @@ namespace Transit.Framework.Redirection
                                 originalMethod.Name,
                                 method.DeclaringType,
                                 method.Name));
-                            s_redirections.Add(originalMethod.RedirectTo(method, callingAssembly, redirectAttr.BitSetRequiredOption));
+                            s_redirections.Add(originalMethod.RedirectTo(method, callingAssembly));
                         }
                     }
 
@@ -162,14 +160,14 @@ namespace Transit.Framework.Redirection
                                 method.Name,
                                 originalMethod.DeclaringType,
                                 originalMethod.Name));
-                            s_redirections.Add(method.RedirectTo(originalMethod, callingAssembly, redirectAttr.BitSetRequiredOption));
+                            s_redirections.Add(method.RedirectTo(originalMethod, callingAssembly));
                         }
                     }
                 }
             }
         }
 
-        public static void RevertRedirections(ulong bitMask = 0)
+        public static void RevertRedirections()
         {
             Assembly callingAssembly = Assembly.GetCallingAssembly();
 
@@ -177,17 +175,12 @@ namespace Transit.Framework.Redirection
             {
                 var redirection = s_redirections[i];
 
-                if (!Equals(redirection.RedirectionSource, callingAssembly))
+                if (Equals(redirection.RedirectionSource, callingAssembly))
                 {
-                    continue;
+                    Debug.Log(string.Format("TFW: Removing redirection {0}", s_redirections[i].OriginalMethod));
+                    s_redirections[i].Dispose();
+                    s_redirections.RemoveAt(i);
                 }
-
-                if (redirection.BitSetRequiredOption != 0 && (bitMask & redirection.BitSetRequiredOption) == 0)
-                    continue;
-
-                Debug.Log(string.Format("TFW: Removing redirection {0}", s_redirections[i].OriginalMethod));
-                s_redirections[i].Dispose();
-                s_redirections.RemoveAt(i);
             }
         }
     }

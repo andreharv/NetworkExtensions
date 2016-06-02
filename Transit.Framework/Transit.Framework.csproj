@@ -59,14 +59,12 @@
     <Compile Include="Builders\ToolBuilder.cs" />
     <Compile Include="Interfaces\IDLCRequired.cs" />
     <Compile Include="Modularity\ModuleBase.Install.cs" />
-    <Compile Include="Mod\ITransitMod.cs" />
     <Compile Include="Mod\TransitModBase.Install.Assets.cs" />
     <Compile Include="Mod\TransitModBase.Install.cs" />
     <Compile Include="Mod\TransitModBase.Install.Localization.cs" />
     <Compile Include="Network\ExtendedNetInfoLane.cs" />
     <Compile Include="Network\ExtendedVehicleType.cs" />
     <Compile Include="Network\NetInfoClasses.cs" />
-    <Compile Include="Prerequisites\PrerequisiteType.cs" />
     <Compile Include="Texturing\ITextureBlenderComponent.cs" />
     <Compile Include="Texturing\PathTextureProvider.cs" />
     <Compile Include="Texturing\Point.cs" />
@@ -93,8 +91,8 @@
     <Compile Include="Modularity\ModuleBase.Parts.cs" />
     <Compile Include="Modularity\IModule.cs" />
     <Compile Include="Modularity\ModuleBase.cs" />
-    <Compile Include="Prerequisites\IPrerequisiteSetup.cs" />
-    <Compile Include="Prerequisites\PrerequisiteHandler.cs" />
+    <Compile Include="Prerequisites\IModPrerequisite.cs" />
+    <Compile Include="Prerequisites\ModPrerequisites.cs" />
     <Compile Include="Mod\TransitModBase.cs" />
     <Compile Include="Mod\TransitModBase.LoadingExtension.cs" />
     <Compile Include="Mod\TransitModBase.Modules.cs" />

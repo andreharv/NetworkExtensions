@@ -8,7 +8,7 @@ namespace Transit.Framework.Mod
     {
         public virtual void OnEnabled()
         {
-            this.InstallPrerequisites();
+            ModPrerequisites.InstallForMod(this);
             LoadModulesIfNeeded();
             LoadSettings();
 
@@ -21,7 +21,7 @@ namespace Transit.Framework.Mod
             foreach (IModule module in Modules)
                 module.OnDisabled();
 
-            this.UninstallPrerequisites();
+            ModPrerequisites.UninstallForMod(this);
         }
 
         public override void OnLevelUnloading()

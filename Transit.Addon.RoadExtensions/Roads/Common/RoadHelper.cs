@@ -77,18 +77,19 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
 
         public static void RemoveProps(this ICollection<NetLaneProps.Prop> props, params string[] namesOfPropsToRemove)
         {
-            for (var i = 0; i < namesOfPropsToRemove.Length; i++)
+            foreach (var t in namesOfPropsToRemove)
             {
-                var propsToRemove = props.Where(p => p.m_prop != null && p.m_prop.name.ToLower().Contains(namesOfPropsToRemove[i].ToLower())).ToList();
+                var propsToRemove = props.Where(p => p.m_prop != null && p.m_prop.name.ToLower().Contains(t.ToLower())).ToList();
                 if (propsToRemove.Count > 0)
                 {
-                    for (var j = 0; j < propsToRemove.Count; j++)
+                    foreach (var t1 in propsToRemove)
                     {
-                        props.Remove(propsToRemove[j]);
+                        props.Remove(t1);
                     }
                 }
             }
         }
+
         public static void AddProps(this ICollection<NetLaneProps.Prop> props, ICollection<NetLaneProps.Prop> propsToAdd)
         {
             foreach (var propToAdd in propsToAdd)

@@ -1,11 +1,9 @@
-﻿using System;
-using ColossalFramework.Math;
+﻿using ColossalFramework.Math;
 using ColossalFramework.UI;
 using CSL_Traffic.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Transit.Framework;
 using Transit.Framework.Network;
 using UnityEngine;
 
@@ -95,43 +93,14 @@ namespace CSL_Traffic
 		ushort m_hoveredNode;
 		ushort m_selectedNode;        
 		NodeLaneMarker m_selectedMarker;
-	    readonly Dictionary<ushort, FastList<NodeLaneMarker>> m_nodeMarkers = new Dictionary<ushort, FastList<NodeLaneMarker>>();
-	    readonly Dictionary<ushort, Segment> m_segments = new Dictionary<ushort, Segment>();
-	    readonly Dictionary<int, FastList<SegmentLaneMarker>> m_hoveredLaneMarkers = new Dictionary<int, FastList<SegmentLaneMarker>>();
-	    readonly List<SegmentLaneMarker> m_selectedLaneMarkers = new List<SegmentLaneMarker>();
+		Dictionary<ushort, FastList<NodeLaneMarker>> m_nodeMarkers = new Dictionary<ushort, FastList<NodeLaneMarker>>();
+		Dictionary<ushort, Segment> m_segments = new Dictionary<ushort, Segment>();
+		Dictionary<int, FastList<SegmentLaneMarker>> m_hoveredLaneMarkers = new Dictionary<int, FastList<SegmentLaneMarker>>();
+		List<SegmentLaneMarker> m_selectedLaneMarkers = new List<SegmentLaneMarker>();
 		int m_hoveredLanes;
 		UIButton m_toolButton;
 
-        protected override void Awake()
-        {
-            base.Awake();
-
-            StartCoroutine(LoadMarkers());
-            StartCoroutine(CreateToolButton());
-        }
-
-	    private IEnumerator LoadMarkers()
-	    {
-            while (LaneManager.sm_lanes == null)
-            {
-                yield return new WaitForEndOfFrame();
-            }
-
-            var nodesList = new HashSet<ushort>();
-            foreach (var lane in LaneManager.sm_lanes)
-            {
-                if (lane == null)
-                    continue;
-                
-                if (lane.ConnectionCount() > 0)
-                    nodesList.Add(lane.m_nodeId);
-            }
-            
-            foreach (var nodeId in nodesList)
-                SetNodeMarkers(nodeId);
-        }
-
-        protected override void OnToolUpdate()
+		protected override void OnToolUpdate()
 		{
 			base.OnToolUpdate();
 
@@ -760,7 +729,7 @@ namespace CSL_Traffic
 
 		#region UI
 
-		public bool InitializeUI(UIButton button)
+		public static bool InitializeUI(UIButton button)
 		{
 			GameObject container = GameObject.Find("TSContainer");
 			if (container == null)
@@ -778,43 +747,38 @@ namespace CSL_Traffic
 			GameObject groupToolstrip = panel.transform.GetChild(1).gameObject;
 			panel.GetComponent<UIPanel>().AttachUIComponent(groupToolstrip);
 
-			GameObject vehiclePanelObj = UITemplateManager.GetAsGameObject("ScrollablePanelTemplate");
-			if (vehiclePanelObj == null)
+			GameObject vehiclePanel = UITemplateManager.GetAsGameObject("ScrollablePanelTemplate");
+			if (vehiclePanel == null)
 				return false;
 
 			UIComponent comp = gtsContainer.GetComponent<UIComponent>();
 			if (comp == null)
 				return false;
-			comp.AttachUIComponent(vehiclePanelObj);
+			comp.AttachUIComponent(vehiclePanel);
 			comp.relativePosition = Vector3.zero;
-			vehiclePanelObj.GetComponent<UIPanel>().AttachUIComponent(vehiclePanelObj.transform.GetChild(0).gameObject);
-			vehiclePanelObj.GetComponent<UIPanel>().relativePosition = Vector3.zero;
-			vehiclePanelObj.GetComponent<UIPanel>().isVisible = true;
-			vehiclePanelObj.GetComponent<UIPanel>().isInteractive = true;
-			vehiclePanelObj.transform.GetChild(0).gameObject.GetComponent<UIComponent>().relativePosition = new Vector3(50f, 0f);
+			vehiclePanel.GetComponent<UIPanel>().AttachUIComponent(vehiclePanel.transform.GetChild(0).gameObject);
+			vehiclePanel.GetComponent<UIPanel>().relativePosition = Vector3.zero;
+			vehiclePanel.GetComponent<UIPanel>().isVisible = true;
+			vehiclePanel.GetComponent<UIPanel>().isInteractive = true;
+			vehiclePanel.transform.GetChild(0).gameObject.GetComponent<UIComponent>().relativePosition = new Vector3(50f, 0f);
 
-			GameObject speedPanelObj = UITemplateManager.GetAsGameObject("ScrollablePanelTemplate");
-			if (speedPanelObj == null)
+			GameObject speedPanel = UITemplateManager.GetAsGameObject("ScrollablePanelTemplate");
+			if (speedPanel == null)
 				return false;
-			comp.AttachUIComponent(speedPanelObj);
-			speedPanelObj.GetComponent<UIPanel>().AttachUIComponent(speedPanelObj.transform.GetChild(0).gameObject);
-			speedPanelObj.GetComponent<UIPanel>().relativePosition = Vector3.zero;
-			speedPanelObj.GetComponent<UIPanel>().isInteractive = true;
-			speedPanelObj.transform.GetChild(0).gameObject.GetComponent<UIComponent>().relativePosition = new Vector3(50f, 0f);
+			comp.AttachUIComponent(speedPanel);
+			speedPanel.GetComponent<UIPanel>().AttachUIComponent(speedPanel.transform.GetChild(0).gameObject);
+			speedPanel.GetComponent<UIPanel>().relativePosition = Vector3.zero;
+			speedPanel.GetComponent<UIPanel>().isInteractive = true;
+			speedPanel.transform.GetChild(0).gameObject.GetComponent<UIComponent>().relativePosition = new Vector3(50f, 0f);
 
 			// add RoadCustomizerGroupPanel to panel
 			panel.AddComponent<RoadCustomizerGroupPanel>();
 
 			// add RoadCustomizerPanel to scrollablePanel
-		    vehiclePanelObj
-		        .AddComponent<RoadCustomizerPanel>()
-		        .AttachLaneCustomizationEvents(this);
+			vehiclePanel.AddComponent<RoadCustomizerPanel>();//.SetPanel(RoadCustomizerPanel.Panel.VehicleRestrictions);
+			speedPanel.AddComponent<RoadCustomizerPanel>();//.SetPanel(RoadCustomizerPanel.Panel.SpeedRestrictions);
 
-            speedPanelObj
-                .AddComponent<RoadCustomizerPanel>()
-                .AttachLaneCustomizationEvents(this);
-
-            button.eventClick += delegate(UIComponent component, UIMouseEventParameter eventParam)
+			button.eventClick += delegate(UIComponent component, UIMouseEventParameter eventParam)
 			{
 				//roadsPanel.isVisible = false;
 				panel.SetActive(true);
@@ -823,6 +787,26 @@ namespace CSL_Traffic
 			};
 
 			return true;
+		}
+
+#if DEBUG
+		IEnumerator RenderVehicle()
+		{
+			yield return new WaitForEndOfFrame();
+
+			Texture2D texture = new Texture2D(1920, 1080);
+			texture.ReadPixels(new Rect(0, 0, 1920, 1080), 0, 0);
+			texture.Apply();
+
+			byte[] bytes = texture.EncodeToPNG();
+			System.IO.File.WriteAllBytes("Vehicle.png", bytes);
+		}
+#endif
+
+		protected override void Awake()
+		{
+			base.Awake();
+			StartCoroutine(CreateToolButton());
 		}
 
 		IEnumerator CreateToolButton()
@@ -872,9 +856,11 @@ namespace CSL_Traffic
 			btn.normalBgSprite = "rctBg";// roadsButton.normalBgSprite;
 			btn.pressedBgSprite = "rctBg" + "Pressed";// roadsButton.pressedBgSprite;
 
-			btn.atlas = AtlasManager.instance.GetAtlas(RoadCustomizerAtlasBuilder.ID);
+			btn.atlas = UI.UIUtils.LoadThumbnailsTextureAtlas("UIThumbnails");
 			btn.atlas.AddSprites(roadsButton.atlas.sprites);
 			btn.foregroundSpriteMode = UIForegroundSpriteMode.Fill;
+			UI.UIUtils.SetThumbnails("rct", new UI.UIUtils.SpriteTextureInfo() { startX = 796, startY = 0, width = 36, height = 36 }, btn.atlas);
+			UI.UIUtils.SetThumbnails("rctBg", new UI.UIUtils.SpriteTextureInfo() { startX = 835, startY = 0, width = 43, height = 49 }, btn.atlas, new string[] { "Hovered", "Pressed", "Focused", "" });
 
 			btn.disabledFgSprite = "rct";
 			btn.focusedFgSprite = "rct";

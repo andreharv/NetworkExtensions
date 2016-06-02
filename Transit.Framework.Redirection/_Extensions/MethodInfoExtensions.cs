@@ -5,9 +5,9 @@ namespace Transit.Framework.Redirection
 {
     public static class MethodInfoExtensions
     {
-        internal static Redirector.MethodRedirection RedirectTo(this MethodInfo originalMethod, MethodInfo newMethod, Assembly redirectionSource, ulong bitSetOption)
+        internal static Redirector.MethodRedirection RedirectTo(this MethodInfo originalMethod, MethodInfo newMethod, Assembly redirectionSource)
         {
-            return new Redirector.MethodRedirection(originalMethod, newMethod, redirectionSource, bitSetOption);
+            return new Redirector.MethodRedirection(originalMethod, newMethod, redirectionSource);
         }
 
         public static bool IsCompatibleWith(this MethodInfo thisMethod, MethodInfo otherMethod)

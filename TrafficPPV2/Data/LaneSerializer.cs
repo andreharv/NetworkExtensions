@@ -12,37 +12,39 @@ namespace CSL_Traffic
             
         public override void OnLoadData()
         {
-            if ((Mod.Options & ModOptions.RoadCustomizerTool) == ModOptions.None)
+            if ((TrafficMod.Options & OptionsManager.ModOptions.RoadCustomizerTool) == OptionsManager.ModOptions.None)
                 return;
+                
 
+            Logger.LogInfo("Loading road data. Time: " + Time.realtimeSinceStartup);
+            byte[] data = serializableDataManager.LoadData(LANE_DATA_ID);
+            if (data == null)
+            {
+                Logger.LogInfo("No road data to load.");
+                return;
+            }
+
+            MemoryStream memStream = new MemoryStream();
+            memStream.Write(data, 0, data.Length);
+            memStream.Position = 0;
+
+            BinaryFormatter binaryFormatter = new BinaryFormatter()
+            {
+                Binder = new LaneSerializationBinder()
+            };
             try
             {
-                Logger.LogInfo("Loading road data. Time: " + Time.realtimeSinceStartup);
-                byte[] data = serializableDataManager.LoadData(LANE_DATA_ID);
-                if (data == null)
-                {
-                    Logger.LogInfo("No road data to load.");
-                    return;
-                }
-
-                using (var memStream = new MemoryStream())
-                {
-                    memStream.Write(data, 0, data.Length);
-                    memStream.Position = 0;
-
-                    var binaryFormatter = new BinaryFormatter()
-                    {
-                        Binder = new LaneSerializationBinder()
-                    };
-                    LaneManager.sm_lanes = (Lane[]) binaryFormatter.Deserialize(memStream);
-                }
-
+                LaneManager.sm_lanes = (Lane[]) binaryFormatter.Deserialize(memStream);
+                    
+                FastList<ushort> nodesList = new FastList<ushort>();
                 foreach (Lane lane in LaneManager.sm_lanes)
                 {
                     if (lane == null)
                         continue;
 
                     lane.UpdateArrows();
+                    if (lane.ConnectionCount() > 0)
+                        nodesList.Add(lane.m_nodeId);
 
                     if (lane.m_speed == 0)
                     {
@@ -62,6 +64,10 @@ namespace CSL_Traffic
 
                 }
 
+                RoadCustomizerTool customizerTool = ToolsModifierControl.GetTool<RoadCustomizerTool>();
+                foreach (ushort nodeId in nodesList)
+                    customizerTool.SetNodeMarkers(nodeId);
+
                 Logger.LogInfo("Finished loading road data. Time: " + Time.realtimeSinceStartup);
             }
             catch (Exception e)
@@ -70,16 +76,13 @@ namespace CSL_Traffic
             }
             finally
             {
-                if (LaneManager.sm_lanes == null)
-                {
-                    LaneManager.sm_lanes = new Lane[NetManager.MAX_LANE_COUNT];
-                }
+                memStream.Close();
             }
         }
 
         public override void OnSaveData()
         {
-            if ((Mod.Options & ModOptions.RoadCustomizerTool) == ModOptions.None)
+            if ((TrafficMod.Options & OptionsManager.ModOptions.RoadCustomizerTool) == OptionsManager.ModOptions.None)
                 return;
 
             Logger.LogInfo("Saving road data!");

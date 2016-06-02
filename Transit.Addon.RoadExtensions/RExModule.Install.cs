@@ -5,7 +5,6 @@ using ICities;
 using System;
 using System.Collections.Generic;
 using Transit.Addon.RoadExtensions.AI;
-using Transit.Addon.RoadExtensions.Menus;
 using Transit.Addon.RoadExtensions.Menus.Roads;
 using Transit.Addon.RoadExtensions.Menus.Roads.Textures;
 using Transit.Addon.RoadExtensions.Roads.TinyRoads.Alley2L;
@@ -13,7 +12,6 @@ using Transit.Addon.RoadExtensions.Roads.TinyRoads.OneWay1L;
 using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.ExtensionPoints.AI;
-using Transit.Framework.ExtensionPoints.AI.Networks;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using ZonablePedestrianTinyGravelRoadBuilder = Transit.Addon.RoadExtensions.Roads.PedestrianRoads.GravelTiny.ZonablePedestrianTinyGravelRoadBuilder;
@@ -53,6 +51,13 @@ namespace Transit.Addon.RoadExtensions
                 locale.CreateNetTitleLocalizedString(builder.Name, builder.DisplayName);
                 locale.CreateNetDescriptionLocalizedString(builder.Name, builder.Description);
             }
+        }
+
+        public override void OnInstallingAssets()
+        {
+            base.OnInstallingAssets();
+
+            AtlasManager.instance.Include<RExExtendedSubBarAtlasBuilder>();
         }
 
         public override void OnInstallingContent()

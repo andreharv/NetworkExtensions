@@ -81,6 +81,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Promenade
                 info.m_class = roadInfo.m_class.Clone("NExtPedRoad16m");
             }
             info.m_class.m_level = ItemClass.Level.Level5;
+
             // Setting up lanes
             var vehicleLanes = info.m_lanes.Where(l => l.m_laneType == NetInfo.LaneType.Vehicle).ToList();
             var bikeLaneWidth = 2;
@@ -94,7 +95,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Promenade
             var carLanes = new List<NetInfo.Lane>();
             carLanes.AddRange(vehicleLanes.Skip(2));
             
-            for (int i = 0; i < bikeLanes.Count; i++)
+            for (var i = 0; i < bikeLanes.Count; i++)
             {
                 bikeLanes[i].m_vehicleType = VehicleInfo.VehicleType.Bicycle;
                 bikeLanes[i].m_position = ((i * 2) - 1) * bikeLanePosAbs;
@@ -121,28 +122,26 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Promenade
                 };
                 carLanes[i] = niLane;
                 var tempProps = carLanes[i].m_laneProps.m_props.ToList();
-                tempProps.RemoveProps("arrow");
+                tempProps.RemoveProps("arrow", "limit");
                 carLanes[i].m_laneProps.m_props = tempProps.ToArray();
 
             }
             var pedLanes = new List<NetInfo.Lane>();
             pedLanes.AddRange(info.m_lanes.Where(l => l.m_laneType == NetInfo.LaneType.Pedestrian).OrderBy(l => l.m_position));
-
-            var tempProps2 = new List<NetLaneProps.Prop>();
-            for (int i = 0; i < vehicleLanes.Count; i++)
+            
+            foreach (var lane in vehicleLanes)
             {
-                var temp = new List<NetLaneProps.Prop>();
-                temp = vehicleLanes[i].m_laneProps.m_props.ToList();
-                temp.RemoveProps("arrow", "manhole");
-                tempProps2.AddRange(temp);
-                vehicleLanes[i].m_laneProps.m_props = tempProps2.ToArray();
+                var laneProps = lane.m_laneProps.m_props.ToList();
+                laneProps.RemoveProps("arrow", "manhole");
+                lane.m_laneProps.m_props = laneProps.ToArray();
             }
+
             for (int i = 0; i < pedLanes.Count; i++)
             {
                 pedLanes[i].m_position = ((i * 2) - 1) * 5;
                 pedLanes[i].m_width = 6;
                 var tempProps = pedLanes[i].m_laneProps.m_props.ToList();
-                tempProps.RemoveProps("bus", "random");
+                tempProps.RemoveProps("bus", "random", "limit");
                 var tempPropProps = tempProps.Where(tp => tp.m_prop != null);
                 if (tempPropProps.Any(tp => tp.m_prop.name.ToLower().IndexOf("street light", StringComparison.Ordinal) != -1))
                 {

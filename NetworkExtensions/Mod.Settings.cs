@@ -28,12 +28,12 @@ namespace NetworkExtensions
             _optionsPanel = ((UIHelper)helper).self as UIScrollablePanel;
             _optionsPanel.autoLayout = false;
 
-            //if (IsTAMInstalled)
-            //{
-            //    UILabel label = _optionsPanel.AddUIComponent<UILabel>();
-            //    label.text = "Transit Addons Mod (TAM) has been detected - Network Extensions have been disabled";
-            //    return;
-            //}
+            if (IsTAMInstalled)
+            {
+                UILabel label = _optionsPanel.AddUIComponent<UILabel>();
+                label.text = "Transit Addons Mod (TAM) has been detected - Network Extensions have been disabled";
+                return;
+            }
 
             UITabstrip strip = _optionsPanel.AddUIComponent<UITabstrip>();
             strip.relativePosition = new Vector3(0, 0);
