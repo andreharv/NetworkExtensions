@@ -1,5 +1,4 @@
-﻿using ColossalFramework;
-using ColossalFramework.Globalization;
+﻿using ColossalFramework.Globalization;
 using ICities;
 using System;
 using System.Collections.Generic;
@@ -7,14 +6,14 @@ using System.Linq;
 using Transit.Addon.RoadExtensions.AI;
 using Transit.Addon.RoadExtensions.Roads.TinyRoads.Alley2L;
 using Transit.Addon.RoadExtensions.Roads.TinyRoads.OneWay1L;
-using Transit.Addon.RoadExtensions.UI.Toolbar.Roads;
 using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.ExtensionPoints.AI.Networks;
-using Transit.Framework.ExtensionPoints.UI;
-using Transit.Framework.Modularity;
 using UnityEngine;
 using Object = UnityEngine.Object;
+using ZonablePedestrianTinyGravelRoadBuilder = Transit.Addon.RoadExtensions.Roads.PedestrianRoads.GravelTiny.ZonablePedestrianTinyGravelRoadBuilder;
+using ZonablePedestrianTinyPavedRoadBuilder = Transit.Addon.RoadExtensions.Roads.PedestrianRoads.PavementTiny.ZonablePedestrianTinyPavedRoadBuilder;
+using ZonablePedestrianTinyStoneRoadBuilder = Transit.Addon.RoadExtensions.Roads.PedestrianRoads.StoneTiny.ZonablePedestrianTinyStoneRoadBuilder;
 
 namespace Transit.Addon.RoadExtensions
 {
@@ -47,11 +46,20 @@ namespace Transit.Addon.RoadExtensions
         {
             _container = new GameObject(REX_OBJECT_NAME);
 
-            RoadZoneBlocksCreationManager.RegisterCustomCreator<TinyRoadZoneBlocksCreator>(Alley2LBuilder.NAME);
-            RoadZoneBlocksCreationManager.RegisterCustomCreator<TinyRoadZoneBlocksCreator>(OneWay1LBuilder.NAME);
+            var tinyZoneBlockCreators = new []
+            {
+                Alley2LBuilder.NAME,
+                OneWay1LBuilder.NAME,
+                ZonablePedestrianTinyGravelRoadBuilder.NAME,
+                ZonablePedestrianTinyPavedRoadBuilder.NAME,
+                ZonablePedestrianTinyStoneRoadBuilder.NAME
+            };
 
-            RoadSnappingModeManager.RegisterCustomSnapping<TinyRoadSnappingMode>(Alley2LBuilder.NAME);
-            RoadSnappingModeManager.RegisterCustomSnapping<TinyRoadSnappingMode>(OneWay1LBuilder.NAME);
+            foreach (var name in tinyZoneBlockCreators)
+            {
+                RoadZoneBlocksCreationManager.RegisterCustomCreator<TinyRoadZoneBlocksCreator>(name);
+                RoadSnappingModeManager.RegisterCustomSnapping<TinyRoadSnappingMode>(name);
+            }
 
             _roadsInstaller = _container.AddInstallerComponent<RoadsInstaller>();
             _roadsInstaller.Host = this;
