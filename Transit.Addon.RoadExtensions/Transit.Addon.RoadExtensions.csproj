@@ -60,6 +60,7 @@
     <Compile Include="Props\MediumAvenueSideLightBuilder.cs" />
     <Compile Include="Props\LargeAvenueMedianLightBuilder.cs" />
     <Compile Include="Roads\Common\RoadModels.8m.NoSW.Wood.cs" />
+    <Compile Include="Roads\Common\LaneTypeEnums.cs" />
     <Compile Include="Roads\Common\RoadHelper.LaneSetup.cs" />
     <Compile Include="Roads\Common\RoadModels.8m.NoSW.cs" />
     <Compile Include="Roads\Common\RoadModels.16m.NoSW.cs" />
@@ -87,9 +88,14 @@
     <Compile Include="Roads\PedestrianRoads\Common\ZonablePedestrianHelper.cs" />
     <Compile Include="Roads\TinyRoads\Plain2L\PlainStreetBuilder.cs" />
     <Compile Include="Roads\TinyRoads\Plain2L\PlainStreetBuilder.Texturing.cs" />
+    <Compile Include="Roads\SmallHeavyRoads\AsymRoad3L\AsymRoad3LTexturing.cs" />
+    <Compile Include="Roads\SmallHeavyRoads\AsymRoad3L\AsymRoadL1R2\AsymRoadL1R2Builder.cs" />
+    <Compile Include="Roads\SmallHeavyRoads\AsymRoad3L\AsymRoadL2R1\AsymRoadL2R1Builder.cs" />
+    <Compile Include="Roads\SmallHeavyRoads\AsymRoad4L\AsymRoad4LTexturing.cs" />
+    <Compile Include="Roads\SmallHeavyRoads\AsymRoad4L\AsymRoadL1R3\AsymRoadL1R3Builder.cs" />
+    <Compile Include="Roads\SmallHeavyRoads\AsymRoad4L\AsymRoadL3R1\AsymRoadL3R1Builder.cs" />
     <Compile Include="Roads\TinyRoads\TinyRoadMenuModifier.cs" />
     <Compile Include="Roads\TinyRoads\Alley2L\Alley2LBuilder.cs" />
-    <Compile Include="Roads\Common\CenterLaneType.cs" />
     <Compile Include="Roads\Common\RoadHelper.cs" />
     <Compile Include="Roads\Common\RoadModels.32m.5mSW.cs" />
     <Compile Include="Roads\Common\LanesConfiguration.cs" />
@@ -958,6 +964,237 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\PedestrianRoads\Promenade\thumbnails.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\AsymRoadL1R2\infotooltip.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\AsymRoadL1R2\thumbnails.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\AsymRoadL2R1\infotooltip.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\AsymRoadL2R1\thumbnails.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\Textures\Elevated_Inverted__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\Textures\Elevated_LOD_Inverted__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\Textures\Elevated_LOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\Textures\Elevated_LOD__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\Textures\Elevated_SegmentLOD_Inverted__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\Textures\Elevated_Segment_Inverted__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\Textures\Elevated__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\Textures\Elevated_NodeLOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\Textures\Elevated_Node__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\Textures\Elevated_SegmentLOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\Textures\Elevated_Segment__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\Textures\Ground_Node__AlphaMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\Textures\Ground_SegmentLOD_Inverted__AlphaMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\Textures\Ground_SegmentLOD_Inverted__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\Textures\Ground_SegmentLOD__AlphaMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\Textures\Ground_SegmentLOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\Textures\Ground_SegmentLOD__XYS.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\Textures\Ground_Segment_Inverted__AlphaMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\Textures\Ground_Segment_Inverted__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\Textures\Ground_Segment__AlphaMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\Textures\Ground_Segment__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\Textures\Slope_SegmentLOD2__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\Textures\Slope_SegmentLOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\Textures\Slope_SegmentLOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\Textures\Slope_SegmentLOD__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\Textures\Slope_Segment__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\Textures\Tunnel_LOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\Textures\Tunnel_LOD__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\Textures\Tunnel_NodeLOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\Textures\Tunnel_Node__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\Textures\Tunnel_Segment_Inverted__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\Textures\Tunnel_Segment_Inverted__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\Textures\Tunnel_Segment__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\Textures\Tunnel_Segment__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\AsymRoadL1R3\infotooltip.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\AsymRoadL1R3\thumbnails.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\AsymRoadL3R1\infotooltip.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\AsymRoadL3R1\thumbnails.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\Textures\Elevated_Inverted__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\Textures\Elevated_LOD_Inverted__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\Textures\Elevated_LOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\Textures\Elevated_LOD__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\Textures\Elevated_SegmentLOD_Inverted__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\Textures\Elevated_Segment_Inverted__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\Textures\Elevated__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\Textures\Elevated_NodeLOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\Textures\Elevated_Node__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\Textures\Elevated_SegmentLOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\Textures\Elevated_Segment__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\Textures\Ground_Node__AlphaMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\Textures\Ground_Node__AlphaMap2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\Textures\Ground_SegmentLOD_Inverted__AlphaMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\Textures\Ground_SegmentLOD_Inverted__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\Textures\Ground_SegmentLOD__AlphaMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\Textures\Ground_SegmentLOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\Textures\Ground_SegmentLOD__XYS.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\Textures\Ground_Segment_Inverted__AlphaMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\Textures\Ground_Segment_Inverted__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\Textures\Ground_Segment__AlphaMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\Textures\Ground_Segment__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\Textures\Slope_SegmentLOD2__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\Textures\Slope_SegmentLOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\Textures\Slope_SegmentLOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\Textures\Slope_SegmentLOD__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\Textures\Slope_Segment__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\Textures\Tunnel_LOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\Textures\Tunnel_LOD__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\Textures\Tunnel_NodeLOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\Textures\Tunnel_Node__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\Textures\Tunnel_Segment_Inverted__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\Textures\Tunnel_Segment_Inverted__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\Textures\Tunnel_Segment__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\Textures\Tunnel_Segment__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\TinyRoads\Alley2L\thumbnails.png">
@@ -2156,6 +2393,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\Common\Meshes\16m\NoSw\Ground_Trans_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\16m\3mSW\BusStopInv.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\Bridge_Cables.obj">
