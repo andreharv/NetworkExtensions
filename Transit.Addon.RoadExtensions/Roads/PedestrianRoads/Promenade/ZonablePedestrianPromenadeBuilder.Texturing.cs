@@ -30,8 +30,8 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Promenade
                                      @"Roads\PedestrianRoads\Promenade\Textures\Ground_Trans__AlphaMap.png",
                                      @"Roads\PedestrianRoads\Promenade\Textures\Ground_Node__XYSMap.png"),
                                 new LODTextureSet
-                                    (@"Roads\PedestrianRoads\Promenade\Textures\Ground_Trans_LOD__MainTex.png",
-                                     @"Roads\PedestrianRoads\Promenade\Textures\Ground_Trans_LOD__AlphaMap.png",
+                                    (@"Roads\PedestrianRoads\Common\Textures\Ground_Trans_LOD__MainTex.png",
+                                     @"Roads\PedestrianRoads\Common\Textures\Ground_Trans_LOD__AlphaMap.png",
                                      @"Roads\PedestrianRoads\Common\Textures\Ground_Node_LOD__XYSMap.png"));
                         }
                         else

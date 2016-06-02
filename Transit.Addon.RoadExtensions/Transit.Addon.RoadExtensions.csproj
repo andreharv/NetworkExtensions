@@ -777,12 +777,6 @@
     <Content Include="Roads\PedestrianRoads\Pavement\thumbnails.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\PedestrianRoads\Promenade\Textures\Ground_Trans_LOD__AlphaMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\PedestrianRoads\Promenade\Textures\Ground_Trans_LOD__MainTex.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Roads\PedestrianRoads\StoneTiny\infotooltip.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -2122,7 +2116,9 @@
     <None Include="Buildings\BridgePillar.CableStay32m.crp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Buildings\Wood8mEPillar.crp" />
+    <None Include="Buildings\Wood8mEPillar.crp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Props\RetractBollard.crp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

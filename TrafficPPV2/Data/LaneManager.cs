@@ -4,9 +4,9 @@ using Transit.Framework.Network;
 
 namespace CSL_Traffic
 {
-    public static partial class RoadManager
+    public static class LaneManager
     {
-        static Lane[] sm_lanes = new Lane[NetManager.MAX_LANE_COUNT];
+        internal static Lane[] sm_lanes = new Lane[NetManager.MAX_LANE_COUNT];
 
         public static Lane CreateLane(uint laneId)
         {
@@ -75,15 +75,27 @@ namespace CSL_Traffic
             return lane.GetConnectionsAsArray();
         }
 
-        private const ExtendedVehicleType sm_unroutedUnits = 
-            ExtendedVehicleType.Unknown | 
-            ExtendedVehicleType.Citizen | 
-            ExtendedVehicleType.Tram | 
-            ExtendedVehicleType.SnowTruck;
+        private const ExtendedVehicleType sm_routedUnits =
+            ExtendedVehicleType.ServiceVehicles |
+            ExtendedVehicleType.PassengerCar |
+            ExtendedVehicleType.CargoTruck |
+            ExtendedVehicleType.Bus |
+            ExtendedVehicleType.Taxi;
 
-        public static bool CheckLaneConnection(ExtendedVehicleType vehicleType, uint from, uint to)
+        public static bool CheckLaneConnection(this NetInfo.Lane laneInfo, ExtendedVehicleType vehicleType, uint from, uint to)
         {
-            if ((vehicleType & sm_unroutedUnits) != 0)
+            if ((vehicleType & sm_routedUnits) == 0)
+            {
+                return true;
+            }
+
+            if ((laneInfo.m_vehicleType & VehicleInfo.VehicleType.Car) == VehicleInfo.VehicleType.None)
+            {
+                return true;
+            }
+
+            // Quick fix for tram
+            if ((laneInfo.m_vehicleType & VehicleInfo.VehicleType.Tram) != VehicleInfo.VehicleType.None)
             {
                 return true;
             }
@@ -95,9 +107,20 @@ namespace CSL_Traffic
         #endregion
 
         #region Vehicle Restrictions
-        public static bool CanUseLane(ExtendedVehicleType vehicleType, uint laneId)
+        public static bool CanUseLane(this NetInfo.Lane laneInfo, ExtendedVehicleType vehicleType, uint laneId)
         {
-            if ((vehicleType & sm_unroutedUnits) != 0)
+            if ((vehicleType & sm_routedUnits) == 0)
+            {
+                return true;
+            }
+
+            if ((laneInfo.m_vehicleType & VehicleInfo.VehicleType.Car) == VehicleInfo.VehicleType.None)
+            {
+                return true;
+            }
+
+            // Quick fix for tram
+            if ((laneInfo.m_vehicleType & VehicleInfo.VehicleType.Tram) != VehicleInfo.VehicleType.None)
             {
                 return true;
             }
@@ -124,12 +147,22 @@ namespace CSL_Traffic
 
         #region Lane Speeds
 
-        public static float GetLaneSpeed(uint laneId)
+        public static float GetLaneSpeed(uint laneId, NetInfo.Lane lane)
+        {
+            if ((TrafficMod.Options & OptionsManager.ModOptions.RoadCustomizerTool) != OptionsManager.ModOptions.RoadCustomizerTool)
+            {
+                return lane.m_speedLimit;
+            }
+
+            return GetLane(laneId).m_speed;
+        }
+
+        public static float GetLaneSpeedRestriction(uint laneId)
         {
             return GetLane(laneId).m_speed;
         }
 
-        public static void SetLaneSpeed(uint laneId, int speed)
+        public static void SetLaneSpeedRestriction(uint laneId, int speed)
         {
             GetLane(laneId).m_speed = (float)Math.Round(speed/50f, 2);
         }
