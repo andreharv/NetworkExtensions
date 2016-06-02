@@ -18,4 +18,14 @@ namespace Transit.Framework.Builders
 
         void BuildUp(NetInfo info, NetInfoVersion version);
     }
+
+    public interface INetInfoSpecificBaseBuilder : INetInfoBuilder
+    {
+        string GetSpecificBasedPrefabName(NetInfoVersion version);
+    }
+
+    public interface INetInfoSpecificNameBuilder : INetInfoBuilder
+    {
+        string GetSpecificBuiltPrefabName(NetInfoVersion version);
+    }
 }
