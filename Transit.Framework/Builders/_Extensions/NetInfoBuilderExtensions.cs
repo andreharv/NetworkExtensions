@@ -7,6 +7,30 @@ namespace Transit.Framework.Builders
 {
     public static class NetInfoBuilderExtensions
     {
+        public static string GetBasedPrefabName(this INetInfoBuilder builder, NetInfoVersion version)
+        {
+            if (builder is INetInfoSpecificBaseBuilder)
+            {
+                return ((INetInfoSpecificBaseBuilder) builder).GetSpecificBasedPrefabName(version);
+            }
+            else
+            {
+                return NetInfos.Vanilla.GetPrefabName(builder.BasedPrefabName, version);
+            }
+        }
+
+        public static string GetBuiltPrefabName(this INetInfoBuilder builder, NetInfoVersion version)
+        {
+            if (builder is INetInfoSpecificNameBuilder)
+            {
+                return ((INetInfoSpecificNameBuilder)builder).GetSpecificBuiltPrefabName(version);
+            }
+            else
+            {
+                return NetInfos.New.GetPrefabName(builder.Name, version);
+            }
+        }
+
         public static IEnumerable<NetInfo> BuildEmergencyFallback(this INetInfoBuilder builder)
         {
             return builder
@@ -17,12 +41,12 @@ namespace Transit.Framework.Builders
 
         private static NetInfo BuildEmergencyFallbackVersion(this INetInfoBuilder builder, NetInfoVersion version)
         {
-            var vanillaPrefabName = NetInfos.Vanilla.GetPrefabName(builder.BasedPrefabName, version);
-            var newPrefabName = NetInfos.New.GetPrefabName(builder.Name, version);
+            var basedPrefabName = builder.GetBasedPrefabName(version);
+            var builtPrefabName = builder.GetBuiltPrefabName(version);
 
             return Prefabs
-                .Find<NetInfo>(vanillaPrefabName)
-                .Clone(newPrefabName);
+                .Find<NetInfo>(basedPrefabName)
+                .Clone(builtPrefabName);
         }
 
         public static IEnumerable<NetInfo> Build(this INetInfoBuilder builder, ICollection<Action> lateOperations)
@@ -102,12 +126,12 @@ namespace Transit.Framework.Builders
         {
             if (builder.SupportedVersions.HasFlag(version))
             {
-                var vanillaPrefabName = NetInfos.Vanilla.GetPrefabName(builder.BasedPrefabName, version);
-                var newPrefabName = NetInfos.New.GetPrefabName(builder.Name, version);
+                var basedPrefabName = builder.GetBasedPrefabName(version);
+                var builtPrefabName = builder.GetBuiltPrefabName(version);
 
                 var info = Prefabs
-                    .Find<NetInfo>(vanillaPrefabName)
-                    .Clone(newPrefabName);
+                    .Find<NetInfo>(basedPrefabName)
+                    .Clone(builtPrefabName);
 
                 builder.BuildUp(info, version);
 

@@ -12,9 +12,15 @@ namespace Transit.Addon.RoadExtensions.Compatibility
     public static class RoadColorChanger
     {
         private const string MOD_ID = "417585852";
+        private const string MOD_ID2 = "651610627";
         public static bool IsPluginActive
         {
-            get { return Singleton<PluginManager>.instance.IsPluginActive(MOD_ID); }
+            get
+            {
+                return 
+                    Singleton<PluginManager>.instance.IsPluginActive(MOD_ID) ||
+                    Singleton<PluginManager>.instance.IsPluginActive(MOD_ID2);
+            }
         }
 
         public static string GetTexturePrefix()

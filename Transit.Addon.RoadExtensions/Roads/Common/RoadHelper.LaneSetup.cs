@@ -196,7 +196,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             {
                 var l = vehicleLanes[i];
 
-                if (version == NetInfoVersion.Ground)
+                if (version == NetInfoVersion.Ground && config.HasBusStop)
                 {
                     if (i == 0)
                     {
@@ -239,7 +239,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             return vehicleLanes;
         }
 
-        private static IEnumerable<NetInfo.Lane> SetupPedestrianLanes(this NetInfo rdInfo, NetInfoVersion version, LanesConfiguration config)
+        public static IEnumerable<NetInfo.Lane> SetupPedestrianLanes(this NetInfo rdInfo, NetInfoVersion version, LanesConfiguration config)
         {
             var pedestrianLanes = rdInfo.m_lanes
                 .Where(l => l.m_laneType == NetInfo.LaneType.Pedestrian)

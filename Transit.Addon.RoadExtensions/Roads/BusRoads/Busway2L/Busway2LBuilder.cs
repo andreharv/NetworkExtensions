@@ -9,7 +9,7 @@ using Transit.Framework.Texturing;
 
 namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L
 {
-    public class Busway2LBuilder : Activable, IMultiNetInfoBuilderPart, ITrafficPlusPlusPart
+    public class Busway2LBuilder : Activable, IMultiNetInfoBuilderPart
     {
         public string Name { get { return "Small Busway"; } }
         public string DisplayName { get { return "[BETA] Busway"; } }

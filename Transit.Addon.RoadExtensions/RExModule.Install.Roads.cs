@@ -67,13 +67,6 @@ namespace Transit.Addon.RoadExtensions
                     .WhereActivated()
                     .ToArray();
 
-                if (TrafficPlusPlus.IsPluginActive)
-                {
-                    piBuilders = piBuilders
-                        .Where(t => !(t is ITrafficPlusPlusPart))
-                        .ToArray();
-                }
-
                 foreach (var piBuilder in piBuilders)
                 {
                     var builder = piBuilder;
@@ -128,13 +121,6 @@ namespace Transit.Addon.RoadExtensions
                     .OfType<INetInfoBuilder>()
                     .WhereActivated()
                     .ToArray();
-
-                if (TrafficPlusPlus.IsPluginActive)
-                {
-                    niBuilders = niBuilders
-                        .Where(t => !(t is ITrafficPlusPlusPart))
-                        .ToArray();
-                }
 
                 var lateOperations = new List<Action>();
 

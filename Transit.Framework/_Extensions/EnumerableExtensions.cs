@@ -37,6 +37,26 @@ namespace Transit.Framework
                 });
         }
 
+        public static IEnumerable<T> WhereMeetRequirements<T>(this IEnumerable<T> enumerable)
+        {
+            return enumerable
+                .Where(element =>
+                {
+                    if (element is IDLCRequired)
+                    {
+                        var requiredDLC = ((IDLCRequired) element).RequiredDLC;
+                        if (requiredDLC == SteamHelper.DLC.None)
+                        {
+                            return true;
+                        }
+
+                        return SteamHelper.IsDLCOwned(requiredDLC);
+                    }
+
+                    return true;
+                });
+        }
+
         public static IEnumerable<T> OrderOrderables<T>(this IEnumerable<T> enumerable)
         {
             return enumerable
