@@ -97,17 +97,26 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.Rail1L
             //info.m_class.m_layer = ItemClass.Layer.PublicTransport;
             info.m_connectGroup = NetInfo.ConnectGroup.CenterTram;
             info.m_nodeConnectGroups = NetInfo.ConnectGroup.CenterTram | NetInfo.ConnectGroup.NarrowTram;
-            //info.m_nodes[1].m_connectGroup = (NetInfo.ConnectGroup)9; 
-            railInfo.m_connectGroup = NetInfo.ConnectGroup.NarrowTram;
-            railInfo.m_nodeConnectGroups = NetInfo.ConnectGroup.NarrowTram;
-            if (railInfo.m_nodes.Length > 1)
+            var railInfos = new List<NetInfo>();
+            railInfos.Add(railInfo);
+            railInfos.Add(Prefabs.Find<NetInfo>(NetInfos.Vanilla.TRAIN_STATION_TRACK, false));
+            railInfos.Add(Prefabs.Find<NetInfo>("Cargo Train Station Track", false));
+            for(int i = 0; i < railInfos.Count; i++)
             {
-                railInfo.m_nodes[1].m_connectGroup = NetInfo.ConnectGroup.NarrowTram;
+                var ri = railInfos[i];
+                //info.m_nodes[1].m_connectGroup = (NetInfo.ConnectGroup)9; 
+                ri.m_connectGroup = NetInfo.ConnectGroup.NarrowTram;
+                railInfo.m_nodeConnectGroups = NetInfo.ConnectGroup.NarrowTram;
+                if (railInfo.m_nodes.Length > 1)
+                {
+                    railInfo.m_nodes[1].m_connectGroup = NetInfo.ConnectGroup.NarrowTram;
+                }
+                else
+                {
+                    Framework.Debug.Log(version + " skipped!");
+                }
             }
-            else
-            {
-                Framework.Debug.Log(version + " skipped!");
-            }
+
             
             var owPlayerNetAI = railInfo.GetComponent<PlayerNetAI>();
             var playerNetAI = info.GetComponent<PlayerNetAI>();
