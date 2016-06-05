@@ -81,6 +81,10 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway1L
             var rightHwLane = info.SetHighwayRightShoulder(highwayInfo, version);
             var vehicleLanes = info.SetHighwayVehicleLanes();
 
+            foreach (var lane in vehicleLanes)
+            {
+                lane.m_speedLimit = 1.8f;
+            }
 
             ///////////////////////////
             // Set up props          //
