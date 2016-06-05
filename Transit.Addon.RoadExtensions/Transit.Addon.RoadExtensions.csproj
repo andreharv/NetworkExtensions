@@ -61,8 +61,12 @@
     <Compile Include="Compatibility\TrafficPlusPlus\ITrafficPlusPlusPart.cs" />
     <Compile Include="Props\MediumAvenueSideLightBuilder.cs" />
     <Compile Include="Props\LargeAvenueMedianLightBuilder.cs" />
+    <Compile Include="Roads\Avenues\AsymAvenue5L\AsymAvenueL2R3\AsymAvenueL2R3Builder.cs" />
+    <Compile Include="Roads\Avenues\AsymAvenue5L\AsymAvenue5LTexturing.cs" />
+    <Compile Include="Roads\Avenues\AsymAvenue6L\AsymAvenueL2R4\AsymAvenueL2R4Builder.cs" />
     <Compile Include="Roads\Common\LaneTypeEnums.cs" />
     <Compile Include="Roads\Common\RoadHelper.LaneSetup.cs" />
+    <Compile Include="Roads\Common\RoadModels.32m.5mSW3mMdn.cs" />
     <Compile Include="Roads\Highways\VanillaHighwayMenuModifier.cs" />
     <Compile Include="Props\BusLaneTextPropBuilder.cs" />
     <Compile Include="AI\TinyRoadSnappingMode.cs" />
@@ -333,6 +337,79 @@
     <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway6L\Textures\Tunnel_Segment__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Roads\Avenues\AsymAvenue5L\AsymAvenueL2R3\infotooltip.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\AsymAvenue5L\AsymAvenueL2R3\thumbnails.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\AsymAvenue5L\Textures\Elevated_Segment_Inverted__AlphaMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\AsymAvenue5L\Textures\Elevated_Segment_Inverted__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\AsymAvenue5L\Textures\Elevated_Segment__AlphaMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\AsymAvenue5L\Textures\Elevated_Segment__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\AsymAvenue5L\Textures\Ground_Segment_Inverted__AlphaMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\AsymAvenue5L\Textures\Ground_Segment_Inverted__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\AsymAvenue5L\Textures\Ground_Segment__AlphaMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\AsymAvenue5L\Textures\Ground_Segment__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\AsymAvenue5L\Textures\Slope_Segment_Inverted__AlphaMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\AsymAvenue5L\Textures\Slope_Segment_Inverted__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\AsymAvenue5L\Textures\Slope_Segment__AlphaMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\AsymAvenue5L\Textures\Slope_Segment__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\AsymAvenue5L\Textures\Slope_U_Node__AlphaMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\AsymAvenue5L\Textures\Tunnel_Node__AlphaMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\AsymAvenue5L\Textures\Tunnel_Node__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\AsymAvenue5L\Textures\Tunnel_Segment_Inverted__AlphaMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\AsymAvenue5L\Textures\Tunnel_Segment_Inverted__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\AsymAvenue5L\Textures\Tunnel_Segment__AlphaMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\AsymAvenue5L\Textures\Tunnel_Segment__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\AsymAvenue6L\AsymAvenueL2R4\infotooltip.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\AsymAvenue6L\AsymAvenueL2R4\thumbnails.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\AsymAvenue6L\Textures\Elevated_Segment_AlphaMap.png" />
+    <Content Include="Roads\Avenues\AsymAvenue6L\Textures\Elevated_Segment_MainTex.png" />
+    <Content Include="Roads\Avenues\AsymAvenue6L\Textures\Ground_Segment_AlphaMap.png" />
+    <Content Include="Roads\Avenues\AsymAvenue6L\Textures\Ground_Segment_MainTex.png" />
     <Content Include="Roads\Highways\Highway2L\Textures\Ground_Node__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -2129,6 +2206,33 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\Tunnel_Node_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\Bus.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\BusBoth.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\BusInv.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\Elevated.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\Ground.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\Slope.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\Slope_U_Node.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\Tunnel.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\Tunnel_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\Common\Meshes\8m\1p5mSW\Ground.obj">

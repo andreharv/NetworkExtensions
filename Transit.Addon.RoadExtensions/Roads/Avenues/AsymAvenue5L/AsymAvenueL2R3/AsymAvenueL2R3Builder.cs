@@ -6,22 +6,22 @@ using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.Network;
 
-namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.AsymRoad4L.AsymRoadL1R3
+namespace Transit.Addon.RoadExtensions.Roads.Avenues.AsymAvenue5L.AsymAvenueL2R3
 {
     public partial class AsymAvenueL2R3Builder : Activable, INetInfoBuilderPart
     {
         public int Order { get { return 10; } }
         public int UIOrder { get { return 60; } }
 
-        public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_2L; } }
-        public string Name { get { return "AsymRoadL1R3"; } }
-        public string DisplayName { get { return "Asymmetrical Road: 1 Left / 3 Right"; } }
-        public string Description { get { return "An asymmetrical road with one left lane and three right lanes.  Note, dragging this road backwards reverses its orientation."; } }
-        public string ShortDescription { get { return "No parking, zoneable, low to medium traffic"; } }
-        public string UICategory { get { return RExExtendedMenus.ROADS_SMALL_HV; } }
+        public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_6L; } }
+        public string Name { get { return "AsymAvenueL2R3"; } }
+        public string DisplayName { get { return "Asymmetrical Road: 2 Left / 3 Right"; } }
+        public string Description { get { return "An asymmetrical road with two left lane and three right lanes.  Note, dragging this road backwards reverses its orientation."; } }
+        public string ShortDescription { get { return "Parking, zoneable, medium to high traffic"; } }
+        public string UICategory { get { return "RoadsMedium"; } }
 
-        public string ThumbnailsPath { get { return @"Roads\SmallHeavyRoads\AsymRoad4L\AsymRoadL1R3\thumbnails.png"; } }
-        public string InfoTooltipPath { get { return @"Roads\SmallHeavyRoads\AsymRoad4L\AsymRoadL1R3\infotooltip.png"; } }
+        public string ThumbnailsPath { get { return @"Roads\Avenues\AsymAvenue5L\AsymAvenueL2R3\thumbnails.png"; } }
+        public string InfoTooltipPath { get { return @"Roads\Avenues\AsymAvenue5L\AsymAvenueL2R3\infotooltip.png"; } }
 
         public NetInfoVersion SupportedVersions
         {
@@ -33,13 +33,13 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.AsymRoad4L.AsymRoad
             ///////////////////////////
             // Template              //
             ///////////////////////////
-            var owRoadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_2L);
-            var owRoadTunnelInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ONEWAY_2L_TUNNEL);
-            var asymLaneType = AsymLaneType.L1R3;
+            var owRoadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_6L);
+            var owRoadTunnelInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_6L_TUNNEL);
+            var asymLaneType = AsymLaneType.L2R3;
             ///////////////////////////
             // 3DModeling            //
             ///////////////////////////
-            info.Setup16m2mSWMesh(version, asymLaneType);
+            info.Setup32m5mSW3mMdn(version, asymLaneType);
 
             ///////////////////////////
             // Texturing             //
@@ -49,15 +49,16 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.AsymRoad4L.AsymRoad
             ///////////////////////////
             // Set up                //
             ///////////////////////////
-            info.m_hasParkingSpaces = false;
-            info.m_pavementWidth = (version != NetInfoVersion.Slope && version != NetInfoVersion.Tunnel ? 2 : 5);
-            info.m_halfWidth = (version != NetInfoVersion.Slope && version != NetInfoVersion.Tunnel ? 8 : 11);
-
+            info.m_hasParkingSpaces = true;
+            info.m_pavementWidth = (version != NetInfoVersion.Slope && version != NetInfoVersion.Tunnel ? 5 : 7);
+            info.m_halfWidth = (version != NetInfoVersion.Elevated && version != NetInfoVersion.Bridge ? 16 : 14);
+            info.m_canCrossLanes = false;
             if (version == NetInfoVersion.Tunnel)
             {
                 info.m_setVehicleFlags = Vehicle.Flags.Transition | Vehicle.Flags.Underground;
                 info.m_setCitizenFlags = CitizenInstance.Flags.Transition | CitizenInstance.Flags.Underground;
                 info.m_class = owRoadTunnelInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL4L_ROAD_TUNNEL);
+
             }
             else
             {
@@ -68,28 +69,28 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.AsymRoad4L.AsymRoad
             info.SetRoadLanes(version, new LanesConfiguration
             {
                 IsTwoWay = true,
-                LanesToAdd = 2,
                 PedPropOffsetX = 0.5f,
-                BusStopOffset = 0f,
-                SpeedLimit = 1.0f,
+                BusStopOffset = 3,
                 AsymLT = asymLaneType
             });
+            var keepLanes = info.m_lanes.Where(l => l.m_position != -1.5).ToArray();
+            info.m_lanes = keepLanes;
             var leftPedLane = info.GetLeftRoadShoulder();
             var rightPedLane = info.GetRightRoadShoulder();
 
             // Fix for T++ legacy support
-            var lanes = info.m_lanes.OrderBy(l => l.m_position).ToArray();
-            var lanesLegacyOrder = new[]
-            {
-                lanes[0],
-                lanes[5],
-                lanes[1],
-                lanes[4],
-                lanes[2],
-                lanes[3]
-            };
+            //var lanes = info.m_lanes.OrderBy(l => l.m_position).ToArray();
+            //var lanesLegacyOrder = new[]
+            //{
+            //    lanes[0],
+            //    lanes[5],
+            //    lanes[1],
+            //    lanes[4],
+            //    lanes[2],
+            //    lanes[3]
+            //};
 
-            info.m_lanes = lanesLegacyOrder;
+            //info.m_lanes = lanesLegacyOrder;
 
             //Setting Up Props
             var leftRoadProps = leftPedLane.m_laneProps.m_props.ToList();
@@ -113,15 +114,15 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.AsymRoad4L.AsymRoad
 
             if (owPlayerNetAI != null && playerNetAI != null)
             {
-                playerNetAI.m_constructionCost = owPlayerNetAI.m_constructionCost * 3 / 2; // Charge by the lane?
-                playerNetAI.m_maintenanceCost = owPlayerNetAI.m_maintenanceCost * 3 / 2; // Charge by the lane?
+                playerNetAI.m_constructionCost = owPlayerNetAI.m_constructionCost * 5 / 6; // Charge by the lane?
+                playerNetAI.m_maintenanceCost = owPlayerNetAI.m_maintenanceCost * 5 / 6; // Charge by the lane?
             }
 
             // TODO: make it configurable
             var roadBaseAI = info.GetComponent<RoadBaseAI>();
             if (roadBaseAI != null)
             {
-                roadBaseAI.m_trafficLights = false;
+                roadBaseAI.m_trafficLights = true;
             }
         }
     }
