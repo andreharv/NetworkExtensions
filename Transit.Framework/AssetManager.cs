@@ -79,8 +79,11 @@ namespace Transit.Framework
                 mesh.LoadOBJ(OBJLoader.LoadOBJ(fileStream));
             }
             mesh.Optimize();
-            mesh.name = Path.GetFileNameWithoutExtension(meshName);
-
+            var name = Path.GetFileNameWithoutExtension(meshName);
+            mesh.name = name;
+            if (!name.Contains("LOD")) { 
+                mesh.UploadMeshData(true);
+            }
             return mesh;
         }
 
