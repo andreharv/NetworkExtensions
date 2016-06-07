@@ -100,7 +100,7 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.Rail1L
             var railInfos = new List<NetInfo>();
             railInfos.Add(railInfo);
             railInfos.Add(Prefabs.Find<NetInfo>(NetInfos.Vanilla.TRAIN_STATION_TRACK, false));
-            railInfos.Add(Prefabs.Find<NetInfo>("Cargo Train Station Track", false));
+            railInfos.Add(Prefabs.Find<NetInfo>("Train Cargo Track", false));
             for(int i = 0; i < railInfos.Count; i++)
             {
                 var ri = railInfos[i];

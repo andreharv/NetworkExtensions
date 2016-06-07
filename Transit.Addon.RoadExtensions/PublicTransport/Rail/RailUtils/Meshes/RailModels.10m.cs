@@ -31,8 +31,8 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.RailUtils
                         var nodes6 = info.m_nodes[3].ShallowClone();
                         var nodes7 = info.m_nodes[3].ShallowClone();
 
-                        nodes1.m_connectGroup = NetInfo.ConnectGroup.CenterTram;
-                        nodes3.m_connectGroup = NetInfo.ConnectGroup.CenterTram;
+                        nodes1.m_connectGroup = NetInfo.ConnectGroup.CenterTram | NetInfo.ConnectGroup.Oneway;
+                        nodes3.m_connectGroup = NetInfo.ConnectGroup.CenterTram | NetInfo.ConnectGroup.Oneway;
                         nodes4.m_connectGroup = NetInfo.ConnectGroup.NarrowTram | NetInfo.ConnectGroup.OnewayStart;
                         nodes5.m_connectGroup = NetInfo.ConnectGroup.NarrowTram | NetInfo.ConnectGroup.OnewayEnd;
                         nodes6.m_connectGroup = NetInfo.ConnectGroup.NarrowTram | NetInfo.ConnectGroup.OnewayStart;
@@ -138,8 +138,8 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.RailUtils
                         var nodes6 = info.m_nodes[2].ShallowClone();
                         var nodes7 = info.m_nodes[2].ShallowClone();
 
-                        nodes1.m_connectGroup = NetInfo.ConnectGroup.CenterTram;
-                        nodes2.m_connectGroup = NetInfo.ConnectGroup.CenterTram;
+                        nodes1.m_connectGroup = NetInfo.ConnectGroup.CenterTram | NetInfo.ConnectGroup.Oneway;
+                        nodes2.m_connectGroup = NetInfo.ConnectGroup.CenterTram | NetInfo.ConnectGroup.Oneway;
                         nodes4.m_connectGroup = NetInfo.ConnectGroup.NarrowTram | NetInfo.ConnectGroup.OnewayStart;
                         nodes5.m_connectGroup = NetInfo.ConnectGroup.NarrowTram | NetInfo.ConnectGroup.OnewayEnd;
                         nodes6.m_connectGroup = NetInfo.ConnectGroup.NarrowTram | NetInfo.ConnectGroup.OnewayStart;
@@ -237,8 +237,8 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.RailUtils
                         var nodes6 = info.m_nodes[2].ShallowClone();
                         var nodes7 = info.m_nodes[2].ShallowClone();
 
-                        nodes1.m_connectGroup = NetInfo.ConnectGroup.CenterTram;
-                        nodes2.m_connectGroup = NetInfo.ConnectGroup.CenterTram;
+                        nodes1.m_connectGroup = NetInfo.ConnectGroup.CenterTram | NetInfo.ConnectGroup.Oneway;
+                        nodes2.m_connectGroup = NetInfo.ConnectGroup.CenterTram | NetInfo.ConnectGroup.Oneway;
                         nodes4.m_connectGroup = NetInfo.ConnectGroup.NarrowTram | NetInfo.ConnectGroup.OnewayStart;
                         nodes5.m_connectGroup = NetInfo.ConnectGroup.NarrowTram | NetInfo.ConnectGroup.OnewayEnd;
                         nodes6.m_connectGroup = NetInfo.ConnectGroup.NarrowTram | NetInfo.ConnectGroup.OnewayStart;
@@ -383,8 +383,8 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.RailUtils
                         var nodes7 = info.m_nodes[2].ShallowClone();
                         var nodes8 = info.m_nodes[2].ShallowClone();
 
-                        nodes1.m_connectGroup = NetInfo.ConnectGroup.CenterTram;
-                        nodes2.m_connectGroup = NetInfo.ConnectGroup.CenterTram;
+                        nodes1.m_connectGroup = NetInfo.ConnectGroup.CenterTram | NetInfo.ConnectGroup.Oneway;
+                        nodes2.m_connectGroup = NetInfo.ConnectGroup.CenterTram | NetInfo.ConnectGroup.Oneway;
                         nodes5.m_connectGroup = NetInfo.ConnectGroup.NarrowTram | NetInfo.ConnectGroup.OnewayStart;
                         nodes6.m_connectGroup = NetInfo.ConnectGroup.NarrowTram | NetInfo.ConnectGroup.OnewayEnd;
                         nodes7.m_connectGroup = NetInfo.ConnectGroup.NarrowTram | NetInfo.ConnectGroup.OnewayStart;
