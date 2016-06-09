@@ -267,7 +267,7 @@ namespace TrafficManager.UI {
 			}
 		}
 
-		protected override void OnToolGUI() {
+		protected override void OnToolGUI(Event e) {
 			Log._Debug($"OnToolGUI");
 
 			try {
@@ -319,8 +319,8 @@ namespace TrafficManager.UI {
 						_guiLaneRestrictions();
 						break;
 				}
-			} catch (Exception e) {
-				Log.Error("GUI Error: " + e.ToString());
+			} catch (Exception ex) {
+				Log.Error("GUI Error: " + ex.ToString());
 			}
 		}
 
