@@ -22,7 +22,7 @@ namespace CSL_Traffic.AI.Redirections
             CitizenInfo info2 = instance.m_instances.m_buffer[(int)passengerInstance].Info;
             NetInfo.LaneType laneType = NetInfo.LaneType.Vehicle | NetInfo.LaneType.Pedestrian | NetInfo.LaneType.TransportVehicle;
             VehicleInfo.VehicleType vehicleType = this.m_info.m_vehicleType;
-            bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != Vehicle.Flags.None;
+            bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != 0;
             PathUnit.Position startPosA;
             PathUnit.Position startPosB;
             float num;

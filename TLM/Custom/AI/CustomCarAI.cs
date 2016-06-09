@@ -38,7 +38,7 @@ namespace TrafficManager.Custom.AI {
 		/// <param name="vehicleData"></param>
 		/// <param name="physicsLodRefPos"></param>
 		public void TrafficManagerSimulationStep(ushort vehicleId, ref Vehicle vehicleData, Vector3 physicsLodRefPos) {
-			if ((vehicleData.m_flags & Vehicle.Flags.WaitingPath) != Vehicle.Flags.None) {
+			if ((vehicleData.m_flags & Vehicle.Flags.WaitingPath) != 0) {
 				PathManager instance = Singleton<PathManager>.instance;
 				byte pathFindFlags = instance.m_pathUnits.m_buffer[(int)((UIntPtr)vehicleData.m_path)].m_pathFindFlags;
 				if ((pathFindFlags & 4) != 0) {
@@ -54,7 +54,7 @@ namespace TrafficManager.Custom.AI {
 					this.PathfindFailure(vehicleId, ref vehicleData);
 					return;
 				}
-			} else if ((vehicleData.m_flags & Vehicle.Flags.WaitingSpace) != Vehicle.Flags.None) {
+			} else if ((vehicleData.m_flags & Vehicle.Flags.WaitingSpace) != 0) {
 				this.TrySpawn(vehicleId, ref vehicleData);
 			}
 
@@ -91,7 +91,7 @@ namespace TrafficManager.Custom.AI {
 			}
 			int privateServiceIndex = ItemClass.GetPrivateServiceIndex(this.m_info.m_class.m_service);
 			int num3 = (privateServiceIndex == -1) ? 150 : 100;
-			if ((vehicleData.m_flags & (Vehicle.Flags.Spawned | Vehicle.Flags.WaitingPath | Vehicle.Flags.WaitingSpace)) == Vehicle.Flags.None && vehicleData.m_cargoParent == 0) {
+			if ((vehicleData.m_flags & (Vehicle.Flags.Spawned | Vehicle.Flags.WaitingPath | Vehicle.Flags.WaitingSpace)) == 0 && vehicleData.m_cargoParent == 0) {
 				Singleton<VehicleManager>.instance.ReleaseVehicle(vehicleId);
 			} else if ((int)vehicleData.m_blockCounter == num3 && Options.enableDespawning) {
 				Singleton<VehicleManager>.instance.ReleaseVehicle(vehicleId);
@@ -195,7 +195,7 @@ namespace TrafficManager.Custom.AI {
 					try {
 						VehiclePosition globalTargetPos = TrafficPriority.GetVehiclePosition(vehicleId);
 
-						if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) == Vehicle.Flags.None) {
+						if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) == 0) {
 							if (vehicleData.Info.m_vehicleType == VehicleInfo.VehicleType.Car) {
 								if (hasTrafficLight && (!isJoinedJunction || hasCrossing)) {
 									var destinationInfo = netManager.m_nodes.m_buffer[destinationNodeId].Info;
@@ -536,7 +536,7 @@ namespace TrafficManager.Custom.AI {
 		}
 
 		internal static bool IsRecklessDriver(ushort vehicleId, ref Vehicle vehicleData) {
-			if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) != Vehicle.Flags.None)
+			if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) != 0)
 				return true;
 
 			return ((vehicleData.Info.m_vehicleType & VehicleInfo.VehicleType.Car) != VehicleInfo.VehicleType.None) && (uint)vehicleId % (Options.getRecklessDriverModulo()) == 0;
@@ -551,7 +551,7 @@ namespace TrafficManager.Custom.AI {
 			}*/
 
 			VehicleInfo info = this.m_info;
-			bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != Vehicle.Flags.None;
+			bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != 0;
 			PathUnit.Position startPosA;
 			PathUnit.Position startPosB;
 			float num;

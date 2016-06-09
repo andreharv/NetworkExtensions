@@ -30,22 +30,22 @@ namespace CSL_Traffic
             if (this.m_info.m_class.m_level >= ItemClass.Level.Level4)
             {
                 base.SimulationStep(vehicleID, ref vehicleData, ref frameData, leaderID, ref leaderData, lodPhysics);
-                if ((vehicleData.m_flags & Vehicle.Flags.Stopped) != Vehicle.Flags.None && this.CanLeave(vehicleID, ref vehicleData))
+                if ((vehicleData.m_flags & Vehicle.Flags.Stopped) != 0 && this.CanLeave(vehicleID, ref vehicleData))
                 {
                     vehicleData.m_flags &= ~Vehicle.Flags.Stopped;
                     vehicleData.m_flags |= Vehicle.Flags.Leaving;
                 }
-                if ((vehicleData.m_flags & Vehicle.Flags.GoingBack) == Vehicle.Flags.None && this.ShouldReturnToSource(vehicleID, ref vehicleData))
+                if ((vehicleData.m_flags & Vehicle.Flags.GoingBack) == 0 && this.ShouldReturnToSource(vehicleID, ref vehicleData))
                 {
                     this.SetTarget(vehicleID, ref vehicleData, 0);
                 }
             }
             else
             {
-                frameData.m_blinkState = (((vehicleData.m_flags & Vehicle.Flags.Emergency2) == Vehicle.Flags.None) ? 0f : 10f);
+                frameData.m_blinkState = (((vehicleData.m_flags & Vehicle.Flags.Emergency2) == 0) ? 0f : 10f);
                 this.TryCollectCrime(vehicleID, ref vehicleData, ref frameData);
                 base.SimulationStep(vehicleID, ref vehicleData, ref frameData, leaderID, ref leaderData, lodPhysics);
-                if ((vehicleData.m_flags & Vehicle.Flags.Stopped) != Vehicle.Flags.None)
+                if ((vehicleData.m_flags & Vehicle.Flags.Stopped) != 0)
                 {
                     if (this.CanLeave(vehicleID, ref vehicleData))
                     {
@@ -53,11 +53,11 @@ namespace CSL_Traffic
                         vehicleData.m_flags |= Vehicle.Flags.Leaving;
                     }
                 }
-                else if ((vehicleData.m_flags & Vehicle.Flags.Arriving) != Vehicle.Flags.None && vehicleData.m_targetBuilding != 0 && (vehicleData.m_flags & (Vehicle.Flags.Emergency2 | Vehicle.Flags.WaitingPath | Vehicle.Flags.GoingBack | Vehicle.Flags.WaitingTarget)) == Vehicle.Flags.None)
+                else if ((vehicleData.m_flags & Vehicle.Flags.Arriving) != 0 && vehicleData.m_targetBuilding != 0 && (vehicleData.m_flags & (Vehicle.Flags.Emergency2 | Vehicle.Flags.WaitingPath | Vehicle.Flags.GoingBack | Vehicle.Flags.WaitingTarget)) == 0)
                 {
                     this.ArriveAtTarget(vehicleID, ref vehicleData);
                 }
-                if ((vehicleData.m_flags & Vehicle.Flags.GoingBack) == Vehicle.Flags.None && this.ShouldReturnToSource(vehicleID, ref vehicleData))
+                if ((vehicleData.m_flags & Vehicle.Flags.GoingBack) == 0 && this.ShouldReturnToSource(vehicleID, ref vehicleData))
                 {
                     this.SetTarget(vehicleID, ref vehicleData, 0);
                 }
@@ -73,11 +73,11 @@ namespace CSL_Traffic
         protected override bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget)
         {
             ExtendedVehicleType vehicleType = ExtendedVehicleType.PoliceCar;
-            if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) != Vehicle.Flags.None)
+            if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) != 0)
                 vehicleType |= ExtendedVehicleType.Emergency;
 
             VehicleInfo info = this.m_info;
-            bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != Vehicle.Flags.None;
+            bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != 0;
             PathUnit.Position startPosA;
             PathUnit.Position startPosB;
             float num;

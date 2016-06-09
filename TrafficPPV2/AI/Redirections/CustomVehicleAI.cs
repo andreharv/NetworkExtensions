@@ -156,7 +156,7 @@ namespace CSL_Traffic
         //        }
         //        if (lane2.m_laneType == NetInfo.LaneType.Pedestrian)
         //        {
-        //            if (vehicleID != 0 && (vehicleData.m_flags & Vehicle.Flags.Parking) == Vehicle.Flags.None)
+        //            if (vehicleID != 0 && (vehicleData.m_flags & Vehicle.Flags.Parking) == 0)
         //            {
         //                byte offset = position.m_offset;
         //                byte offset2 = position.m_offset;
@@ -214,7 +214,7 @@ namespace CSL_Traffic
         //            vehicleData.m_flags &= ~Vehicle.Flags.Leaving;
         //        }
         //        byte b4 = 0;
-        //        if ((vehicleData.m_flags & Vehicle.Flags.Flying) != Vehicle.Flags.None)
+        //        if ((vehicleData.m_flags & Vehicle.Flags.Flying) != 0)
         //        {
         //            b4 = (byte)((position2.m_offset < 128) ? 255 : 0);
         //        }
@@ -229,7 +229,7 @@ namespace CSL_Traffic
         //            bool flag2 = b2 == 0;
         //            if (flag2)
         //            {
-        //                if ((vehicleData.m_flags & Vehicle.Flags.Reversed) != Vehicle.Flags.None)
+        //                if ((vehicleData.m_flags & Vehicle.Flags.Reversed) != 0)
         //                {
         //                    flag2 = (vehicleData.m_trailingVehicle == 0);
         //                }

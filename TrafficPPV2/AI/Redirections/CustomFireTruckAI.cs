@@ -28,7 +28,7 @@ namespace CSL_Traffic
             }
 
 
-            frameData.m_blinkState = (((vehicleData.m_flags & (Vehicle.Flags.Emergency1 | Vehicle.Flags.Emergency2)) == Vehicle.Flags.None) ? 0f : 10f);
+            frameData.m_blinkState = (((vehicleData.m_flags & (Vehicle.Flags.Emergency1 | Vehicle.Flags.Emergency2)) == 0) ? 0f : 10f);
             base.SimulationStep(vehicleID, ref vehicleData, ref frameData, leaderID, ref leaderData, lodPhysics);
             bool flag = false;
             if (vehicleData.m_targetBuilding != 0)
@@ -36,8 +36,8 @@ namespace CSL_Traffic
                 BuildingManager instance = Singleton<BuildingManager>.instance;
                 Vector3 a = instance.m_buildings.m_buffer[(int)vehicleData.m_targetBuilding].CalculateSidewalkPosition();
                 flag = ((a - frameData.m_position).sqrMagnitude < 4096f);
-                bool flag2 = (vehicleData.m_flags & Vehicle.Flags.Stopped) != Vehicle.Flags.None || frameData.m_velocity.sqrMagnitude < 0.0100000007f;
-                if (flag && (vehicleData.m_flags & Vehicle.Flags.Emergency2) != Vehicle.Flags.None)
+                bool flag2 = (vehicleData.m_flags & Vehicle.Flags.Stopped) != 0 || frameData.m_velocity.sqrMagnitude < 0.0100000007f;
+                if (flag && (vehicleData.m_flags & Vehicle.Flags.Emergency2) != 0)
                 {
                     vehicleData.m_flags = ((vehicleData.m_flags & ~Vehicle.Flags.Emergency2) | Vehicle.Flags.Emergency1);
                 }
@@ -47,7 +47,7 @@ namespace CSL_Traffic
                     {
                         vehicleData.m_blockCounter = 8;
                     }
-                    if (vehicleData.m_blockCounter == 8 && (vehicleData.m_flags & Vehicle.Flags.Stopped) == Vehicle.Flags.None)
+                    if (vehicleData.m_blockCounter == 8 && (vehicleData.m_flags & Vehicle.Flags.Stopped) == 0)
                     {
                         this.ArriveAtTarget(leaderID, ref leaderData);
                     }
@@ -61,12 +61,12 @@ namespace CSL_Traffic
                     this.SetTarget(vehicleID, ref vehicleData, 0);
                 }
             }
-            if ((vehicleData.m_flags & Vehicle.Flags.Stopped) != Vehicle.Flags.None && !flag && this.CanLeave(vehicleID, ref vehicleData))
+            if ((vehicleData.m_flags & Vehicle.Flags.Stopped) != 0 && !flag && this.CanLeave(vehicleID, ref vehicleData))
             {
                 vehicleData.m_flags &= ~Vehicle.Flags.Stopped;
                 vehicleData.m_flags |= Vehicle.Flags.Leaving;
             }
-            if ((vehicleData.m_flags & Vehicle.Flags.GoingBack) == Vehicle.Flags.None)
+            if ((vehicleData.m_flags & Vehicle.Flags.GoingBack) == 0)
             {
                 if (this.ShouldReturnToSource(vehicleID, ref vehicleData))
                 {
@@ -94,11 +94,11 @@ namespace CSL_Traffic
         protected override bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget)
         {
             ExtendedVehicleType vehicleType = ExtendedVehicleType.FireTruck;
-            if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) != Vehicle.Flags.None)
+            if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) != 0)
                 vehicleType |= ExtendedVehicleType.Emergency;
 
             VehicleInfo info = this.m_info;
-            bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != Vehicle.Flags.None;
+            bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != 0;
             PathUnit.Position startPosA;
             PathUnit.Position startPosB;
             float num;

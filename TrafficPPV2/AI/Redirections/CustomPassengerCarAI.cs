@@ -13,7 +13,7 @@ namespace CSL_Traffic
         [RedirectFrom(typeof(PassengerCarAI))]
         public override void SimulationStep(ushort vehicleID, ref Vehicle data, Vector3 physicsLodRefPos)
         {
-            if (((data.m_flags & Vehicle.Flags.Congestion) != Vehicle.Flags.None) &&
+            if (((data.m_flags & Vehicle.Flags.Congestion) != 0) &&
                 ((TrafficMod.Options & OptionsManager.ModOptions.NoDespawn) != OptionsManager.ModOptions.NoDespawn))
             {
                 Singleton<VehicleManager>.instance.ReleaseVehicle(vehicleID);
@@ -39,7 +39,7 @@ namespace CSL_Traffic
                 m_info.ApplySpeedMultiplier(CarSpeedData.Of(vehicleID));
             }
 
-            if ((vehicleData.m_flags & Vehicle.Flags.Stopped) != Vehicle.Flags.None)
+            if ((vehicleData.m_flags & Vehicle.Flags.Stopped) != 0)
             {
                 vehicleData.m_waitCounter += 1;
                 if (this.CanLeave(vehicleID, ref vehicleData))
@@ -69,7 +69,7 @@ namespace CSL_Traffic
             CitizenInfo info2 = instance.m_instances.m_buffer[(int)driverInstance].Info;
             NetInfo.LaneType laneTypes = NetInfo.LaneType.Vehicle | NetInfo.LaneType.Pedestrian;
             VehicleInfo.VehicleType vehicleType = this.m_info.m_vehicleType;
-            bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != Vehicle.Flags.None;
+            bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != 0;
             PathUnit.Position startPosA;
             PathUnit.Position startPosB;
             float num;
