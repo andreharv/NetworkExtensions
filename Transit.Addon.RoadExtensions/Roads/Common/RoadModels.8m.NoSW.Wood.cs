@@ -57,13 +57,13 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                         segments0
                             .SetFlagsDefault()
                             .SetMeshes(
-                            @"Roads\Common\Meshes\8m\NoSwWood\Elevated.obj",
-                            @"Roads\Common\Meshes\8m\NoSwWood\Elevated_LOD.obj");
+                            @"Roads\Common\Meshes\8m\NoSwWood\Elevated_NoCom.obj",
+                            @"Roads\Common\Meshes\8m\NoSwWood\Elevated_LOD_NoCom.obj");
 
                         nodes0
                             .SetMeshes(
-                            @"Roads\Common\Meshes\8m\NoSwWood\Elevated_Node.obj",
-                            @"Roads\Common\Meshes\8m\NoSwWood\Elevated_Node_LOD.obj");
+                            @"Roads\Common\Meshes\8m\NoSwWood\Elevated_Node_NoCom.obj",
+                            @"Roads\Common\Meshes\8m\NoSwWood\Elevated_Node_LOD_NoCom.obj");
 
                         nodes1
                             .SetMeshes(

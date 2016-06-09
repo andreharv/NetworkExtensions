@@ -82,7 +82,7 @@ namespace Transit.Framework
             mesh.Optimize();
             mesh.name = Path.GetFileNameWithoutExtension(meshName);
 
-            if (mesh.name != null && !mesh.name.Contains("LOD"))
+            if (mesh.name != null && !mesh.name.Contains("LOD") && !mesh.name.Contains("NoCom"))
             {
                 mesh.UploadMeshData(true);
             }
