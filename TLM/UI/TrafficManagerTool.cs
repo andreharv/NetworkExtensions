@@ -207,7 +207,7 @@ namespace TrafficManager.UI {
 				if (Options.nodesOverlay) {
 					_guiNodes();
 #if DEBUG
-					/*_guiVehicles();*/
+					//_guiVehicles();
 					//_guiCitizens();
 #endif
 				}
@@ -289,50 +289,71 @@ namespace TrafficManager.UI {
 
 				// find currently hovered node
 				var nodeInput = new RaycastInput(this.m_mouseRay, this.m_mouseRayLength);
+				// find road nodes
 				nodeInput.m_netService.m_itemLayers = ItemClass.Layer.Default | ItemClass.Layer.MetroTunnels;
 				nodeInput.m_netService.m_service = ItemClass.Service.Road;
-				nodeInput.m_netService2.m_itemLayers = ItemClass.Layer.Default | ItemClass.Layer.PublicTransport | ItemClass.Layer.MetroTunnels;
+				/*nodeInput.m_netService2.m_itemLayers = ItemClass.Layer.Default | ItemClass.Layer.PublicTransport | ItemClass.Layer.MetroTunnels;
 				nodeInput.m_netService2.m_service = ItemClass.Service.PublicTransport;
-				nodeInput.m_netService2.m_subService = ItemClass.SubService.PublicTransportTrain;
+				nodeInput.m_netService2.m_subService = ItemClass.SubService.PublicTransportTrain;*/
 				nodeInput.m_ignoreTerrain = true;
-				nodeInput.m_ignoreNodeFlags = NetNode.Flags.None;
+				nodeInput.m_ignoreNodeFlags = NetNode.Flags.Untouchable;
 
 				RaycastOutput nodeOutput;
 				if (RayCast(nodeInput, out nodeOutput)) {
 					HoveredNodeId = nodeOutput.m_netNode;
+				} else {
+					// find train nodes
+					nodeInput.m_netService.m_itemLayers = ItemClass.Layer.Default | ItemClass.Layer.MetroTunnels;
+					nodeInput.m_netService.m_service = ItemClass.Service.PublicTransport;
+					nodeInput.m_netService.m_subService = ItemClass.SubService.PublicTransportTrain;
+					nodeInput.m_ignoreTerrain = true;
+					nodeInput.m_ignoreNodeFlags = NetNode.Flags.Untouchable;
+
+					if (RayCast(nodeInput, out nodeOutput)) {
+						HoveredNodeId = nodeOutput.m_netNode;
+					}
 				}
 
 				// find currently hovered segment
 				var segmentInput = new RaycastInput(this.m_mouseRay, this.m_mouseRayLength);
+				// find road segments
 				segmentInput.m_netService.m_itemLayers = ItemClass.Layer.Default | ItemClass.Layer.MetroTunnels;
 				segmentInput.m_netService.m_service = ItemClass.Service.Road;
-				segmentInput.m_netService2.m_itemLayers = ItemClass.Layer.Default | ItemClass.Layer.PublicTransport | ItemClass.Layer.MetroTunnels;
-				segmentInput.m_netService2.m_service = ItemClass.Service.PublicTransport;
-				segmentInput.m_netService2.m_subService = ItemClass.SubService.PublicTransportTrain;
 				segmentInput.m_ignoreTerrain = true;
 				segmentInput.m_ignoreSegmentFlags = NetSegment.Flags.Untouchable;
 
 				RaycastOutput segmentOutput;
 				if (RayCast(segmentInput, out segmentOutput)) {
 					HoveredSegmentId = segmentOutput.m_netSegment;
+				} else {
+					// find train segments
+					segmentInput.m_netService.m_itemLayers = ItemClass.Layer.Default | ItemClass.Layer.MetroTunnels;
+					segmentInput.m_netService.m_service = ItemClass.Service.PublicTransport;
+					segmentInput.m_netService.m_subService = ItemClass.SubService.PublicTransportTrain;
+					segmentInput.m_ignoreTerrain = true;
+					segmentInput.m_ignoreSegmentFlags = NetSegment.Flags.Untouchable;
 
-					if (HoveredNodeId <= 0) {
-						// alternative way to get a node hit: check distance to start and end nodes of the segment
-						ushort startNodeId = Singleton<NetManager>.instance.m_segments.m_buffer[HoveredSegmentId].m_startNode;
-						ushort endNodeId = Singleton<NetManager>.instance.m_segments.m_buffer[HoveredSegmentId].m_endNode;
-
-						float startDist = (segmentOutput.m_hitPos - Singleton<NetManager>.instance.m_nodes.m_buffer[startNodeId].m_position).magnitude;
-						float endDist = (segmentOutput.m_hitPos - Singleton<NetManager>.instance.m_nodes.m_buffer[endNodeId].m_position).magnitude;
-						if (startDist < endDist && startDist < 25f)
-							HoveredNodeId = startNodeId;
-						else if (endDist < startDist && endDist < 25f)
-							HoveredNodeId = endNodeId;
+					if (RayCast(segmentInput, out segmentOutput)) {
+						HoveredSegmentId = segmentOutput.m_netSegment;
 					}
 				}
 
-				/*if (oldHoveredNodeId != HoveredNodeId || oldHoveredSegmentId != HoveredSegmentId) {
+				if (HoveredNodeId <= 0 && HoveredSegmentId > 0) {
+					// alternative way to get a node hit: check distance to start and end nodes of the segment
+					ushort startNodeId = Singleton<NetManager>.instance.m_segments.m_buffer[HoveredSegmentId].m_startNode;
+					ushort endNodeId = Singleton<NetManager>.instance.m_segments.m_buffer[HoveredSegmentId].m_endNode;
+
+					float startDist = (segmentOutput.m_hitPos - Singleton<NetManager>.instance.m_nodes.m_buffer[startNodeId].m_position).magnitude;
+					float endDist = (segmentOutput.m_hitPos - Singleton<NetManager>.instance.m_nodes.m_buffer[endNodeId].m_position).magnitude;
+					if (startDist < endDist && startDist < 25f)
+						HoveredNodeId = startNodeId;
+					else if (endDist < startDist && endDist < 25f)
+						HoveredNodeId = endNodeId;
+				}
+
+				if (oldHoveredNodeId != HoveredNodeId || oldHoveredSegmentId != HoveredSegmentId) {
 					Log._Debug($"*** Mouse ray @ node {HoveredNodeId}, segment {HoveredSegmentId}, toolMode={GetToolMode()}");
-                }*/
+                }
 
 				return (HoveredNodeId != 0 || HoveredSegmentId != 0);
 			} else {
@@ -441,8 +462,13 @@ namespace TrafficManager.UI {
 					_counterStyle.normal.textColor = new Color(1f, 0f, 0f);
 
 					String labelStr = "Segment " + i;
-#if DEBUG
+#if DEBUGx
 					labelStr += ", flags: " + segments.m_buffer[i].m_flags.ToString() + ", condition: " + segments.m_buffer[i].m_condition;
+#endif
+#if DEBUG
+					SegmentEnd startEnd = TrafficPriority.GetPrioritySegment(segments.m_buffer[i].m_startNode, (ushort)i);
+					SegmentEnd endEnd = TrafficPriority.GetPrioritySegment(segments.m_buffer[i].m_endNode, (ushort)i);
+					labelStr += "\nstart veh.: " + startEnd?.GetRegisteredVehicleCount() + ", end veh.: " + endEnd?.GetRegisteredVehicleCount();
 #endif
 					labelStr += "\nTraffic: " + segments.m_buffer[i].m_trafficDensity + " %";
 
@@ -532,7 +558,7 @@ namespace TrafficManager.UI {
 			Array16<Vehicle> vehicles = Singleton<VehicleManager>.instance.m_vehicles;
 			for (int i = 1; i < vehicles.m_size; ++i) {
 				Vehicle vehicle = vehicles.m_buffer[i];
-				if (vehicle.m_flags == Vehicle.Flags.None) // node is unused
+				if (vehicle.m_flags == 0) // node is unused
 					continue;
 
 				Vector3 pos = vehicle.GetLastFramePosition();
@@ -553,8 +579,8 @@ namespace TrafficManager.UI {
 				_counterStyle.normal.textColor = new Color(1f, 1f, 1f);
 				//_counterStyle.normal.background = MakeTex(1, 1, new Color(0f, 0f, 0f, 0.4f));
 
-				VehiclePosition vPos = TrafficPriority.GetVehiclePosition((ushort)i);
-				String labelStr = "Veh. " + i + " @ " + String.Format("{0:0.##}", vehicle.GetLastFrameVelocity().magnitude) + ", len: " + vehicle.CalculateTotalLength((ushort)i) + ", state: " + vPos.CarState;
+				VehicleState vState = VehicleStateManager.GetVehicleState((ushort)i);
+				String labelStr = "Veh. " + i + " @ " + String.Format("{0:0.##}", vehicle.GetLastFrameVelocity().magnitude) + ", len: " + vState?.TotalLength + ", state: " + vState?.JunctionTransitState + "\npos: " + vState?.GetCurrentPosition()?.SourceSegmentId + "->" + vState?.GetCurrentPosition()?.TransitNodeId + ", last update: " + vState?.LastPositionUpdate;
 				// add current path info
 				/*var currentPathId = vehicle.m_path;
 				if (currentPathId > 0) {
@@ -565,7 +591,7 @@ namespace TrafficManager.UI {
 					}
 				}*/
 
-			Vector2 dim = _counterStyle.CalcSize(new GUIContent(labelStr));
+				Vector2 dim = _counterStyle.CalcSize(new GUIContent(labelStr));
 				Rect labelRect = new Rect(screenPos.x - dim.x / 2f, screenPos.y - dim.y - 50f, dim.x, dim.y);
 
 				GUI.Box(labelRect, labelStr, _counterStyle);

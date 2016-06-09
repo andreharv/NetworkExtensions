@@ -42,7 +42,7 @@ namespace TrafficManager.Custom.AI {
 					}
 				}
 
-				TrafficPriority.TrafficLightSimulationStep();
+				TrafficLightSimulation.SimulationStep();
 
 				var nodeSim = TrafficLightSimulation.GetNodeSimulation(nodeId);
 				if (nodeSim == null || !nodeSim.IsSimulationActive()) {
@@ -198,7 +198,7 @@ namespace TrafficManager.Custom.AI {
 			}*/
 
 			// get vehicle type
-			ExtVehicleType? vehicleType = CustomVehicleAI.DetermineVehicleTypeFromVehicle(vehicleId, ref vehicleData);
+			ExtVehicleType? vehicleType = VehicleStateManager.GetVehicleState(vehicleId)?.VehicleType;
 			if (vehicleData.Info.m_vehicleType == VehicleInfo.VehicleType.Tram && vehicleType != ExtVehicleType.Tram)
 				Log.Warning($"vehicleType={vehicleType} ({(int)vehicleType}) for Tram");
 			//Log._Debug($"GetCustomTrafficLightState: Vehicle {vehicleId} is a {vehicleType}");
@@ -221,12 +221,15 @@ namespace TrafficManager.Custom.AI {
 
 			SegmentGeometry geometry = CustomRoadAI.GetSegmentGeometry(fromSegmentId);
 
+			// determine node position at `toSegment` (start/end)
+			bool isStartNode = geometry.StartNodeId() == nodeId;
+
 			// get traffic light state from responsible traffic light
 			if (toSegmentId == fromSegmentId) {
 				vehicleLightState = TrafficPriority.IsLeftHandDrive() ? light.GetLightRight() : light.GetLightLeft();
-			} else if (geometry.IsLeftSegment(toSegmentId, nodeId)) {
+			} else if (geometry.IsLeftSegment(toSegmentId, isStartNode)) {
 				vehicleLightState = light.GetLightLeft();
-			} else if (geometry.IsRightSegment(toSegmentId, nodeId)) {
+			} else if (geometry.IsRightSegment(toSegmentId, isStartNode)) {
 				vehicleLightState = light.GetLightRight();
 			} else {
 				vehicleLightState = light.GetLightMain();
@@ -388,7 +391,7 @@ namespace TrafficManager.Custom.AI {
 			Vector3 position2 = instance2.m_nodes.m_buffer[(int)data.m_endNode].m_position;
 			Vector3 vector = (position + position2) * 0.5f;
 			bool flag = false;
-			if ((this.m_info.m_setVehicleFlags & Vehicle.Flags.Underground) == Vehicle.Flags.None) {
+			if ((this.m_info.m_setVehicleFlags & Vehicle.Flags.Underground) == 0) {
 				float num6 = Singleton<TerrainManager>.instance.WaterLevel(VectorUtils.XZ(vector));
 				if (num6 > vector.y + 1f) {
 					flag = true;
@@ -407,7 +410,7 @@ namespace TrafficManager.Custom.AI {
 			DistrictPolicies.CityPlanning cityPlanningPolicies = instance3.m_districts.m_buffer[(int)district].m_cityPlanningPolicies;
 			int num7 = (int)(100 - (data.m_trafficDensity - 100) * (data.m_trafficDensity - 100) / 100);
 			if ((this.m_info.m_vehicleTypes & VehicleInfo.VehicleType.Car) != VehicleInfo.VehicleType.None) {
-				if ((this.m_info.m_setVehicleFlags & Vehicle.Flags.Underground) == Vehicle.Flags.None) {
+				if ((this.m_info.m_setVehicleFlags & Vehicle.Flags.Underground) == 0) {
 					int num8 = (int)data.m_wetness;
 					if (!instance2.m_treatWetAsSnow) {
 						if (flag) {
@@ -577,10 +580,10 @@ namespace TrafficManager.Custom.AI {
 			return segmentGeometries[segmentId];
 		}
 
-		internal static SegmentGeometry GetSegmentGeometry(ushort segmentId, ushort nodeId) {
+		/*internal static SegmentGeometry GetSegmentGeometry(ushort segmentId, ushort nodeId) {
 			SegmentGeometry ret = segmentGeometries[segmentId];
 			ret.VerifySegmentsByCount(nodeId);
 			return ret;
-		}
+		}*/
 	}
 }

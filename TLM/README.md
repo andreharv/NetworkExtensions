@@ -2,6 +2,13 @@
 A work-in-progress modification for **Cities: Skylines** to add additional road traffic control
 
 # Changelog
+1.6.18, 06/09/2016
+- Updated for game patch 1.5.0-f4
+- Improved performance of priority signs and timed traffic lights
+- Players can now select elevated rail segments/nodes 
+- Trams and trains now follow priority signs
+- Improved UI behavior when setting up priority signs
+
 1.6.17, 04/20/2016
 - Hotfix for reported path-finding problems
 

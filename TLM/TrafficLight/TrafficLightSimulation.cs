@@ -45,16 +45,18 @@ namespace TrafficManager.TrafficLight {
 
 			TimedLight = new TimedTrafficLights(nodeId, nodeGroup);
 
-			setupLiveSegments();
+			//setupLiveSegments();
 		}
 
 		public void DestroyTimedTrafficLight() {
-			if (TimedLight != null)
-				TimedLight.Stop();
+			var timedLight = TimedLight;
 			TimedLight = null;
 
-			if (!IsManualLight())
-				destroyLiveSegments();
+			if (timedLight != null)
+				timedLight.Stop();
+
+			if (!IsManualLight() && timedLight != null)
+				timedLight.Destroy();
 		}
 
         public TrafficLightSimulation(ushort nodeId) {
@@ -77,25 +79,22 @@ namespace TrafficManager.TrafficLight {
 			return IsManualLight() || IsTimedLightActive();
 		}
 
-        public void SimulationStep() {
-            //Log.Warning("step: " + NodeId);
-            var currentFrameIndex = Singleton<SimulationManager>.instance.m_currentFrameIndex;
-
-			if (IsTimedLightActive()) {
-				TimedLight.SimulationStep();
-            }
-
-			// TODO check this
-			/*for (var l = 0; l < 8; l++) {
-                var segment = Singleton<NetManager>.instance.m_nodes.m_buffer[nodeId].GetSegment(l);
-                if (segment == 0) continue;
-                if (!TrafficLight.CustomTrafficLights.IsSegmentLight(nodeId, segment)) continue;
-
-                var segmentLights = TrafficLight.CustomTrafficLights.GetSegmentLights(nodeId, segment);
-
-                segmentLights.LastChange = (currentFrameIndex >> 6) - segmentLights.LastChangeFrame;
-            }*/
-        }
+		public static void SimulationStep() {
+			try {
+				foreach (KeyValuePair<ushort, TrafficLightSimulation> e in LightSimulationByNodeId) {
+					try {
+						var nodeSim = e.Value;
+						if (nodeSim.IsTimedLightActive())
+							nodeSim.TimedLight.SimulationStep();
+					} catch (Exception ex) {
+						Log.Warning($"Error occured while simulating traffic light @ node {e.Key}: {ex.ToString()}");
+					}
+				}
+			} catch (Exception ex) {
+				// TODO the dictionary was modified (probably a segment connected to a traffic light was changed/removed). rework this
+				Log.Warning($"Error occured while iterating over traffic light simulations: {ex.ToString()}");
+			}
+		}
 
 		/// <summary>
 		/// Stops & destroys the traffic light simulation(s) at this node (group)
@@ -185,7 +184,7 @@ namespace TrafficManager.TrafficLight {
 				if (segmentId == 0)
 					continue;
 				CustomRoadAI.GetSegmentGeometry(segmentId)?.Recalculate(true, true);
-				TrafficLight.CustomTrafficLights.AddLiveSegmentLights(nodeId, segmentId);
+				TrafficLight.CustomTrafficLights.AddSegmentLights(nodeId, segmentId);
 			}
 		}
 

@@ -33,17 +33,7 @@ namespace TrafficManager.TrafficLight {
 			NodeGroup = new List<ushort>(nodeGroup);
 			masterNodeId = NodeGroup[0];
 
-			// setup priority segments & live traffic lights
-			foreach (ushort slaveNodeId in nodeGroup) {
-				for (int s = 0; s < 8; ++s) {
-					ushort segmentId = Singleton<NetManager>.instance.m_nodes.m_buffer[slaveNodeId].GetSegment(s);
-					if (segmentId <= 0)
-						continue;
-					CustomRoadAI.GetSegmentGeometry(segmentId).Recalculate(true, true);
-					TrafficPriority.AddPrioritySegment(slaveNodeId, segmentId, SegmentEnd.PriorityType.None);
-					CustomTrafficLights.AddLiveSegmentLights(slaveNodeId, segmentId);
-				}
-			}
+			SetupSegments();
 
 			started = false;
 		}
@@ -86,6 +76,11 @@ namespace TrafficManager.TrafficLight {
 		}
 
 		internal bool housekeeping(bool housekeepCustomLights) {
+			if (NodeGroup == null) {
+				started = false;
+				return false;
+			}
+
 			bool mayStart = true;
 			List<ushort> nodeIdsToDelete = new List<ushort>();
 
@@ -108,15 +103,7 @@ namespace TrafficManager.TrafficLight {
 			}
 
 			// check that live lights exist (TODO refactor?)
-			foreach (ushort timedNodeId in NodeGroup) {
-				for (int s = 0; s < 8; s++) {
-					var segmentId = Singleton<NetManager>.instance.m_nodes.m_buffer[timedNodeId].GetSegment(s);
-
-					if (segmentId == 0)
-						continue;
-					CustomTrafficLights.AddLiveSegmentLights(timedNodeId, segmentId);
-				}
-			}
+			SetupSegments();
 
 			if (NodeGroup.Count <= 0) {
 				Log.Warning($"Timed housekeeping: No lights left. mayStart = false");
@@ -147,6 +134,12 @@ namespace TrafficManager.TrafficLight {
 			started = false;
 		}
 
+		internal void Destroy() {
+			Steps = null;
+			NodeGroup = null;
+			DestroySegments();
+		}
+
 		public bool IsStarted() {
 			return started;
 		}
@@ -160,6 +153,13 @@ namespace TrafficManager.TrafficLight {
 		}
 
 		public void SimulationStep() {
+			if (!isMasterNode() || !IsStarted()) {
+#if DEBUGTTL
+				Log._Debug($"TTL SimStep: *STOP* NodeId={NodeId} isMasterNode={isMasterNode()} IsStarted={IsStarted()}");
+#endif
+				return;
+			}
+
 			var currentFrame = Singleton<SimulationManager>.instance.m_currentFrameIndex >> 5;
 #if DEBUGTTL
 			Log._Debug($"TTL SimStep: nodeId={NodeId} currentFrame={currentFrame} lastSimulationStep={lastSimulationStep}");
@@ -172,12 +172,6 @@ namespace TrafficManager.TrafficLight {
 			}
 			lastSimulationStep = currentFrame;
 
-			if (!isMasterNode() || !IsStarted()) {
-#if DEBUGTTL
-				Log._Debug($"TTL SimStep: *STOP* NodeId={NodeId} isMasterNode={isMasterNode()} IsStarted={IsStarted()}");
-#endif
-				return;
-			}
 			if (!housekeeping(false)) {
 #if DEBUGTTL
 				Log.Warning($"TTL SimStep: *STOP* NodeId={NodeId} Housekeeping detected that this timed traffic light has become invalid: {NodeId}.");
@@ -353,7 +347,7 @@ namespace TrafficManager.TrafficLight {
 					ushort segmentId = Singleton<NetManager>.instance.m_nodes.m_buffer[NodeId].GetSegment(s);
 					if (segmentId <= 0)
 						continue;
-					CustomTrafficLights.AddLiveSegmentLights(NodeId, segmentId);
+					CustomTrafficLights.AddSegmentLights(NodeId, segmentId);
 				}
 
 				return;
@@ -380,8 +374,7 @@ namespace TrafficManager.TrafficLight {
 				if (isNewSegment) {
 					Log._Debug($"New segment detected: {segmentId} @ {NodeId}");
 					// segment was created
-					CustomTrafficLights.AddLiveSegmentLights(NodeId, segmentId);
-					TrafficPriority.AddPrioritySegment(NodeId, segmentId, SegmentEnd.PriorityType.None);
+					SetupSegmentEnd(NodeId, segmentId);
 
 					if (invalidSegmentIds.Count > 0) {
 						var oldSegmentId = invalidSegmentIds[0];
@@ -512,6 +505,42 @@ namespace TrafficManager.TrafficLight {
 					timedLight.GetStep(i).waitFlowBalance = waitFlowBalances[i];
 				}
 			}
+		}
+
+		private void SetupSegments() {
+			// setup priority segments & live traffic lights
+			foreach (ushort slaveNodeId in NodeGroup) {
+				for (int s = 0; s < 8; ++s) {
+					ushort segmentId = Singleton<NetManager>.instance.m_nodes.m_buffer[slaveNodeId].GetSegment(s);
+					SetupSegmentEnd(slaveNodeId, segmentId);
+				}
+			}
+		}
+
+		private void DestroySegments() {
+			// setup priority segments & live traffic lights
+			foreach (ushort slaveNodeId in NodeGroup) {
+				for (int s = 0; s < 8; ++s) {
+					ushort segmentId = Singleton<NetManager>.instance.m_nodes.m_buffer[slaveNodeId].GetSegment(s);
+					DestroySegmentEnd(slaveNodeId, segmentId);
+				}
+			}
+		}
+
+		private void SetupSegmentEnd(ushort nodeId, ushort segmentId) {
+			if (segmentId <= 0)
+				return;
+			//CustomRoadAI.GetSegmentGeometry(segmentId).Recalculate(true, true);
+			if (!TrafficPriority.IsPrioritySegment(nodeId, segmentId))
+				TrafficPriority.AddPrioritySegment(nodeId, segmentId, SegmentEnd.PriorityType.None);
+			CustomTrafficLights.AddSegmentLights(nodeId, segmentId);
+		}
+
+		private void DestroySegmentEnd(ushort nodeId, ushort segmentId) {
+			if (segmentId <= 0)
+				return;
+			TrafficPriority.RemovePrioritySegment(nodeId, segmentId);
+			CustomTrafficLights.RemoveSegmentLights(segmentId);
 		}
 	}
 }

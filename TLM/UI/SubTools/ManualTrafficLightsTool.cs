@@ -34,12 +34,12 @@ namespace TrafficManager.UI.SubTools {
 				sim = TrafficLightSimulation.AddNodeToSimulation(SelectedNodeId);
 				sim.SetupManualTrafficLight();
 
-				for (var s = 0; s < 8; s++) {
+				/*for (var s = 0; s < 8; s++) {
 					var segment = Singleton<NetManager>.instance.m_nodes.m_buffer[SelectedNodeId].GetSegment(s);
 					if (segment != 0 && !TrafficPriority.IsPrioritySegment(SelectedNodeId, segment)) {
 						TrafficPriority.AddPrioritySegment(SelectedNodeId, segment, SegmentEnd.PriorityType.None);
 					}
-				}
+				}*/
 			} else {
 				MainTool.ShowTooltip(Translation.GetString("NODE_IS_TIMED_LIGHT"), Singleton<NetManager>.instance.m_nodes.m_buffer[HoveredNodeId].m_position);
 			}
@@ -149,12 +149,13 @@ namespace TrafficManager.UI.SubTools {
 						}
 
 						SegmentGeometry geometry = CustomRoadAI.GetSegmentGeometry(segmentId);
+						bool startNode = geometry.StartNodeId() == SelectedNodeId;
 
-						if (geometry.IsOutgoingOneWay(SelectedNodeId)) continue;
+						if (geometry.IsOutgoingOneWay(startNode)) continue;
 
-						var hasLeftSegment = geometry.HasLeftSegment(SelectedNodeId);
-						var hasForwardSegment = geometry.HasStraightSegment(SelectedNodeId);
-						var hasRightSegment = geometry.HasRightSegment(SelectedNodeId);
+						var hasLeftSegment = geometry.HasLeftSegment(startNode);
+						var hasForwardSegment = geometry.HasStraightSegment(startNode);
+						var hasRightSegment = geometry.HasRightSegment(startNode);
 
 						switch (segmentLight.CurrentMode) {
 							case CustomSegmentLight.Mode.Simple:

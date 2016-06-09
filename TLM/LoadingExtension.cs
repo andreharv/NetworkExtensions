@@ -116,6 +116,23 @@ namespace TrafficManager {
 					detourFailed = true;
 				}
 
+				Log.Info("Redirection VehicleAI::ReleaseVehicle calls");
+				try {
+					Detours.Add(new Detour(typeof(VehicleAI).GetMethod("ReleaseVehicle",
+							BindingFlags.Public | BindingFlags.Instance,
+							null,
+							new[]
+							{
+									typeof (ushort),
+									typeof (Vehicle).MakeByRefType()
+							},
+							null),
+							typeof(CustomVehicleAI).GetMethod("CustomReleaseVehicle")));
+				} catch (Exception) {
+					Log.Error("Could not redirect VehicleAI::ReleaseVehicle");
+					detourFailed = true;
+				}
+
 				Log.Info("Redirecting TramBaseAI Calculate Segment Calls (2)");
 				try {
 					Detours.Add(new Detour(typeof(TramBaseAI).GetMethod("CalculateSegmentPosition",

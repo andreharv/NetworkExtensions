@@ -403,7 +403,7 @@ namespace TrafficManager.TrafficLight {
 						continue; // skip invalid segment
 					}
 
-					bool startPhase = getCurrentFrame() <= startFrame + minTime + 2; // during start phase all vehicles on "green" segments are counted as flowing
+					bool startPhase = true;// getCurrentFrame() <= startFrame + minTime + 2; // during start phase all vehicles on "green" segments are counted as flowing
 					ExtVehicleType validVehicleTypes = VehicleRestrictionsManager.GetAllowedVehicleTypes(fromSegmentId, timedNode.NodeId);
 
 					foreach (ExtVehicleType vehicleType in segLights.VehicleTypes) {
@@ -437,7 +437,7 @@ namespace TrafficManager.TrafficLight {
 						foreach (KeyValuePair<ushort, uint> f in carsToSegmentMetrics[0]) {
 							var toSegmentId = f.Key;
 							SegmentGeometry geometry = CustomRoadAI.GetSegmentGeometry(fromSegmentId);
-							Direction dir = geometry.GetDirection(toSegmentId, timedNodeId);
+							Direction dir = geometry.GetDirection(toSegmentId, timedNodeId == geometry.StartNodeId());
 							directions[toSegmentId] = dir;
 						}
 

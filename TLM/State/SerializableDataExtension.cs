@@ -152,7 +152,7 @@ namespace TrafficManager.State {
 			LoadDataState();
 			Flags.clearHighwayLaneArrows();
 			Flags.applyAllFlags();
-			TrafficPriority.HandleAllVehicles();
+			VehicleStateManager.InitAllVehicles();
 		}
 
 		private static void LoadDataState() {
@@ -533,7 +533,7 @@ namespace TrafficManager.State {
 			Log.Info("Saving Mod Data.");
 			var configuration = new Configuration();
 
-			if (TrafficPriority.PrioritySegments != null) {
+			if (TrafficPriority.TrafficSegments != null) {
 				for (ushort i = 0; i < Singleton<NetManager>.instance.m_segments.m_size; i++) {
 					SavePrioritySegment(i, configuration);
 					SaveSegmentNodeFlags(i, configuration);
@@ -737,26 +737,26 @@ namespace TrafficManager.State {
 
 		private static void SavePrioritySegment(ushort segmentId, Configuration configuration) {
 			try {
-				if (TrafficPriority.PrioritySegments[segmentId] == null) {
+				if (TrafficPriority.TrafficSegments[segmentId] == null) {
 					return;
 				}
 
-				if (TrafficPriority.PrioritySegments[segmentId].Node1 != 0 && TrafficPriority.PrioritySegments[segmentId].Instance1.Type != SegmentEnd.PriorityType.None) {
-					Log.Info($"Saving Priority Segment of type: {TrafficPriority.PrioritySegments[segmentId].Instance1.Type} @ node {TrafficPriority.PrioritySegments[segmentId].Node1}, seg. {segmentId}");
+				if (TrafficPriority.TrafficSegments[segmentId].Node1 != 0 && TrafficPriority.TrafficSegments[segmentId].Instance1.Type != SegmentEnd.PriorityType.None) {
+					Log.Info($"Saving Priority Segment of type: {TrafficPriority.TrafficSegments[segmentId].Instance1.Type} @ node {TrafficPriority.TrafficSegments[segmentId].Node1}, seg. {segmentId}");
                     configuration.PrioritySegments.Add(new[]
 					{
-						TrafficPriority.PrioritySegments[segmentId].Node1, segmentId,
-						(int) TrafficPriority.PrioritySegments[segmentId].Instance1.Type
+						TrafficPriority.TrafficSegments[segmentId].Node1, segmentId,
+						(int) TrafficPriority.TrafficSegments[segmentId].Instance1.Type
 					});
 				}
 
-				if (TrafficPriority.PrioritySegments[segmentId].Node2 == 0 || TrafficPriority.PrioritySegments[segmentId].Instance2.Type == SegmentEnd.PriorityType.None)
+				if (TrafficPriority.TrafficSegments[segmentId].Node2 == 0 || TrafficPriority.TrafficSegments[segmentId].Instance2.Type == SegmentEnd.PriorityType.None)
 					return;
 
-				Log.Info($"Saving Priority Segment of type: {TrafficPriority.PrioritySegments[segmentId].Instance2.Type} @ node {TrafficPriority.PrioritySegments[segmentId].Node2}, seg. {segmentId}");
+				Log.Info($"Saving Priority Segment of type: {TrafficPriority.TrafficSegments[segmentId].Instance2.Type} @ node {TrafficPriority.TrafficSegments[segmentId].Node2}, seg. {segmentId}");
 				configuration.PrioritySegments.Add(new[] {
-					TrafficPriority.PrioritySegments[segmentId].Node2, segmentId,
-					(int) TrafficPriority.PrioritySegments[segmentId].Instance2.Type
+					TrafficPriority.TrafficSegments[segmentId].Node2, segmentId,
+					(int) TrafficPriority.TrafficSegments[segmentId].Instance2.Type
 				});
 			} catch (Exception e) {
 				Log.Error($"Error adding Priority Segments to Save: {e.ToString()}");

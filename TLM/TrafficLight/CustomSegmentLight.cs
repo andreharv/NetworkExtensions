@@ -94,9 +94,10 @@ namespace TrafficManager.TrafficLight {
 		public void ChangeMode() {
 			SegmentGeometry geometry = CustomRoadAI.GetSegmentGeometry(SegmentId);
 			geometry.Recalculate(true, true);
-			var hasLeftSegment = geometry.HasOutgoingLeftSegment(NodeId);
-			var hasForwardSegment = geometry.HasOutgoingStraightSegment(NodeId);
-			var hasRightSegment = geometry.HasOutgoingRightSegment(NodeId);
+			bool startNode = geometry.StartNodeId() == NodeId;
+			var hasLeftSegment = geometry.HasOutgoingLeftSegment(startNode);
+			var hasForwardSegment = geometry.HasOutgoingStraightSegment(startNode);
+			var hasRightSegment = geometry.HasOutgoingRightSegment(startNode);
 
 			Log._Debug($"ChangeMode. segment {SegmentId} @ node {NodeId}, hasOutgoingLeft={hasLeftSegment}, hasOutgoingStraight={hasForwardSegment}, hasOutgoingRight={hasRightSegment}");
 

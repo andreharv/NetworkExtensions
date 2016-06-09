@@ -766,7 +766,7 @@ namespace TrafficManager.UI.SubTools {
 
 							String labelStr = "n/a";
 							if (prioSeg != null) {
-								labelStr = prioSeg.getNumCars().ToString() + " " + Translation.GetString("incoming");
+								labelStr = prioSeg.GetRegisteredVehicleCount().ToString() + " " + Translation.GetString("incoming");
 								/*for (int k = 0; k < prioSeg.numLanes; ++k) {
 									if (k > 0)
 										labelStr += "/";
@@ -814,11 +814,12 @@ namespace TrafficManager.UI.SubTools {
 						}
 
 						SegmentGeometry geometry = CustomRoadAI.GetSegmentGeometry(srcSegmentId);
-						if (geometry.IsOutgoingOneWay(nodeId)) continue;
+						bool startNode = geometry.StartNodeId() == nodeId;
+						if (geometry.IsOutgoingOneWay(startNode)) continue;
 
-						var hasLeftSegment = geometry.HasLeftSegment(nodeId);
-						var hasForwardSegment = geometry.HasStraightSegment(nodeId);
-						var hasRightSegment = geometry.HasRightSegment(nodeId);
+						var hasLeftSegment = geometry.HasLeftSegment(startNode);
+						var hasForwardSegment = geometry.HasStraightSegment(startNode);
+						var hasRightSegment = geometry.HasRightSegment(startNode);
 
 						switch (liveSegmentLight.CurrentMode) {
 							case CustomSegmentLight.Mode.Simple: {
@@ -1352,7 +1353,7 @@ namespace TrafficManager.UI.SubTools {
 					var nodeSimulation = TrafficLightSimulation.GetNodeSimulation(selectedNodeIndex);
 					nodeSimulation.SetupTimedTrafficLight(SelectedNodeIndexes);
 
-					for (var s = 0; s < 8; s++) {
+					/*for (var s = 0; s < 8; s++) {
 						var segment = Singleton<NetManager>.instance.m_nodes.m_buffer[selectedNodeIndex].GetSegment(s);
 						if (segment <= 0)
 							continue;
@@ -1362,7 +1363,7 @@ namespace TrafficManager.UI.SubTools {
 						} else {
 							TrafficPriority.GetPrioritySegment(selectedNodeIndex, segment).Type = SegmentEnd.PriorityType.None;
 						}
-					}
+					}*/
 				}
 
 				TrafficManagerTool.SetToolMode(ToolMode.TimedLightsShowLights);

@@ -156,7 +156,7 @@ namespace TrafficManager.UI.SubTools {
 				if (!geometry.IsOneWay()) {
 					Flags.setUTurnAllowed(SelectedSegmentId, startNode, GUILayout.Toggle(Flags.getUTurnAllowed(SelectedSegmentId, startNode), Translation.GetString("Allow_u-turns") + " (BETA feature)", new GUILayoutOption[] { }));
 				}
-				if (geometry.HasOutgoingStraightSegment(SelectedNodeId)) {
+				if (geometry.HasOutgoingStraightSegment(startNode)) {
 					Flags.setStraightLaneChangingAllowed(SelectedSegmentId, startNode, GUILayout.Toggle(Flags.getStraightLaneChangingAllowed(SelectedSegmentId, startNode), Translation.GetString("Allow_lane_changing_for_vehicles_going_straight"), new GUILayoutOption[] { }));
 				}
 				Flags.setEnterWhenBlockedAllowed(SelectedSegmentId, startNode, GUILayout.Toggle(Flags.getEnterWhenBlockedAllowed(SelectedSegmentId, startNode), Translation.GetString("Allow_vehicles_to_enter_a_blocked_junction"), new GUILayoutOption[] { }));
