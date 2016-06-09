@@ -7,7 +7,7 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.RailUtils
 {
     public static partial class RailModels
     {
-        public static void Setup10mStationMesh(this NetInfo info, NetInfoVersion version)
+        public static void Setup6mStationMesh(this NetInfo info, NetInfoVersion version)
         {
             ///////////////////////////
             // Template              //
@@ -41,55 +41,55 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.RailUtils
                         segments0
                             .SetFlagsDefault()
                             .SetMeshes
-                            (@"PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Pavement.obj",
-                            @"PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Pavement_LOD.obj");
+                            (@"PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Pavement.obj",
+                            @"PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Pavement_LOD.obj");
 
                         segments1
                             .SetFlagsDefault()
                             .SetMeshes
-                            (@"PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Rail.obj",
-                            @"PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Rail_LOD.obj");
+                            (@"PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Rail.obj",
+                            @"PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Rail_LOD.obj");
 
                         segments2
                             .SetMeshes
-                            (@"PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Power.obj",
-                            @"PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Power.obj");
+                            (@"PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Power.obj",
+                            @"PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Power.obj");
 
                         nodes0
                             .SetMeshes
-                            (@"PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Pavement_Node.obj",
-                            @"PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Pavement_Node_LOD.obj");
+                            (@"PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Pavement_Node.obj",
+                            @"PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Pavement_Node_LOD.obj");
 
                         nodes1
                             .SetMeshes
-                            (@"PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Rail.obj",
-                            @"PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Rail_Node_LOD.obj");
+                            (@"PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Rail.obj",
+                            @"PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Rail_Node_LOD.obj");
 
                         nodes2
                             .SetMeshes
-                            (@"PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Level_Crossing.obj",
-                            @"PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Level_Crossing_LOD.obj");
+                            (@"PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Level_Crossing.obj",
+                            @"PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Level_Crossing_LOD.obj");
 
                         nodes3
                             .SetMeshes
-                            (@"PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Power.obj",
-                            @"PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Power.obj");
+                            (@"PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Power.obj",
+                            @"PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Power.obj");
                         nodes4
                             .SetMeshes
-                            (@"PublicTransport\Rail\RailUtils\Meshes\10m\Station\Ground_Station_Rail_Start.obj",
-                            @"PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Rail_End_LOD.obj");
+                            (@"PublicTransport\Rail\RailUtils\Meshes\6m\Station\Ground_Station_Rail_Start.obj",
+                            @"PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Rail_End_LOD.obj");
                         nodes5
                             .SetMeshes
-                            (@"PublicTransport\Rail\RailUtils\Meshes\10m\Station\Ground_Power_Start.obj",
-                            @"PublicTransport\Rail\RailUtils\Meshes\10m\Station\Ground_Power_Start.obj");
+                            (@"PublicTransport\Rail\RailUtils\Meshes\6m\Station\Ground_Power_Start.obj",
+                            @"PublicTransport\Rail\RailUtils\Meshes\6m\Station\Ground_Power_Start.obj");
                         nodes6
                             .SetMeshes
-                            (@"PublicTransport\Rail\RailUtils\Meshes\10m\Station\Ground_Station_Rail_End.obj",
-                            @"PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Rail_End_LOD.obj");
+                            (@"PublicTransport\Rail\RailUtils\Meshes\6m\Station\Ground_Station_Rail_End.obj",
+                            @"PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Rail_End_LOD.obj");
                         nodes7
                             .SetMeshes
-                            (@"PublicTransport\Rail\RailUtils\Meshes\10m\Station\Ground_Power_End.obj",
-                            @"PublicTransport\Rail\RailUtils\Meshes\10m\Station\Ground_Power_End.obj");
+                            (@"PublicTransport\Rail\RailUtils\Meshes\6m\Station\Ground_Power_End.obj",
+                            @"PublicTransport\Rail\RailUtils\Meshes\6m\Station\Ground_Power_End.obj");
 
                         var colors = new List<UnityEngine.Color>();
                         var colors32 = new List<UnityEngine.Color32>();
@@ -143,41 +143,41 @@ namespace Transit.Addon.RoadExtensions.PublicTransport.RailUtils
                         segments0
                             .SetFlagsDefault()
                             .SetMeshes
-                            (@"PublicTransport\Rail\RailUtils\Meshes\10m\Elevated_Pavement.obj",
-                            @"PublicTransport\Rail\RailUtils\Meshes\10m\Elevated_Pavement_LOD.obj");
+                            (@"PublicTransport\Rail\RailUtils\Meshes\6m\Elevated_Pavement.obj",
+                            @"PublicTransport\Rail\RailUtils\Meshes\6m\Elevated_Pavement_LOD.obj");
 
                         segments1
                             .SetFlagsDefault()
                             .SetMeshes
-                            (@"PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Rail.obj",
-                            @"PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Rail_LOD.obj");
+                            (@"PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Rail.obj",
+                            @"PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Rail_LOD.obj");
 
                         segments2
                             .SetMeshes
-                            (@"PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Power.obj",
-                            @"PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Power.obj");
+                            (@"PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Power.obj",
+                            @"PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Power.obj");
 
                         nodes0
                             .SetMeshes
-                            (@"PublicTransport\Rail\RailUtils\Meshes\10m\Elevated_Pavement.obj",
-                            @"PublicTransport\Rail\RailUtils\Meshes\10m\Elevated_Pavement_Node_LOD.obj");
+                            (@"PublicTransport\Rail\RailUtils\Meshes\6m\Elevated_Pavement.obj",
+                            @"PublicTransport\Rail\RailUtils\Meshes\6m\Elevated_Pavement_Node_LOD.obj");
 
                         nodes1
                             .SetMeshes
-                            (@"PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Rail.obj",
-                            @"PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Rail_Node_LOD.obj");
+                            (@"PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Rail.obj",
+                            @"PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Rail_Node_LOD.obj");
                         nodes2
                             .SetMeshes
-                            (@"PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Power.obj",
-                            @"PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Power.obj");
+                            (@"PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Power.obj",
+                            @"PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Power.obj");
                         nodes4
                             .SetMeshes
-                            (@"PublicTransport\Rail\RailUtils\Meshes\10m\Station\Ground_Power_StartEnd.obj",
-                            @"PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Rail_Start_LOD.obj");
+                            (@"PublicTransport\Rail\RailUtils\Meshes\6m\Station\Ground_Power_StartEnd.obj",
+                            @"PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Rail_Start_LOD.obj");
                         nodes5
                             .SetMeshes
-                            (@"PublicTransport\Rail\RailUtils\Meshes\10m\Station\Ground_Rail_StartEnd.obj",
-                            @"PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Rail_End_LOD.obj");
+                            (@"PublicTransport\Rail\RailUtils\Meshes\6m\Station\Ground_Rail_StartEnd.obj",
+                            @"PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Rail_End_LOD.obj");
 
                         var colors = new List<UnityEngine.Color>();
                         var colors32 = new List<UnityEngine.Color32>();

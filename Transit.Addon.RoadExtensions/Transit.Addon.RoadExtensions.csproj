@@ -59,13 +59,15 @@
     <Compile Include="Menus\Roads\RExExtendedMenus.cs" />
     <Compile Include="Props\MediumAvenueSideLightBuilder.cs" />
     <Compile Include="Props\LargeAvenueMedianLightBuilder.cs" />
+    <Compile Include="PublicTransport\Rail\Rail2LOW\Rail2LOWBuilder.cs" />
+    <Compile Include="PublicTransport\Rail\RailUtils\Meshes\RailModels.10m.cs" />
     <Compile Include="Roads\Common\LaneTypeEnums.cs" />
     <Compile Include="PublicTransport\Rail\Rail1LStation\Rail1LStationBuilder.cs" />
     <Compile Include="PublicTransport\Rail\Rail1LStation\Rail1LStationBuilder.Texturing.cs" />
-    <Compile Include="PublicTransport\Rail\RailUtils\Meshes\RailModels.10m.cs" />
+    <Compile Include="PublicTransport\Rail\RailUtils\Meshes\RailModels.6m.cs" />
     <Compile Include="PublicTransport\Rail\Rail1L\Rail1LBuilder.cs" />
     <Compile Include="PublicTransport\Rail\Rail1L\Rail1LBuilder.Texturing.cs" />
-    <Compile Include="PublicTransport\Rail\RailUtils\Meshes\RailModels.10mStation.cs" />
+    <Compile Include="PublicTransport\Rail\RailUtils\Meshes\RailModels.6mStation.cs" />
     <Compile Include="Roads\Common\RoadModels.8m.NoSW.Wood.cs" />
     <Compile Include="Roads\Common\RoadHelper.LaneSetup.cs" />
     <Compile Include="Roads\Common\RoadModels.8m.NoSW.cs" />
@@ -2362,85 +2364,91 @@
     <None Include="Props\StoneBollard.crp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="PublicTransport\Rail\RailUtils\Meshes\10m\Bridge_Pavement.obj">
+    <None Include="PublicTransport\Rail\RailUtils\Meshes\10m\RailEnd.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="PublicTransport\Rail\RailUtils\Meshes\10m\Bridge_Pavement_LOD.obj">
+    <None Include="PublicTransport\Rail\RailUtils\Meshes\10m\RailStart.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="PublicTransport\Rail\RailUtils\Meshes\10m\Elevated_Pavement.obj">
+    <None Include="PublicTransport\Rail\RailUtils\Meshes\6m\Bridge_Pavement.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="PublicTransport\Rail\RailUtils\Meshes\10m\Elevated_Pavement_LOD.obj">
+    <None Include="PublicTransport\Rail\RailUtils\Meshes\6m\Bridge_Pavement_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="PublicTransport\Rail\RailUtils\Meshes\10m\Elevated_Pavement_Node_LOD.obj">
+    <None Include="PublicTransport\Rail\RailUtils\Meshes\6m\Elevated_Pavement.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Level_Crossing.obj">
+    <None Include="PublicTransport\Rail\RailUtils\Meshes\6m\Elevated_Pavement_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Level_Crossing_LOD.obj">
+    <None Include="PublicTransport\Rail\RailUtils\Meshes\6m\Elevated_Pavement_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Pavement.obj">
+    <None Include="PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Level_Crossing.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Pavement_LOD.obj">
+    <None Include="PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Level_Crossing_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Pavement_Node.obj">
+    <None Include="PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Pavement.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Pavement_Node_LOD.obj">
+    <None Include="PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Pavement_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Power.obj">
+    <None Include="PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Pavement_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Power_End.obj">
+    <None Include="PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Pavement_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Power_Start.obj">
+    <None Include="PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Power.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Rail.obj">
+    <None Include="PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Power_End.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Rail_End.obj">
+    <None Include="PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Power_Start.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Rail_End_LOD.obj">
+    <None Include="PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Rail.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Rail_LOD.obj">
+    <None Include="PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Rail_End.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Rail_Node_LOD.obj">
+    <None Include="PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Rail_End_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Rail_Start.obj">
+    <None Include="PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Rail_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Rail_Start_LOD.obj">
+    <None Include="PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Rail_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="PublicTransport\Rail\RailUtils\Meshes\10m\Station\Ground_Power_End.obj">
+    <None Include="PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Rail_Start.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="PublicTransport\Rail\RailUtils\Meshes\10m\Station\Ground_Power_Start.obj">
+    <None Include="PublicTransport\Rail\RailUtils\Meshes\6m\Ground_Rail_Start_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="PublicTransport\Rail\RailUtils\Meshes\10m\Station\Ground_Station_Rail_End.obj">
+    <None Include="PublicTransport\Rail\RailUtils\Meshes\6m\Station\Ground_Power_End.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="PublicTransport\Rail\RailUtils\Meshes\10m\Station\Ground_Station_Rail_Start.obj">
+    <None Include="PublicTransport\Rail\RailUtils\Meshes\6m\Station\Ground_Power_Start.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="PublicTransport\Rail\RailUtils\Meshes\10m\Tunnel.obj">
+    <None Include="PublicTransport\Rail\RailUtils\Meshes\6m\Station\Ground_Station_Rail_End.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="PublicTransport\Rail\RailUtils\Meshes\10m\Tunnel_Node.obj">
+    <None Include="PublicTransport\Rail\RailUtils\Meshes\6m\Station\Ground_Station_Rail_Start.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="PublicTransport\Rail\RailUtils\Meshes\6m\Tunnel.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="PublicTransport\Rail\RailUtils\Meshes\6m\Tunnel_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <Content Include="Roads\TinyRoads\Plain2L\infotooltip.png">
@@ -2456,7 +2464,7 @@
     <None Include="Buildings\BridgePillar.CableStay32m.crp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="PublicTransport\Rail\RailUtils\Meshes\10m\Tunnel_Node_LOD.obj">
+    <None Include="PublicTransport\Rail\RailUtils\Meshes\6m\Tunnel_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Buildings\Wood8mEPillar.crp" />
