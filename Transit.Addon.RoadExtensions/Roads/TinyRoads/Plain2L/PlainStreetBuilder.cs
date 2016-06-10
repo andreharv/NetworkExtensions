@@ -37,7 +37,7 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.Plain2L
             ///////////////////////////
             info.m_createGravel = false;
             info.m_createPavement = true;
-            info.m_setVehicleFlags = Vehicle.Flags.None;
+            info.m_setVehicleFlags = 0;
 
             ///////////////////////////
             // AI                    //

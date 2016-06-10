@@ -25,14 +25,14 @@ namespace CSL_Traffic
                 m_info.ApplySpeedMultiplier(CarSpeedData.Of(vehicleID));
             }
 
-            if (((data.m_flags & Vehicle.Flags.Congestion) != Vehicle.Flags.None) &&
+            if (((data.m_flags & Vehicle.Flags.Congestion) != 0) &&
                 ((TrafficMod.Options & OptionsManager.ModOptions.NoDespawn) != OptionsManager.ModOptions.NoDespawn))
             {
                 Singleton<VehicleManager>.instance.ReleaseVehicle(vehicleID);
             }
             else
             {
-                if ((data.m_flags & Vehicle.Flags.WaitingTarget) != Vehicle.Flags.None && (data.m_waitCounter += 1) > 20)
+                if ((data.m_flags & Vehicle.Flags.WaitingTarget) != 0 && (data.m_waitCounter += 1) > 20)
                 {
                     this.RemoveOffers(vehicleID, ref data);
                     data.m_flags &= ~Vehicle.Flags.WaitingTarget;
@@ -55,11 +55,11 @@ namespace CSL_Traffic
         [RedirectFrom(typeof(CargoTruckAI))]
         protected override bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget)
         {
-            if ((vehicleData.m_flags & (Vehicle.Flags.TransferToSource | Vehicle.Flags.GoingBack)) != Vehicle.Flags.None)
+            if ((vehicleData.m_flags & (Vehicle.Flags.TransferToSource | Vehicle.Flags.GoingBack)) != 0)
             {
                 return this.StartPathFind(ExtendedVehicleType.CargoTruck, vehicleID, ref vehicleData, startPos, endPos, startBothWays, endBothWays, undergroundTarget, this.IsHeavyVehicle(), this.IgnoreBlocked(vehicleID, ref vehicleData));
             }
-            bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != Vehicle.Flags.None;
+            bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != 0;
             PathUnit.Position startPosA;
             PathUnit.Position startPosB;
             float num;

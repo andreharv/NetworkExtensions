@@ -12,10 +12,10 @@ namespace TrafficManager.Custom.AI
         public void CustomSimulationStep(ushort vehicleId, ref Vehicle data, Vector3 physicsLodRefPos)
         {
 			try {
-				if ((data.m_flags & Vehicle.Flags.Congestion) != Vehicle.Flags.None && Options.enableDespawning) {
+				if ((data.m_flags & Vehicle.Flags.Congestion) != 0 && Options.enableDespawning) {
 					Singleton<VehicleManager>.instance.ReleaseVehicle(vehicleId);
 				} else {
-					if ((data.m_flags & Vehicle.Flags.WaitingTarget) != Vehicle.Flags.None && (data.m_waitCounter += 1) > 20) {
+					if ((data.m_flags & Vehicle.Flags.WaitingTarget) != 0 && (data.m_waitCounter += 1) > 20) {
 						RemoveOffers(vehicleId, ref data);
 						data.m_flags &= ~Vehicle.Flags.WaitingTarget;
 						data.m_flags |= Vehicle.Flags.GoingBack;
@@ -44,15 +44,15 @@ namespace TrafficManager.Custom.AI
 
         private static void RemoveOffers(ushort vehicleId, ref Vehicle data)
         {
-            if ((data.m_flags & Vehicle.Flags.WaitingTarget) != Vehicle.Flags.None)
+            if ((data.m_flags & Vehicle.Flags.WaitingTarget) != 0)
             {
                 var offer = default(TransferManager.TransferOffer);
                 offer.Vehicle = vehicleId;
-                if ((data.m_flags & Vehicle.Flags.TransferToSource) != Vehicle.Flags.None)
+                if ((data.m_flags & Vehicle.Flags.TransferToSource) != 0)
                 {
                     Singleton<TransferManager>.instance.RemoveIncomingOffer((TransferManager.TransferReason)data.m_transferType, offer);
                 }
-                else if ((data.m_flags & Vehicle.Flags.TransferToTarget) != Vehicle.Flags.None)
+                else if ((data.m_flags & Vehicle.Flags.TransferToTarget) != 0)
                 {
                     Singleton<TransferManager>.instance.RemoveOutgoingOffer((TransferManager.TransferReason)data.m_transferType, offer);
                 }
@@ -61,7 +61,7 @@ namespace TrafficManager.Custom.AI
 
         private void BaseSimulationStep(ushort vehicleId, ref Vehicle data, Vector3 physicsLodRefPos)
         {
-            if ((data.m_flags & Vehicle.Flags.WaitingPath) != Vehicle.Flags.None)
+            if ((data.m_flags & Vehicle.Flags.WaitingPath) != 0)
             {
                 PathManager instance = Singleton<PathManager>.instance;
                 byte pathFindFlags = instance.m_pathUnits.m_buffer[(int)((UIntPtr)data.m_path)].m_pathFindFlags;
@@ -82,7 +82,7 @@ namespace TrafficManager.Custom.AI
                     return;
                 }
             }
-            else if ((data.m_flags & Vehicle.Flags.WaitingSpace) != Vehicle.Flags.None)
+            else if ((data.m_flags & Vehicle.Flags.WaitingSpace) != 0)
             {
                 TrySpawn(vehicleId, ref data);
             }
@@ -125,7 +125,7 @@ namespace TrafficManager.Custom.AI
             }
             int num3 = (m_info.m_class.m_service > ItemClass.Service.Office) ? 150 : 100;
             if ((data.m_flags & (Vehicle.Flags.Spawned | Vehicle.Flags.WaitingPath | Vehicle.Flags.WaitingSpace)) ==
-                Vehicle.Flags.None && data.m_cargoParent == 0)
+                0 && data.m_cargoParent == 0)
             {
                 Singleton<VehicleManager>.instance.ReleaseVehicle(vehicleId);
             }
@@ -136,10 +136,10 @@ namespace TrafficManager.Custom.AI
         }
 
 		public bool CustomStartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget) {
-			if ((vehicleData.m_flags & (Vehicle.Flags.TransferToSource | Vehicle.Flags.GoingBack)) != Vehicle.Flags.None) {
+			if ((vehicleData.m_flags & (Vehicle.Flags.TransferToSource | Vehicle.Flags.GoingBack)) != 0) {
 				return CustomCargoTruckAI.BaseCustomStartPathFind(this.IsHeavyVehicle(), this.IgnoreBlocked(vehicleID, ref vehicleData), ref this.m_info, vehicleID, ref vehicleData, startPos, endPos, startBothWays, endBothWays);
 			}
-			bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != Vehicle.Flags.None;
+			bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != 0;
 			PathUnit.Position startPosA;
 			PathUnit.Position startPosB;
 			float num;
@@ -200,7 +200,7 @@ namespace TrafficManager.Custom.AI
 		}
 
 		public static bool BaseCustomStartPathFind(bool heavyVehicle, bool ignoreBlocked, ref VehicleInfo info, ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays) {
-			bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != Vehicle.Flags.None;
+			bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != 0;
 			PathUnit.Position startPosA;
 			PathUnit.Position startPosB;
 			float num;

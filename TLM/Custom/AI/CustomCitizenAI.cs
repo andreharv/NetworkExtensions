@@ -70,7 +70,7 @@ namespace TrafficManager.Custom.AI {
                 bool res = false;
 				if (Options.disableSomething5 || extVehicleType == null)
 				// NON-STOCK CODE END //
-					res = Singleton<CustomPathManager>.instance.CreatePath(out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, position2, endPosA, position2, vehiclePosition, laneType, vehicleType, 20000f, false, false, false, false);
+					res = Singleton<CustomPathManager>.instance.CreatePath(out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, position2, endPosA, position2, vehiclePosition, laneType, vehicleType, 20000f, false, false, false, false, false);
 				// NON-STOCK CODE START //
 				else
 					res = Singleton<CustomPathManager>.instance.CreatePath((ExtVehicleType)extVehicleType, out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, position2, endPosA, position2, vehiclePosition, laneType, vehicleType, 20000f, false, false, false, false);
