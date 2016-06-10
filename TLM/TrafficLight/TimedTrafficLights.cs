@@ -135,9 +135,9 @@ namespace TrafficManager.TrafficLight {
 		}
 
 		internal void Destroy() {
+			DestroySegments();
 			Steps = null;
 			NodeGroup = null;
-			DestroySegments();
 		}
 
 		public bool IsStarted() {
@@ -347,7 +347,8 @@ namespace TrafficManager.TrafficLight {
 					ushort segmentId = Singleton<NetManager>.instance.m_nodes.m_buffer[NodeId].GetSegment(s);
 					if (segmentId <= 0)
 						continue;
-					CustomTrafficLights.AddSegmentLights(NodeId, segmentId);
+					if (! CustomTrafficLights.IsSegmentLight(NodeId, segmentId))
+						CustomTrafficLights.AddSegmentLights(NodeId, segmentId);
 				}
 
 				return;
@@ -508,6 +509,9 @@ namespace TrafficManager.TrafficLight {
 		}
 
 		private void SetupSegments() {
+			if (NodeGroup == null)
+				return;
+
 			// setup priority segments & live traffic lights
 			foreach (ushort slaveNodeId in NodeGroup) {
 				for (int s = 0; s < 8; ++s) {
@@ -518,7 +522,9 @@ namespace TrafficManager.TrafficLight {
 		}
 
 		private void DestroySegments() {
-			// setup priority segments & live traffic lights
+			if (NodeGroup == null)
+				return;
+
 			foreach (ushort slaveNodeId in NodeGroup) {
 				for (int s = 0; s < 8; ++s) {
 					ushort segmentId = Singleton<NetManager>.instance.m_nodes.m_buffer[slaveNodeId].GetSegment(s);
@@ -533,7 +539,8 @@ namespace TrafficManager.TrafficLight {
 			//CustomRoadAI.GetSegmentGeometry(segmentId).Recalculate(true, true);
 			if (!TrafficPriority.IsPrioritySegment(nodeId, segmentId))
 				TrafficPriority.AddPrioritySegment(nodeId, segmentId, SegmentEnd.PriorityType.None);
-			CustomTrafficLights.AddSegmentLights(nodeId, segmentId);
+			if (!CustomTrafficLights.IsSegmentLight(nodeId, segmentId))
+				CustomTrafficLights.AddSegmentLights(nodeId, segmentId);
 		}
 
 		private void DestroySegmentEnd(ushort nodeId, ushort segmentId) {

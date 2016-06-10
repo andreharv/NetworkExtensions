@@ -36,6 +36,7 @@ namespace TrafficManager.TrafficLight {
 				leftLight = value;
 			}
 		}
+
 		public RoadBaseAI.TrafficLightState LightMain {
 			get { return mainLight; }
 			set {
@@ -313,7 +314,7 @@ namespace TrafficManager.TrafficLight {
 		}
 
 		internal void MakeRed() {
-			LightLeft = RoadBaseAI.TrafficLightState.Red;
+            LightLeft = RoadBaseAI.TrafficLightState.Red;
 			LightMain = RoadBaseAI.TrafficLightState.Red;
 			LightRight = RoadBaseAI.TrafficLightState.Red;
 		}

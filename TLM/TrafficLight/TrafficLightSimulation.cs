@@ -4,6 +4,7 @@ using TrafficManager.Traffic;
 using System.Collections.Generic;
 using TrafficManager.State;
 using TrafficManager.Custom.AI;
+using System.Linq;
 
 namespace TrafficManager.TrafficLight {
 	public class TrafficLightSimulation {
@@ -109,8 +110,9 @@ namespace TrafficManager.TrafficLight {
 					}
 
 					if (destroyGroup || timedNodeId == nodeId) {
-						Log._Debug($"Removing simulation @ node {timedNodeId}");
+						//Log._Debug($"Slave: Removing simulation @ node {timedNodeId}");
 						otherNodeSim.DestroyTimedTrafficLight();
+						otherNodeSim.DestroyManualTrafficLight();
 						LightSimulationByNodeId.Remove(timedNodeId);
 					} else {
 						if (!otherNodeSim.IsTimedLight()) {
@@ -123,6 +125,7 @@ namespace TrafficManager.TrafficLight {
 			}
 
 			//Flags.setNodeTrafficLight(nodeId, false);
+			DestroyTimedTrafficLight();
 			DestroyManualTrafficLight();
 			LightSimulationByNodeId.Remove(nodeId);
 		}
