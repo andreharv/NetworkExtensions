@@ -26,7 +26,7 @@ namespace CSL_Traffic
             }
 
             base.SimulationStep(vehicleID, ref vehicleData, ref frameData, leaderID, ref leaderData, lodPhysics);
-            if ((vehicleData.m_flags & Vehicle.Flags.Stopped) != Vehicle.Flags.None && this.CanLeave(vehicleID, ref vehicleData))
+            if ((vehicleData.m_flags & Vehicle.Flags.Stopped) != 0 && this.CanLeave(vehicleID, ref vehicleData))
             {
                 vehicleData.m_flags &= ~Vehicle.Flags.Stopped;
                 vehicleData.m_flags |= Vehicle.Flags.Leaving;
@@ -45,11 +45,11 @@ namespace CSL_Traffic
         [RedirectFrom(typeof(HearseAI))]
         protected override bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData)
         {
-            if ((vehicleData.m_flags & Vehicle.Flags.WaitingTarget) != Vehicle.Flags.None)
+            if ((vehicleData.m_flags & Vehicle.Flags.WaitingTarget) != 0)
             {
                 return true;
             }
-            if ((vehicleData.m_flags & Vehicle.Flags.GoingBack) != Vehicle.Flags.None)
+            if ((vehicleData.m_flags & Vehicle.Flags.GoingBack) != 0)
             {
                 if (vehicleData.m_sourceBuilding != 0)
                 {
