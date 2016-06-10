@@ -92,13 +92,13 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
             }
 
             //Setting Up Props
-            var leftRoadProps = leftPedLane.m_laneProps.m_props.ToList();
-            var rightRoadProps = rightPedLane.m_laneProps.m_props.ToList();
-            var medianRoadProps = medianLane?.m_laneProps?.m_props.ToList();
+            var leftPedLaneProps = leftPedLane.m_laneProps.m_props.ToList();
+            var rightPedLaneProps = rightPedLane.m_laneProps.m_props.ToList();
+            var medianPedLaneProps = medianLane?.m_laneProps?.m_props.ToList();
 
             if (version != NetInfoVersion.Tunnel)
             {
-                var medianStreetLight = medianRoadProps?.FirstOrDefault(p => p.m_prop.name.ToLower().Contains("avenue light"));
+                var medianStreetLight = medianPedLaneProps?.FirstOrDefault(p => p.m_prop.name.ToLower().Contains("avenue light"));
                 if (medianStreetLight != null)
                 {
                     medianStreetLight.m_finalProp = 
@@ -106,17 +106,25 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
                 }
             }
 
-            if (version == NetInfoVersion.Slope)
+            if (medianPedLaneProps != null)
             {
-                leftRoadProps.AddLeftWallLights(info.m_pavementWidth);
-                rightRoadProps.AddRightWallLights(info.m_pavementWidth);
+                medianPedLaneProps.RemoveProps("50 Speed Limit");
             }
 
-            leftPedLane.m_laneProps.m_props = leftRoadProps.ToArray();
-            rightPedLane.m_laneProps.m_props = rightRoadProps.ToArray();
-            if (medianLane != null && medianLane.m_laneProps != null)
-                medianLane.m_laneProps.m_props = medianRoadProps.ToArray();
+            if (version == NetInfoVersion.Slope)
+            {
+                leftPedLaneProps.AddLeftWallLights(info.m_pavementWidth);
+                rightPedLaneProps.AddRightWallLights(info.m_pavementWidth);
+            }
 
+            leftPedLane.m_laneProps.m_props = leftPedLaneProps.ToArray();
+            rightPedLane.m_laneProps.m_props = rightPedLaneProps.ToArray();
+            if (medianLane?.m_laneProps != null && medianPedLaneProps != null)
+            {
+                medianLane.m_laneProps.m_props = medianPedLaneProps.ToArray();
+            }
+
+            
             info.TrimAboveGroundProps(version);
 
             // AI

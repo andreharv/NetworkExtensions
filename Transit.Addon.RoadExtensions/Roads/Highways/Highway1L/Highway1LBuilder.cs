@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Transit.Addon.RoadExtensions.Roads.Common;
 using Transit.Addon.RoadExtensions.Roads.Highways;
 using Transit.Addon.RoadExtensions.Roads.Highways.Common;
 using Transit.Framework;
@@ -129,6 +130,9 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway1L
                 leftHwLaneProps.AddLeftWallLights();
                 rightHwLaneProps.AddRightWallLights();
             }
+
+            leftHwLaneProps.RemoveProps("100 Speed Limit"); // Since we dont have the 90km/h limit prop
+            rightHwLaneProps.RemoveProps("100 Speed Limit"); // Since we dont have the 90km/h limit prop
 
             leftHwLane.m_laneProps.m_props = leftHwLaneProps.ToArray();
             rightHwLane.m_laneProps.m_props = rightHwLaneProps.ToArray();
