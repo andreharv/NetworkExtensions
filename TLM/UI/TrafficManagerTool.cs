@@ -207,7 +207,7 @@ namespace TrafficManager.UI {
 				if (Options.nodesOverlay) {
 					_guiNodes();
 #if DEBUG
-					//_guiVehicles();
+					_guiVehicles();
 					//_guiCitizens();
 #endif
 				}

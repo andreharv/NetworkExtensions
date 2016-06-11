@@ -2,6 +2,9 @@
 A work-in-progress modification for **Cities: Skylines** to add additional road traffic control
 
 # Changelog
+1.6.19, 06/11/2016
+- Bugfix: Timed traffic lights UI not working as expected (thanks to @Madgemade for pointing out this problem)
+
 1.6.18, 06/09/2016
 - Updated for game patch 1.5.0-f4
 - Improved performance of priority signs and timed traffic lights

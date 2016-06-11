@@ -707,7 +707,7 @@ namespace TrafficManager.Custom.PathFinding {
 					if (this._randomParking) {
 						item2.m_comparisonValue += (float)this._pathRandomizer.Int32(300u) / this._maxLength;
 					}
-					this.ProcessItemPedBicycle(item, nextNodeId, prevSegmentId, ref netManager.m_segments.m_buffer[(int)prevSegmentId], connectOffset2, 128, nextLaneIndex2, nextlaneId2); // ped
+					this.ProcessItemPedBicycle(item2, nextNodeId, prevSegmentId, ref netManager.m_segments.m_buffer[(int)prevSegmentId], connectOffset2, 128, nextLaneIndex2, nextlaneId2); // ped
 				}
 			} else {
 				bool mayTurnAround = (nextNode.m_flags & (NetNode.Flags.End | NetNode.Flags.OneWayOut)) != NetNode.Flags.None;
@@ -1701,7 +1701,7 @@ namespace TrafficManager.Custom.PathFinding {
 					prevCost *= 50f;
 
 				// add costs for u-turns
-				if (!isMiddle && nextSegmentId == item.m_position.m_segment) {
+				if (!isMiddle && nextSegmentId == item.m_position.m_segment && (prevLaneInfo.m_vehicleType & VehicleInfo.VehicleType.Car) != VehicleInfo.VehicleType.None) {
 					prevCost *= Options.someValue4;
 				}
 			}

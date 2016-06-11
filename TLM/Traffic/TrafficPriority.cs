@@ -926,9 +926,6 @@ namespace TrafficManager.Traffic {
 		private static List<ushort> vehicleIdsToDelete = new List<ushort>();
 
 		public static void segmentHousekeeping(ushort segmentId) {
-			if (Options.disableSomething2)
-				return;
-
 			if (ClearTrafficRequested) {
 				TrafficPriority.ClearTraffic();
 				ClearTrafficRequested = false;
@@ -957,9 +954,6 @@ namespace TrafficManager.Traffic {
 
 		public static void nodeHousekeeping(ushort nodeId) {
 			try {
-				if (Options.disableSomething2)
-					return;
-
 				uint frame = Singleton<SimulationManager>.instance.m_currentFrameIndex;
 
 				NetManager netManager = Singleton<NetManager>.instance;

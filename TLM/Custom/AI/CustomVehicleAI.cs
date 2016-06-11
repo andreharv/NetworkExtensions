@@ -126,6 +126,12 @@ namespace TrafficManager.Custom.AI {
 				return true;
 			}
 
+			try {
+				VehicleStateManager.UpdateVehiclePos(vehicleId, ref vehicleData);
+			} catch (Exception e) {
+				Log.Error("VehicleAI MayChangeSegment Error: " + e.ToString());
+			}
+
 			var netManager = Singleton<NetManager>.instance;
 
 			bool simulatePrioritySigns = true;  //(lastFrameVehiclePos - camPos).sqrMagnitude < FarLod && !isRecklessDriver;

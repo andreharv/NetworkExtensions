@@ -97,7 +97,8 @@ namespace TrafficManager.Traffic {
 
 		internal void UpdatePosition(ref Vehicle vehicleData, ref PathUnit.Position currentPos) {
 #if DEBUG
-			bool debug = false;// (VehicleId & 63) == 17;
+			//bool debug = (VehicleId & 63) == 17;
+			bool debug = currentPos.m_segment == 15491;
 #endif
 
 			LastPositionUpdate = Singleton<SimulationManager>.instance.m_currentFrameIndex;
@@ -125,7 +126,6 @@ namespace TrafficManager.Traffic {
 				Log._Debug($"UpdatePosition: Vehicle {VehicleId} is handled");
 #endif
 
-			LinkedListNode<VehiclePosition> currentVehiclePosNode = CurrentPosition;
 			if (CurrentPosition == null) {
 #if DEBUGVSTATE
 				if (debug)
@@ -162,7 +162,7 @@ namespace TrafficManager.Traffic {
 					end.UnregisterVehicle(VehicleId);
 #if DEBUGVSTATE
 				if (debug)
-					Log._Debug($"UpdatePosition: Vehicle {VehicleId}: Removed position {pos.SourceSegmentId}, {pos.TransitNodeId} (lane {pos.SourceLaneIndex}). Remaining: {VehiclePositions.Count}");
+					Log._Debug($"UpdatePosition: Vehicle {VehicleId}: Removed position {CurrentPosition.Value.SourceSegmentId}, {CurrentPosition.Value.TransitNodeId} (lane {CurrentPosition.Value.SourceLaneIndex}). Remaining: {VehiclePositions.Count}");
 #endif
 				--numRegisteredAhead;
 				CurrentPosition = CurrentPosition.Next;
@@ -191,7 +191,7 @@ namespace TrafficManager.Traffic {
 			for (int i = 0; i < maxNumRegSegments; ++i) {
 #if DEBUGVSTATE
 				if (debug)
-					Log._Debug($"UpdatePosition: Vehicle {VehicleId}: checking for segment end (2) @ {pos.SourceSegmentId}, {pos.TransitNodeId}, lane {pos.SourceLaneIndex} // currentPos: {currentPos.m_segment} @ lane {currentPos.m_lane}");
+					Log._Debug($"UpdatePosition: Vehicle {VehicleId}: checking for segment end (2) @ {posNode.Value.SourceSegmentId}, {posNode.Value.TransitNodeId}, lane {posNode.Value.SourceLaneIndex} // currentPos: {currentPos.m_segment} @ lane {currentPos.m_lane}");
 #endif
 
 				//if (posNode.Value.SourceSegmentId == currentPos.m_segment && posNode.Value.SourceLaneIndex == currentPos.m_lane) {
@@ -201,7 +201,7 @@ namespace TrafficManager.Traffic {
 						if (i == 0 || (nodeSim != null && nodeSim.IsTimedLight())) {
 #if DEBUGVSTATE
 							if (debug)
-								Log._Debug($"UpdatePosition: Vehicle {VehicleId}: checking for segment end (1) @ {pos.SourceSegmentId}, {pos.TransitNodeId}, lane {pos.SourceLaneIndex} // currentPos: {currentPos.m_segment} @ lane {currentPos.m_lane}");
+								Log._Debug($"UpdatePosition: Vehicle {VehicleId}: checking for segment end (1) @ {posNode.Value.SourceSegmentId}, {posNode.Value.TransitNodeId}, lane {posNode.Value.SourceLaneIndex} // currentPos: {currentPos.m_segment} @ lane {currentPos.m_lane}");
 #endif
 							end.RegisterVehicle(VehicleId, ref vehicleData, posNode.Value);
 						}
@@ -232,8 +232,7 @@ namespace TrafficManager.Traffic {
 			}*/
 #if DEBUGVSTATE
 			if (debug) {
-				currentVehiclePosition = GetCurrentPosition();
-				Log._Debug($"UpdatePosition: Vehicle {VehicleId}: Update finished. Current position: {currentVehiclePosition?.SourceSegmentId} -> {currentVehiclePosition?.TransitNodeId}");
+				Log._Debug($"UpdatePosition: Vehicle {VehicleId}: Update finished. Current position: {CurrentPosition?.Value.SourceSegmentId} -> {CurrentPosition?.Value.TransitNodeId}");
 			}
 #endif
 		}
@@ -373,7 +372,7 @@ namespace TrafficManager.Traffic {
 
 			CurrentPosition = VehiclePositions.First;
 #if DEBUGVSTATE
-			Log._Debug($"OnPathFindReady: Vehicle {VehicleId}: Vehicle is valid now. {VehiclePositions.Count} vehicle positions.");
+			Log._Debug($"OnPathFindReady: Vehicle {VehicleId}: Vehicle is valid now. {VehiclePositions.Count} vehicle positions. Current position: {CurrentPosition?.Value.SourceSegmentId} -> {CurrentPosition?.Value.TransitNodeId}");
 #endif
 			Valid = true;
 
