@@ -1,13 +1,14 @@
-﻿using Transit.Addon.RoadExtensions.Menus.Roads;
+﻿using System.Collections.Generic;
+using Transit.Addon.RoadExtensions.Menus.Roads;
 using Transit.Addon.RoadExtensions.Roads.Common;
 using Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.Network;
 
-namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.GravelTiny
+namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.BoardwalkTiny
 {
-    public partial class ZonablePedestrianTinyGravelRoadBuilder : Activable, INetInfoBuilderPart, INetInfoLateBuilder
+    public partial class ZonablePedestrianBoardwalkRoadBuilder : Activable, INetInfoBuilderPart, INetInfoLateBuilder
     {
         public int Order { get { return 300; } }
         public int UIOrder { get { return 5; } }
@@ -15,13 +16,13 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.GravelTiny
         public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_2L; } }
         public string UICategory { get { return RExExtendedMenus.ROADS_PEDESTRIANS; } }
 
-        public const string NAME = "Zonable Pedestrian Gravel Tiny";
+        public const string NAME = "Zonable Pedestrian Boardwalk Tiny";
         public string Name { get { return NAME; } }
-        public string DisplayName { get { return "Zonable Pedestrian Gravel Tiny Road"; } }
-        public string Description { get { return "Gravel roads allow pedestrians to walk fast and easy."; } }
+        public string DisplayName { get { return "Zonable Pedestrian Boardwalk Tiny Road"; } }
+        public string Description { get { return "Boardwalks for mixed traffic.  Great for beaches and shopping districts."; } }
         public string ShortDescription { get { return "Zoneable, No Passenger Vehicles [Traffic++ V2 required]"; } }
 
-        public string ThumbnailsPath { get { return @"Roads\PedestrianRoads\GravelTiny\thumbnails.png"; } }
+        public string ThumbnailsPath { get { return @"Roads\PedestrianRoads\BoardwalkTiny\thumbnails.png"; } }
         public string InfoTooltipPath { get { return @"Roads\PedestrianRoads\GravelTiny\infotooltip.png"; } }
 
         public NetInfoVersion SupportedVersions
@@ -34,34 +35,29 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.GravelTiny
             ///////////////////////////
             // 3DModeling            //
             ///////////////////////////
-            if (version == NetInfoVersion.Ground)
-            {
-                info.Setup8mNoSWMesh(version);
-            }
-            else
-            {
-                info.Setup8mNoSwWoodMesh(version);
-            }
-            
+            info.Setup8mNoSwWoodMesh(version);
+
             ///////////////////////////
             // Texturing             //
             ///////////////////////////
-            if (version == NetInfoVersion.Ground)
-            {
-                info.SetupGroundNakedTextures(version);
-            }
-            else
-            {
-                info.SetupBoardWalkTextures(version);
-            }
+            info.SetupBoardWalkTextures(version);
 
             ///////////////////////////
             // Set up                //
             ///////////////////////////
-            info.m_createGravel = true;
-            info.m_createPavement = false;
+            info.m_createGravel = false;
+            info.m_createPavement = true;
+            info.m_connectGroup = NetInfo.ConnectGroup.CenterTram;
+            info.m_nodeConnectGroups = NetInfo.ConnectGroup.CenterTram;
+            info.m_surfaceLevel = 0.2f;
             info.SetupTinyPed(version);
-
+            var lanes = new List<NetInfo.Lane>();
+            lanes.AddRange(info.m_lanes);
+            for(int i = 0; i < info.m_lanes.Length; i++)
+            {
+                lanes[i].m_verticalOffset = 0.2f;
+            }
+            info.m_lanes = lanes.ToArray();
             if (version == NetInfoVersion.Ground)
             {
                 info.m_setVehicleFlags = Vehicle.Flags.OnGravel;

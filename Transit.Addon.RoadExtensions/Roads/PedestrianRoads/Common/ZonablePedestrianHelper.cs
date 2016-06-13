@@ -29,7 +29,6 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
             info.m_pavementWidth = 2;
             info.m_class = roadInfo.m_class.Clone($"NExt {info.name}");
             info.m_class.m_level = ItemClass.Level.Level5;
-
             // Setting up lanes
             info.SetRoadLanes(version, new LanesConfiguration
             {

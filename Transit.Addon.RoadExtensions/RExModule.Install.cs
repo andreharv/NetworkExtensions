@@ -17,6 +17,7 @@ using Object = UnityEngine.Object;
 using ZonablePedestrianTinyGravelRoadBuilder = Transit.Addon.RoadExtensions.Roads.PedestrianRoads.GravelTiny.ZonablePedestrianTinyGravelRoadBuilder;
 using ZonablePedestrianTinyPavedRoadBuilder = Transit.Addon.RoadExtensions.Roads.PedestrianRoads.PavementTiny.ZonablePedestrianTinyPavedRoadBuilder;
 using ZonablePedestrianTinyStoneRoadBuilder = Transit.Addon.RoadExtensions.Roads.PedestrianRoads.StoneTiny.ZonablePedestrianTinyStoneRoadBuilder;
+using ZonablePedestrianBoardwalkRoadBuilder = Transit.Addon.RoadExtensions.Roads.PedestrianRoads.BoardwalkTiny.ZonablePedestrianBoardwalkRoadBuilder;
 
 namespace Transit.Addon.RoadExtensions
 {
@@ -70,7 +71,8 @@ namespace Transit.Addon.RoadExtensions
                 OneWay1LBuilder.NAME,
                 ZonablePedestrianTinyGravelRoadBuilder.NAME,
                 ZonablePedestrianTinyPavedRoadBuilder.NAME,
-                ZonablePedestrianTinyStoneRoadBuilder.NAME
+                ZonablePedestrianTinyStoneRoadBuilder.NAME,
+                ZonablePedestrianBoardwalkRoadBuilder.NAME
             };
 
             foreach (var name in tinyZoneBlockCreators)
