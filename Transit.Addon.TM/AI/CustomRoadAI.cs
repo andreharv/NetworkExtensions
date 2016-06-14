@@ -553,7 +553,7 @@ namespace Transit.Addon.TM.AI {
 			Vector3 position2 = instance2.m_nodes.m_buffer[(int)data.m_endNode].m_position;
 			Vector3 vector = (position + position2) * 0.5f;
 			bool flag = false;
-			if ((this.m_info.m_setVehicleFlags & Vehicle.Flags.Underground) == Vehicle.Flags.None) {
+			if ((this.m_info.m_setVehicleFlags & Vehicle.Flags.Underground) == 0) {
 				float num6 = Singleton<TerrainManager>.instance.WaterLevel(VectorUtils.XZ(vector));
 				if (num6 > vector.y + 1f) {
 					flag = true;
@@ -572,7 +572,7 @@ namespace Transit.Addon.TM.AI {
 			DistrictPolicies.CityPlanning cityPlanningPolicies = instance3.m_districts.m_buffer[(int)district].m_cityPlanningPolicies;
 			int num7 = (int)(100 - (data.m_trafficDensity - 100) * (data.m_trafficDensity - 100) / 100);
 			if ((this.m_info.m_vehicleTypes & VehicleInfo.VehicleType.Car) != VehicleInfo.VehicleType.None) {
-				if ((this.m_info.m_setVehicleFlags & Vehicle.Flags.Underground) == Vehicle.Flags.None) {
+				if ((this.m_info.m_setVehicleFlags & Vehicle.Flags.Underground) == 0) {
 					int num8 = (int)data.m_wetness;
 					if (!instance2.m_treatWetAsSnow) {
 						if (flag) {

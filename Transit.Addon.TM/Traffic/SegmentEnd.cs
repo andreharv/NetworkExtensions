@@ -103,7 +103,7 @@ namespace Transit.Addon.TM.Traffic {
 
 				if (vehicleId <= 0 || carPos.ToSegment <= 0)
 					continue;
-				if ((vehicleManager.m_vehicles.m_buffer[vehicleId].m_flags & Vehicle.Flags.Created) == Vehicle.Flags.None) {
+				if ((vehicleManager.m_vehicles.m_buffer[vehicleId].m_flags & Vehicle.Flags.Created) == 0) {
 					vehicleIdsToReHandle.Add(vehicleId);
 					continue;
 				}
@@ -165,7 +165,7 @@ namespace Transit.Addon.TM.Traffic {
 		internal int getNumApproachingVehicles() {
 			return Vehicles.Where(e =>
 				(e.Value.CarState != VehicleJunctionTransitState.Leave || e.Value.LastCarStateUpdate >> 6 >= Singleton<SimulationManager>.instance.m_currentFrameIndex >> 6) &&
-				(Singleton<VehicleManager>.instance.m_vehicles.m_buffer[e.Key].m_flags & Vehicle.Flags.Created) != Vehicle.Flags.None &&
+				(Singleton<VehicleManager>.instance.m_vehicles.m_buffer[e.Key].m_flags & Vehicle.Flags.Created) != 0 &&
 				Singleton<VehicleManager>.instance.m_vehicles.m_buffer[e.Key].GetLastFrameVelocity().magnitude > TrafficPriority.maxStopVelocity).Count();
 		}
 
@@ -176,7 +176,7 @@ namespace Transit.Addon.TM.Traffic {
 		internal Dictionary<ushort, VehiclePosition> getApproachingVehicles() {
 			return Vehicles.Where(e => 
 				(e.Value.CarState != VehicleJunctionTransitState.Leave || e.Value.LastCarStateUpdate >> 6 >= Singleton<SimulationManager>.instance.m_currentFrameIndex >> 6) &&
-				(Singleton<VehicleManager>.instance.m_vehicles.m_buffer[e.Key].m_flags & Vehicle.Flags.Created) != Vehicle.Flags.None &&
+				(Singleton<VehicleManager>.instance.m_vehicles.m_buffer[e.Key].m_flags & Vehicle.Flags.Created) != 0 &&
 				Singleton<VehicleManager>.instance.m_vehicles.m_buffer[e.Key].GetLastFrameVelocity().magnitude > TrafficPriority.maxStopVelocity).ToDictionary(e => e.Key, e => e.Value);
 		}
 	}

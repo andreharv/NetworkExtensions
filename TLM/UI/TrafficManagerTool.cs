@@ -529,7 +529,7 @@ namespace TrafficManager.UI {
 			Array16<Vehicle> vehicles = Singleton<VehicleManager>.instance.m_vehicles;
 			for (int i = 1; i < vehicles.m_size; ++i) {
 				Vehicle vehicle = vehicles.m_buffer[i];
-				if (vehicle.m_flags == Vehicle.Flags.None) // node is unused
+				if (vehicle.m_flags == 0) // node is unused
 					continue;
 
 				Vector3 pos = vehicle.GetLastFramePosition();

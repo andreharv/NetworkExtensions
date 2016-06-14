@@ -2243,16 +2243,16 @@
     <None Include="Roads\Common\Meshes\8m\2mSW\Ground_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\8m\NoSwWood\Elevated.obj">
+    <None Include="Roads\Common\Meshes\8m\NoSwWood\Elevated_NoCom.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\8m\NoSwWood\Elevated_LOD.obj">
+    <None Include="Roads\Common\Meshes\8m\NoSwWood\Elevated_LOD_NoCom.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\8m\NoSwWood\Elevated_Node.obj">
+    <None Include="Roads\Common\Meshes\8m\NoSwWood\Elevated_Node_NoCom.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\8m\NoSwWood\Elevated_Node_LOD.obj">
+    <None Include="Roads\Common\Meshes\8m\NoSwWood\Elevated_Node_LOD_NoCom.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\Common\Meshes\8m\NoSW\Elevated.obj">

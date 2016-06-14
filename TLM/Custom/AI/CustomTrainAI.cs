@@ -13,7 +13,7 @@ namespace TrafficManager.Custom.AI {
 	public class CustomTrainAI : TrainAI { // correct would be to inherit from VehicleAI (in order to keep the correct references to `base`)
 		public void TrafficManagerSimulationStep(ushort vehicleId, ref Vehicle vehicleData, Vector3 physicsLodRefPos) {
 			try {
-				if ((vehicleData.m_flags & Vehicle.Flags.WaitingPath) != Vehicle.Flags.None) {
+				if ((vehicleData.m_flags & Vehicle.Flags.WaitingPath) != 0) {
 					byte pathFindFlags = Singleton<PathManager>.instance.m_pathUnits.m_buffer[(int)((UIntPtr)vehicleData.m_path)].m_pathFindFlags;
 					if ((pathFindFlags & 4) != 0) {
 						this.PathFindReady(vehicleId, ref vehicleData);
@@ -24,11 +24,11 @@ namespace TrafficManager.Custom.AI {
 						vehicleData.Unspawn(vehicleId);
 						return;
 					}
-				} else if ((vehicleData.m_flags & Vehicle.Flags.WaitingSpace) != Vehicle.Flags.None) {
+				} else if ((vehicleData.m_flags & Vehicle.Flags.WaitingSpace) != 0) {
 					this.TrySpawn(vehicleId, ref vehicleData);
 				}
 
-				bool reversed = (vehicleData.m_flags & Vehicle.Flags.Reversed) != Vehicle.Flags.None;
+				bool reversed = (vehicleData.m_flags & Vehicle.Flags.Reversed) != 0;
 				ushort frontVehicleId;
 				if (reversed) {
 					frontVehicleId = vehicleData.GetLastVehicle(vehicleId);
@@ -50,7 +50,7 @@ namespace TrafficManager.Custom.AI {
 				if ((vehicleData.m_flags & (Vehicle.Flags.Created | Vehicle.Flags.Deleted)) != Vehicle.Flags.Created) {
 					return;
 				}
-				bool flag2 = (vehicleData.m_flags & Vehicle.Flags.Reversed) != Vehicle.Flags.None;
+				bool flag2 = (vehicleData.m_flags & Vehicle.Flags.Reversed) != 0;
 				if (flag2 != reversed) {
 					reversed = flag2;
 					if (reversed) {
@@ -63,7 +63,7 @@ namespace TrafficManager.Custom.AI {
 					if ((vehicleData.m_flags & (Vehicle.Flags.Created | Vehicle.Flags.Deleted)) != Vehicle.Flags.Created) {
 						return;
 					}
-					flag2 = ((vehicleData.m_flags & Vehicle.Flags.Reversed) != Vehicle.Flags.None);
+					flag2 = ((vehicleData.m_flags & Vehicle.Flags.Reversed) != 0);
 					if (flag2 != reversed) {
 						Singleton<VehicleManager>.instance.ReleaseVehicle(vehicleId);
 						return;
@@ -100,7 +100,7 @@ namespace TrafficManager.Custom.AI {
 						}
 					}
 				}
-				if ((vehicleData.m_flags & (Vehicle.Flags.Spawned | Vehicle.Flags.WaitingPath | Vehicle.Flags.WaitingSpace | Vehicle.Flags.WaitingCargo)) == Vehicle.Flags.None || (vehicleData.m_blockCounter == 255 && Options.enableDespawning)) {
+				if ((vehicleData.m_flags & (Vehicle.Flags.Spawned | Vehicle.Flags.WaitingPath | Vehicle.Flags.WaitingSpace | Vehicle.Flags.WaitingCargo)) == 0 || (vehicleData.m_blockCounter == 255 && Options.enableDespawning)) {
 					Singleton<VehicleManager>.instance.ReleaseVehicle(vehicleId);
 				}
 			} catch (Exception ex) {
@@ -129,7 +129,7 @@ namespace TrafficManager.Custom.AI {
 			/// NON-STOCK CODE END ///
 
 			VehicleInfo info = this.m_info;
-			if ((vehicleData.m_flags & Vehicle.Flags.Spawned) == Vehicle.Flags.None && Vector3.Distance(startPos, endPos) < 100f) {
+			if ((vehicleData.m_flags & Vehicle.Flags.Spawned) == 0 && Vector3.Distance(startPos, endPos) < 100f) {
 				startPos = endPos;
 			}
 			bool allowUnderground;
@@ -138,7 +138,7 @@ namespace TrafficManager.Custom.AI {
 				allowUnderground = true;
 				allowUnderground2 = true;
 			} else {
-				allowUnderground = ((vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != Vehicle.Flags.None);
+				allowUnderground = ((vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != 0);
 				allowUnderground2 = false;
 			}
 			PathUnit.Position startPosA;

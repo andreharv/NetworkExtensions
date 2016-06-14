@@ -173,7 +173,7 @@ namespace Transit.Addon.TM.UI {
 
 			ushort vehicleId = Convert.ToUInt16(_goToField.text);
 			Vehicle vehicle = Singleton<VehicleManager>.instance.m_vehicles.m_buffer[vehicleId];
-			if ((vehicle.m_flags & Vehicle.Flags.Created) != Vehicle.Flags.None) {
+			if ((vehicle.m_flags & Vehicle.Flags.Created) != 0) {
 				CameraCtrl.GoToVehicle(vehicleId, new Vector3(vehicle.GetLastFramePosition().x, Camera.main.transform.position.y, vehicle.GetLastFramePosition().z));
 			}
 		}

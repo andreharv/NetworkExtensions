@@ -37,8 +37,9 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
                             node.SetTextures(
                                 new TextureSet
                                     (@"Roads\PedestrianRoads\Common\Textures\Ground_Trans__MainTex.png",
-                                     @"Roads\PedestrianRoads\Common\Textures\Ground_Trans__AlphaMap.png"),
-                                new LODTextureSet
+                                     @"Roads\PedestrianRoads\Common\Textures\Ground_Trans__AlphaMap.png",
+                                     @"Roads\PedestrianRoads\Common\Textures\Ground_Node_LOD__XYSMap.png"),
+                            new LODTextureSet
                                     (@"Roads\PedestrianRoads\Common\Textures\Ground_Trans_LOD__MainTex.png",
                                      @"Roads\PedestrianRoads\Common\Textures\Ground_Trans_LOD__AlphaMap.png",
                                      @"Roads\PedestrianRoads\Common\Textures\Ground_Node_LOD__XYSMap.png"));

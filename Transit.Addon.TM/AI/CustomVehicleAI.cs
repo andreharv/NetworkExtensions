@@ -38,7 +38,7 @@ namespace Transit.Addon.TM.AI {
 			List<String> logBuffer = new List<String>();
 			bool logme = false;
 #endif
-			if ((vehicleData.m_flags & Vehicle.Flags.Created) == Vehicle.Flags.None) {
+			if ((vehicleData.m_flags & Vehicle.Flags.Created) == 0) {
 				TrafficPriority.RemoveVehicleFromSegments(vehicleId);
 				return;
 			}
@@ -184,7 +184,7 @@ namespace Transit.Addon.TM.AI {
 						vehiclePos.ToSegment = realTimePositions[1].m_segment;
 						vehiclePos.ToLaneIndex = realTimePositions[1].m_lane;
 						vehiclePos.ReduceSpeedByValueToYield = UnityEngine.Random.Range(16f, 28f);
-						vehiclePos.OnEmergency = (vehicleData.m_flags & Vehicle.Flags.Emergency2) != Vehicle.Flags.None;
+						vehiclePos.OnEmergency = (vehicleData.m_flags & Vehicle.Flags.Emergency2) != 0;
 						vehiclePos.VehicleType = (TMVehicleType)vehicleType;
 
 #if DEBUGV
@@ -213,7 +213,7 @@ namespace Transit.Addon.TM.AI {
 							upcomingVehiclePos.ToSegment = realTimePositions[i + 1].m_segment;
 							upcomingVehiclePos.ToLaneIndex = realTimePositions[i + 1].m_lane;
 							upcomingVehiclePos.ReduceSpeedByValueToYield = UnityEngine.Random.Range(16f, 28f);
-							upcomingVehiclePos.OnEmergency = (vehicleData.m_flags & Vehicle.Flags.Emergency2) != Vehicle.Flags.None;
+							upcomingVehiclePos.OnEmergency = (vehicleData.m_flags & Vehicle.Flags.Emergency2) != 0;
 							upcomingVehiclePos.VehicleType = (TMVehicleType)vehicleType;
 #if DEBUGV
 							logBuffer.Add($"* vehicleId {vehicleId}. Adding future position: from {upcomingVehiclePos.FromSegment}  (lane {upcomingVehiclePos.FromLaneIndex}), going over {upcomingVehiclePos.ToNode}, to {upcomingVehiclePos.ToSegment} (lane {upcomingVehiclePos.ToLaneIndex})");
@@ -268,7 +268,7 @@ namespace Transit.Addon.TM.AI {
 		}
 
 		internal static TMVehicleType? DetermineVehicleTypeFromVehicle(ushort vehicleId, ref Vehicle vehicleData) {
-			if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) != Vehicle.Flags.None)
+			if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) != 0)
 				return TMVehicleType.Emergency;
 			
 			VehicleAI ai = vehicleData.Info.m_vehicleAI;
@@ -329,7 +329,7 @@ namespace Transit.Addon.TM.AI {
 		public static bool ShouldRecalculatePath(ushort vehicleId, ref Vehicle vehicleData, int maxBlockCounter) {
 			if (vehicleData.m_leadingVehicle != 0)
 				return false;
-			if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) == Vehicle.Flags.None)
+			if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) == 0)
 				return false;
 			if (!TMDataManager.Options.dynamicPathRecalculation)
 				return false;
