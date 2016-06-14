@@ -2,6 +2,13 @@
 A work-in-progress modification for **Cities: Skylines** to add additional road traffic control
 
 # Changelog
+1.6.21, 06/14/2016:
+- Bugfix: Too few cargo trains were spawning (thanks to @Scratch, @toruk_makto1, @Mr.Miyagi, @mottoh and @Syparo for pointing out this problem)       
+- Bugfix: Vehicle restrictions did not work as expected (thanks to @nordlaser for pointing out this problem)
+
+1.6.20, 06/11/2016:
+- Bugfix: Priority signs were not working correctly (thanks to @mottoth, @Madgemade for pointing out this problem)
+
 1.6.19, 06/11/2016
 - Bugfix: Timed traffic lights UI not working as expected (thanks to @Madgemade for pointing out this problem)
 

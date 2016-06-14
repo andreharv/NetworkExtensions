@@ -128,12 +128,21 @@ namespace TrafficManager.Custom.AI {
 			}
 		}
 
-		public bool CustomStartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays) {
+		public bool CustomStartPathFind(ushort vehicleId, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays) {
 			/// NON-STOCK CODE START ///
-			ExtVehicleType? vehicleType = VehicleStateManager.GetVehicleState(vehicleID)?.VehicleType;
+			ExtVehicleType? vehicleType = VehicleStateManager.DetermineVehicleType(ref vehicleData);
 			if (vehicleType == ExtVehicleType.CargoTrain)
 				vehicleType = ExtVehicleType.CargoVehicle;
-			//Log._Debug($"CustomTrainAI.CustomStartPathFind. vehicleID={vehicleID}. type={this.GetType().ToString()} vehicleType={vehicleType}");
+#if DEBUG
+			bool reversed = (vehicleData.m_flags & Vehicle.Flags.Reversed) != 0;
+			ushort frontVehicleId;
+			if (reversed) {
+				frontVehicleId = vehicleData.GetLastVehicle(vehicleId);
+			} else {
+				frontVehicleId = vehicleId;
+			}
+			Log._Debug($"CustomTrainAI.CustomStartPathFind. vehicleID={vehicleId}. reversed={reversed} frontVehicleId={frontVehicleId} type={this.GetType().ToString()} vehicleType={vehicleType} target={vehicleData.m_targetBuilding}");
+#endif
 			/// NON-STOCK CODE END ///
 
 			VehicleInfo info = this.m_info;

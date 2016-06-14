@@ -256,7 +256,7 @@ namespace TrafficManager.Traffic {
 			}
 
 			// determine vehicle type
-			ExtVehicleType? type = DetermineVehicleType(ref vehicleData);
+			ExtVehicleType? type = VehicleStateManager.DetermineVehicleType(ref vehicleData);
 			if (type == null) {
 #if DEBUGVSTATE
 				Log.Warning($"OnPathFindReady: Could not determine vehicle type of {VehicleId}!");
@@ -384,62 +384,6 @@ namespace TrafficManager.Traffic {
 				//Log._Debug($"HandleVehicle: adding traffic to segment {realTimePositions[0].m_segment}, lane {realTimePositions[0].m_lane}");
 				CustomRoadAI.AddTraffic(laneId, Singleton<NetManager>.instance.m_segments.m_buffer[realTimePositions[0].m_segment].Info.m_lanes[realTimePositions[0].m_lane], (ushort)Mathf.RoundToInt(vehicleData.CalculateTotalLength(vehicleId)), logVehicleSpeed ? (ushort?)Mathf.RoundToInt(lastFrameData.m_velocity.magnitude) : null);
 			}*/ // TODO move to VehicleStateManager
-		}
-
-		private static ExtVehicleType? DetermineVehicleType(ref Vehicle vehicleData) {
-			if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) != 0)
-				return ExtVehicleType.Emergency;
-
-			VehicleAI ai = vehicleData.Info.m_vehicleAI;
-			return DetermineVehicleTypeFromAIType(ai, false);
-		}
-
-		private static ExtVehicleType? DetermineVehicleTypeFromAIType(VehicleAI ai, bool emergencyOnDuty) {
-			if (emergencyOnDuty)
-				return ExtVehicleType.Emergency;
-
-			switch (ai.m_info.m_vehicleType) {
-				case VehicleInfo.VehicleType.Bicycle:
-					return ExtVehicleType.Bicycle;
-				case VehicleInfo.VehicleType.Car:
-					if (ai is PassengerCarAI)
-						return ExtVehicleType.PassengerCar;
-					if (ai is AmbulanceAI || ai is FireTruckAI || ai is PoliceCarAI || ai is HearseAI || ai is GarbageTruckAI || ai is MaintenanceTruckAI || ai is SnowTruckAI) {
-						return ExtVehicleType.Service;
-					}
-					if (ai is CarTrailerAI)
-						return ExtVehicleType.None;
-					if (ai is BusAI)
-						return ExtVehicleType.Bus;
-					if (ai is TaxiAI)
-						return ExtVehicleType.Taxi;
-					if (ai is CargoTruckAI)
-						return ExtVehicleType.CargoTruck;
-					break;
-				case VehicleInfo.VehicleType.Metro:
-				case VehicleInfo.VehicleType.Train:
-					if (ai is PassengerTrainAI)
-						return ExtVehicleType.PassengerTrain;
-					//if (ai is CargoTrainAI)
-					return ExtVehicleType.CargoTrain;
-				//break;
-				case VehicleInfo.VehicleType.Tram:
-					return ExtVehicleType.Tram;
-				case VehicleInfo.VehicleType.Ship:
-					if (ai is PassengerShipAI)
-						return ExtVehicleType.PassengerShip;
-					//if (ai is CargoShipAI)
-					return ExtVehicleType.CargoShip;
-				//break;
-				case VehicleInfo.VehicleType.Plane:
-					//if (ai is PassengerPlaneAI)
-					return ExtVehicleType.PassengerPlane;
-					//break;
-			}
-#if DEBUGVSTATE
-			Log._Debug($"Could not determine vehicle type from ai type: {ai.GetType().ToString()}");
-#endif
-			return null;
 		}
 	}
 }

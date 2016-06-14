@@ -588,6 +588,18 @@ namespace TrafficManager.State {
 			}
 		}
 
+		public static void resetSpeedLimits() {
+			try {
+				Monitor.Enter(laneSpeedLimitLock);
+				laneSpeedLimit.Clear();
+				for (int i = 0; i < Singleton<NetManager>.instance.m_segments.m_size; ++i) {
+					laneSpeedLimitArray[i] = null;
+				}
+			} finally {
+				Monitor.Exit(laneSpeedLimitLock);
+			}
+		}
+
 		internal static void OnLevelUnloading() {
 			initDone = false;
 

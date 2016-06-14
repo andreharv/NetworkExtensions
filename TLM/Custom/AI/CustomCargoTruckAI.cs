@@ -22,11 +22,11 @@ namespace TrafficManager.Custom.AI {
 						}
 					}
 
-					try {
+					/*try {
 						VehicleStateManager.LogTraffic(vehicleId, ref data, true);
 					} catch (Exception e) {
 						Log.Error("CargoTruckAI CustomSimulationStep Error: " + e.ToString());
-					}
+					}*/
 
 					BaseSimulationStep(vehicleId, ref data, physicsLodRefPos);
 				}
@@ -35,22 +35,20 @@ namespace TrafficManager.Custom.AI {
 			}
 		}
 
-		// TODO: inherit CarAI
-
 		private static void RemoveOffers(ushort vehicleId, ref Vehicle data) {
-			if ((data.m_flags & Vehicle.Flags.WaitingTarget) != 0) {
+			if ((data.m_flags & Vehicle.Flags.WaitingTarget) != (Vehicle.Flags)0) {
 				var offer = default(TransferManager.TransferOffer);
 				offer.Vehicle = vehicleId;
-				if ((data.m_flags & Vehicle.Flags.TransferToSource) != 0) {
+				if ((data.m_flags & Vehicle.Flags.TransferToSource) != (Vehicle.Flags)0) {
 					Singleton<TransferManager>.instance.RemoveIncomingOffer((TransferManager.TransferReason)data.m_transferType, offer);
-				} else if ((data.m_flags & Vehicle.Flags.TransferToTarget) != 0) {
+				} else if ((data.m_flags & Vehicle.Flags.TransferToTarget) != (Vehicle.Flags)0) {
 					Singleton<TransferManager>.instance.RemoveOutgoingOffer((TransferManager.TransferReason)data.m_transferType, offer);
 				}
 			}
 		}
 
 		private void BaseSimulationStep(ushort vehicleId, ref Vehicle data, Vector3 physicsLodRefPos) {
-			if ((data.m_flags & Vehicle.Flags.WaitingPath) != 0) {
+			if ((data.m_flags & Vehicle.Flags.WaitingPath) != (Vehicle.Flags)0) {
 				PathManager instance = Singleton<PathManager>.instance;
 				byte pathFindFlags = instance.m_pathUnits.m_buffer[(int)((UIntPtr)data.m_path)].m_pathFindFlags;
 				if ((pathFindFlags & 4) != 0) {
@@ -194,7 +192,7 @@ namespace TrafficManager.Custom.AI {
 					endPosB = default(PathUnit.Position);
 				}
 				uint path;
-				ExtVehicleType? extVehicleType = VehicleStateManager.GetVehicleState(vehicleID)?.VehicleType;
+				ExtVehicleType? extVehicleType = VehicleStateManager.DetermineVehicleType(ref vehicleData);
 				bool res = false;
 				if (extVehicleType == null)
 					res = Singleton<PathManager>.instance.CreatePath(out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, NetInfo.LaneType.Vehicle, info.m_vehicleType, 20000f, heavyVehicle, ignoreBlocked, false, false);

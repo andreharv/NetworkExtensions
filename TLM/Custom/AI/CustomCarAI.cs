@@ -35,7 +35,7 @@ namespace TrafficManager.Custom.AI {
 		/// <param name="vehicleId"></param>
 		/// <param name="vehicleData"></param>
 		/// <param name="physicsLodRefPos"></param>
-		public void TrafficManagerSimulationStep(ushort vehicleId, ref Vehicle vehicleData, Vector3 physicsLodRefPos) {
+		public void CustomSimulationStep(ushort vehicleId, ref Vehicle vehicleData, Vector3 physicsLodRefPos) {
 			if ((vehicleData.m_flags & Vehicle.Flags.WaitingPath) != 0) {
 				PathManager instance = Singleton<PathManager>.instance;
 				byte pathFindFlags = instance.m_pathUnits.m_buffer[(int)((UIntPtr)vehicleData.m_path)].m_pathFindFlags;
@@ -60,13 +60,13 @@ namespace TrafficManager.Custom.AI {
 			try {
 				VehicleStateManager.LogTraffic(vehicleId, ref vehicleData, true);
 			} catch (Exception e) {
-				Log.Error("CarAI TrafficManagerSimulationStep Error: " + e.ToString());
+				Log.Error("CarAI CustomSimulationStep Error: " + e.ToString());
 			}
 
 			try {
 				VehicleStateManager.UpdateVehiclePos(vehicleId, ref vehicleData);
 			} catch (Exception e) {
-				Log.Error("CarAI TmCalculateSegmentPosition Error: " + e.ToString());
+				Log.Error("CarAI CustomSimulationStep Error: " + e.ToString());
 			}
 
 			Vector3 lastFramePosition = vehicleData.GetLastFramePosition();
@@ -239,7 +239,7 @@ namespace TrafficManager.Custom.AI {
 			if (isRecklessDriver)
 				maxSpeed *= 1.5f + vehicleRand * 1.5f; // woohooo, 1.5 .. 3
 			else if ((vehicleType & ExtVehicleType.PassengerCar) != ExtVehicleType.None)
-				maxSpeed *= 0.8f + vehicleRand * 0.3f; // a little variance, 0.8 .. 1.1
+				maxSpeed *= 0.7f + vehicleRand * 0.4f; // a little variance, 0.7 .. 1.1
 			else if ((vehicleType & ExtVehicleType.Taxi) != ExtVehicleType.None)
 				maxSpeed *= 0.9f + vehicleRand * 0.4f; // a little variance, 0.9 .. 1.3
 
@@ -271,7 +271,7 @@ namespace TrafficManager.Custom.AI {
 		}
 
 		public bool CustomStartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget) {
-			ExtVehicleType? vehicleType = VehicleStateManager.GetVehicleState(vehicleID)?.VehicleType;
+			ExtVehicleType? vehicleType = VehicleStateManager.DetermineVehicleType(ref vehicleData);
 			/*if (vehicleType == null) {
 				Log._Debug($"CustomCarAI.CustomStartPathFind: Could not determine ExtVehicleType from class type. typeof this={this.GetType().ToString()}");
 			} else {

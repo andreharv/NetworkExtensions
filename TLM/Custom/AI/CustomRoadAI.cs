@@ -199,8 +199,8 @@ namespace TrafficManager.Custom.AI {
 
 			// get vehicle type
 			ExtVehicleType? vehicleType = VehicleStateManager.GetVehicleState(vehicleId)?.VehicleType;
-			if (vehicleData.Info.m_vehicleType == VehicleInfo.VehicleType.Tram && vehicleType != ExtVehicleType.Tram)
-				Log.Warning($"vehicleType={vehicleType} ({(int)vehicleType}) for Tram");
+			/*if (vehicleData.Info.m_vehicleType == VehicleInfo.VehicleType.Tram && vehicleType != ExtVehicleType.Tram)
+				Log.Warning($"vehicleType={vehicleType} ({(int)vehicleType}) for Tram");*/
 			//Log._Debug($"GetCustomTrafficLightState: Vehicle {vehicleId} is a {vehicleType}");
 			if (vehicleType == null) {
 				Log.Warning($"GetTrafficLightState: Could not determine vehicle type of vehicle {vehicleId}!");

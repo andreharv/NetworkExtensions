@@ -194,7 +194,7 @@ namespace TrafficManager {
 									typeof (Vehicle).MakeByRefType(),
 									typeof (Vector3)
 								}),
-								typeof(CustomCarAI).GetMethod("TrafficManagerSimulationStep")));
+								typeof(CustomCarAI).GetMethod("CustomSimulationStep")));
 				} catch (Exception) {
 					Log.Error("Could not redirect CarAI::SimulationStep.");
 					detourFailed = true;

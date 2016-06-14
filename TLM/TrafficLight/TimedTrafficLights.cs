@@ -220,15 +220,23 @@ namespace TrafficManager.TrafficLight {
 
 			// change step
 			var newCurrentStep = (CurrentStep + 1) % NumSteps();
-			foreach (ushort slaveNodeId in NodeGroup) {
-				TrafficLightSimulation slaveSim = TrafficLightSimulation.GetNodeSimulation(slaveNodeId);
-				if (slaveSim == null || !slaveSim.IsTimedLight()) {
-					continue;
+			while (newCurrentStep != CurrentStep) {
+				foreach (ushort slaveNodeId in NodeGroup) {
+					TrafficLightSimulation slaveSim = TrafficLightSimulation.GetNodeSimulation(slaveNodeId);
+					if (slaveSim == null || !slaveSim.IsTimedLight()) {
+						continue;
+					}
+
+					slaveSim.TimedLight.CurrentStep = newCurrentStep;
+					slaveSim.TimedLight.Steps[newCurrentStep].Start();
+					slaveSim.TimedLight.Steps[newCurrentStep].SetLights();
 				}
 
-				slaveSim.TimedLight.CurrentStep = newCurrentStep;
-				slaveSim.TimedLight.Steps[newCurrentStep].Start();
-				slaveSim.TimedLight.Steps[newCurrentStep].SetLights();
+				if (Steps[CurrentStep].minTime > 0 || !Steps[CurrentStep].StepDone(true)) {
+					break;
+				}
+
+				newCurrentStep = (newCurrentStep + 1) % NumSteps();
 			}
 		}
 

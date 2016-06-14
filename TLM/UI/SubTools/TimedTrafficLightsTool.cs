@@ -347,8 +347,8 @@ namespace TrafficManager.UI.SubTools {
 					if (GUILayout.Button(Translation.GetString("Save"), GUILayout.Width(70))) {
 						foreach (var sim in SelectedNodeIndexes.Select(TrafficLightSimulation.GetNodeSimulation)) {
 
-							if (_stepMinValue <= 0)
-								_stepMinValue = 1;
+							if (_stepMinValue < 0)
+								_stepMinValue = 0;
 							if (_stepMaxValue <= 0)
 								_stepMaxValue = 1;
 							if (_stepMaxValue < _stepMinValue)
@@ -396,8 +396,8 @@ namespace TrafficManager.UI.SubTools {
 
 					if (GUILayout.Button(Translation.GetString("Add"), GUILayout.Width(70))) {
 						foreach (var sim in SelectedNodeIndexes.Select(TrafficLightSimulation.GetNodeSimulation)) {
-							if (_stepMinValue <= 0)
-								_stepMinValue = 1;
+							if (_stepMinValue < 0)
+								_stepMinValue = 0;
 							if (_stepMaxValue <= 0)
 								_stepMaxValue = 1;
 							if (_stepMaxValue < _stepMinValue)

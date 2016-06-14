@@ -75,5 +75,61 @@ namespace TrafficManager.Traffic {
 				}
 			}
 		}
+
+		internal static ExtVehicleType? DetermineVehicleType(ref Vehicle vehicleData) {
+			if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) != 0)
+				return ExtVehicleType.Emergency;
+
+			VehicleAI ai = vehicleData.Info.m_vehicleAI;
+			return DetermineVehicleTypeFromAIType(ai, false);
+		}
+
+		private static ExtVehicleType? DetermineVehicleTypeFromAIType(VehicleAI ai, bool emergencyOnDuty) {
+			if (emergencyOnDuty)
+				return ExtVehicleType.Emergency;
+
+			switch (ai.m_info.m_vehicleType) {
+				case VehicleInfo.VehicleType.Bicycle:
+					return ExtVehicleType.Bicycle;
+				case VehicleInfo.VehicleType.Car:
+					if (ai is PassengerCarAI)
+						return ExtVehicleType.PassengerCar;
+					if (ai is AmbulanceAI || ai is FireTruckAI || ai is PoliceCarAI || ai is HearseAI || ai is GarbageTruckAI || ai is MaintenanceTruckAI || ai is SnowTruckAI) {
+						return ExtVehicleType.Service;
+					}
+					if (ai is CarTrailerAI)
+						return ExtVehicleType.None;
+					if (ai is BusAI)
+						return ExtVehicleType.Bus;
+					if (ai is TaxiAI)
+						return ExtVehicleType.Taxi;
+					if (ai is CargoTruckAI)
+						return ExtVehicleType.CargoTruck;
+					break;
+				case VehicleInfo.VehicleType.Metro:
+				case VehicleInfo.VehicleType.Train:
+					if (ai is PassengerTrainAI)
+						return ExtVehicleType.PassengerTrain;
+					//if (ai is CargoTrainAI)
+					return ExtVehicleType.CargoTrain;
+				//break;
+				case VehicleInfo.VehicleType.Tram:
+					return ExtVehicleType.Tram;
+				case VehicleInfo.VehicleType.Ship:
+					if (ai is PassengerShipAI)
+						return ExtVehicleType.PassengerShip;
+					//if (ai is CargoShipAI)
+					return ExtVehicleType.CargoShip;
+				//break;
+				case VehicleInfo.VehicleType.Plane:
+					//if (ai is PassengerPlaneAI)
+					return ExtVehicleType.PassengerPlane;
+					//break;
+			}
+#if DEBUGVSTATE
+			Log._Debug($"Could not determine vehicle type from ai type: {ai.GetType().ToString()}");
+#endif
+			return null;
+		}
 	}
 }

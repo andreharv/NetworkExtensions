@@ -541,7 +541,7 @@ namespace TrafficManager.Custom.PathFinding {
 #if DEBUGPF
 			//bool debug = Options.disableSomething1 && item.m_position.m_segment == 1459 && nextNodeId == 19630;
 			//bool debug = Options.disableSomething1 && (item.m_position.m_segment == 3833 || item.m_position.m_segment == 9649);
-			bool debug = false;// Options.disableSomething1;
+			bool debug = Options.disableSomething1 && (nextNodeId == 13267 || item.m_position.m_segment == 36329);// Options.disableSomething1;
 #endif
 #if DEBUGPF
 			/*if (m_queuedPathFindCount > 100 && Options.disableSomething1)
@@ -559,7 +559,7 @@ namespace TrafficManager.Custom.PathFinding {
 #endif
 
 #if DEBUGPF2
-			bool debug2 = Options.disableSomething1 && _extVehicleType == ExtVehicleType.Bicycle;
+			bool debug2 = debug; //Options.disableSomething1 && _extVehicleType == ExtVehicleType.Bicycle;
 			List<String> logBuf2 = null;
 			if (debug2)
 				logBuf2 = new List<String>();
@@ -1039,20 +1039,20 @@ namespace TrafficManager.Custom.PathFinding {
 								int numLanesSeen = Math.Max(totalIncomingLanes, totalOutgoingLanes); // number of lanes that were processed in earlier segment iterations (either all incoming or all outgoing)
 #if DEBUGPF
 								if (debug)
-									logBuf.Add($"Applying highway rules. {numRightLanes} right lanes found ({totalIncomingLanes} incoming, {totalOutgoingLanes} outgoing).");
+									logBuf.Add($"Applying highway rules. {numLanesSeen} lanes found ({totalIncomingLanes} incoming, {totalOutgoingLanes} outgoing).");
 #endif
 								int nextLeftSimilarIndex;
 								if (totalOutgoingLanes > 0) {
 									nextLeftSimilarIndex = prevLeftSimilarLaneIndex + numLanesSeen; // lane splitting
 #if DEBUGPF
 									if (debug)
-										logBuf.Add($"Performing lane split. nextLeftSimilarIndex={nextLeftSimilarIndex} = prevLeftSimilarIndex({prevLeftSimilarLaneIndex}) + numRightLanes({numRightLanes})");
+										logBuf.Add($"Performing lane split. nextLeftSimilarIndex={nextLeftSimilarIndex} = prevLeftSimilarIndex({prevLeftSimilarLaneIndex}) + numLanesSeen({numLanesSeen})");
 #endif
 								} else {
 									nextLeftSimilarIndex = prevLeftSimilarLaneIndex - numLanesSeen; // lane merging
 #if DEBUGPF
 									if (debug)
-										logBuf.Add($"Performing lane merge. nextLeftSimilarIndex={nextLeftSimilarIndex} = prevLeftSimilarIndex({prevLeftSimilarLaneIndex}) - numRightLanes({numRightLanes})");
+										logBuf.Add($"Performing lane merge. nextLeftSimilarIndex={nextLeftSimilarIndex} = prevLeftSimilarIndex({prevLeftSimilarLaneIndex}) - numLanesSeen({numLanesSeen})");
 #endif
 								}
 
@@ -1310,7 +1310,7 @@ namespace TrafficManager.Custom.PathFinding {
 			}
 
 			if (nextNode.m_lane != 0u) {
-				// transport lines
+				// transport lines, cargo lines, etc.
 
 				bool targetDisabled = (nextNode.m_flags & NetNode.Flags.Disabled) != NetNode.Flags.None;
 				ushort nextSegment = netManager.m_lanes.m_buffer[(int)((UIntPtr)nextNode.m_lane)].m_segment;
@@ -1676,10 +1676,11 @@ namespace TrafficManager.Custom.PathFinding {
 
 			// check vehicle ban policies
 			if ((this._isHeavyVehicle && (nextSegment.m_flags & NetSegment.Flags.HeavyBan) != NetSegment.Flags.None) ||
-				(prevLaneType == NetInfo.LaneType.Vehicle && (prevVehicleType & _vehicleTypes) == VehicleInfo.VehicleType.Car && (instance.m_segments.m_buffer[(int)item.m_position.m_segment].m_flags & NetSegment.Flags.CarBan) != NetSegment.Flags.None)) {
+				(prevLaneType == NetInfo.LaneType.Vehicle && (prevVehicleType & _vehicleTypes) == VehicleInfo.VehicleType.Car &&
+				(instance.m_segments.m_buffer[(int)item.m_position.m_segment].m_flags & NetSegment.Flags.CarBan) != NetSegment.Flags.None)) {
 #if DEBUGPF
 				if (Options.disableSomething1 && debug) {
-					Log._Debug($"Vehicle {_extVehicleType} should not use lane {item.m_position.m_lane} @ seg. {item.m_position.m_segment}, null? {lane == null}");
+					Log._Debug($"Vehicle {_extVehicleType} should not use lane {item.m_position.m_lane} @ seg. {item.m_position.m_segment}, null? {prevLaneInfo == null}");
 				}
 #endif
 				avoidLane = true;
@@ -1755,7 +1756,7 @@ namespace TrafficManager.Custom.PathFinding {
 				List<String> logBuf = null;
 				if (costDebug) {
 					logBuf = new List<String>();
-					logBuf.Add($"Path from {nextSegmentId} (idx {laneIndex}, id {curLaneId}) to {item.m_position.m_segment} (lane {prevRightSimilarLaneIndex} from right, idx {item.m_position.m_lane}): costDebug=TRUE, explore? {nextLane.CheckType(laneType2, vehicleType2)} && {(nextSegmentId != item.m_position.m_segment || laneIndex != (int)item.m_position.m_lane)} && {(byte)(nextLane.m_finalDirection & nextDir2) != 0 && CanLanesConnect(curLaneId, item.m_laneID)}");
+					logBuf.Add($"Path from {nextSegmentId} (idx {laneIndex}, id {curLaneId}) to {item.m_position.m_segment} (lane {prevRightSimilarLaneIndex} from right, idx {item.m_position.m_lane}): costDebug=TRUE, explore? {nextLane.CheckType(allowedLaneTypes, allowedVehicleTypes)} && {(nextSegmentId != item.m_position.m_segment || laneIndex != (int)item.m_position.m_lane)} && {(byte)(nextLane.m_finalDirection & nextFinalDir) != 0 && CanLanesConnect(curLaneId, item.m_laneID)}");
 				}
 #endif
 
@@ -1779,7 +1780,7 @@ namespace TrafficManager.Custom.PathFinding {
 						if (addCustomTrafficCosts && !strictlyAvoidLane) {
 							// calculate current lane density & speed
 							nextSpeed = CustomRoadAI.laneMeanSpeeds[nextSegmentId] != null && laneIndex < CustomRoadAI.laneMeanSpeeds[nextSegmentId].Length ? CustomRoadAI.laneMeanSpeeds[nextSegmentId][laneIndex] : 1f;
-							nextDensity = CustomRoadAI.laneMeanDensities[nextSegmentId] != null && laneIndex < CustomRoadAI.laneMeanDensities[nextSegmentId].Length ? CustomRoadAI.laneMeanDensities[nextSegmentId][laneIndex] : 0f;
+							nextDensity = CustomRoadAI.laneMeanDensities[nextSegmentId] != null && laneIndex < CustomRoadAI.laneMeanDensities[nextSegmentId].Length ? CustomRoadAI.laneMeanDensities[nextSegmentId][laneIndex] : 0.1f;
 							nextSpeed = (float)Math.Max(0.1f, Math.Round(nextSpeed * 0.1f) / 10f); // 0.1, 0.2, ..., 1
 							nextDensity = (float)Math.Max(0.2f, Math.Round(nextDensity * 0.1f) / 10f); // 0.1, 0.2, ..., 1
 						}
@@ -2056,12 +2057,13 @@ namespace TrafficManager.Custom.PathFinding {
 
 							if (addItem) {
 								// NON-STOCK CODE END //
+
+								nextItem.m_lanesUsed = (item.m_lanesUsed | nextLane.m_laneType);
+								nextItem.m_laneID = curLaneId;
 #if DEBUGPF
 								if (debug)
 									Log._Debug($">> PF {this._pathFindIndex} -- Adding item: seg {nextItem.m_position.m_segment}, lane {nextItem.m_position.m_lane} (idx {nextItem.m_laneID}), off {nextItem.m_position.m_offset} -> seg {item.m_position.m_segment}, lane {item.m_position.m_lane} (idx {item.m_laneID}), off {item.m_position.m_offset}, cost {nextItem.m_comparisonValue}, previous cost {item.m_comparisonValue}, methodDist {nextItem.m_methodDistance}");
 #endif
-								nextItem.m_lanesUsed = (item.m_lanesUsed | nextLane.m_laneType);
-								nextItem.m_laneID = curLaneId;
 
 								this.AddBufferItem(nextItem, item.m_position);
 								// NON-STOCK CODE START //
@@ -2212,6 +2214,9 @@ namespace TrafficManager.Custom.PathFinding {
 #endregion
 
 		private float CalculateLaneSpeed(float speedLimit, byte startOffset, byte endOffset, ref NetSegment segment, NetInfo.Lane laneInfo) {
+			if ((laneInfo.m_vehicleType & (VehicleInfo.VehicleType.Train | VehicleInfo.VehicleType.Tram)) != VehicleInfo.VehicleType.None)
+				speedLimit = laneInfo.m_speedLimit;
+
 			NetInfo.Direction direction = ((segment.m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None) ? laneInfo.m_finalDirection : NetInfo.InvertDirection(laneInfo.m_finalDirection);
 			if ((byte)(direction & NetInfo.Direction.Avoid) == 0) {
 				return speedLimit;
@@ -2399,7 +2404,7 @@ namespace TrafficManager.Custom.PathFinding {
 			ExtVehicleType allowedTypes = VehicleRestrictionsManager.GetAllowedVehicleTypes(segmentId, segmentInfo, laneIndex, laneInfo);
 #if DEBUGPF
 			if (debug) {
-				Log._Debug($"CanUseLane: segmentId={segmentId} laneIndex={laneIndex} laneId={laneId}, _extVehicleType={_extVehicleType} _vehicleTypes={_vehicleTypes} _laneTypes={_laneTypes} _transportVehicle={_transportVehicle} _isHeavyVehicle={_isHeavyVehicle} allowedTypes={allowedTypes} res={((allowedTypes & _extVehicleType) != ExtVehicleType.None)}");
+				Log._Debug($"CanUseLane: segmentId={segmentId} laneIndex={laneIndex} _extVehicleType={_extVehicleType} _vehicleTypes={_vehicleTypes} _laneTypes={_laneTypes} _transportVehicle={_transportVehicle} _isHeavyVehicle={_isHeavyVehicle} allowedTypes={allowedTypes} res={((allowedTypes & _extVehicleType) != ExtVehicleType.None)}");
             }
 #endif
 			

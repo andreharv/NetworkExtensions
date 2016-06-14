@@ -580,7 +580,7 @@ namespace TrafficManager.UI {
 				//_counterStyle.normal.background = MakeTex(1, 1, new Color(0f, 0f, 0f, 0.4f));
 
 				VehicleState vState = VehicleStateManager.GetVehicleState((ushort)i);
-				String labelStr = "Veh. " + i + " @ " + String.Format("{0:0.##}", vehicle.GetLastFrameVelocity().magnitude) + ", len: " + vState?.TotalLength + ", state: " + vState?.JunctionTransitState + "\npos: " + vState?.GetCurrentPosition()?.SourceSegmentId + "->" + vState?.GetCurrentPosition()?.TransitNodeId + ", last update: " + vState?.LastPositionUpdate;
+				String labelStr = "Veh. " + i + /*" @ " + String.Format("{0:0.##}", vehicle.GetLastFrameVelocity().magnitude)*/ " (" + VehicleStateManager.GetVehicleState((ushort)i)?.VehicleType + ", valid? " + VehicleStateManager.GetVehicleState((ushort)i)?.Valid + ")" + ", len: " + vState?.TotalLength + ", state: " + vState?.JunctionTransitState + "\npos: " + vState?.GetCurrentPosition()?.SourceSegmentId + "->" + vState?.GetCurrentPosition()?.TransitNodeId + ", last update: " + vState?.LastPositionUpdate;
 				// add current path info
 				/*var currentPathId = vehicle.m_path;
 				if (currentPathId > 0) {
