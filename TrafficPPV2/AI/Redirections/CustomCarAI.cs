@@ -92,7 +92,7 @@ namespace CSL_Traffic
                             flag5 = true;
                             RoadBaseAI.SetTrafficLightState(num4, ref instance.m_segments.m_buffer[(int)prevPos.m_segment], currentFrameIndex - num5, vehicleLightState, pedestrianLightState, flag5, pedestrians);
                         }
-                        if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) == Vehicle.Flags.None || info.m_class.m_service != ItemClass.Service.Road)
+                        if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) == 0 || info.m_class.m_service != ItemClass.Service.Road)
                         {
                             switch (vehicleLightState)
                             {

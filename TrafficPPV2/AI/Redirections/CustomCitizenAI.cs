@@ -15,6 +15,7 @@ namespace CSL_Traffic
         {
             NetInfo.LaneType laneType = NetInfo.LaneType.Pedestrian;
             VehicleInfo.VehicleType vehicleType = VehicleInfo.VehicleType.None;
+            bool randomParking = false;
             if (vehicleInfo != null)
             {
                 if (vehicleInfo.m_class.m_subService == ItemClass.SubService.PublicTransportTaxi)
@@ -33,6 +34,10 @@ namespace CSL_Traffic
                 {
                     laneType |= NetInfo.LaneType.Vehicle;
                     vehicleType |= vehicleInfo.m_vehicleType;
+                    if (citizenData.m_targetBuilding != 0 && Singleton<BuildingManager>.instance.m_buildings.m_buffer[(int)citizenData.m_targetBuilding].Info.m_class.m_service > ItemClass.Service.Office)
+                    {
+                        randomParking = true;
+                    }
                 }
             }
             PathUnit.Position vehiclePosition = default(PathUnit.Position);
@@ -53,7 +58,7 @@ namespace CSL_Traffic
                 }
                 PathUnit.Position position2 = default(PathUnit.Position);
                 uint path;
-                if (Singleton<PathManager>.instance.CreatePath(ExtendedVehicleType.PassengerCar, out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, position2, endPosA, position2, vehiclePosition, laneType, vehicleType, 20000f, false, false, false, false))
+                if (Singleton<PathManager>.instance.CreatePath(ExtendedVehicleType.PassengerCar, out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, position2, endPosA, position2, vehiclePosition, laneType, vehicleType, 20000f, false, false, false, false, randomParking))
                 {
                     if (citizenData.m_path != 0u)
                     {

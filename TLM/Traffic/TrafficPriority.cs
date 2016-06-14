@@ -159,7 +159,7 @@ namespace TrafficManager.Traffic {
 		internal static void HandleAllVehicles() {
 			VehicleManager vehicleManager = Singleton<VehicleManager>.instance;
 			for (ushort i = 0; i < vehicleManager.m_vehicles.m_size; ++i) {
-				if (vehicleManager.m_vehicles.m_buffer[i].m_flags != Vehicle.Flags.None) {
+				if (vehicleManager.m_vehicles.m_buffer[i].m_flags != 0) {
 					try {
 						CustomVehicleAI.HandleVehicle(i, ref Singleton<VehicleManager>.instance.m_vehicles.m_buffer[i], false, false);
 					} catch (Exception e) {
@@ -239,7 +239,7 @@ namespace TrafficManager.Traffic {
 
 				for (ushort i = 0; i < Singleton<VehicleManager>.instance.m_vehicles.m_size; ++i) {
 					if (
-						(Singleton<VehicleManager>.instance.m_vehicles.m_buffer[i].m_flags & Vehicle.Flags.Created) != Vehicle.Flags.None /*&&
+						(Singleton<VehicleManager>.instance.m_vehicles.m_buffer[i].m_flags & Vehicle.Flags.Created) != 0 /*&&
 						Singleton<VehicleManager>.instance.m_vehicles.m_buffer[i].Info.m_vehicleType == VehicleInfo.VehicleType.Car*/)
 						Singleton<VehicleManager>.instance.ReleaseVehicle(i);
 				}
@@ -577,14 +577,14 @@ namespace TrafficManager.Traffic {
 #endif
 
 				// delete invalid target car
-				if ((Singleton<VehicleManager>.instance.m_vehicles.m_buffer[targetCarId].m_flags & Vehicle.Flags.Created) == Vehicle.Flags.None) {
+				if ((Singleton<VehicleManager>.instance.m_vehicles.m_buffer[targetCarId].m_flags & Vehicle.Flags.Created) == 0) {
 					RemoveVehicleFromSegments(targetCarId);
 					Vehicles[targetCarId].Valid = false;
 					return true;
 				}
 
 				// delete invalid incoming car
-				if ((Singleton<VehicleManager>.instance.m_vehicles.m_buffer[incomingCarId].m_flags & Vehicle.Flags.Created) == Vehicle.Flags.None) {
+				if ((Singleton<VehicleManager>.instance.m_vehicles.m_buffer[incomingCarId].m_flags & Vehicle.Flags.Created) == 0) {
 					RemoveVehicleFromSegments(incomingCarId);
 					Vehicles[incomingCarId].Valid = false;
 					return true;
@@ -1066,7 +1066,7 @@ namespace TrafficManager.Traffic {
 			if (prioritySegment.Node1 != 0) {
 				foreach (KeyValuePair<ushort, VehiclePosition> e in prioritySegment.Instance1.getCars()) {
 					var vehicleId = e.Key;
-					if ((Singleton<VehicleManager>.instance.m_vehicles.m_buffer[vehicleId].m_flags & Vehicle.Flags.Created) == Vehicle.Flags.None) {
+					if ((Singleton<VehicleManager>.instance.m_vehicles.m_buffer[vehicleId].m_flags & Vehicle.Flags.Created) == 0) {
 						vehicleIdsToDelete.Add(vehicleId);
 					}
 				}
@@ -1082,7 +1082,7 @@ namespace TrafficManager.Traffic {
 			if (prioritySegment.Node2 != 0) {
 				foreach (KeyValuePair<ushort, VehiclePosition> e in prioritySegment.Instance2.getCars()) {
 					var vehicleId = e.Key;
-					if ((Singleton<VehicleManager>.instance.m_vehicles.m_buffer[vehicleId].m_flags & Vehicle.Flags.Created) == Vehicle.Flags.None) {
+					if ((Singleton<VehicleManager>.instance.m_vehicles.m_buffer[vehicleId].m_flags & Vehicle.Flags.Created) == 0) {
 						vehicleIdsToDelete.Add(vehicleId);
 					}
 				}

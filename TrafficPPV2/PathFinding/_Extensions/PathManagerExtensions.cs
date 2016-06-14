@@ -32,20 +32,20 @@ namespace CSL_Traffic
         public static bool CreatePath(this PathManager pm, ExtendedVehicleType extendedVehicleType, out uint unit, ref Randomizer randomizer, uint buildIndex, PathUnit.Position startPos, PathUnit.Position endPos, NetInfo.LaneType laneTypes, VehicleInfo.VehicleType vehicleTypes, float maxLength)
         {
             PathUnit.Position position = default(PathUnit.Position);
-            return pm.CreatePath(extendedVehicleType, out unit, ref randomizer, buildIndex, startPos, position, endPos, position, position, laneTypes, vehicleTypes, maxLength, false, false, false, false);
+            return pm.CreatePath(extendedVehicleType, out unit, ref randomizer, buildIndex, startPos, position, endPos, position, position, laneTypes, vehicleTypes, maxLength, false, false, false, false, false);
         }
 
         public static bool CreatePath(this PathManager pm, ExtendedVehicleType extendedVehicleType, out uint unit, ref Randomizer randomizer, uint buildIndex, PathUnit.Position startPosA, PathUnit.Position startPosB, PathUnit.Position endPosA, PathUnit.Position endPosB, NetInfo.LaneType laneTypes, VehicleInfo.VehicleType vehicleTypes, float maxLength)
         {
-            return pm.CreatePath(extendedVehicleType, out unit, ref randomizer, buildIndex, startPosA, startPosB, endPosA, endPosB, default(PathUnit.Position), laneTypes, vehicleTypes, maxLength, false, false, false, false);
+            return pm.CreatePath(extendedVehicleType, out unit, ref randomizer, buildIndex, startPosA, startPosB, endPosA, endPosB, default(PathUnit.Position), laneTypes, vehicleTypes, maxLength, false, false, false, false, false);
         }
 
         public static bool CreatePath(this PathManager pm, ExtendedVehicleType extendedVehicleType, out uint unit, ref Randomizer randomizer, uint buildIndex, PathUnit.Position startPosA, PathUnit.Position startPosB, PathUnit.Position endPosA, PathUnit.Position endPosB, NetInfo.LaneType laneTypes, VehicleInfo.VehicleType vehicleTypes, float maxLength, bool isHeavyVehicle, bool ignoreBlocked, bool stablePath, bool skipQueue)
         {
-            return pm.CreatePath(extendedVehicleType, out unit, ref randomizer, buildIndex, startPosA, startPosB, endPosA, endPosB, default(PathUnit.Position), laneTypes, vehicleTypes, maxLength, isHeavyVehicle, ignoreBlocked, stablePath, skipQueue);
+            return pm.CreatePath(extendedVehicleType, out unit, ref randomizer, buildIndex, startPosA, startPosB, endPosA, endPosB, default(PathUnit.Position), laneTypes, vehicleTypes, maxLength, isHeavyVehicle, ignoreBlocked, stablePath, skipQueue, false);
         }
 
-        public static bool CreatePath(this PathManager pm, ExtendedVehicleType extendedVehicleType, out uint unit, ref Randomizer randomizer, uint buildIndex, PathUnit.Position startPosA, PathUnit.Position startPosB, PathUnit.Position endPosA, PathUnit.Position endPosB, PathUnit.Position vehiclePosition, NetInfo.LaneType laneTypes, VehicleInfo.VehicleType vehicleTypes, float maxLength, bool isHeavyVehicle, bool ignoreBlocked, bool stablePath, bool skipQueue)
+        public static bool CreatePath(this PathManager pm, ExtendedVehicleType extendedVehicleType, out uint unit, ref Randomizer randomizer, uint buildIndex, PathUnit.Position startPosA, PathUnit.Position startPosB, PathUnit.Position endPosA, PathUnit.Position endPosB, PathUnit.Position vehiclePosition, NetInfo.LaneType laneTypes, VehicleInfo.VehicleType vehicleTypes, float maxLength, bool isHeavyVehicle, bool ignoreBlocked, bool stablePath, bool skipQueue, bool randomParking)
         {
             if (ExtendedPathManager.PathFindFacades == null)
             {
@@ -65,7 +65,8 @@ namespace CSL_Traffic
                     isHeavyVehicle, 
                     ignoreBlocked, 
                     stablePath, 
-                    skipQueue);
+                    skipQueue,
+                    randomParking);
             }
 
             while (!Monitor.TryEnter(pm.m_bufferLock, SimulationManager.SYNCHRONIZE_TIMEOUT))
