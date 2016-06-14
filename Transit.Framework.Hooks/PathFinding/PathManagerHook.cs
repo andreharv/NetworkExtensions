@@ -40,7 +40,7 @@ namespace Transit.Framework.Hooks.PathFinding
         }
 
         [RedirectFrom(typeof(PathManager), (ulong)PrerequisiteType.PathFinding)]
-        public new bool CreatePath(out uint unit, ref Randomizer randomizer, uint buildIndex, PathUnit.Position startPosA, PathUnit.Position startPosB, PathUnit.Position endPosA, PathUnit.Position endPosB, PathUnit.Position vehiclePosition, NetInfo.LaneType laneTypes, VehicleInfo.VehicleType vehicleTypes, float maxLength, bool isHeavyVehicle, bool ignoreBlocked, bool stablePath, bool skipQueue)
+        public new bool CreatePath(out uint unit, ref Randomizer randomizer, uint buildIndex, PathUnit.Position startPosA, PathUnit.Position startPosB, PathUnit.Position endPosA, PathUnit.Position endPosB, PathUnit.Position vehiclePosition, NetInfo.LaneType laneTypes, VehicleInfo.VehicleType vehicleTypes, float maxLength, bool isHeavyVehicle, bool ignoreBlocked, bool stablePath, bool skipQueue, bool randomParking)
         {
             return this.CreatePath(
                 ExtendedUnitType.Unknown, 
@@ -58,7 +58,8 @@ namespace Transit.Framework.Hooks.PathFinding
                 isHeavyVehicle,
                 ignoreBlocked,
                 stablePath,
-                skipQueue);
+                skipQueue,
+                randomParking);
         }
 
         [RedirectFrom(typeof(PathManager), (ulong)PrerequisiteType.PathFinding)]

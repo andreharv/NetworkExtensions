@@ -20,7 +20,7 @@ namespace Transit.Framework.Hooks.AI.Units
 				allowUnderground = true;
 				allowUnderground2 = true;
 			} else {
-				allowUnderground = ((vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != Vehicle.Flags.None);
+				allowUnderground = ((vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != 0);
 				allowUnderground2 = false;
 			}
 			PathUnit.Position startPosA;

@@ -13,11 +13,11 @@ namespace Transit.Framework.Hooks.AI.Units
         [RedirectFrom(typeof(HearseAI), (ulong)PrerequisiteType.PathFinding)]
         protected override bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData)
         {
-            if ((vehicleData.m_flags & Vehicle.Flags.WaitingTarget) != Vehicle.Flags.None)
+            if ((vehicleData.m_flags & Vehicle.Flags.WaitingTarget) != 0)
             {
                 return true;
             }
-            if ((vehicleData.m_flags & Vehicle.Flags.GoingBack) != Vehicle.Flags.None)
+            if ((vehicleData.m_flags & Vehicle.Flags.GoingBack) != 0)
             {
                 if (vehicleData.m_sourceBuilding != 0)
                 {

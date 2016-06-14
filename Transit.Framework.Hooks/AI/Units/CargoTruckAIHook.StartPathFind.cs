@@ -15,11 +15,11 @@ namespace Transit.Framework.Hooks.AI.Units
         [RedirectFrom(typeof(CargoTruckAI), (ulong)PrerequisiteType.PathFinding)]
         protected override bool StartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget)
         {
-            if ((vehicleData.m_flags & (Vehicle.Flags.TransferToSource | Vehicle.Flags.GoingBack)) != Vehicle.Flags.None)
+            if ((vehicleData.m_flags & (Vehicle.Flags.TransferToSource | Vehicle.Flags.GoingBack)) != 0)
             {
                 return this.StartPathFind(ExtendedUnitType.Cargo, vehicleID, ref vehicleData, startPos, endPos, startBothWays, endBothWays, undergroundTarget, this.IsHeavyVehicle(), this.IgnoreBlocked(vehicleID, ref vehicleData));
             }
-            bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != Vehicle.Flags.None;
+            bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != 0;
             PathUnit.Position startPosA;
             PathUnit.Position startPosB;
             float num;

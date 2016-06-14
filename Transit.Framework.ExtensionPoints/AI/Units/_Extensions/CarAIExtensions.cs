@@ -15,7 +15,7 @@ namespace Transit.Framework.ExtensionPoints.AI.Units
         public static bool StartPathFind(this CarAI carAI, ExtendedUnitType extendedVehicleType, ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget, bool isHeavyVehicle, bool ignoreBlocked)
         {
             VehicleInfo info = carAI.m_info;
-            bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != Vehicle.Flags.None;
+            bool allowUnderground = (vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != 0;
             PathUnit.Position startPosA;
             PathUnit.Position startPosB;
             float num;

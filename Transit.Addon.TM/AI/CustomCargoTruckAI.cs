@@ -9,10 +9,10 @@ namespace Transit.Addon.TM.AI {
 	class CustomCargoTruckAI : CarAI {
 		public void CustomSimulationStep(ushort vehicleId, ref Vehicle data, Vector3 physicsLodRefPos) {
 			try {
-				if ((data.m_flags & Vehicle.Flags.Congestion) != Vehicle.Flags.None && TMDataManager.Options.enableDespawning) {
+				if ((data.m_flags & Vehicle.Flags.Congestion) != 0 && TMDataManager.Options.enableDespawning) {
 					Singleton<VehicleManager>.instance.ReleaseVehicle(vehicleId);
 				} else {
-					if ((data.m_flags & Vehicle.Flags.WaitingTarget) != Vehicle.Flags.None && (data.m_waitCounter += 1) > 20) {
+					if ((data.m_flags & Vehicle.Flags.WaitingTarget) != 0 && (data.m_waitCounter += 1) > 20) {
 						RemoveOffers(vehicleId, ref data);
 						data.m_flags &= ~Vehicle.Flags.WaitingTarget;
 						data.m_flags |= Vehicle.Flags.GoingBack;
@@ -38,19 +38,19 @@ namespace Transit.Addon.TM.AI {
 		// TODO: inherit CarAI
 
 		private static void RemoveOffers(ushort vehicleId, ref Vehicle data) {
-			if ((data.m_flags & Vehicle.Flags.WaitingTarget) != Vehicle.Flags.None) {
+			if ((data.m_flags & Vehicle.Flags.WaitingTarget) != 0) {
 				var offer = default(TransferManager.TransferOffer);
 				offer.Vehicle = vehicleId;
-				if ((data.m_flags & Vehicle.Flags.TransferToSource) != Vehicle.Flags.None) {
+				if ((data.m_flags & Vehicle.Flags.TransferToSource) != 0) {
 					Singleton<TransferManager>.instance.RemoveIncomingOffer((TransferManager.TransferReason)data.m_transferType, offer);
-				} else if ((data.m_flags & Vehicle.Flags.TransferToTarget) != Vehicle.Flags.None) {
+				} else if ((data.m_flags & Vehicle.Flags.TransferToTarget) != 0) {
 					Singleton<TransferManager>.instance.RemoveOutgoingOffer((TransferManager.TransferReason)data.m_transferType, offer);
 				}
 			}
 		}
 
 		private void BaseSimulationStep(ushort vehicleId, ref Vehicle data, Vector3 physicsLodRefPos) {
-			if ((data.m_flags & Vehicle.Flags.WaitingPath) != Vehicle.Flags.None) {
+			if ((data.m_flags & Vehicle.Flags.WaitingPath) != 0) {
 				PathManager instance = Singleton<PathManager>.instance;
 				byte pathFindFlags = instance.m_pathUnits.m_buffer[(int)((UIntPtr)data.m_path)].m_pathFindFlags;
 				if ((pathFindFlags & 4) != 0) {
@@ -66,7 +66,7 @@ namespace Transit.Addon.TM.AI {
 					PathfindFailure(vehicleId, ref data);
 					return;
 				}
-			} else if ((data.m_flags & Vehicle.Flags.WaitingSpace) != Vehicle.Flags.None) {
+			} else if ((data.m_flags & Vehicle.Flags.WaitingSpace) != 0) {
 				TrySpawn(vehicleId, ref data);
 			}
 			Vector3 lastFramePosition = data.GetLastFramePosition();
@@ -100,7 +100,7 @@ namespace Transit.Addon.TM.AI {
 			}
 			int maxBlockCounter = (m_info.m_class.m_service > ItemClass.Service.Office) ? 150 : 100;
 			if ((data.m_flags & (Vehicle.Flags.Spawned | Vehicle.Flags.WaitingPath | Vehicle.Flags.WaitingSpace)) ==
-				Vehicle.Flags.None && data.m_cargoParent == 0) {
+				0 && data.m_cargoParent == 0) {
 				Singleton<VehicleManager>.instance.ReleaseVehicle(vehicleId);
 			} else if (data.m_blockCounter >= maxBlockCounter && TMDataManager.Options.enableDespawning) {
 				Singleton<VehicleManager>.instance.ReleaseVehicle(vehicleId);

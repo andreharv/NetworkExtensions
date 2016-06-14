@@ -12,7 +12,7 @@ using UnityEngine;
 namespace TrafficManager.Custom.AI {
 	class CustomTramBaseAI : TramBaseAI {
 		public void CustomSimulationStep(ushort vehicleId, ref Vehicle vehicleData, Vector3 physicsLodRefPos) {
-			if ((vehicleData.m_flags & Vehicle.Flags.WaitingPath) != Vehicle.Flags.None) {
+			if ((vehicleData.m_flags & Vehicle.Flags.WaitingPath) != 0) {
 				byte pathFindFlags = Singleton<PathManager>.instance.m_pathUnits.m_buffer[(int)((UIntPtr)vehicleData.m_path)].m_pathFindFlags;
 				if ((pathFindFlags & 4) != 0) {
 					this.PathfindSuccess(vehicleId, ref vehicleData);
@@ -24,12 +24,12 @@ namespace TrafficManager.Custom.AI {
 					this.PathfindFailure(vehicleId, ref vehicleData);
 					return;
 				}
-			} else if ((vehicleData.m_flags & Vehicle.Flags.WaitingSpace) != Vehicle.Flags.None) {
+			} else if ((vehicleData.m_flags & Vehicle.Flags.WaitingSpace) != 0) {
 				this.TrySpawn(vehicleId, ref vehicleData);
 			}
 
 			/// NON-STOCK CODE START ///
-			bool reversed = (vehicleData.m_flags & Vehicle.Flags.Reversed) != Vehicle.Flags.None;
+			bool reversed = (vehicleData.m_flags & Vehicle.Flags.Reversed) != 0;
 			ushort frontVehicleId;
 			if (reversed) {
 				frontVehicleId = vehicleData.GetLastVehicle(vehicleId);
@@ -65,7 +65,7 @@ namespace TrafficManager.Custom.AI {
 					break;
 				}
 			}
-			if ((vehicleData.m_flags & (Vehicle.Flags.Spawned | Vehicle.Flags.WaitingPath | Vehicle.Flags.WaitingSpace | Vehicle.Flags.WaitingCargo)) == Vehicle.Flags.None || (vehicleData.m_blockCounter == 255 && Options.enableDespawning)) {
+			if ((vehicleData.m_flags & (Vehicle.Flags.Spawned | Vehicle.Flags.WaitingPath | Vehicle.Flags.WaitingSpace | Vehicle.Flags.WaitingCargo)) == 0 || (vehicleData.m_blockCounter == 255 && Options.enableDespawning)) {
 				Singleton<VehicleManager>.instance.ReleaseVehicle(vehicleId);
 			}
 		}
@@ -78,7 +78,7 @@ namespace TrafficManager.Custom.AI {
 				allowUnderground = true;
 				allowUnderground2 = true;
 			} else {
-				allowUnderground = ((vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != Vehicle.Flags.None);
+				allowUnderground = ((vehicleData.m_flags & (Vehicle.Flags.Underground | Vehicle.Flags.Transition)) != 0);
 				allowUnderground2 = false;
 			}
 			PathUnit.Position startPosA;

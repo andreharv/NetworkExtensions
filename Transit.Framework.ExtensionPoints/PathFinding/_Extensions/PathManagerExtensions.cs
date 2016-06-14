@@ -32,20 +32,20 @@ namespace Transit.Framework.ExtensionPoints.PathFinding
         public static bool CreatePath(this PathManager pm, ExtendedUnitType unitType, out uint unit, ref Randomizer randomizer, uint buildIndex, PathUnit.Position startPos, PathUnit.Position endPos, NetInfo.LaneType laneTypes, VehicleInfo.VehicleType vehicleTypes, float maxLength)
         {
             PathUnit.Position position = default(PathUnit.Position);
-            return pm.CreatePath(unitType, out unit, ref randomizer, buildIndex, startPos, position, endPos, position, position, laneTypes, vehicleTypes, maxLength, false, false, false, false);
+            return pm.CreatePath(unitType, out unit, ref randomizer, buildIndex, startPos, position, endPos, position, position, laneTypes, vehicleTypes, maxLength, false, false, false, false, false);
         }
 
         public static bool CreatePath(this PathManager pm, ExtendedUnitType unitType, out uint unit, ref Randomizer randomizer, uint buildIndex, PathUnit.Position startPosA, PathUnit.Position startPosB, PathUnit.Position endPosA, PathUnit.Position endPosB, NetInfo.LaneType laneTypes, VehicleInfo.VehicleType vehicleTypes, float maxLength)
         {
-            return pm.CreatePath(unitType, out unit, ref randomizer, buildIndex, startPosA, startPosB, endPosA, endPosB, default(PathUnit.Position), laneTypes, vehicleTypes, maxLength, false, false, false, false);
+            return pm.CreatePath(unitType, out unit, ref randomizer, buildIndex, startPosA, startPosB, endPosA, endPosB, default(PathUnit.Position), laneTypes, vehicleTypes, maxLength, false, false, false, false, false);
         }
 
         public static bool CreatePath(this PathManager pm, ExtendedUnitType unitType, out uint unit, ref Randomizer randomizer, uint buildIndex, PathUnit.Position startPosA, PathUnit.Position startPosB, PathUnit.Position endPosA, PathUnit.Position endPosB, NetInfo.LaneType laneTypes, VehicleInfo.VehicleType vehicleTypes, float maxLength, bool isHeavyVehicle, bool ignoreBlocked, bool stablePath, bool skipQueue)
         {
-            return pm.CreatePath(unitType, out unit, ref randomizer, buildIndex, startPosA, startPosB, endPosA, endPosB, default(PathUnit.Position), laneTypes, vehicleTypes, maxLength, isHeavyVehicle, ignoreBlocked, stablePath, skipQueue);
+            return pm.CreatePath(unitType, out unit, ref randomizer, buildIndex, startPosA, startPosB, endPosA, endPosB, default(PathUnit.Position), laneTypes, vehicleTypes, maxLength, isHeavyVehicle, ignoreBlocked, stablePath, skipQueue, false);
         }
 
-        public static bool CreatePath(this PathManager pm, ExtendedUnitType unitType, out uint unit, ref Randomizer randomizer, uint buildIndex, PathUnit.Position startPosA, PathUnit.Position startPosB, PathUnit.Position endPosA, PathUnit.Position endPosB, PathUnit.Position vehiclePosition, NetInfo.LaneType laneTypes, VehicleInfo.VehicleType vehicleTypes, float maxLength, bool isHeavyVehicle, bool ignoreBlocked, bool stablePath, bool skipQueue)
+        public static bool CreatePath(this PathManager pm, ExtendedUnitType unitType, out uint unit, ref Randomizer randomizer, uint buildIndex, PathUnit.Position startPosA, PathUnit.Position startPosB, PathUnit.Position endPosA, PathUnit.Position endPosB, PathUnit.Position vehiclePosition, NetInfo.LaneType laneTypes, VehicleInfo.VehicleType vehicleTypes, float maxLength, bool isHeavyVehicle, bool ignoreBlocked, bool stablePath, bool skipQueue, bool randomParking)
         {
             if (TAMPathFindFacadeManager.instance.Facades == null)
             {
@@ -89,6 +89,12 @@ namespace Transit.Framework.ExtensionPoints.PathFinding
                 PathUnit[] expr_E4_cp_0 = pm.m_pathUnits.m_buffer;
                 UIntPtr expr_E4_cp_1 = (UIntPtr)unit;
                 expr_E4_cp_0[(int)expr_E4_cp_1].m_simulationFlags = (byte)(expr_E4_cp_0[(int)expr_E4_cp_1].m_simulationFlags | 64);
+            }
+            if (randomParking)
+            {
+                PathUnit[] expr_10D_cp_0 = pm.m_pathUnits.m_buffer;
+                UIntPtr expr_10D_cp_1 = (UIntPtr)unit;
+                expr_10D_cp_0[(int)expr_10D_cp_1].m_simulationFlags = (byte)(expr_10D_cp_0[(int)expr_10D_cp_1].m_simulationFlags | 128);
             }
             pm.m_pathUnits.m_buffer[(int)((UIntPtr)unit)].m_pathFindFlags = 0;
             pm.m_pathUnits.m_buffer[(int)((UIntPtr)unit)].m_buildIndex = buildIndex;
