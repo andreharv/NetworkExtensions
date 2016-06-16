@@ -40,7 +40,16 @@ namespace DoubleTrainTrack.Rail2LOW
             info.m_class = railInfo.m_class.Clone("NExtDoubleTrackOW");
             info.m_halfWidth = 4.999f;
             info.Setup10mMesh(version);
-            info.SetRoadLanes(version, new LanesConfiguration() { IsTwoWay = false });
+            var lanes = new List<NetInfo.Lane>();
+            lanes.AddRange(info.m_lanes.ToList());
+            for (int i = 0; i < lanes.Count; i++)
+            {
+                if (lanes[i].m_direction == NetInfo.Direction.Backward)
+                {
+                    lanes[i].m_direction = NetInfo.Direction.Forward;
+                }
+            }
+            info.m_lanes = lanes.ToArray();
             info.m_connectGroup = NetInfo.ConnectGroup.WideTram;
             info.m_nodeConnectGroups = NetInfo.ConnectGroup.WideTram | NetInfo.ConnectGroup.NarrowTram;
             var railInfos = new List<NetInfo>();

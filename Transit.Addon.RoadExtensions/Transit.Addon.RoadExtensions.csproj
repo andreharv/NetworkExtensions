@@ -2364,6 +2364,12 @@
     <None Include="Props\StoneBollard.crp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Power_End.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="PublicTransport\Rail\RailUtils\Meshes\10m\Ground_Power_Start.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="PublicTransport\Rail\RailUtils\Meshes\10m\RailEnd.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
