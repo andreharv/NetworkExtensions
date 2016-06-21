@@ -62,27 +62,14 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
 
         public static void HandleAsymSegmentFlags(this NetInfo.Segment segment, AsymLaneType asymLaneType)
         {
-            switch (asymLaneType)
+            if (asymLaneType != AsymLaneType.L0R0)
             {
-                case AsymLaneType.L2R1:
-                case AsymLaneType.L3R1:
-                case AsymLaneType.L3R2:
-                    segment.m_forwardForbidden |= NetSegment.Flags.Invert;
-                    segment.m_backwardRequired |= NetSegment.Flags.Invert;
-                    break;
-
-                case AsymLaneType.L1R2:
-                case AsymLaneType.L1R3:
-                case AsymLaneType.L2R3:
-                    //segment.m_forwardRequired |= NetSegment.Flags.Invert;
-                    //segment.m_backwardForbidden |= NetSegment.Flags.Invert;
-                    segment.m_forwardForbidden |= NetSegment.Flags.Invert;
-                    segment.m_backwardRequired |= NetSegment.Flags.Invert;
-                    break;
-
-                default:
-                    segment.SetFlagsDefault();
-                    break;
+                segment.m_forwardForbidden |= NetSegment.Flags.Invert;
+                segment.m_backwardRequired |= NetSegment.Flags.Invert;
+            }
+            else
+            {
+                segment.SetFlagsDefault();
             }
         }
 
@@ -100,7 +87,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                     break;
                 case AsymLaneType.L2R1:
                 case AsymLaneType.L3R1:
-                    case AsymLaneType.L3R2:
+                case AsymLaneType.L3R2:
                     fSegment.m_forwardRequired |= NetSegment.Flags.Invert;
                     fSegment.m_backwardForbidden |= NetSegment.Flags.Invert;
                     bSegment.m_forwardForbidden |= NetSegment.Flags.Invert;

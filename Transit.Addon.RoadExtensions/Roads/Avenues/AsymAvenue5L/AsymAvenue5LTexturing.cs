@@ -17,8 +17,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.AsymAvenue5L
                         {
                             var inverted = string.Empty;
                             if ((asymLaneType == AsymLaneType.L2R3 && ((info.m_segments[i].m_backwardForbidden & NetSegment.Flags.Invert) == 0))
-                                || (asymLaneType == AsymLaneType.L3R2 && ((info.m_segments[i].m_backwardForbidden & NetSegment.Flags.Invert) != 0))
-                                || (info.m_segments[i].m_mesh.name == "Bus"))
+                                || (asymLaneType == AsymLaneType.L3R2 && ((info.m_segments[i].m_backwardForbidden & NetSegment.Flags.Invert) == 0))
+                                || (info.m_segments[i].m_mesh.name == "BusInv"))
                             {
                                 inverted = "_Inverted";
                             }

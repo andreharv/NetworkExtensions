@@ -9,7 +9,13 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
         {
             var highwayInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L);
             var defaultMaterial = highwayInfo.m_nodes[0].m_material;
-
+            var L = asymLaneType.ToString()[1];
+            var R = asymLaneType.ToString()[3];
+            var inverted = string.Empty;
+            if (L > R)
+            {
+                inverted = "_Inverted";
+            }
             switch (version)
             {
                 case NetInfoVersion.Ground:
@@ -19,7 +25,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                         var segments2 = info.m_segments[2];
                         var segments3 = info.m_segments[1].ShallowClone();
                         segments0.SetMeshes(
-                            @"Roads\Common\Meshes\32m\5mSw3mMdn\Ground.obj");
+                            $@"Roads\Common\Meshes\32m\5mSw3mMdn\Ground{inverted}.obj");
                         segments1.SetMeshes(
                             @"Roads\Common\Meshes\32m\5mSw3mMdn\BusInv.obj");
                         segments2.SetMeshes(
@@ -42,7 +48,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
 
                         segments0
                             .SetMeshes
-                                (@"Roads\Common\Meshes\32m\5mSw3mMdn\Elevated.obj");
+                                ($@"Roads\Common\Meshes\32m\5mSw3mMdn\Elevated{inverted}.obj");
 
                         //nodes0.SetMeshes
                         //    (@"Roads\Common\Meshes\32m\5mSw3mMdn\Elevated_Node.obj");
@@ -64,7 +70,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
 
                         segment2
                             .SetMeshes
-                            (@"Roads\Common\Meshes\32m\5mSw3mMdn\Slope.obj");
+                            ($@"Roads\Common\Meshes\32m\5mSw3mMdn\Slope{inverted}.obj");
 
                         //node1
                         //    .SetMeshes
@@ -93,7 +99,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
 
                         segments1
                             .SetMeshes
-                            (@"Roads\Common\Meshes\32m\5mSw3mMdn\Tunnel.obj");
+                            ($@"Roads\Common\Meshes\32m\5mSw3mMdn\Tunnel{inverted}.obj");
 
                         nodes1
                             .SetFlags(NetNode.Flags.None, NetNode.Flags.None)
