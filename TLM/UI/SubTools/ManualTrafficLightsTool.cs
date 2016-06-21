@@ -50,7 +50,7 @@ namespace TrafficManager.UI.SubTools {
 
 			if (SelectedNodeId != 0) {
 				var nodeSimulation = TrafficLightSimulation.GetNodeSimulation(SelectedNodeId);
-				nodeSimulation.housekeeping(true);
+				nodeSimulation.housekeeping();
 
 				/*if (Singleton<NetManager>.instance.m_nodes.m_buffer[SelectedNode].CountSegments() == 2) {
 					_guiManualTrafficLightsCrosswalk(ref Singleton<NetManager>.instance.m_nodes.m_buffer[SelectedNode]);
@@ -148,7 +148,7 @@ namespace TrafficManager.UI.SubTools {
 							}
 						}
 
-						SegmentGeometry geometry = CustomRoadAI.GetSegmentGeometry(segmentId);
+						SegmentGeometry geometry = SegmentGeometry.Get(segmentId);
 						bool startNode = geometry.StartNodeId() == SelectedNodeId;
 
 						if (geometry.IsOutgoingOneWay(startNode)) continue;
@@ -675,7 +675,7 @@ namespace TrafficManager.UI.SubTools {
 			if (nodeSimulation == null || !nodeSimulation.IsManualLight()) return;
 
 			nodeSimulation.DestroyManualTrafficLight();
-			TrafficLightSimulation.RemoveNodeFromSimulation(SelectedNodeId, true);
+			TrafficLightSimulation.RemoveNodeFromSimulation(SelectedNodeId, true, false);
 		}
 	}
 }

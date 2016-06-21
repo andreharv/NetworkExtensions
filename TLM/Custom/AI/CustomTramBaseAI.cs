@@ -42,13 +42,13 @@ namespace TrafficManager.Custom.AI {
 				//Log._Debug($"HandleVehicle for trams. vehicleId={vehicleId} frontVehicleId={frontVehicleId}");
 				VehicleStateManager.LogTraffic(frontVehicleId, ref Singleton<VehicleManager>.instance.m_vehicles.m_buffer[frontVehicleId], true);
 			} catch (Exception e) {
-				Log.Error("TrainAI TrafficManagerSimulationStep Error: " + e.ToString());
+				Log.Error("TramAI CustomSimulationStep (1) Error: " + e.ToString());
 			}
 
 			try {
 				VehicleStateManager.UpdateVehiclePos(frontVehicleId, ref Singleton<VehicleManager>.instance.m_vehicles.m_buffer[frontVehicleId]);
 			} catch (Exception e) {
-				Log.Error("CarAI TmCalculateSegmentPosition Error: " + e.ToString());
+				Log.Error("TramAI CustomSimulationStep (2) Error: " + e.ToString());
 			}
 			/// NON-STOCK CODE END ///
 

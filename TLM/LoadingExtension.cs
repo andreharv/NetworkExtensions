@@ -14,6 +14,7 @@ using ColossalFramework.UI;
 using ColossalFramework.Math;
 using TrafficManager.Custom.PathFinding;
 using TrafficManager.Util;
+using TrafficManager.Custom.Manager;
 
 namespace TrafficManager {
     public class LoadingExtension : LoadingExtensionBase {
@@ -685,6 +686,49 @@ namespace TrafficManager {
 					detourFailed = true;
 				}
 
+				Log.Info("Redirection RoadBaseAI::UpdateLanes calls");
+				try {
+					Detours.Add(new Detour(typeof(RoadBaseAI).GetMethod("UpdateLanes",
+							BindingFlags.Public | BindingFlags.Instance,
+							null,
+							new[]
+							{
+									typeof (ushort),
+									typeof (NetSegment).MakeByRefType(),
+									typeof (bool)
+							},
+							null),
+							typeof(CustomRoadAI).GetMethod("CustomUpdateLanes")));
+				} catch (Exception) {
+					Log.Error("Could not redirect RoadBaseAI::UpdateLanes");
+					detourFailed = true;
+				}
+
+				Log.Info("Reverse-Redirection CustomRoadAI::CheckBuildings calls");
+				try {
+					Detours.Add(new Detour(typeof(CustomRoadAI).GetMethod("CheckBuildings",
+							BindingFlags.NonPublic | BindingFlags.Instance,
+							null,
+							new[]
+							{
+									typeof (ushort),
+									typeof (NetSegment).MakeByRefType(),
+							},
+							null),
+							typeof(RoadBaseAI).GetMethod("CheckBuildings",
+								BindingFlags.NonPublic | BindingFlags.Instance,
+								null,
+								new[]
+								{
+									typeof (ushort),
+									typeof (NetSegment).MakeByRefType(),
+								},
+								null)));
+				} catch (Exception) {
+					Log.Error("Could not reverse-redirect CustomRoadAI::CheckBuildings");
+					detourFailed = true;
+				}
+
 				Log.Info("Reverse-Redirection CustomTrainAI::CheckOverlap calls (1)");
 				try {
 					Detours.Add(new Detour(typeof(CustomTrainAI).GetMethod("CheckOverlap",
@@ -774,6 +818,58 @@ namespace TrafficManager {
 							typeof(CustomTrainAI).GetMethod("CustomCheckNextLane")));
 				} catch (Exception) {
 					Log.Error("Could not redirect TrainAI::CheckNextLane");
+					detourFailed = true;
+				}
+
+				/*Log.Info("Redirection NetManager::FinalizeNode calls");
+				try {
+					Detours.Add(new Detour(typeof(NetManager).GetMethod("FinalizeNode",
+							BindingFlags.NonPublic | BindingFlags.Instance,
+							null,
+							new[]
+							{
+									typeof (ushort),
+									typeof (NetNode).MakeByRefType()
+							},
+							null),
+							typeof(CustomNetManager).GetMethod("CustomFinalizeNode")));
+				} catch (Exception) {
+					Log.Error("Could not redirect NetManager::FinalizeNode");
+					detourFailed = true;
+				}*/
+
+				Log.Info("Redirection NetManager::FinalizeSegment calls");
+				try {
+					Detours.Add(new Detour(typeof(NetManager).GetMethod("FinalizeSegment",
+							BindingFlags.NonPublic | BindingFlags.Instance,
+							null,
+							new[]
+							{
+									typeof (ushort),
+									typeof (NetSegment).MakeByRefType()
+							},
+							null),
+							typeof(CustomNetManager).GetMethod("CustomFinalizeSegment")));
+				} catch (Exception) {
+					Log.Error("Could not redirect NetManager::FinalizeSegment");
+					detourFailed = true;
+				}
+
+				Log.Info("Redirection NetManager::UpdateSegment calls");
+				try {
+					Detours.Add(new Detour(typeof(NetManager).GetMethod("UpdateSegment",
+							BindingFlags.NonPublic | BindingFlags.Instance,
+							null,
+							new[]
+							{
+									typeof (ushort),
+									typeof (ushort),
+									typeof (int),
+							},
+							null),
+							typeof(CustomNetManager).GetMethod("CustomUpdateSegment")));
+				} catch (Exception) {
+					Log.Error("Could not redirect NetManager::UpdateSegment");
 					detourFailed = true;
 				}
 

@@ -46,7 +46,7 @@ namespace TrafficManager.UI {
 			width = Translation.getMenuWidth();
 			height = LoadingExtension.IsPathManagerCompatible ? 390 : 230;
 #if DEBUG
-			height += 200;		
+			height += 240;		
 #endif
 			relativePosition = new Vector3(85f, 80f);
 
@@ -189,7 +189,7 @@ namespace TrafficManager.UI {
 			ushort buildingId = Convert.ToUInt16(_goToField.text);
 			Building building = Singleton<BuildingManager>.instance.m_buildings.m_buffer[buildingId];
 			if ((building.m_flags & Building.Flags.Created) != 0) {
-				CameraCtrl.GoToVehicle(buildingId, new Vector3(building.m_position.x, Camera.main.transform.position.y, building.m_position.z));
+				CameraCtrl.GoToBuilding(buildingId, new Vector3(building.m_position.x, Camera.main.transform.position.y, building.m_position.z));
 			}
 		}
 

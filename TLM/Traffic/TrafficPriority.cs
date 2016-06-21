@@ -37,14 +37,18 @@ namespace TrafficManager.Traffic {
 			if (nodeId <= 0 || segmentId <= 0)
 				return null;
 
-			Log.Info("adding PrioritySegment @ node " + nodeId + ", seg. " + segmentId + ", type " + type);
+#if DEBUG
+			Log._Debug("adding PrioritySegment @ node " + nodeId + ", seg. " + segmentId + ", type " + type);
+#endif
 
 			SegmentEnd ret = null;
 			var trafficSegment = TrafficSegments[segmentId];
 			if (trafficSegment != null) { // do not replace with IsPrioritySegment!
 				trafficSegment.Segment = segmentId;
 
+#if DEBUG
 				Log.Warning("Priority segment already exists. Node1=" + trafficSegment.Node1 + " Node2=" + trafficSegment.Node2);
+#endif
 
 				if (trafficSegment.Node1 == nodeId || trafficSegment.Node1 == 0) {
 					// overwrite/add Node1
@@ -66,14 +70,18 @@ namespace TrafficManager.Traffic {
 					rebuildPriorityNodes();
 				} else {
 					// add Node2
+#if DEBUG
 					Log._Debug("Adding as Node2");
+#endif
 					trafficSegment.Node2 = nodeId;
 					ret = new SegmentEnd(nodeId, segmentId, type);
 					trafficSegment.Instance2 = ret;
 				}
 			} else {
 				// add Node1
+#if DEBUG
 				Log._Debug("Adding as Node1");
+#endif
 				trafficSegment = new TrafficSegment();
 				trafficSegment.Segment = segmentId;
 				trafficSegment.Node1 = nodeId;
@@ -94,23 +102,7 @@ namespace TrafficManager.Traffic {
 				if (segmentId <= 0)
 					continue;
 
-				if (IsPrioritySegment(nodeId, segmentId)) {
-					//Log.Message("Housekeeping: node " + nodeId + " contains prio seg. " + segmentId);
-					var prioritySegment = TrafficSegments[segmentId];
-					if (prioritySegment.Node1 == nodeId) {
-						prioritySegment.Node1 = 0;
-						prioritySegment.Instance1.Destroy();
-						prioritySegment.Instance1 = null;
-					} else {
-						prioritySegment.Node2 = 0;
-						prioritySegment.Instance2.Destroy();
-						prioritySegment.Instance2 = null;
-					}
-
-					if (prioritySegment.Node1 == 0 && prioritySegment.Node2 == 0) {
-						TrafficSegments[segmentId] = null;
-					}
-				}
+				RemovePrioritySegment(nodeId, segmentId, false);
 			}
 			priorityNodes.Remove(nodeId);
 		}
@@ -160,7 +152,7 @@ namespace TrafficManager.Traffic {
 			return priorityNodes.Contains(nodeId);
 		}
 
-		public static HashSet<ushort> getPriorityNodes() {
+		public static HashSet<ushort> GetPriorityNodes() {
 			return priorityNodes;
 		}
 
@@ -177,10 +169,14 @@ namespace TrafficManager.Traffic {
 				prioritySegment.Instance2 : null;
 		}
 
-		internal static void RemovePrioritySegment(ushort nodeId, ushort segmentId) { // priorityNodes: OK
+		internal static void RemovePrioritySegment(ushort nodeId, ushort segmentId, bool rebuildNodes = true) { // priorityNodes: OK
 			if (nodeId <= 0 || segmentId <= 0 || TrafficSegments[segmentId] == null)
 				return;
 			var prioritySegment = TrafficSegments[segmentId];
+
+#if DEBUG
+			Log._Debug($"TrafficPriority.RemovePrioritySegment: Removing SegmentEnd {segmentId} @ {nodeId}");
+#endif
 
 			if (prioritySegment.Node1 == nodeId) {
 				prioritySegment.Node1 = 0;
@@ -195,7 +191,8 @@ namespace TrafficManager.Traffic {
 
 			if (prioritySegment.Node1 == 0 && prioritySegment.Node2 == 0)
 				TrafficSegments[segmentId] = null;
-			rebuildPriorityNodes();
+			if (rebuildNodes)
+				rebuildPriorityNodes();
 		}
 
 		internal static void ClearTraffic() {
@@ -238,7 +235,7 @@ namespace TrafficManager.Traffic {
 					continue;
 				if (TrafficPriority.IsPrioritySegment(nodeId, segmentId))
 					continue;
-				/*if (CustomRoadAI.GetSegmentGeometry(segmentId).IsOutgoingOneWay(nodeId))
+				/*if (SegmentGeometry.Get(segmentId).IsOutgoingOneWay(nodeId))
 					continue;*/ // we need this for pedestrian traffic lights
 
 				TrafficPriority.AddPrioritySegment(nodeId, segmentId, SegmentEnd.PriorityType.None);
@@ -299,7 +296,7 @@ namespace TrafficManager.Traffic {
 					return false;
 				}
 
-				//SegmentGeometry srcGeometry = CustomRoadAI.GetSegmentGeometry(targetVehiclePos.SourceSegmentId);
+				//SegmentGeometry srcGeometry = SegmentGeometry.Get(targetVehiclePos.SourceSegmentId);
 				//Direction targetToDir = srcGeometry.GetDirection(targetVehiclePos.TargetSegmentId, srcGeometry.StartNodeId() == nodeId);
 
 				// get all cars
@@ -328,24 +325,27 @@ namespace TrafficManager.Traffic {
 						continue; // should not happen
 					}
 
-					SegmentGeometry incomingGeometry = CustomRoadAI.GetSegmentGeometry(incomingSegmentId);
+					SegmentGeometry incomingGeometry = SegmentGeometry.Get(incomingSegmentId);
 					if (incomingGeometry.IsOutgoingOneWay(incomingGeometry.StartNodeId() == nodeId)) {
 						continue;
 					}
 
 					if ((Singleton<NetManager>.instance.m_nodes.m_buffer[nodeId].m_flags & NetNode.Flags.TrafficLights) == NetNode.Flags.None) {
-						if (targetFromPrioritySegment.Type == SegmentEnd.PriorityType.Main) {
+						if (targetFromPrioritySegment.Type == SegmentEnd.PriorityType.Main || targetFromPrioritySegment.Type == SegmentEnd.PriorityType.None) {
 #if DEBUG
 							if (debug)
 								Log._Debug($"HasIncomingVehicles: Target {targetVehicleId} is on a main road @ {nodeId}.");
 #endif
 							// target is on a main segment
-							if (incomingFromPrioritySegment.Type != SegmentEnd.PriorityType.Main) {
+							if (incomingFromPrioritySegment.Type != SegmentEnd.PriorityType.Main && incomingFromPrioritySegment.Type != SegmentEnd.PriorityType.None) {
 								continue; // ignore cars coming from low priority segments (yield/stop)
 										  // count incoming cars from other main segment
 							}
 
-							foreach (ushort incomingVehicleId in incomingFromPrioritySegment.GetRegisteredVehicles()) {
+							foreach (KeyValuePair<ushort, VehiclePosition> e in incomingFromPrioritySegment.GetRegisteredVehicles()) {
+								ushort incomingVehicleId = e.Key;
+								VehiclePosition incomingVehiclePos = e.Value;
+
 #if DEBUG
 								if (debug)
 									Log._Debug($"HasIncomingVehicles: Checking agains incoming vehicle {incomingVehicleId}.");
@@ -355,7 +355,7 @@ namespace TrafficManager.Traffic {
 									continue;
 
 								if (Singleton<VehicleManager>.instance.m_vehicles.m_buffer[incomingVehicleId].GetLastFrameVelocity().magnitude > maxStopVelocity) {
-									if (HasVehiclePriority(debug, targetVehicleId, true, incomingVehicleId, true, targetFromPrioritySegment, incomingFromPrioritySegment)) {
+									if (HasVehiclePriority(debug, targetVehicleId, true, incomingVehicleId, true, incomingVehiclePos, targetFromPrioritySegment, incomingFromPrioritySegment)) {
 #if DEBUG
 										if (debug)
 											Log._Debug($"HasIncomingVehicles: Incoming {incomingVehicleId} is not conflicting.");
@@ -383,7 +383,9 @@ namespace TrafficManager.Traffic {
 #endif
 
 							// Main - Yield/Stop
-							foreach (ushort incomingVehicleId in incomingFromPrioritySegment.GetRegisteredVehicles()) {
+							foreach (KeyValuePair<ushort, VehiclePosition> e in incomingFromPrioritySegment.GetRegisteredVehicles()) {
+								ushort incomingVehicleId = e.Key;
+								VehiclePosition incomingVehiclePos = e.Value;
 #if DEBUG
 								if (debug)
 									Log._Debug($"HasIncomingVehicles: Checking agains incoming vehicle {incomingVehicleId}.");
@@ -401,9 +403,9 @@ namespace TrafficManager.Traffic {
 									continue;
 								}*/
 
-								if (incomingFromPrioritySegment.Type == SegmentEnd.PriorityType.Main) {
+								if (incomingFromPrioritySegment.Type == SegmentEnd.PriorityType.Main || incomingFromPrioritySegment.Type == SegmentEnd.PriorityType.None) {
 									if (Singleton<VehicleManager>.instance.m_vehicles.m_buffer[incomingVehicleId].GetLastFrameVelocity().magnitude > maxStopVelocity) {
-										if (HasVehiclePriority(debug, targetVehicleId, false, incomingVehicleId, true, targetFromPrioritySegment, incomingFromPrioritySegment)) {
+										if (HasVehiclePriority(debug, targetVehicleId, false, incomingVehicleId, true, incomingVehiclePos, targetFromPrioritySegment, incomingFromPrioritySegment)) {
 #if DEBUG
 											if (debug)
 												Log._Debug($"HasIncomingVehicles: Incoming {incomingVehicleId} (main) is not conflicting.");
@@ -424,7 +426,7 @@ namespace TrafficManager.Traffic {
 									}
 								} else {
 									if (Singleton<VehicleManager>.instance.m_vehicles.m_buffer[incomingVehicleId].GetLastFrameVelocity().magnitude > 0.5f) {
-										if (HasVehiclePriority(debug, targetVehicleId, false, incomingVehicleId, false, targetFromPrioritySegment, incomingFromPrioritySegment)) {
+										if (HasVehiclePriority(debug, targetVehicleId, false, incomingVehicleId, false, incomingVehiclePos, targetFromPrioritySegment, incomingFromPrioritySegment)) {
 #if DEBUG
 											if (debug)
 												Log._Debug($"HasIncomingVehicles: Incoming {incomingVehicleId} (low) is not conflicting.");
@@ -463,9 +465,11 @@ namespace TrafficManager.Traffic {
 						}
 
 						var segmentLights = CustomTrafficLights.GetSegmentLights(nodeId, incomingSegmentId);
-						var segmentLight = segmentLights.GetCustomLight(targetVehicleState.VehicleType);
+						var segmentLight = segmentLights.GetCustomLight(targetVehiclePos.SourceLaneIndex);
 						if (segmentLight == null) {
+#if DEBUG
 							Log._Debug($"HasIncomingVehicles: segmentLight is null for seg. {incomingSegmentId} @ node {nodeId}, vehicle type {targetVehicleState.VehicleType}");
+#endif
 							continue;
 						}
 
@@ -476,12 +480,12 @@ namespace TrafficManager.Traffic {
 							Log._Debug($"Segment {incomingSegmentId} @ {nodeId} is a GREEN traffic light.");
 #endif
 
-						foreach (ushort incomingVehicleId in incomingFromPrioritySegment.GetRegisteredVehicles()) {
-							if (incomingVehicleId == 0)
-								continue;
+						foreach (KeyValuePair<ushort, VehiclePosition> e in incomingFromPrioritySegment.GetRegisteredVehicles()) {
+							ushort incomingVehicleId = e.Key;
+							VehiclePosition incomingVehiclePos = e.Value;
 
 							if (Singleton<VehicleManager>.instance.m_vehicles.m_buffer[incomingVehicleId].GetLastFrameVelocity().magnitude > maxStopVelocity) {
-								if (HasVehiclePriority(debug, targetVehicleId, true, incomingVehicleId, true, targetFromPrioritySegment, incomingFromPrioritySegment)) {
+								if (HasVehiclePriority(debug, targetVehicleId, true, incomingVehicleId, true, incomingVehiclePos, targetFromPrioritySegment, incomingFromPrioritySegment)) {
 #if DEBUG
 									if (debug)
 										Log._Debug($"HasIncomingVehicles: Incoming {incomingVehicleId} (light) is not conflicting.");
@@ -511,7 +515,7 @@ namespace TrafficManager.Traffic {
 			return false;
 		}
 
-		protected static bool HasVehiclePriority(bool debug, ushort targetCarId, bool targetIsOnMainRoad, ushort incomingCarId, bool incomingIsOnMainRoad, SegmentEnd targetEnd, SegmentEnd incomingEnd) {
+		protected static bool HasVehiclePriority(bool debug, ushort targetCarId, bool targetIsOnMainRoad, ushort incomingCarId, bool incomingIsOnMainRoad, VehiclePosition incomingVehPos, SegmentEnd targetEnd, SegmentEnd incomingEnd) {
 			try {
 #if DEBUG
 				debug = targetEnd.NodeId == 16015;
@@ -543,7 +547,9 @@ namespace TrafficManager.Traffic {
 				// check if incoming car has stopped
 				float incomingVel = Singleton<VehicleManager>.instance.m_vehicles.m_buffer[incomingCarId].GetLastFrameVelocity().magnitude;
 				if (incomingVel <= maxStopVelocity) {
+#if DEBUG
 					Log._Debug($"HasVehiclePriority: incoming car {incomingCarId} is too slow");
+#endif
 					return true;
 				}
 
@@ -571,25 +577,14 @@ namespace TrafficManager.Traffic {
 				}
 
 				var targetVehPos = targetVehState.GetCurrentPosition();
-				var incomingVehPos = incomingVehState.GetCurrentPosition();
 
 				if (targetVehPos == null) {
 					targetEnd.RequestCleanup();
 					return true;
 				}
 
-				if (incomingVehPos == null) {
-					incomingEnd.RequestCleanup();
-					return true;
-				}
-
 				if (targetVehPos.SourceSegmentId != targetEnd.SegmentId || targetVehPos.TransitNodeId != targetEnd.NodeId) {
 					targetEnd.RequestCleanup();
-					return true;
-				}
-
-				if (incomingVehPos.SourceSegmentId != incomingEnd.SegmentId || incomingVehPos.TransitNodeId != incomingEnd.NodeId) {
-					incomingEnd.RequestCleanup();
 					return true;
 				}
 
@@ -622,8 +617,8 @@ namespace TrafficManager.Traffic {
 
 				// We assume the target car is coming from BOTTOM.
 
-				SegmentGeometry targetGeometry = CustomRoadAI.GetSegmentGeometry(targetVehPos.SourceSegmentId);
-				SegmentGeometry incomingGeometry = CustomRoadAI.GetSegmentGeometry(incomingVehPos.SourceSegmentId);
+				SegmentGeometry targetGeometry = SegmentGeometry.Get(targetVehPos.SourceSegmentId);
+				SegmentGeometry incomingGeometry = SegmentGeometry.Get(incomingVehPos.SourceSegmentId);
 				bool isTargetStartNode = targetGeometry.StartNodeId() == nodeId;
 				Direction targetToDir = targetGeometry.GetDirection(targetVehPos.TargetSegmentId, isTargetStartNode);
 				Direction incomingRelDir = targetGeometry.GetDirection(incomingVehPos.SourceSegmentId, isTargetStartNode);
@@ -803,92 +798,6 @@ namespace TrafficManager.Traffic {
 			return true;
 		}
 
-		/*public static bool LaneOrderCorrect(int segmentid, uint leftLane, uint rightLane) {
-			if (leftLane == rightLane)
-				return false;
-
-			var instance = Singleton<NetManager>.instance;
-
-			var segment = instance.m_segments.m_buffer[segmentid];
-			var info = segment.Info;
-
-			var curLaneId = segment.m_lanes;
-			var laneIndex = 0;
-
-			var oneWaySegment = true;
-			while (laneIndex < info.m_lanes.Length && curLaneId != 0u) {
-				if (info.m_lanes[laneIndex].m_laneType != NetInfo.LaneType.Pedestrian &&
-					(info.m_lanes[laneIndex].m_direction == NetInfo.Direction.Backward)) {
-					oneWaySegment = false;
-					break;
-				}
-
-				curLaneId = instance.m_lanes.m_buffer[(int)((UIntPtr)curLaneId)].m_nextLane;
-				laneIndex++;
-			}
-
-			laneIndex = 0;
-			var leftLanePosition = 0f;
-			var rightLanePosition = 0f;
-
-			while (laneIndex < info.m_lanes.Length && curLaneId != 0u) {
-				if (curLaneId == leftLane) {
-					leftLanePosition = info.m_lanes[laneIndex].m_position;
-				}
-
-				if (curLaneId == rightLane) {
-					rightLanePosition = info.m_lanes[laneIndex].m_position;
-				}
-
-				curLaneId = instance.m_lanes.m_buffer[(int)((UIntPtr)curLaneId)].m_nextLane;
-				laneIndex++;
-			}
-
-			if (oneWaySegment) {
-				if (leftLanePosition < rightLanePosition) {
-					return true;
-				}
-			} else {
-				if (leftLanePosition > rightLanePosition) {
-					return true;
-				}
-			}
-
-			return false;
-		}*/
-		
-		public static bool IsRightSegment(ushort fromSegment, ushort toSegment, ushort nodeid) {
-			if (fromSegment <= 0 || toSegment <= 0)
-				return false;
-
-			return IsLeftSegment(toSegment, fromSegment, nodeid);
-		}
-
-		public static bool IsLeftSegment(ushort fromSegment, ushort toSegment, ushort nodeid) {
-			if (fromSegment <= 0 || toSegment <= 0)
-				return false;
-
-			Vector3 fromDir = GetSegmentDir(fromSegment, nodeid);
-			fromDir.y = 0;
-			fromDir.Normalize();
-			Vector3 toDir = GetSegmentDir(toSegment, nodeid);
-			toDir.y = 0;
-			toDir.Normalize();
-			return Vector3.Cross(fromDir, toDir).y >= 0.5;
-		}
-
-		public static Vector3 GetSegmentDir(int segment, ushort nodeid) {
-			var instance = Singleton<NetManager>.instance;
-
-			Vector3 dir;
-
-			dir = instance.m_segments.m_buffer[segment].m_startNode == nodeid ?
-				instance.m_segments.m_buffer[segment].m_startDirection :
-				instance.m_segments.m_buffer[segment].m_endDirection;
-
-			return dir;
-		}
-
 		/// <summary>
 		/// rebuilds the implicitly defined set of priority nodes (traffic light nodes & nodes with priority signs)
 		/// </summary>
@@ -914,37 +823,22 @@ namespace TrafficManager.Traffic {
 			return Singleton<SimulationManager>.instance.m_metaData.m_invertTraffic == SimulationMetaData.MetaBool.True;
 		}
 
-		internal static void fixJunctions() {
-			for (ushort i = 0; i < Singleton<NetManager>.instance.m_nodes.m_size; ++i) {
-				if ((Singleton<NetManager>.instance.m_nodes.m_buffer[i].m_flags & NetNode.Flags.Created) == NetNode.Flags.None)
-					continue;
-				if (Singleton<NetManager>.instance.m_nodes.m_buffer[i].CountSegments() > 2)
-					Singleton<NetManager>.instance.m_nodes.m_buffer[i].m_flags |= NetNode.Flags.Junction;
-			}
-		}
-
 		private static List<ushort> vehicleIdsToDelete = new List<ushort>();
 
-		public static void segmentHousekeeping(ushort segmentId) {
+		//private static ushort nextValidityCheckedSegment = 0;
+
+		public static void SegmentSimulationStep(ushort segmentId) {
 			if (ClearTrafficRequested) {
 				TrafficPriority.ClearTraffic();
 				ClearTrafficRequested = false;
 			}
 
-			NetManager netManager = Singleton<NetManager>.instance;
+			/*SegmentGeometry.Get(nextValidityCheckedSegment)?.VerifyCreated();
+			if (nextValidityCheckedSegment != segmentId)
+				SegmentGeometry.Get(segmentId)?.VerifyByNodes();
+			nextValidityCheckedSegment = (ushort)(((int)nextValidityCheckedSegment + 1) % NetManager.MAX_SEGMENT_COUNT);*/
 
-			if (CustomRoadAI.initDone)
-				CustomRoadAI.GetSegmentGeometry(segmentId).VerifySegmentsByCount();
-
-			// update lane arrows
-			uint laneId = netManager.m_segments.m_buffer[segmentId].m_lanes;
-			while (laneId != 0) {
-				if (!Flags.applyLaneArrowFlags(laneId)) {
-					Flags.removeLaneArrowFlags(laneId);
-				}
-				laneId = netManager.m_lanes.m_buffer[laneId].m_nextLane;
-			}
-
+			// simulate segment-ends
 			TrafficSegment trafficSegment = TrafficSegments[segmentId];
 			if (trafficSegment == null)
 				return;
@@ -952,7 +846,7 @@ namespace TrafficManager.Traffic {
 			trafficSegment.Instance2?.SimulationStep();
 		}
 
-		public static void nodeHousekeeping(ushort nodeId) {
+		/*public static void nodeHousekeeping(ushort nodeId) {
 			try {
 				uint frame = Singleton<SimulationManager>.instance.m_currentFrameIndex;
 
@@ -978,8 +872,7 @@ namespace TrafficManager.Traffic {
 							case NodeValidityState.IllegalSim:
 								// delete traffic light simulation
 								Log.Warning("Housekeeping: RemoveNodeFromSimulation " + nodeId);
-								TrafficLightSimulation.RemoveNodeFromSimulation(nodeId, false);
-								Flags.setNodeTrafficLight(nodeId, false);
+								TrafficLightSimulation.RemoveNodeFromSimulation(nodeId, false, true);
 								break;
 							default:
 								break;
@@ -1057,17 +950,17 @@ namespace TrafficManager.Traffic {
 						TimedTrafficLights timedLight = nodeSim.TimedLight;
 						if (timedLight == null || timedLight.Steps.Count <= 0) {
 							Log.Warning("Housekeeping: Timed light is null or no steps for node {nodeId}!");
-							TrafficLightSimulation.RemoveNodeFromSimulation(nodeId, false);
+							TrafficLightSimulation.RemoveNodeFromSimulation(nodeId, false, false);
 							return false;
 						}
 
-						/*foreach (var segmentId in timedLight.Steps[0].segmentIds) {
-							if (! IsPrioritySegment(nodeId, segmentId)) {
-								Log.Warning("Housekeeping: Timed light - Priority segment has gone away!");
-								RemoveNodeFromSimulation(nodeId);
-								return false;
-							}
-						}*/
+						//foreach (var segmentId in timedLight.Steps[0].segmentIds) {
+						//	if (! IsPrioritySegment(nodeId, segmentId)) {
+						//		Log.Warning("Housekeeping: Timed light - Priority segment has gone away!");
+						//		RemoveNodeFromSimulation(nodeId);
+						//		return false;
+						//	}
+						//}
 					}
 					return true;
 				}
@@ -1109,6 +1002,6 @@ namespace TrafficManager.Traffic {
 				}
 				return ok;
 			}
-		}
+		}*/
 	}
 }

@@ -101,7 +101,7 @@ namespace TrafficManager.UI.SubTools {
 			var info = Singleton<NetManager>.instance.m_segments.m_buffer[SelectedSegmentId].Info;
 
 			List<object[]> laneList = TrafficManagerTool.GetSortedVehicleLanes(SelectedSegmentId, info, SelectedNodeId);
-			SegmentGeometry geometry = CustomRoadAI.GetSegmentGeometry(SelectedSegmentId);
+			SegmentGeometry geometry = SegmentGeometry.Get(SelectedSegmentId);
 
 			GUILayout.BeginHorizontal();
 

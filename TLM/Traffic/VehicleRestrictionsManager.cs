@@ -37,7 +37,17 @@ namespace TrafficManager.Traffic {
 		/// <param name="nodeId"></param>
 		/// <returns></returns>
 		internal static HashSet<ExtVehicleType> GetAllowedVehicleTypesAsSet(ushort segmentId, ushort nodeId) {
-			HashSet<ExtVehicleType> ret = new HashSet<ExtVehicleType>();
+			return new HashSet<ExtVehicleType>(GetAllowedVehicleTypesAsDict(segmentId, nodeId).Values);
+		}
+
+		/// <summary>
+		/// Determines the allowed vehicle types that may approach the given node from the given segment (lane-wise).
+		/// </summary>
+		/// <param name="segmentId"></param>
+		/// <param name="nodeId"></param>
+		/// <returns></returns>
+		internal static Dictionary<byte, ExtVehicleType> GetAllowedVehicleTypesAsDict(ushort segmentId, ushort nodeId) {
+			Dictionary<byte, ExtVehicleType> ret = new Dictionary<byte, ExtVehicleType>();
 
 			NetManager netManager = Singleton<NetManager>.instance;
 			if (segmentId == 0 || (netManager.m_segments.m_buffer[segmentId].m_flags & NetSegment.Flags.Created) == NetSegment.Flags.None ||
@@ -59,7 +69,7 @@ namespace TrafficManager.Traffic {
 				if (toNodeId == nodeId) {
 					ExtVehicleType vehicleTypes = GetAllowedVehicleTypes(segmentId, segmentInfo, laneIndex, laneInfo);
 					if (vehicleTypes != ExtVehicleType.None)
-						ret.Add(vehicleTypes);
+						ret[(byte)laneIndex] = vehicleTypes;
 				}
 				curLaneId = netManager.m_lanes.m_buffer[curLaneId].m_nextLane;
 				++laneIndex;
@@ -114,7 +124,7 @@ namespace TrafficManager.Traffic {
 				if ((laneInfo.m_vehicleType & VehicleInfo.VehicleType.Tram) != VehicleInfo.VehicleType.None)
 					ret |= ExtVehicleType.Tram;
 				if ((laneInfo.m_laneType & NetInfo.LaneType.TransportVehicle) != NetInfo.LaneType.None)
-					ret |= ExtVehicleType.RoadPublicTransport | ExtVehicleType.Emergency;
+					ret |= ExtVehicleType.RoadPublicTransport | ExtVehicleType.Service | ExtVehicleType.Emergency;
 				else if ((laneInfo.m_vehicleType & VehicleInfo.VehicleType.Car) != VehicleInfo.VehicleType.None)
 					ret |= ExtVehicleType.RoadVehicle;
 				if ((laneInfo.m_vehicleType & (VehicleInfo.VehicleType.Train | VehicleInfo.VehicleType.Metro)) != VehicleInfo.VehicleType.None)
@@ -179,6 +189,8 @@ namespace TrafficManager.Traffic {
 
 			allowedTypes &= GetBaseMask(segmentInfo.m_lanes[laneIndex]); // ensure default base mask
 			Flags.setLaneAllowedVehicleTypes(segmentId, laneIndex, laneId, allowedTypes);
+			NotifyStartEndNode(segmentId);
+
 			return true;
 		}
 
@@ -203,6 +215,7 @@ namespace TrafficManager.Traffic {
 			allowedTypes |= vehicleType;
 			allowedTypes &= GetBaseMask(segmentInfo.m_lanes[laneIndex]); // ensure default base mask
 			Flags.setLaneAllowedVehicleTypes(segmentId, laneIndex, laneId, allowedTypes);
+			NotifyStartEndNode(segmentId);
 		}
 
 		/// <summary>
@@ -226,6 +239,7 @@ namespace TrafficManager.Traffic {
 			allowedTypes &= ~vehicleType;
 			allowedTypes &= GetBaseMask(segmentInfo.m_lanes[laneIndex]); // ensure default base mask
 			Flags.setLaneAllowedVehicleTypes(segmentId, laneIndex, laneId, allowedTypes);
+			NotifyStartEndNode(segmentId);
 		}
 
 		public static void ToggleAllowedType(ushort segmentId, NetInfo segmentInfo, uint laneIndex, uint laneId, NetInfo.Lane laneInfo, ExtVehicleType vehicleType, bool add) {
@@ -350,6 +364,16 @@ namespace TrafficManager.Traffic {
 			if (defaultVehicleTypeCache != null) {
 				defaultVehicleTypeCache[segmentId] = null;
 			}
+		}
+
+		public static void NotifyStartEndNode(ushort segmentId) {
+			// notify observers of start node and end node
+			ushort startNodeId = Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].m_startNode;
+			ushort endNodeId = Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].m_endNode;
+			if (startNodeId != 0)
+				NodeGeometry.Get(startNodeId).NotifyObservers();
+			if (endNodeId != 0)
+				NodeGeometry.Get(endNodeId).NotifyObservers();
 		}
 	}
 }

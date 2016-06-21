@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TrafficManager.State;
+using UnityEngine;
 
 namespace TrafficManager.Traffic {
 	public class SegmentEndGeometry {
@@ -16,6 +17,13 @@ namespace TrafficManager.Traffic {
 		public ushort NodeId() {
 			return StartNode ? Singleton<NetManager>.instance.m_segments.m_buffer[SegmentId].m_startNode : Singleton<NetManager>.instance.m_segments.m_buffer[SegmentId].m_endNode;
 		}
+
+		/// <summary>
+		/// last known connected node
+		/// </summary>
+		public ushort LastKnownNodeId {
+			get; private set;
+		} = 0;
 
 		private ushort[] connectedSegments = new ushort[7];
 		private byte numConnectedSegments = 0;
@@ -172,7 +180,7 @@ namespace TrafficManager.Traffic {
 			StartNode = startNode;
 		}
 
-		internal void cleanup() {
+		internal void Cleanup() {
 			for (int i = 0; i < 7; ++i) {
 				ConnectedSegments[i] = 0;
 
@@ -204,10 +212,13 @@ namespace TrafficManager.Traffic {
 
 			OnlyHighways = false;
 			OutgoingOneWay = false;
+
+			LastKnownNodeId = 0;
 		}
 
 		public bool IsValid() {
-			return SegmentId > 0 && NodeId() > 0;
+			bool valid = GetSegmentGeometry() == null || GetSegmentGeometry().IsValid();
+			return valid && NodeId() != 0;
 		}
 
 		public bool IsConnectedTo(ushort otherSegmentId) {
@@ -264,15 +275,29 @@ namespace TrafficManager.Traffic {
 			return ret;
 		}
 
-		internal void Recalculate() {
-			cleanup();
+		public SegmentGeometry GetSegmentGeometry() {
+			return SegmentGeometry.Get(SegmentId);
+		}
 
-			if (!IsValid())
+		internal void Recalculate(bool propagate) {
+#if DEBUG
+			//Log._Debug($"SegmentEndGeometry: Recalculate seg. {SegmentId} @ node {NodeId()}, propagate={propagate}");
+#endif
+
+			ushort nodeIdBeforeRecalc = LastKnownNodeId;
+			Cleanup();
+
+			if (!IsValid()) {
+				if (nodeIdBeforeRecalc != 0 && propagate)
+					NodeGeometry.Get(nodeIdBeforeRecalc).RemoveSegment(SegmentId);
+
 				return;
+			}
 
 			NetManager netManager = Singleton<NetManager>.instance;
 
 			ushort nodeId = NodeId();
+			LastKnownNodeId = nodeId;
 
 			outgoingOneWay = SegmentGeometry.calculateIsOutgoingOneWay(SegmentId, nodeId);
 			onlyHighways = true;
@@ -297,7 +322,7 @@ namespace TrafficManager.Traffic {
 				if (!(SegmentGeometry.calculateIsHighway(otherSegmentId) && otherIsOneWay))
 					onlyHighways = false;
 
-				if (TrafficPriority.IsRightSegment(SegmentId, otherSegmentId, nodeId)) {
+				if (IsRightSegment(SegmentId, otherSegmentId, nodeId)) {
 					RightSegments[NumRightSegments++] = otherSegmentId;
 					if (!otherIsOutgoingOneWay) {
 						IncomingRightSegments[NumIncomingRightSegments++] = otherSegmentId;
@@ -306,7 +331,7 @@ namespace TrafficManager.Traffic {
 					} else {
 						OutgoingRightSegments[NumOutgoingRightSegments++] = otherSegmentId;
 					}
-				} else if (TrafficPriority.IsLeftSegment(SegmentId, otherSegmentId, nodeId)) {
+				} else if (IsLeftSegment(SegmentId, otherSegmentId, nodeId)) {
 					LeftSegments[NumLeftSegments++] = otherSegmentId;
 					if (!otherIsOutgoingOneWay) {
 						IncomingLeftSegments[NumIncomingLeftSegments++] = otherSegmentId;
@@ -334,6 +359,48 @@ namespace TrafficManager.Traffic {
 
 			if (!hasOtherSegments)
 				onlyHighways = false;
+
+			// propagate information to other segments
+			if (nodeIdBeforeRecalc != nodeId && propagate) {
+				if (nodeIdBeforeRecalc != 0)
+					NodeGeometry.Get(nodeIdBeforeRecalc).RemoveSegment(SegmentId);
+
+				NodeGeometry.Get(nodeId).AddSegment(SegmentId, StartNode);
+			}
+		}
+
+		// static methods
+
+		private static bool IsRightSegment(ushort fromSegment, ushort toSegment, ushort nodeid) {
+			if (fromSegment <= 0 || toSegment <= 0)
+				return false;
+
+			return IsLeftSegment(toSegment, fromSegment, nodeid);
+		}
+
+		private static bool IsLeftSegment(ushort fromSegment, ushort toSegment, ushort nodeid) {
+			if (fromSegment <= 0 || toSegment <= 0)
+				return false;
+
+			Vector3 fromDir = GetSegmentDir(fromSegment, nodeid);
+			fromDir.y = 0;
+			fromDir.Normalize();
+			Vector3 toDir = GetSegmentDir(toSegment, nodeid);
+			toDir.y = 0;
+			toDir.Normalize();
+			return Vector3.Cross(fromDir, toDir).y >= 0.5;
+		}
+
+		private static Vector3 GetSegmentDir(int segment, ushort nodeid) {
+			var instance = Singleton<NetManager>.instance;
+
+			Vector3 dir;
+
+			dir = instance.m_segments.m_buffer[segment].m_startNode == nodeid ?
+				instance.m_segments.m_buffer[segment].m_startDirection :
+				instance.m_segments.m_buffer[segment].m_endDirection;
+
+			return dir;
 		}
 	}
 }

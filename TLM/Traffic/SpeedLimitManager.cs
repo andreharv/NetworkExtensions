@@ -195,10 +195,10 @@ namespace TrafficManager.Traffic {
 		/// Sets the speed limit of a given segment and lane direction.
 		/// </summary>
 		/// <param name="segmentId"></param>
-		/// <param name="dir"></param>
+		/// <param name="finalDir"></param>
 		/// <param name="speedLimit"></param>
 		/// <returns></returns>
-		public static bool SetSpeedLimit(ushort segmentId, NetInfo.Direction dir, ushort speedLimit) {
+		public static bool SetSpeedLimit(ushort segmentId, NetInfo.Direction finalDir, ushort speedLimit) {
 			if (segmentId == 0)
 				return false;
 			if (!AvailableSpeedLimits.Contains(speedLimit))
@@ -209,8 +209,8 @@ namespace TrafficManager.Traffic {
 			uint curLaneId = Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].m_lanes;
 			int laneIndex = 0;
 			while (laneIndex < Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].Info.m_lanes.Length && curLaneId != 0u) {
-				NetInfo.Direction d = Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].Info.m_lanes[laneIndex].m_direction;
-				if ((Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].Info.m_lanes[laneIndex].m_laneType & (NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle)) == NetInfo.LaneType.None || d != dir)
+				NetInfo.Direction d = Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].Info.m_lanes[laneIndex].m_finalDirection;
+				if ((Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].Info.m_lanes[laneIndex].m_laneType & (NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle)) == NetInfo.LaneType.None || d != finalDir)
 					goto nextIter;
 
 				Log._Debug($"SpeedLimitManager: Setting speed limit of lane {curLaneId} to {speedLimit}");

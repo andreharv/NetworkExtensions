@@ -93,8 +93,8 @@ namespace TrafficManager.TrafficLight {
 		}
 
 		public void ChangeMode() {
-			SegmentGeometry geometry = CustomRoadAI.GetSegmentGeometry(SegmentId);
-			geometry.Recalculate(true, true);
+			SegmentGeometry geometry = SegmentGeometry.Get(SegmentId);
+			//geometry.Recalculate(true, true);
 			bool startNode = geometry.StartNodeId() == NodeId;
 			var hasLeftSegment = geometry.HasOutgoingLeftSegment(startNode);
 			var hasForwardSegment = geometry.HasOutgoingStraightSegment(startNode);
@@ -275,21 +275,23 @@ namespace TrafficManager.TrafficLight {
 			return MemberwiseClone();
 		}
 
-		public void invert() {
+		/*public void invert() {
 			LightMain = InvertLight(LightMain);
 			LightLeft = InvertLight(LightLeft);
 			LightRight = InvertLight(LightRight);
-		}
+		}*/
 
-		public static RoadBaseAI.TrafficLightState InvertLight(RoadBaseAI.TrafficLightState light) { // TODO refactor
-			switch (light) {
+		public static RoadBaseAI.TrafficLightState GetPedestrianLightState(RoadBaseAI.TrafficLightState vehicleLightState) {
+			switch (vehicleLightState) {
 				case RoadBaseAI.TrafficLightState.Red:
-				case RoadBaseAI.TrafficLightState.GreenToRed:
+				default:
 					return RoadBaseAI.TrafficLightState.Green;
 				case RoadBaseAI.TrafficLightState.Green:
-				case RoadBaseAI.TrafficLightState.RedToGreen:
-				default:
 					return RoadBaseAI.TrafficLightState.Red;
+				case RoadBaseAI.TrafficLightState.RedToGreen:
+					return RoadBaseAI.TrafficLightState.GreenToRed;
+				case RoadBaseAI.TrafficLightState.GreenToRed:
+					return RoadBaseAI.TrafficLightState.RedToGreen;
 			}
 		}
 

@@ -21,52 +21,49 @@ namespace TrafficManager.Util {
 		/// <param name="direction">Specifies if traffic should be able to flow towards the initial segment (Incoming) or should be able to flow from the initial segment (Outgoing) or in both directions (Both).</param>
 		/// <param name="maximumDepth">Specifies the maximum depth to explore. At a depth of 0, no segment will be traversed (event the initial segment will be omitted).</param>
 		/// <param name="visitor">Specifies the stateful visitor that should be notified as soon as a traversable segment (which has not been traversed before) is found.</param>
-		public static void Traverse(SegmentGeometry initialSegmentGeometry, bool nextNodeIsStartNode, TraverseDirection direction, int maximumDepth, IVisitor<SegmentGeometry> visitor) {
-			if (maximumDepth <= 0) {
+		public static void Traverse(ushort initialSegmentId, TraverseDirection direction, IVisitor<SegmentGeometry> visitor) {
+			SegmentGeometry initialGeometry = SegmentGeometry.Get(initialSegmentId);
+			if (initialGeometry == null)
 				return;
-			}
 
-			if (visitor.Visit(initialSegmentGeometry)) {
+			if (visitor.Visit(initialGeometry)) {
 				HashSet<ushort> visitedSegmentIds = new HashSet<ushort>();
-				visitedSegmentIds.Add(initialSegmentGeometry.SegmentId);
+				visitedSegmentIds.Add(initialSegmentId);
 
-				TraverseRec(initialSegmentGeometry, nextNodeIsStartNode, direction, maximumDepth - 1, visitor, visitedSegmentIds);
+				TraverseRec(initialGeometry, true, direction, visitor, visitedSegmentIds);
+				TraverseRec(initialGeometry, false, direction, visitor, visitedSegmentIds);
 			}
 		}
 
-		private static void TraverseRec(SegmentGeometry prevSegmentGeometry, bool prevNodeIsStartNode, TraverseDirection direction, int maximumDepth, IVisitor<SegmentGeometry> visitor, HashSet<ushort> visitedSegmentIds) {
-			if (maximumDepth <= 0) {
-				return;
-			}
-
+		private static void TraverseRec(SegmentGeometry prevGeometry, bool exploreStartNode, TraverseDirection direction, IVisitor<SegmentGeometry> visitor, HashSet<ushort> visitedSegmentIds) {
 			// collect next segment ids to traverse
+
 			ushort[] nextSegmentIds;
 			switch (direction) {
 				case TraverseDirection.Both:
 				default:
-					nextSegmentIds = prevSegmentGeometry.GetConnectedSegments(prevNodeIsStartNode);
+					nextSegmentIds = prevGeometry.GetConnectedSegments(exploreStartNode);
 					break;
 				case TraverseDirection.Incoming:
-					nextSegmentIds = prevSegmentGeometry.GetIncomingSegments(prevNodeIsStartNode);
+					nextSegmentIds = prevGeometry.GetIncomingSegments(exploreStartNode);
 					break;
 				case TraverseDirection.Outgoing:
-					nextSegmentIds = prevSegmentGeometry.GetOutgoingSegments(prevNodeIsStartNode);
+					nextSegmentIds = prevGeometry.GetOutgoingSegments(exploreStartNode);
 					break;
 			}
 
-			ushort prevNodeId = prevSegmentGeometry.GetNodeId(prevNodeIsStartNode);
+			ushort prevNodeId = prevGeometry.GetNodeId(exploreStartNode);
 
 			// explore next segments
 			foreach (ushort nextSegmentId in nextSegmentIds) {
-				if (visitedSegmentIds.Contains(nextSegmentId))
+				if (nextSegmentId == 0 || visitedSegmentIds.Contains(nextSegmentId))
 					continue;
 				visitedSegmentIds.Add(nextSegmentId);
 
-				SegmentGeometry nextSegmentGeometry = CustomRoadAI.GetSegmentGeometry(nextSegmentId);
-				if (visitor.Visit(nextSegmentGeometry)) {
-
+				SegmentGeometry nextSegmentGeometry = SegmentGeometry.Get(nextSegmentId);
+				if (nextSegmentGeometry != null && visitor.Visit(nextSegmentGeometry)) {
 					bool nextNodeIsStartNode = nextSegmentGeometry.StartNodeId() != prevNodeId;
-					TraverseRec(nextSegmentGeometry, nextNodeIsStartNode, direction, maximumDepth - 1, visitor, visitedSegmentIds);
+					TraverseRec(nextSegmentGeometry, nextNodeIsStartNode, direction, visitor, visitedSegmentIds);
 				}
 			}
 		}

@@ -351,9 +351,9 @@ namespace TrafficManager.UI {
 						HoveredNodeId = endNodeId;
 				}
 
-				if (oldHoveredNodeId != HoveredNodeId || oldHoveredSegmentId != HoveredSegmentId) {
+				/*if (oldHoveredNodeId != HoveredNodeId || oldHoveredSegmentId != HoveredSegmentId) {
 					Log._Debug($"*** Mouse ray @ node {HoveredNodeId}, segment {HoveredSegmentId}, toolMode={GetToolMode()}");
-                }
+                }*/
 
 				return (HoveredNodeId != 0 || HoveredSegmentId != 0);
 			} else {
@@ -407,7 +407,7 @@ namespace TrafficManager.UI {
 
 				labelStr += "Lane idx " + i + ", id " + curLaneId;
 #if DEBUG
-				labelStr += ", flags: " + ((NetLane.Flags)Singleton<NetManager>.instance.m_lanes.m_buffer[curLaneId].m_flags).ToString() + ", limit: " + SpeedLimitManager.GetCustomSpeedLimit(curLaneId) + " km/h, dir: " + laneInfo.m_direction + ", final: " + laneInfo.m_finalDirection + ", pos: " + String.Format("{0:0.##}", laneInfo.m_position) + ", sim. idx: " + laneInfo.m_similarLaneIndex + " for " + laneInfo.m_vehicleType;
+				labelStr += ", flags: " + ((NetLane.Flags)Singleton<NetManager>.instance.m_lanes.m_buffer[curLaneId].m_flags).ToString() + ", limit: " + SpeedLimitManager.GetCustomSpeedLimit(curLaneId) + " km/h, dir: " + laneInfo.m_direction + ", final: " + laneInfo.m_finalDirection + ", pos: " + String.Format("{0:0.##}", laneInfo.m_position) + ", sim. idx: " + laneInfo.m_similarLaneIndex + " for " + laneInfo.m_vehicleType + "/" + laneInfo.m_laneType;
 #endif
 				if (CustomRoadAI.InStartupPhase)
 					labelStr += ", in start-up phase";
@@ -580,7 +580,7 @@ namespace TrafficManager.UI {
 				//_counterStyle.normal.background = MakeTex(1, 1, new Color(0f, 0f, 0f, 0.4f));
 
 				VehicleState vState = VehicleStateManager.GetVehicleState((ushort)i);
-				String labelStr = "Veh. " + i + /*" @ " + String.Format("{0:0.##}", vehicle.GetLastFrameVelocity().magnitude)*/ " (" + VehicleStateManager.GetVehicleState((ushort)i)?.VehicleType + ", valid? " + VehicleStateManager.GetVehicleState((ushort)i)?.Valid + ")" + ", len: " + vState?.TotalLength + ", state: " + vState?.JunctionTransitState + "\npos: " + vState?.GetCurrentPosition()?.SourceSegmentId + "->" + vState?.GetCurrentPosition()?.TransitNodeId + ", last update: " + vState?.LastPositionUpdate;
+				String labelStr = "Veh. " + i + /*" @ " + String.Format("{0:0.##}", vehicle.GetLastFrameVelocity().magnitude)*/ " (" + (vState != null ? vState.VehicleType.ToString() : "-") + ", valid? " + (vState != null ? vState.Valid.ToString() : "-") + ")" + ", len: " + (vState != null ? vState.TotalLength.ToString() : "-") + ", state: " + (vState != null ? vState.JunctionTransitState.ToString() : "-") + "\npos: " + vState?.GetCurrentPosition()?.SourceSegmentId + "(" + vState?.GetCurrentPosition()?.SourceLaneIndex + ")->" + vState?.GetCurrentPosition()?.TransitNodeId + ", last update: " + vState?.LastPositionUpdate;
 				// add current path info
 				/*var currentPathId = vehicle.m_path;
 				if (currentPathId > 0) {
@@ -604,9 +604,6 @@ namespace TrafficManager.UI {
 			GUIStyle _counterStyle = new GUIStyle();
 			Array16<CitizenInstance> citizenInstances = Singleton<CitizenManager>.instance.m_instances;
 			for (int i = 1; i < citizenInstances.m_size; ++i) {
-				if (i % (int)Options.someValue4 != 0)
-					continue;
-
 				CitizenInstance citizenInstance = citizenInstances.m_buffer[i];
 				if (citizenInstance.m_flags == CitizenInstance.Flags.None)
 					continue;
@@ -730,7 +727,7 @@ namespace TrafficManager.UI {
 				if ((segmentInfo.m_lanes[laneIndex].m_laneType & (NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle)) == NetInfo.LaneType.None)
 					goto nextIter;
 
-				NetInfo.Direction dir = segmentInfo.m_lanes[laneIndex].m_direction;
+				NetInfo.Direction dir = segmentInfo.m_lanes[laneIndex].m_finalDirection;
 				Vector3 bezierCenter = Singleton<NetManager>.instance.m_lanes.m_buffer[curLaneId].m_bezier.Position(0.5f);
 
 				if (!segmentCenterByDir.ContainsKey(dir)) {

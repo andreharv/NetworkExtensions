@@ -42,13 +42,13 @@ namespace TrafficManager.Custom.AI {
 					//Log._Debug($"HandleVehicle for trams. vehicleId={vehicleId} frontVehicleId={frontVehicleId}");
 					VehicleStateManager.LogTraffic(frontVehicleId, ref Singleton<VehicleManager>.instance.m_vehicles.m_buffer[frontVehicleId], true);
 				} catch (Exception e) {
-					Log.Error("TrainAI TrafficManagerSimulationStep Error: " + e.ToString());
+					Log.Error("TrainAI TrafficManagerSimulationStep (1) Error: " + e.ToString());
 				}
 
 				try {
 					VehicleStateManager.UpdateVehiclePos(frontVehicleId, ref Singleton<VehicleManager>.instance.m_vehicles.m_buffer[frontVehicleId]);
 				} catch (Exception e) {
-					Log.Error("CarAI TmCalculateSegmentPosition Error: " + e.ToString());
+					Log.Error("TrainAI TrafficManagerSimulationStep (2) Error: " + e.ToString());
 				}
 				/// NON-STOCK CODE END ///
 
@@ -134,14 +134,14 @@ namespace TrafficManager.Custom.AI {
 			if (vehicleType == ExtVehicleType.CargoTrain)
 				vehicleType = ExtVehicleType.CargoVehicle;
 #if DEBUG
-			bool reversed = (vehicleData.m_flags & Vehicle.Flags.Reversed) != 0;
+			/*bool reversed = (vehicleData.m_flags & Vehicle.Flags.Reversed) != 0;
 			ushort frontVehicleId;
 			if (reversed) {
 				frontVehicleId = vehicleData.GetLastVehicle(vehicleId);
 			} else {
 				frontVehicleId = vehicleId;
 			}
-			Log._Debug($"CustomTrainAI.CustomStartPathFind. vehicleID={vehicleId}. reversed={reversed} frontVehicleId={frontVehicleId} type={this.GetType().ToString()} vehicleType={vehicleType} target={vehicleData.m_targetBuilding}");
+			Log._Debug($"CustomTrainAI.CustomStartPathFind. vehicleID={vehicleId}. reversed={reversed} frontVehicleId={frontVehicleId} type={this.GetType().ToString()} vehicleType={vehicleType} target={vehicleData.m_targetBuilding}");*/
 #endif
 			/// NON-STOCK CODE END ///
 
@@ -241,7 +241,15 @@ namespace TrafficManager.Custom.AI {
 				}
 				if (targetNodeId == prevTargetNodeId) {
 					float oldMaxSpeed = maxSpeed;
-					if (!CustomVehicleAI.MayChangeSegment(vehicleID, ref vehicleData, ref lastFrameData, false, ref prevPos, prevTargetNodeId, prevLaneID, ref position, targetNodeId, laneID, out maxSpeed))
+#if DEBUG
+					bool debug = false;// targetNodeId == 14527 || targetNodeId == 15048;
+					if (debug)
+						Log._Debug($"Train {vehicleID} wants to change segment. seg. {prevPos.m_segment} -> node {targetNodeId} -> seg. {position.m_segment}");
+#else
+					bool debug = false;
+#endif
+					bool mayChange = CustomVehicleAI.MayChangeSegment(vehicleID, ref vehicleData, ref lastFrameData, false, ref prevPos, prevTargetNodeId, prevLaneID, ref position, targetNodeId, laneID, out maxSpeed, debug);
+					if (! mayChange)
 						return;
 					maxSpeed = oldMaxSpeed;
 				}

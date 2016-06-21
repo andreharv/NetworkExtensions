@@ -1,7 +1,22 @@
 # Cities: Skylines - Traffic Manager: *President Edition*
-A work-in-progress modification for **Cities: Skylines** to add additional road traffic control
+A work-in-progress modification for **Cities: Skylines** to add additional traffic control
 
 # Changelog
+1.6.22, 06/21/2016:
+- Speed/vehicle restrictions may now be applied to all road segments between two junctions by holding the shift key
+- Reworked how changes in the road network are recognized 
+- Advanced Vehicle AI: Improved lane selection at junctions where bus lanes end
+- Advanced Vehicle AI: Improved lane selection of busses
+- Improved automatic pedestrian lights 
+- Improved separate traffic lights: Traffic lights now control traffic lane-wise
+- UI: Sensitivity slider is only available while adding/editing a step or while in test mode
+- Bugfix: Lane selection on maps with left-hand traffic was incorrect
+- Bugfix: While building in pause mode, changes in the road network were not always recognized causing vehicles to stop/despawn 
+- Bugfix: Police cars off-duty were ignoring lane arrows
+- Bugfix: If public transport stops were near a junction, trams/busses were not counted by timed traffic lights (many thanks to Filip for identifying this problem)
+- Bugfix: Trains/Trams were sometimes ignoring timed traffic lights (many thanks to Filip for identifying this problem)
+- Bugfix: Building roads with bus lanes caused garbage, bodies, etc. to pile up 
+
 1.6.21, 06/14/2016:
 - Bugfix: Too few cargo trains were spawning (thanks to @Scratch, @toruk_makto1, @Mr.Miyagi, @mottoh and @Syparo for pointing out this problem)       
 - Bugfix: Vehicle restrictions did not work as expected (thanks to @nordlaser for pointing out this problem)

@@ -8,6 +8,9 @@ using TrafficManager.TrafficLight;
 
 namespace TrafficManager.Traffic {
 	public class VehicleState {
+#if DEBUGVSTATE
+		private static readonly ushort debugVehicleId = 6316;
+#endif
 		private static readonly VehicleInfo.VehicleType HANDLED_VEHICLE_TYPES = VehicleInfo.VehicleType.Car | VehicleInfo.VehicleType.Train | VehicleInfo.VehicleType.Tram;
 
 		private VehicleJunctionTransitState junctionTransitState;
@@ -25,10 +28,6 @@ namespace TrafficManager.Traffic {
 
 		public uint LastPositionUpdate {
 			get; private set;
-		}
-
-		public bool FrontVehicle {
-			get; internal set;
 		}
 
 		public float TotalLength {
@@ -55,7 +54,9 @@ namespace TrafficManager.Traffic {
 
 		public void Reset() {
 #if DEBUGVSTATE
-			Log._Debug($"Reset() Resetting vehicle {VehicleId}");
+			bool debug = VehicleId == debugVehicleId;
+			if (debug)
+				Log._Debug($"Reset() Resetting vehicle {VehicleId}");
 #endif
 			if (VehiclePositions != null) {
 				while (VehiclePositions.First != null) {
@@ -71,7 +72,6 @@ namespace TrafficManager.Traffic {
 			VehiclePositions = null;
 			LastPathRecalculation = 0;
 			TotalLength = 0f;
-			FrontVehicle = false;
 			VehicleType = ExtVehicleType.None;
 			WaitTime = 0;
 			JunctionTransitState = VehicleJunctionTransitState.None;
@@ -96,9 +96,9 @@ namespace TrafficManager.Traffic {
 		}
 
 		internal void UpdatePosition(ref Vehicle vehicleData, ref PathUnit.Position currentPos) {
-#if DEBUG
+#if DEBUGVSTATE
 			//bool debug = (VehicleId & 63) == 17;
-			bool debug = currentPos.m_segment == 15491;
+			bool debug = VehicleId == debugVehicleId;
 #endif
 
 			LastPositionUpdate = Singleton<SimulationManager>.instance.m_currentFrameIndex;
@@ -142,37 +142,37 @@ namespace TrafficManager.Traffic {
 				if (debug)
 					Log._Debug($"UpdatePosition: Vehicle {VehicleId} is still up-to-date (seg. {currentPos.m_segment} @ lane {currentPos.m_lane}).");
 #endif
-				return;
-			}
+			} else {
 
-#if DEBUGVSTATE
-			if (debug)
-				Log._Debug($"UpdatePosition: Vehicle {VehicleId}: Update necessary. currentPos: seg. {currentPos.m_segment} @ lane {currentPos.m_lane}");
-#endif
-			this.WaitTime = 0;
-			this.JunctionTransitState = VehicleJunctionTransitState.None;
-
-			// unregister the vehicle at previous segments
-			ushort currentSegmentId = currentPos.m_segment;
-			byte currentLaneIndex = currentPos.m_lane;
-
-			while (CurrentPosition.Value.SourceSegmentId != currentSegmentId || CurrentPosition.Value.SourceLaneIndex != currentLaneIndex) {
-				SegmentEnd end = TrafficPriority.GetPrioritySegment(CurrentPosition.Value.TransitNodeId, CurrentPosition.Value.SourceSegmentId);
-				if (end != null)
-					end.UnregisterVehicle(VehicleId);
 #if DEBUGVSTATE
 				if (debug)
-					Log._Debug($"UpdatePosition: Vehicle {VehicleId}: Removed position {CurrentPosition.Value.SourceSegmentId}, {CurrentPosition.Value.TransitNodeId} (lane {CurrentPosition.Value.SourceLaneIndex}). Remaining: {VehiclePositions.Count}");
+					Log._Debug($"UpdatePosition: Vehicle {VehicleId}: Update necessary. currentPos: seg. {currentPos.m_segment} @ lane {currentPos.m_lane}");
 #endif
-				--numRegisteredAhead;
-				CurrentPosition = CurrentPosition.Next;
+				this.WaitTime = 0;
+				this.JunctionTransitState = VehicleJunctionTransitState.None;
 
-				if (CurrentPosition == null) {
+				// unregister the vehicle at previous segments
+				ushort currentSegmentId = currentPos.m_segment;
+				byte currentLaneIndex = currentPos.m_lane;
+
+				while (CurrentPosition.Value.SourceSegmentId != currentSegmentId || CurrentPosition.Value.SourceLaneIndex != currentLaneIndex) {
+					SegmentEnd end = TrafficPriority.GetPrioritySegment(CurrentPosition.Value.TransitNodeId, CurrentPosition.Value.SourceSegmentId);
+					if (end != null)
+						end.UnregisterVehicle(VehicleId);
 #if DEBUGVSTATE
 					if (debug)
-						Log.Error($"UpdatePosition: Vehicle {VehicleId}: Could not reach current position!");
+						Log._Debug($"UpdatePosition: Vehicle {VehicleId}: Removed position {CurrentPosition.Value.SourceSegmentId}, {CurrentPosition.Value.TransitNodeId} (lane {CurrentPosition.Value.SourceLaneIndex}). Remaining: {VehiclePositions.Count}");
 #endif
-					return;
+					--numRegisteredAhead;
+					CurrentPosition = CurrentPosition.Next;
+
+					if (CurrentPosition == null) {
+#if DEBUGVSTATE
+						if (debug)
+							Log.Error($"UpdatePosition: Vehicle {VehicleId}: Could not reach current position!");
+#endif
+						return;
+					}
 				}
 			}
 
@@ -246,11 +246,16 @@ namespace TrafficManager.Traffic {
 		}
 
 		internal void OnPathFindReady(ref Vehicle vehicleData) {
+#if DEBUGVSTATE
+			bool debug = VehicleId == debugVehicleId;
+#endif
+
 			Reset();
 
 			if ((vehicleData.m_flags & Vehicle.Flags.Created) == 0) {
 #if DEBUGVSTATE
-				Log.Warning($"OnPathFindReady: Vehicle {VehicleId} is not created!");
+				if (debug)
+					Log.Warning($"OnPathFindReady: Vehicle {VehicleId} is not created!");
 #endif
 				return;
 			}
@@ -259,7 +264,8 @@ namespace TrafficManager.Traffic {
 			ExtVehicleType? type = VehicleStateManager.DetermineVehicleType(ref vehicleData);
 			if (type == null) {
 #if DEBUGVSTATE
-				Log.Warning($"OnPathFindReady: Could not determine vehicle type of {VehicleId}!");
+				if (debug)
+					Log.Warning($"OnPathFindReady: Could not determine vehicle type of {VehicleId}!");
 #endif
 				return;
 			}
@@ -268,7 +274,8 @@ namespace TrafficManager.Traffic {
 			if ((vehicleData.Info.m_vehicleType & HANDLED_VEHICLE_TYPES) == VehicleInfo.VehicleType.None) {
 				// vehicle type is not handled by TM:PE
 #if DEBUGVSTATE
-				Log.Warning($"OnPathFindReady: Vehicle {VehicleId} is not handled by TM:PE!");
+				if (debug)
+					Log.Warning($"OnPathFindReady: Vehicle {VehicleId} is not handled by TM:PE!");
 #endif
 				return;
 			}
@@ -287,14 +294,16 @@ namespace TrafficManager.Traffic {
 
 			if (vehicleData.m_path <= 0) {
 #if DEBUGVSTATE
-				Log.Warning($"OnPathFindReady: Vehicle {VehicleId} does not have a valid path!");
+				if (debug)
+					Log.Warning($"OnPathFindReady: Vehicle {VehicleId} does not have a valid path!");
 #endif
 				return;
 			}
 
 			if ((Singleton<PathManager>.instance.m_pathUnits.m_buffer[vehicleData.m_path].m_pathFindFlags & PathUnit.FLAG_READY) == 0) {
 #if DEBUGVSTATE
-				Log.Warning($"OnPathFindReady: Vehicle {VehicleId} does not have finished path-finding!");
+				if (debug)
+					Log.Warning($"OnPathFindReady: Vehicle {VehicleId} does not have finished path-finding!");
 #endif
 				return;
 			}
@@ -304,7 +313,8 @@ namespace TrafficManager.Traffic {
 			TotalLength = Singleton<VehicleManager>.instance.m_vehicles.m_buffer[VehicleId].CalculateTotalLength(VehicleId);
 
 #if DEBUGVSTATE
-			Log._Debug($"OnPathFindReady: Vehicle {VehicleId} Type: {VehicleType} TotalLength: {TotalLength}");
+			if (debug)
+				Log._Debug($"OnPathFindReady: Vehicle {VehicleId} Type: {VehicleType} TotalLength: {TotalLength}");
 #endif
 
 			// calculate vehicle transits
@@ -312,67 +322,91 @@ namespace TrafficManager.Traffic {
 
 			var currentPathUnitId = vehicleData.m_path;
 			int pathPositionIndex = 0;
-			PathUnit.Position curPos = Singleton<PathManager>.instance.m_pathUnits.m_buffer[currentPathUnitId].GetPosition(pathPositionIndex++);
-			ushort prevSegmentId = curPos.m_segment;
-			byte prevLaneIndex = curPos.m_lane;
 
-			if (prevSegmentId <= 0) {
+			// find first path unit
+			PathUnit.Position curPos = default(PathUnit.Position);
+			if (!Singleton<PathManager>.instance.m_pathUnits.m_buffer[currentPathUnitId].GetPosition(pathPositionIndex++, out curPos)) { // if this returns false, there is no next path unit
 #if DEBUGVSTATE
-				Log.Warning($"OnPathFindReady: Vehicle {VehicleId} -- no previous segmentId! Path {currentPathUnitId}, pathPosIndex {vehicleData.m_pathPositionIndex}, m_segment {curPos.m_segment}, m_lane {curPos.m_lane}");
+				if (debug)
+					Log._Debug($"OnPathFindReady: Vehicle {VehicleId}: Could not get first path position");
 #endif
 				return;
 			}
 
-			ushort prevTargetNodeId;
-			if (curPos.m_offset == 0) {
-				prevTargetNodeId = netManager.m_segments.m_buffer[prevSegmentId].m_startNode;
-			} else {
-				prevTargetNodeId = netManager.m_segments.m_buffer[prevSegmentId].m_endNode;
+			ushort prevSegmentId = curPos.m_segment;
+			byte prevLaneIndex = curPos.m_lane;
+			byte prevOffset = curPos.m_offset;
+
+			if (prevSegmentId <= 0) {
+#if DEBUGVSTATE
+				if (debug)
+					Log.Warning($"OnPathFindReady: Vehicle {VehicleId} -- no previous segmentId! Path {currentPathUnitId}, pathPosIndex {vehicleData.m_pathPositionIndex}, m_segment {curPos.m_segment}, m_lane {curPos.m_lane}");
+#endif
+				return;
 			}
+
+			/*ushort targetNodeId;
+			if (curPos.m_offset == 0) {
+				targetNodeId = netManager.m_segments.m_buffer[prevSegmentId].m_startNode;
+			} else {
+				targetNodeId = netManager.m_segments.m_buffer[prevSegmentId].m_endNode;
+			}*/
 
 			//Log._Debug($"OnPathFindReady: Vehicle {VehicleId}: prevSegmentId {prevSegmentId} prevLaneIndex {prevLaneIndex} prevTargetNodeId {prevTargetNodeId}");
 
 			// evaluate upcoming path units
-			uint nextPathUnitId = currentPathUnitId;
 			while (true) {
 				//Log._Debug($"OnPathFindReady: Vehicle {VehicleId}: Evaluating path pos index {nextPathPos}, path unit {nextPathUnitId}");
 				if (pathPositionIndex > 11) {
 					// go to next path unit
 					pathPositionIndex = 0;
-					nextPathUnitId = Singleton<PathManager>.instance.m_pathUnits.m_buffer[nextPathUnitId].m_nextPathUnit;
-					if (nextPathUnitId <= 0)
+					currentPathUnitId = Singleton<PathManager>.instance.m_pathUnits.m_buffer[currentPathUnitId].m_nextPathUnit;
+					if (currentPathUnitId <= 0)
 						break;
 				}
 
-				PathUnit.Position nextPos = default(PathUnit.Position);
-				if (!Singleton<PathManager>.instance.m_pathUnits.m_buffer[nextPathUnitId].GetPosition(pathPositionIndex, out nextPos)) { // if this returns false, there is no next path unit
+				if (!Singleton<PathManager>.instance.m_pathUnits.m_buffer[currentPathUnitId].GetPosition(pathPositionIndex++, out curPos)) { // if this returns false, there is no next path unit
 					break;
 				}
 
-				ushort nextSegmentId = nextPos.m_segment;
-				byte nextLaneIndex = nextPos.m_lane;
+				ushort nextSegmentId = curPos.m_segment;
+				byte nextLaneIndex = curPos.m_lane;
+				byte nextOffset = curPos.m_offset;
 				if (nextSegmentId <= 0)
 					break;
 
-				//Log._Debug($"OnPathFindReady: Vehicle {VehicleId}: prevSegmentId {prevSegmentId} prevLaneIndex {prevLaneIndex} prevTargetNodeId {prevTargetNodeId} nextSegmentId {nextSegmentId} nextLaneIndex {nextLaneIndex}");
+				ushort transitNodeId;
+				if (prevOffset == 0) {
+					transitNodeId = netManager.m_segments.m_buffer[prevSegmentId].m_startNode;
+				} else if (prevOffset == 255) {
+					transitNodeId = netManager.m_segments.m_buffer[prevSegmentId].m_endNode;
+				} else if (nextOffset == 0) {
+					transitNodeId = netManager.m_segments.m_buffer[nextSegmentId].m_startNode;
+				} else {
+					transitNodeId = netManager.m_segments.m_buffer[nextSegmentId].m_endNode;
+				}
 
-				VehiclePositions.AddLast(new VehiclePosition(prevSegmentId, prevLaneIndex, prevTargetNodeId, nextSegmentId, nextLaneIndex));
+#if DEBUGVSTATE
+				if (debug)
+					Log._Debug($"OnPathFindReady: Vehicle {VehicleId}: prevSegmentId {prevSegmentId} prevLaneIndex {prevLaneIndex} transitNodeId {transitNodeId} nextSegmentId {nextSegmentId} nextLaneIndex {nextLaneIndex}");
+#endif
+
+				VehiclePositions.AddLast(new VehiclePosition(prevSegmentId, prevLaneIndex, transitNodeId, nextSegmentId, nextLaneIndex));
 
 				// prepare next iteration
-				if (nextPos.m_offset == 0) {
-					prevTargetNodeId = netManager.m_segments.m_buffer[nextSegmentId].m_startNode;
-				} else {
-					prevTargetNodeId = netManager.m_segments.m_buffer[nextSegmentId].m_endNode;
-				}
 				prevSegmentId = nextSegmentId;
 				prevLaneIndex = nextLaneIndex;
-
-				pathPositionIndex++;
+				prevOffset = nextOffset;
 			}
 
 			CurrentPosition = VehiclePositions.First;
 #if DEBUGVSTATE
-			Log._Debug($"OnPathFindReady: Vehicle {VehicleId}: Vehicle is valid now. {VehiclePositions.Count} vehicle positions. Current position: {CurrentPosition?.Value.SourceSegmentId} -> {CurrentPosition?.Value.TransitNodeId}");
+			if (debug) {
+				Log._Debug($"OnPathFindReady: Vehicle {VehicleId}: Vehicle is valid now. {VehiclePositions.Count} vehicle positions. Current position: {CurrentPosition?.Value.SourceSegmentId} -> {CurrentPosition?.Value.TransitNodeId}");
+				if (GetCurrentPosition() == null) {
+					Log.Warning($"OnPathFindReady: Vehicle {VehicleId}: Could not determine vehicle position!");
+				}
+			}
 #endif
 			Valid = true;
 

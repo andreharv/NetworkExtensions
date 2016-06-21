@@ -70,7 +70,7 @@ namespace TrafficManager.UI.SubTools {
 					var trafficSegment = TrafficPriority.TrafficSegments[segmentId];
 					if (trafficSegment == null)
 						continue;
-					SegmentGeometry geometry = CustomRoadAI.GetSegmentGeometry(segmentId);
+					SegmentGeometry geometry = SegmentGeometry.Get(segmentId);
 
 					List<SegmentEnd> prioritySegments = new List<SegmentEnd>();
 					if (TrafficLightSimulation.GetNodeSimulation(trafficSegment.Node1) == null) {
@@ -253,7 +253,7 @@ namespace TrafficManager.UI.SubTools {
 						} else if (ok) {
 							if (!TrafficPriority.IsPriorityNode(HoveredNodeId)) {
 								//Log._Debug("_guiPrioritySigns: adding prio segments @ nodeId=" + HoveredNodeId);
-								TrafficLightSimulation.RemoveNodeFromSimulation(HoveredNodeId, false); // TODO refactor!
+								TrafficLightSimulation.RemoveNodeFromSimulation(HoveredNodeId, false, true);
 								Flags.setNodeTrafficLight(HoveredNodeId, false); // TODO refactor!
 								TrafficPriority.AddPriorityNode(HoveredNodeId);
 							}
@@ -283,6 +283,15 @@ namespace TrafficManager.UI.SubTools {
 				}
 			}
 			return numMainRoads;
+		}
+
+		public override void Cleanup() {
+			HashSet<ushort> priorityNodeIds = TrafficPriority.GetPriorityNodes();
+			foreach (ushort nodeId in priorityNodeIds) {
+				foreach (SegmentEnd end in TrafficPriority.GetPrioritySegments(nodeId)) {
+					end.Housekeeping();
+				}
+			}
 		}
 	}
 }

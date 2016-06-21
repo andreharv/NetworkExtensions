@@ -35,7 +35,11 @@ namespace TrafficManager.State {
 			try {
 				Log.Info("Initializing flags");
 				Flags.OnBeforeLoadData();
+				Log.Info("Initializing node geometries");
+				NodeGeometry.OnBeforeLoadData();
 				Log.Info("Initializing segment geometries");
+				SegmentGeometry.OnBeforeLoadData();
+				Log.Info("Initializing CustomRoadAI");
 				CustomRoadAI.OnBeforeLoadData();
 				Log.Info("Initialization done. Loading mod data now.");
 				byte[] data = _serializableData.LoadData(DataId);
@@ -530,6 +534,8 @@ namespace TrafficManager.State {
 		}
 
 		public override void OnSaveData() {
+			Log.Info("Recalculating segment geometries");
+			SegmentGeometry.OnBeforeSaveData();
 			Log.Info("Saving Mod Data.");
 			var configuration = new Configuration();
 
