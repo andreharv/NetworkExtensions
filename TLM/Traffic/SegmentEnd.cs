@@ -113,6 +113,8 @@ namespace TrafficManager.Traffic {
 
 				cleanupRequested = false;
 			}
+
+			Housekeeping();
 		}
 
 		/// <summary>
@@ -299,7 +301,7 @@ namespace TrafficManager.Traffic {
 		}
 
 		internal void Housekeeping() {
-			if (TrafficManagerTool.GetToolMode() != ToolMode.AddPrioritySigns && TrafficLightSimulation.GetNodeSimulation(NodeId) == null)
+			if (TrafficManagerTool.GetToolMode() != ToolMode.AddPrioritySigns && TrafficLightSimulation.GetNodeSimulation(NodeId) == null && Type == PriorityType.None)
 				TrafficPriority.RemovePrioritySegments(NodeId);
 		}
 	}

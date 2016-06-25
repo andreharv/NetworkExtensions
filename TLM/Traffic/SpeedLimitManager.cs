@@ -31,9 +31,9 @@ namespace TrafficManager.Traffic {
 		/// An in-game speed limit of 2.0 (e.g. on highway) is hereby translated into a discrete speed limit value of 100 (km/h).
 		/// </summary>
 		/// <param name="segmentId"></param>
-		/// <param name="dir"></param>
+		/// <param name="finalDir"></param>
 		/// <returns></returns>
-		public static ushort GetCustomSpeedLimit(ushort segmentId, NetInfo.Direction dir) {
+		public static ushort GetCustomSpeedLimit(ushort segmentId, NetInfo.Direction finalDir) {
 			// calculate the currently set mean speed limit
 			if (segmentId == 0)
 				return 0;
@@ -46,8 +46,8 @@ namespace TrafficManager.Traffic {
 			float meanSpeedLimit = 0f;
 			uint validLanes = 0;
 			while (laneIndex < segmentInfo.m_lanes.Length && curLaneId != 0u) {
-				NetInfo.Direction d = segmentInfo.m_lanes[laneIndex].m_direction;
-				if ((segmentInfo.m_lanes[laneIndex].m_laneType & (NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle)) == NetInfo.LaneType.None || d != dir)
+				NetInfo.Direction d = segmentInfo.m_lanes[laneIndex].m_finalDirection;
+				if ((segmentInfo.m_lanes[laneIndex].m_laneType & (NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle)) == NetInfo.LaneType.None || d != finalDir)
 					goto nextIter;
 
 				ushort? setSpeedLimit = Flags.getLaneSpeedLimit(curLaneId);
@@ -72,15 +72,15 @@ namespace TrafficManager.Traffic {
 		/// An in-game speed limit of 2.0 (e.g. on highway) is hereby translated into a discrete speed limit value of 100 (km/h).
 		/// </summary>
 		/// <param name="segmentInfo"></param>
-		/// <param name="dir"></param>
+		/// <param name="finalDir"></param>
 		/// <returns></returns>
-		public static ushort GetAverageDefaultCustomSpeedLimit(NetInfo segmentInfo, NetInfo.Direction? dir=null) {
+		public static ushort GetAverageDefaultCustomSpeedLimit(NetInfo segmentInfo, NetInfo.Direction? finalDir=null) {
 			// calculate the currently set mean speed limit
 			float meanSpeedLimit = 0f;
 			uint validLanes = 0;
 			for (int i = 0; i < segmentInfo.m_lanes.Length; ++i) {
-				NetInfo.Direction d = segmentInfo.m_lanes[i].m_direction;
-				if ((segmentInfo.m_lanes[i].m_laneType & (NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle)) == NetInfo.LaneType.None || (dir != null && d != dir))
+				NetInfo.Direction d = segmentInfo.m_lanes[i].m_finalDirection;
+				if ((segmentInfo.m_lanes[i].m_laneType & (NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle)) == NetInfo.LaneType.None || (finalDir != null && d != finalDir))
 					continue;
 
 				meanSpeedLimit += segmentInfo.m_lanes[i].m_speedLimit;

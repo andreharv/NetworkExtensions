@@ -1052,46 +1052,50 @@ namespace TrafficManager.Custom.PathFinding {
 								if (debug)
 									logBuf.Add($"Applying highway rules. {numLanesSeen} lanes found ({totalIncomingLanes} incoming, {totalOutgoingLanes} outgoing).");
 #endif
-								int nextInnerSimilarIndex;
+								int nextLeftSimilarIndex;
+								int prevLeftSimilarIndex = TrafficPriority.IsLeftHandDrive() ? prevOuterSimilarLaneIndex : prevInnerSimilarLaneIndex;
+								int prevRightSimilarIndex = TrafficPriority.IsLeftHandDrive() ? prevInnerSimilarLaneIndex : prevOuterSimilarLaneIndex;
+								byte[] laneLeftSimilarLaneIndexes = TrafficPriority.IsLeftHandDrive() ? laneOuterSimilarIndexes : laneInnerSimilarIndexes;
+								byte[] laneRightSimilarLaneIndexes = TrafficPriority.IsLeftHandDrive() ? laneInnerSimilarIndexes : laneOuterSimilarIndexes;
 								if (totalOutgoingLanes > 0) {
-									nextInnerSimilarIndex = prevInnerSimilarLaneIndex + numLanesSeen; // lane splitting
+									nextLeftSimilarIndex = prevLeftSimilarIndex + numLanesSeen; // lane splitting
 #if DEBUGPF
 									if (debug)
-										logBuf.Add($"Performing lane split. nextInnerSimilarIndex={nextInnerSimilarIndex} = prevInnerSimilarLaneIndex({prevInnerSimilarLaneIndex}) + numLanesSeen({numLanesSeen})");
+										logBuf.Add($"Performing lane split. nextLeftSimilarIndex={nextLeftSimilarIndex} = prevLeftSimilarIndex({prevLeftSimilarIndex}) + numLanesSeen({numLanesSeen})");
 #endif
 								} else {
-									nextInnerSimilarIndex = prevInnerSimilarLaneIndex - numLanesSeen; // lane merging
+									nextLeftSimilarIndex = prevLeftSimilarIndex - numLanesSeen; // lane merging
 #if DEBUGPF
 									if (debug)
-										logBuf.Add($"Performing lane merge. nextInnerSimilarIndex={nextInnerSimilarIndex} = prevInnerSimilarLaneIndex({prevInnerSimilarLaneIndex}) - numLanesSeen({numLanesSeen})");
+										logBuf.Add($"Performing lane merge. nextLeftSimilarIndex={nextLeftSimilarIndex} = prevLeftSimilarIndex({prevLeftSimilarIndex}) - numLanesSeen({numLanesSeen})");
 #endif
 								}
 
-								if (nextInnerSimilarIndex >= 0 && nextInnerSimilarIndex < nextCompatibleLaneCount) {
+								if (nextLeftSimilarIndex >= 0 && nextLeftSimilarIndex < nextCompatibleLaneCount) {
 									// enough lanes available
-									nextLaneI = FindValue(ref laneInnerSimilarIndexes, nextInnerSimilarIndex, nextCompatibleLaneCount);// Convert.ToInt32(indexByInnerSimilarLaneIndex[nextInnerSimilarIndex]) - 1;
+									nextLaneI = FindValue(ref laneLeftSimilarLaneIndexes, nextLeftSimilarIndex, nextCompatibleLaneCount);// Convert.ToInt32(indexByInnerSimilarLaneIndex[nextInnerSimilarIndex]) - 1;
 #if DEBUGPF
 									if (debug)
 										logBuf.Add($"Next lane within bounds. nextLaneI={nextLaneI}");
 #endif
 								} else {
 									// Highway lanes "failed". Too few lanes at prevSegment or nextSegment.
-									if (nextInnerSimilarIndex < 0) {
+									if (nextLeftSimilarIndex < 0) {
 										if (totalIncomingLanes >= prevSimiliarLaneCount) {
 											// there have already been explored more incoming lanes than outgoing lanes on the previous segment. Allow the current segment to also join the big merging party. What a fun!
-											nextLaneI = FindValue(ref laneOuterSimilarIndexes, prevOuterSimilarLaneIndex, nextCompatibleLaneCount);
+											nextLaneI = FindValue(ref laneRightSimilarLaneIndexes, prevRightSimilarIndex, nextCompatibleLaneCount);
 										}
 									} else {
 										if (totalOutgoingLanes >= nextCompatibleLaneCount) {
 											// there have already been explored more outgoing lanes than incoming lanes on the previous segment. Also allow vehicles to go to the current segment.
-											nextLaneI = FindValue(ref laneOuterSimilarIndexes, 0, nextCompatibleLaneCount);
+											nextLaneI = FindValue(ref laneRightSimilarLaneIndexes, 0, nextCompatibleLaneCount);
 										}
 									}
 
 									// If nextLaneI is still -1 here, then highways rules really cannot handle this situation (that's ok).
 #if DEBUGPF
 									if (debug)
-										logBuf.Add($"Next lane out of bounds. nextLaneI={nextLaneI}, isIncomingLeft={isIncomingLeft}, prevOuterSimilarIndex={prevOuterSimilarLaneIndex}, prevInnerSimilarIndex={prevInnerSimilarLaneIndex}");
+										logBuf.Add($"Next lane out of bounds. nextLaneI={nextLaneI}, isIncomingLeft={isIncomingLeft}, prevRightSimilarIndex={prevRightSimilarIndex}, prevLeftSimilarIndex={prevLeftSimilarIndex}");
 #endif
 								}
 

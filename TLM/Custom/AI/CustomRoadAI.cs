@@ -32,13 +32,6 @@ namespace TrafficManager.Custom.AI {
 				simStartFrame = Singleton<SimulationManager>.instance.m_currentFrameIndex;
 
 			try {
-				try {
-					if (TrafficManagerTool.GetToolMode() != ToolMode.AddPrioritySigns && TrafficLightSimulation.GetNodeSimulation(nodeId) == null)
-						TrafficPriority.RemovePrioritySegments(nodeId);
-				} catch (Exception e) {
-					Log.Error($"Error occured while housekeeping node {nodeId}: " + e.ToString());
-				}
-
 				TrafficLightSimulation.SimulationStep();
 
 				var nodeSim = TrafficLightSimulation.GetNodeSimulation(nodeId);
