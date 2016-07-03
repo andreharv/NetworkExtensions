@@ -237,7 +237,7 @@ namespace TrafficManager.Custom.AI {
 			ExtVehicleType? vehicleType = VehicleStateManager.GetVehicleState(vehicleId)?.VehicleType;
 			float vehicleRand = Math.Min(1f, (float)(vehicleId % 101) * 0.01f); // we choose 101 because it's a prime number
 			if (isRecklessDriver)
-				maxSpeed *= 1.5f + vehicleRand * 1.5f; // woohooo, 1.5 .. 3
+				maxSpeed *= 1.5f + vehicleRand * 0.5f; // woohooo, 1.5 .. 2
 			else if ((vehicleType & ExtVehicleType.PassengerCar) != ExtVehicleType.None)
 				maxSpeed *= 0.7f + vehicleRand * 0.4f; // a little variance, 0.7 .. 1.1
 			else if ((vehicleType & ExtVehicleType.Taxi) != ExtVehicleType.None)
@@ -266,6 +266,8 @@ namespace TrafficManager.Custom.AI {
 		internal static bool IsRecklessDriver(ushort vehicleId, ref Vehicle vehicleData) {
 			if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) != 0)
 				return true;
+			if (Options.recklessDrivers == 3)
+				return false;
 
 			return ((vehicleData.Info.m_vehicleType & VehicleInfo.VehicleType.Car) != VehicleInfo.VehicleType.None) && (uint)vehicleId % (Options.getRecklessDriverModulo()) == 0;
 		}

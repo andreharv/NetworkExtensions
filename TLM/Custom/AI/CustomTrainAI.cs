@@ -112,7 +112,7 @@ namespace TrafficManager.Custom.AI {
 					Singleton<VehicleManager>.instance.ReleaseVehicle(vehicleId);
 				}
 			} catch (Exception ex) {
-				Log.Error("Error in TrainAI.SimulationStep: " + ex.ToString());
+				Log.Error("Error in TrainAI.SimulationStep(" + vehicleId + "): " + ex.ToString());
 			}
 		}
 

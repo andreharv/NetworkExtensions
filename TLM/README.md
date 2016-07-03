@@ -2,6 +2,11 @@
 A work-in-progress modification for **Cities: Skylines** to add additional traffic control
 
 # Changelog
+1.6.22, 06/29/2016:
+- AI: Taxis now may not ignore lane arrows and are using bus lanes whenever possible (thanks to @Cochy for pointing out this issue)
+- AI: Busses may only ignore lane arrows while driving on a bus lane
+- Bugfix: Traffic measurement at timed traffic lights was incorrect
+
 1.6.22, 06/21/2016:
 - Speed/vehicle restrictions may now be applied to all road segments between two junctions by holding the shift key
 - Reworked how changes in the road network are recognized 

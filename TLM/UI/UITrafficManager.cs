@@ -18,6 +18,7 @@ namespace TrafficManager.UI {
 		private static UIButton _buttonManualControl;
 		private static UIButton _buttonTimedMain;
 		private static UIButton _buttonLaneChange;
+		private static UIButton _buttonTppLaneConnector;
 		private static UIButton _buttonVehicleRestrictions;
 		private static UIButton _buttonSpeedLimits;
 		private static UIButton _buttonClearTraffic;
@@ -67,6 +68,9 @@ namespace TrafficManager.UI {
 			if (LoadingExtension.IsPathManagerCompatible) {
 				_buttonLaneChange = _createButton(Translation.GetString("Change_lane_arrows"), y, clickChangeLanes);
 				y += 40;
+
+				/*_buttonTppLaneConnector = _createButton(Translation.GetString("Traffic++_lane_connector"), y, clickTppLaneConnector);
+				y += 40;*/
 
 				_buttonSpeedLimits = _createButton(Translation.GetString("Speed_limits"), y, clickSpeedLimits);
 				y += 40;

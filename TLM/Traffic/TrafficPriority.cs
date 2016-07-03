@@ -12,7 +12,7 @@ namespace TrafficManager.Traffic {
 	class TrafficPriority {
 		private static uint[] segmentsCheckLoadBalanceMod = new uint[] { 127, 255, 511, 1023, 2047 };
 		
-		public static float maxStopVelocity = 0.5f;
+		public static float maxStopVelocity = 0.1f;
 
 		/// <summary>
 		/// Dictionary of segments that are connected to roads with timed traffic lights or priority signs. Index: segment id
@@ -425,7 +425,7 @@ namespace TrafficManager.Traffic {
 #endif
 									}
 								} else {
-									if (Singleton<VehicleManager>.instance.m_vehicles.m_buffer[incomingVehicleId].GetLastFrameVelocity().magnitude > 0.5f) {
+									if (Singleton<VehicleManager>.instance.m_vehicles.m_buffer[incomingVehicleId].GetLastFrameVelocity().magnitude > maxStopVelocity) {
 										if (HasVehiclePriority(debug, targetVehicleId, false, incomingVehicleId, false, incomingVehiclePos, targetFromPrioritySegment, incomingFromPrioritySegment)) {
 #if DEBUG
 											if (debug)

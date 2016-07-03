@@ -455,7 +455,7 @@ namespace TrafficManager.TrafficLight {
 		/// <returns>true if the values could be calculated, false otherwise</returns>
 		public bool calcWaitFlow(out float wait, out float flow) {
 #if DEBUGMETRIC
-			bool debug = timedNode.NodeId == 17813 || timedNode.NodeId == 7725;
+			bool debug = timedNode.NodeId == 3201;
 #else
 			bool debug = false;
 #endif
@@ -524,13 +524,13 @@ namespace TrafficManager.TrafficLight {
 						Dictionary<ushort, uint> carsFlowingToSegmentMetric = null;
 						Dictionary<ushort, uint> allCarsToSegmentMetric = null;
 						try {
-							carsFlowingToSegmentMetric = fromSeg.GetVehicleMetricGoingToSegment(0.1f, laneIndex, debug);
+							carsFlowingToSegmentMetric = fromSeg.GetVehicleMetricGoingToSegment(false, laneIndex, debug);
 						} catch (Exception ex) {
 							Log.Warning("calcWaitFlow (1): " + ex.ToString());
 						}
 
 						try {
-							allCarsToSegmentMetric = fromSeg.GetVehicleMetricGoingToSegment(null, laneIndex, debug);
+							allCarsToSegmentMetric = fromSeg.GetVehicleMetricGoingToSegment(true, laneIndex, debug);
 						} catch (Exception ex) {
 							Log.Warning("calcWaitFlow (2): " + ex.ToString());
 						}
@@ -540,7 +540,7 @@ namespace TrafficManager.TrafficLight {
 
 						// build directions from toSegment to fromSegment
 						Dictionary<ushort, Direction> directions = new Dictionary<ushort, Direction>();
-						foreach (KeyValuePair<ushort, uint> f in carsFlowingToSegmentMetric) {
+						foreach (KeyValuePair<ushort, uint> f in allCarsToSegmentMetric) {
 							var toSegmentId = f.Key;
 							SegmentGeometry geometry = SegmentGeometry.Get(fromSegmentId);
 							Direction dir = geometry.GetDirection(toSegmentId, timedNodeId == geometry.StartNodeId());
