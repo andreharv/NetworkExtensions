@@ -12,18 +12,18 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
         Median = 2
     }
 
-    public enum AsymLaneType
+    public enum LanesLayoutStyle
     {
-        L0R0 = 0,
-        L1R2 = 12,
-        L2R1 = 21,
-        L1R3 = 13,
-        L3R1 = 31,
-        L2R3 = 23,
-        L3R2 = 32,
-        L2R4 = 24,
-        L4R2 = 42,
-        L3R5 = 35,
-        L5R3 = 53
+        Symetrical = 0,
+        AsymL1R2 = 12,
+        AsymL2R1 = 21,
+        AsymL1R3 = 13,
+        AsymL3R1 = 31,
+        AsymL2R3 = 23,
+        AsymL3R2 = 32,
+        AsymL2R4 = 24,
+        AsymL4R2 = 42,
+        AsymL3R5 = 35,
+        AsymL5R3 = 53
     }
 }

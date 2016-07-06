@@ -86,9 +86,10 @@
     <Compile Include="Roads\PedestrianRoads\Promenade\ZonablePedestrianPromenadeBuilder.cs" />
     <Compile Include="Roads\PedestrianRoads\Promenade\ZonablePedestrianPromenadeBuilder.Texturing.cs" />
     <Compile Include="Roads\PedestrianRoads\Common\ZonablePedestrianHelper.cs" />
+    <Compile Include="Roads\SmallHeavyRoads\AsymRoad3L\AsymRoad3LBuilderBase.cs" />
     <Compile Include="Roads\TinyRoads\Plain2L\PlainStreetBuilder.cs" />
     <Compile Include="Roads\TinyRoads\Plain2L\PlainStreetBuilder.Texturing.cs" />
-    <Compile Include="Roads\SmallHeavyRoads\AsymRoad3L\AsymRoad3LTexturing.cs" />
+    <Compile Include="Roads\SmallHeavyRoads\AsymRoad3L\AsymRoad3LBuilderBase.Texturing.cs" />
     <Compile Include="Roads\SmallHeavyRoads\AsymRoad3L\AsymRoadL1R2\AsymRoadL1R2Builder.cs" />
     <Compile Include="Roads\SmallHeavyRoads\AsymRoad3L\AsymRoadL2R1\AsymRoadL2R1Builder.cs" />
     <Compile Include="Roads\SmallHeavyRoads\AsymRoad4L\AsymRoad4LTexturing.cs" />
