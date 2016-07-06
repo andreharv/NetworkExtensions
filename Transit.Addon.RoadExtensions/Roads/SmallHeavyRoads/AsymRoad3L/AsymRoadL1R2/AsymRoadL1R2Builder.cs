@@ -6,7 +6,7 @@ using Transit.Framework.Network;
 
 namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.AsymRoad3L.AsymRoadL1R2
 {
-    public class AsymRoadL1R2Builder : AsymRoad3LBuilderBase, INetInfoBuilderPart
+    public class AsymRoadL1R2Builder : AsymRoad3LBuilderBase, INetInfoBuilderPart, INetInfoAsymBuilder
     {
         public int Order { get { return 8; } }
         public int UIOrder { get { return 40; } }

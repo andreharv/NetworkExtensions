@@ -91,10 +91,8 @@
     <Compile Include="Roads\TinyRoads\Plain2L\PlainStreetBuilder.Texturing.cs" />
     <Compile Include="Roads\SmallHeavyRoads\AsymRoad3L\AsymRoad3LBuilderBase.Texturing.cs" />
     <Compile Include="Roads\SmallHeavyRoads\AsymRoad3L\AsymRoadL1R2\AsymRoadL1R2Builder.cs" />
-    <Compile Include="Roads\SmallHeavyRoads\AsymRoad3L\AsymRoadL2R1\AsymRoadL2R1Builder.cs" />
     <Compile Include="Roads\SmallHeavyRoads\AsymRoad4L\AsymRoad4LTexturing.cs" />
     <Compile Include="Roads\SmallHeavyRoads\AsymRoad4L\AsymRoadL1R3\AsymRoadL1R3Builder.cs" />
-    <Compile Include="Roads\SmallHeavyRoads\AsymRoad4L\AsymRoadL3R1\AsymRoadL3R1Builder.cs" />
     <Compile Include="Roads\TinyRoads\TinyRoadMenuModifier.cs" />
     <Compile Include="Roads\TinyRoads\Alley2L\Alley2LBuilder.cs" />
     <Compile Include="Roads\Common\RoadHelper.cs" />
@@ -973,12 +971,6 @@
     <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\AsymRoadL1R2\thumbnails.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\AsymRoadL2R1\infotooltip.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\AsymRoadL2R1\thumbnails.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Roads\SmallHeavyRoads\AsymRoad3L\Textures\Elevated_Inverted__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1085,12 +1077,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\AsymRoadL1R3\thumbnails.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\AsymRoadL3R1\infotooltip.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\AsymRoadL3R1\thumbnails.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\SmallHeavyRoads\AsymRoad4L\Textures\Elevated_Inverted__MainTex.png">

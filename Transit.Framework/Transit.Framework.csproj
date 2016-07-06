@@ -55,6 +55,7 @@
     <Compile Include="Activable.cs" />
     <Compile Include="AtlasManager.cs" />
     <Compile Include="Builders\IAtlasBuilder.cs" />
+    <Compile Include="Builders\INetInfoAsymBuilder.cs" />
     <Compile Include="Builders\IToolBuilder.cs" />
     <Compile Include="Builders\ToolBuilder.cs" />
     <Compile Include="Interfaces\IDLCRequired.cs" />
