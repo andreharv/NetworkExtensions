@@ -1,4 +1,8 @@
-﻿using ICities;
+﻿using ColossalFramework;
+using ICities;
+using Transit.Framework;
+using Transit.Framework.UI;
+using UnityEngine;
 
 namespace Transit.Addon.Tools.Inverting
 {
@@ -31,20 +35,48 @@ namespace Transit.Addon.Tools.Inverting
             {
                 return;
             }
+            
+            if (!Input.GetMouseButtonUp((int)MouseKeyCode.RightButton))
+            {
+                return;
+            }
 
-            // if NOT Mouse RightClick 
-            //  Return;
+            var hoveringSegmentId = ExtendedToolBase.RayCastSegment();
+            if (hoveringSegmentId == null)
+            {
+                return;
+            }
 
-            // if Mouse DONT HoverSegment
-            //  Return;
-
+            // TODO
             // if HoveringSegment is NOT Invertable
             //  Return;
 
-            // if HoveringSegment.m_flags & Invert = None
-            //  HoveringSegment.m_flags |= Invert
-            // else
-            //  HoveringSegment.m_flags &= ~Invert
+            var hoveringSegment = NetManager.instance.m_segments.m_buffer[hoveringSegmentId.Value];
+            if ((hoveringSegment.m_flags & NetSegment.Flags.Created) == 0)
+            {
+                return;
+            }
+
+            var netInfo = hoveringSegment.Info;
+            var startNode = hoveringSegment.m_startNode;
+            var endNode = hoveringSegment.m_endNode;
+            var startDirection = hoveringSegment.m_startDirection;
+            var endDirection = hoveringSegment.m_endDirection;
+
+            Singleton<NetManager>.instance.ReleaseSegment(hoveringSegmentId.Value, true);
+
+            ushort segmentId;
+            Singleton<NetManager>.instance.CreateSegment
+               (out segmentId,
+                ref Singleton<SimulationManager>.instance.m_randomizer,
+                netInfo,
+                endNode,
+                startNode,
+                endDirection,
+                startDirection,
+                Singleton<SimulationManager>.instance.m_currentBuildIndex,
+                Singleton<SimulationManager>.instance.m_currentBuildIndex,
+                false);
         }
     }
 }

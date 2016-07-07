@@ -58,6 +58,7 @@
     <Compile Include="Builders\INetInfoInvertableBuilder.cs" />
     <Compile Include="Builders\IToolBuilder.cs" />
     <Compile Include="Builders\ToolBuilder.cs" />
+    <Compile Include="ExtendedToolBase.cs" />
     <Compile Include="Interfaces\IDLCRequired.cs" />
     <Compile Include="Modularity\ModuleBase.Install.cs" />
     <Compile Include="Mod\TransitModBase.Install.Assets.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="Assets.cs" />
     <Compile Include="Builders\MenuItemBuilder.cs" />
     <Compile Include="Interfaces\IShortDescriptor.cs" />
+    <Compile Include="UI\MouseKeyCode.cs" />
     <Compile Include="_Extensions\AppDomainExtensions.cs" />
     <Compile Include="_Extensions\AssetManagerExtensions.cs" />
     <Compile Include="_Extensions\CloningExtensions.cs" />
