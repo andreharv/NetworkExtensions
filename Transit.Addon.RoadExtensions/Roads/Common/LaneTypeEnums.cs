@@ -14,7 +14,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
 
     public enum LanesLayoutStyle
     {
-        Symetrical = 0,
+        Symmetrical = 0,
         AsymL1R2 = 12,
         AsymL1R3 = 13,
         AsymL3R1 = 31,

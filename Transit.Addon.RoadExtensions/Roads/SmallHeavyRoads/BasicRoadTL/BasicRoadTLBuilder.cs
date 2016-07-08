@@ -70,6 +70,7 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.BasicRoadTL
             {
                 IsTwoWay = true,
                 LanesToAdd = 2,
+                LaneWidth = 3.3f,
                 SpeedLimit = 1.2f,
                 CenterLane = CenterLaneType.TurningLane
             });

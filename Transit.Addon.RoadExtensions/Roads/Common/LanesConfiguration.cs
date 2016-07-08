@@ -27,7 +27,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             BusStopOffset = 1.5f;
             CenterLane = CenterLaneType.None;
             CenterLaneWidth = 3.0f;
-            LayoutStyle = LanesLayoutStyle.Symetrical;
+            LayoutStyle = LanesLayoutStyle.Symmetrical;
         }
     }
 }

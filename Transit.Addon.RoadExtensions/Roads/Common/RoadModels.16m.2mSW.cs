@@ -5,7 +5,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
 {
     public static partial class RoadModels
     {
-        public static NetInfo Setup16m2mSWMesh(this NetInfo info, NetInfoVersion version, LanesLayoutStyle laneStyle = LanesLayoutStyle.Symetrical)
+        public static NetInfo Setup16m2mSWMesh(this NetInfo info, NetInfoVersion version, LanesLayoutStyle laneStyle = LanesLayoutStyle.Symmetrical)
         {
             var highwayInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L);
             var highwaySlopeInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L_SLOPE);
@@ -20,7 +20,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                         var segment2 = info.m_segments[2];
                         var segment3 = info.m_segments[1].ShallowClone();
 
-                        if (laneStyle != LanesLayoutStyle.Symetrical)
+                        if (laneStyle != LanesLayoutStyle.Symmetrical)
                             RoadHelper.HandleAsymComplementarySegmentsFlags(segment1, segment3, laneStyle);
                         var node0 = info.m_nodes[0];
 

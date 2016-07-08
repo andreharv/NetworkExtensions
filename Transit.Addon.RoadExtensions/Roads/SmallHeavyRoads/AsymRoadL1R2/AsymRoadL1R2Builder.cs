@@ -69,7 +69,8 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.AsymRoadL1R2
             {
                 IsTwoWay = true,
                 LanesToAdd = 1,
-                SpeedLimit = 1.2f,
+                LaneWidth = 3.3f,
+                SpeedLimit = 1.0f,
                 CenterLane = CenterLaneType.None,
                 LayoutStyle = LanesLayoutStyle.AsymL1R2
             });

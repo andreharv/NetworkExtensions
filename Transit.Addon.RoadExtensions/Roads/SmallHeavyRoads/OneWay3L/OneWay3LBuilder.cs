@@ -69,6 +69,7 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.OneWay3L
             {
                 IsTwoWay = false,
                 LanesToAdd = 1,
+                LaneWidth = 3.3f,
                 SpeedLimit = 1.2f
             });
             var leftPedLane = info.GetLeftRoadShoulder();

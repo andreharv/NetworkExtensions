@@ -71,8 +71,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
 
                 case LanesLayoutStyle.AsymL1R2:
                 case LanesLayoutStyle.AsymL1R3:
-                    //segment.m_forwardRequired |= NetSegment.Flags.Invert;
-                    //segment.m_backwardForbidden |= NetSegment.Flags.Invert;
                     segment.m_forwardForbidden |= NetSegment.Flags.Invert;
                     segment.m_backwardRequired |= NetSegment.Flags.Invert;
                     break;
@@ -83,9 +81,9 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             }
         }
 
-        public static void HandleAsymComplementarySegmentsFlags(NetInfo.Segment fSegment, NetInfo.Segment bSegment, LanesLayoutStyle asymLaneType)
+        public static void HandleAsymComplementarySegmentsFlags(NetInfo.Segment fSegment, NetInfo.Segment bSegment, LanesLayoutStyle lanesLayoutStyle)
         {
-            switch (asymLaneType)
+            switch (lanesLayoutStyle)
             {
                 case LanesLayoutStyle.AsymL1R2:
                 case LanesLayoutStyle.AsymL1R3:
@@ -108,7 +106,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             var vehicleLanes = rdInfo.m_lanes
                 .Where(l => l.m_laneType != NetInfo.LaneType.None && l.m_laneType != NetInfo.LaneType.Parking && l.m_laneType != NetInfo.LaneType.Pedestrian)
                 .ToArray();
-            int leftLaneCount = (config.LayoutStyle != LanesLayoutStyle.Symetrical) ? (int)config.LayoutStyle / 10 : 0;
+            var leftLaneCount = (config.LayoutStyle != LanesLayoutStyle.Symmetrical) ? (int)config.LayoutStyle / 10 : 0;
             var nbLanes = vehicleLanes.Count();
             var nbUsableLanes = nbLanes - (config.CenterLane == CenterLaneType.TurningLane ? 2 : 0);
             var nbUsableLanesPerSide = nbUsableLanes / 2;
@@ -212,7 +210,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                             l.m_direction = NetInfo.Direction.Forward;
                         }
                     }
-                    else if (config.LayoutStyle != LanesLayoutStyle.Symetrical)
+                    else if (config.LayoutStyle != LanesLayoutStyle.Symmetrical)
                     {
                         if (l.m_position <= positionStart + ((leftLaneCount - 1) * l.m_width))
                         {

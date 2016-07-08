@@ -13,7 +13,7 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.AsymRoad4L
                 case NetInfoVersion.Ground:
                     foreach (var segment in info.m_segments)
                     {
-                        if (asymLaneType != LanesLayoutStyle.Symetrical)
+                        if (asymLaneType != LanesLayoutStyle.Symmetrical)
                         {
                             var inverted = string.Empty;
                             if ((asymLaneType == LanesLayoutStyle.AsymL1R3 && ((segment.m_backwardForbidden & NetSegment.Flags.Invert) == 0))
