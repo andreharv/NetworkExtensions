@@ -64,7 +64,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
         {
             switch (asymLaneType)
             {
-                case LanesLayoutStyle.AsymL2R1:
                 case LanesLayoutStyle.AsymL3R1:
                     segment.m_forwardForbidden |= NetSegment.Flags.Invert;
                     segment.m_backwardRequired |= NetSegment.Flags.Invert;
@@ -95,7 +94,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                     bSegment.m_forwardRequired |= NetSegment.Flags.Invert;
                     bSegment.m_backwardForbidden |= NetSegment.Flags.Invert;
                     break;
-                case LanesLayoutStyle.AsymL2R1:
                 case LanesLayoutStyle.AsymL3R1:
                     fSegment.m_forwardRequired |= NetSegment.Flags.Invert;
                     fSegment.m_backwardForbidden |= NetSegment.Flags.Invert;

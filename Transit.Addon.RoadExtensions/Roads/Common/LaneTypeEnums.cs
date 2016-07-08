@@ -16,7 +16,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
     {
         Symetrical = 0,
         AsymL1R2 = 12,
-        AsymL2R1 = 21,
         AsymL1R3 = 13,
         AsymL3R1 = 31,
         AsymL2R3 = 23,

@@ -1,13 +1,31 @@
 ﻿using System.Linq;
+using Transit.Addon.RoadExtensions.Menus.Roads;
 using Transit.Addon.RoadExtensions.Roads.Common;
 using Transit.Framework;
+using Transit.Framework.Builders;
 using Transit.Framework.Network;
 
-namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.AsymRoad3L
+namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.AsymRoadL1R2
 {
-    public abstract partial class AsymRoad3LBuilderBase : Activable
+    public partial class AsymRoadL1R2Builder : Activable, INetInfoBuilderPart, INetInfoInvertableBuilder
     {
-        public abstract LanesLayoutStyle LanesLayoutStyle { get; }
+        public int Order { get { return 8; } }
+        public int UIOrder { get { return 10; } }
+
+        public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_2L; } }
+        public string Name { get { return "AsymRoadL1R2"; } }
+        public string DisplayName { get { return "Three-Lane Asymmetrical Road (1+2)"; } }
+        public string Description { get { return "An asymmetrical road with one left lane and two right lanes.  Note, dragging this road backwards reverses its orientation."; } }
+        public string ShortDescription { get { return "No parking, zoneable, low traffic"; } }
+        public string UICategory { get { return RExExtendedMenus.ROADS_SMALL_HV; } }
+
+        public string ThumbnailsPath { get { return @"Roads\SmallHeavyRoads\AsymRoadL1R2\thumbnails.png"; } }
+        public string InfoTooltipPath { get { return @"Roads\SmallHeavyRoads\AsymRoadL1R2\infotooltip.png"; } }
+
+        public NetInfoVersion SupportedVersions
+        {
+            get { return NetInfoVersion.All; }
+        }
 
         public void BuildUp(NetInfo info, NetInfoVersion version)
         {
@@ -20,12 +38,12 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.AsymRoad3L
             ///////////////////////////
             // 3DModeling            //
             ///////////////////////////
-            info.Setup16m3mSWMesh(version, LanesLayoutStyle);
+            info.Setup16m3mSWMesh(version, LanesLayoutStyle.AsymL1R2);
 
             ///////////////////////////
             // Texturing             //
             ///////////////////////////
-            SetupTextures(info, version, LanesLayoutStyle);
+            SetupTextures(info, version);
             
             ///////////////////////////
             // Set up                //
@@ -53,7 +71,7 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.AsymRoad3L
                 LanesToAdd = 1,
                 SpeedLimit = 1.2f,
                 CenterLane = CenterLaneType.None,
-                LayoutStyle = LanesLayoutStyle
+                LayoutStyle = LanesLayoutStyle.AsymL1R2
             });
 
             var leftPedLane = info.GetLeftRoadShoulder();

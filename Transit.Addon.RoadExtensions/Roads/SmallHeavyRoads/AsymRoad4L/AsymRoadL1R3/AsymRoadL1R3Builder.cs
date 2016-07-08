@@ -10,8 +10,8 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.AsymRoad4L.AsymRoad
 {
     public partial class AsymRoadL1R3Builder : Activable, INetInfoBuilderPart, INetInfoInvertableBuilder
     {
-        public int Order { get { return 10; } }
-        public int UIOrder { get { return 60; } }
+        public int Order { get { return 11; } }
+        public int UIOrder { get { return 13; } }
 
         public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_2L; } }
         public string Name { get { return "AsymRoadL1R3"; } }
