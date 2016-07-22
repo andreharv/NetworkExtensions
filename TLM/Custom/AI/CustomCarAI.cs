@@ -1,4 +1,6 @@
 #define DEBUGVx
+#define USEPATHWAITCOUNTERx
+#define PATHRECALCx
 
 using System;
 using System.Collections.Generic;
@@ -13,13 +15,6 @@ using TrafficManager.State;
 
 namespace TrafficManager.Custom.AI {
 	internal class CustomCarAI : CarAI { // correct would be to inherit from VehicleAI (in order to keep the correct references to `base`)
-		private const float FarLod = 1210000f;
-		private const float CloseLod = 250000f;
-
-		private static int[] closeLodUpdateMod = new int[] { 1, 2, 4, 6, 8 };
-		private static int[] farLodUpdateMod = new int[] { 4, 6, 8, 10, 12 };
-		private static int[] veryFarLodUpdateMod = new int[] { 8, 10, 12, 14, 16 };
-
 		public void Awake() {
 
 		}
@@ -36,25 +31,49 @@ namespace TrafficManager.Custom.AI {
 		/// <param name="vehicleData"></param>
 		/// <param name="physicsLodRefPos"></param>
 		public void CustomSimulationStep(ushort vehicleId, ref Vehicle vehicleData, Vector3 physicsLodRefPos) {
+#if USEPATHWAITCOUNTER
+			VehicleState state = VehicleStateManager._GetVehicleState(vehicleId);
+#endif
+
 			if ((vehicleData.m_flags & Vehicle.Flags.WaitingPath) != 0) {
 				PathManager instance = Singleton<PathManager>.instance;
 				byte pathFindFlags = instance.m_pathUnits.m_buffer[(int)((UIntPtr)vehicleData.m_path)].m_pathFindFlags;
-				if ((pathFindFlags & 4) != 0) {
+				if ((pathFindFlags & PathUnit.FLAG_READY) != 0) {
+#if USEPATHWAITCOUNTER
+					state.PathWaitCounter = 0; // NON-STOCK CODE
+#endif
 					vehicleData.m_pathPositionIndex = 255;
 					vehicleData.m_flags &= ~Vehicle.Flags.WaitingPath;
 					vehicleData.m_flags &= ~Vehicle.Flags.Arriving;
 					this.PathfindSuccess(vehicleId, ref vehicleData);
 					this.TrySpawn(vehicleId, ref vehicleData);
 					VehicleStateManager.OnPathFindReady(vehicleId, ref vehicleData); // NON-STOCK CODE
-				} else if ((pathFindFlags & 8) != 0) {
+				} else if ((pathFindFlags & PathUnit.FLAG_FAILED) != 0
+#if USEPATHWAITCOUNTER
+					|| ((pathFindFlags & PathUnit.FLAG_CREATED) != 0 && state.PathWaitCounter == ushort.MaxValue)
+#endif
+					) { // NON-STOCK CODE
+#if USEPATHWAITCOUNTER
+					state.PathWaitCounter = 0; // NON-STOCK CODE
+#endif
 					vehicleData.m_flags &= ~Vehicle.Flags.WaitingPath;
 					Singleton<PathManager>.instance.ReleasePath(vehicleData.m_path);
 					vehicleData.m_path = 0u;
 					this.PathfindFailure(vehicleId, ref vehicleData);
 					return;
 				}
-			} else if ((vehicleData.m_flags & Vehicle.Flags.WaitingSpace) != 0) {
-				this.TrySpawn(vehicleId, ref vehicleData);
+#if USEPATHWAITCOUNTER
+				else {
+					state.PathWaitCounter = (ushort)Math.Min(ushort.MaxValue, (int)state.PathWaitCounter+1); // NON-STOCK CODE
+				}
+#endif
+			} else {
+#if USEPATHWAITCOUNTER
+				state.PathWaitCounter = 0; // NON-STOCK CODE
+#endif
+				if ((vehicleData.m_flags & Vehicle.Flags.WaitingSpace) != 0) {
+					this.TrySpawn(vehicleId, ref vehicleData);
+				}
 			}
 
 			try {
@@ -94,16 +113,22 @@ namespace TrafficManager.Custom.AI {
 					}
 				}
 			}
+#if PATHRECALC
+			ushort recalcSegmentId = 0;
+#endif
 			int privateServiceIndex = ItemClass.GetPrivateServiceIndex(this.m_info.m_class.m_service);
 			int maxBlockCounter = (privateServiceIndex == -1) ? 150 : 100;
 			if ((vehicleData.m_flags & (Vehicle.Flags.Spawned | Vehicle.Flags.WaitingPath | Vehicle.Flags.WaitingSpace)) == 0 && vehicleData.m_cargoParent == 0) {
 				Singleton<VehicleManager>.instance.ReleaseVehicle(vehicleId);
 			} else if ((int)vehicleData.m_blockCounter == maxBlockCounter && Options.enableDespawning) {
 				Singleton<VehicleManager>.instance.ReleaseVehicle(vehicleId);
-			} else if (vehicleData.m_leadingVehicle == 0 && CustomVehicleAI.ShouldRecalculatePath(vehicleId, ref vehicleData, maxBlockCounter)) {
-				CustomVehicleAI.MarkPathRecalculation(vehicleId);
+			}
+#if PATHRECALC
+			else if (vehicleData.m_leadingVehicle == 0 && CustomVehicleAI.ShouldRecalculatePath(vehicleId, ref vehicleData, maxBlockCounter, out recalcSegmentId)) {
+				CustomVehicleAI.MarkPathRecalculation(vehicleId, recalcSegmentId);
 				InvalidPath(vehicleId, ref vehicleData, vehicleId, ref vehicleData);
 			}
+#endif
 		}
 
 		public void CustomCalculateSegmentPosition(ushort vehicleId, ref Vehicle vehicleData, PathUnit.Position nextPosition,
@@ -117,6 +142,18 @@ namespace TrafficManager.Custom.AI {
 			Vector3 lastFrameVehiclePos = lastFrameData.m_position;
 
 			var camPos = Camera.main.transform.position;
+
+			if (Options.simAccuracy <= 1) {
+				try {
+					VehicleStateManager.UpdateVehiclePos(vehicleId, ref vehicleData);
+				} catch (Exception e) {
+					Log.Error("CarAI CustomCalculateSegmentPosition Error: " + e.ToString());
+				}
+			}
+
+#if DEBUG
+			//bool isEmergency = VehicleStateManager._GetVehicleState(vehicleId).VehicleType == ExtVehicleType.Emergency;
+#endif
 
 			// I think this is supposed to be the lane position?
 			// [VN, 12/23/2015] It's the 3D car position on the Bezier curve of the lane.
@@ -176,6 +213,9 @@ namespace TrafficManager.Custom.AI {
 			}
 
 			maxSpeed = CalcMaxSpeed(vehicleId, ref vehicleData, position, pos, maxSpeed, isRecklessDriver);
+			VehicleState state = VehicleStateManager.GetVehicleState(vehicleId);
+			if (state != null)
+				state.CurrentMaxSpeed = maxSpeed;
 		}
 
 		
@@ -274,6 +314,11 @@ namespace TrafficManager.Custom.AI {
 
 		public bool CustomStartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget) {
 			ExtVehicleType? vehicleType = VehicleStateManager.DetermineVehicleType(ref vehicleData);
+#if PATHRECALC
+			VehicleState state = VehicleStateManager._GetVehicleState(vehicleID);
+			bool recalcRequested = state.PathRecalculationRequested;
+			state.PathRecalculationRequested = false;
+#endif
 			/*if (vehicleType == null) {
 				Log._Debug($"CustomCarAI.CustomStartPathFind: Could not determine ExtVehicleType from class type. typeof this={this.GetType().ToString()}");
 			} else {
@@ -303,7 +348,11 @@ namespace TrafficManager.Custom.AI {
 				if (vehicleType == null)
 					res = Singleton<CustomPathManager>.instance.CreatePath(out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, NetInfo.LaneType.Vehicle, info.m_vehicleType, 20000f, this.IsHeavyVehicle(), this.IgnoreBlocked(vehicleID, ref vehicleData), false, false);
 				else
-					res = Singleton<CustomPathManager>.instance.CreatePath((ExtVehicleType)vehicleType, out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, startPosA, startPosB, endPosA, endPosB, NetInfo.LaneType.Vehicle, info.m_vehicleType, 20000f, this.IsHeavyVehicle(), this.IgnoreBlocked(vehicleID, ref vehicleData), false, false);
+					res = Singleton<CustomPathManager>.instance.CreatePath(
+#if PATHRECALC
+						recalcRequested, 
+#endif
+						(ExtVehicleType)vehicleType, out path, ref Singleton<SimulationManager>.instance.m_randomizer, Singleton<SimulationManager>.instance.m_currentBuildIndex, ref startPosA, ref startPosB, ref endPosA, ref endPosB, NetInfo.LaneType.Vehicle, info.m_vehicleType, 20000f, this.IsHeavyVehicle(), this.IgnoreBlocked(vehicleID, ref vehicleData), false, false);
 				if (res) {
 					if (vehicleData.m_path != 0u) {
 						Singleton<PathManager>.instance.ReleasePath(vehicleData.m_path);

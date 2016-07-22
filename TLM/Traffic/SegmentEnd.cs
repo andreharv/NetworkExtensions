@@ -35,7 +35,9 @@ namespace TrafficManager.Traffic {
 			get; private set;
 		}
 
-		private bool startNode = false;
+		public bool StartNode {
+			get; private set;
+		} = false;
 
 		private int numLanes = 0;
 
@@ -51,7 +53,7 @@ namespace TrafficManager.Traffic {
 		/// <summary>
 		/// Vehicles that are traversing or will traverse this segment
 		/// </summary>
-		private Dictionary<ushort, VehiclePosition> registeredVehicles;
+		internal ushort FirstRegisteredVehicleId = 0;
 
 		private bool cleanupRequested = false;
 
@@ -70,7 +72,7 @@ namespace TrafficManager.Traffic {
 			NodeId = nodeId;
 			SegmentId = segmentId;
 			Type = type;
-			registeredVehicles = new Dictionary<ushort, VehiclePosition>();
+			FirstRegisteredVehicleId = 0;
 			SegmentGeometry segGeometry = SegmentGeometry.Get(segmentId);
 			OnUpdate(segGeometry);
 			segGeometryUnsubscriber = segGeometry.Subscribe(this);
@@ -92,24 +94,28 @@ namespace TrafficManager.Traffic {
 #if DEBUG
 				//Log._Debug($"Cleanup of SegmentEnd {SegmentId} @ {NodeId} requested. Performing cleanup now.");
 #endif
-				ushort[] regVehs = registeredVehicles.Keys.ToArray();
-				foreach (ushort vehicleId in regVehs) {
+				ushort vehicleId = FirstRegisteredVehicleId;
+				while (vehicleId != 0) {
+					bool removeVehicle = false;
 					if ((Singleton<VehicleManager>.instance.m_vehicles.m_buffer[vehicleId].m_flags & Vehicle.Flags.Created) == 0) {
-						UnregisterVehicle(vehicleId);
-						continue;
+						removeVehicle = true;
+					} else {
+						VehicleState state = VehicleStateManager.GetVehicleState(vehicleId);
+						if (state == null) {
+							removeVehicle = true;
+						} else {
+							if (!state.HasPath(ref Singleton<VehicleManager>.instance.m_vehicles.m_buffer[vehicleId])) {
+								removeVehicle = true;
+							}
+						}
 					}
 
-					VehicleState state = VehicleStateManager.GetVehicleState(vehicleId);
-					if (state == null) {
-						UnregisterVehicle(vehicleId);
-						continue;
+					VehicleState nextState = VehicleStateManager._GetVehicleState(vehicleId);
+					ushort nextVehicleId = nextState.NextVehicleIdOnSegment;
+					if (removeVehicle) {
+						nextState.Unlink();
 					}
-
-					VehiclePosition pos = state.GetCurrentPosition();
-					if (pos == null) {
-						UnregisterVehicle(vehicleId);
-						continue;
-					}
+					vehicleId = nextVehicleId;
 				}
 
 				cleanupRequested = false;
@@ -145,80 +151,86 @@ namespace TrafficManager.Traffic {
 				Log._Debug($"GetVehicleMetricGoingToSegment: Segment {SegmentId}, Node {NodeId}. Target segments: {string.Join(", ", ret.Keys.Select(x => x.ToString()).ToArray())}, Registered Vehicles: {string.Join(", ", GetRegisteredVehicles().Select(x => x.Key.ToString()).ToArray())}");
 #endif
 
-			foreach (KeyValuePair<ushort, VehiclePosition> e in GetRegisteredVehicles()) {
-				ushort vehicleId = e.Key;
-				VehiclePosition pos = e.Value;
+			ushort vehicleId = FirstRegisteredVehicleId;
+			int numProcessed = 0;
+			while (vehicleId != 0) {
+				VehicleState state = VehicleStateManager._GetVehicleState(vehicleId);
+				if (!state.Valid) {
+					RequestCleanup();
+					vehicleId = state.NextVehicleIdOnSegment;
+					continue;
+				}
 
+				bool breakLoop = false;
+
+				state.ProcessCurrentAndNextPathPosition(ref Singleton<VehicleManager>.instance.m_vehicles.m_buffer[vehicleId], delegate (ref PathUnit.Position curPos, ref PathUnit.Position nextPos) {
 #if DEBUGMETRIC
 				if (debug)
 					Log._Debug($" GetVehicleMetricGoingToSegment: Checking vehicle {vehicleId}");
 #endif
 
-				if (!ret.ContainsKey(pos.TargetSegmentId)) {
+					if (!ret.ContainsKey(nextPos.m_segment)) {
 #if DEBUGMETRIC
 					if (debug)
 						Log._Debug($"  GetVehicleMetricGoingToSegment: ret does not contain key for target segment {pos.TargetSegmentId}");
 #endif
-					continue;
-				}
+						return;
+					}
 
-				if ((Singleton<VehicleManager>.instance.m_vehicles.m_buffer[vehicleId].m_flags & Vehicle.Flags.Created) == 0) {
-#if DEBUGMETRIC
-					if (debug)
-						Log._Debug($"  GetVehicleMetricGoingToSegment: Checking vehicle {vehicleId}: vehicle is invalid");
-#endif
-					RequestCleanup();
-					continue;
-				}
-
-				VehicleState state = VehicleStateManager.GetVehicleState(vehicleId);
-				if (state == null) {
-#if DEBUGMETRIC
-					if (debug)
-						Log._Debug($"  GetVehicleMetricGoingToSegment: Checking vehicle {vehicleId}: state is null");
-#endif
-					RequestCleanup();
-					continue;
-				}
-
-				if (!includeStopped && vehicleManager.m_vehicles.m_buffer[vehicleId].GetLastFrameVelocity().magnitude < TrafficPriority.maxStopVelocity) {
+					if (!includeStopped && vehicleManager.m_vehicles.m_buffer[vehicleId].GetLastFrameVelocity().magnitude < TrafficPriority.maxStopVelocity) {
 #if DEBUGMETRIC
 					if (debug)
 						Log._Debug($"  GetVehicleMetricGoingToSegment: Vehicle {vehicleId}: too slow");
 #endif
-					continue;
-				}
+						++numProcessed;
+						return;
+					}
 
-				if (laneIndex != null && pos.SourceLaneIndex != laneIndex) {
+					if (laneIndex != null && curPos.m_lane != laneIndex) {
 #if DEBUGMETRIC
 					if (debug)
 						Log._Debug($"  GetVehicleMetricGoingToSegment: Vehicle {vehicleId}: Lane index mismatch (expected: {laneIndex}, was: {pos.SourceLaneIndex})");
 #endif
-					continue;
-				}
+						return;
+					}
 
-				uint avgSegmentLength = (uint)netManager.m_segments.m_buffer[SegmentId].m_averageLength;
-				uint normLength = Math.Min(100u, (uint)(state.TotalLength * 100u) / avgSegmentLength);
+					if (Options.simAccuracy <= 2) {
+						uint avgSegmentLength = (uint)netManager.m_segments.m_buffer[SegmentId].m_averageLength;
+						uint normLength = Math.Min(100u, (uint)(state.TotalLength * 100u) / avgSegmentLength);
 
 #if DEBUGMETRIC
-				if (debug)
-					Log._Debug($"  GetVehicleMetricGoingToSegment: NormLength of vehicle {vehicleId}: {avgSegmentLength} -> {normLength}");
+						if (debug)
+							Log._Debug($"  GetVehicleMetricGoingToSegment: NormLength of vehicle {vehicleId}: {avgSegmentLength} -> {normLength}");
 #endif
 
 #if DEBUGMETRIC
-				if (debug)
-					ret[pos.TargetSegmentId] += 1;
-				else
-					ret[pos.TargetSegmentId] = Math.Min(100u, ret[pos.TargetSegmentId] + normLength);
+						if (debug)
+							ret[pos.TargetSegmentId] += 1;
+						else
+							ret[pos.TargetSegmentId] = Math.Min(100u, ret[pos.TargetSegmentId] + normLength);
 #else
-				ret[pos.TargetSegmentId] = Math.Min(100u, ret[pos.TargetSegmentId] + normLength);
+							ret[nextPos.m_segment] += normLength;
 #endif
+					} else {
+						ret[nextPos.m_segment] += 10;
+					}
+					++numProcessed;
+
+					if ((Options.simAccuracy >= 3 && numProcessed >= 3) || (Options.simAccuracy == 2 && numProcessed >= 5) || (Options.simAccuracy == 1 && numProcessed >= 10)) {
+						breakLoop = true;
+						return;
+					}
 
 #if DEBUGMETRIC
 				if (debug)
 					Log._Debug($"  GetVehicleMetricGoingToSegment: Vehicle {vehicleId}: *added*! Coming from segment {SegmentId}, lane {laneIndex}. Going to segment {pos.TargetSegmentId}, lane {pos.TargetLaneIndex}, minSpeed={TrafficPriority.maxStopVelocity}, speed={speed}");
 #endif
+				});
 
+				if (breakLoop)
+					break;
+
+				vehicleId = state.NextVehicleIdOnSegment;
 			}
 
 #if DEBUGMETRIC
@@ -228,73 +240,42 @@ namespace TrafficManager.Traffic {
 			return ret;
 		}
 
-		internal void RegisterVehicle(ushort vehicleId, ref Vehicle vehicleData, VehiclePosition pos) {
-			if (pos.TransitNodeId != NodeId || pos.SourceSegmentId != SegmentId) {
-				Log.Warning($"Refusing to add vehicle {vehicleId} to SegmentEnd {SegmentId} @ {NodeId} (given: {pos.SourceSegmentId} @ {pos.TransitNodeId}).");
-				return;
-			}
-
-			registeredVehicles[vehicleId] = pos;
-
-#if DEBUGREG
-			Log._Debug($"RegisterVehicle({vehicleId}): Registering vehicle {vehicleId} at segment {SegmentId}, {NodeId}. number of vehicles: {registeredVehicles.Count}. reg. vehicles: {string.Join(", ", registeredVehicles.Select(x => x.ToString()).ToArray())}");
-#endif
-			/*if (isCurrentSegment)
-				DetermineFrontVehicles();*/
-		}
-
-		internal void UnregisterVehicle(ushort vehicleId) {
-			registeredVehicles.Remove(vehicleId);
-
-#if DEBUGREG
-			Log.Warning($"UnregisterVehicle({vehicleId}): Removing vehicle {vehicleId} from segment {SegmentId}, {NodeId}. number of vehicles: {registeredVehicles.Count}. reg. vehicles: {string.Join(", ", registeredVehicles.Select(x => x.ToString()).ToArray())}");
-#endif
-			//DetermineFrontVehicles();
-		}
-
-		/*internal void UpdateApproachingVehicles() {
-			DetermineFrontVehicles();
-		}*/
-
-		internal Dictionary<ushort, VehiclePosition> GetRegisteredVehicles() {
-#if DEBUGREG
-			Log._Debug($"GetRegisteredVehicles: Segment {SegmentId}. { string.Join(", ", registeredVehicles.Select(x => x.ToString()).ToArray())}");
-#endif
-			return registeredVehicles;
-		}
-
 		internal int GetRegisteredVehicleCount() {
-			return registeredVehicles.Count;
-		}
-
-		internal int GetRegisteredVehicleCount(HashSet<byte> laneIndices) {
+			ushort vehicleId = FirstRegisteredVehicleId;
 			int ret = 0;
-			foreach (KeyValuePair<ushort, VehiclePosition> e in registeredVehicles) {
-				ushort vehicleId = e.Key;
-				VehiclePosition pos = e.Value;
-#if DEBUGREG
-				Log._Debug($"GetRegisteredVehicleCount @ seg. {SegmentId}, node {NodeId}: laneIndices: {string.Join(", ", laneIndices.Select(x => x.ToString()).ToArray())}, vehicle {vehicleId}, pos? {pos != null}, source seg. {pos?.SourceSegmentId}, transit node {pos?.TransitNodeId}, source lane {pos?.SourceLaneIndex}");
-#endif
-				if (laneIndices.Contains(pos.SourceLaneIndex))
-					++ret;
+			while (vehicleId != 0) {
+				++ret;
+				vehicleId = VehicleStateManager._GetVehicleState(vehicleId).NextVehicleIdOnSegment;
 			}
 			return ret;
 		}
 
 		internal void Destroy() {
+			UnregisterAllVehicles();
 			if (segGeometryUnsubscriber != null)
 				segGeometryUnsubscriber.Dispose();
 			if (nodeGeometryUnsubscriber != null)
 				nodeGeometryUnsubscriber.Dispose();
 		}
 
+		private void UnregisterAllVehicles() {
+			while (FirstRegisteredVehicleId != 0) {
+				VehicleStateManager._GetVehicleState(FirstRegisteredVehicleId).Unlink();
+			}
+		}
+
 		public void OnUpdate(SegmentGeometry geometry) {
-			startNode = Singleton<NetManager>.instance.m_segments.m_buffer[SegmentId].m_startNode == NodeId;
+			if (!geometry.IsValid()) {
+				TrafficPriority.RemovePrioritySegment(NodeId, SegmentId);
+				return;
+			}
+
+			StartNode = Singleton<NetManager>.instance.m_segments.m_buffer[SegmentId].m_startNode == NodeId;
 			numLanes = Singleton<NetManager>.instance.m_segments.m_buffer[SegmentId].Info.m_lanes.Length;
 			numVehiclesFlowingToSegmentId = new Dictionary<ushort, uint>(7);
 			numVehiclesGoingToSegmentId = new Dictionary<ushort, uint>(7);
 			//frontVehicleIds = new ushort[numLanes];
-			ushort[] outgoingSegmentIds = geometry.GetOutgoingSegments(startNode);
+			ushort[] outgoingSegmentIds = geometry.GetOutgoingSegments(StartNode);
 			foreach (ushort otherSegmentId in outgoingSegmentIds) {
 				numVehiclesFlowingToSegmentId[otherSegmentId] = 0;
 				numVehiclesGoingToSegmentId[otherSegmentId] = 0;

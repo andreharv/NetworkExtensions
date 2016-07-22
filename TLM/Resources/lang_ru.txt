@@ -83,7 +83,7 @@ Create_group Создать группу
 Delete_group Удалить группу
 Add_zoning Добавить зонирование
 Remove_zoning Удалить зонирование
-Lane_Arrow_Changer_Disabled Изменение движения для перекрестка отключено. По причине вашей активации правил на шоссе
+Lane_Arrow_Changer_Disabled_Highway Изменение движения для перекрестка отключено. По причине вашей активации правил на шоссе
 Add_junction_to_timed_light Соединить с данным светофором
 Remove_junction_from_timed_light Не соединять с данным светофором
 Select_junction Выбрать перекресток
@@ -114,3 +114,13 @@ The_chosen_traffic_light_program_is_incompatible_to_this_junction Выбранн
 Advanced_AI_cannot_be_activated Продвинутый AI не может быть активирован
 The_Advanced_Vehicle_AI_cannot_be_activated Продвинутый AI не активирован, потому что вами уже используется иной мод, что меняет поведение транспорта (например Improved AI, Traffic++).
 Enable_dynamic_path_calculation Enable dynamic path calculation
+Lane_Arrow_Changer_Disabled_Connection The lane arrow changer for this lane is disabled because you have created lane connections by hand.
+Lane_connector Lane connector
+Connected_lanes Connected lanes
+Use_alternative_view_mode Use alternative view mode
+Road_type Road type
+Default_speed_limit Default speed limit
+Unit_system Unit system
+Metric Metric
+Imperial Imperial
+Use_more_CPU_cores_for_route_calculation_if_available Use more CPU cores for route calculation (if available)
