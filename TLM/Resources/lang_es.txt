@@ -113,14 +113,14 @@ Select_a_timed_traffic_light_program Seleccionar un semáforo programado
 The_chosen_traffic_light_program_is_incompatible_to_this_junction El programa de semáforo elegido es incompatible para este cruce
 Advanced_AI_cannot_be_activated IA Avanzada no puede ser activada
 The_Advanced_Vehicle_AI_cannot_be_activated La IA de vehículos avanzada no puede ser activada debido a que estás usando algún otro mod que modifica el comportamiento de los vehículos (por ejemplo Improved AI o Traffic++)
-Enable_dynamic_path_calculation Enable dynamic path calculation
-Lane_Arrow_Changer_Disabled_Connection The lane arrow changer for this lane is disabled because you have created lane connections by hand.
-Lane_connector Lane connector
-Connected_lanes Connected lanes
-Use_alternative_view_mode Use alternative view mode
-Road_type Road type
-Default_speed_limit Default speed limit
-Unit_system Unit system
-Metric Metric
+Enable_dynamic_path_calculation Activar el cálculo dinámico de las rutas
+Lane_Arrow_Changer_Disabled_Connection El modificador de flechas de la carretera fue desactivado porque has creado las conexiones manualmente.
+Lane_connector Conector de carriles
+Connected_lanes Carriles conectados
+Use_alternative_view_mode Usar modo de vista alternativo
+Road_type Tipo de carretera
+Default_speed_limit Límite de velocidad por defecto
+Unit_system Sistema de medida
+Metric Métrico
 Imperial Imperial
-Use_more_CPU_cores_for_route_calculation_if_available Use more CPU cores for route calculation (if available)
+Use_more_CPU_cores_for_route_calculation_if_available Usar más nucleos del procesador para el cálculo de rutas (si está disponible)

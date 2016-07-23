@@ -157,12 +157,7 @@ namespace TrafficManager.Custom.AI {
 				return true;
 			}
 
-			try {
-				VehicleStateManager.UpdateVehiclePos(vehicleId, ref vehicleData);
-			} catch (Exception e) {
-				Log.Error("VehicleAI MayChangeSegment Error: " + e.ToString());
-			}
-
+			bool forceUpdatePos = false;
 			VehicleState vehicleState = null;
 			try {
 				vehicleState = VehicleStateManager.GetVehicleState(vehicleId);
@@ -170,14 +165,25 @@ namespace TrafficManager.Custom.AI {
 				if (vehicleState == null) {
 					VehicleStateManager.OnPathFindReady(vehicleId, ref vehicleData);
 					vehicleState = VehicleStateManager.GetVehicleState(vehicleId);
-#if DEBUG
+
 					if (vehicleState == null) {
+#if DEBUG
 						Log._Debug($"Could not get vehicle state of {vehicleId}!");
-					}
 #endif
+					} else {
+						forceUpdatePos = true;
+					}
 				}
 			} catch (Exception e) {
 				Log.Error("VehicleAI MayChangeSegment vehicle state error: " + e.ToString());
+			}
+
+			if (forceUpdatePos || Options.simAccuracy >= 2) {
+				try {
+					VehicleStateManager.UpdateVehiclePos(vehicleId, ref vehicleData, ref prevPos, ref position);
+				} catch (Exception e) {
+					Log.Error("VehicleAI MayChangeSegment Error: " + e.ToString());
+				}
 			}
 
 			var netManager = Singleton<NetManager>.instance;

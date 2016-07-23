@@ -980,8 +980,8 @@ namespace TrafficManager {
 			TrafficPriority.OnLevelLoading();
 #if !TAM
 			determinePathManagerCompatible();
-#if DEBUG
 			IsRainfallLoaded = CheckRainfallIsLoaded();
+#if DEBUG
 			SpeedLimitManager.GetDefaultSpeedLimits();
 #endif
 
@@ -1081,14 +1081,14 @@ namespace TrafficManager {
 #endif
 
 		private bool CheckRainfallIsLoaded() {
-			bool TMPEisLoaded = false;
+			bool rainfall = false;
 
 			var loadingWrapperLoadingExtensionsField = typeof(LoadingWrapper).GetField("m_LoadingExtensions", BindingFlags.NonPublic | BindingFlags.Instance);
 			List<ILoadingExtension> loadingExtensions = null;
 			if (loadingWrapperLoadingExtensionsField != null) {
 				loadingExtensions = (List<ILoadingExtension>)loadingWrapperLoadingExtensionsField.GetValue(Singleton<LoadingManager>.instance.m_LoadingWrapper);
 			} else {
-				throw new Exception("Could not get loading extensions field");
+				Log._Debug("Could not get loading extensions field");
 			}
 
 			if (loadingExtensions != null) {
@@ -1097,16 +1097,17 @@ namespace TrafficManager {
 						continue;
 
 					var namespaceStr = extension.GetType().Namespace.ToString();
-					if ("TrafficManager".Equals(namespaceStr)) {
-						TMPEisLoaded = true;
+					if ("Rainfall".Equals(namespaceStr)) {
+						Log.Info("The mod Rainfall has been detected.");
+						rainfall = true;
 						break;
 					}
 				}
 			} else {
-				throw new Exception("Could not get loading extensions");
+				Log._Debug("Could not get loading extensions");
 			}
 
-			return TMPEisLoaded;
+			return rainfall;
 		}
 
 		public void SetToolMode(TrafficManagerMode mode) {

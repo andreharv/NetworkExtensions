@@ -152,7 +152,7 @@ namespace TrafficManager.Custom.AI {
 
 		public bool CustomStartPathFind(ushort vehicleId, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays) {
 			/// NON-STOCK CODE START ///
-			ExtVehicleType? vehicleType = VehicleStateManager.DetermineVehicleType(ref vehicleData);
+			ExtVehicleType? vehicleType = VehicleStateManager.DetermineVehicleType(vehicleId, ref vehicleData);
 			if (vehicleType == ExtVehicleType.CargoTrain)
 				vehicleType = ExtVehicleType.CargoVehicle;
 #if DEBUG
@@ -215,6 +215,14 @@ namespace TrafficManager.Custom.AI {
 		}
 
 		public void CustomCheckNextLane(ushort vehicleID, ref Vehicle vehicleData, ref float maxSpeed, PathUnit.Position position, uint laneID, byte offset, PathUnit.Position prevPos, uint prevLaneID, byte prevOffset, Bezier3 bezier) {
+			if (Options.simAccuracy <= 1) {
+				try {
+					VehicleStateManager.UpdateVehiclePos(vehicleID, ref vehicleData, ref prevPos, ref position);
+				} catch (Exception e) {
+					Log.Error("TrainAI CustomCheckNextLane Error: " + e.ToString());
+				}
+			}
+
 			NetManager instance = Singleton<NetManager>.instance;
 			Vehicle.Frame lastFrameData = vehicleData.GetLastFrameData();
 			Vector3 a = lastFrameData.m_position;

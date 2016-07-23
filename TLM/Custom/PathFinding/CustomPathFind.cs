@@ -1912,7 +1912,7 @@ namespace TrafficManager.Custom.PathFinding {
 			bool nextIsHighway = SegmentGeometry.Get(nextSegmentId).IsHighway();
 			bool nextIsRealJunction = SegmentGeometry.Get(item.m_position.m_segment).CountOtherSegments(nextIsStartNodeOfPrevSegment) > 1;
 			// determines if a vehicles wants to change lanes here (randomized). If true, costs for changing to an adjacent lane are not added to the result
-			bool wantToChangeLane = false;
+			//bool wantToChangeLane = false;
 			/*if (useAdvancedAI && Options.laneChangingRandomization != 5) {
 				laneChangeRandCounter = (ushort)((laneChangeRandCounter + 1) % Options.getLaneChangingRandomizationTargetValue());
 				wantToChangeLane = (laneChangeRandCounter == 0);
@@ -2177,13 +2177,9 @@ namespace TrafficManager.Custom.PathFinding {
 
 								if ((!isMiddle && nextSegmentId == item.m_position.m_segment) || // u-turns
 									(_extVehicleType != ExtVehicleType.Emergency && // emergency vehicles may do everything
-									forceLaneIndex == null && // no lane changing at junctions
-									(!wantToChangeLane || laneDist > 1
-#if MARKCONGESTEDSEGMENTS
-									|| prevIsCongested
-#endif
-									))) { // randomized lane changing
-																			// we use the power operator here to express that lane changing one-by-one is preferred over changing multiple lanes at once
+									forceLaneIndex == null // no lane changing at junctions
+									)) {
+									// we use the power operator here to express that lane changing one-by-one is preferred over changing multiple lanes at once
 									laneMetric = (float)Math.Pow(laneChangeCostBase, laneDist);
 									metric *= laneMetric;
 								}

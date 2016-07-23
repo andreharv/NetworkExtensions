@@ -11,7 +11,7 @@ namespace TrafficManager.Custom.AI {
 	class CustomShipAI : ShipAI {
 		public bool CustomStartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays) {
 			/// NON-STOCK CODE START ///
-			ExtVehicleType? vehicleType = VehicleStateManager.DetermineVehicleType(ref vehicleData);
+			ExtVehicleType? vehicleType = VehicleStateManager.DetermineVehicleType(vehicleID, ref vehicleData);
 			if (vehicleType == ExtVehicleType.CargoShip)
 				vehicleType = ExtVehicleType.CargoVehicle;
 			/// NON-STOCK CODE END ///

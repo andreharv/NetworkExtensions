@@ -11,7 +11,7 @@ using System.Threading;
 namespace TrafficManager.Traffic {
 	class TrafficPriority {
 		public static float maxStopVelocity = 0.1f;
-		public static float maxYieldVelocity = 0.5f;
+		public static float maxYieldVelocity = 0.3f;
 
 		/// <summary>
 		/// Dictionary of segments that are connected to roads with timed traffic lights or priority signs. Index: segment id
@@ -214,14 +214,21 @@ namespace TrafficManager.Traffic {
 #if TRACE
 			Singleton<CodeProfiler>.instance.Start("TrafficPriority.GetPrioritySegment");
 #endif
-			if (!IsPrioritySegment(nodeId, segmentId)) {
+			/*if (!IsPrioritySegment(nodeId, segmentId)) {
+#if TRACE
+				Singleton<CodeProfiler>.instance.Stop("TrafficPriority.GetPrioritySegment");
+#endif
+				return null;
+			}*/
+
+			var prioritySegment = TrafficSegments[segmentId];
+
+			if (prioritySegment == null) {
 #if TRACE
 				Singleton<CodeProfiler>.instance.Stop("TrafficPriority.GetPrioritySegment");
 #endif
 				return null;
 			}
-
-			var prioritySegment = TrafficSegments[segmentId];
 
 			if (prioritySegment.Node1 == nodeId) {
 #if TRACE
@@ -328,6 +335,13 @@ namespace TrafficManager.Traffic {
 				ushort transitNodeId = VehicleState.GetTransitNodeId(ref curPos, ref nextPos);
 				Vector3 transitNodePos = netManager.m_nodes.m_buffer[transitNodeId].m_position;
 
+				if ((Singleton<NetManager>.instance.m_nodes.m_buffer[transitNodeId].m_flags & NetNode.Flags.TrafficLights) != NetNode.Flags.None) {
+#if TRACE
+					Singleton<CodeProfiler>.instance.Stop("TrafficPriority.HasIncomingVehiclesWithHigherPriority");
+#endif
+					return false;
+				}
+
 #if DEBUG
 				//bool debug = nodeId == 30634;
 				//bool debug = transitNodeId == 21371;
@@ -339,7 +353,7 @@ namespace TrafficManager.Traffic {
 				bool debug = false;
 #endif
 
-				VehicleState targetVehicleState = VehicleStateManager.GetVehicleState(targetVehicleId);
+				/*VehicleState targetVehicleState = VehicleStateManager.GetVehicleState(targetVehicleId);
 				if (targetVehicleState == null) {
 #if DEBUG
 					Log.Warning($"HasIncomingVehicles: vehicle {targetVehicleId} @ node {transitNodeId}: Target state is invalid!");
@@ -348,7 +362,7 @@ namespace TrafficManager.Traffic {
 					Singleton<CodeProfiler>.instance.Stop("TrafficPriority.HasIncomingVehiclesWithHigherPriority");
 #endif
 					return false;
-				}
+				}*/
 
 #if DEBUG
 				if (debug) {
@@ -412,130 +426,129 @@ namespace TrafficManager.Traffic {
 						continue;
 					}
 
-					if ((Singleton<NetManager>.instance.m_nodes.m_buffer[transitNodeId].m_flags & NetNode.Flags.TrafficLights) == NetNode.Flags.None) {
-						bool targetOnMain = targetFromPrioritySegment.Type == SegmentEnd.PriorityType.Main || targetFromPrioritySegment.Type == SegmentEnd.PriorityType.None;
-						bool incomingOnMain = incomingFromPrioritySegment.Type == SegmentEnd.PriorityType.Main || incomingFromPrioritySegment.Type == SegmentEnd.PriorityType.None;
+					
+					bool targetOnMain = targetFromPrioritySegment.Type == SegmentEnd.PriorityType.Main || targetFromPrioritySegment.Type == SegmentEnd.PriorityType.None;
+					bool incomingOnMain = incomingFromPrioritySegment.Type == SegmentEnd.PriorityType.Main || incomingFromPrioritySegment.Type == SegmentEnd.PriorityType.None;
 
 #if DEBUG
+					if (debug) {
+						Log._Debug($"HasIncomingVehicles: targetOnMain={targetOnMain} incomingOnMain={incomingOnMain}");
+					}
+#endif
+
+					ushort incomingVehicleId = incomingFromPrioritySegment.FirstRegisteredVehicleId;
+					while (incomingVehicleId != 0) {
+#if DEBUG
 						if (debug) {
-							Log._Debug($"HasIncomingVehicles: targetOnMain={targetOnMain} incomingOnMain={incomingOnMain}");
+							Log._Debug("");
+							Log._Debug($"HasIncomingVehicles: checking incoming vehicle {incomingVehicleId} @ seg. {incomingFromPrioritySegment.SegmentId}");
 						}
 #endif
 
-						ushort incomingVehicleId = incomingFromPrioritySegment.FirstRegisteredVehicleId;
-						while (incomingVehicleId != 0) {
-#if DEBUG
-							if (debug) {
-								Log._Debug("");
-								Log._Debug($"HasIncomingVehicles: checking incoming vehicle {incomingVehicleId} @ seg. {incomingFromPrioritySegment.SegmentId}");
-							}
-#endif
-
-							VehicleState incomingState = VehicleStateManager._GetVehicleState(incomingVehicleId);
-							if (! incomingState.Valid) {
-#if DEBUG
-								if (debug)
-									Log._Debug($"HasIncomingVehicles: Incoming vehicle {incomingVehicleId}: state is invalid. *IGNORING*");
-#endif
-								incomingVehicleId = incomingState.NextVehicleIdOnSegment;
-								continue;
-							}
-
+						VehicleState incomingState = VehicleStateManager._GetVehicleState(incomingVehicleId);
+						if (! incomingState.Valid) {
 #if DEBUG
 							if (debug)
-								Log._Debug($"HasIncomingVehicles: Checking against incoming vehicle {incomingVehicleId}.");
+								Log._Debug($"HasIncomingVehicles: Incoming vehicle {incomingVehicleId}: state is invalid. *IGNORING*");
+#endif
+							incomingVehicleId = incomingState.NextVehicleIdOnSegment;
+							continue;
+						}
+
+#if DEBUG
+						if (debug)
+							Log._Debug($"HasIncomingVehicles: Checking against incoming vehicle {incomingVehicleId}.");
 #endif
 
-							if (incomingState.JunctionTransitState == VehicleJunctionTransitState.Leave || incomingState.JunctionTransitState == VehicleJunctionTransitState.Enter || incomingState.JunctionTransitState == VehicleJunctionTransitState.Stop) {
+						if (incomingState.JunctionTransitState == VehicleJunctionTransitState.Leave || incomingState.JunctionTransitState == VehicleJunctionTransitState.Enter || incomingState.JunctionTransitState == VehicleJunctionTransitState.Stop) {
 								
 
-								bool conflicting = false;
-								incomingState.ProcessCurrentAndNextPathPositionAndOtherVehicleCurrentAndNextPathPosition(ref vehManager.m_vehicles.m_buffer[incomingVehicleId], ref curPos, ref nextPos, delegate (ref Vehicle incomingVehicleData, ref PathUnit.Position incomingCurPos, ref PathUnit.Position incomingNextPos, ref PathUnit.Position targetCurPos, ref PathUnit.Position targetNextPos) {
-									if (incomingState.JunctionTransitState != VehicleJunctionTransitState.Stop && (incomingState.JunctionTransitState != VehicleJunctionTransitState.Leave || (incomingState.LastStateUpdate >> VehicleState.STATE_UPDATE_SHIFT) < (frame >> VehicleState.STATE_UPDATE_SHIFT))) {
-										Vector3 incomingPos = incomingVehicleData.GetLastFramePosition();
-										Vector3 incomingVel = incomingVehicleData.GetLastFrameVelocity();
-										Vector3 incomingToNode = transitNodePos - incomingPos;
+							bool conflicting = false;
+							incomingState.ProcessCurrentAndNextPathPositionAndOtherVehicleCurrentAndNextPathPosition(ref vehManager.m_vehicles.m_buffer[incomingVehicleId], ref curPos, ref nextPos, ref targetVehicleData, delegate (ref Vehicle incomingVehicleData, ref PathUnit.Position incomingCurPos, ref PathUnit.Position incomingNextPos, ref Vehicle targetVehData, ref PathUnit.Position targetCurPos, ref PathUnit.Position targetNextPos) {
+								if (incomingState.JunctionTransitState != VehicleJunctionTransitState.Stop && (incomingState.JunctionTransitState != VehicleJunctionTransitState.Leave || (incomingState.LastStateUpdate >> VehicleState.STATE_UPDATE_SHIFT) < (frame >> VehicleState.STATE_UPDATE_SHIFT))) {
+									Vector3 incomingPos = incomingVehicleData.GetLastFramePosition();
+									Vector3 incomingVel = incomingVehicleData.GetLastFrameVelocity();
+									Vector3 incomingToNode = transitNodePos - incomingPos;
 
-										// check if incoming vehicle moves towards node
-										float dot = Vector3.Dot(incomingToNode, incomingVel);
-										if (dot <= 0) {
-#if DEBUG
-											if (debug)
-												Log._Debug($"HasIncomingVehicles: Incoming {incomingVehicleId} is moving away from the transit node ({dot}). *IGNORING*");
-#endif
-											return;
-										}
+									// check if incoming vehicle moves towards node
+									float dot = Vector3.Dot(incomingToNode, incomingVel);
+									if (dot <= 0) {
 #if DEBUG
 										if (debug)
-											Log._Debug($"HasIncomingVehicles: Incoming {incomingVehicleId} is moving towards the transit node ({dot}).");
+											Log._Debug($"HasIncomingVehicles: Incoming {incomingVehicleId} is moving away from the transit node ({dot}). *IGNORING*");
 #endif
-
-										if (Options.simAccuracy <= 1 && !Single.IsInfinity(targetTimeToTransitNode) && !Single.IsNaN(targetTimeToTransitNode)) {
-											float incomingSpeed = incomingVel.magnitude;
-											float incomingDistanceToTransitNode = incomingToNode.magnitude;
-											float incomingTimeToTransitNode = Single.NaN;
-
-											if (incomingSpeed > 0)
-												incomingTimeToTransitNode = incomingDistanceToTransitNode / incomingSpeed;
-											else
-												incomingTimeToTransitNode = Single.PositiveInfinity;
-
-											float timeDiff = Mathf.Abs(incomingTimeToTransitNode - targetTimeToTransitNode);
-											if (timeDiff > 10f) {
+										return;
+									}
 #if DEBUG
-												if (debug)
-													Log._Debug($"HasIncomingVehicles: Incoming {incomingVehicleId} needs {incomingTimeToTransitNode} time units to get to the node where target needs {targetTimeToTransitNode} time units (diff = {timeDiff}). Difference to large. *IGNORING*");
+									if (debug)
+										Log._Debug($"HasIncomingVehicles: Incoming {incomingVehicleId} is moving towards the transit node ({dot}).");
 #endif
-												return;
-											} else {
+
+									if (Options.simAccuracy <= 1 && !Single.IsInfinity(targetTimeToTransitNode) && !Single.IsNaN(targetTimeToTransitNode)) {
+										float incomingSpeed = incomingVel.magnitude;
+										float incomingDistanceToTransitNode = incomingToNode.magnitude;
+										float incomingTimeToTransitNode = Single.NaN;
+
+										if (incomingSpeed > 0)
+											incomingTimeToTransitNode = incomingDistanceToTransitNode / incomingSpeed;
+										else
+											incomingTimeToTransitNode = Single.PositiveInfinity;
+
+										float timeDiff = Mathf.Abs(incomingTimeToTransitNode - targetTimeToTransitNode);
+										if (timeDiff > 10f) {
 #if DEBUG
-												if (debug)
-													Log._Debug($"HasIncomingVehicles: Incoming {incomingVehicleId} needs {incomingTimeToTransitNode} time units to get to the node where target needs {targetTimeToTransitNode} time units (diff = {timeDiff}). Difference within bounds.");
+											if (debug)
+												Log._Debug($"HasIncomingVehicles: Incoming {incomingVehicleId} needs {incomingTimeToTransitNode} time units to get to the node where target needs {targetTimeToTransitNode} time units (diff = {timeDiff}). Difference to large. *IGNORING*");
 #endif
-											}
+											return;
 										} else {
 #if DEBUG
 											if (debug)
-												Log._Debug($"HasIncomingVehicles: Target is stopped.");
+												Log._Debug($"HasIncomingVehicles: Incoming {incomingVehicleId} needs {incomingTimeToTransitNode} time units to get to the node where target needs {targetTimeToTransitNode} time units (diff = {timeDiff}). Difference within bounds.");
 #endif
 										}
 									} else {
 #if DEBUG
 										if (debug)
-											Log._Debug($"HasIncomingVehicles: Incoming {incomingVehicleId} is LEAVING but state update occurred recently.");
+											Log._Debug($"HasIncomingVehicles: Target is stopped.");
 #endif
 									}
-
-									if (HasVehiclePriority(debug, transitNodeId, targetVehicleId, ref targetCurPos, ref targetNextPos, targetOnMain, incomingVehicleId, ref incomingCurPos, ref incomingNextPos, incomingOnMain, targetFromPrioritySegment, incomingFromPrioritySegment)) {
+								} else {
 #if DEBUG
-										if (debug)
-											Log._Debug($"HasIncomingVehicles: Incoming {incomingVehicleId} is not conflicting.");
+									if (debug)
+										Log._Debug($"HasIncomingVehicles: Incoming {incomingVehicleId} is LEAVING but state update occurred recently.");
 #endif
-										return;
-									} else {
-#if DEBUG
-										if (debug)
-											Log._Debug($"==========> HasIncomingVehicles: Incoming {incomingVehicleId} IS conflicting.");
-#endif
-										conflicting = true;
-										return;
-									}
-								});
-								if (conflicting) {
-#if TRACE
-									Singleton<CodeProfiler>.instance.Stop("TrafficPriority.HasIncomingVehiclesWithHigherPriority");
-#endif
-									return true;
 								}
-							} else {
-#if DEBUG
-								if (debug)
-									Log._Debug($"HasIncomingVehicles: Incoming {incomingVehicleId} (main) is not conflicting ({incomingState.JunctionTransitState}).");
-#endif
-							}
 
-							incomingVehicleId = incomingState.NextVehicleIdOnSegment;
+								if (HasVehiclePriority(debug, transitNodeId, targetVehicleId, ref targetVehData, ref targetCurPos, ref targetNextPos, targetOnMain, incomingVehicleId, ref incomingCurPos, ref incomingNextPos, incomingOnMain, targetFromPrioritySegment, incomingFromPrioritySegment)) {
+#if DEBUG
+									if (debug)
+										Log._Debug($"HasIncomingVehicles: Incoming {incomingVehicleId} is not conflicting.");
+#endif
+									return;
+								} else {
+#if DEBUG
+									if (debug)
+										Log._Debug($"==========> HasIncomingVehicles: Incoming {incomingVehicleId} IS conflicting.");
+#endif
+									conflicting = true;
+									return;
+								}
+							});
+							if (conflicting) {
+#if TRACE
+								Singleton<CodeProfiler>.instance.Stop("TrafficPriority.HasIncomingVehiclesWithHigherPriority");
+#endif
+								return true;
+							}
+						} else {
+#if DEBUG
+							if (debug)
+								Log._Debug($"HasIncomingVehicles: Incoming {incomingVehicleId} (main) is not conflicting ({incomingState.JunctionTransitState}).");
+#endif
 						}
+
+						incomingVehicleId = incomingState.NextVehicleIdOnSegment;
 					}
 				}
 
@@ -552,7 +565,7 @@ namespace TrafficManager.Traffic {
 			return false;
 		}
 
-		private static bool HasVehiclePriority(bool debug, ushort transitNodeId, ushort targetCarId, ref PathUnit.Position targetCurPos, ref PathUnit.Position targetNextPos, bool targetIsOnMainRoad, ushort incomingCarId, ref PathUnit.Position incomingCurPos, ref PathUnit.Position incomingNextPos, bool incomingIsOnMainRoad, SegmentEnd targetEnd, SegmentEnd incomingEnd) {
+		private static bool HasVehiclePriority(bool debug, ushort transitNodeId, ushort targetCarId, ref Vehicle targetVehicleData, ref PathUnit.Position targetCurPos, ref PathUnit.Position targetNextPos, bool targetIsOnMainRoad, ushort incomingCarId, ref PathUnit.Position incomingCurPos, ref PathUnit.Position incomingNextPos, bool incomingIsOnMainRoad, SegmentEnd targetEnd, SegmentEnd incomingEnd) {
 #if TRACE
 			Singleton<CodeProfiler>.instance.Start("TrafficPriority.HasVehiclePriority");
 #endif
@@ -594,18 +607,18 @@ namespace TrafficManager.Traffic {
 					return true;
 				}
 
-				var targetVehState = VehicleStateManager.GetVehicleState(targetCarId);
-				var incomingVehState = VehicleStateManager.GetVehicleState(incomingCarId);
+				//var targetVehState = VehicleStateManager.GetVehicleState(targetCarId);
+				//var incomingVehState = VehicleStateManager.GetVehicleState(incomingCarId);
 
-				if (targetVehState == null) {
+				/*if (targetVehState == null) {
 					targetEnd.RequestCleanup();
 #if TRACE
 					Singleton<CodeProfiler>.instance.Stop("TrafficPriority.HasVehiclePriority");
 #endif
 					return true;
-				}
+				}*/
 
-				if ((targetVehState.VehicleType & ExtVehicleType.Emergency) != ExtVehicleType.None) {
+				if ((targetVehicleData.m_flags & Vehicle.Flags.Emergency2) != 0) {
 					// target vehicle is on emergency
 #if TRACE
 					Singleton<CodeProfiler>.instance.Stop("TrafficPriority.HasVehiclePriority");
@@ -613,13 +626,13 @@ namespace TrafficManager.Traffic {
 					return true;
 				}
 
-				if (incomingVehState == null) {
+				/*if (incomingVehState == null) {
 					incomingEnd.RequestCleanup();
 #if TRACE
 					Singleton<CodeProfiler>.instance.Stop("TrafficPriority.HasVehiclePriority");
 #endif
 					return true;
-				}
+				}*/
 
 				//var targetVehPos = targetVehState.GetCurrentPosition();
 
@@ -981,15 +994,14 @@ namespace TrafficManager.Traffic {
 				ClearTrafficRequested = false;
 			}
 
-			/*SegmentGeometry.Get(nextValidityCheckedSegment)?.VerifyCreated();
-			if (nextValidityCheckedSegment != segmentId)
-				SegmentGeometry.Get(segmentId)?.VerifyByNodes();
-			nextValidityCheckedSegment = (ushort)(((int)nextValidityCheckedSegment + 1) % NetManager.MAX_SEGMENT_COUNT);*/
-
 			// simulate segment-ends
 			TrafficSegment trafficSegment = TrafficSegments[segmentId];
-			if (trafficSegment == null)
+			if (trafficSegment == null) {
+#if TRACE
+				Singleton<CodeProfiler>.instance.Stop("TrafficPriority.SegmentSimulationStep");
+#endif
 				return;
+			}
 			trafficSegment.Instance1?.SimulationStep();
 			trafficSegment.Instance2?.SimulationStep();
 #if TRACE

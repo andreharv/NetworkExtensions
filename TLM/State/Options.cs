@@ -18,7 +18,7 @@ namespace TrafficManager.State {
 		public static readonly int DYNAMIC_RECALC_MIN_PROCESSOR_COUNT = 8;
 
 		private static UIDropDown simAccuracyDropdown = null;
-		private static UIDropDown laneChangingRandomizationDropdown = null;
+		//private static UIDropDown laneChangingRandomizationDropdown = null;
 		private static UIDropDown recklessDriversDropdown = null;
 		private static UICheckBox relaxedBussesToggle = null;
 		private static UICheckBox allRelaxedToggle = null;
@@ -69,7 +69,7 @@ namespace TrafficManager.State {
 		private static UIHelperBase maintenanceGroup = null;
 
 		public static int simAccuracy = 1;
-		public static int laneChangingRandomization = 2;
+		//public static int laneChangingRandomization = 2;
 		public static int recklessDrivers = 3;
 		public static bool relaxedBusses = true;
 		public static bool allRelaxed = false;
@@ -98,7 +98,7 @@ namespace TrafficManager.State {
 		public static bool disableSomething3 = false; // debug switch
 		public static bool disableSomething4 = false; // debug switch
 		public static bool disableSomething5 = false; // debug switch
-		public static float someValue = 4f; // debug value
+		public static float someValue = 3f; // debug value
 		public static float someValue2 = 1.25f; // debug value
 		public static float someValue3 = 2f; // debug value
 		public static float someValue4 = 5f; // debug value
@@ -132,7 +132,7 @@ namespace TrafficManager.State {
 #if DEBUG
 			preferOuterLaneToggle = aiGroup.AddCheckbox(Translation.GetString("Prefer_outer_lane") + " (BETA feature)", preferOuterLane, onPreferOuterLaneChanged) as UICheckBox;
 #endif
-			laneChangingRandomizationDropdown = aiGroup.AddDropdown(Translation.GetString("Drivers_want_to_change_lanes_(only_applied_if_Advanced_AI_is_enabled):"), new string[] { Translation.GetString("Very_often") + " (50 %)", Translation.GetString("Often") + " (25 %)", Translation.GetString("Sometimes") + " (10 %)", Translation.GetString("Rarely") + " (5 %)", Translation.GetString("Very_rarely") + " (2.5 %)", Translation.GetString("Only_if_necessary") }, laneChangingRandomization, onLaneChangingRandomizationChanged) as UIDropDown;
+			//laneChangingRandomizationDropdown = aiGroup.AddDropdown(Translation.GetString("Drivers_want_to_change_lanes_(only_applied_if_Advanced_AI_is_enabled):"), new string[] { Translation.GetString("Very_often") + " (50 %)", Translation.GetString("Often") + " (25 %)", Translation.GetString("Sometimes") + " (10 %)", Translation.GetString("Rarely") + " (5 %)", Translation.GetString("Very_rarely") + " (2.5 %)", Translation.GetString("Only_if_necessary") }, laneChangingRandomization, onLaneChangingRandomizationChanged) as UIDropDown;
 			overlayGroup = helper.AddGroup(Translation.GetString("Persistently_visible_overlays"));
 			prioritySignsOverlayToggle = overlayGroup.AddCheckbox(Translation.GetString("Priority_signs"), prioritySignsOverlay, onPrioritySignsOverlayChanged) as UICheckBox;
 			timedLightsOverlayToggle = overlayGroup.AddCheckbox(Translation.GetString("Timed_traffic_lights"), timedLightsOverlay, onTimedLightsOverlayChanged) as UICheckBox;
@@ -263,13 +263,13 @@ namespace TrafficManager.State {
 			simAccuracy = newAccuracy;
 		}
 
-		private static void onLaneChangingRandomizationChanged(int newLaneChangingRandomization) {
+		/*private static void onLaneChangingRandomizationChanged(int newLaneChangingRandomization) {
 			if (!checkGameLoaded())
 				return;
 
 			Log._Debug($"Lane changing frequency changed to {newLaneChangingRandomization}");
 			laneChangingRandomization = newLaneChangingRandomization;
-		}
+		}*/
 
 		private static void onRecklessDriversChanged(int newRecklessDrivers) {
 			if (!checkGameLoaded())
@@ -602,11 +602,11 @@ namespace TrafficManager.State {
 				simAccuracyDropdown.selectedIndex = newAccuracy;
 		}
 
-		public static void setLaneChangingRandomization(int newLaneChangingRandomization) {
+		/*public static void setLaneChangingRandomization(int newLaneChangingRandomization) {
 			laneChangingRandomization = newLaneChangingRandomization;
 			if (laneChangingRandomizationDropdown != null)
 				laneChangingRandomizationDropdown.selectedIndex = newLaneChangingRandomization;
-		}
+		}*/
 
 		public static void setRecklessDrivers(int newRecklessDrivers) {
 			recklessDrivers = newRecklessDrivers;
@@ -804,7 +804,7 @@ namespace TrafficManager.State {
 				vehicleOverlayToggle.isChecked = newVal;
 		}
 
-		internal static int getLaneChangingRandomizationTargetValue() {
+		/*internal static int getLaneChangingRandomizationTargetValue() {
 			int ret = 100;
 			switch (laneChangingRandomization) {
 				case 0:
@@ -824,9 +824,9 @@ namespace TrafficManager.State {
 					break;
 			}
 			return ret;
-		}
+		}*/
 
-		internal static float getLaneChangingProbability() {
+		/*internal static float getLaneChangingProbability() {
 			switch (laneChangingRandomization) {
 				case 0:
 					return 0.5f;
@@ -840,7 +840,7 @@ namespace TrafficManager.State {
 					return 0.01f;
 			}
 			return 0.01f;
-		}
+		}*/
 
 		internal static int getRecklessDriverModulo() {
 			switch (recklessDrivers) {

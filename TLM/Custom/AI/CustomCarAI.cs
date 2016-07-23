@@ -132,8 +132,16 @@ namespace TrafficManager.Custom.AI {
 		}
 
 		public void CustomCalculateSegmentPosition(ushort vehicleId, ref Vehicle vehicleData, PathUnit.Position nextPosition,
-			PathUnit.Position position, uint laneID, byte offset, PathUnit.Position prevPos, uint prevLaneID,
-			byte prevOffset, int index, out Vector3 pos, out Vector3 dir, out float maxSpeed) {
+				PathUnit.Position position, uint laneID, byte offset, PathUnit.Position prevPos, uint prevLaneID,
+				byte prevOffset, int index, out Vector3 pos, out Vector3 dir, out float maxSpeed) {
+			if (Options.simAccuracy <= 1) {
+				try {
+					VehicleStateManager.UpdateVehiclePos(vehicleId, ref vehicleData, ref prevPos, ref position);
+				} catch (Exception e) {
+					Log.Error("CarAI CustomCalculateSegmentPosition Error: " + e.ToString());
+				}
+			}
+
 			var netManager = Singleton<NetManager>.instance;
 			//var vehicleManager = Singleton<VehicleManager>.instance;
 			netManager.m_lanes.m_buffer[(int)((UIntPtr)laneID)].CalculatePositionAndDirection(offset * 0.003921569f, out pos, out dir);
@@ -142,14 +150,6 @@ namespace TrafficManager.Custom.AI {
 			Vector3 lastFrameVehiclePos = lastFrameData.m_position;
 
 			var camPos = Camera.main.transform.position;
-
-			if (Options.simAccuracy <= 1) {
-				try {
-					VehicleStateManager.UpdateVehiclePos(vehicleId, ref vehicleData);
-				} catch (Exception e) {
-					Log.Error("CarAI CustomCalculateSegmentPosition Error: " + e.ToString());
-				}
-			}
 
 #if DEBUG
 			//bool isEmergency = VehicleStateManager._GetVehicleState(vehicleId).VehicleType == ExtVehicleType.Emergency;
@@ -213,9 +213,6 @@ namespace TrafficManager.Custom.AI {
 			}
 
 			maxSpeed = CalcMaxSpeed(vehicleId, ref vehicleData, position, pos, maxSpeed, isRecklessDriver);
-			VehicleState state = VehicleStateManager.GetVehicleState(vehicleId);
-			if (state != null)
-				state.CurrentMaxSpeed = maxSpeed;
 		}
 
 		
@@ -274,14 +271,16 @@ namespace TrafficManager.Custom.AI {
 				}
 			}
 
-			ExtVehicleType? vehicleType = VehicleStateManager.GetVehicleState(vehicleId)?.VehicleType;
+			//ExtVehicleType? vehicleType = VehicleStateManager.GetVehicleState(vehicleId)?.VehicleType;
 			float vehicleRand = Math.Min(1f, (float)(vehicleId % 101) * 0.01f); // we choose 101 because it's a prime number
 			if (isRecklessDriver)
 				maxSpeed *= 1.5f + vehicleRand * 0.5f; // woohooo, 1.5 .. 2
-			else if ((vehicleType & ExtVehicleType.PassengerCar) != ExtVehicleType.None)
+			else
+				maxSpeed *= 0.7f + vehicleRand * 0.6f; // a little variance, 0.7 .. 1.3
+			/*else if ((vehicleType & ExtVehicleType.PassengerCar) != ExtVehicleType.None)
 				maxSpeed *= 0.7f + vehicleRand * 0.4f; // a little variance, 0.7 .. 1.1
 			else if ((vehicleType & ExtVehicleType.Taxi) != ExtVehicleType.None)
-				maxSpeed *= 0.9f + vehicleRand * 0.4f; // a little variance, 0.9 .. 1.3
+				maxSpeed *= 0.9f + vehicleRand * 0.4f; // a little variance, 0.9 .. 1.3*/
 
 			maxSpeed = Math.Max(MIN_SPEED, maxSpeed); // at least 10 km/h
 
@@ -313,7 +312,7 @@ namespace TrafficManager.Custom.AI {
 		}
 
 		public bool CustomStartPathFind(ushort vehicleID, ref Vehicle vehicleData, Vector3 startPos, Vector3 endPos, bool startBothWays, bool endBothWays, bool undergroundTarget) {
-			ExtVehicleType? vehicleType = VehicleStateManager.DetermineVehicleType(ref vehicleData);
+			ExtVehicleType? vehicleType = VehicleStateManager.DetermineVehicleType(vehicleID, ref vehicleData);
 #if PATHRECALC
 			VehicleState state = VehicleStateManager._GetVehicleState(vehicleID);
 			bool recalcRequested = state.PathRecalculationRequested;

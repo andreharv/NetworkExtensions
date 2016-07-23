@@ -115,13 +115,13 @@ Advanced_AI_cannot_be_activated 加強版 AI 無法啟動
 The_Advanced_Vehicle_AI_cannot_be_activated 加強版車輛AI無法啟動，因為您所使用的其它車輛行控模組正作動中（例如 Improved AI 或 Traffic++）
 Enable_dynamic_path_calculation 啟用動態的路線運算
 Changes_made_with_this_tool_will_take_full_effect_after_some_minutes 請注意，此工具造成的改變需要幾分鐘才能完全發揮效果。
-Lane_Arrow_Changer_Disabled_Connection The lane arrow changer for this lane is disabled because you have created lane connections by hand.
-Lane_connector Lane connector
-Connected_lanes Connected lanes
-Use_alternative_view_mode Use alternative view mode
-Road_type Road type
-Default_speed_limit Default speed limit
-Unit_system Unit system
-Metric Metric
-Imperial Imperial
-Use_more_CPU_cores_for_route_calculation_if_available Use more CPU cores for route calculation (if available)
+Lane_Arrow_Changer_Disabled_Connection 因為您已手動創建了車道的連接，故在此車道上無法使用改變遵行方向的功能
+Lane_connector 車道連接工具
+Connected_lanes 已連接車道
+Use_alternative_view_mode 使用替代瀏覽模式
+Road_type 道路類型
+Default_speed_limit 預設道路速限
+Unit_system 單位制
+Metric 公制
+Imperial 英制
+Use_more_CPU_cores_for_route_calculation_if_available 使用更多的CPU核心來做路線運算 (若有的話)

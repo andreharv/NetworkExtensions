@@ -524,6 +524,9 @@ namespace TrafficManager.State {
 		}
 
 		public static void setHighwayLaneArrowFlags(uint laneId, LaneArrows flags, bool check=true) {
+			if (!IsInitDone())
+				return;
+
 			if (check && !mayHaveLaneArrows(laneId)) {
 				removeLaneArrowFlags(laneId);
 				return;
@@ -651,6 +654,9 @@ namespace TrafficManager.State {
 		}
 
 		public static LaneArrows? getHighwayLaneArrowFlags(uint laneId) {
+			if (!IsInitDone())
+				return null;
+
 			return highwayLaneArrowFlags[laneId];
 		}
 

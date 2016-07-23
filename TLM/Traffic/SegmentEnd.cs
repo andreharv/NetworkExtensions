@@ -91,29 +91,23 @@ namespace TrafficManager.Traffic {
 
 		internal void SimulationStep() {
 			if (cleanupRequested) {
+				VehicleManager vehManager = Singleton<VehicleManager>.instance;
+
 #if DEBUG
 				//Log._Debug($"Cleanup of SegmentEnd {SegmentId} @ {NodeId} requested. Performing cleanup now.");
 #endif
 				ushort vehicleId = FirstRegisteredVehicleId;
 				while (vehicleId != 0) {
-					bool removeVehicle = false;
-					if ((Singleton<VehicleManager>.instance.m_vehicles.m_buffer[vehicleId].m_flags & Vehicle.Flags.Created) == 0) {
-						removeVehicle = true;
-					} else {
-						VehicleState state = VehicleStateManager.GetVehicleState(vehicleId);
-						if (state == null) {
-							removeVehicle = true;
-						} else {
-							if (!state.HasPath(ref Singleton<VehicleManager>.instance.m_vehicles.m_buffer[vehicleId])) {
-								removeVehicle = true;
-							}
-						}
-					}
+					VehicleState state = VehicleStateManager._GetVehicleState(vehicleId);
 
-					VehicleState nextState = VehicleStateManager._GetVehicleState(vehicleId);
-					ushort nextVehicleId = nextState.NextVehicleIdOnSegment;
+					bool removeVehicle = false;
+					if (!state.Valid) {
+						removeVehicle = true;
+					}
+					
+					ushort nextVehicleId = state.NextVehicleIdOnSegment;
 					if (removeVehicle) {
-						nextState.Unlink();
+						state.Unlink();
 					}
 					vehicleId = nextVehicleId;
 				}
@@ -129,6 +123,9 @@ namespace TrafficManager.Traffic {
 		/// We use integer arithmetic for better performance.
 		/// </summary>
 		public Dictionary<ushort, uint> GetVehicleMetricGoingToSegment(bool includeStopped=true, byte? laneIndex=null, bool debug = false) {
+#if TRACE
+			Singleton<CodeProfiler>.instance.Start("SegmentEnd.GetVehicleMetricGoingToSegment");
+#endif
 			VehicleManager vehicleManager = Singleton<VehicleManager>.instance;
 			NetManager netManager = Singleton<NetManager>.instance;
 
@@ -155,15 +152,15 @@ namespace TrafficManager.Traffic {
 			int numProcessed = 0;
 			while (vehicleId != 0) {
 				VehicleState state = VehicleStateManager._GetVehicleState(vehicleId);
-				if (!state.Valid) {
-					RequestCleanup();
-					vehicleId = state.NextVehicleIdOnSegment;
-					continue;
-				}
 
 				bool breakLoop = false;
 
-				state.ProcessCurrentAndNextPathPosition(ref Singleton<VehicleManager>.instance.m_vehicles.m_buffer[vehicleId], delegate (ref PathUnit.Position curPos, ref PathUnit.Position nextPos) {
+				state.ProcessCurrentAndNextPathPosition(ref Singleton<VehicleManager>.instance.m_vehicles.m_buffer[vehicleId], delegate (ref Vehicle vehState, ref PathUnit.Position curPos, ref PathUnit.Position nextPos) {
+					if (!state.CheckValidity(ref vehState)) {
+						RequestCleanup();
+						return;
+					}
+
 #if DEBUGMETRIC
 				if (debug)
 					Log._Debug($" GetVehicleMetricGoingToSegment: Checking vehicle {vehicleId}");
@@ -177,7 +174,7 @@ namespace TrafficManager.Traffic {
 						return;
 					}
 
-					if (!includeStopped && vehicleManager.m_vehicles.m_buffer[vehicleId].GetLastFrameVelocity().magnitude < TrafficPriority.maxStopVelocity) {
+					if (!includeStopped && vehState.GetLastFrameVelocity().magnitude < TrafficPriority.maxStopVelocity) {
 #if DEBUGMETRIC
 					if (debug)
 						Log._Debug($"  GetVehicleMetricGoingToSegment: Vehicle {vehicleId}: too slow");
@@ -236,6 +233,9 @@ namespace TrafficManager.Traffic {
 #if DEBUGMETRIC
 			if (debug)
 				Log._Debug($"GetVehicleMetricGoingToSegment: Calculation completed. {string.Join(", ", ret.Select(x => x.Key.ToString() + "=" + x.Value.ToString()).ToArray())}");
+#endif
+#if TRACE
+			Singleton<CodeProfiler>.instance.Stop("SegmentEnd.GetVehicleMetricGoingToSegment");
 #endif
 			return ret;
 		}

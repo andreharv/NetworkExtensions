@@ -113,14 +113,14 @@ Select_a_timed_traffic_light_program Wybierz program dla czasowej sygnalizacji �
 The_chosen_traffic_light_program_is_incompatible_to_this_junction Wybrany szablon sygnalizacji jest niekompatybilny z tym skrzyżowaniem
 Advanced_AI_cannot_be_activated Nie można włączyć Zaawansowanej SI
 The_Advanced_Vehicle_AI_cannot_be_activated Zaawansowana SI nie może zostać włączona, ponieważ aktywowana została inna modyfikacja zmieniająca zachowanie pojazdów (np:. Improved AI lub Traffic++).
-Enable_dynamic_path_calculation Enable dynamic path calculation
-Lane_Arrow_Changer_Disabled_Connection The lane arrow changer for this lane is disabled because you have created lane connections by hand.
-Lane_connector Lane connector
+Enable_dynamic_path_calculation Aktywuj dynamiczne wyznaczanie ścieżki
+Lane_Arrow_Changer_Disabled_Connection Zmiana strzałek pasów ruchu jest niedostępna, ponieważ pasy ruchu zostały połączone ręcznie.
+Lane_connector Połącz pasy ruchu
 Connected_lanes Connected lanes
-Use_alternative_view_mode Use alternative view mode
-Road_type Road type
-Default_speed_limit Default speed limit
-Unit_system Unit system
-Metric Metric
-Imperial Imperial
-Use_more_CPU_cores_for_route_calculation_if_available Use more CPU cores for route calculation (if available)
+Use_alternative_view_mode Użyj alternatywnego widoku
+Road_type Typ drogi
+Default_speed_limit Domyślny limit prędkości
+Unit_system System jednostek
+Metric Metryczne
+Imperial Imperialne
+Use_more_CPU_cores_for_route_calculation_if_available Użyj więcej rdzeni procesora do obliczania tras (jeśli dostępne)

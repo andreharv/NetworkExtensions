@@ -56,7 +56,7 @@ namespace TrafficManager.State {
 					}
 
 					if (options.Length >= 2) {
-						Options.setLaneChangingRandomization(options[1]);
+						//Options.setLaneChangingRandomization(options[1]);
 					}
 
 					if (options.Length >= 3) {
@@ -642,7 +642,7 @@ namespace TrafficManager.State {
 				// save options
 				_serializableData.SaveData("TMPE_Options", new byte[] {
 					(byte)Options.simAccuracy,
-					(byte)Options.laneChangingRandomization,
+					(byte)0,//Options.laneChangingRandomization,
 					(byte)Options.recklessDrivers,
 					(byte)(Options.relaxedBusses ? 1 : 0),
 					(byte) (Options.nodesOverlay ? 1 : 0),

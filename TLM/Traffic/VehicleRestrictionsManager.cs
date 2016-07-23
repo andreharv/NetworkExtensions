@@ -22,16 +22,16 @@ namespace TrafficManager.Traffic {
 		/// <param name="segmentId"></param>
 		/// <param name="nodeId"></param>
 		/// <returns></returns>
-		internal static ExtVehicleType GetAllowedVehicleTypes(ushort segmentId, ushort nodeId) {
+		internal static ExtVehicleType GetAllowedVehicleTypes(ushort segmentId, ushort nodeId) { // TODO optimize method (don't depend on collections!)
 #if TRACE
-			Singleton<CodeProfiler>.instance.Start("VehicleRestrictionsManager.GetAllowedVehicleTypes");
+			Singleton<CodeProfiler>.instance.Start("VehicleRestrictionsManager.GetAllowedVehicleTypes(1)");
 #endif
 			ExtVehicleType ret = ExtVehicleType.None;
 			foreach (ExtVehicleType vehicleType in GetAllowedVehicleTypesAsSet(segmentId, nodeId)) {
 				ret |= vehicleType;
 			}
 #if TRACE
-			Singleton<CodeProfiler>.instance.Stop("VehicleRestrictionsManager.GetAllowedVehicleTypes");
+			Singleton<CodeProfiler>.instance.Stop("VehicleRestrictionsManager.GetAllowedVehicleTypes(1)");
 #endif
 			return ret;
 		}
@@ -111,20 +111,20 @@ namespace TrafficManager.Traffic {
 		/// <returns></returns>
 		internal static ExtVehicleType GetAllowedVehicleTypes(ushort segmentId, NetInfo segmentInfo, uint laneIndex, NetInfo.Lane laneInfo) {
 #if TRACE
-			Singleton<CodeProfiler>.instance.Start("VehicleRestrictionsManager.GetAllowedVehicleTypes");
+			Singleton<CodeProfiler>.instance.Start("VehicleRestrictionsManager.GetAllowedVehicleTypes(2)");
 #endif
 			if (Flags.IsInitDone()) {
 				ExtVehicleType?[] fastArray = Flags.laneAllowedVehicleTypesArray[segmentId];
 				if (fastArray != null && fastArray.Length > laneIndex && fastArray[laneIndex] != null) {
 #if TRACE
-					Singleton<CodeProfiler>.instance.Stop("VehicleRestrictionsManager.GetAllowedVehicleTypes");
+					Singleton<CodeProfiler>.instance.Stop("VehicleRestrictionsManager.GetAllowedVehicleTypes(2)");
 #endif
 					return (ExtVehicleType)fastArray[laneIndex];
 				}
 			}
 
 #if TRACE
-			Singleton<CodeProfiler>.instance.Stop("VehicleRestrictionsManager.GetAllowedVehicleTypes");
+			Singleton<CodeProfiler>.instance.Stop("VehicleRestrictionsManager.GetAllowedVehicleTypes(2)");
 #endif
 			return GetDefaultAllowedVehicleTypes(segmentId, segmentInfo, laneIndex, laneInfo);
 		}
