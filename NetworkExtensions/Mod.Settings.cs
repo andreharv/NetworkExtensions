@@ -21,9 +21,7 @@ namespace NetworkExtensions
 
         public void OnSettingsUI(UIHelperBase helper)
         {
-            UIButton tabTemplate = Resources.FindObjectsOfTypeAll<OptionsKeymappingPanel>()[0]
-                                            .GetComponentInChildren<UITabstrip>()
-                                            .GetComponentInChildren<UIButton>();
+            UIButton tabTemplate = Resources.FindObjectsOfTypeAll<UIButton>()[0];
 
             _optionsPanel = ((UIHelper)helper).self as UIScrollablePanel;
             _optionsPanel.autoLayout = false;

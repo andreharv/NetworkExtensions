@@ -21,10 +21,7 @@ namespace Transit.Addon
 
         public void OnSettingsUI(UIHelperBase helper)
         {
-            UIButton tabTemplate = Resources.FindObjectsOfTypeAll<OptionsKeymappingPanel>()[0]
-                                            .GetComponentInChildren<UITabstrip>()
-                                            .GetComponentInChildren<UIButton>();
-
+            var tabTemplate = Resources.FindObjectsOfTypeAll<UIButton>()[0];
             _optionsPanel = ((UIHelper)helper).self as UIScrollablePanel;
             _optionsPanel.autoLayout = false;
 
@@ -53,7 +50,6 @@ namespace Transit.Addon
                 
                 module.OnSettingsUI(stripHelper);
             }
-
         }
     }
 }

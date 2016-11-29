@@ -12,7 +12,9 @@ namespace Transit.Addon
             {
                 if (_workshopId == null)
                 {
-                    foreach(var mod in PluginManager.instance.GetPluginsInfo())
+                    var pluginManager = new PluginManager();
+
+                    foreach(var mod in pluginManager.GetPluginsInfo())
                     {
                         if (mod.userModInstance == this)
                         {

@@ -1,5 +1,5 @@
 ﻿using ColossalFramework.DataBinding;
-using ColossalFramework.Steamworks;
+using ColossalFramework.PlatformServices;
 using ColossalFramework.UI;
 using System;
 using System.Collections.Generic;
@@ -196,7 +196,7 @@ namespace Transit.Framework
             _cancelButton.eventClicked += (UIComponent component, UIMouseEventParameter eventParam) =>
             {
                 OnClosed();
-                Steam.ActivateGameOverlayToWebPage(url);
+                PlatformService.ActivateGameOverlayToWebPage(url);
             };
 
             UIView.library.ShowModal(this.name);
