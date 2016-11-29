@@ -70,12 +70,11 @@ namespace Transit.Framework.Mod
             }
 
             // 3. Check Steam
-            var workshop = new Workshop();
-            foreach (var mod in workshop.GetSubscribedItems())
+            foreach (var mod in PlatformService.workshop.GetSubscribedItems())
             {
                 if (mod.AsUInt64 == workshopId)
                 {
-                    var workshopPath = workshop.GetSubscribedItemPath(mod);
+                    var workshopPath = PlatformService.workshop.GetSubscribedItemPath(mod);
                     Debug.Log(string.Format("TFW: Exist={0} WorkshopPath={1}", Directory.Exists(workshopPath), workshopPath));
                     if (Directory.Exists(workshopPath))
                     {

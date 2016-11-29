@@ -1,4 +1,5 @@
-﻿using ColossalFramework.Plugins;
+﻿using ColossalFramework;
+using ColossalFramework.Plugins;
 using Transit.Framework.Mod;
 
 namespace Transit.Addon
@@ -12,9 +13,7 @@ namespace Transit.Addon
             {
                 if (_workshopId == null)
                 {
-                    var pluginManager = new PluginManager();
-
-                    foreach(var mod in pluginManager.GetPluginsInfo())
+                    foreach(var mod in Singleton<PluginManager>.instance.GetPluginsInfo())
                     {
                         if (mod.userModInstance == this)
                         {
