@@ -99,18 +99,17 @@ namespace CSL_Traffic
             {
                 try
                 {
-                    if (this.m_level == 6)
-                    {
-                        if ((TrafficMod.Options & OptionsManager.ModOptions.RoadCustomizerTool) == OptionsManager.ModOptions.RoadCustomizerTool)
-                            AddTool<RoadCustomizerTool>(ToolsModifierControl.toolController);
+                    Logger.LogInfo("Options: " + TrafficMod.Options);
 
-                        if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
+                    if ((TrafficMod.Options & OptionsManager.ModOptions.RoadCustomizerTool) == OptionsManager.ModOptions.RoadCustomizerTool)
+                        AddTool<RoadCustomizerTool>(ToolsModifierControl.toolController);
+
+                    if ((TrafficMod.Options & OptionsManager.ModOptions.UseRealisticSpeeds) == OptionsManager.ModOptions.UseRealisticSpeeds)
+                    {
+                        for (uint i = 0; i < PrefabCollection<CitizenInfo>.LoadedCount(); i++)
                         {
-                            for (uint i = 0; i < PrefabCollection<CitizenInfo>.LoadedCount(); i++)
-                            {
-                                CitizenInfo cit = PrefabCollection<CitizenInfo>.GetLoaded(i);
-                                cit.m_walkSpeed *= 0.25f;
-                            }
+                            CitizenInfo cit = PrefabCollection<CitizenInfo>.GetLoaded(i);
+                            cit.m_walkSpeed *= 0.25f;
                         }
                     }
 
