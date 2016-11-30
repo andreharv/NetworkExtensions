@@ -10,8 +10,8 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.OneWay3L
 {
     public partial class OneWay3LBuilder : Activable, INetInfoBuilderPart
     {
-        public int Order { get { return 8; } }
-        public int UIOrder { get { return 10; } }
+        public int Order { get { return 9; } }
+        public int UIOrder { get { return 11; } }
 
         public string BasedPrefabName { get { return NetInfos.Vanilla.ONEWAY_2L; } }
         public string Name { get { return "Oneway3L"; } }
@@ -69,6 +69,7 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.OneWay3L
             {
                 IsTwoWay = false,
                 LanesToAdd = 1,
+                LaneWidth = 3.3f,
                 SpeedLimit = 1.2f
             });
             var leftPedLane = info.GetLeftRoadShoulder();
