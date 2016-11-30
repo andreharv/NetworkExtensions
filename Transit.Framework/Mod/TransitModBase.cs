@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using ColossalFramework.IO;
-using ColossalFramework.Steamworks;
+using ColossalFramework.PlatformServices;
 using ICities;
 using Transit.Framework;
 using Transit.Framework.Modularity;
@@ -70,11 +70,11 @@ namespace Transit.Framework.Mod
             }
 
             // 3. Check Steam
-            foreach (var mod in Steam.workshop.GetSubscribedItems())
+            foreach (var mod in PlatformService.workshop.GetSubscribedItems())
             {
                 if (mod.AsUInt64 == workshopId)
                 {
-                    var workshopPath = Steam.workshop.GetSubscribedItemPath(mod);
+                    var workshopPath = PlatformService.workshop.GetSubscribedItemPath(mod);
                     Debug.Log(string.Format("TFW: Exist={0} WorkshopPath={1}", Directory.Exists(workshopPath), workshopPath));
                     if (Directory.Exists(workshopPath))
                     {

@@ -12,7 +12,7 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.SmallAvenue4L
     public partial class SmallAvenue4LBuilder : Activable, INetInfoBuilderPart
     {
         public int Order { get { return 10; } }
-        public int UIOrder { get { return 20; } }
+        public int UIOrder { get { return 12; } }
 
         public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_2L; } }
         public string Name { get { return "Small Avenue"; } }

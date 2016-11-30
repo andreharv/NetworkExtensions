@@ -214,3 +214,4 @@ pip-log.txt
 /packages/
 /.vs/
 *.dll
+Transit.Addon/Mod.cs
