@@ -161,7 +161,19 @@ namespace Transit.Framework.Hooks.UI
                     num5 += 1u;
                 }
             }
-
+            if (filter.IsFlagSet(GeneratedGroupPanel.GroupFilter.Disaster))
+            {
+                uint num6 = 0u;
+                while ((ulong)num6 < (ulong)((long)PrefabCollection<DisasterInfo>.LoadedCount()))
+                {
+                    DisasterInfo loaded6 = PrefabCollection<DisasterInfo>.GetLoaded(num6);
+                    if (loaded6 != null && this.IsPlacementRelevant(loaded6))
+                    {
+                        this.AddGroup(poolList, loaded6);
+                    }
+                    num6 += 1u;
+                }
+            }
             poolList.Sort(comparison);
             return poolList;
         }
@@ -225,7 +237,12 @@ namespace Transit.Framework.Hooks.UI
         {
             throw new NotImplementedException("IsPlacementRelevant is target of redirection and is not implemented.");
         }
-
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        [RedirectTo(typeof(GeneratedGroupPanel))]
+        private bool IsPlacementRelevant(DisasterInfo info)
+        {
+            throw new NotImplementedException("IsPlacementRelevant is target of redirection and is not implemented.");
+        }
         [MethodImpl(MethodImplOptions.NoInlining)]
         [RedirectTo(typeof(GeneratedGroupPanel))]
         private bool FilterWonders(GroupFilter filter, BuildingInfo info)
