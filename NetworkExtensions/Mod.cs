@@ -9,7 +9,7 @@ namespace NetworkExtensions
     {
         public override ulong WorkshopId
         {
-            get { return 478820060; }
+            get { return 811897770; }
         }
 
         public override string Name
