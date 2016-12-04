@@ -149,15 +149,14 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
         {
             if (version == NetInfoVersion.Bridge)
             {
-                var bridgePillar = PrefabCollection<BuildingInfo>.FindLoaded("478820060.CableStay32m_Data");
-
+                //var bridgePillar = PrefabCollection<BuildingInfo>.FindLoaded("478820060.CableStay32m_Data");
+                var bridgePillar = PrefabCollection<BuildingInfo>.FindLoaded($"{Tools.PackageName("BridgePillar")}.CableStay32m_Data");
                 if (bridgePillar == null)
                 {
-                    bridgePillar = PrefabCollection<BuildingInfo>.FindLoaded("BridgePillar.CableStay32m_Data");
+                    Framework.Debug.Log($"{info.name}: CableStay32m Pillar not found!");
                 }
-
-                if (bridgePillar != null)
-                {
+                else
+                { 
                     var bridgeAI = info.GetComponent<RoadBridgeAI>();
                     if (bridgeAI != null)
                     {
