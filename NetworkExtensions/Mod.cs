@@ -7,11 +7,6 @@ namespace NetworkExtensions
 {
     public sealed partial class Mod : TransitModBase
     {
-        public override ulong WorkshopId
-        {
-            get { return 811897770; }
-        }
-
         public override string Name
         {
             get { return "Network Extensions"; }

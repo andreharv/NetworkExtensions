@@ -5,6 +5,10 @@ using ICities;
 using Transit.Framework;
 using Transit.Framework.Modularity;
 using UnityEngine;
+using static ColossalFramework.Plugins.PluginManager;
+using ColossalFramework.Plugins;
+using System.Linq;
+using System;
 
 #if DEBUG
 using Debug = Transit.Framework.Debug;
@@ -14,8 +18,6 @@ namespace Transit.Framework.Mod
 {
     public abstract partial class TransitModBase : IUserMod
     {
-        public abstract ulong WorkshopId { get; }
-
         public abstract string Name { get; }
 
         public abstract string Description { get; }
@@ -34,7 +36,8 @@ namespace Transit.Framework.Mod
             {
                 if (_assetPath == null)
                 {
-                    _assetPath = GetAssetPath(DefaultFolderPath, WorkshopId);
+                    var publishedFileID = PluginInfo.publishedFileID.AsUInt64;
+                    _assetPath = GetAssetPath(DefaultFolderPath, publishedFileID);
 
                     if (_assetPath != Assets.PATH_NOT_FOUND)
                     {
@@ -48,7 +51,33 @@ namespace Transit.Framework.Mod
                 return _assetPath;
             }
         }
+        private static PluginInfo PluginInfo
+        {
+            get
+            {
+                var pluginManager = PluginManager.instance;
+                var plugins = pluginManager.GetPluginsInfo();
 
+                foreach (var item in plugins)
+                {
+                    try
+                    {
+                        var instances = item.GetInstances<IUserMod>();
+                        if (!(instances.FirstOrDefault() is TransitModBase))
+                        {
+                            continue;
+                        }
+                        return item;
+                    }
+                    catch
+                    {
+
+                    }
+                }
+                throw new Exception("Failed to find NetworkExtensions assembly!");
+
+            }
+        }
         private static string GetAssetPath(string defaultFolderPath, ulong workshopId)
         {
             // 1. Check Local path (CurrentUser\Appdata\Local\Colossal Order\Cities_Skylines\Addons\Mods)
