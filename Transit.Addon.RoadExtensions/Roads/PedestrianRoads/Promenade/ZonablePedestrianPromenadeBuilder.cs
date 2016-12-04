@@ -236,16 +236,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Promenade
 
         public void LateBuildUp(NetInfo info, NetInfoVersion version)
         {
-            var stoneBollard = PrefabCollection<PropInfo>.FindLoaded("478820060.StoneBollard_Data");
-            if (stoneBollard == null)
-            {
-                stoneBollard = PrefabCollection<PropInfo>.FindLoaded("StoneBollard.StoneBollard_Data");
-            }
-
-            if (stoneBollard == null)
-            {
-                return;
-            }
+            var stoneBollard = PrefabCollection<PropInfo>.FindLoaded($"{Tools.PackageName("BridgePillar")}.CableStay32m_Data");
 
             var pedLanes = info.m_lanes.Where(pl => pl.m_laneType == NetInfo.LaneType.Pedestrian).ToArray();
             for (var i = 0; i < pedLanes.Length; i++)
