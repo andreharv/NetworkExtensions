@@ -30,7 +30,7 @@ namespace Transit.Framework.Hooks.AI
                 {
                     num = 0;
                 }
-                if (num != 0 && Singleton<NetManager>.instance.m_segments.m_buffer[(int) num].Info == this.m_info)
+                if (num != 0 && Singleton<NetManager>.instance.m_segments.m_buffer[(int)num].Info == this.m_info && (Singleton<NetManager>.instance.m_segments.m_buffer[(int)num].m_flags & NetSegment.Flags.Collapsed) == NetSegment.Flags.None)
                 {
                     if (ZoneBlocksOffset.Mode == ZoneBlocksOffsetMode.Default)
                     {
