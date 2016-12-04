@@ -9,20 +9,19 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
         public static void AddWoodBollards(this NetInfo info, NetInfoVersion version)
         {
             var bollardName = "WoodBollard";
-            var bollardInfo = PrefabCollection<PropInfo>.FindLoaded($"478820060.{bollardName}_Data");
+            var bollardInfo = PrefabCollection<PropInfo>.FindLoaded($"{Tools.PackageName(bollardName)}.{bollardName}_Data");
             if (bollardInfo == null)
             {
-                bollardInfo = PrefabCollection<PropInfo>.FindLoaded($"{bollardName}.{bollardName}_Data");
+                Debug.Log($"{info.name}: {bollardName} not found!");
             }
-
             BuildingInfo pillarInfo = null;
             if (version == NetInfoVersion.Elevated || version == NetInfoVersion.Bridge)
             {
                 var pillarName = "Wood8mEPillar";
-                pillarInfo = PrefabCollection<BuildingInfo>.FindLoaded($"478820060.{pillarName}_Data");
+                pillarInfo = PrefabCollection<BuildingInfo>.FindLoaded($"{Tools.PackageName(pillarName)}.{pillarName}_Data");
                 if (pillarInfo == null)
                 {
-                    pillarInfo = PrefabCollection<BuildingInfo>.FindLoaded($"{pillarName}.{pillarName}_Data");
+                    Debug.Log($"{info.name}: {bollardName} not found!");
                 }
             }
 
@@ -32,10 +31,10 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
         public static void AddRetractBollard(this NetInfo info, NetInfoVersion version)
         {
             var bollardName = "RetractBollard";
-            var bollardInfo = PrefabCollection<PropInfo>.FindLoaded($"478820060.{bollardName}_Data");
+            var bollardInfo = PrefabCollection<PropInfo>.FindLoaded($"{Tools.PackageName(bollardName)}.{bollardName}_Data");
             if (bollardInfo == null)
             {
-                bollardInfo = PrefabCollection<PropInfo>.FindLoaded($"{bollardName}.{bollardName}_Data");
+                Debug.Log($"{info.name}: {bollardName} not found!");
             }
             info.AddBollards(version, bollardInfo);
         }
@@ -43,10 +42,10 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
         public static void AddStoneBollard(this NetInfo info, NetInfoVersion version)
         {
             var bollardName = "StoneBollard";
-            var bollardInfo = PrefabCollection<PropInfo>.FindLoaded($"478820060.{bollardName}_Data");
+            var bollardInfo = PrefabCollection<PropInfo>.FindLoaded($"{Tools.PackageName(bollardName)}.{bollardName}_Data");
             if (bollardInfo == null)
             {
-                bollardInfo = PrefabCollection<PropInfo>.FindLoaded($"{bollardName}.{bollardName}_Data");
+                Debug.Log($"{info.name}: {bollardName} not found!");
             }
             info.AddBollards(version, bollardInfo);
         }
