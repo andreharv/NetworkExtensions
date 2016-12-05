@@ -13,7 +13,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
             var bollardInfo = PrefabCollection<PropInfo>.FindLoaded($"{Tools.PackageName(bollardName)}.{bollardName}_Data");
             if (bollardInfo == null)
             {
-                Debug.Log($"{info.name}: {bollardName} not found!");
+                Framework.Debug.Log($"{info.name}: {bollardName} not found!");
             }
             BuildingInfo pillarInfo = null;
             if (version == NetInfoVersion.Elevated || version == NetInfoVersion.Bridge)
@@ -22,7 +22,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
                 pillarInfo = PrefabCollection<BuildingInfo>.FindLoaded($"{Tools.PackageName(pillarName)}.{pillarName}_Data");
                 if (pillarInfo == null)
                 {
-                    Debug.Log($"{info.name}: {bollardName} not found!");
+                    Framework.Debug.Log($"{info.name}: {bollardName} not found!");
                 }
             }
 
@@ -35,7 +35,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
             var bollardInfo = PrefabCollection<PropInfo>.FindLoaded($"{Tools.PackageName(bollardName)}.{bollardName}_Data");
             if (bollardInfo == null)
             {
-                Debug.Log($"{info.name}: {bollardName} not found!");
+                Framework.Debug.Log($"{info.name}: {bollardName} not found!");
             }
             info.AddBollards(version, bollardInfo);
         }
@@ -46,7 +46,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
             var bollardInfo = PrefabCollection<PropInfo>.FindLoaded($"{Tools.PackageName(bollardName)}.{bollardName}_Data");
             if (bollardInfo == null)
             {
-                Debug.Log($"{info.name}: {bollardName} not found!");
+                Framework.Debug.Log($"{info.name}: {bollardName} not found!");
             }
             info.AddBollards(version, bollardInfo);
         }

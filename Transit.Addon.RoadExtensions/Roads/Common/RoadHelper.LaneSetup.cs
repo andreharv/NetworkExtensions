@@ -87,17 +87,18 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             {
                 case LanesLayoutStyle.AsymL1R2:
                 case LanesLayoutStyle.AsymL1R3:
+                case LanesLayoutStyle.AsymL2R3:
                     fSegment.m_forwardForbidden |= NetSegment.Flags.Invert;
                     fSegment.m_backwardRequired |= NetSegment.Flags.Invert;
                     bSegment.m_forwardRequired |= NetSegment.Flags.Invert;
                     bSegment.m_backwardForbidden |= NetSegment.Flags.Invert;
                     break;
-                case LanesLayoutStyle.AsymL3R1:
-                    fSegment.m_forwardRequired |= NetSegment.Flags.Invert;
-                    fSegment.m_backwardForbidden |= NetSegment.Flags.Invert;
-                    bSegment.m_forwardForbidden |= NetSegment.Flags.Invert;
-                    bSegment.m_backwardRequired |= NetSegment.Flags.Invert;
-                    break;
+                //case LanesLayoutStyle.AsymL3R1:
+                //    fSegment.m_forwardRequired |= NetSegment.Flags.Invert;
+                //    fSegment.m_backwardForbidden |= NetSegment.Flags.Invert;
+                //    bSegment.m_forwardForbidden |= NetSegment.Flags.Invert;
+                //    bSegment.m_backwardRequired |= NetSegment.Flags.Invert;
+                //    break;
             }
         }
 

@@ -15,7 +15,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.AsymAvenue5L.AsymAvenueL2R3
 
         public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_6L; } }
         public string Name { get { return "AsymAvenueL2R3"; } }
-        public string DisplayName { get { return "Asymmetrical Road: 2 Left / 3 Right"; } }
+        public string DisplayName { get { return "Five-Lane Asymmetrical Road: (2+3)"; } }
         public string Description { get { return "An asymmetrical road with two left lane and three right lanes.  Note, dragging this road backwards reverses its orientation."; } }
         public string ShortDescription { get { return "Parking, zoneable, medium to high traffic"; } }
         public string UICategory { get { return "RoadsMedium"; } }
@@ -35,16 +35,15 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.AsymAvenue5L.AsymAvenueL2R3
             ///////////////////////////
             var owRoadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_6L);
             var owRoadTunnelInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_6L_TUNNEL);
-            var asymLaneType = AsymLaneType.L2R3;
             ///////////////////////////
             // 3DModeling            //
             ///////////////////////////
-            info.Setup32m5mSW3mMdn(version, asymLaneType);
+            info.Setup32m5mSW3mMdn(version, LanesLayoutStyle.AsymL2R3);
 
             ///////////////////////////
             // Texturing             //
             ///////////////////////////
-            info.SetupTextures(version, asymLaneType);
+            info.SetupTextures(version, LanesLayoutStyle.AsymL2R3);
 
             ///////////////////////////
             // Set up                //
@@ -71,7 +70,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.AsymAvenue5L.AsymAvenueL2R3
                 IsTwoWay = true,
                 PedPropOffsetX = 0.5f,
                 BusStopOffset = 3,
-                AsymLT = asymLaneType
+                LayoutStyle = LanesLayoutStyle.AsymL2R3
             });
             var keepLanes = info.m_lanes.Where(l => l.m_position != -1.5).ToArray();
             info.m_lanes = keepLanes;

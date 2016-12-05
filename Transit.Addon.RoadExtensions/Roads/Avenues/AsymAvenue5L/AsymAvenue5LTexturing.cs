@@ -6,19 +6,18 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.AsymAvenue5L
 {
     public static class AsymAvenue5LTexturing
     {
-        public static void SetupTextures(this NetInfo info, NetInfoVersion version, AsymLaneType asymLaneType)
+        public static void SetupTextures(this NetInfo info, NetInfoVersion version, LanesLayoutStyle lanesStyle)
         {
             switch (version)
             {
                 case NetInfoVersion.Ground:
                     for (int i = 0; i < info.m_segments.Length; i++)
                     {
-                        if (asymLaneType != AsymLaneType.L0R0)
+                        if (lanesStyle != LanesLayoutStyle.Symmetrical)
                         {
                             var inverted = string.Empty;
-                            if ((asymLaneType == AsymLaneType.L2R3 && ((info.m_segments[i].m_backwardForbidden & NetSegment.Flags.Invert) == 0))
-                                || (asymLaneType == AsymLaneType.L3R2 && ((info.m_segments[i].m_backwardForbidden & NetSegment.Flags.Invert) == 0))
-                                || (info.m_segments[i].m_mesh.name == "BusInv"))
+                            if ((lanesStyle == LanesLayoutStyle.AsymL2R3 && ((info.m_segments[i].m_backwardForbidden & NetSegment.Flags.Invert) == 0))
+                                || (info.m_segments[i].m_mesh.name == "Bus"))
                             {
                                 inverted = "_Inverted";
                             }
@@ -40,7 +39,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.AsymAvenue5L
                     {
                         if (info.m_segments[i].m_mesh.name == "Elevated" || info.m_segments[i].m_mesh.name == "Bridge")
                         {
-                            var inverted = (asymLaneType == AsymLaneType.L2R3 ? "_Inverted" : string.Empty);
+                            var inverted = (lanesStyle == LanesLayoutStyle.AsymL2R3 ? "_Inverted" : string.Empty);
                             info.m_segments[i].SetTextures(
                             new TextureSet
                                 (string.Format(@"Roads\Avenues\AsymAvenue5L\Textures\Elevated_Segment{0}__MainTex.png", inverted),
@@ -69,7 +68,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.AsymAvenue5L
                     {
                         if (info.m_segments[i].m_mesh.name == "Slope")
                         {
-                            var inverted = (asymLaneType == AsymLaneType.L2R3 ? "_Inverted" : string.Empty);
+                            var inverted = (lanesStyle == LanesLayoutStyle.AsymL2R3 ? "_Inverted" : string.Empty);
                             info.m_segments[i].SetTextures(
                                 new TextureSet(
                                     string.Format(@"Roads\Avenues\AsymAvenue5L\Textures\Ground_Segment{0}__MainTex.png", inverted),
@@ -131,7 +130,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.AsymAvenue5L
                         {
                             if (info.m_segments[i].m_mesh.name == "Tunnel")
                             {
-                                var inverted = (asymLaneType == AsymLaneType.L2R3 ? "_Inverted" : string.Empty);
+                                var inverted = (lanesStyle == LanesLayoutStyle.AsymL2R3 ? "_Inverted" : string.Empty);
                                 info.m_segments[i].SetTextures(
                                 new TextureSet
                                     (string.Format(@"Roads\Avenues\AsymAvenue5L\Textures\Tunnel_Segment{0}__MainTex.png", inverted),
