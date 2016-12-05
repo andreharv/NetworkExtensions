@@ -21,6 +21,7 @@ namespace Transit.Framework.Modularity
                         .Where(t => !t.IsAbstract && !t.IsInterface)
                         .Where(partType.IsAssignableFrom)
                         .Select(t => (IModulePart)Activator.CreateInstance(t))
+                        .WhereMeetRequirements()
                         .OrderOrderables()
                         .ToArray();
                 }

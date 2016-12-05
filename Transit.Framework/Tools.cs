@@ -1,6 +1,12 @@
-﻿using ColossalFramework.UI;
-using UnityEngine;
+﻿using static ColossalFramework.Plugins.PluginManager;
+using ColossalFramework.Plugins;
+using ColossalFramework.PlatformServices;
 using Object = UnityEngine.Object;
+using UnityEngine;
+using System.Linq;
+using ICities;
+using System;
+using Transit.Framework.Mod;
 
 namespace Transit.Framework
 {
@@ -36,6 +42,44 @@ namespace Transit.Framework
             {
                 var value = f.GetValue(unityObj);
                 Debug.Log(string.Format("Member name \"{0}\" value is \"{1}\"", f.Name, value));
+            }
+        }
+
+        public static string PackageName(string assetName)
+        {
+            var publishedFileID = PluginInfo.publishedFileID.ToString();
+            if (publishedFileID.Equals(PublishedFileId.invalid.ToString()))
+            {
+                return assetName;
+            }
+            return publishedFileID;
+        }
+
+        private static PluginInfo PluginInfo
+        {
+            get
+            {
+                var pluginManager = PluginManager.instance;
+                var plugins = pluginManager.GetPluginsInfo();
+
+                foreach (var item in plugins)
+                {
+                    try
+                    {
+                        var instances = item.GetInstances<IUserMod>();
+                        if (!(instances.FirstOrDefault() is TransitModBase))
+                        {
+                            continue;
+                        }
+                        return item;
+                    }
+                    catch
+                    {
+
+                    }
+                }
+                throw new Exception("Failed to find NetworkExtensions assembly!");
+
             }
         }
     }

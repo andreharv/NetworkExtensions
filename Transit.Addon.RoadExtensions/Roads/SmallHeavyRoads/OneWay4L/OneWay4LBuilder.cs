@@ -10,8 +10,8 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.OneWay4L
 {
     public partial class OneWay4LBuilder : Activable, INetInfoBuilderPart
     {
-        public int Order { get { return 9; } }
-        public int UIOrder { get { return 30; } }
+        public int Order { get { return 12; } }
+        public int UIOrder { get { return 14; } }
 
         public string BasedPrefabName { get { return NetInfos.Vanilla.ONEWAY_2L; } }
         public string Name { get { return "Oneway4L"; } }

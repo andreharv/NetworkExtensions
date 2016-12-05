@@ -87,5 +87,28 @@ namespace Transit.Framework
                 localizedStrings[kvp.Key] = newTitle;
             }
         }
+        public static bool HasAsymmetricalLanes(this NetInfo info)
+        {
+            var forwardLanes = info.m_lanes.Where(l => l.m_direction == NetInfo.Direction.Forward).OrderBy(l => Math.Abs(l.m_position)).ToList();
+            var backwardLanes = info.m_lanes.Where(l => l.m_direction == NetInfo.Direction.Backward).OrderBy(l => Math.Abs(l.m_position)).ToList();
+            if (backwardLanes.Count() > 0 && forwardLanes.Count() > 0)
+            {
+                if (forwardLanes.Count() == backwardLanes.Count())
+                {
+                    for (int i = 0; i < forwardLanes.Count(); i++)
+                    {
+                        if (Math.Abs(forwardLanes[i].m_position) != Math.Abs(forwardLanes[i].m_position))
+                        {
+                            return true;
+                        }
+                    }
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

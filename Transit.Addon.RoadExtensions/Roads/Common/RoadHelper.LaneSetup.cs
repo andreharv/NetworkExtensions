@@ -60,34 +60,39 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             return rdInfo;
         }
 
-        public static void HandleAsymSegmentFlags(this NetInfo.Segment segment, AsymLaneType asymLaneType)
-        {
-            if (asymLaneType != AsymLaneType.L0R0)
-            {
-                segment.m_forwardForbidden |= NetSegment.Flags.Invert;
-                segment.m_backwardRequired |= NetSegment.Flags.Invert;
-            }
-            else
-            {
-                segment.SetFlagsDefault();
-            }
-        }
-
-        public static void HandleAsymComplementarySegmentsFlags(NetInfo.Segment fSegment, NetInfo.Segment bSegment, AsymLaneType asymLaneType)
+        public static void HandleAsymSegmentFlags(this NetInfo.Segment segment, LanesLayoutStyle asymLaneType)
         {
             switch (asymLaneType)
             {
-                case AsymLaneType.L1R2:
-                case AsymLaneType.L1R3:
-                case AsymLaneType.L2R3:
+                case LanesLayoutStyle.AsymL3R1:
+                    segment.m_forwardForbidden |= NetSegment.Flags.Invert;
+                    segment.m_backwardRequired |= NetSegment.Flags.Invert;
+                    break;
+
+                case LanesLayoutStyle.AsymL1R2:
+                case LanesLayoutStyle.AsymL1R3:
+                    segment.m_forwardForbidden |= NetSegment.Flags.Invert;
+                    segment.m_backwardRequired |= NetSegment.Flags.Invert;
+                    break;
+
+                default:
+                    segment.SetFlagsDefault();
+                    break;
+            }
+        }
+
+        public static void HandleAsymComplementarySegmentsFlags(NetInfo.Segment fSegment, NetInfo.Segment bSegment, LanesLayoutStyle lanesLayoutStyle)
+        {
+            switch (lanesLayoutStyle)
+            {
+                case LanesLayoutStyle.AsymL1R2:
+                case LanesLayoutStyle.AsymL1R3:
                     fSegment.m_forwardForbidden |= NetSegment.Flags.Invert;
                     fSegment.m_backwardRequired |= NetSegment.Flags.Invert;
                     bSegment.m_forwardRequired |= NetSegment.Flags.Invert;
                     bSegment.m_backwardForbidden |= NetSegment.Flags.Invert;
                     break;
-                case AsymLaneType.L2R1:
-                case AsymLaneType.L3R1:
-                case AsymLaneType.L3R2:
+                case LanesLayoutStyle.AsymL3R1:
                     fSegment.m_forwardRequired |= NetSegment.Flags.Invert;
                     fSegment.m_backwardForbidden |= NetSegment.Flags.Invert;
                     bSegment.m_forwardForbidden |= NetSegment.Flags.Invert;
@@ -101,7 +106,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             var vehicleLanes = rdInfo.m_lanes
                 .Where(l => l.m_laneType != NetInfo.LaneType.None && l.m_laneType != NetInfo.LaneType.Parking && l.m_laneType != NetInfo.LaneType.Pedestrian)
                 .ToArray();
-            int leftLaneCount = (config.AsymLT != AsymLaneType.L0R0) ? (int)config.AsymLT / 10 : 0;
+            var leftLaneCount = (config.LayoutStyle != LanesLayoutStyle.Symmetrical) ? (int)config.LayoutStyle / 10 : 0;
             var nbLanes = vehicleLanes.Count();
             var nbUsableLanes = nbLanes - (config.CenterLane == CenterLaneType.TurningLane ? 2 : 0);
             var nbUsableLanesPerSide = nbUsableLanes / 2;
@@ -205,7 +210,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                             l.m_direction = NetInfo.Direction.Forward;
                         }
                     }
-                    else if (config.AsymLT != AsymLaneType.L0R0)
+                    else if (config.LayoutStyle != LanesLayoutStyle.Symmetrical)
                     {
                         if (l.m_position <= positionStart + ((leftLaneCount - 1) * l.m_width))
                         {
@@ -243,7 +248,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             {
                 var l = vehicleLanes[i];
 
-                if (version == NetInfoVersion.Ground)
+                if (version == NetInfoVersion.Ground && config.HasBusStop)
                 {
                     if (i == 0)
                     {
@@ -286,7 +291,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             return vehicleLanes;
         }
 
-        private static IEnumerable<NetInfo.Lane> SetupPedestrianLanes(this NetInfo rdInfo, NetInfoVersion version, LanesConfiguration config)
+        public static IEnumerable<NetInfo.Lane> SetupPedestrianLanes(this NetInfo rdInfo, NetInfoVersion version, LanesConfiguration config)
         {
             var pedestrianLanes = rdInfo.m_lanes
                 .Where(l => l.m_laneType == NetInfo.LaneType.Pedestrian)

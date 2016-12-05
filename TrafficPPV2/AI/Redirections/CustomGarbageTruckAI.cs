@@ -25,20 +25,20 @@ namespace CSL_Traffic
                 m_info.ApplySpeedMultiplier(CarSpeedData.Of(vehicleID));
             }
 
-            if ((vehicleData.m_flags & Vehicle.Flags.TransferToSource) != Vehicle.Flags.None)
+            if ((vehicleData.m_flags & Vehicle.Flags.TransferToSource) != 0)
             {
                 var self = (GarbageTruckAI)((object)this);
                 if ((int)vehicleData.m_transferSize < self.m_cargoCapacity)
                 {
                     this.TryCollectGarbage(vehicleID, ref vehicleData, ref frameData);
                 }
-                if ((int)vehicleData.m_transferSize >= self.m_cargoCapacity && (vehicleData.m_flags & Vehicle.Flags.GoingBack) == Vehicle.Flags.None && vehicleData.m_targetBuilding != 0)
+                if ((int)vehicleData.m_transferSize >= self.m_cargoCapacity && (vehicleData.m_flags & Vehicle.Flags.GoingBack) == 0 && vehicleData.m_targetBuilding != 0)
                 {
                     this.SetTarget(vehicleID, ref vehicleData, 0);
                 }
             }
             base.SimulationStep(vehicleID, ref vehicleData, ref frameData, leaderID, ref leaderData, lodPhysics);
-            if ((vehicleData.m_flags & Vehicle.Flags.Arriving) != Vehicle.Flags.None && vehicleData.m_targetBuilding != 0 && (vehicleData.m_flags & (Vehicle.Flags.WaitingPath | Vehicle.Flags.GoingBack | Vehicle.Flags.WaitingTarget)) == Vehicle.Flags.None)
+            if ((vehicleData.m_flags & Vehicle.Flags.Arriving) != 0 && vehicleData.m_targetBuilding != 0 && (vehicleData.m_flags & (Vehicle.Flags.WaitingPath | Vehicle.Flags.GoingBack | Vehicle.Flags.WaitingTarget)) == 0)
             {
                 this.ArriveAtTarget(vehicleID, ref vehicleData);
             }

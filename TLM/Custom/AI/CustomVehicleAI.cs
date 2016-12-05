@@ -34,7 +34,7 @@ namespace TrafficManager.Custom.AI {
 			List<String> logBuffer = new List<String>();
 			bool logme = false;
 #endif
-			if ((vehicleData.m_flags & Vehicle.Flags.Created) == Vehicle.Flags.None) {
+			if ((vehicleData.m_flags & Vehicle.Flags.Created) == 0) {
 				TrafficPriority.RemoveVehicleFromSegments(vehicleId);
 				return;
 			}
@@ -179,7 +179,7 @@ namespace TrafficManager.Custom.AI {
 						vehiclePos.ToSegment = realTimePositions[1].m_segment;
 						vehiclePos.ToLaneIndex = realTimePositions[1].m_lane;
 						vehiclePos.ReduceSpeedByValueToYield = UnityEngine.Random.Range(16f, 28f);
-						vehiclePos.OnEmergency = (vehicleData.m_flags & Vehicle.Flags.Emergency2) != Vehicle.Flags.None;
+						vehiclePos.OnEmergency = (vehicleData.m_flags & Vehicle.Flags.Emergency2) != 0;
 						vehiclePos.VehicleType = (ExtVehicleType)vehicleType;
 
 #if DEBUGV
@@ -208,7 +208,7 @@ namespace TrafficManager.Custom.AI {
 							upcomingVehiclePos.ToSegment = realTimePositions[i + 1].m_segment;
 							upcomingVehiclePos.ToLaneIndex = realTimePositions[i + 1].m_lane;
 							upcomingVehiclePos.ReduceSpeedByValueToYield = UnityEngine.Random.Range(16f, 28f);
-							upcomingVehiclePos.OnEmergency = (vehicleData.m_flags & Vehicle.Flags.Emergency2) != Vehicle.Flags.None;
+							upcomingVehiclePos.OnEmergency = (vehicleData.m_flags & Vehicle.Flags.Emergency2) != 0;
 							upcomingVehiclePos.VehicleType = (ExtVehicleType)vehicleType;
 #if DEBUGV
 							logBuffer.Add($"* vehicleId {vehicleId}. Adding future position: from {upcomingVehiclePos.FromSegment}  (lane {upcomingVehiclePos.FromLaneIndex}), going over {upcomingVehiclePos.ToNode}, to {upcomingVehiclePos.ToSegment} (lane {upcomingVehiclePos.ToLaneIndex})");
@@ -263,7 +263,7 @@ namespace TrafficManager.Custom.AI {
 		}
 
 		internal static ExtVehicleType? DetermineVehicleTypeFromVehicle(ushort vehicleId, ref Vehicle vehicleData) {
-			if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) != Vehicle.Flags.None)
+			if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) != 0)
 				return ExtVehicleType.Emergency;
 			/*else {
 				VehiclePosition vehiclePos = TrafficPriority.GetVehiclePosition(vehicleId);
@@ -272,7 +272,7 @@ namespace TrafficManager.Custom.AI {
 			}*/
 
 			VehicleAI ai = vehicleData.Info.m_vehicleAI;
-			return DetermineVehicleTypeFromAIType(ai, (vehicleData.m_flags & Vehicle.Flags.Emergency2) != Vehicle.Flags.None);
+			return DetermineVehicleTypeFromAIType(ai, (vehicleData.m_flags & Vehicle.Flags.Emergency2) != 0);
 		}
 
 		internal static ExtVehicleType? DetermineVehicleTypeFromVehicleInfo(VehicleInfo vehicleInfo) {

@@ -10,6 +10,8 @@ namespace Transit.Framework.Network
             public const string ROAD_2L = "Basic Road";
             public const string ROAD_2L_GRASS = "Basic Road Decoration Grass";
             public const string ROAD_2L_TREES = "Basic Road Decoration Trees";
+            public const string ROAD_2L_BIKE = "Basic Road Bicycle";
+            public const string ROAD_2L_TUNNEL = "Basic Road Tunnel";
             public const string ROAD_4L = "Medium Road";
             public const string ROAD_4L_BRIDGE = "Medium Road Bridge";
             public const string ROAD_4L_SLOPE = "Medium Road Slope";
@@ -24,16 +26,12 @@ namespace Transit.Framework.Network
             public const string ONEWAY_2L_TREES = "Oneway Road Decoration Trees";
             public const string ONEWAY_2L_TUNNEL = "Oneway Road Tunnel";
             public const string ONEWAY_6L = "Large Oneway";
-
             public const string HIGHWAY_RAMP = "HighwayRamp";
             public const string HIGHWAY_3L = "Highway";
             public const string HIGHWAY_3L_SLOPE = "Highway Slope";
             public const string HIGHWAY_3L_TUNNEL = "Highway Tunnel";
             public const string HIGHWAY_3L_BARRIER = "Highway Barrier";
-
-            public const string LARGE_ROAD_BRIDGE_SUSPENSION_PILLAR = "LargeRoadBridgeSuspensionPillar";
-
-            public const string PED_GRAVEL = ROAD_2L_GRAVEL; // Quick fix for the Pedestian zonable roads
+            
             public const string PED_PAVEMENT = "Pedestrian Pavement";
             
             public static string GetPrefabName(string groundName, NetInfoVersion version)
@@ -41,9 +39,9 @@ namespace Transit.Framework.Network
                 switch (groundName)
                 {
                     case ROAD_2L:
-                    case ROAD_6L:
-
+                    case ROAD_2L_GRAVEL:
                     case ROAD_4L:
+                    case ROAD_6L:
 
                     case ONEWAY_2L:
 
@@ -97,18 +95,19 @@ namespace Transit.Framework.Network
                                 throw new NotImplementedException();
                         }
 
-                    case PED_GRAVEL:
+                    case ROAD_2L_BIKE:
+                        var template = "Basic Road {0} Bike";
                         switch (version)
                         {
                             case NetInfoVersion.Ground:
                                 return groundName;
                             case NetInfoVersion.Elevated:
+                                return string.Format(template, "Elevated");
                             case NetInfoVersion.Bridge:
-                                return "Pedestrian Elevated";
+                                return string.Format(template, "Bridge");
                             default:
                                 throw new NotImplementedException();
                         }
-
                     default:
                         throw new NotImplementedException();
                 }
@@ -119,7 +118,6 @@ namespace Transit.Framework.Network
         {
             // Legacy from T++
             public const string BUSWAY_6L = "Large Road With Bus Lanes";
-            public const string ZONEABLE_PED_PAVEMENT = "Zonable Pedestrian Pavement";
 
             public static string GetPrefabName(string groundName, NetInfoVersion version)
             {
@@ -136,18 +134,6 @@ namespace Transit.Framework.Network
                             return "Large Road Decoration Trees With Bus Lanes";
                         default:
                             return string.Format("Large Road {0} With Bus Lanes", version);
-                    }
-                }
-
-                // Legacy from T++
-                if (groundName == ZONEABLE_PED_PAVEMENT)
-                {
-                    switch (version)
-                    {
-                        case NetInfoVersion.Ground:
-                            return groundName;
-                        default:
-                            return string.Format("Zonable Pedestrian {0}", version);
                     }
                 }
 

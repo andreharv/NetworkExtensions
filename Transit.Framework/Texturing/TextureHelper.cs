@@ -40,7 +40,8 @@ namespace Transit.Framework.Texturing
                         texture.LoadImage(textureBytes);
                         texture.anisoLevel = 8;
                         texture.filterMode = FilterMode.Bilinear;
-                        texture.Apply();
+                        texture.Compress(true);
+                        texture.Apply(true, true);
                         return texture;
                     }
 
@@ -51,8 +52,8 @@ namespace Transit.Framework.Texturing
                         texture.LoadImage(textureBytes);
                         texture.anisoLevel = 8;
                         texture.filterMode = FilterMode.Bilinear;
+                        texture.Compress(true);
                         texture.Apply();
-                        texture.Compress(false);
                         return texture;
                     }
 
