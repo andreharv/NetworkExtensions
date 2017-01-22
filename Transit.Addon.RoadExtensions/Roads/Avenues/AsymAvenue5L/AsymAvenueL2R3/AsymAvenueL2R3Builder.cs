@@ -72,8 +72,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.AsymAvenue5L.AsymAvenueL2R3
                 BusStopOffset = 3,
                 LayoutStyle = LanesLayoutStyle.AsymL2R3
             });
-            var keepLanes = info.m_lanes.Where(l => l.m_position != -1.5).ToArray();
-            info.m_lanes = keepLanes;
+
             var leftPedLane = info.GetLeftRoadShoulder();
             var rightPedLane = info.GetRightRoadShoulder();
 

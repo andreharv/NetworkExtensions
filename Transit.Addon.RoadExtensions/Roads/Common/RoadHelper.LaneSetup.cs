@@ -60,59 +60,38 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             return rdInfo;
         }
 
-        public static void HandleAsymSegmentFlags(this NetInfo.Segment segment, LanesLayoutStyle asymLaneType)
+        public static void HandleAsymSegmentFlags(NetInfo.Segment fSegment, NetInfo.Segment bSegment = null)
         {
-            switch (asymLaneType)
+            fSegment.m_forwardForbidden |= NetSegment.Flags.Invert;
+            fSegment.m_backwardRequired |= NetSegment.Flags.Invert;
+            if (bSegment != null)
             {
-                case LanesLayoutStyle.AsymL3R1:
-                    segment.m_forwardForbidden |= NetSegment.Flags.Invert;
-                    segment.m_backwardRequired |= NetSegment.Flags.Invert;
-                    break;
-
-                case LanesLayoutStyle.AsymL1R2:
-                case LanesLayoutStyle.AsymL1R3:
-                    segment.m_forwardForbidden |= NetSegment.Flags.Invert;
-                    segment.m_backwardRequired |= NetSegment.Flags.Invert;
-                    break;
-
-                default:
-                    segment.SetFlagsDefault();
-                    break;
+                bSegment.m_forwardRequired |= NetSegment.Flags.Invert;
+                bSegment.m_backwardForbidden |= NetSegment.Flags.Invert;
             }
         }
-
-        public static void HandleAsymComplementarySegmentsFlags(NetInfo.Segment fSegment, NetInfo.Segment bSegment, LanesLayoutStyle lanesLayoutStyle)
+        public static void HandleAsymNodeFlags(NetInfo.Node fNode, NetInfo.Node bNode = null)
         {
-            switch (lanesLayoutStyle)
+            fNode.m_flagsRequired = NetNode.Flags.OneWayOut | NetNode.Flags.;
+            if (bNode != null)
             {
-                case LanesLayoutStyle.AsymL1R2:
-                case LanesLayoutStyle.AsymL1R3:
-                case LanesLayoutStyle.AsymL2R3:
-                    fSegment.m_forwardForbidden |= NetSegment.Flags.Invert;
-                    fSegment.m_backwardRequired |= NetSegment.Flags.Invert;
-                    bSegment.m_forwardRequired |= NetSegment.Flags.Invert;
-                    bSegment.m_backwardForbidden |= NetSegment.Flags.Invert;
-                    break;
-                //case LanesLayoutStyle.AsymL3R1:
-                //    fSegment.m_forwardRequired |= NetSegment.Flags.Invert;
-                //    fSegment.m_backwardForbidden |= NetSegment.Flags.Invert;
-                //    bSegment.m_forwardForbidden |= NetSegment.Flags.Invert;
-                //    bSegment.m_backwardRequired |= NetSegment.Flags.Invert;
-                //    break;
+                bNode.m_flagsForbidden = NetNode.Flags.OneWayOut;
             }
+
         }
 
         private static IEnumerable<NetInfo.Lane> SetupVehicleLanes(this NetInfo rdInfo, NetInfoVersion version, LanesConfiguration config)
         {
+            var isNotSymmetrical = config.LayoutStyle != LanesLayoutStyle.Symmetrical;
             var vehicleLanes = rdInfo.m_lanes
                 .Where(l => l.m_laneType != NetInfo.LaneType.None && l.m_laneType != NetInfo.LaneType.Parking && l.m_laneType != NetInfo.LaneType.Pedestrian)
                 .ToArray();
-            var leftLaneCount = (config.LayoutStyle != LanesLayoutStyle.Symmetrical) ? (int)config.LayoutStyle / 10 : 0;
+
             var nbLanes = vehicleLanes.Count();
             var nbUsableLanes = nbLanes - (config.CenterLane == CenterLaneType.TurningLane ? 2 : 0);
-            var nbUsableLanesPerSide = nbUsableLanes / 2;
             var hasCenterLane = nbUsableLanes % 2 == 1;
-
+            var leftLaneCount = isNotSymmetrical ? (int)config.LayoutStyle / 10 : 0;
+            var nbLanesBeforeMedian = isNotSymmetrical ? leftLaneCount : nbUsableLanes / 2;
             var positionStart = 0f;
 
             if (config.CenterLane == CenterLaneType.Median ||
@@ -125,7 +104,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                 positionStart -= config.LaneWidth / 2;
             }
 
-            positionStart -= config.LaneWidth * (nbUsableLanesPerSide - 1) + config.LaneWidth / 2;
+            positionStart -= config.LaneWidth * (nbLanesBeforeMedian - (isNotSymmetrical && config.CenterLane != CenterLaneType.None ? 0 : 1)) + config.LaneWidth / 2;
 
             //Debug.Log(">>>> NbLanes : " + nbLanes);
             //Debug.Log(">>>> NbUsableLanes : " + nbUsableLanes);
@@ -140,10 +119,10 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
 
                 var isTurningLane =
                    config.CenterLane == CenterLaneType.TurningLane &&
-                   i >= nbUsableLanesPerSide && i <= nbLanes - nbUsableLanesPerSide - 1;
+                   i >= nbLanesBeforeMedian && i <= nbLanes - nbLanesBeforeMedian - 1;
                 var is2ndTurningLane =
                    config.CenterLane == CenterLaneType.TurningLane &&
-                   i >= nbUsableLanesPerSide + 1 && i <= nbLanes - nbUsableLanesPerSide - 1;
+                   i >= nbLanesBeforeMedian + 1 && i <= nbLanes - nbLanesBeforeMedian - 1;
 
                 if (isTurningLane)
                 {
@@ -151,7 +130,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                 }
                 else
                 {
-                    if (i < nbUsableLanesPerSide)
+                    if (i < nbLanesBeforeMedian)
                     {
                         l.m_position =
                             positionStart +
@@ -211,7 +190,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                             l.m_direction = NetInfo.Direction.Forward;
                         }
                     }
-                    else if (config.LayoutStyle != LanesLayoutStyle.Symmetrical)
+                    else if (isNotSymmetrical)
                     {
                         if (l.m_position <= positionStart + ((leftLaneCount - 1) * l.m_width))
                         {
@@ -324,7 +303,10 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                 .m_lanes
                 .Where(l => l.m_laneType == NetInfo.LaneType.Parking)
                 .ToArray();
-
+            for (int i = 0; i < parkingLanes.Count(); i++)
+            {
+                parkingLanes[i].m_position = (float)(Math.Sign(parkingLanes[i].m_position) * (rdInfo.m_halfWidth - rdInfo.m_pavementWidth - (0.5 * parkingLanes[i].m_width)));
+            }
             return parkingLanes;
         }
 

@@ -23,10 +23,9 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                         segments3.SetMeshes(@"Roads\Common\Meshes\16m\3mSW\BusStopInv.obj");
                         if (lanesLayoutStyle != LanesLayoutStyle.Symmetrical)
                         {
-                            RoadHelper.HandleAsymComplementarySegmentsFlags(segments1, segments3, lanesLayoutStyle);
-
-                            segments0.HandleAsymSegmentFlags(lanesLayoutStyle);
-                            segments2.HandleAsymSegmentFlags(lanesLayoutStyle);
+                            RoadHelper.HandleAsymSegmentFlags(segments1, segments3);
+                            RoadHelper.HandleAsymSegmentFlags(segments0);
+                            RoadHelper.HandleAsymSegmentFlags(segments2);
                         }
 
                         info.m_segments = new[] { segments0, segments1, segments2, segments3 };
@@ -47,7 +46,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                             (@"Roads\Common\Meshes\16m\3mSW\Elevated_Node.obj",
                             @"Roads\Common\Meshes\16m\3mSW\Elevated_Node_LOD.obj");
 
-                        segments0.HandleAsymSegmentFlags(lanesLayoutStyle);
+                        RoadHelper.HandleAsymSegmentFlags(segments0);
                         info.m_segments = new[] { segments0 };
                         info.m_nodes = new[] { nodes0 };
                         break;
@@ -78,7 +77,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                             (@"Roads\Common\Meshes\16m\3mSW\Slope_U_Node.obj",
                             @"Roads\Common\Meshes\16m\3mSW\Slope_U_Node_LOD.obj");
 
-                        segment2.HandleAsymSegmentFlags(lanesLayoutStyle);
+                        RoadHelper.HandleAsymSegmentFlags(segment2);
                         node2.m_material = defaultMaterial;
 
                         info.m_segments = new[] { segment0, segment1, segment2 };
@@ -105,7 +104,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                             (@"Roads\Common\Meshes\16m\3mSW\Tunnel_Node.obj",
                             @"Roads\Common\Meshes\16m\3mSW\Tunnel_Node_LOD.obj");
 
-                        segments1.HandleAsymSegmentFlags(lanesLayoutStyle);
+                        RoadHelper.HandleAsymSegmentFlags(segments1);
                         segments1.m_material = defaultMaterial;
                         nodes1.m_material = defaultMaterial;
 

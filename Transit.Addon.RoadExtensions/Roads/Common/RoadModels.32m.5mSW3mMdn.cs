@@ -35,32 +35,40 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                             @"Roads\Common\Meshes\32m\5mSw3mMdn\Ground_Inverted.obj");
                         if (layoutStyle != LanesLayoutStyle.Symmetrical)
                         {
-                            RoadHelper.HandleAsymComplementarySegmentsFlags(segments3, segments1, layoutStyle);
-                            RoadHelper.HandleAsymComplementarySegmentsFlags(segments0, segments4, layoutStyle);
+                            RoadHelper.HandleAsymSegmentFlags(segments3, segments1);
+                            RoadHelper.HandleAsymSegmentFlags(segments0, segments4);
                         }
 
                         info.m_segments = new[] { segments0, segments1, segments2, segments3,segments4 };
                         break;
                     }
                 case NetInfoVersion.Elevated:
-                case NetInfoVersion.Bridge:
                     {
                         var segments0 = info.m_segments[0];
-                        var segments1 = info.m_segments[0].ShallowClone();
-                        //var nodes0 = info.m_nodes[0];
 
                         segments0
                             .SetMeshes
                                 ($@"Roads\Common\Meshes\32m\5mSw3mMdn\Elevated.obj");
-                        segments1
-                            .SetMeshes
-                                ($@"Roads\Common\Meshes\32m\5mSw3mMdn\Elevated_Inverted.obj");
-                        //nodes0.SetMeshes
-                        //    (@"Roads\Common\Meshes\32m\5mSw3mMdn\Elevated_Node.obj");
-                        if (layoutStyle != LanesLayoutStyle.Symmetrical)
-                            RoadHelper.HandleAsymComplementarySegmentsFlags(segments0, segments1, layoutStyle);
 
-                            info.m_segments = new[] { segments0, segments1 };
+                        if (layoutStyle != LanesLayoutStyle.Symmetrical)
+                            RoadHelper.HandleAsymSegmentFlags(segments0);
+
+                        info.m_segments = new[] { segments0};
+                        break;
+                    }
+                case NetInfoVersion.Bridge:
+                    {
+                        var segments0 = info.m_segments[0];
+                        var segments1 = info.m_segments[1];
+
+                        segments0
+                            .SetMeshes
+                                ($@"Roads\Common\Meshes\32m\5mSw3mMdn\Elevated.obj");
+
+                        if (layoutStyle != LanesLayoutStyle.Symmetrical)
+                            RoadHelper.HandleAsymSegmentFlags(segments0);
+
+                        info.m_segments = new[] { segments0,segments1 };
                         //info.m_nodes = new[] { nodes0 };
                         break;
                     }
@@ -69,31 +77,24 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                         var segment0 = info.m_segments[0];
                         var segment1 = info.m_segments[1].ShallowClone();
                         var segment2 = info.m_segments[1].ShallowClone();
-                        var segment3 = info.m_segments[1].ShallowClone();
                         var node0 = info.m_nodes[0];
                         var node1 = info.m_nodes[1];
                         var node2 = node0.ShallowClone();
 
-                        segment2
+                        segment1
                             .SetMeshes
                             ($@"Roads\Common\Meshes\32m\5mSw3mMdn\Slope.obj");
-                        segment3
-                            .SetMeshes
-                            ($@"Roads\Common\Meshes\32m\5mSw3mMdn\Slope.obj");
-                        //node1
-                        //    .SetMeshes
-                        //    (@"Roads\Common\Meshes\32m\5mSw3mMdn\Slope_Node.obj");
 
                         node2
+                            .SetFlags(NetNode.Flags.Underground, NetNode.Flags.None)
                             .SetMeshes
                             (@"Roads\Common\Meshes\32m\5mSw3mMdn\Slope_U_Node.obj",
                              @"Roads\Common\Meshes\32m\5mSW\Slope_U_Node.obj");
 
-                        if (layoutStyle != LanesLayoutStyle.Symmetrical)
-                            RoadHelper.HandleAsymComplementarySegmentsFlags(segment2, segment3, layoutStyle);
+                        RoadHelper.HandleAsymSegmentFlags(segment1);
                         node2.m_material = defaultMaterial;
 
-                        info.m_segments = new[] { segment0, segment1, segment2, segment3 };
+                        info.m_segments = new[] { segment0, segment1, segment2 };
                         info.m_nodes = new[] { node0, node1, node2 };
 
                         break;
@@ -119,7 +120,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                              @"Roads\Highways\Common\Meshes\32m\Tunnel_LOD.obj");
 
                         if (layoutStyle != LanesLayoutStyle.Symmetrical)
-                            RoadHelper.HandleAsymComplementarySegmentsFlags(segments1, segments2, layoutStyle);
+                            RoadHelper.HandleAsymSegmentFlags(segments1, segments2);
                         segments1.m_material = defaultMaterial;
                         nodes1.m_material = defaultMaterial;
 

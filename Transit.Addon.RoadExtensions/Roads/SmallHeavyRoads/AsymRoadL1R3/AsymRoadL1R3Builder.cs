@@ -35,16 +35,15 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.AsymRoadL1R3
             ///////////////////////////
             var owRoadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_2L);
             var owRoadTunnelInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ONEWAY_2L_TUNNEL);
-            var asymLaneType = LanesLayoutStyle.AsymL1R3;
             ///////////////////////////
             // 3DModeling            //
             ///////////////////////////
-            info.Setup16m2mSWMesh(version, asymLaneType);
+            info.Setup16m2mSWMesh(version, LanesLayoutStyle.AsymL1R3);
 
             ///////////////////////////
             // Texturing             //
             ///////////////////////////
-            SetupTextures(info, version, asymLaneType);
+            SetupTextures(info, version, LanesLayoutStyle.AsymL1R3);
 
             ///////////////////////////
             // Set up                //
@@ -72,7 +71,8 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.AsymRoadL1R3
                 PedPropOffsetX = 0.5f,
                 BusStopOffset = 0f,
                 SpeedLimit = 1.0f,
-                LayoutStyle = asymLaneType
+                CenterLane = CenterLaneType.None,
+                LayoutStyle = LanesLayoutStyle.AsymL1R3
             });
             var leftPedLane = info.GetLeftRoadShoulder();
             var rightPedLane = info.GetRightRoadShoulder();
