@@ -89,6 +89,7 @@
     <Compile Include="RExModule.Install.Menu.cs" />
     <Compile Include="RExModule.Install.Roads.cs" />
     <Compile Include="RExModule.Install.Init.cs" />
+    <Compile Include="Roads\PedestrianRoads\BoardwalkTiny\ZonablePedestrianTinyBoardwalkRoadBuilder.cs" />
     <Compile Include="Roads\PedestrianRoads\Common\ZonablePedestrianHelper.Props.cs" />
     <Compile Include="Roads\PedestrianRoads\Common\ZonablePedestrianHelper.Texturing.cs" />
     <Compile Include="Roads\PedestrianRoads\GravelTiny\ZonablePedestrianTinyGravelRoadBuilder.cs" />
@@ -963,6 +964,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\Common\Textures\Plain\Ground_Trans__AlphaMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\PedestrianRoads\BoardwalkTiny\thumbnails.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\PedestrianRoads\Common\Textures\Elevated_Segment__XYSMap.png">

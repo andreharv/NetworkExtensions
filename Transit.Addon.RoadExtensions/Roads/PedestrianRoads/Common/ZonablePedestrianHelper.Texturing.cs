@@ -89,20 +89,21 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
             }
         }
 
-        public static void SetupElevatedBoardWalkTextures(this NetInfo info, NetInfoVersion version)
+        public static void SetupBoardWalkTextures(this NetInfo info, NetInfoVersion version)
         {
             switch (version)
             {
+                case NetInfoVersion.Ground:
                 case NetInfoVersion.Elevated:
                     info.SetAllSegmentsTexture(
                         new TextureSet(
                             @"Roads\PedestrianRoads\BoardWalkTiny\Textures\Elevated_Segment__MainTex.png",
                             @"Roads\PedestrianRoads\BoardWalkTiny\Textures\Elevated_Segment__AlphaMap.png",
-                            @"Roads\PedestrianRoads\BoardWalkTiny\Textures\Elevated_Segment__XYSMap.png"),
+                            @"Roads\PedestrianRoads\Common\Textures\Ground_Node__XYSMap.png"),
                         new LODTextureSet(
                             @"Roads\PedestrianRoads\BoardWalkTiny\Textures\Elevated_Segment_LOD__MainTex.png",
                             @"Roads\PedestrianRoads\BoardWalkTiny\Textures\Elevated_Segment_LOD__AlphaMap.png",
-                            @"Roads\PedestrianRoads\BoardWalkTiny\Textures\Elevated_Segment_LOD__XYSMap.png")
+                            @"Roads\PedestrianRoads\Common\Textures\Ground_Node_LOD__XYSMap.png")
                         );
 
                     foreach (var node in info.m_nodes)
@@ -113,11 +114,11 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
                                 new TextureSet(
                                     @"Roads\PedestrianRoads\BoardWalkTiny\Textures\Elevated_Segment__MainTex.png",
                                     @"Roads\PedestrianRoads\BoardWalkTiny\Textures\Elevated_Segment__AlphaMap.png",
-                                    @"Roads\PedestrianRoads\BoardWalkTiny\Textures\Elevated_Segment__XYSMap.png"),
+                                    @"Roads\PedestrianRoads\Common\Textures\Ground_Node__XYSMap.png"),
                                 new LODTextureSet(
                                     @"Roads\PedestrianRoads\BoardWalkTiny\Textures\Elevated_Segment_LOD__MainTex.png",
                                     @"Roads\PedestrianRoads\BoardWalkTiny\Textures\Elevated_Segment_LOD__AlphaMap.png",
-                                    @"Roads\PedestrianRoads\BoardWalkTiny\Textures\Elevated_Segment_LOD__XYSMap.png")
+                                    @"Roads\PedestrianRoads\Common\Textures\Ground_Node_LOD__XYSMap.png")
                                 );
                         }
                         else
