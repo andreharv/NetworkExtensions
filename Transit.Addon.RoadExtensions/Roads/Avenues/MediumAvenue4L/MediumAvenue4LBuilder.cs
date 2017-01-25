@@ -14,7 +14,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.MediumAvenue4L
 
         public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_6L; } }
         public string Name { get { return "Medium Avenue"; } }
-        public string DisplayName { get { return "Four-Lane Road"; } }
+        public string DisplayName { get { return "Four-Lane Road"; } }     
         public string Description { get { return "A four-lane road with parking spaces. Supports medium traffic."; } }
         public string ShortDescription { get { return "Parkings, zoneable, medium traffic"; } }
         public string UICategory { get { return "RoadsMedium"; } }
@@ -73,10 +73,10 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.MediumAvenue4L
             {
                 IsTwoWay = true,
                 LanesToAdd = -2,
-                LaneWidth = 3.8f,
+                LaneWidth = 3.4f,
                 BusStopOffset = 2.9f,
                 CenterLane = CenterLaneType.Median,
-                CenterLaneWidth = 3.8f
+                CenterLaneWidth = 4.4f
             });
             var leftPedLane = info.GetLeftRoadShoulder();
             var rightPedLane = info.GetRightRoadShoulder();

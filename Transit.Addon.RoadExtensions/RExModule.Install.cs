@@ -8,7 +8,8 @@ using Transit.Addon.RoadExtensions.AI;
 using Transit.Addon.RoadExtensions.Menus.Roads;
 using Transit.Addon.RoadExtensions.Menus.Roads.Textures;
 using Transit.Addon.RoadExtensions.Roads.TinyRoads.Alley2L;
-using Transit.Addon.RoadExtensions.Roads.TinyRoads.OneWay1L;
+using Transit.Addon.RoadExtensions.Roads.TinyRoads.Oneway1L;
+using Transit.Addon.RoadExtensions.Roads.TinyRoads.Oneway1LParking;
 using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.ExtensionPoints.AI;
@@ -67,7 +68,8 @@ namespace Transit.Addon.RoadExtensions
             var tinyZoneBlockCreators = new []
             {
                 Alley2LBuilder.NAME,
-                OneWay1LBuilder.NAME,
+                Oneway1LBuilder.NAME,
+                Oneway1LParkingBuilder.NAME,
                 ZonablePedestrianTinyGravelRoadBuilder.NAME,
                 ZonablePedestrianTinyPavedRoadBuilder.NAME,
                 ZonablePedestrianTinyStoneRoadBuilder.NAME

@@ -236,7 +236,11 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Promenade
 
         public void LateBuildUp(NetInfo info, NetInfoVersion version)
         {
-            var stoneBollard = PrefabCollection<PropInfo>.FindLoaded($"{Tools.PackageName("BridgePillar")}.CableStay32m_Data");
+            var bollardName = "StoneBollard";
+            var stoneBollard = PrefabCollection<PropInfo>.FindLoaded($"{Tools.PackageName(bollardName)}.{bollardName}_Data");
+
+            var RoadPlanter1Name = "RoadPlanter1";
+            var RoadPlanter1 = PrefabCollection<PropInfo>.FindLoaded($"{Tools.PackageName(RoadPlanter1Name)}.{RoadPlanter1Name}_Data");
 
             var pedLanes = info.m_lanes.Where(pl => pl.m_laneType == NetInfo.LaneType.Pedestrian).ToArray();
             for (var i = 0; i < pedLanes.Length; i++)
@@ -266,9 +270,16 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Promenade
                 bollardProp2.m_endFlagsRequired = NetNode.Flags.None;
                 bollardProp2.m_startFlagsRequired = NetNode.Flags.Transition;
 
-                var bollardProps = new List<NetLaneProps.Prop> { bollardProp, bollardProp2, bollardProp3, bollardProp4 };
+                var planterProp = new NetLaneProps.Prop();
+                planterProp.m_prop = RoadPlanter1;
+                planterProp.m_finalProp = RoadPlanter1;
+                planterProp.m_repeatDistance = 30;
+                planterProp.m_probability = 100;
+                planterProp.m_position = new UnityEngine.Vector3(((i * 2) - 1) * 1.4f, 0 , -0.15f);
+
+                var additionalProps = new List<NetLaneProps.Prop> { bollardProp, bollardProp2, bollardProp3, bollardProp4, planterProp };
                 var tempProps = pedLanes[i].m_laneProps.m_props.ToList();
-                tempProps.AddRange(bollardProps);
+                tempProps.AddRange(additionalProps);
                 pedLanes[i].m_laneProps.m_props = tempProps.ToArray();
             }
         }

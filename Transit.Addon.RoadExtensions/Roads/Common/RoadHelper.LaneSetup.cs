@@ -72,7 +72,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
         }
         public static void HandleAsymNodeFlags(NetInfo.Node fNode, NetInfo.Node bNode = null)
         {
-            fNode.m_flagsRequired = NetNode.Flags.OneWayOut | NetNode.Flags.;
+            fNode.m_flagsRequired = NetNode.Flags.OneWayOut | NetNode.Flags.OneWayOut;
             if (bNode != null)
             {
                 bNode.m_flagsForbidden = NetNode.Flags.OneWayOut;
@@ -89,23 +89,18 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
 
             var nbLanes = vehicleLanes.Count();
             var nbUsableLanes = nbLanes - (config.CenterLane == CenterLaneType.TurningLane ? 2 : 0);
-            var hasCenterLane = nbUsableLanes % 2 == 1;
-            var leftLaneCount = isNotSymmetrical ? (int)config.LayoutStyle / 10 : 0;
+            var leftLaneCount = isNotSymmetrical ? (int)Math.Floor((decimal)(int)config.LayoutStyle / 10) : 0;
             var nbLanesBeforeMedian = isNotSymmetrical ? leftLaneCount : nbUsableLanes / 2;
-            var positionStart = 0f;
+            var positionStart = -(rdInfo.m_halfWidth - rdInfo.m_pavementWidth - (rdInfo.m_hasParkingSpaces ? rdInfo.m_lanes.FirstOrDefault(l=>l.m_laneType == NetInfo.LaneType.Parking)?.m_width ?? 0:0) - (0.5f * config.LaneWidth) + config.LanePositionOffst);
 
-            if (config.CenterLane == CenterLaneType.Median ||
-                config.CenterLane == CenterLaneType.TurningLane)
-            {
-                positionStart -= config.CenterLaneWidth / 2;
-            }
-            else if (hasCenterLane)
-            {
-                positionStart -= config.LaneWidth / 2;
-            }
+            //if (config.CenterLane == CenterLaneType.Median ||
+            //    config.CenterLane == CenterLaneType.TurningLane)
+            //{
+            //    positionStart -= config.CenterLaneWidth / 2;
+            //}
 
-            positionStart -= config.LaneWidth * (nbLanesBeforeMedian - (isNotSymmetrical && config.CenterLane != CenterLaneType.None ? 0 : 1)) + config.LaneWidth / 2;
-
+            //positionStart -= config.LaneWidth * (nbLanesBeforeMedian - (isNotSymmetrical && config.CenterLane != CenterLaneType.None ? 0 : 1)) + config.LaneWidth / 2;
+            Framework.Debug.Log($"{ rdInfo.name} has position start {positionStart}");
             //Debug.Log(">>>> NbLanes : " + nbLanes);
             //Debug.Log(">>>> NbUsableLanes : " + nbUsableLanes);
             //Debug.Log(">>>> NbUsableLanesPerSide : " + nbUsableLanesPerSide);

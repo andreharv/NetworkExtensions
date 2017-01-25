@@ -73,6 +73,7 @@
     <Compile Include="Roads\Common\RoadModels.32m.5mSW3mMdn.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="Roads\Common\RoadModels.8m.1p5mSWGrass.cs" />
     <Compile Include="Roads\Common\RoadModels.8m.NoSW.Wood.cs" />
     <Compile Include="Roads\Common\LaneTypeEnums.cs" />
     <Compile Include="Roads\Common\RoadHelper.LaneSetup.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="Roads\PedestrianRoads\Promenade\ZonablePedestrianPromenadeBuilder.Texturing.cs" />
     <Compile Include="Roads\PedestrianRoads\Common\ZonablePedestrianHelper.cs" />
     <Compile Include="Roads\SmallHeavyRoads\AsymRoadL1R2\AsymRoadL1R2Builder.cs" />
+    <Compile Include="Roads\TinyRoads\Oneway1LParking\Oneway1LParkingBuilder.cs" />
     <Compile Include="Roads\TinyRoads\Plain2L\PlainStreetBuilder.cs" />
     <Compile Include="Roads\TinyRoads\Plain2L\PlainStreetBuilder.Texturing.cs" />
     <Compile Include="Roads\SmallHeavyRoads\AsymRoadL1R2\AsymRoadL1R2Builder.Texturing.cs" />
@@ -148,7 +150,7 @@
     <Compile Include="RExModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Roads\Highways\Highway6L\Highway6LBuilder.cs" />
-    <Compile Include="Roads\TinyRoads\OneWay1L\OneWay1LBuilder.cs" />
+    <Compile Include="Roads\TinyRoads\Oneway1L\Oneway1LBuilder.cs" />
     <Compile Include="SomeRoads\PlanningRoadLargeBuilder.cs" />
     <Compile Include="SomeRoads\PlanningRoadSmallBuilder.cs" />
   </ItemGroup>
@@ -2523,37 +2525,127 @@
     <Content Include="Roads\SmallHeavyRoads\SmallAvenue4L\thumbnails.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\TinyRoads\OneWay1L\thumbnails.png">
+    <Content Include="Roads\TinyRoads\Oneway1LTrees\infotooltip.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\TinyRoads\OneWay1L\infotooltip.png">
+    <Content Include="Roads\TinyRoads\Oneway1LTrees\Textures\Ground_LOD__XYSMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\TinyRoads\OneWay1L\Textures\Ground_LOD__XYSMap.png">
+    <Content Include="Roads\TinyRoads\Oneway1LTrees\Textures\Ground_Node_LOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\TinyRoads\OneWay1L\Textures\Ground_Node_LOD__APRMap.png">
+    <Content Include="Roads\TinyRoads\Oneway1LTrees\Textures\Ground_Node_LOD__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\TinyRoads\OneWay1L\Textures\Ground_Node_LOD__MainTex.png">
+    <Content Include="Roads\TinyRoads\Oneway1LTrees\Textures\Ground_Node__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\TinyRoads\OneWay1L\Textures\Ground_Node__APRMap.png">
+    <Content Include="Roads\TinyRoads\Oneway1LTrees\Textures\Ground_Node__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\TinyRoads\OneWay1L\Textures\Ground_Node__MainTex.png">
+    <Content Include="Roads\TinyRoads\Oneway1LTrees\Textures\Ground_Segment_LOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\TinyRoads\OneWay1L\Textures\Ground_Segment_LOD__APRMap.png">
+    <Content Include="Roads\TinyRoads\Oneway1LTrees\Textures\Ground_Segment_LOD__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\TinyRoads\OneWay1L\Textures\Ground_Segment_LOD__MainTex.png">
+    <Content Include="Roads\TinyRoads\Oneway1LTrees\Textures\Ground_Segment__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\TinyRoads\OneWay1L\Textures\Ground_Segment__APRMap.png">
+    <Content Include="Roads\TinyRoads\Oneway1LTrees\Textures\Ground_Segment__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\TinyRoads\OneWay1L\Textures\Ground_Segment__MainTex.png">
+    <Content Include="Roads\TinyRoads\Oneway1LTrees\Textures\Ground_Trans_LOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1LTrees\Textures\Ground_Trans_LOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1LTrees\Textures\Ground_Trans__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1LTrees\Textures\Ground_Trans__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1LTrees\thumbnails.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1LParking\infotooltip.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1LParking\Textures\Ground_LOD__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1LParking\Textures\Ground_Node_LOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1LParking\Textures\Ground_Node_LOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1LParking\Textures\Ground_Node__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1LParking\Textures\Ground_Node__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1LParking\Textures\Ground_Segment_LOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1LParking\Textures\Ground_Segment_LOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1LParking\Textures\Ground_Segment__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1LParking\Textures\Ground_Segment__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1LParking\Textures\Ground_Trans_LOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1LParking\Textures\Ground_Trans_LOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1LParking\Textures\Ground_Trans__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1LParking\Textures\Ground_Trans__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1LParking\thumbnails.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1L\thumbnails.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1L\infotooltip.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1L\Textures\Ground_LOD__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1L\Textures\Ground_Node_LOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1L\Textures\Ground_Node_LOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1L\Textures\Ground_Node__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1L\Textures\Ground_Node__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1L\Textures\Ground_Segment_LOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1L\Textures\Ground_Segment_LOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1L\Textures\Ground_Segment__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1L\Textures\Ground_Segment__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\TinyRoads\Plain2L\infotooltip.png">
@@ -2579,9 +2671,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Props\WoodBollard.crp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\Ground_NodeX.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\Common\Meshes\16m\NoSw\Elevated.obj">

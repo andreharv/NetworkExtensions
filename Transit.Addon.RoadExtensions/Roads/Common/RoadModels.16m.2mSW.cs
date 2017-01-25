@@ -23,7 +23,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                         if (laneStyle != LanesLayoutStyle.Symmetrical)
                             RoadHelper.HandleAsymSegmentFlags(segment1, segment3);
                         var node0 = info.m_nodes[0].ShallowClone();
-                        var node1 = info.m_nodes[0].ShallowClone();
+
                         segment0
                             .SetMeshes
                                 (@"Roads\Common\Meshes\16m\2mSW\Ground.obj",
@@ -44,15 +44,12 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                             .SetMeshes
                                 (@"Roads\Common\Meshes\16m\2mSW\Ground_Node.obj",
                                 @"Roads\Common\Meshes\16m\2mSW\Ground_Node_LOD.obj");
-                        node1
-                            .SetMeshes
-                                (@"Roads\Common\Meshes\16m\2mSW\Ground_NodeX.obj",
-                                @"Roads\Common\Meshes\16m\2mSW\Ground_Node_LOD.obj");
+
                         RoadHelper.HandleAsymSegmentFlags(segment0);
                         RoadHelper.HandleAsymSegmentFlags(segment2);
-                        RoadHelper.HandleAsymNodeFlags(node0,node1);
+
                         info.m_segments = new[] { segment0, segment1, segment2, segment3 };
-                        info.m_nodes = new[] { node0,node1 };
+                        info.m_nodes = new[] { node0 };
 
                         break;
                     }

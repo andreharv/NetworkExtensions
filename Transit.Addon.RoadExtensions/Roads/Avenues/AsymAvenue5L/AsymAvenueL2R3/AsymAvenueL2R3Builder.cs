@@ -68,8 +68,10 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.AsymAvenue5L.AsymAvenueL2R3
             info.SetRoadLanes(version, new LanesConfiguration
             {
                 IsTwoWay = true,
+                LanesToAdd = -1,
                 PedPropOffsetX = 0.5f,
                 BusStopOffset = 3,
+                CenterLane = CenterLaneType.Median,
                 LayoutStyle = LanesLayoutStyle.AsymL2R3
             });
 
