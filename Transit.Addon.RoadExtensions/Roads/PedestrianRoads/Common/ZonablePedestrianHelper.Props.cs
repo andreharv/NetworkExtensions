@@ -24,11 +24,17 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
                 {
                     Framework.Debug.Log($"{info.name}: {bollardName} not found!");
                 }
+                else
+                {
+                    var bridgeAI = info.GetComponent<RoadBridgeAI>();
+                    if (pillarInfo != null && bridgeAI != null)
+                    {
+                        bridgeAI.m_bridgePillarOffset = 1;
+                    }
+                }
+                info.AddBollards(version, bollardInfo, pillarInfo);
             }
-
-            info.AddBollards(version, bollardInfo, pillarInfo);
         }
-
         public static void AddRetractBollard(this NetInfo info, NetInfoVersion version)
         {
             var bollardName = "RetractBollard";
@@ -66,7 +72,8 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
                     bridgeAI.m_doubleLength = false;
                     bridgeAI.m_bridgePillarInfo = pillarInfo;
                     bridgeAI.m_middlePillarInfo = null;
-                    bridgeAI.m_bridgePillarOffset = 0;
+                    if (bridgeAI.m_bridgePillarOffset == 0)
+                        bridgeAI.m_bridgePillarOffset = 0.6f;
                 }
             }
 
@@ -105,10 +112,10 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
                     .m_lanes
                     .First(l => l.m_position == 0f && l.m_laneType == NetInfo.LaneType.Pedestrian);
 
-                propPedLane.m_laneProps.m_props =  propPedLane
+                propPedLane.m_laneProps.m_props = propPedLane
                     .m_laneProps
                     .m_props
-                    .Union(new[] { bollardProp1, bollardProp2, bollardProp3, bollardProp4, bollardProp5, bollardProp6})
+                    .Union(new[] { bollardProp1, bollardProp2, bollardProp3, bollardProp4, bollardProp5, bollardProp6 })
                     .ToArray();
             }
         }

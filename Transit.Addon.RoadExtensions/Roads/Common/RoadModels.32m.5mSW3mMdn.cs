@@ -83,8 +83,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
 
                         segment1
                             .SetMeshes
-                            ($@"Roads\Common\Meshes\32m\5mSw3mMdn\Slope.obj");
-
+                            ($@"Roads\Common\Meshes\32m\5mSw3mMdn\Slope.obj",
+                            @"Roads\Common\Meshes\32m\3mSw2mMdn\Slope_LOD.obj");
                         node2
                             .SetFlags(NetNode.Flags.Underground, NetNode.Flags.None)
                             .SetMeshes

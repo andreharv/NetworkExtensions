@@ -915,6 +915,9 @@
     <Content Include="Menus\Roads\Textures\RExExtendedSubBar.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Roads\PedestrianRoads\BoardwalkTiny\infotooltip.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Roads\PedestrianRoads\BoardwalkTiny\Textures\Elevated_Segment_LOD__AlphaMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -2529,51 +2532,6 @@
     <Content Include="Roads\SmallHeavyRoads\SmallAvenue4L\thumbnails.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\TinyRoads\Oneway1LTrees\infotooltip.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\TinyRoads\Oneway1LTrees\Textures\Ground_LOD__XYSMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\TinyRoads\Oneway1LTrees\Textures\Ground_Node_LOD__APRMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\TinyRoads\Oneway1LTrees\Textures\Ground_Node_LOD__MainTex.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\TinyRoads\Oneway1LTrees\Textures\Ground_Node__APRMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\TinyRoads\Oneway1LTrees\Textures\Ground_Node__MainTex.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\TinyRoads\Oneway1LTrees\Textures\Ground_Segment_LOD__APRMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\TinyRoads\Oneway1LTrees\Textures\Ground_Segment_LOD__MainTex.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\TinyRoads\Oneway1LTrees\Textures\Ground_Segment__APRMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\TinyRoads\Oneway1LTrees\Textures\Ground_Segment__MainTex.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\TinyRoads\Oneway1LTrees\Textures\Ground_Trans_LOD__APRMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\TinyRoads\Oneway1LTrees\Textures\Ground_Trans_LOD__MainTex.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\TinyRoads\Oneway1LTrees\Textures\Ground_Trans__APRMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\TinyRoads\Oneway1LTrees\Textures\Ground_Trans__MainTex.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\TinyRoads\Oneway1LTrees\thumbnails.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Roads\TinyRoads\Oneway1LParking\infotooltip.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -2905,6 +2863,12 @@
     <None Include="Roads\Common\Meshes\8m\NoSwWood\Elevated_Node_LOD_NoCom.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Roads\Common\Meshes\8m\NoSwWood\Elevated_Trans.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\8m\NoSwWood\Ground_LevelCrossing_NoCom.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Roads\Common\Meshes\8m\NoSwWood\Ground_LOD_NoCom.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -2915,6 +2879,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\Common\Meshes\8m\NoSwWood\Ground_Node_NoCom.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\8m\NoSwWood\Ground_Trans.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\8m\NoSwWood\Ground_Trans_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\8m\NoSwWood\Ground_Trans_Ramp_NoCom.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\Common\Meshes\8m\NoSW\Elevated.obj">
@@ -2951,6 +2924,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\Common\Meshes\8m\NoSW\Ground_Trans_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\Blank.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\Highways\Common\Meshes\16m\Elevated.obj">

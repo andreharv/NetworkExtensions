@@ -130,19 +130,19 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.Oneway1LParking
             for (int i = 0; i < pedLanes.Count(); i++)
             {
                 pedLanes[i].m_verticalOffset = 0.25f;
-                var tempProps = pedLanes[i].m_laneProps.m_props.ToList();
-                if (version == NetInfoVersion.Ground)
-                {
-                    var treeProp = new NetLaneProps.Prop()
-                    {
-                        m_tree = Prefabs.Find<TreeInfo>("Tree2variant"),
-                        m_repeatDistance = 30,
-                        m_probability = 100,
-                    };
-                    treeProp.m_position = new UnityEngine.Vector3(((i * 2) - 1), -0.1f, -0.15f);
-                    tempProps.Add(treeProp);
-                }
-                pedLanes[i].m_laneProps.m_props = tempProps.ToArray();
+                //var tempProps = pedLanes[i].m_laneProps.m_props.ToList();
+                //if (version == NetInfoVersion.Ground)
+                //{
+                //    var treeProp = new NetLaneProps.Prop()
+                //    {
+                //        m_tree = Prefabs.Find<TreeInfo>("Tree2variant"),
+                //        m_repeatDistance = 30,
+                //        m_probability = 100,
+                //    };
+                //    treeProp.m_position = new UnityEngine.Vector3(((i * 2) - 1), -0.1f, -0.15f);
+                //    tempProps.Add(treeProp);
+                //}
+                //pedLanes[i].m_laneProps.m_props = tempProps.ToArray();
             }
 
             foreach (var roadLane in roadLanes)
@@ -179,21 +179,21 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.Oneway1LParking
 
         public void LateBuildUp(NetInfo info, NetInfoVersion version)
         {
-            var RoadPlanter1Name = "RoadPlanter1";
-            var RoadPlanter1 = PrefabCollection<PropInfo>.FindLoaded($"{Tools.PackageName(RoadPlanter1Name)}.{RoadPlanter1Name}_Data");
-            var pedLanes = info.m_lanes.Where(pl => pl.m_laneType == NetInfo.LaneType.Pedestrian).ToArray();
-            for (var i = 0; i < pedLanes.Length; i++)
-            {
-                var planterProp = new NetLaneProps.Prop();
-                planterProp.m_prop = RoadPlanter1;
-                planterProp.m_finalProp = RoadPlanter1;
-                planterProp.m_repeatDistance = 30;
-                planterProp.m_probability = 100;
-                planterProp.m_position = new UnityEngine.Vector3(((i * 2) - 1), 0.05f, -0.15f);
-                var tempProps = pedLanes[i].m_laneProps.m_props.ToList();
-                tempProps.Add(planterProp);
-                pedLanes[i].m_laneProps.m_props = tempProps.ToArray();
-            }
+            //var RoadPlanter1Name = "RoadPlanter1";
+            //var RoadPlanter1 = PrefabCollection<PropInfo>.FindLoaded($"{Tools.PackageName(RoadPlanter1Name)}.{RoadPlanter1Name}_Data");
+            //var pedLanes = info.m_lanes.Where(pl => pl.m_laneType == NetInfo.LaneType.Pedestrian).ToArray();
+            //for (var i = 0; i < pedLanes.Length; i++)
+            //{
+            //    var planterProp = new NetLaneProps.Prop();
+            //    planterProp.m_prop = RoadPlanter1;
+            //    planterProp.m_finalProp = RoadPlanter1;
+            //    planterProp.m_repeatDistance = 30;
+            //    planterProp.m_probability = 100;
+            //    planterProp.m_position = new UnityEngine.Vector3(((i * 2) - 1), 0.05f, -0.15f);
+            //    var tempProps = pedLanes[i].m_laneProps.m_props.ToList();
+            //    tempProps.Add(planterProp);
+            //    pedLanes[i].m_laneProps.m_props = tempProps.ToArray();
+            //}
         }
     }
 }

@@ -23,7 +23,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.BoardwalkTiny
         public string ShortDescription { get { return "Zoneable, No Passenger Vehicles [Traffic++ V2 required]"; } }
 
         public string ThumbnailsPath { get { return @"Roads\PedestrianRoads\BoardwalkTiny\thumbnails.png"; } }
-        public string InfoTooltipPath { get { return @"Roads\PedestrianRoads\GravelTiny\infotooltip.png"; } }
+        public string InfoTooltipPath { get { return @"Roads\PedestrianRoads\BoardwalkTiny\infotooltip.png"; } }
 
         public NetInfoVersion SupportedVersions
         {
@@ -45,23 +45,21 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.BoardwalkTiny
             ///////////////////////////
             // Set up                //
             ///////////////////////////
-            info.m_createGravel = false;
-            info.m_createPavement = true;
+            info.m_createGravel = version == NetInfoVersion.Ground;
+            info.m_createPavement = false;
             info.m_connectGroup = NetInfo.ConnectGroup.CenterTram;
             info.m_nodeConnectGroups = NetInfo.ConnectGroup.CenterTram;
-            info.m_surfaceLevel = 0.2f;
+            info.m_surfaceLevel = 0.6f;
+            info.m_pavementWidth = 1;
+            info.m_clipTerrain = false;
             info.SetupTinyPed(version);
             var lanes = new List<NetInfo.Lane>();
             lanes.AddRange(info.m_lanes);
             for(int i = 0; i < info.m_lanes.Length; i++)
             {
-                lanes[i].m_verticalOffset = 0.2f;
+                lanes[i].m_verticalOffset = 0.6f;
             }
             info.m_lanes = lanes.ToArray();
-            if (version == NetInfoVersion.Ground)
-            {
-                info.m_setVehicleFlags = Vehicle.Flags.OnGravel;
-            }
 
             ///////////////////////////
             // AI                    //

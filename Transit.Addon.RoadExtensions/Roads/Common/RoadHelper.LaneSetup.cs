@@ -70,15 +70,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                 bSegment.m_backwardForbidden |= NetSegment.Flags.Invert;
             }
         }
-        public static void HandleAsymNodeFlags(NetInfo.Node fNode, NetInfo.Node bNode = null)
-        {
-            fNode.m_flagsRequired = NetNode.Flags.OneWayOut | NetNode.Flags.OneWayOut;
-            if (bNode != null)
-            {
-                bNode.m_flagsForbidden = NetNode.Flags.OneWayOut;
-            }
-
-        }
 
         private static IEnumerable<NetInfo.Lane> SetupVehicleLanes(this NetInfo rdInfo, NetInfoVersion version, LanesConfiguration config)
         {

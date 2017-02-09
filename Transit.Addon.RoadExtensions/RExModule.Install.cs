@@ -18,7 +18,7 @@ using Object = UnityEngine.Object;
 using ZonablePedestrianTinyGravelRoadBuilder = Transit.Addon.RoadExtensions.Roads.PedestrianRoads.GravelTiny.ZonablePedestrianTinyGravelRoadBuilder;
 using ZonablePedestrianTinyPavedRoadBuilder = Transit.Addon.RoadExtensions.Roads.PedestrianRoads.PavementTiny.ZonablePedestrianTinyPavedRoadBuilder;
 using ZonablePedestrianTinyStoneRoadBuilder = Transit.Addon.RoadExtensions.Roads.PedestrianRoads.StoneTiny.ZonablePedestrianTinyStoneRoadBuilder;
-
+using ZonablePedestrianTinyBoardwalkBuilder = Transit.Addon.RoadExtensions.Roads.PedestrianRoads.BoardwalkTiny.ZonablePedestrianBoardwalkRoadBuilder;
 namespace Transit.Addon.RoadExtensions
 {
     public partial class RExModule
@@ -72,7 +72,8 @@ namespace Transit.Addon.RoadExtensions
                 Oneway1LParkingBuilder.NAME,
                 ZonablePedestrianTinyGravelRoadBuilder.NAME,
                 ZonablePedestrianTinyPavedRoadBuilder.NAME,
-                ZonablePedestrianTinyStoneRoadBuilder.NAME
+                ZonablePedestrianTinyStoneRoadBuilder.NAME,
+                ZonablePedestrianTinyBoardwalkBuilder.NAME
             };
 
             foreach (var name in tinyZoneBlockCreators)

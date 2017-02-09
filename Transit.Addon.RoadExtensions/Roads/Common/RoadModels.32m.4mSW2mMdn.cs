@@ -92,7 +92,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
 
                         segment1
                             .SetMeshes
-                            ($@"Roads\Common\Meshes\32m\4mSw2mMdn\Slope.obj");
+                            ($@"Roads\Common\Meshes\32m\4mSw2mMdn\Slope.obj",
+                            @"Roads\Common\Meshes\32m\3mSw2mMdn\Slope_LOD.obj");
                         node1
                             .SetMeshes
                             (@"Roads\Common\Meshes\32m\4mSW2mMdn\Slope_Node.obj");

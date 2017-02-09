@@ -78,7 +78,7 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.Oneway1L
             info.m_halfWidth = 4f;
             info.m_pavementWidth = 2f;
             info.m_class = roadInfo.m_class.Clone("NExt1LOneway");
-
+            info.m_class.m_level = ItemClass.Level.Level2;
             info.m_lanes = info.m_lanes
                 .Where(l => l.m_laneType != NetInfo.LaneType.Parking)
                 .ToArray();

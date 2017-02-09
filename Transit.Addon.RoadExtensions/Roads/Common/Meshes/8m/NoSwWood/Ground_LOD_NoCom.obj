@@ -1,8 +1,8 @@
 # 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
-# File Created: 09.06.2016 23:48:54
+# File Created: 04.02.2017 15:11:17
 
 #
-# object Object001
+# object Ground_LOD_NoCom
 #
 
 v  -3.8283 0.0500 -16.0000
@@ -26,7 +26,7 @@ vt 0.9983 0.4000 0.0000
 vt 0.5846 0.4000 0.0000
 # 4 texture coords
 
-g Object001
+g Ground_LOD_NoCom
 s off
 f 1/1/1 2/2/1 3/3/1 
 f 3/3/1 4/4/1 1/1/1 
