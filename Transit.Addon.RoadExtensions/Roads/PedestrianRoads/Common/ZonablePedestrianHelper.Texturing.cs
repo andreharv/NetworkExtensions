@@ -127,8 +127,8 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
                         {
                             node.SetTextures(
                                 new TextureSet
-                                    ($@"Roads\PedestrianRoads\Common\Textures\{groundElevated}_Trans__MainTex.png",
-                                    $@"Roads\Common\Textures\Plain\{groundElevated}_Trans__AlphaMap.png"),
+                                    ($@"Roads\PedestrianRoads\BoardwalkTiny\Textures\{groundElevated}_Trans__MainTex.png",
+                                    $@"Roads\PedestrianRoads\BoardwalkTiny\Textures\{groundElevated}_Trans__AlphaMap.png"),
                                 new LODTextureSet
                                     ($@"Roads\PedestrianRoads\Common\Textures\{groundElevated}_Trans_LOD__MainTex.png",
                                     $@"Roads\PedestrianRoads\Common\Textures\{groundElevated}_Trans_LOD__AlphaMap.png",
