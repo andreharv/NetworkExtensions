@@ -35,8 +35,14 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Gravel
             ///////////////////////////
             // 3DModeling            //
             ///////////////////////////
-            info.Setup8mNoSwWoodMesh(version);
-
+            if (version == NetInfoVersion.Ground)
+            {
+                info.Setup8mNoSwWoodMesh(version);
+            }
+            else
+            {
+                info.Setup8mNoSwWoodMesh(version);
+            }
             ///////////////////////////
             // Texturing             //
             ///////////////////////////
@@ -46,7 +52,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Gravel
             }
             else
             {
-                info.SetupElevatedBoardWalkTextures(version);
+                info.SetupBoardWalkTextures(version);
             }
 
             info.m_createGravel = true;
@@ -65,17 +71,17 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Gravel
             switch (version)
             {
                 case NetInfoVersion.Ground:
-                {
-                    var vanillaplayerNetAI = pedestrianVanilla.GetComponent<PlayerNetAI>();
-                    var playerNetAI = info.GetComponent<PlayerNetAI>();
-
-                    if (playerNetAI != null)
                     {
-                        playerNetAI.m_constructionCost = vanillaplayerNetAI.m_constructionCost;
-                        playerNetAI.m_maintenanceCost = vanillaplayerNetAI.m_maintenanceCost;
+                        var vanillaplayerNetAI = pedestrianVanilla.GetComponent<PlayerNetAI>();
+                        var playerNetAI = info.GetComponent<PlayerNetAI>();
+
+                        if (playerNetAI != null)
+                        {
+                            playerNetAI.m_constructionCost = vanillaplayerNetAI.m_constructionCost;
+                            playerNetAI.m_maintenanceCost = vanillaplayerNetAI.m_maintenanceCost;
+                        }
                     }
-                }
-                break;
+                    break;
             }
         }
 

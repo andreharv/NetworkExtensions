@@ -1,10 +1,11 @@
 ﻿using System;
 using ColossalFramework;
-using Transit.Framework.ExtensionPoints.PathFinding;
+using Transit.Framework.Network;
+using static NetInfo;
 
 namespace Transit.Addon.Tools.Core
 {
-    public class LanesManager : Singleton<LanesManager>, ILaneRoutingManager, ILaneSpeedManager
+    public class LanesManager : Singleton<LanesManager>
     {
         #region Lane Creation
 
@@ -101,22 +102,22 @@ namespace Transit.Addon.Tools.Core
         #endregion
 
         #region Vehicle Restrictions
-        public bool CanUseLane(TAMVehicleType vehicleType, uint laneId)
+        public bool CanUseLane(ExtendedVehicleType vehicleType, uint laneId)
         {            
-            return (GetLane(laneId).m_vehicleTypes & vehicleType) != TAMVehicleType.None;
+            return (GetLane(laneId).m_vehicleTypes & vehicleType) != ExtendedVehicleType.None;
         }
 
-        public TAMVehicleType GetVehicleRestrictions(uint laneId)
+        public ExtendedVehicleType GetVehicleRestrictions(uint laneId)
         {
             return GetLane(laneId).m_vehicleTypes;
         }
 
-        public void SetVehicleRestrictions(uint laneId, TAMVehicleType vehicleRestrictions)
+        public void SetVehicleRestrictions(uint laneId, ExtendedVehicleType vehicleRestrictions)
         {
             GetLane(laneId).m_vehicleTypes = vehicleRestrictions;
         }
 
-        public void ToggleVehicleRestriction(uint laneId, TAMVehicleType vehicleType)
+        public void ToggleVehicleRestriction(uint laneId, ExtendedVehicleType vehicleType)
         {
             GetLane(laneId).m_vehicleTypes ^= vehicleType;
         }

@@ -4,12 +4,12 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
 {
     public static partial class RoadModels
     {
-        public static NetInfo Setup8m1p5mSWMesh(this NetInfo info, NetInfoVersion version)
+        public static NetInfo Setup8m1p5mSWMesh(this NetInfo info, NetInfoVersion version, LanesLayoutStyle laneStyle = LanesLayoutStyle.Symmetrical)
         {
             switch (version)
             {
                 case NetInfoVersion.Ground:
-                    { 
+                    {
                         var segments0 = info.m_segments[0];
                         var nodes0 = info.m_nodes[0];
                         var nodes1 = info.m_nodes[0].ShallowClone();
@@ -31,6 +31,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                             .SetMeshes
                             (@"Roads\Common\Meshes\8m\1p5mSW\Ground_Trans.obj",
                              @"Roads\Common\Meshes\8m\1p5mSW\Ground_Node_LOD.obj");
+                        
+                        RoadHelper.HandleAsymSegmentFlags(segments0);
 
                         info.m_segments = new[] { segments0 };
                         info.m_nodes = new[] { nodes0, nodes1 };

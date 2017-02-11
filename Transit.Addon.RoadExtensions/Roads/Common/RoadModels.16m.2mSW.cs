@@ -21,8 +21,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                         var segment3 = info.m_segments[1].ShallowClone();
 
                         if (laneStyle != LanesLayoutStyle.Symmetrical)
-                            RoadHelper.HandleAsymComplementarySegmentsFlags(segment1, segment3, laneStyle);
-                        var node0 = info.m_nodes[0];
+                            RoadHelper.HandleAsymSegmentFlags(segment1, segment3);
+                        var node0 = info.m_nodes[0].ShallowClone();
 
                         segment0
                             .SetMeshes
@@ -45,8 +45,9 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                                 (@"Roads\Common\Meshes\16m\2mSW\Ground_Node.obj",
                                 @"Roads\Common\Meshes\16m\2mSW\Ground_Node_LOD.obj");
 
-                        segment0.HandleAsymSegmentFlags(laneStyle);
-                        segment2.HandleAsymSegmentFlags(laneStyle);
+                        RoadHelper.HandleAsymSegmentFlags(segment0);
+                        RoadHelper.HandleAsymSegmentFlags(segment2);
+
                         info.m_segments = new[] { segment0, segment1, segment2, segment3 };
                         info.m_nodes = new[] { node0 };
 
@@ -69,7 +70,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                                 (@"Roads\Common\Meshes\16m\2mSW\Elevated_Node.obj",
                                 @"Roads\Common\Meshes\16m\2mSW\Elevated_Node_LOD.obj");
 
-                        segment0.HandleAsymSegmentFlags(laneStyle);
+                        RoadHelper.HandleAsymSegmentFlags(segment0);
                         info.m_segments = new[] { segment0 };
                         info.m_nodes = new[] { node0 };
                         break;
@@ -104,7 +105,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                             (@"Roads\Common\Meshes\16m\2mSW\Slope_U_Node.obj",
                             @"Roads\Common\Meshes\16m\2mSW\Slope_U_Node_LOD.obj");
 
-                        segment2.HandleAsymSegmentFlags(laneStyle);
+                        RoadHelper.HandleAsymSegmentFlags(segment2);
                         node2.m_material = defaultMaterial;
 
                         info.m_segments = new[] { segment0, segment1, segment2 };
@@ -132,7 +133,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                             (@"Roads\Common\Meshes\16m\2mSW\Tunnel_Node.obj",
                             @"Roads\Common\Meshes\16m\2mSW\Tunnel_Node_LOD.obj");
 
-                        segment1.HandleAsymSegmentFlags(laneStyle);
+                        RoadHelper.HandleAsymSegmentFlags(segment1);
                         segment1.m_material = defaultMaterial;
                         node1.m_material = defaultMaterial;
 

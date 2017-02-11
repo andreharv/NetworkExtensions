@@ -8,9 +8,9 @@ using Transit.Framework.Builders;
 using Transit.Framework.Network;
 using Transit.Framework.Texturing;
 
-namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.OneWay1L
+namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.Oneway1L
 {
-    public class OneWay1LBuilder : Activable, INetInfoBuilderPart
+    public class Oneway1LBuilder : Activable, INetInfoBuilderPart
     {
         public const string NAME = "One-Lane Oneway";
 
@@ -25,8 +25,8 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.OneWay1L
         public string ShortDescription { get { return "No parking, zoneable, neighborhood traffic"; } }
         public string UICategory { get { return RExExtendedMenus.ROADS_TINY; } }
 
-        public string ThumbnailsPath { get { return @"Roads\TinyRoads\OneWay1L\thumbnails.png"; } }
-        public string InfoTooltipPath { get { return @"Roads\TinyRoads\OneWay1L\infotooltip.png"; } }
+        public string ThumbnailsPath { get { return @"Roads\TinyRoads\Oneway1L\thumbnails.png"; } }
+        public string InfoTooltipPath { get { return @"Roads\TinyRoads\Oneway1L\infotooltip.png"; } }
 
         public NetInfoVersion SupportedVersions
         {
@@ -53,21 +53,21 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.OneWay1L
                 case NetInfoVersion.Ground:
                     info.SetAllSegmentsTexture(
                         new TextureSet
-                           (@"Roads\TinyRoads\OneWay1L\Textures\Ground_Segment__MainTex.png",
-                            @"Roads\TinyRoads\OneWay1L\Textures\Ground_Segment__APRMap.png"),
+                           (@"Roads\TinyRoads\Oneway1L\Textures\Ground_Segment__MainTex.png",
+                            @"Roads\TinyRoads\Oneway1L\Textures\Ground_Segment__APRMap.png"),
                         new LODTextureSet
-                           (@"Roads\TinyRoads\OneWay1L\Textures\Ground_Segment_LOD__MainTex.png",
-                            @"Roads\TinyRoads\OneWay1L\Textures\Ground_Segment_LOD__APRMap.png",
-                            @"Roads\TinyRoads\OneWay1L\Textures\Ground_LOD__XYSMap.png"));
+                           (@"Roads\TinyRoads\Oneway1L\Textures\Ground_Segment_LOD__MainTex.png",
+                            @"Roads\TinyRoads\Oneway1L\Textures\Ground_Segment_LOD__APRMap.png",
+                            @"Roads\TinyRoads\Oneway1L\Textures\Ground_LOD__XYSMap.png"));
 
                     info.SetAllNodesTexture(
                         new TextureSet
-                            (@"Roads\TinyRoads\OneWay1L\Textures\Ground_Node__MainTex.png",
-                             @"Roads\TinyRoads\OneWay1L\Textures\Ground_Node__APRMap.png"),
+                            (@"Roads\TinyRoads\Oneway1L\Textures\Ground_Node__MainTex.png",
+                             @"Roads\TinyRoads\Oneway1L\Textures\Ground_Node__APRMap.png"),
                         new LODTextureSet
-                           (@"Roads\TinyRoads\OneWay1L\Textures\Ground_Node_LOD__MainTex.png",
-                            @"Roads\TinyRoads\OneWay1L\Textures\Ground_Node_LOD__APRMap.png",
-                            @"Roads\TinyRoads\OneWay1L\Textures\Ground_LOD__XYSMap.png"));
+                           (@"Roads\TinyRoads\Oneway1L\Textures\Ground_Node_LOD__MainTex.png",
+                            @"Roads\TinyRoads\Oneway1L\Textures\Ground_Node_LOD__APRMap.png",
+                            @"Roads\TinyRoads\Oneway1L\Textures\Ground_LOD__XYSMap.png"));
                     break;
             }
 
@@ -78,7 +78,7 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.OneWay1L
             info.m_halfWidth = 4f;
             info.m_pavementWidth = 2f;
             info.m_class = roadInfo.m_class.Clone("NExt1LOneway");
-
+            info.m_class.m_level = ItemClass.Level.Level2;
             info.m_lanes = info.m_lanes
                 .Where(l => l.m_laneType != NetInfo.LaneType.Parking)
                 .ToArray();

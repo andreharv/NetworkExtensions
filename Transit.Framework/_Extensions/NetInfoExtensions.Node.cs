@@ -1,4 +1,5 @@
-﻿using Transit.Framework.Texturing;
+﻿using System.Collections.Generic;
+using Transit.Framework.Texturing;
 using UnityEngine;
 
 namespace Transit.Framework
@@ -53,6 +54,31 @@ namespace Transit.Framework
         {
             node.m_flagsRequired = required;
             node.m_flagsForbidden = forbidden;
+
+            return node;
+        }
+
+        public static NetInfo.Node SetConsistentUVs(this NetInfo.Node node)
+        {
+            var colors = new List<Color>();
+            var colors32 = new List<Color32>();
+            for (int i = 0; i < node.m_mesh.vertexCount; i++)
+            {
+                colors.Add(new UnityEngine.Color(255, 0, 255, 255));
+                colors32.Add(new UnityEngine.Color32(255, 0, 255, 255));
+            }
+            node.m_mesh.colors = colors.ToArray();
+            node.m_mesh.colors32 = colors32.ToArray();
+
+            colors = new List<Color>();
+            colors32 = new List<Color32>();
+            for (int i = 0; i < node.m_lodMesh.vertexCount; i++)
+            {
+                colors.Add(new UnityEngine.Color(255, 0, 255, 255));
+                colors32.Add(new UnityEngine.Color32(255, 0, 255, 255));
+            }
+            node.m_lodMesh.colors = colors.ToArray();
+            node.m_lodMesh.colors32 = colors32.ToArray();
 
             return node;
         }

@@ -34,7 +34,14 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.GravelTiny
             ///////////////////////////
             // 3DModeling            //
             ///////////////////////////
-            info.Setup8mNoSwWoodMesh(version);
+            if (version == NetInfoVersion.Ground)
+            {
+                info.Setup8mNoSWMesh(version);
+            }
+            else
+            {
+                info.Setup8mNoSwWoodMesh(version);
+            }
 
             ///////////////////////////
             // Texturing             //
@@ -45,7 +52,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.GravelTiny
             }
             else
             {
-                info.SetupElevatedBoardWalkTextures(version);
+                info.SetupBoardWalkTextures(version);
             }
 
             ///////////////////////////

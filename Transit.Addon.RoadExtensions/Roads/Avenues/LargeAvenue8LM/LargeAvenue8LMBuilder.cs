@@ -152,7 +152,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
                 var bridgePillar = PrefabCollection<BuildingInfo>.FindLoaded($"{Tools.PackageName("BridgePillar")}.CableStay32m_Data");
                 if (bridgePillar == null)
                 {
-                    Debug.Log($"{info.name}: CableStay32m Pillar not found!");
+                    Framework.Debug.Log($"{info.name}: CableStay32m Pillar not found!");
                 }
                 else
                 { 

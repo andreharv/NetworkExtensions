@@ -15,19 +15,35 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                         var segments0 = info.m_segments[0];
                         var nodes0 = info.m_nodes[0].ShallowClone();
                         var nodes1 = info.m_nodes[0].ShallowClone();
-
+                        var nodes2 = info.m_nodes[0].ShallowClone();
+                        var nodes3 = info.m_nodes[0].ShallowClone();
+                        var nodes4 = info.m_nodes[0].ShallowClone();
                         nodes0.m_flagsRequired = NetNode.Flags.None;
                         nodes0.m_flagsForbidden = NetNode.Flags.Transition;
 
                         nodes1.m_flagsRequired = NetNode.Flags.Transition;
                         nodes1.m_flagsForbidden = NetNode.Flags.None;
 
+                        nodes2.m_flagsRequired = NetNode.Flags.None;
+                        nodes2.m_flagsForbidden = NetNode.Flags.Transition | NetNode.Flags.LevelCrossing;
+
+                        nodes3.m_flagsRequired = NetNode.Flags.LevelCrossing;
+                        nodes3.m_flagsForbidden = NetNode.Flags.None;
+
+                        nodes4.m_flagsRequired = NetNode.Flags.Transition;
+                        nodes4.m_flagsForbidden = NetNode.Flags.None;
+
                         segments0
                             .SetFlagsDefault()
                             .SetMeshes(
-                            @"Roads\Common\Meshes\8m\NoSW\Ground.obj",
-                            @"Roads\Common\Meshes\8m\NoSW\Ground_LOD.obj");
-
+                            @"Roads\Common\Meshes\8m\NoSwWood\Ground_NoCom.obj",
+                            @"Roads\Common\Meshes\8m\NoSwWood\Ground_LOD_NoCom.obj")
+                            .SetConsistentUVs();
+                        //nodes0
+                        //    .SetMeshes(
+                        //    @"Roads\Common\Meshes\8m\NoSwWood\Ground_Node_NoCom.obj",
+                        //    @"Roads\Common\Meshes\8m\NoSwWood\Ground_Node_LOD_NoCom.obj")
+                        //    .SetConsistentUVs();
                         nodes0
                             .SetMeshes(
                             @"Roads\Common\Meshes\8m\NoSW\Ground_Node.obj",
@@ -36,16 +52,34 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                             .SetMeshes(
                             @"Roads\Common\Meshes\8m\NoSW\Ground_Trans.obj",
                             @"Roads\Common\Meshes\8m\NoSW\Ground_Trans_LOD.obj");
+                        nodes2
+                            .SetMeshes(
+                            @"Roads\Common\Meshes\8m\NoSwWood\Ground_Node_NoCom.obj",
+                            @"Roads\Common\Meshes\8m\NoSwWood\Ground_Node_LOD_NoCom.obj")
+                            .SetConsistentUVs();
+                        nodes3
+                            .SetMeshes(
+                            @"Roads\Common\Meshes\8m\NoSwWood\Ground_LevelCrossing_NoCom.obj",
+                            @"Roads\Common\Meshes\8m\NoSwWood\Ground_LevelCrossing_NoCom.obj")
+                            .SetConsistentUVs();
+                        nodes4
+                            .SetMeshes(
+                            @"Roads\Common\Meshes\8m\NoSwWood\Ground_Trans.obj",
+                            @"Roads\Common\Meshes\8m\NoSwWood\Ground_Trans_LOD.obj");
 
+                        nodes2.m_directConnect = true;      
+                        nodes2.m_connectGroup = NetInfo.ConnectGroup.CenterTram;
+                        nodes3.m_directConnect = true;
+                        nodes3.m_connectGroup = NetInfo.ConnectGroup.CenterTram;
                         info.m_segments = new[] { segments0 };
-                        info.m_nodes = new[] { nodes0, nodes1 };
+                        info.m_nodes = new[] { nodes0, nodes1, nodes2,nodes3,nodes4 };
                         break;
                     }
                 case NetInfoVersion.Elevated:
                 case NetInfoVersion.Bridge:
                     {
                         var segments0 = info.m_segments[0];
-                        var nodes0 = info.m_nodes[0];
+                        var nodes0 = info.m_nodes[0].ShallowClone();
                         var nodes1 = info.m_nodes[0].ShallowClone();
 
                         nodes0.m_flagsRequired = NetNode.Flags.None;
@@ -58,59 +92,30 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                             .SetFlagsDefault()
                             .SetMeshes(
                             @"Roads\Common\Meshes\8m\NoSwWood\Elevated_NoCom.obj",
-                            @"Roads\Common\Meshes\8m\NoSwWood\Elevated_LOD_NoCom.obj");
+                            @"Roads\Common\Meshes\8m\NoSwWood\Elevated_LOD_NoCom.obj")
+                            .SetConsistentUVs();
 
                         nodes0
                             .SetMeshes(
                             @"Roads\Common\Meshes\8m\NoSwWood\Elevated_Node_NoCom.obj",
-                            @"Roads\Common\Meshes\8m\NoSwWood\Elevated_Node_LOD_NoCom.obj");
+                            @"Roads\Common\Meshes\8m\NoSwWood\Elevated_Node_LOD_NoCom.obj")
+                            .SetConsistentUVs();
 
                         nodes1
                             .SetMeshes(
-                            @"Roads\Common\Meshes\8m\NoSW\Elevated_Trans.obj",
+                            @"Roads\Common\Meshes\8m\NoSwWood\Elevated_Trans.obj",
                             @"Roads\Common\Meshes\8m\NoSW\Elevated_Trans_LOD.obj");
-                        var colors = new List<UnityEngine.Color>();
-                        var colors32 = new List<UnityEngine.Color32>();
-                        for (int i = 0; i < segments0.m_mesh.vertexCount; i++)
-                        {
-                            colors.Add(new UnityEngine.Color(255, 0, 255, 255));
-                            colors32.Add(new UnityEngine.Color32(255, 0, 255, 255));
-                        }
-                        segments0.m_mesh.colors = colors.ToArray();
-                        segments0.m_mesh.colors32 = colors32.ToArray();
+                        //nodes2
+                        //    .SetMeshes(
+                        //    @"Roads\Common\Meshes\8m\NoSwWood\Ground_Node_NoCom.obj",
+                        //    @"Roads\Common\Meshes\8m\NoSwWood\Ground_Node_LOD_NoCom.obj")
+                        //    .SetConsistentUVs();
 
-                        colors = new List<UnityEngine.Color>();
-                        colors32 = new List<UnityEngine.Color32>();
-                        for (int i = 0; i < segments0.m_lodMesh.vertexCount; i++)
-                        {
-                            colors.Add(new UnityEngine.Color(255, 0, 255, 255));
-                            colors32.Add(new UnityEngine.Color32(255, 0, 255, 255));
-                        }
-                        segments0.m_lodMesh.colors = colors.ToArray();
-                        segments0.m_lodMesh.colors32 = colors32.ToArray();
-
-                        colors = new List<UnityEngine.Color>();
-                        colors32 = new List<UnityEngine.Color32>();
-                        for (int i = 0; i < nodes0.m_mesh.vertexCount; i++)
-                        {
-                            colors.Add(new UnityEngine.Color(255, 0, 255, 255));
-                            colors32.Add(new UnityEngine.Color32(255, 0, 255, 255));
-                        }
-                        nodes0.m_mesh.colors = colors.ToArray();
-                        nodes0.m_mesh.colors32 = colors32.ToArray();
-
-                        colors = new List<UnityEngine.Color>();
-                        colors32 = new List<UnityEngine.Color32>();
-                        for (int i = 0; i < nodes0.m_lodMesh.vertexCount; i++)
-                        {
-                            colors.Add(new UnityEngine.Color(255, 0, 255, 255));
-                            colors32.Add(new UnityEngine.Color32(255, 0, 255, 255));
-                        }
-                        nodes0.m_lodMesh.colors = colors.ToArray();
-                        nodes0.m_lodMesh.colors32 = colors32.ToArray();
+                        //nodes2.m_directConnect = true;
+                        //nodes2.m_connectGroup = NetInfo.ConnectGroup.CenterTram;
 
                         info.m_segments = new[] { segments0 };
-                        info.m_nodes = new[] { nodes0, nodes1 };
+                        info.m_nodes = new[] { nodes0, nodes1};
                         break;
                     }
             }
