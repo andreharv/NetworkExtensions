@@ -2,7 +2,9 @@
 using System.Linq;
 using Transit.Framework;
 using UnityEngine;
-
+#if DEBUG
+using Debug = Transit.Framework.Debug;
+#endif
 namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
 {
     public static partial class ZonablePedestrianHelper
@@ -14,7 +16,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
             float? pillarOffset = null;
             var bollardInfo = PrefabCollection<PropInfo>.FindLoaded($"{Tools.PackageName(bollardName)}.{bollardName}_Data");
             if (bollardInfo == null)
-                Framework.Debug.Log($"{info.name}: {bollardName} not found!");
+                Debug.Log($"{info.name}: {bollardName} not found!");
             else
                 bollardOffset = 0;
             BuildingInfo pillarInfo = null;
@@ -25,7 +27,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
                 pillarInfo = PrefabCollection<BuildingInfo>.FindLoaded($"{Tools.PackageName(pillarName)}.{pillarName}_Data");
                 if (pillarInfo == null)
                 {
-                    Framework.Debug.Log($"{info.name}: {pillarName} not found!");
+                    Debug.Log($"{info.name}: {pillarName} not found!");
                 }
             }
             info.AddBollards(version, bollardInfo, pillarInfo, pillarOffset, bollardOffset);
@@ -36,7 +38,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
             var bollardInfo = PrefabCollection<PropInfo>.FindLoaded($"{Tools.PackageName(bollardName)}.{bollardName}_Data");
             if (bollardInfo == null)
             {
-                Framework.Debug.Log($"{info.name}: {bollardName} not found!");
+                Debug.Log($"{info.name}: {bollardName} not found!");
             }
             info.AddBollards(version, bollardInfo);
         }
@@ -47,7 +49,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
             var bollardInfo = PrefabCollection<PropInfo>.FindLoaded($"{Tools.PackageName(bollardName)}.{bollardName}_Data");
             if (bollardInfo == null)
             {
-                Framework.Debug.Log($"{info.name}: {bollardName} not found!");
+                Debug.Log($"{info.name}: {bollardName} not found!");
             }
             info.AddBollards(version, bollardInfo);
         }

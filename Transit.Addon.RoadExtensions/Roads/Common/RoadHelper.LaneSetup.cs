@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Transit.Framework;
 using UnityEngine;
-
+#if DEBUG
+using Debug = Transit.Framework.Debug;
+#endif
 namespace Transit.Addon.RoadExtensions.Roads.Common
 {
     public static partial class RoadHelper
@@ -91,7 +93,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             //}
 
             //positionStart -= config.LaneWidth * (nbLanesBeforeMedian - (isNotSymmetrical && config.CenterLane != CenterLaneType.None ? 0 : 1)) + config.LaneWidth / 2;
-            Framework.Debug.Log($"{ rdInfo.name} has position start {positionStart}");
+            Debug.Log($"{ rdInfo.name} has position start {positionStart}");
             //Debug.Log(">>>> NbLanes : " + nbLanes);
             //Debug.Log(">>>> NbUsableLanes : " + nbUsableLanes);
             //Debug.Log(">>>> NbUsableLanesPerSide : " + nbUsableLanesPerSide);

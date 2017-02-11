@@ -7,7 +7,9 @@ using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.Network;
 using UnityEngine;
-
+#if DEBUG
+using Debug = Transit.Framework.Debug;
+#endif
 namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
 {
     public partial class LargeAvenue8LMBuilder : Activable, INetInfoBuilderPart, INetInfoLateBuilder
@@ -152,7 +154,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
                 var bridgePillar = PrefabCollection<BuildingInfo>.FindLoaded($"{Tools.PackageName("BridgePillar")}.CableStay32m_Data");
                 if (bridgePillar == null)
                 {
-                    Framework.Debug.Log($"{info.name}: CableStay32m Pillar not found!");
+                    Debug.Log($"{info.name}: CableStay32m Pillar not found!");
                 }
                 else
                 { 
