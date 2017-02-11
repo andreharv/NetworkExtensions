@@ -64,10 +64,11 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Pavement
             ///////////////////////////
             // Set up                //
             ///////////////////////////
+
             info.m_createGravel = false;
             info.m_createPavement = true;
             info.SetupTinyPed(version);
-
+            info.m_availableIn = ItemClass.Availability.None;
             ///////////////////////////
             // AI                    //
             ///////////////////////////

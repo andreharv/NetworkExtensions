@@ -37,7 +37,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Gravel
             ///////////////////////////
             if (version == NetInfoVersion.Ground)
             {
-                info.Setup8mNoSwWoodMesh(version);
+                info.Setup8mNoSWMesh(version);
             }
             else
             {
@@ -54,11 +54,11 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Gravel
             {
                 info.SetupBoardWalkTextures(version);
             }
-
+            
             info.m_createGravel = true;
             info.m_createPavement = false;
             info.SetupTinyPed(version);
-
+            info.m_availableIn = ItemClass.Availability.None;
             if (version == NetInfoVersion.Ground)
             {
                 info.m_setVehicleFlags = Vehicle.Flags.OnGravel;
