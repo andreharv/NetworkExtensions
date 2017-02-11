@@ -22,7 +22,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                         var segments1 = info.m_segments[1];
                         var segments2 = info.m_segments[2];
                         var segments3 = info.m_segments[1].ShallowClone();
-                        var segments4 = info.m_segments[0].ShallowClone();
                         segments0.SetMeshes(
                             @"Roads\Common\Meshes\32m\5mSw3mMdn\Ground.obj");
                         segments1.SetMeshes(
@@ -31,15 +30,13 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                             @"Roads\Common\Meshes\32m\5mSw3mMdn\BusBoth.obj");
                         segments3.SetMeshes(
                             @"Roads\Common\Meshes\32m\5mSw3mMdn\BusInv.obj");
-                        segments4.SetMeshes(
-                            @"Roads\Common\Meshes\32m\5mSw3mMdn\Ground_Inverted.obj");
                         if (layoutStyle != LanesLayoutStyle.Symmetrical)
                         {
                             RoadHelper.HandleAsymSegmentFlags(segments3, segments1);
-                            RoadHelper.HandleAsymSegmentFlags(segments0, segments4);
+                            RoadHelper.HandleAsymSegmentFlags(segments0);
                         }
 
-                        info.m_segments = new[] { segments0, segments1, segments2, segments3,segments4 };
+                        info.m_segments = new[] { segments0, segments1, segments2, segments3 };
                         break;
                     }
                 case NetInfoVersion.Elevated:

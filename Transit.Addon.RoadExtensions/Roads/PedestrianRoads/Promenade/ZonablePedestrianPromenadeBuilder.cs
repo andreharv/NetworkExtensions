@@ -74,11 +74,11 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Promenade
             if (version == NetInfoVersion.Tunnel)
             {
                 info.m_setVehicleFlags = Vehicle.Flags.Transition;
-                info.m_class = roadTunnelInfo.m_class.Clone("NExtPedRoad16m");
+                info.m_class = roadTunnelInfo.m_class.Clone("NExtPedRoadStone16m");
             }
             else
             {
-                info.m_class = roadInfo.m_class.Clone("NExtPedRoad16m");
+                info.m_class = roadInfo.m_class.Clone("NExtPedRoadStone16m");
             }
             info.m_class.m_level = ItemClass.Level.Level5;
 
@@ -94,7 +94,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Promenade
 
             var carLanes = new List<NetInfo.Lane>();
             carLanes.AddRange(vehicleLanes.Skip(2));
-            
+
             for (var i = 0; i < bikeLanes.Count; i++)
             {
                 bikeLanes[i].m_vehicleType = VehicleInfo.VehicleType.Bicycle;
@@ -108,7 +108,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Promenade
                 tempProps.RemoveProps("arrow");
                 bikeLanes[i].m_laneProps.m_props = tempProps.ToArray();
             }
-            
+
             for (int i = 0; i < carLanes.Count; i++)
             {
                 carLanes[i].m_verticalOffset = 0.05f;
@@ -128,7 +128,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Promenade
             }
             var pedLanes = new List<NetInfo.Lane>();
             pedLanes.AddRange(info.m_lanes.Where(l => l.m_laneType == NetInfo.LaneType.Pedestrian).OrderBy(l => l.m_position));
-            
+
             foreach (var lane in vehicleLanes)
             {
                 var laneProps = lane.m_laneProps.m_props.ToList();
@@ -164,19 +164,19 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Promenade
                     lightProp.m_position.x = ((i * 2) - 1) * -2.5f;
                     tempProps.Add(lightProp);
                 }
-                if (version == NetInfoVersion.Ground)
-                {
-                    var treeProp = new NetLaneProps.Prop()
-                    {
-                        m_tree = Prefabs.Find<TreeInfo>("Tree2variant"),
-                        m_repeatDistance = 30,
-                        m_probability = 100,
-                    };
-                    treeProp.m_position.x = ((i * 2) - 1) * 1.4f;
+                //if (version == NetInfoVersion.Ground)
+                //{
+                //    var treeProp = new NetLaneProps.Prop()
+                //    {
+                //        m_tree = Prefabs.Find<TreeInfo>("Tree2variant"),
+                //        m_repeatDistance = 30,
+                //        m_probability = 100,
+                //    };
+                //    treeProp.m_position.x = ((i * 2) - 1) * 1.4f;
 
-                    tempProps.Add(treeProp);
-                }
-                else if (version == NetInfoVersion.Elevated || version == NetInfoVersion.Bridge)
+                //    tempProps.Add(treeProp);
+                //}
+                if (version == NetInfoVersion.Elevated || version == NetInfoVersion.Bridge)
                 {
                     var benchProp1 = new NetLaneProps.Prop()
                     {
@@ -186,7 +186,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Promenade
                         m_probability = 100,
                         m_angle = 90 + (i * 180)
                     };
-                    benchProp1.m_position.x = ((i * 2) - 1)* 1.8f;
+                    benchProp1.m_position.x = ((i * 2) - 1) * 1.8f;
 
                     tempProps.Add(benchProp1);
                 }
@@ -245,6 +245,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Promenade
             var pedLanes = info.m_lanes.Where(pl => pl.m_laneType == NetInfo.LaneType.Pedestrian).ToArray();
             for (var i = 0; i < pedLanes.Length; i++)
             {
+                var additionalProps = new List<NetLaneProps.Prop>();
                 var bollardProp = new NetLaneProps.Prop()
                 {
                     m_prop = stoneBollard,
@@ -270,14 +271,22 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Promenade
                 bollardProp2.m_endFlagsRequired = NetNode.Flags.None;
                 bollardProp2.m_startFlagsRequired = NetNode.Flags.Transition;
 
-                var planterProp = new NetLaneProps.Prop();
-                planterProp.m_prop = RoadPlanter1;
-                planterProp.m_finalProp = RoadPlanter1;
-                planterProp.m_repeatDistance = 30;
-                planterProp.m_probability = 100;
-                planterProp.m_position = new UnityEngine.Vector3(((i * 2) - 1) * 1.4f, 0 , -0.15f);
+                additionalProps.Add(bollardProp);
+                additionalProps.Add(bollardProp2);
+                additionalProps.Add(bollardProp3);
+                additionalProps.Add(bollardProp4);
 
-                var additionalProps = new List<NetLaneProps.Prop> { bollardProp, bollardProp2, bollardProp3, bollardProp4, planterProp };
+                //if (version == NetInfoVersion.Ground)
+                //{
+                //    var planterProp = new NetLaneProps.Prop();
+                //    planterProp.m_prop = RoadPlanter1;
+                //    planterProp.m_finalProp = RoadPlanter1;
+                //    planterProp.m_repeatDistance = 30;
+                //    planterProp.m_probability = 100;
+                //    planterProp.m_position.x = ((i * 2) - 1) * 1.4f;
+                //    additionalProps.Add(planterProp);
+                //}     
+
                 var tempProps = pedLanes[i].m_laneProps.m_props.ToList();
                 tempProps.AddRange(additionalProps);
                 pedLanes[i].m_laneProps.m_props = tempProps.ToArray();

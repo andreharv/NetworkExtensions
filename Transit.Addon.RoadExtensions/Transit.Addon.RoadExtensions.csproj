@@ -2641,6 +2641,9 @@
     <None Include="Props\RetractBollard.crp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Props\RoadPlanter1.crp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Props\StoneBollard.crp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

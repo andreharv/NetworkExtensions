@@ -96,7 +96,7 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.Oneway1LParking
             info.m_halfWidth = 4f;
             info.m_pavementWidth = 1.5f;
             info.m_surfaceLevel = 0;
-            info.m_class = roadInfo.m_class.Clone("NExt1LOneway");
+            info.m_class = roadInfo.m_class.Clone("NExt1LOnewayWithParking");
             var parkLane = info.m_lanes.Last(l => l.m_laneType == NetInfo.LaneType.Parking).CloneWithoutStops();
             info.m_class.m_level = (ItemClass.Level)5; //New level
             parkLane.m_width = 2f;

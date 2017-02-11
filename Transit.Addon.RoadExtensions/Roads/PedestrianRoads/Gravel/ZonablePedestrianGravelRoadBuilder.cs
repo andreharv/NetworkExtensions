@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Transit.Addon.RoadExtensions.Compatibility;
 using Transit.Addon.RoadExtensions.Menus.Roads;
 using Transit.Addon.RoadExtensions.Roads.Common;
@@ -63,7 +64,17 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Gravel
             {
                 info.m_setVehicleFlags = Vehicle.Flags.OnGravel;
             }
-
+            else if (version == NetInfoVersion.Elevated || version == NetInfoVersion.Bridge)
+            {
+                info.m_surfaceLevel = 0.6f;
+                var lanes = new List<NetInfo.Lane>();
+                lanes.AddRange(info.m_lanes);
+                for (int i = 0; i < info.m_lanes.Length; i++)
+                {
+                    lanes[i].m_verticalOffset = 0.6f;
+                }
+                info.m_lanes = lanes.ToArray();
+            }
             ///////////////////////////
             // AI                    //
             ///////////////////////////
