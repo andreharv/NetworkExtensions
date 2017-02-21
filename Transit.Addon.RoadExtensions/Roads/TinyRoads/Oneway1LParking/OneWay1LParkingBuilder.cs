@@ -166,8 +166,8 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.Oneway1LParking
 
             if (playerNetAI != null && originPlayerNetAI != null)
             {
-                playerNetAI.m_constructionCost = originPlayerNetAI.m_constructionCost * 1 / 2;
-                playerNetAI.m_maintenanceCost = originPlayerNetAI.m_maintenanceCost * 1 / 2;
+                playerNetAI.m_constructionCost = originPlayerNetAI.m_constructionCost * 2 / 3;
+                playerNetAI.m_maintenanceCost = originPlayerNetAI.m_maintenanceCost * 2 / 3;
             }
 
             var roadBaseAI = info.GetComponent<RoadBaseAI>();

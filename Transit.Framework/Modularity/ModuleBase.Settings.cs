@@ -2,6 +2,8 @@
 using System.Xml;
 using ICities;
 using Transit.Framework.Interfaces;
+using ColossalFramework.UI;
+using Transit.Framework.Builders;
 
 namespace Transit.Framework.Modularity
 {
@@ -9,10 +11,37 @@ namespace Transit.Framework.Modularity
     {
         public virtual void OnSettingsUI(UIHelperBase helper)
         {
+            var stripHelper = helper is UIHelper?(UIHelper)helper:null;
+            var uiCat = "";
+            if(stripHelper != null && stripHelper.self != null)
+            {
+                var myUIHelper = stripHelper.self is UIPanel ? (UIPanel)stripHelper.self : null;
+                if (myUIHelper != null)
+                {
+                    uiCat = myUIHelper.name;
+                }
+            }
             foreach (var part in Parts.OfType<IActivablePart>())
             {
                 var partLocal = part;
-
+                if (uiCat != "")
+                {
+                    if (part is IMenuItemBuilder)
+                    {
+                        if(((IMenuItemBuilder)part).UICategory != uiCat)
+                        {
+                            continue;
+                        }
+                    }
+                    else if (part is IMenuItemBuildersProvider)
+                    {
+                        if (((IMenuItemBuildersProvider)part).MenuItemBuilders.All(mp=>mp.UICategory != uiCat))
+                        {
+                            continue;
+                        }
+                    }
+                }
+            
                 helper.AddCheckbox(
                     part.DisplayName,
                     part is IShortDescriptor ? ((IShortDescriptor)part).ShortDescription :

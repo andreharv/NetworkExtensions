@@ -6,7 +6,6 @@ namespace Transit.Framework.Builders
     {
         string UICategory { get; }
         int UIOrder { get; }
-
         string ThumbnailsPath { get; }
         string InfoTooltipPath { get; }
     }

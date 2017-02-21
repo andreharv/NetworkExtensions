@@ -30,7 +30,6 @@ namespace Transit.Framework
         {
             info.m_UIPriority = config.UIOrder;
             info.SetUICategory(config.UICategory);
-
             if (!config.ThumbnailsPath.IsNullOrWhiteSpace())
             {
                 var thumbnails = AssetManager.instance.GetThumbnails(config.GetCodeName(), config.ThumbnailsPath);

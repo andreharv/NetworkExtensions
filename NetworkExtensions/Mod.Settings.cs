@@ -44,22 +44,45 @@ namespace NetworkExtensions
             container.size = new Vector3(744, 713);
             strip.tabPages = container;
 
-            int tabIndex = 0;
             foreach (IModule module in Modules)
             {
-                strip.AddTab(module.Name, tabTemplate, true);
-                strip.selectedIndex = tabIndex;
+                if (module.Name == "Roads")
+                {
+                    addTab(strip, 0, module, tabTemplate, "Tiny", "RoadsTiny");
+                    addTab(strip, 1, module, tabTemplate, "Small", "RoadsSmall");
+                    addTab(strip, 2, module, tabTemplate, "Sml Hvy","RoadsSmallHV");
+                    addTab(strip, 3, module, tabTemplate, "Medium", "RoadsMedium");
+                    addTab(strip, 4, module, tabTemplate, "Large", "RoadsLarge");
+                    addTab(strip, 5, module, tabTemplate, "Highway", "RoadsHighway");
+                    addTab(strip, 6, module, tabTemplate, "Ped", "RoadsPedestrians");
+                    addTab(strip, 7, module, tabTemplate, "Bus", "RoadsBusways");
+                }
+                else
+                {
+                    addTab(strip, 8, module, tabTemplate);
+                }
 
-                // Get the current container and use the UIHelper to have something in there
-                UIPanel stripRoot = strip.tabContainer.components[tabIndex++] as UIPanel;
-                stripRoot.autoLayout = true;
-                stripRoot.autoLayoutDirection = LayoutDirection.Vertical;
-                stripRoot.autoLayoutPadding.top = 5;
-                stripRoot.autoLayoutPadding.left = 10;
-                UIHelper stripHelper = new UIHelper(stripRoot);
-
-                module.OnSettingsUI(stripHelper);
             }
+        }
+        private static void addTab(UITabstrip strip, int tabIndex, IModule module, UIButton tabTemplate, string moduleName = "",string uiCategory = "")
+        {
+            if (moduleName == "")
+            {
+                moduleName = module.Name;
+            }
+            strip.AddTab(moduleName, tabTemplate, true);
+            strip.selectedIndex = tabIndex;
+
+            // Get the current container and use the UIHelper to have something in there
+            UIPanel stripRoot = strip.tabContainer.components[tabIndex] as UIPanel;
+            stripRoot.autoLayout = true;
+            stripRoot.autoLayoutDirection = LayoutDirection.Vertical;
+            stripRoot.autoLayoutPadding.top = 5;
+            stripRoot.autoLayoutPadding.left = 10;
+            stripRoot.name = $"{uiCategory}";
+            UIHelper stripHelper = new UIHelper(stripRoot);
+            
+            module.OnSettingsUI(stripHelper);
         }
     }
 }

@@ -14,11 +14,13 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             switch (version)
             {
                 case NetInfoVersion.Ground:
+                case NetInfoVersion.GroundGrass:
+                case NetInfoVersion.GroundTrees:
                     {
-                        var segments0 = info.m_segments[0];
-                        var segments1 = info.m_segments[1];
-                        var segments2 = info.m_segments[2];
-                        var segments3 = info.m_segments[1].ShallowClone();
+                        var segments0 = info.m_segments[0].SetConsistentUVs();
+                        var segments1 = info.m_segments[1].SetConsistentUVs();
+                        var segments2 = info.m_segments[2].SetConsistentUVs();
+                        var segments3 = info.m_segments[1].ShallowClone().SetConsistentUVs();
 
                         segments3.SetMeshes(@"Roads\Common\Meshes\16m\3mSW\BusStopInv.obj");
                         if (lanesLayoutStyle != LanesLayoutStyle.Symmetrical)
@@ -40,7 +42,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                         segments0
                             .SetMeshes
                                 (@"Roads\Common\Meshes\16m\3mSW\Elevated.obj",
-                                @"Roads\Common\Meshes\16m\3mSW\Elevated_LOD.obj");
+                                @"Roads\Common\Meshes\16m\3mSW\Elevated_LOD.obj")
+                                .SetConsistentUVs();
 
                         nodes0.SetMeshes
                             (@"Roads\Common\Meshes\16m\3mSW\Elevated_Node.obj",
@@ -64,7 +67,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                         segment2
                             .SetMeshes
                             (@"Roads\Common\Meshes\16m\3mSW\Slope.obj",
-                            @"Roads\Common\Meshes\16m\3mSW\Slope_LOD.obj");
+                            @"Roads\Common\Meshes\16m\3mSW\Slope_LOD.obj")
+                            .SetConsistentUVs();
 
                         node1
                             .SetMeshes
@@ -96,7 +100,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                         segments1
                             .SetMeshes
                             (@"Roads\Common\Meshes\16m\3mSW\Tunnel.obj",
-                            @"Roads\Common\Meshes\16m\3mSW\Tunnel_LOD.obj");
+                            @"Roads\Common\Meshes\16m\3mSW\Tunnel_LOD.obj")
+                            .SetConsistentUVs();
 
                         nodes1
                             .SetFlags(NetNode.Flags.None, NetNode.Flags.None)

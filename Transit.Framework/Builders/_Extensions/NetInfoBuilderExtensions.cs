@@ -11,7 +11,7 @@ namespace Transit.Framework.Builders
         {
             if (builder is INetInfoSpecificBaseBuilder)
             {
-                return ((INetInfoSpecificBaseBuilder) builder).GetSpecificBasedPrefabName(version);
+                return ((INetInfoSpecificBaseBuilder)builder).GetSpecificBasedPrefabName(version);
             }
             else
             {
@@ -56,8 +56,13 @@ namespace Transit.Framework.Builders
             var groundGrassInfo = builder.BuildVersion(NetInfoVersion.GroundGrass, lateOperations);
             var groundTreesInfo = builder.BuildVersion(NetInfoVersion.GroundTrees, lateOperations);
 
-            var groundInfos = new[] {groundInfo, groundGrassInfo, groundTreesInfo};
-            groundInfos = groundInfos.Where(gi => gi != null).ToArray();
+            var groundInfos = new Dictionary<NetInfoVersion, NetInfo>();
+            if (groundInfo != null)
+                groundInfos.Add(NetInfoVersion.Ground, groundInfo);
+            if (groundGrassInfo != null)
+                groundInfos.Add(NetInfoVersion.GroundGrass, groundGrassInfo);
+            if (groundTreesInfo != null)
+                groundInfos.Add(NetInfoVersion.GroundTrees, groundTreesInfo);
 
             if (!groundInfos.Any())
             {
@@ -84,17 +89,15 @@ namespace Transit.Framework.Builders
             else if (builder is IMenuItemBuildersProvider)
             {
                 var mibp = builder as IMenuItemBuildersProvider;
-                var mibs = mibp.MenuItemBuilders.ToDictionary(x => x.Name, StringComparer.InvariantCultureIgnoreCase);
+                var mibs = mibp.MenuItemBuilders.ToList();
 
                 foreach (var mainInfo in groundInfos)
                 {
-                    if (mibs.ContainsKey(mainInfo.name))
-                    {
-                        var mib = mibs[mainInfo.name];
-                        mainInfo.SetMenuItemConfig(mib);
+                    var mib = mibs.FirstOrDefault(m => ((IMenuItemVersionedBuilder)m).DefaultVersion == mainInfo.Key);
+                    if (mib != null)
+                        mainInfo.Value.SetMenuItemConfig(mib);
                     }
                 }
-            }
             else
             {
                 throw new Exception("Cannot set the menuitem on netinfo, either implement IMenuItemBuilder or IMenuItemBuildersProvider");
@@ -103,7 +106,7 @@ namespace Transit.Framework.Builders
             // Setup AI
             foreach (var mainInfo in groundInfos)
             {
-                var ai = mainInfo.GetComponent<RoadAI>();
+                var ai = mainInfo.Value.GetComponent<RoadAI>();
 
                 ai.m_elevatedInfo = elevatedInfo;
                 ai.m_bridgeInfo = bridgeInfo;
@@ -114,7 +117,7 @@ namespace Transit.Framework.Builders
             // Returning
             foreach (var mainInfo in groundInfos)
             {
-                yield return mainInfo;
+                yield return mainInfo.Value;
             }
             if (elevatedInfo != null) yield return elevatedInfo;
             if (bridgeInfo != null) yield return bridgeInfo;
@@ -126,7 +129,15 @@ namespace Transit.Framework.Builders
         {
             if (builder.SupportedVersions.HasFlag(version))
             {
-                var basedPrefabName = builder.GetBasedPrefabName(version);
+                var basedPrefabVersion = version;
+                if (builder is IMultiNetInfoBuilderPart && ((IMultiNetInfoBuilderPart)builder).UseGroundBasedPrefabName)
+                {
+                    if (version == NetInfoVersion.GroundGrass || version == NetInfoVersion.GroundTrees)
+                    {
+                        basedPrefabVersion = NetInfoVersion.Ground;
+                    }
+                }
+                var basedPrefabName = builder.GetBasedPrefabName(basedPrefabVersion);
                 var builtPrefabName = builder.GetBuiltPrefabName(version);
 
                 var info = Prefabs

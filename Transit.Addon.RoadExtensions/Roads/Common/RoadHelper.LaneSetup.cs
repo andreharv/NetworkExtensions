@@ -93,7 +93,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             //}
 
             //positionStart -= config.LaneWidth * (nbLanesBeforeMedian - (isNotSymmetrical && config.CenterLane != CenterLaneType.None ? 0 : 1)) + config.LaneWidth / 2;
-            Debug.Log($"{ rdInfo.name} has position start {positionStart}");
             //Debug.Log(">>>> NbLanes : " + nbLanes);
             //Debug.Log(">>>> NbUsableLanes : " + nbUsableLanes);
             //Debug.Log(">>>> NbUsableLanesPerSide : " + nbUsableLanesPerSide);

@@ -164,18 +164,18 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Promenade
                     lightProp.m_position.x = ((i * 2) - 1) * -2.5f;
                     tempProps.Add(lightProp);
                 }
-                //if (version == NetInfoVersion.Ground)
-                //{
-                //    var treeProp = new NetLaneProps.Prop()
-                //    {
-                //        m_tree = Prefabs.Find<TreeInfo>("Tree2variant"),
-                //        m_repeatDistance = 30,
-                //        m_probability = 100,
-                //    };
-                //    treeProp.m_position.x = ((i * 2) - 1) * 1.4f;
+                if (version == NetInfoVersion.Ground)
+                {
+                    var treeProp = new NetLaneProps.Prop()
+                    {
+                        m_tree = Prefabs.Find<TreeInfo>("Tree2variant"),
+                        m_repeatDistance = 30,
+                        m_probability = 100,
+                    };
+                    treeProp.m_position.x = ((i * 2) - 1) * 1.4f;
 
-                //    tempProps.Add(treeProp);
-                //}
+                    tempProps.Add(treeProp);
+                }
                 if (version == NetInfoVersion.Elevated || version == NetInfoVersion.Bridge)
                 {
                     var benchProp1 = new NetLaneProps.Prop()

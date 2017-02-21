@@ -18,12 +18,12 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L
         public int Order { get { return 110; } }
         public string ShortDescription { get { return "No parking, not zoneable, buses only [Traffic++ V2 required]"; } }
         public NetInfoVersion SupportedVersions { get { return NetInfoVersion.AllWithDecoration; } }
-
+        public bool UseGroundBasedPrefabName { get { return false; } }
         public IEnumerable<IMenuItemBuilder> MenuItemBuilders
         {
             get
             {
-                yield return new MenuItemBuilder
+                yield return new MenuItemVersionedBuilder
                 {
                     UICategory = RExExtendedMenus.ROADS_BUSWAYS,
                     UIOrder = 10,
@@ -31,9 +31,10 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L
                     DisplayName = "[BETA] Busway",
                     Description = "A two-lane, two-way road suitable for buses only. Busway does not allow zoning next to it!",
                     ThumbnailsPath = @"Roads\BusRoads\Busway2L\thumbnails.png",
-                    InfoTooltipPath = @"Roads\BusRoads\Busway2L\infotooltip.png"
+                    InfoTooltipPath = @"Roads\BusRoads\Busway2L\infotooltip.png",
+                    DefaultVersion = NetInfoVersion.Ground
                 };
-                yield return new MenuItemBuilder
+                yield return new MenuItemVersionedBuilder
                 {
                     UICategory = RExExtendedMenus.ROADS_BUSWAYS,
                     UIOrder = 11,
@@ -41,9 +42,10 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L
                     DisplayName = "[BETA] Busway with Grass",
                     Description = "A two-lane, two-way road with decorative grass suitable for buses only. Busway does not allow zoning next to it!",
                     ThumbnailsPath = @"Roads\BusRoads\Busway2L\thumbnails_grass.png",
-                    InfoTooltipPath = @"Roads\BusRoads\Busway2L\infotooltip_grass.png"
+                    InfoTooltipPath = @"Roads\BusRoads\Busway2L\infotooltip_grass.png",
+                    DefaultVersion = NetInfoVersion.GroundGrass
                 };
-                yield return new MenuItemBuilder
+                yield return new MenuItemVersionedBuilder
                 {
                     UICategory = RExExtendedMenus.ROADS_BUSWAYS,
                     UIOrder = 12,
@@ -51,7 +53,8 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L
                     DisplayName = "[BETA] Busway with Trees",
                     Description = "A two-lane, two-way road with decorative trees suitable for buses only. Busway does not allow zoning next to it!",
                     ThumbnailsPath = @"Roads\BusRoads\Busway2L\thumbnails_trees.png",
-                    InfoTooltipPath = @"Roads\BusRoads\Busway2L\infotooltip_trees.png"
+                    InfoTooltipPath = @"Roads\BusRoads\Busway2L\infotooltip_trees.png",
+                    DefaultVersion = NetInfoVersion.GroundTrees
                 };
             }
         }
