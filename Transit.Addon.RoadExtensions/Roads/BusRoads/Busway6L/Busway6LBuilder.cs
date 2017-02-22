@@ -22,7 +22,7 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway6L
         {
             get
             {
-                yield return new MenuItemVersionedBuilder
+                yield return new MenuItemBuilder
                 {
                     UICategory = RExExtendedMenus.ROADS_BUSWAYS,
                     UIOrder = 40,
@@ -30,10 +30,9 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway6L
                     DisplayName = "[BETA] Large Road With Bus Lanes",
                     Description = "A six-lane, two-way road suitable for cars with dedicated bus lanes.",
                     ThumbnailsPath = @"Roads\BusRoads\Busway6L\thumbnails.png",
-                    InfoTooltipPath = @"Roads\BusRoads\Busway6L\infotooltip.png",
-                    DefaultVersion = NetInfoVersion.Ground
+                    InfoTooltipPath = @"Roads\BusRoads\Busway6L\infotooltip.png"
                 };
-                yield return new MenuItemVersionedBuilder
+                yield return new MenuItemBuilder
                 {
                     UICategory = RExExtendedMenus.ROADS_BUSWAYS,
                     UIOrder = 41,
@@ -41,10 +40,9 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway6L
                     DisplayName = "[BETA] Large Road Decoration Grass With Bus Lanes",
                     Description = "A six-lane, two-way road suitable for cars with decorative grass and dedicated bus lanes.",
                     ThumbnailsPath = @"Roads\BusRoads\Busway6L\thumbnails_grass.png",
-                    InfoTooltipPath = @"Roads\BusRoads\Busway6L\infotooltip_grass.png",
-                    DefaultVersion = NetInfoVersion.GroundGrass
+                    InfoTooltipPath = @"Roads\BusRoads\Busway6L\infotooltip_grass.png"
                 };
-                yield return new MenuItemVersionedBuilder
+                yield return new MenuItemBuilder
                 {
                     UICategory = RExExtendedMenus.ROADS_BUSWAYS,
                     UIOrder = 42,
@@ -52,8 +50,7 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway6L
                     DisplayName = "[BETA] Large Road Decoration Grass With Bus Lanes",
                     Description = "A six-lane, two-way road suitable for cars with decorative trees and dedicated bus lanes.",
                     ThumbnailsPath = @"Roads\BusRoads\Busway6L\thumbnails_trees.png",
-                    InfoTooltipPath = @"Roads\BusRoads\Busway6L\infotooltip_trees.png",
-                    DefaultVersion = NetInfoVersion.GroundTrees
+                    InfoTooltipPath = @"Roads\BusRoads\Busway6L\infotooltip_trees.png"
                 };
             }
         }

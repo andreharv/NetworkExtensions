@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Transit.Addon.RoadExtensions.Menus;
-using Transit.Addon.RoadExtensions.Menus.Roads;
 using Transit.Addon.RoadExtensions.Roads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
@@ -25,7 +22,7 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallRoads.BasicRoadMdn
         {
             get
             {
-                yield return new MenuItemVersionedBuilder
+                yield return new MenuItemBuilder
                 {
                     UICategory = "RoadsSmall",
                     UIOrder = 10,
@@ -34,29 +31,29 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallRoads.BasicRoadMdn
                     Description = "A basic two lane road with a median and no parkings spaces. Supports local traffic.",
                     ThumbnailsPath = @"Roads\SmallRoads\BasicRoadMdn\thumbnails.png",
                     InfoTooltipPath = @"Roads\SmallRoads\BasicRoadMdn\infotooltip.png",
-                    DefaultVersion = NetInfoVersion.Ground
+                    //DefaultVersion = NetInfoVersion.Ground
                 };
-                yield return new MenuItemVersionedBuilder
+                yield return new MenuItemBuilder
                 {
                     UICategory = "RoadsSmall",
                     UIOrder = 11,
-                    Name = "BasicRoadMdnGrass",
+                    Name = "BasicRoadMdn Decoration Grass",
                     DisplayName = "Basic Road with Grass Median",
                     Description = "A basic two lane road with a grass median and no parkings spaces. Supports local traffic.",
                     ThumbnailsPath = @"Roads\SmallRoads\BasicRoadMdn\thumbnails_grass.png",
                     InfoTooltipPath = @"Roads\SmallRoads\BasicRoadMdn\infotooltip_grass.png",
-                    DefaultVersion = NetInfoVersion.GroundGrass
+                    //DefaultVersion = NetInfoVersion.GroundGrass
                 };
-                yield return new MenuItemVersionedBuilder
+                yield return new MenuItemBuilder
                 {
                     UICategory = "RoadsSmall",
                     UIOrder = 12,
-                    Name = "BasicRoadMdnTrees",
+                    Name = "BasicRoadMdn Decoration Trees",
                     DisplayName = "Basic Road with Grass Median and Trees",
                     Description = "A basic two lane road with a grass median, trees and no parkings spaces. Supports local traffic.",
                     ThumbnailsPath = @"Roads\SmallRoads\BasicRoadMdn\thumbnails_trees.png",
                     InfoTooltipPath = @"Roads\SmallRoads\BasicRoadMdn\infotooltip_trees.png",
-                    DefaultVersion = NetInfoVersion.GroundTrees
+                    //DefaultVersion = NetInfoVersion.GroundTrees
                 };
             }
         }

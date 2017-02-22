@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Transit.Framework.Interfaces;
 using Transit.Framework.Network;
 
 namespace Transit.Framework.Builders
@@ -56,13 +57,8 @@ namespace Transit.Framework.Builders
             var groundGrassInfo = builder.BuildVersion(NetInfoVersion.GroundGrass, lateOperations);
             var groundTreesInfo = builder.BuildVersion(NetInfoVersion.GroundTrees, lateOperations);
 
-            var groundInfos = new Dictionary<NetInfoVersion, NetInfo>();
-            if (groundInfo != null)
-                groundInfos.Add(NetInfoVersion.Ground, groundInfo);
-            if (groundGrassInfo != null)
-                groundInfos.Add(NetInfoVersion.GroundGrass, groundGrassInfo);
-            if (groundTreesInfo != null)
-                groundInfos.Add(NetInfoVersion.GroundTrees, groundTreesInfo);
+            var groundInfos = new[] { groundInfo, groundGrassInfo, groundTreesInfo };
+            groundInfos = groundInfos.Where(gi => gi != null).ToArray();
 
             if (!groundInfos.Any())
             {
@@ -89,15 +85,17 @@ namespace Transit.Framework.Builders
             else if (builder is IMenuItemBuildersProvider)
             {
                 var mibp = builder as IMenuItemBuildersProvider;
-                var mibs = mibp.MenuItemBuilders.ToList();
+                var mibs = mibp.MenuItemBuilders.ToDictionary(x => x.Name, StringComparer.InvariantCultureIgnoreCase);
 
                 foreach (var mainInfo in groundInfos)
                 {
-                    var mib = mibs.FirstOrDefault(m => ((IMenuItemVersionedBuilder)m).DefaultVersion == mainInfo.Key);
-                    if (mib != null)
-                        mainInfo.Value.SetMenuItemConfig(mib);
+                    if (mibs.ContainsKey(mainInfo.name))
+                    {
+                        var mib = mibs[mainInfo.name];
+                        mainInfo.SetMenuItemConfig(mib);
                     }
                 }
+            }
             else
             {
                 throw new Exception("Cannot set the menuitem on netinfo, either implement IMenuItemBuilder or IMenuItemBuildersProvider");
@@ -106,7 +104,7 @@ namespace Transit.Framework.Builders
             // Setup AI
             foreach (var mainInfo in groundInfos)
             {
-                var ai = mainInfo.Value.GetComponent<RoadAI>();
+                var ai = mainInfo.GetComponent<RoadAI>();
 
                 ai.m_elevatedInfo = elevatedInfo;
                 ai.m_bridgeInfo = bridgeInfo;
@@ -117,7 +115,7 @@ namespace Transit.Framework.Builders
             // Returning
             foreach (var mainInfo in groundInfos)
             {
-                yield return mainInfo.Value;
+                yield return mainInfo;
             }
             if (elevatedInfo != null) yield return elevatedInfo;
             if (bridgeInfo != null) yield return bridgeInfo;

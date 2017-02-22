@@ -55,10 +55,8 @@
     <Compile Include="Activable.cs" />
     <Compile Include="AtlasManager.cs" />
     <Compile Include="Builders\IAtlasBuilder.cs" />
-    <Compile Include="Builders\IMenuItemVersionedBuilder.cs" />
     <Compile Include="Builders\INetInfoInvertableBuilder.cs" />
     <Compile Include="Builders\IToolBuilder.cs" />
-    <Compile Include="Builders\MenuItemVersionedBuilder.cs" />
     <Compile Include="Builders\ToolBuilder.cs" />
     <Compile Include="ExtendedToolBase.cs" />
     <Compile Include="Interfaces\IDLCRequired.cs" />
