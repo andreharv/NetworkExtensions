@@ -8,8 +8,8 @@
     <ProjectGuid>{D2DA5492-3DE6-4E7D-AFF1-BB62C950632D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NetworkExtensions.Deploy</RootNamespace>
-    <AssemblyName>NetworkExtensions.Deploy</AssemblyName>
+    <RootNamespace>NetworkExtensions2.Deploy</RootNamespace>
+    <AssemblyName>NetworkExtensions2.Deploy</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -35,9 +35,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NetworkExtensions\NetworkExtensions.csproj">
+    <ProjectReference Include="..\NetworkExtensions2\NetworkExtensions2.csproj">
       <Project>{dcd9dd56-9c49-4ba9-8f37-7567444fe7cb}</Project>
-      <Name>NetworkExtensions</Name>
+      <Name>NetworkExtensions2</Name>
     </ProjectReference>
     <ProjectReference Include="..\Transit.Addon.RoadExtensions\Transit.Addon.RoadExtensions.csproj">
       <Project>{19FA21B2-39CC-4B90-BE7E-B6BDCCB09208}</Project>
@@ -68,14 +68,14 @@
   <PropertyGroup>
     <PostBuildEvent>forfiles /P "$(ProjectDir)bin\$(ConfigurationName)" /S /M *.CRP /C "cmd /c move @file "$(ProjectDir)bin\$(ConfigurationName)""
 
-del "$(TargetDir)NetworkExtensions.Deploy.dll"
+del "$(TargetDir)NetworkExtensions2.Deploy.dll"
 del "$(TargetDir)*.pdb"
 rd /s /q "$(TargetDir)\Buildings"
 
 if $(ConfigurationName) == Debug (
-rd /s /q  "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\NetworkExtensions"
-mkdir "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\NetworkExtensions"
-xcopy /q /y /e "$(ProjectDir)bin\$(ConfigurationName)" "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\NetworkExtensions"
+rd /s /q  "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\NetworkExtensions2"
+mkdir "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\NetworkExtensions2"
+xcopy /q /y /e "$(ProjectDir)bin\$(ConfigurationName)" "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\NetworkExtensions2"
 ) else (
 rd /s /q  "D:\Games\Steam\SteamApps\workshop\content\255710\478820060"
 mkdir "D:\Games\Steam\SteamApps\workshop\content\255710\478820060"

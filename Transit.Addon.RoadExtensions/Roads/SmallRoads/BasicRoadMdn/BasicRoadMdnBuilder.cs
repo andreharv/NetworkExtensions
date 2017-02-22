@@ -65,7 +65,6 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallRoads.BasicRoadMdn
                 info.m_nodes = roadInfo.m_nodes.Select(x => x.ShallowClone()).ToArray();
                 info.m_lanes = roadInfo.m_lanes.Select(x => x.ShallowClone()).ToArray();
             }
-            var roadTunnelInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_2L_TUNNEL);
 
             ///////////////////////////
             // 3DModeling            //

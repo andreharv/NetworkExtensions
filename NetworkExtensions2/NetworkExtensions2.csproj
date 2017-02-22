@@ -7,8 +7,8 @@
     <ProjectGuid>{DCD9DD56-9C49-4BA9-8F37-7567444FE7CB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NetworkExtensions</RootNamespace>
-    <AssemblyName>NetworkExtensions</AssemblyName>
+    <RootNamespace>NetworkExtensions2</RootNamespace>
+    <AssemblyName>NetworkExtensions2</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
