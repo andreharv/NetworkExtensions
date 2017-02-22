@@ -20,17 +20,23 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                         var segments0 = info.m_segments[0].SetConsistentUVs();
                         var segments1 = info.m_segments[1].SetConsistentUVs();
                         var segments2 = info.m_segments[2].SetConsistentUVs();
-                        var segments3 = info.m_segments[1].ShallowClone().SetConsistentUVs();
-
-                        segments3.SetMeshes(@"Roads\Common\Meshes\16m\3mSW\BusStopInv.obj");
                         if (lanesLayoutStyle != LanesLayoutStyle.Symmetrical)
                         {
+                            var segments3 = info.m_segments[1].ShallowClone().SetConsistentUVs();
+
+                            segments3.SetMeshes(@"Roads\Common\Meshes\16m\3mSW\BusStopInv.obj");
+
                             RoadHelper.HandleAsymSegmentFlags(segments1, segments3);
                             RoadHelper.HandleAsymSegmentFlags(segments0);
                             RoadHelper.HandleAsymSegmentFlags(segments2);
-                        }
 
-                        info.m_segments = new[] { segments0, segments1, segments2, segments3 };
+
+                            info.m_segments = new[] { segments0, segments1, segments2, segments3 };
+                        }
+                        else
+                        {
+                            info.m_segments = new[] { segments0, segments1, segments2 };
+                        }
                         break;
                     }
                 case NetInfoVersion.Elevated:

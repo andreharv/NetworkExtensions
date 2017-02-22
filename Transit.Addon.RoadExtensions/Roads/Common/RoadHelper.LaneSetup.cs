@@ -215,7 +215,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             {
                 var l = vehicleLanes[i];
 
-                if (version == NetInfoVersion.Ground && config.HasBusStop)
+                if ((version == NetInfoVersion.Ground || version == NetInfoVersion.GroundGrass || version == NetInfoVersion.GroundTrees) && config.HasBusStop)
                 {
                     if (i == 0)
                     {

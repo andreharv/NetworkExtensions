@@ -23,7 +23,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                         var segments2 = info.m_segments[2];
                         var segments3 = info.m_segments[0].ShallowClone();
 
-                        segments3.SetMeshes(@"Roads\Common\Meshes\16m\3mSW3mMdn\Ground_Segment_Median.obj", @"Roads\Common\Meshes\16m\3mSW3mMdn\Ground_Segment_Median_LOD.obj");
+                        segments3.SetFlagsDefault().SetMeshes(@"Roads\Common\Meshes\16m\3mSW3mMdn\Ground_Segment_Median.obj", @"Roads\Common\Meshes\16m\3mSW3mMdn\Ground_Segment_Median_LOD.obj");
 
                         var theNodes = new List<NetInfo.Node>();
                         theNodes.AddRange(info.m_nodes);
