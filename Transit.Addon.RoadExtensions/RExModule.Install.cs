@@ -51,8 +51,6 @@ namespace Transit.Addon.RoadExtensions
             {
                 locale.CreateNetTitleLocalizedString(builder.Name, builder.DisplayName);
                 locale.CreateNetDescriptionLocalizedString(builder.Name, builder.Description);
-                Framework.Debug.Log(builder.Name);
-                Framework.Debug.Log(builder.DisplayName);
             }
         }
 
