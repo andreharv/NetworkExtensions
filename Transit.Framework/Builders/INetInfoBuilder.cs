@@ -10,7 +10,6 @@ namespace Transit.Framework.Builders
 
     public interface IMultiNetInfoBuilderPart : INetInfoBuilder, IActivablePart, IIdentifiable, IDisplayable, IMenuItemBuildersProvider, IOrderable, IShortDescriptor
     {
-        bool UseGroundBasedPrefabName { get; }
     }
 
     public interface INetInfoBuilder : IPrefabBuilder, IIdentifiable

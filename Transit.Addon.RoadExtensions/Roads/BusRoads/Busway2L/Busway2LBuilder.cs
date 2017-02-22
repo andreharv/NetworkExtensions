@@ -18,7 +18,6 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L
         public int Order { get { return 110; } }
         public string ShortDescription { get { return "No parking, not zoneable, buses only [Traffic++ V2 required]"; } }
         public NetInfoVersion SupportedVersions { get { return NetInfoVersion.AllWithDecoration; } }
-        public bool UseGroundBasedPrefabName { get { return false; } }
         public IEnumerable<IMenuItemBuilder> MenuItemBuilders
         {
             get

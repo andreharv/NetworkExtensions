@@ -33,8 +33,8 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallRoads.BasicRoadPntMdn
             ///////////////////////////
             // Template              //
             ///////////////////////////
-            var roadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_2L);
-            var owRoadTunnelInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ONEWAY_2L_TUNNEL);
+            //var roadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_2L);
+            //var owRoadTunnelInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ONEWAY_2L_TUNNEL);
 
             ///////////////////////////
             // 3DModeling            //
@@ -57,11 +57,11 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallRoads.BasicRoadPntMdn
             {
                 info.m_setVehicleFlags = Vehicle.Flags.Transition | Vehicle.Flags.Underground;
                 info.m_setCitizenFlags = CitizenInstance.Flags.Transition | CitizenInstance.Flags.Underground;
-                info.m_class = owRoadTunnelInfo.m_class.Clone("NEXTbasicroadpaintedmedianTunnel");
+                info.m_class = info.m_class.Clone("NEXTbasicroadpaintedmedianTunnel");
             }
             else
             {
-                info.m_class = roadInfo.m_class.Clone("NEXTbasicroadpaintedmedian");
+                info.m_class = info.m_class.Clone("NEXTbasicroadpaintedmedian");
             }
 
             // Setting up lanes
@@ -94,14 +94,6 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallRoads.BasicRoadPntMdn
 
             
             // AI
-            var owPlayerNetAI = roadInfo.GetComponent<PlayerNetAI>();
-            var playerNetAI = info.GetComponent<PlayerNetAI>();
-
-            if (owPlayerNetAI != null && playerNetAI != null)
-            {
-                playerNetAI.m_constructionCost = owPlayerNetAI.m_constructionCost; // Charge by the lane?
-                playerNetAI.m_maintenanceCost = owPlayerNetAI.m_maintenanceCost; // Charge by the lane?
-            }
 
             var roadBaseAI = info.GetComponent<RoadBaseAI>();
             if (roadBaseAI != null)

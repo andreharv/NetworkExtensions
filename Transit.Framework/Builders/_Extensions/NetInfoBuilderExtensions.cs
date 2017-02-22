@@ -53,6 +53,7 @@ namespace Transit.Framework.Builders
         public static IEnumerable<NetInfo> Build(this INetInfoBuilder builder, ICollection<Action> lateOperations)
         {
             // Ground versions
+
             var groundInfo = builder.BuildVersion(NetInfoVersion.Ground, lateOperations);
             var groundGrassInfo = builder.BuildVersion(NetInfoVersion.GroundGrass, lateOperations);
             var groundTreesInfo = builder.BuildVersion(NetInfoVersion.GroundTrees, lateOperations);
@@ -127,15 +128,7 @@ namespace Transit.Framework.Builders
         {
             if (builder.SupportedVersions.HasFlag(version))
             {
-                var basedPrefabVersion = version;
-                if (builder is IMultiNetInfoBuilderPart && ((IMultiNetInfoBuilderPart)builder).UseGroundBasedPrefabName)
-                {
-                    if (version == NetInfoVersion.GroundGrass || version == NetInfoVersion.GroundTrees)
-                    {
-                        basedPrefabVersion = NetInfoVersion.Ground;
-                    }
-                }
-                var basedPrefabName = builder.GetBasedPrefabName(basedPrefabVersion);
+                var basedPrefabName = builder.GetBasedPrefabName(version);
                 var builtPrefabName = builder.GetBuiltPrefabName(version);
 
                 var info = Prefabs

@@ -9,12 +9,12 @@ namespace NetworkExtensions
     {
         protected override string SettingsFile
         {
-            get { return "NetworkExtensionsConfig.xml"; }
+            get { return "NetworkExtensions2Config.xml"; }
         }
 
         protected override string SettingsNode
         {
-            get { return "NetworkExtensions"; }
+            get { return "NetworkExtensions2"; }
         }
 
         private UIScrollablePanel _optionsPanel;
@@ -31,7 +31,7 @@ namespace NetworkExtensions
             if (IsTAMInstalled)
             {
                 UILabel label = _optionsPanel.AddUIComponent<UILabel>();
-                label.text = "Transit Addons Mod (TAM) has been detected - Network Extensions have been disabled";
+                label.text = "Transit Addons Mod (TAM) has been detected - Network Extensions 2 have been disabled";
                 return;
             }
 

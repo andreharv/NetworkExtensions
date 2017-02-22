@@ -9,12 +9,12 @@ namespace NetworkExtensions
     {
         public override string Name
         {
-            get { return "Network Extensions"; }
+            get { return "Network Extensions 2"; }
         }
 
         public override string Description
         {
-            get { return "An addition of highways and roads"; }
+            get { return "A continuation of the successful Network Extensions Project"; }
         }
 
         public override string Version

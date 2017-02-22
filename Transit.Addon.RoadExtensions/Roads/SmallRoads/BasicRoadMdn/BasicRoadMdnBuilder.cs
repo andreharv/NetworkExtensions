@@ -15,7 +15,6 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallRoads.BasicRoadMdn
         public string Name { get { return "BasicRoadMdn"; } }
         public string DisplayName { get { return "Basic Road with Median"; } }
         public string ShortDescription { get { return "No parking, zoneable, low traffic"; } }
-        public bool UseGroundBasedPrefabName { get { return true; } }
         public NetInfoVersion SupportedVersions { get { return NetInfoVersion.AllWithDecoration; } }
 
         public IEnumerable<IMenuItemBuilder> MenuItemBuilders
@@ -30,8 +29,7 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallRoads.BasicRoadMdn
                     DisplayName = "Basic Road with Median",
                     Description = "A basic two lane road with a median and no parkings spaces. Supports local traffic.",
                     ThumbnailsPath = @"Roads\SmallRoads\BasicRoadMdn\thumbnails.png",
-                    InfoTooltipPath = @"Roads\SmallRoads\BasicRoadMdn\infotooltip.png",
-                    //DefaultVersion = NetInfoVersion.Ground
+                    InfoTooltipPath = @"Roads\SmallRoads\BasicRoadMdn\infotooltip.png"
                 };
                 yield return new MenuItemBuilder
                 {
@@ -41,8 +39,7 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallRoads.BasicRoadMdn
                     DisplayName = "Basic Road with Grass Median",
                     Description = "A basic two lane road with a grass median and no parkings spaces. Supports local traffic.",
                     ThumbnailsPath = @"Roads\SmallRoads\BasicRoadMdn\thumbnails_grass.png",
-                    InfoTooltipPath = @"Roads\SmallRoads\BasicRoadMdn\infotooltip_grass.png",
-                    //DefaultVersion = NetInfoVersion.GroundGrass
+                    InfoTooltipPath = @"Roads\SmallRoads\BasicRoadMdn\infotooltip_grass.png"
                 };
                 yield return new MenuItemBuilder
                 {
@@ -52,8 +49,7 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallRoads.BasicRoadMdn
                     DisplayName = "Basic Road with Grass Median and Trees",
                     Description = "A basic two lane road with a grass median, trees and no parkings spaces. Supports local traffic.",
                     ThumbnailsPath = @"Roads\SmallRoads\BasicRoadMdn\thumbnails_trees.png",
-                    InfoTooltipPath = @"Roads\SmallRoads\BasicRoadMdn\infotooltip_trees.png",
-                    //DefaultVersion = NetInfoVersion.GroundTrees
+                    InfoTooltipPath = @"Roads\SmallRoads\BasicRoadMdn\infotooltip_trees.png"
                 };
             }
         }
@@ -62,16 +58,14 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallRoads.BasicRoadMdn
             ///////////////////////////
             // Template              //
             ///////////////////////////
-            NetInfo roadInfo = null;
-            if (version == NetInfoVersion.GroundTrees)
-                roadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_2L_TREES);
-            else if (version == NetInfoVersion.GroundGrass)
-                roadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_2L_GRASS);
-            else
-                roadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_2L);
-
-
-            var owRoadTunnelInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ONEWAY_2L_TUNNEL);
+            if (version == NetInfoVersion.GroundGrass || version == NetInfoVersion.GroundTrees)
+            {
+                var roadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_2L);
+                info.m_segments = roadInfo.m_segments.Select(x => x.ShallowClone()).ToArray();
+                info.m_nodes = roadInfo.m_nodes.Select(x => x.ShallowClone()).ToArray();
+                info.m_lanes = roadInfo.m_lanes.Select(x => x.ShallowClone()).ToArray();
+            }
+            var roadTunnelInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_2L_TUNNEL);
 
             ///////////////////////////
             // 3DModeling            //
@@ -95,11 +89,11 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallRoads.BasicRoadMdn
             {
                 info.m_setVehicleFlags = Vehicle.Flags.Transition | Vehicle.Flags.Underground;
                 info.m_setCitizenFlags = CitizenInstance.Flags.Transition | CitizenInstance.Flags.Underground;
-                info.m_class = owRoadTunnelInfo.m_class.Clone("NEXTbasicroadmediantunnel");
+                info.m_class = info.m_class.Clone("NEXTbasicroadmedian" + version.ToString());
             }
             else
             {
-                info.m_class = roadInfo.m_class.Clone("NEXTbasicroadmediantrees");
+                info.m_class = info.m_class.Clone("NEXTbasicroadmedian" + version.ToString());
             }
 
             // Setting up lanes
@@ -150,14 +144,14 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallRoads.BasicRoadMdn
 
 
             // AI
-            var owPlayerNetAI = roadInfo.GetComponent<PlayerNetAI>();
-            var playerNetAI = info.GetComponent<PlayerNetAI>();
+            //var owPlayerNetAI = roadInfo.GetComponent<PlayerNetAI>();
+            //var playerNetAI = info.GetComponent<PlayerNetAI>();
 
-            if (owPlayerNetAI != null && playerNetAI != null)
-            {
-                playerNetAI.m_constructionCost = owPlayerNetAI.m_constructionCost ; // Charge by the lane?
-                playerNetAI.m_maintenanceCost = owPlayerNetAI.m_maintenanceCost; // Charge by the lane?
-            }
+            //if (owPlayerNetAI != null && playerNetAI != null)
+            //{
+            //    playerNetAI.m_constructionCost = owPlayerNetAI.m_constructionCost ; // Charge by the lane?
+            //    playerNetAI.m_maintenanceCost = owPlayerNetAI.m_maintenanceCost; // Charge by the lane?
+            //}
 
             var roadBaseAI = info.GetComponent<RoadBaseAI>();
             if (roadBaseAI != null)
