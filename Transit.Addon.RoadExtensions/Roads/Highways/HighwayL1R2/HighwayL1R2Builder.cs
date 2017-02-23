@@ -58,12 +58,12 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.HighwayL1R2
             info.m_surfaceLevel = 0;
             info.m_createPavement = !(version == NetInfoVersion.Ground || version == NetInfoVersion.Tunnel);
             info.m_createGravel = version == NetInfoVersion.Ground;
-            info.m_averageVehicleLaneSpeed = 2f;
+            info.m_averageVehicleLaneSpeed = 1.8f;
             info.m_hasParkingSpaces = false;
             info.m_hasPedestrianLanes = false;
             info.m_UnlockMilestone = highwayInfo.m_UnlockMilestone;
             info.m_halfWidth = (version == NetInfoVersion.Bridge || version == NetInfoVersion.Elevated) ? 11 : 12;
-            info.m_pavementWidth = 1.8f;
+            info.m_pavementWidth = 2f;
             info.m_maxBuildAngle = 90;
             info.m_maxBuildAngleCos = 0;
             if (version == NetInfoVersion.Tunnel)
