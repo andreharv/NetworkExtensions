@@ -61,7 +61,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway2L2W
             info.m_hasPedestrianLanes = false;
             info.m_UnlockMilestone = highwayInfo.m_UnlockMilestone;
             info.m_halfWidth = (version == NetInfoVersion.Bridge || version == NetInfoVersion.Elevated) ? 11 : 12;
-            info.m_pavementWidth = 2;
+            info.m_pavementWidth = 1.8f;
             info.m_maxBuildAngle = 90;
             info.m_maxBuildAngleCos = 0;
             if (version == NetInfoVersion.Tunnel)
