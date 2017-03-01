@@ -35,7 +35,7 @@ namespace Transit.Framework.Texturing
             {
                 case TextureType.Default:
                     {
-                        var texture = new Texture2D(1, 1, TextureFormat.ARGB32, true);
+                        var texture = new Texture2D(1, 1, TextureFormat.DXT5, true);
                         texture.name = textureName;
                         texture.LoadImage(textureBytes);
                         texture.anisoLevel = 8;
@@ -47,7 +47,7 @@ namespace Transit.Framework.Texturing
 
                 case TextureType.LOD:
                     {
-                        var texture = new Texture2D(1, 1, TextureFormat.ARGB32, false);
+                        var texture = new Texture2D(1, 1, TextureFormat.DXT1, false);
                         texture.name = textureName;
                         texture.LoadImage(textureBytes);
                         texture.anisoLevel = 8;

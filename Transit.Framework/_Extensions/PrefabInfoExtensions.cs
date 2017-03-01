@@ -8,8 +8,20 @@ namespace Transit.Framework
 {
     public static class PrefabInfoExtensions
     {
-        public static T Clone<T>(this T originalPrefabInfo, string newName)
+        public static T Clone<T>(this T originalPrefabInfo, string newName, Transform parentTransform)
             where T : PrefabInfo
+        {
+            var instance = Object.Instantiate(originalPrefabInfo.gameObject);
+            instance.name = newName;
+            instance.transform.SetParent(parentTransform);
+            instance.transform.localPosition = new Vector3(-7500, -7500, -7500);
+            var newPrefab = instance.GetComponent<T>();
+            instance.SetActive(false);
+            newPrefab.m_prefabInitialized = false;
+            return newPrefab;
+        }
+        public static T Clone<T>(this T originalPrefabInfo, string newName)
+    where T : PrefabInfo
         {
             var gameObject = Object.Instantiate(originalPrefabInfo.gameObject);
             gameObject.transform.parent = originalPrefabInfo.gameObject.transform; // N.B. This line is evil and removing it is killoing the game's performances
