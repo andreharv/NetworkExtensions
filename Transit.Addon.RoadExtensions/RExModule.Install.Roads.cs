@@ -11,6 +11,8 @@ using System.Diagnostics;
 
 #if DEBUG
 using Debug = Transit.Framework.Debug;
+#else
+using Debug = UnityEngine.Debug;
 #endif
 
 namespace Transit.Addon.RoadExtensions

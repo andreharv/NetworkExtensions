@@ -6,6 +6,12 @@ using Transit.Framework.Interfaces;
 using Transit.Framework.Network;
 using UnityEngine;
 
+#if DEBUG
+using Debug = Transit.Framework.Debug;
+#else
+using Debug = UnityEngine.Debug;
+#endif
+
 namespace Transit.Framework.Builders
 {
     public static class NetInfoBuilderExtensions
