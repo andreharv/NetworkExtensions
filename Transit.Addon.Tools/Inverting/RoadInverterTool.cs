@@ -29,7 +29,7 @@ namespace Transit.Addon.Tools.Inverting
         }
 
         public override void OnUpdate(float realTimeDelta, float simulationTimeDelta)
-        {
+        {/*
             if (ToolsModifierControl.toolController == null)
             {
                 return;
@@ -92,7 +92,7 @@ namespace Transit.Addon.Tools.Inverting
                 Singleton<SimulationManager>.instance.m_currentBuildIndex,
                 false);
             Singleton<SimulationManager>.instance.m_currentBuildIndex += 2u;
-            m_lastSegment.Add(segmentId);
+            m_lastSegment.Add(segmentId);*/
         }
     }
 }
