@@ -236,7 +236,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Promenade
 
         public void LateBuildUp(NetInfo info, NetInfoVersion version)
         {
-            var bollardName = "StoneBollard";
+            var bollardName = "Stone Bollard";
             var stoneBollard = PrefabCollection<PropInfo>.FindLoaded($"{Tools.PackageName(bollardName)}.{bollardName}_Data");
 
             var RoadPlanter1Name = "RoadPlanter1";
