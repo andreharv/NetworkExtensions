@@ -79,7 +79,6 @@ namespace Transit.Framework
                 mesh.LoadOBJ(OBJLoader.LoadOBJ(fileStream));
             }
 
-           // mesh.Optimize();
             mesh.name = Path.GetFileNameWithoutExtension(meshName);
 
             if (mesh.name != null && !mesh.name.Contains("LOD") && !mesh.name.Contains("NoCom"))
