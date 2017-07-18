@@ -50,7 +50,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Inverting\RoadInverterTool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ToolModule.cs" />
     <Compile Include="ToolModule.Install.cs" />
@@ -68,6 +67,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Inverting\" />
     <Folder Include="Routing\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
