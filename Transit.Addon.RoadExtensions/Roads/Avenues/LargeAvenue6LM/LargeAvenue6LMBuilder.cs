@@ -10,22 +10,22 @@ using UnityEngine;
 #if DEBUG
 using Debug = Transit.Framework.Debug;
 #endif
-namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
+namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue6LM
 {
-    public partial class LargeAvenue8LMBuilder : Activable, INetInfoBuilderPart, INetInfoLateBuilder
+    public partial class LargeAvenue6LMBuilder : Activable, INetInfoBuilderPart, INetInfoLateBuilder
     {
-        public int Order { get { return 25; } }
+        public int Order { get { return 26; } }
         public int UIOrder { get { return 1500; } }
 
         public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_4L; } }
-        public string Name { get { return "Eight-Lane Avenue"; } }
-        public string DisplayName { get { return "Eight-Lane Road"; } }
-        public string Description { get { return "An eight-lane road with paved median. Supports heavy urban traffic."; } }
+        public string Name { get { return "Six-Lane Avenue Median"; } }
+        public string DisplayName { get { return "Six-Lane Road with Median"; } }
+        public string Description { get { return "A Six-lane road with paved median. Supports heavy urban traffic."; } }
         public string ShortDescription { get { return "No parking, zoneable, heavy urban traffic"; } }
         public string UICategory { get { return "RoadsLarge"; } }
 
-        public string ThumbnailsPath { get { return @"Roads\Avenues\LargeAvenue8LM\thumbnails.png"; } }
-        public string InfoTooltipPath { get { return @"Roads\Avenues\LargeAvenue8LM\infotooltip.png"; } }
+        public string ThumbnailsPath { get { return @"Roads\Avenues\LargeAvenue6LM\thumbnails.png"; } }
+        public string InfoTooltipPath { get { return @"Roads\Avenues\LargeAvenue6LM\infotooltip.png"; } }
         
         public NetInfoVersion SupportedVersions
         {
@@ -42,7 +42,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
             ///////////////////////////
             // 3DModeling            //
             ///////////////////////////
-            info.Setup32m3mSW2mMdnMesh(version);
+            info.Setup32m3mSW4mMdnMesh(version);
 
             ///////////////////////////
             // Texturing             //
@@ -52,8 +52,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
             ///////////////////////////
             // Set up                //
             ///////////////////////////
-            info.m_hasParkingSpaces = false;
-            info.m_pavementWidth = (version == NetInfoVersion.Slope || version == NetInfoVersion.Tunnel ? 4 : 3);
+            info.m_hasParkingSpaces = true;
+            info.m_pavementWidth = version == NetInfoVersion.Ground ? 3 : 5;
             info.m_halfWidth = (version == NetInfoVersion.Tunnel ? 17 : 16);
 
             if (version == NetInfoVersion.Tunnel)
@@ -71,11 +71,11 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
             info.SetRoadLanes(version, new LanesConfiguration
             {
                 IsTwoWay = true,
-                LanesToAdd = 4,
-                LaneWidth = version == NetInfoVersion.Slope ? 2.75f : 3,
+                LaneWidth = 3,
+                LanesToAdd = 2,
                 PedPropOffsetX = version == NetInfoVersion.Slope ? 1.5f : 1f,
                 CenterLane = CenterLaneType.Median,
-                CenterLaneWidth = 2,
+                CenterLaneWidth = 4,
                 BusStopOffset = 0f
             });
 
