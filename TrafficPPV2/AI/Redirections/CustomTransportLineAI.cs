@@ -178,7 +178,7 @@ namespace CSL_Traffic
                 PathUnit.Position pathPos;
                 if (instance.m_pathUnits.m_buffer[(int)((UIntPtr)data.m_path)].GetPosition(0, out pathPos))
                 {
-                    flag = TransportLineAI.CheckNodePosition(data.m_startNode, pathPos);
+                    TransportLineAI.CheckNodePosition(data.m_startNode, pathPos);
                 }
                 if (instance.m_pathUnits.m_buffer[(int)((UIntPtr)data.m_path)].GetLastPosition(out pathPos))
                 {
