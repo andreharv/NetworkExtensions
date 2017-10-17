@@ -62,12 +62,12 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
 
         public static NetInfo.Lane GetLeftRoadShoulder(this NetInfo info)
         {
-            return info.m_lanes.First(l => l.m_laneType == NetInfo.LaneType.Pedestrian);
+            return info.m_lanes.FirstOrDefault(l => l.m_laneType == NetInfo.LaneType.Pedestrian);
         }
 
         public static NetInfo.Lane GetRightRoadShoulder(this NetInfo info)
         {
-            return info.m_lanes.Last(l => l.m_laneType == NetInfo.LaneType.Pedestrian);
+            return info.m_lanes.LastOrDefault(l => l.m_laneType == NetInfo.LaneType.Pedestrian);
         }
 
         public static NetInfo.Lane GetMedianLane(this NetInfo info)
