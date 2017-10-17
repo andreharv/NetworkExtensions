@@ -8,9 +8,9 @@ namespace Transit.Framework
     {
         public static NetInfo SetAllNodesTexture(this NetInfo info, TextureSet newTextures, LODTextureSet newLODTextures = null)
         {
-            foreach (var node in info.m_nodes)
+            for(var i = 0; i < info.m_nodes.Length; i++)
             {
-                node.SetTextures(newTextures, newLODTextures);
+                info.m_nodes[i].SetTextures(newTextures, newLODTextures);
             }
 
             return info;
@@ -58,14 +58,26 @@ namespace Transit.Framework
             return node;
         }
 
-        public static NetInfo.Node SetConsistentUVs(this NetInfo.Node node)
+        public static NetInfo.Node SetConsistentUVs(this NetInfo.Node node, bool isPowerLines = true)
         {
             var colors = new List<Color>();
             var colors32 = new List<Color32>();
+            Color color;
+            Color32 color32;
+            if (isPowerLines)
+            {
+                color = new Color(0, 0, 0, 255);
+                color32 = new Color32(0, 0, 0, 255);
+            }
+            else
+            {
+                color = new Color(255, 0, 255, 255);
+                color32 = new Color32(255, 0, 255, 255);
+            }
             for (int i = 0; i < node.m_mesh.vertexCount; i++)
             {
-                colors.Add(new UnityEngine.Color(255, 0, 255, 255));
-                colors32.Add(new UnityEngine.Color32(255, 0, 255, 255));
+                colors.Add(color);
+                colors32.Add(color32);
             }
             node.m_mesh.colors = colors.ToArray();
             node.m_mesh.colors32 = colors32.ToArray();
@@ -74,8 +86,8 @@ namespace Transit.Framework
             colors32 = new List<Color32>();
             for (int i = 0; i < node.m_lodMesh.vertexCount; i++)
             {
-                colors.Add(new UnityEngine.Color(255, 0, 255, 255));
-                colors32.Add(new UnityEngine.Color32(255, 0, 255, 255));
+                colors.Add(color);
+                colors32.Add(color32);
             }
             node.m_lodMesh.colors = colors.ToArray();
             node.m_lodMesh.colors32 = colors32.ToArray();

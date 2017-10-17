@@ -12,10 +12,12 @@ namespace Transit.Framework.Network
             public const string ROAD_2L_TREES = "Basic Road Decoration Trees";
             public const string ROAD_2L_BIKE = "Basic Road Bicycle";
             public const string ROAD_2L_TUNNEL = "Basic Road Tunnel";
+            public const string ROAD_2L_TRAM = "Basic Road Tram";
             public const string ROAD_4L = "Medium Road";
             public const string ROAD_4L_BRIDGE = "Medium Road Bridge";
             public const string ROAD_4L_SLOPE = "Medium Road Slope";
             public const string ROAD_4L_TUNNEL = "Medium Road Tunnel";
+            public const string ROAD_4L_SMALL = "Small Avenue";
             public const string ROAD_6L = "Large Road";
             public const string ROAD_6L_BRIDGE = "Large Road Bridge";
             public const string ROAD_6L_TUNNEL = "Large Road Tunnel";
@@ -31,9 +33,9 @@ namespace Transit.Framework.Network
             public const string HIGHWAY_3L_SLOPE = "Highway Slope";
             public const string HIGHWAY_3L_TUNNEL = "Highway Tunnel";
             public const string HIGHWAY_3L_BARRIER = "Highway Barrier";
-            
+
             public const string PED_PAVEMENT = "Pedestrian Pavement";
-            
+
             public static string GetPrefabName(string groundName, NetInfoVersion version)
             {
                 switch (groundName)
@@ -41,6 +43,7 @@ namespace Transit.Framework.Network
                     case ROAD_2L:
                     case ROAD_2L_GRAVEL:
                     case ROAD_4L:
+                    case ROAD_4L_SMALL:
                     case ROAD_6L:
 
                     case ONEWAY_2L:
@@ -62,7 +65,20 @@ namespace Transit.Framework.Network
                             default:
                                 throw new NotImplementedException();
                         }
-
+                    case ROAD_2L_TRAM:
+                        var formatString = "Basic Road {0} Tram";
+                        switch (version)
+                        {
+                            case NetInfoVersion.Ground:
+                                return groundName;
+                            case NetInfoVersion.Elevated:
+                            case NetInfoVersion.Bridge:
+                            case NetInfoVersion.Slope:
+                            case NetInfoVersion.Tunnel:
+                                return string.Format(formatString, version);
+                            default:
+                                throw new NotImplementedException();
+                        }
                     case ONEWAY_6L:
                         switch (version)
                         {

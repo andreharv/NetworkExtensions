@@ -8,6 +8,7 @@ namespace Transit.Framework.Mod
     {
         public virtual void OnEnabled()
         {
+            Debug.Log(Name + " Enabled");
             ModPrerequisites.InstallForMod(this);
             LoadModulesIfNeeded();
             LoadSettings();

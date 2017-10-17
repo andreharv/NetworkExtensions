@@ -339,7 +339,7 @@ namespace TrafficManager.State {
 				}
 
 				if (curLaneId == laneId) {
-					NetInfo.Lane laneInfo = segmentInfo.m_lanes[laneIndex];
+					NetInfo.Lane laneInfo = segmentinfo.m_lanes[laneIndex].ShallowClone();
 					ushort nodeId = (laneInfo.m_direction == dir3) ? netManager.m_segments.m_buffer[segmentId].m_endNode : netManager.m_segments.m_buffer[segmentId].m_startNode;
 
 					if ((netManager.m_nodes.m_buffer[nodeId].m_flags & NetNode.Flags.Created) == NetNode.Flags.None)

@@ -21,6 +21,8 @@ namespace Transit.Framework.Network
         public const string NEXT_SMALL3L_ROAD = "NExtSmall3LRoad";
         public const string NEXT_SMALL3L_ROAD_TUNNEL = "NExtSmall3LRoadTunnel";
         public const string NEXT_SMALL4L_ROAD = "NExtSmall4LRoad";
+        public const string NEXT_SMALL4LTRAM_ROAD = "NExtSmall4LTramRoad";
+        public const string NEXT_SMALL4LTRAM_ROAD_TUNNEL = "NExtSmall4LTramTunnelRoad";
         public const string NEXT_SMALL4L_ROAD_TUNNEL = "NExtSmall4LRoadTunnel";
         public const string NEXT_MEDIUM_ROAD = "NExtMediumRoad";
         public const string NEXT_MEDIUM_ROAD_TUNNEL = "NExtMediumRoadTunnel";

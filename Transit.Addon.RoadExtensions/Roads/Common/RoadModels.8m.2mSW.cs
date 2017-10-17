@@ -10,7 +10,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             {
                 case NetInfoVersion.Ground:
                     { 
-                        var segments0 = info.m_segments[0];
+                        var segments0 = info.m_segments[0].ShallowClone();
                         var nodes0 = info.m_nodes[0].ShallowClone();
                         segments0
                             .SetFlagsDefault()

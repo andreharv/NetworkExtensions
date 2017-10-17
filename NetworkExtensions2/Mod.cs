@@ -1,7 +1,11 @@
-﻿using ColossalFramework;
+﻿using System;
+using ColossalFramework;
 using ColossalFramework.Plugins;
 using Transit.Framework;
 using Transit.Framework.Mod;
+using Transit.Framework.Modularity;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace NetworkExtensions
 {
@@ -22,19 +26,19 @@ namespace NetworkExtensions
             get { return "1.0.0"; }
         }
 
-        private const string TAM_MOD_ID = "543703997";
-        private bool? _isTAMInstalled;
+        private const string NEXT_2_ID = "812125426";
+        private bool? _isNEXT2Installed;
 
-        public bool IsTAMInstalled
+        public bool IsNEXT2Installed
         {
             get
             {
-                if (_isTAMInstalled == null)
+                if (_isNEXT2Installed == null)
                 {
-                    _isTAMInstalled = Singleton<PluginManager>.instance.IsPluginInstalled(TAM_MOD_ID);
+                    _isNEXT2Installed = Singleton<PluginManager>.instance.IsPluginInstalled(NEXT_2_ID);
                 }
 
-                return _isTAMInstalled.Value;
+                return _isNEXT2Installed.Value;
             }
         }
     }

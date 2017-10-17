@@ -53,7 +53,19 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue6LM
             // Set up                //
             ///////////////////////////
             info.m_hasParkingSpaces = true;
-            info.m_pavementWidth = version == NetInfoVersion.Ground ? 3 : 5;
+            if (version == NetInfoVersion.Ground)
+            {
+                info.m_pavementWidth = 3;
+            }
+            else if (version == NetInfoVersion.Tunnel)
+            {
+                info.m_pavementWidth = 6;
+            }
+            else
+            {
+                info.m_pavementWidth = 5;
+            }
+
             info.m_halfWidth = (version == NetInfoVersion.Tunnel ? 17 : 16);
 
             if (version == NetInfoVersion.Tunnel)
@@ -151,7 +163,15 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue6LM
         {
             if (version == NetInfoVersion.Bridge)
             {
+                foreach (var building in BuildingCollection.FindObjectsOfType<BuildingInfo>())
+                {
+                    if (building.name.ToLower().Contains("pillar"))
+                    {
+                        Debug.Log($"PILLARNAME = {building.name}");
+                    }
+                }
                 var bridgePillar = PrefabCollection<BuildingInfo>.FindLoaded($"{Tools.PackageName("BridgePillar")}.CableStay32m_Data");
+                
                 if (bridgePillar == null)
                 {
                     Debug.Log($"{info.name}: CableStay32m Pillar not found!");
