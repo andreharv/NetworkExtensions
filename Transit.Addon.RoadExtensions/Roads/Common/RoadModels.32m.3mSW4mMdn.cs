@@ -16,17 +16,24 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                 case NetInfoVersion.Ground:
                     {
                         var segments0 = info.m_segments[0].ShallowClone();
+                        var segments1 = info.m_segments[1].ShallowClone();
+                        var segments2 = info.m_segments[2].ShallowClone();
                         var nodes0 = info.m_nodes[0].ShallowClone();
 
                         segments0
-                        .SetFlagsDefault()
                         .SetMeshes
                             (@"Roads\Common\Meshes\32m\3mSW4mMdn\Ground.obj");
+                        segments1
+                            .SetMeshes
+                                (@"Roads\Common\Meshes\32m\3mSW4mMdn\Bus.obj");
+                        segments2
+                            .SetMeshes
+                                (@"Roads\Common\Meshes\32m\3mSW4mMdn\BusBoth.obj");
+                        nodes0
+                            .SetMeshes
+                                 (@"Roads\Common\Meshes\32m\3mSW4mMdn\Ground_Node.obj");
 
-                        nodes0.SetMeshes
-                            (@"Roads\Common\Meshes\32m\3mSW4mMdn\Ground_Node.obj");
-
-                        info.m_segments = new[] { segments0 };
+                        info.m_segments = new[] { segments0,segments1, segments2 };
                         info.m_nodes = new[] { nodes0 };
                         break;
                     }

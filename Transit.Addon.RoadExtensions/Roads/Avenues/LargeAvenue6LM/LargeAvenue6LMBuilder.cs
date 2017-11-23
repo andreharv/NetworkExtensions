@@ -14,7 +14,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue6LM
 {
     public partial class LargeAvenue6LMBuilder : Activable, INetInfoBuilderPart, INetInfoLateBuilder
     {
-        public int Order { get { return 26; } }
+        public int Order { get { return 25; } }
         public int UIOrder { get { return 1500; } }
 
         public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_4L; } }
@@ -88,7 +88,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue6LM
                 PedPropOffsetX = version == NetInfoVersion.Slope ? 1.5f : 1f,
                 CenterLane = CenterLaneType.Median,
                 CenterLaneWidth = 4,
-                BusStopOffset = 0f
+                BusStopOffset = 3
             });
 
             var medianLane = info.GetMedianLane();

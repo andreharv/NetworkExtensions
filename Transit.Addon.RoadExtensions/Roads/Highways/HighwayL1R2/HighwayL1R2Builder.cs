@@ -10,7 +10,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.HighwayL1R2
 {
     public partial class HighwayL1R2Builder : Activable, INetInfoBuilderPart
     {
-        public int Order { get { return 49; } }
+        public int Order { get { return 47; } }
         public int UIOrder { get { return 40; } }
 
         public string BasedPrefabName { get { return NetInfos.Vanilla.HIGHWAY_3L; } }
@@ -41,7 +41,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.HighwayL1R2
             ///////////////////////////
             // 3DModeling            //
             ///////////////////////////
-            info.Setup24mMesh(version);
+            info.Setup22mMesh(version, LanesLayoutStyle.AsymL1R2);
 
 
             ///////////////////////////
@@ -62,7 +62,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.HighwayL1R2
             info.m_hasParkingSpaces = false;
             info.m_hasPedestrianLanes = false;
             info.m_UnlockMilestone = highwayInfo.m_UnlockMilestone;
-            info.m_halfWidth = (version == NetInfoVersion.Bridge || version == NetInfoVersion.Elevated) ? 11 : 12;
+            info.m_halfWidth = 11;
             info.m_pavementWidth = 2f;
             info.m_maxBuildAngle = 90;
             info.m_maxBuildAngleCos = 0;
@@ -75,20 +75,23 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.HighwayL1R2
             {
                 info.m_class = highwayInfo.m_class.Clone(info.name + version.ToString() + "Class");
             }
-
-
+            info.SetRoadLanes(version, new LanesConfiguration
+            {
+                LanePositionOffst = -3,
+                IsTwoWay = true,
+                LaneWidth = 4,
+                SpeedLimit = 1.8f
+            });
             ///////////////////////////
             // Set up lanes          //
             ///////////////////////////
             // Setting up lanes
-            info.SetRoadLanes(version, new LanesConfiguration
-            {
-                LanePositionOffst = -2,
-                IsTwoWay = true,
-                LaneWidth = 4,
-                LayoutStyle = LanesLayoutStyle.AsymL1R2
-            });
+            var vehicleLanes = info.m_lanes.Where(l => l.m_laneType == NetInfo.LaneType.Vehicle).ToList();
+            var leftLane = vehicleLanes.FirstOrDefault(l => l.m_position == vehicleLanes.Min(n => n.m_position));
+            leftLane.m_direction = NetInfo.Direction.Backward;
+            leftLane.m_finalDirection = NetInfo.Direction.Backward;
 
+            
             ///////////////////////////
             // Set up props          //
             ///////////////////////////
@@ -103,11 +106,13 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.HighwayL1R2
                 leftRoadProps?.AddLeftWallLights(info.m_pavementWidth);
                 rightRoadProps?.AddRightWallLights(info.m_pavementWidth);
             }
+
             if (leftPedLane != null && leftPedLane.m_laneProps != null)
                 leftPedLane.m_laneProps.m_props = leftRoadProps.ToArray();
             if (rightPedLane != null && rightPedLane.m_laneProps != null)
                 rightPedLane.m_laneProps.m_props = rightRoadProps.ToArray();
 
+            info.TrimNonHighwayProps(version == NetInfoVersion.Ground);
             ///////////////////////////
             // AI                    //
             ///////////////////////////

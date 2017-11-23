@@ -23,6 +23,7 @@ namespace Transit.Framework
                 if (segment.m_material != null)
                 {
                     segment.m_material = newTextures.CreateRoadMaterial(segment.m_material);
+                    segment.m_segmentMaterial = segment.m_material;
                 }
             }
 
@@ -40,7 +41,7 @@ namespace Transit.Framework
         public static NetInfo.Segment SetMeshes(this NetInfo.Segment segment, string newMeshPath, string newLODMeshPath = null)
         {
             segment.m_mesh = AssetManager.instance.GetMesh(newMeshPath);
-
+            segment.m_segmentMesh = segment.m_mesh;
             if (newLODMeshPath != null)
             {
                 segment.m_lodMesh = AssetManager.instance.GetMesh(newLODMeshPath);

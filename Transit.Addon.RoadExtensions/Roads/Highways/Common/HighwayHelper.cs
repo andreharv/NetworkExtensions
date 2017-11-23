@@ -380,6 +380,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Common
 
                 foreach (var prop in laneProps.m_props.Where(p => p.m_prop != null))
                 {
+                    var newProp = prop.ShallowClone();
                     if (prop.m_prop == randomProp)
                     {
                         continue;
@@ -395,13 +396,15 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Common
                         if (prop.m_prop == streetLight &&
                             laneProps.name.Contains("Left"))
                         {
-                            continue;
+                            prop.m_probability = 0;
+                            //continue;
                         }
 
                         if (prop.m_prop == streetLightHw &&
                             laneProps.name.Contains("Left"))
                         {
-                            continue;
+                            prop.m_probability = 0;
+                            //continue;
                         }
                     }
 
@@ -410,13 +413,15 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Common
                         if (prop.m_prop == streetLight &&
                             laneProps.name.Contains("Right"))
                         {
-                            continue;
+                            prop.m_probability = 0;
+                            //continue;
                         }
 
                         if (prop.m_prop == streetLightHw &&
                             laneProps.name.Contains("Right"))
                         {
-                            continue;
+                            prop.m_probability = 0;
+                            //continue;
                         }
                     }
 

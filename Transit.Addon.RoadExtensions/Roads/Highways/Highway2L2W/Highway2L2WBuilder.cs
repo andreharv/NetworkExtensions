@@ -10,7 +10,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway2L2W
 {
     public partial class Highway2L2WBuilder : Activable, INetInfoBuilderPart
     {
-        public int Order { get { return 49; } }
+        public int Order { get { return 48; } }
         public int UIOrder { get { return 40; } }
 
         public string BasedPrefabName { get { return NetInfos.Vanilla.HIGHWAY_3L; } }
@@ -83,7 +83,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway2L2W
                 LanePositionOffst = -2,
                 IsTwoWay = true,
                 LaneWidth = 4,
-                LanesToAdd = 1
+                LanesToAdd = 1,
+                SpeedLimit = 1.8f
             });
 
             ///////////////////////////
@@ -104,7 +105,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway2L2W
                 leftPedLane.m_laneProps.m_props = leftRoadProps.ToArray();
             if (rightPedLane != null && rightPedLane.m_laneProps != null)
                 rightPedLane.m_laneProps.m_props = rightRoadProps.ToArray();
-
+            info.TrimNonHighwayProps(version == NetInfoVersion.Ground);
             ///////////////////////////
             // AI                    //
             ///////////////////////////

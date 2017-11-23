@@ -1,11 +1,12 @@
-﻿using Transit.Framework;
+﻿using Transit.Addon.RoadExtensions.Roads.Common;
+using Transit.Framework;
 using Transit.Framework.Network;
 
 namespace Transit.Addon.RoadExtensions.Roads.Highways
 {
     public static partial class HighwayModels
     {
-        public static void Setup24mMesh(this NetInfo info, NetInfoVersion version)
+        public static void Setup24mMesh(this NetInfo info, NetInfoVersion version, LanesLayoutStyle lanesLayoutStyle = LanesLayoutStyle.Symmetrical)
         {
             ///////////////////////////
             // Template              //
@@ -29,6 +30,11 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways
                 nodes1.SetMeshes(
                     @"Roads\Highways\Common\Meshes\24m\Ground_Trans.obj",
                     @"Roads\Highways\Common\Meshes\24m\Ground_Trans_LOD.obj");
+
+                if (lanesLayoutStyle != LanesLayoutStyle.Symmetrical)
+                {
+                    RoadHelper.HandleAsymSegmentFlags(segments0);
+                }
 
                 info.m_segments = new[] { segments0 };
                 info.m_nodes = new[] { nodes0, nodes1 };

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Transit.Addon.RoadExtensions.Menus;
 using Transit.Addon.RoadExtensions.Menus.Roads;
@@ -70,39 +71,66 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.AlleyCulDeSac
                             @"Roads\TinyRoads\AlleyCulDeSac\Textures\Ground_LOD__XYSMap.png"));
                     break;
             }
-
-            ///////////////////////////
-            // Set up                //
-            ///////////////////////////
             info.m_hasParkingSpaces = true;
             info.m_connectGroup = NetInfo.ConnectGroup.NarrowTram;
             info.m_nodeConnectGroups = NetInfo.ConnectGroup.NarrowTram;
             info.m_halfWidth = 4f;
-            info.m_pavementWidth = 2f;
-            info.m_class = roadInfo.m_class.Clone("NExt1LOnewayX");
-            info.m_class.m_level = ItemClass.Level.Level2;
+            info.m_pavementWidth = 1.5f;
+            info.m_surfaceLevel = 0;
+            info.m_class = roadInfo.m_class.Clone("NExt1LOnewayWithParking");
+            var parkLane = info.m_lanes.Last(l => l.m_laneType == NetInfo.LaneType.Parking).CloneWithoutStops();
+            info.m_class.m_level = (ItemClass.Level)5; //New level
+            parkLane.m_width = 2f;
+            info.m_lanes = info.m_lanes
+                .Where(l => l.m_laneType != NetInfo.LaneType.Parking)
+                .ToArray();
 
+            var laneWidth = 3f;
             info.SetRoadLanes(version, new LanesConfiguration
             {
                 IsTwoWay = false,
-                LaneWidth = 4f,
+                LaneWidth = laneWidth,
                 LanesToAdd = -1,
                 SpeedLimit = 0.6f,
                 BusStopOffset = 0f,
                 PedLaneOffset = -0.75f,
-                PedPropOffsetX = 2.25f
+                PedPropOffsetX = 2.25f,
+                LanePositionOffst = -2
             });
             info.SetupNewSpeedLimitProps(30, 40);
+            info.m_lanes.First(l => l.m_laneType == NetInfo.LaneType.Vehicle).m_position = (info.m_halfWidth - info.m_pavementWidth - (0.5f * laneWidth)) * -1;
+            parkLane.m_position = (info.m_halfWidth - info.m_pavementWidth - (0.5f * parkLane.m_width));
+            var tempLanes = new List<NetInfo.Lane>();
+            tempLanes.AddRange(info.m_lanes);
+            tempLanes.Add(parkLane);
+            info.m_lanes = tempLanes.ToArray();
 
+            var pedLanes = info.m_lanes.Where(l => l.m_laneType == NetInfo.LaneType.Pedestrian).ToList();
+            var roadLanes = info.m_lanes.Where(l => l.m_laneType != NetInfo.LaneType.Pedestrian && l.m_laneType != NetInfo.LaneType.None);
+
+            for (int i = 0; i < pedLanes.Count(); i++)
+            {
+                pedLanes[i].m_verticalOffset = 0.25f;
+            }
+
+            foreach (var roadLane in roadLanes)
+            {
+                roadLane.m_verticalOffset = 0.1f;
+            }
             for (var i = 0; i < info.m_lanes.Count(); i++)
             {
                 if (info.m_lanes[i]?.m_laneProps?.m_props != null)
                 {
                     for (var j = 0; j < info.m_lanes[i].m_laneProps.m_props.Count(); j++)
                     {
-                        if (info.m_lanes[i].m_laneProps.m_props[j] != null)
+                        var prop = info?.m_lanes[i]?.m_laneProps?.m_props[j];
+                        if (prop != null)
                         {
-                            info.m_lanes[i].m_laneProps.m_props[j].m_probability = 0;
+                            if (prop.m_prop.name.Contains("Street Light"))
+                            {
+                                prop.m_probability = 0;
+                            }
+                            //info.m_lanes[i].m_laneProps.m_props[j].m_probability = 0;
                         }
                     }
                 }
