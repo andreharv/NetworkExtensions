@@ -26,7 +26,7 @@ namespace Transit.Addon.RoadExtensions
             {
                 foreach (var req in RequiredNetCollections)
                 {
-                    if(GameObject.Find(req) == null)
+                    if (GameObject.Find(req) == null)
                     {
                         return false;
                     }
@@ -37,7 +37,7 @@ namespace Transit.Addon.RoadExtensions
                 {
                     return false;
                 }
-                if (RequiredNetCollections.Any(r=>netColl.Any(n=>n.name == r)==false))
+                if (RequiredNetCollections.Any(r => netColl.Any(n => n.name == r) == false))
                 {
                     return false;
                 }
@@ -138,17 +138,42 @@ namespace Transit.Addon.RoadExtensions
                             foreach (NetInfoVersion version in Enum.GetValues(typeof(NetInfoVersion)))
                             {
                                 NetInfo info = null;
-                                if (version != NetInfoVersion.All && version != NetInfoVersion.AllWithDecoration && builder.SupportedVersions.HasFlag(version))
+                                if (version != NetInfoVersion.All && version != NetInfoVersion.AllWithDecoration && version != NetInfoVersion.AllWithDecorationAndPavement && builder.SupportedVersions.HasFlag(version))
                                 {
                                     var basedPrefabName = builder.GetBasedPrefabName(version);
                                     var newPrefabName = builder.GetBuiltPrefabName(version);
-                                    if (m_BasedPrefabs.ContainsKey(basedPrefabName) == false)
+                                    if ((!isMultiMenu || version == NetInfoVersion.Ground))
                                     {
-                                        m_BasedPrefabs.Add(basedPrefabName, Resources.FindObjectsOfTypeAll<NetInfo>().FirstOrDefault(netInfo => netInfo.name == basedPrefabName));
-                                    }
-                                    info = m_BasedPrefabs[basedPrefabName].Clone(newPrefabName, transform);
+                                        if (m_BasedPrefabs.ContainsKey(basedPrefabName) == false)
+                                        {
+                                            m_BasedPrefabs.Add(basedPrefabName, Resources.FindObjectsOfTypeAll<NetInfo>().FirstOrDefault(netInfo => netInfo.name == basedPrefabName));
+                                        }
 
-                                    builder.BuildUp(info, version);
+                                        info = m_BasedPrefabs[basedPrefabName].Clone(newPrefabName, transform);
+                                        builder.BuildUp(info, version);
+                                        if (isMultiMenu)
+                                        {
+                                            m_BasedPrefabs.Add(builder.Name, info);
+                                        }
+                                    }
+                                    else if (isMultiMenu)
+                                    {
+                                        if (m_BasedPrefabs.ContainsKey(basedPrefabName) == false)
+                                        {
+                                            m_BasedPrefabs.Add(basedPrefabName, Resources.FindObjectsOfTypeAll<NetInfo>().FirstOrDefault(netInfo => netInfo.name == basedPrefabName));
+                                        }
+
+                                        if (m_BasedPrefabs.ContainsKey(basedPrefabName))
+                                        {
+                                            Debug.Log($"{builder.Name} PASSED using {basedPrefabName}");
+                                        }
+                                        else
+                                        {
+                                            Debug.Log($"{builder.Name} FAILED using {basedPrefabName}");
+                                        }
+                                        info = m_BasedPrefabs[basedPrefabName].Clone(newPrefabName, transform);
+                                        builder.BuildUp(info, version);
+                                    }
 
                                     var lateBuilder = builder as INetInfoLateBuilder;
                                     if (lateBuilder != null)
@@ -164,7 +189,7 @@ namespace Transit.Addon.RoadExtensions
                             {
                                 if (kvp.Value != null)
                                 {
-                                    if (kvp.Key == NetInfoVersion.Ground || kvp.Key == NetInfoVersion.GroundGrass || kvp.Key == NetInfoVersion.GroundTrees)
+                                    if (kvp.Key == NetInfoVersion.Ground || kvp.Key == NetInfoVersion.GroundGrass || kvp.Key == NetInfoVersion.GroundTrees || kvp.Key == NetInfoVersion.GroundPavement)
                                     {
                                         groundInfos.Add(kvp.Value);
                                     }
