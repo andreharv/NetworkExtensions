@@ -16,7 +16,9 @@ namespace Transit.Framework
         All = 15,
         GroundGrass = 16,
         GroundTrees = 32,
+        GroundPavement = 64,
         AllWithDecoration = 63,
+        AllWithDecorationAndPavement = 127
     }
 
     public static class NetInfoVersionExtensions
@@ -26,7 +28,7 @@ namespace Transit.Framework
             return Enum
                 .GetValues(typeof (NetInfoVersion))
                 .OfType<NetInfoVersion>()
-                .Where(niv => niv != NetInfoVersion.All && niv != NetInfoVersion.AllWithDecoration)
+                .Where(niv => niv != NetInfoVersion.All && niv != NetInfoVersion.AllWithDecoration && niv != NetInfoVersion.AllWithDecorationAndPavement)
                 .Where(niv => version.HasFlag(niv));
         }
     }

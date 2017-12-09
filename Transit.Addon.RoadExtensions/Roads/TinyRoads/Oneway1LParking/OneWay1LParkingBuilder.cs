@@ -52,7 +52,9 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.Oneway1LParking
             switch (version)
             {
                 case NetInfoVersion.Ground:
-                    info.SetAllSegmentsTexture(
+                    for (int i = 0; i < info.m_segments.Count(); i++)
+                    {
+                        info.m_segments[i].SetTextures(
                         new TextureSet
                            (@"Roads\TinyRoads\Oneway1LParking\Textures\Ground_Segment__MainTex.png",
                             @"Roads\TinyRoads\Oneway1LParking\Textures\Ground_Segment__APRMap.png"),
@@ -60,6 +62,7 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.Oneway1LParking
                             @"Roads\TinyRoads\Oneway1LParking\Textures\Ground_Segment_LOD__MainTex.png",
                             @"Roads\TinyRoads\Oneway1LParking\Textures\Ground_Segment_LOD__APRMap.png",
                             @"Roads\TinyRoads\Oneway1LParking\Textures\Ground_LOD__XYSMap.png"));
+                    }
 
                     for (int i = 0; i < info.m_nodes.Count(); i++)
                     {

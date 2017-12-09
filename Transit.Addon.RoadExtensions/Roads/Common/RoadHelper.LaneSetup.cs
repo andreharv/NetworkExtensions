@@ -13,6 +13,12 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
     {
         public static NetInfo SetRoadLanes(this NetInfo rdInfo, NetInfoVersion version, LanesConfiguration config)
         {
+            if (rdInfo.m_hasParkingSpaces == false)
+            {
+                var laneList = new List<NetInfo.Lane>();
+                laneList.AddRange(rdInfo.m_lanes.Where(l=>l != null && l.m_laneType != NetInfo.LaneType.Parking));
+                rdInfo.m_lanes = laneList.ToArray();
+            }
             if (config.LanesToAdd < 0)
             {
                 var remainingLanes = new List<NetInfo.Lane>();
@@ -36,8 +42,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                     var newLane = sourceLane.CloneWithoutStops();
                     tempLanes.Add(newLane);
                 }
-
-                rdInfo.m_lanes = tempLanes.ToArray();
+         rdInfo.m_lanes = tempLanes.ToArray();       
             }
 
             var laneCollection = new List<NetInfo.Lane>();
@@ -215,7 +220,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             {
                 var l = vehicleLanes[i];
 
-                if ((version == NetInfoVersion.Ground || version == NetInfoVersion.GroundGrass || version == NetInfoVersion.GroundTrees) && config.HasBusStop)
+                if ((version == NetInfoVersion.Ground || version == NetInfoVersion.GroundGrass || version == NetInfoVersion.GroundTrees || version == NetInfoVersion.GroundPavement) && config.HasBusStop)
                 {
                     if (i == 0)
                     {
