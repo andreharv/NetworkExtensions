@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Diagnostics;
+using System.Linq;
 using Transit.Addon.RoadExtensions.Roads.Highways;
 using Transit.Addon.RoadExtensions.Roads.Highways.Common;
 using Transit.Framework;
@@ -28,27 +29,38 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway5L
 
         public void BuildUp(NetInfo info, NetInfoVersion version)
         {
+            var sw = new Stopwatch();
+            sw.Start();
             ///////////////////////////
             // Template              //
             ///////////////////////////
             var highwayInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L);
             var highwayTunnelInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L_TUNNEL);
-
+            sw.Stop();
+            Framework.Debug.Log($"Templates in {sw.ElapsedMilliseconds}ms");
             ///////////////////////////
             // 3DModeling            //
             ///////////////////////////
+            var swa = new Stopwatch();
+            swa.Start();
             info.Setup28mMesh(version);
-
+            swa.Stop();
+            Framework.Debug.Log($"Modeling in {swa.ElapsedMilliseconds}ms");
 
             ///////////////////////////
             // Texturing             //
             ///////////////////////////
+            var swb = new Stopwatch();
+            swb.Start();
             SetupTextures(info, version);
-
+            swb.Stop();
+            Framework.Debug.Log($"Textures in {swb.ElapsedMilliseconds}ms");
 
             ///////////////////////////
             // Set up                //
             ///////////////////////////
+            var sw2 = new Stopwatch();
+            sw2.Start();
             info.m_availableIn = ItemClass.Availability.All;
             //info.m_class = highwayInfo.m_class.Clone(NetInfoClasses.NEXT_HIGHWAY5L);
             info.m_surfaceLevel = 0;
@@ -70,10 +82,13 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway5L
                 info.m_class = highwayInfo.m_class.Clone(NetInfoClasses.NEXT_HIGHWAY5L);
             }
 
-
+            sw2.Stop();
+            Framework.Debug.Log($"Set up in {sw2.ElapsedMilliseconds}ms");
             ///////////////////////////
             // Set up lanes          //
             ///////////////////////////
+            var sw3 = new Stopwatch();
+            sw3.Start();
             info.SetupHighwayLanes();
             var leftHwLane = info.SetHighwayLeftShoulder(highwayInfo, version);
             var rightHwLane = info.SetHighwayRightShoulder(highwayInfo, version);
@@ -98,11 +113,14 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway5L
             rightHwLane.m_laneProps.m_props = rightHwLaneProps.ToArray();
 
             info.TrimNonHighwayProps(false, false);
-
+            sw3.Stop();
+            Framework.Debug.Log($"Lanes and props in {sw3.ElapsedMilliseconds}ms");
 
             ///////////////////////////
             // AI                    //
             ///////////////////////////
+            var sw4 = new Stopwatch();
+            sw4.Start();
             var hwPlayerNetAI = highwayInfo.GetComponent<PlayerNetAI>();
             var playerNetAI = info.GetComponent<PlayerNetAI>();
 
@@ -127,6 +145,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway5L
             {
                 roadAI.m_enableZoning = false;
             }
+            sw4.Stop();
+            Framework.Debug.Log($"AI in {sw4.ElapsedMilliseconds}ms");
         }
     }
 }

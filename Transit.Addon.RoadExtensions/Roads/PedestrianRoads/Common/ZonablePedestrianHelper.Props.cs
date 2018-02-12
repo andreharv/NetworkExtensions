@@ -14,7 +14,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
             var bollardName = "WoodBollard"; 
             float? bollardOffset = null;
             float? pillarOffset = null;
-            var bollardInfo = PrefabCollection<PropInfo>.FindLoaded($"{Tools.PackageName(bollardName)}.{bollardName}_Data");
+            var bollardInfo = Prefabs.Find<PropInfo>($"{Tools.PackageName(bollardName)}.{bollardName}_Data");
             if (bollardInfo == null)
                 Debug.Log($"{info.name}: {bollardName} not found!");
             else
@@ -24,7 +24,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
             if (version == NetInfoVersion.Elevated || version == NetInfoVersion.Bridge)
             {
                 var pillarName = "Wood8mEPillar";
-                pillarInfo = PrefabCollection<BuildingInfo>.FindLoaded($"{Tools.PackageName(pillarName)}.{pillarName}_Data");
+                pillarInfo = Prefabs.Find<BuildingInfo>($"{Tools.PackageName(pillarName)}.{pillarName}_Data");
                 if (pillarInfo == null)
                 {
                     Debug.Log($"{info.name}: {pillarName} not found!");
@@ -35,7 +35,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
         public static void AddRetractBollard(this NetInfo info, NetInfoVersion version)
         {
             var bollardName = "RetractBollard";
-            var bollardInfo = PrefabCollection<PropInfo>.FindLoaded($"{Tools.PackageName(bollardName)}.{bollardName}_Data");
+            var bollardInfo = Prefabs.Find<PropInfo>($"{Tools.PackageName(bollardName)}.{bollardName}_Data");
             if (bollardInfo == null)
             {
                 Debug.Log($"{info.name}: {bollardName} not found!");
@@ -46,7 +46,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
         public static void AddStoneBollard(this NetInfo info, NetInfoVersion version)
         {
             var bollardName = "StoneBollard";
-            var bollardInfo = PrefabCollection<PropInfo>.FindLoaded($"{Tools.PackageName(bollardName)}.{bollardName}_Data");
+            var bollardInfo = Prefabs.Find<PropInfo>($"{Tools.PackageName(bollardName)}.{bollardName}_Data");
             if (bollardInfo == null)
             {
                 Debug.Log($"{info.name}: {bollardName} not found!");

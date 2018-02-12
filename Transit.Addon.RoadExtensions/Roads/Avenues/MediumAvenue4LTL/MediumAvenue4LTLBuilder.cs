@@ -1,32 +1,94 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Transit.Addon.RoadExtensions.Props;
 using Transit.Addon.RoadExtensions.Roads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.Network;
+using static Transit.Framework.NetInfoExtensions;
 
 namespace Transit.Addon.RoadExtensions.Roads.Avenues.MediumAvenue4LTL
 {
-    public partial class MediumAvenue4LTLBuilder : Activable, INetInfoBuilderPart
+    public partial class MediumAvenue4LTLBuilder : Activable, IMultiNetInfoBuilderPart, INetInfoSpecificBaseBuilder
     {
         public int Order { get { return 21; } }
-        public int UIOrder { get { return 5; } }
+        public int UIOrder { get { return 4; } }
 
+        public string DisplayName { get { return "Four Lane Avenue with Turning Lane"; } }
         public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_6L; } }
         public string Name { get { return "Medium Avenue TL"; } }
-        public string DisplayName { get { return "Four-Lane Road with Turning Lane"; } }
-        public string Description { get { return "A four-lane road with turning lanes and parking spaces. Supports medium traffic. Note: The turning lane goes in both directions so collisions may occur!"; } }
-        public string ShortDescription { get { return "Parkings, zoneable, medium traffic; turning lane works both ways and could cause collisions"; } }
-        public string UICategory { get { return "RoadsMedium"; } }
+        public string ShortDescription { get { return "Parkings, zoneable, medium traffic"; } }
 
-        public string ThumbnailsPath { get { return @"Roads\Avenues\MediumAvenue4LTL\thumbnails.png"; } }
-        public string InfoTooltipPath { get { return @"Roads\Avenues\MediumAvenue4LTL\infotooltip.png"; } }
-
-        public NetInfoVersion SupportedVersions
+        public string GetSpecificBasedPrefabName(NetInfoVersion version)
         {
-            get { return NetInfoVersion.All; }
+            if (version == NetInfoVersion.GroundGrass || version == NetInfoVersion.GroundTrees || version == NetInfoVersion.GroundPavement)
+            {
+                return "Medium Avenue TL";
+            }
+            return NetInfos.Vanilla.GetPrefabName(BasedPrefabName, version);
         }
 
+        public NetInfoVersion SupportedVersions { get { return NetInfoVersion.AllWithDecorationAndPavement; } }
+        public IEnumerable<IMenuItemBuilder> MenuItemBuilders
+        {
+            get
+            {
+                yield return new MenuItemBuilder
+                {
+                    UICategory = "RoadsMedium",
+                    UIOrder = 61,
+                    Name = "Medium Avenue TL",
+                    DisplayName = "Four Lane Avenue with Turning Lane",
+                    Description = "A four-lane road with turning lanes and parking spaces. Supports medium traffic. Note: The turning lane goes in both directions so collisions may occur!",
+                    ThumbnailsPath = @"Roads\Avenues\MediumAvenue4LTL\thumbnails.png",
+                    InfoTooltipPath = @"Roads\Avenues\MediumAvenue4LTL\infotooltip.png"
+                };
+                yield return new MenuItemBuilder
+                {
+                    UICategory = "RoadsMedium",
+                    UIOrder = 62,
+                    Name = "Medium Avenue TL Decoration Grass",
+                    DisplayName = "Four Lane Avenue with Turning Lane Grass",
+                    Description = "A four-lane road with turning lanes and parking spaces. Supports medium traffic. Note: The turning lane goes in both directions so collisions may occur!",
+                    ThumbnailsPath = @"Roads\Avenues\MediumAvenue4LTL\thumbnails.png",
+                    InfoTooltipPath = @"Roads\Avenues\MediumAvenue4LTL\infotooltip.png"
+                };
+                yield return new MenuItemBuilder
+                {
+                    UICategory = "RoadsMedium",
+                    UIOrder = 63,
+                    Name = "Medium Avenue TL Decoration Trees",
+                    DisplayName = "Four Lane Avenue with Turning Lane Trees",
+                    Description = "A four - lane road with turning lanes and parking spaces.Supports medium traffic.Note: The turning lane goes in both directions so collisions may occur!",
+                    ThumbnailsPath = @"Roads\Avenues\MediumAvenue4LTL\thumbnails.png",
+                    InfoTooltipPath = @"Roads\Avenues\MediumAvenue4LTL\infotooltip.png"
+                };
+                yield return new MenuItemBuilder
+                {
+                    UICategory = "RoadsMedium",
+                    UIOrder = 64,
+                    Name = "Medium Avenue TL Decoration Pavement",
+                    DisplayName = "Four Lane Avenue with Turning Lane Pavement",
+                    Description = "A four-lane road with turning lanes and parking spaces. Supports medium traffic. Note: The turning lane goes in both directions so collisions may occur!",
+                    ThumbnailsPath = @"Roads\Avenues\MediumAvenue4LTL\thumbnails.png",
+                    InfoTooltipPath = @"Roads\Avenues\MediumAvenue4LTL\infotooltip.png"
+                };
+            }
+        }
+
+
+        public void SetupRoadLanes(NetInfo info, NetInfoVersion version)
+        {
+            info.SetRoadLanes(version, new LanesConfiguration
+            {
+                IsTwoWay = true,
+                LaneWidth = 3.4f,
+                BusStopOffset = 2.9f,
+                CenterLane = CenterLaneType.TurningLane,
+                CenterLaneWidth = 4.4f
+            });
+            info.DoBuildupMulti(version);
+        }
         public void BuildUp(NetInfo info, NetInfoVersion version)
         {
             ///////////////////////////
@@ -45,12 +107,27 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.MediumAvenue4LTL
             // Texturing             //
             ///////////////////////////
             SetupTextures(info, version);
-
+            //info.SetupConnectGroup("5mSW", ConnextGroup.TwoPlusTwo);
             ///////////////////////////
             // Set up                //
             ///////////////////////////
-            info.m_hasParkingSpaces = true;
-            info.m_pavementWidth = (version != NetInfoVersion.Slope && version != NetInfoVersion.Tunnel ? 5 : 7);
+            info.m_hasParkingSpaces = version == NetInfoVersion.Ground;
+            if (version == NetInfoVersion.Ground)
+            {
+                info.m_pavementWidth = 4.8f;
+            }
+            else if (version == NetInfoVersion.Elevated || version == NetInfoVersion.Bridge)
+            {
+                info.m_pavementWidth = 5;
+            }
+            else if (version.IsGroundDecorated())
+            {
+                info.m_pavementWidth = 6.8f;
+            }
+            else
+            {
+                info.m_pavementWidth = 7;
+            }
             info.m_halfWidth = (version == NetInfoVersion.Bridge || version == NetInfoVersion.Elevated ? 14 : 16);
 
             if (version == NetInfoVersion.Tunnel)
@@ -67,16 +144,11 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.MediumAvenue4LTL
             {
                 info.m_class = roadInfo.m_class.Clone(NetInfoClasses.NEXT_MEDIUM_ROAD_TL);
             }
-			
+
             // Setting up lanes
-            info.SetRoadLanes(version, new LanesConfiguration
-            {
-                IsTwoWay = true,
-                LaneWidth = 3.4f,
-                BusStopOffset = 2.9f,
-                CenterLane = CenterLaneType.TurningLane,
-                CenterLaneWidth = 4.4f
-            });
+
+            SetupRoadLanes(info, version);
+            info.SetupLaneProps(version);
             var leftPedLane = info.GetLeftRoadShoulder();
             var rightPedLane = info.GetRightRoadShoulder();
 
@@ -120,12 +192,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.MediumAvenue4LTL
                     rightStreetLight.m_finalProp =
                     rightStreetLight.m_prop = Prefabs.Find<PropInfo>(MediumAvenueSideLightBuilder.NAME);
                 }
-            }
-
-            if (version == NetInfoVersion.Slope)
-            {
-                leftRoadProps.AddLeftWallLights(info.m_pavementWidth);
-                rightRoadProps.AddRightWallLights(info.m_pavementWidth);
             }
 
             leftPedLane.m_laneProps.m_props = leftRoadProps.ToArray();

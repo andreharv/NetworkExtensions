@@ -15,7 +15,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
             ///////////////////////////
             // Template              //
             ///////////////////////////
-            var roadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_2L_TREES);
+            var roadInfo = Prefabs.FindResource<NetInfo>(NetInfos.Vanilla.ROAD_2L_TREES);
 
             ///////////////////////////
             // Set up                //
@@ -68,10 +68,10 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
 
             var pedLaneProps = pedLane.m_laneProps.m_props.ToList();
             pedLaneProps.RemoveProps("random", "bus", "limit");
-            pedLaneProps.ReplacePropInfo(new KeyValuePair<string, PropInfo>("street light", Prefabs.Find<PropInfo>("StreetLamp02")));
-            pedLaneProps.ReplacePropInfo(new KeyValuePair<string, PropInfo>("traffic light 01", Prefabs.Find<PropInfo>("Traffic Light 01 Mirror")));
+            pedLaneProps.ReplacePropInfo(new KeyValuePair<string, PropInfo>("street light", Prefabs.FindResource<PropInfo>("StreetLamp02")));
+            pedLaneProps.ReplacePropInfo(new KeyValuePair<string, PropInfo>("traffic light 01", Prefabs.FindResource<PropInfo>("Traffic Light 01 Mirror")));
             var pedLightProp = pedLaneProps.First(tp => tp.m_prop.name == "Traffic Light 01 Mirror").ShallowClone();
-            var pedLightPropInfo = Prefabs.Find<PropInfo>("Traffic Light Pedestrian");
+            var pedLightPropInfo = Prefabs.FindResource<PropInfo>("Traffic Light Pedestrian");
             pedLightProp.m_prop = pedLightPropInfo;
             pedLightProp.m_position.x = -3.5f;
             
@@ -89,7 +89,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
             var pedLightProp2 = pedLaneProps.First(tp => tp.m_prop.name == "Traffic Light 02").ShallowClone();
             pedLightProp2.m_prop = pedLightPropInfo;
             pedLightProp2.m_position.x = 3.5f;
-            pedLaneProps.ReplacePropInfo(new KeyValuePair<string, PropInfo>("traffic light 02", Prefabs.Find<PropInfo>("Traffic Light 01 Mirror")));
+            pedLaneProps.ReplacePropInfo(new KeyValuePair<string, PropInfo>("traffic light 02", Prefabs.FindResource<PropInfo>("Traffic Light 01 Mirror")));
             pedLaneProps.Add(pedLightProp);
             pedLaneProps.Add(pedLightProp2);
             pedLane.m_laneProps.m_props = pedLaneProps.ToArray();

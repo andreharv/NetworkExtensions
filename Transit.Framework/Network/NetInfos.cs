@@ -52,8 +52,9 @@ namespace Transit.Framework.Network
                         switch (version)
                         {
                             case NetInfoVersion.Ground:
-                            case NetInfoVersion.GroundPavement:
                                 return groundName;
+                            case NetInfoVersion.GroundPavement:
+                                return groundName + " Decoration Pavement";
                             case NetInfoVersion.GroundGrass:
                                 return groundName + " Decoration Grass";
                             case NetInfoVersion.GroundTrees:
@@ -162,7 +163,8 @@ namespace Transit.Framework.Network
                         return groundName + " Decoration Grass";
                     case NetInfoVersion.GroundTrees:
                         return groundName + " Decoration Trees";
-
+                    case NetInfoVersion.GroundPavement:
+                        return groundName + " Decoration Pavement";
                     default:
                         return groundName + " " + version;
                 }

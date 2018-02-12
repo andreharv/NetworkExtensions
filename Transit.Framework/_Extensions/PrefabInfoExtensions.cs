@@ -3,6 +3,7 @@ using ColossalFramework;
 using Transit.Framework.Builders;
 using Transit.Framework.Interfaces;
 using UnityEngine;
+using System;
 
 namespace Transit.Framework
 {
@@ -11,7 +12,7 @@ namespace Transit.Framework
         public static T Clone<T>(this T originalPrefabInfo, string newName, Transform parentTransform)
             where T : PrefabInfo
         {
-            var instance = Object.Instantiate(originalPrefabInfo.gameObject);
+            var instance = UnityEngine.Object.Instantiate(originalPrefabInfo.gameObject);
             instance.name = newName;
             instance.transform.SetParent(parentTransform);
             instance.transform.localPosition = new Vector3(-7500, -7500, -7500);
@@ -23,7 +24,7 @@ namespace Transit.Framework
         public static T Clone<T>(this T originalPrefabInfo, string newName)
     where T : PrefabInfo
         {
-            var gameObject = Object.Instantiate(originalPrefabInfo.gameObject);
+            var gameObject = UnityEngine.Object.Instantiate(originalPrefabInfo.gameObject);
             gameObject.transform.parent = originalPrefabInfo.gameObject.transform; // N.B. This line is evil and removing it is killoing the game's performances
             gameObject.name = newName;
 
@@ -40,21 +41,30 @@ namespace Transit.Framework
 
         public static void SetMenuItemConfig(this PrefabInfo info, IMenuItemBuilder config)
         {
-            info.m_UIPriority = config.UIOrder;
-            info.SetUICategory(config.UICategory);
-            if (!config.ThumbnailsPath.IsNullOrWhiteSpace())
+            try
             {
-                var thumbnails = AssetManager.instance.GetThumbnails(config.GetCodeName(), config.ThumbnailsPath);
-                info.m_Atlas = thumbnails;
-                info.m_Thumbnail = thumbnails.name;
-            }
+                info.m_UIPriority = config.UIOrder;
+                info.SetUICategory(config.UICategory);
+                if (!config.ThumbnailsPath.IsNullOrWhiteSpace())
+                {
+                    var thumbnails = AssetManager.instance.GetThumbnails(config.GetCodeName(), config.ThumbnailsPath);
+                    info.m_Atlas = thumbnails;
+                    info.m_Thumbnail = thumbnails.name;
+                }
 
-            if (!config.InfoTooltipPath.IsNullOrWhiteSpace())
+                if (!config.InfoTooltipPath.IsNullOrWhiteSpace())
+                {
+                    var infoTips = AssetManager.instance.GetInfoTooltip(config.GetCodeName(), config.InfoTooltipPath);
+                    info.m_InfoTooltipAtlas = infoTips;
+                    info.m_InfoTooltipThumbnail = infoTips.name;
+                }
+            }
+            catch (Exception ex)
             {
-                var infoTips = AssetManager.instance.GetInfoTooltip(config.GetCodeName(), config.InfoTooltipPath);
-                info.m_InfoTooltipAtlas = infoTips;
-                info.m_InfoTooltipThumbnail = infoTips.name;
+                Debug.Log("SOMETHING WENT WRONG\r\n" + ex.Message);
             }
         }
+
     }
 }
+

@@ -15,7 +15,6 @@ namespace Transit.Framework.Builders
     public interface INetInfoBuilder : IPrefabBuilder, IIdentifiable
     {
         NetInfoVersion SupportedVersions { get; }
-
         void BuildUp(NetInfo info, NetInfoVersion version);
     }
 

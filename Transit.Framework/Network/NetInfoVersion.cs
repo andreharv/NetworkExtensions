@@ -31,5 +31,9 @@ namespace Transit.Framework
                 .Where(niv => niv != NetInfoVersion.All && niv != NetInfoVersion.AllWithDecoration && niv != NetInfoVersion.AllWithDecorationAndPavement)
                 .Where(niv => version.HasFlag(niv));
         }
+        public static bool IsGroundDecorated(this NetInfoVersion version)
+        {
+            return version == NetInfoVersion.GroundGrass || version == NetInfoVersion.GroundTrees || version == NetInfoVersion.GroundPavement;
+        }
     }
 }

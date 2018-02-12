@@ -183,7 +183,7 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.Oneway1LParking
         public void LateBuildUp(NetInfo info, NetInfoVersion version)
         {
             //var RoadPlanter1Name = "RoadPlanter1";
-            //var RoadPlanter1 = PrefabCollection<PropInfo>.FindLoaded($"{Tools.PackageName(RoadPlanter1Name)}.{RoadPlanter1Name}_Data");
+            //var RoadPlanter1 = Prefabs.Find<PropInfo>($"{Tools.PackageName(RoadPlanter1Name)}.{RoadPlanter1Name}_Data");
             //var pedLanes = info.m_lanes.Where(pl => pl.m_laneType == NetInfo.LaneType.Pedestrian).ToArray();
             //for (var i = 0; i < pedLanes.Length; i++)
             //{

@@ -7,6 +7,7 @@ using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.Network;
 using UnityEngine;
+using static Transit.Framework.NetInfoExtensions;
 #if DEBUG
 using Debug = Transit.Framework.Debug;
 #endif
@@ -32,7 +33,11 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
             get { return NetInfoVersion.All; }
         }
 
-        public void BuildUp(NetInfo info, NetInfoVersion version)
+        public void SetupRoadLanes(NetInfo info, NetInfoVersion version)
+		{
+
+		}
+		 public void BuildUp(NetInfo info, NetInfoVersion version)
         {
             ///////////////////////////
             // Template              //
@@ -43,19 +48,19 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
             // 3DModeling            //
             ///////////////////////////
             info.Setup32m3mSW2mMdnMesh(version);
-
+            
             ///////////////////////////
             // Texturing             //
             ///////////////////////////
             SetupTextures(info, version);
-
+//info.SetupConnectGroup("3mSW2mMdn", ConnextGroup.FourPlusFour);
             ///////////////////////////
             // Set up                //
             ///////////////////////////
             info.m_hasParkingSpaces = false;
             info.m_pavementWidth = (version == NetInfoVersion.Slope || version == NetInfoVersion.Tunnel ? 4 : 3);
             info.m_halfWidth = (version == NetInfoVersion.Tunnel ? 17 : 16);
-
+            info.SetupConnectGroup("3mSW2mMdn", ConnextGroup.FourPlusFour, ConnextGroup.ThreeMidL);
             if (version == NetInfoVersion.Tunnel)
             {
                 info.m_setVehicleFlags = Vehicle.Flags.Transition | Vehicle.Flags.Underground;
@@ -78,6 +83,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
                 CenterLaneWidth = 2,
                 BusStopOffset = 0f
             });
+            //SetupRoadLanes(info, version);
 
             var medianLane = info.GetMedianLane();
             var leftPedLane = info.GetLeftRoadShoulder();
@@ -151,7 +157,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
         {
             if (version == NetInfoVersion.Bridge)
             {
-                var bridgePillar = PrefabCollection<BuildingInfo>.FindLoaded($"{Tools.PackageName("BridgePillar")}.CableStay32m_Data");
+                var bridgePillar = Prefabs.Find<BuildingInfo>($"{Tools.PackageName("BridgePillar")}.CableStay32m_Data");
                 if (bridgePillar == null)
                 {
                     Debug.Log($"{info.name}: CableStay32m Pillar not found!");

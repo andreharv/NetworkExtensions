@@ -224,5 +224,10 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway6L
                 }
             }
         }
+
+        public void SetupRoadLanes(NetInfo info, NetInfoVersion version)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

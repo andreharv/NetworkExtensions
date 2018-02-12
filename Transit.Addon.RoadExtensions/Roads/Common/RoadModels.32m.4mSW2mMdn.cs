@@ -1,4 +1,5 @@
-﻿using Transit.Framework;
+﻿using System.Linq;
+using Transit.Framework;
 using Transit.Framework.Network;
 
 namespace Transit.Addon.RoadExtensions.Roads.Common
@@ -22,7 +23,9 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                         var segments1 = info.m_segments[1].ShallowClone();
                         var segments2 = info.m_segments[2].ShallowClone();
                         var segments3 = info.m_segments[1].ShallowClone();
+                        var segments4 = info.m_segments[0].ShallowClone();
                         var nodes0 = info.m_nodes[0].ShallowClone();
+                        var nodes1 = info.m_nodes[0].ShallowClone();
                         segments0.SetMeshes(
                             @"Roads\Common\Meshes\32m\4mSw2mMdn\Ground.obj");
                         segments1.SetMeshes(
@@ -31,8 +34,12 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                             @"Roads\Common\Meshes\32m\4mSw2mMdn\BusBoth.obj");
                         segments3.SetMeshes(
                             @"Roads\Common\Meshes\32m\4mSw2mMdn\BusInv.obj");
+                        segments4.SetMeshes(
+                            @"Roads\Common\Meshes\32m\4mSW\Ground_Parking.obj");
                         nodes0.SetMeshes(
-                            @"Roads\Common\Meshes\32m\4mSW2mMdn\Ground_Node.obj");
+                            @"Roads\Common\Meshes\32m\4mSW\Ground_Node_Parking.obj");
+                        nodes1.SetMeshes(
+                            @"Roads\Common\Meshes\32m\4mSW\Ground_Parking.obj");
                         if (layoutStyle != LanesLayoutStyle.Symmetrical)
                         {
                             
@@ -40,8 +47,51 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                             RoadHelper.HandleAsymSegmentFlags(segments0);
                         }
 
-                        info.m_segments = new[] { segments0, segments1, segments2, segments3 };
-                        info.m_nodes = new[] { nodes0 };
+                        info.m_segments = new[] { segments0, segments1, segments2, segments3,segments4 };
+                        info.m_nodes = new[] { nodes0,nodes1 };
+                        break;
+                    }
+                case NetInfoVersion.GroundGrass:
+                case NetInfoVersion.GroundTrees:
+                case NetInfoVersion.GroundPavement:
+                    {
+
+                        var segments1 = info.m_segments[1].ShallowClone();
+                        var segments2 = info.m_segments[2].ShallowClone();
+                        var segments3 = info.m_segments[3].ShallowClone();
+                        var segments4 = info.m_segments[0].ShallowClone();
+                        var segments5 = info.m_segments[1].ShallowClone();
+                        var segments6 = info.m_segments[3].ShallowClone();
+                        segments1.SetMeshes(
+                            @"Roads\Common\Meshes\32m\4mSW2mMdn\Bus_Pavement.obj");
+                        segments2.SetMeshes(
+                            @"Roads\Common\Meshes\32m\4mSW2mMdn\BusBoth_Pavement.obj");
+                        segments3.SetMeshes(
+                            @"Roads\Common\Meshes\32m\4mSW2mMdn\BusInv_Pavement.obj");
+                        segments4.SetMeshes(
+                            @"Roads\Common\Meshes\32m\4mSW\Ground_Pavement.obj");
+                        segments5.SetMeshes(
+                            @"Roads\Common\Meshes\32m\4mSW\Ground_Pavement_Bus.obj");
+                        segments6.SetMeshes(
+                            @"Roads\Common\Meshes\32m\4mSW\Ground_Pavement_Bus.obj");
+                        var nodes0 = info.m_nodes[0].ShallowClone();
+                        var nodes1 = info.m_nodes[1].ShallowClone();
+                        nodes0.SetMeshes(
+                            @"Roads\Common\Meshes\32m\4mSW\Ground_Node_Pavement.obj");
+                        nodes1.SetMeshes(
+                            @"Roads\Common\Meshes\32m\4mSW\Ground_Pavement.obj");
+                        var segmentList = info.m_segments.ToList();
+                        var nodeList = info.m_nodes.ToList();
+                        segmentList[1] = segments1;
+                        segmentList[2] = segments2;
+                        segmentList[3] = segments3;
+                        segmentList[4] = segments4;
+                        segmentList.Add(segments5);
+                        segmentList.Add(segments6);
+                        nodeList[0] = nodes0;
+                        nodeList[1] = nodes1;
+                        info.m_segments = segmentList.ToArray();
+                        info.m_nodes = nodeList.ToArray();
                         break;
                     }
                 case NetInfoVersion.Elevated:

@@ -52,7 +52,6 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.OneWay4L
             info.m_hasParkingSpaces = false;
             info.m_pavementWidth = (version != NetInfoVersion.Slope && version != NetInfoVersion.Tunnel ? 2 : 5);
             info.m_halfWidth = (version != NetInfoVersion.Slope && version != NetInfoVersion.Tunnel ? 8 : 11);
-
             if (version == NetInfoVersion.Tunnel)
             {
                 info.m_setVehicleFlags = Vehicle.Flags.Transition | Vehicle.Flags.Underground;

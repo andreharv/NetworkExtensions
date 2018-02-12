@@ -6,6 +6,7 @@ using Transit.Addon.RoadExtensions.Roads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.Network;
+using static Transit.Framework.NetInfoExtensions;
 
 namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.SmallAvenue4L
 {
@@ -53,7 +54,7 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.SmallAvenue4L
             info.m_hasParkingSpaces = false;
             info.m_pavementWidth = (version != NetInfoVersion.Slope && version != NetInfoVersion.Tunnel ? 2 : 5);
             info.m_halfWidth = (version != NetInfoVersion.Slope && version != NetInfoVersion.Tunnel ? 8 : 11);
-
+            info.SetupConnectGroup("2mSW", ConnextGroup.TwoMidL, ConnextGroup.OneMidL,ConnextGroup.ThreeMidL, ConnextGroup.OnePlusOne,ConnextGroup.TwoPlusTwo,ConnextGroup.TwoPlusThree, ConnextGroup.ThreePlusThree, ConnextGroup.TwoPlusFour);
             if (version == NetInfoVersion.Tunnel)
             {
                 info.m_setVehicleFlags = Vehicle.Flags.Transition | Vehicle.Flags.Underground;

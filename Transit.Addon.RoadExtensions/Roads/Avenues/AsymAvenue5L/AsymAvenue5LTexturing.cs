@@ -13,7 +13,19 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.AsymAvenue5L
                 case NetInfoVersion.Ground:
                     for (int i = 0; i < info.m_segments.Length; i++)
                     {
-                        if (lanesStyle != LanesLayoutStyle.Symmetrical)
+
+                        if (info.m_segments[i].m_mesh.name.ToLower().Contains("ground_p"))
+                        {
+                            info.m_segments[i].SetTextures(
+                            new TextureSet
+                                (@"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_Median__MainTex.png",
+                                $@"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_MedianConcrete2__AlphaMap.png"),
+                            new LODTextureSet
+                                (@"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_Median_LOD__MainTex.png",
+                                $@"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_MedianConcrete2_LOD__AlphaMap.png",
+                                @"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_Median_LOD__XYSMap.png"));
+                        }
+                        else if (lanesStyle != LanesLayoutStyle.Symmetrical)
                         {
                             var inverted = string.Empty;
                             var lodInverted = string.Empty;
@@ -21,7 +33,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.AsymAvenue5L
                             if (invertMe)
                                 lodInverted = "_Inverted";
                             if (invertMe || info.m_segments[i].m_mesh.name == "Bus")
-                                inverted = "_Inverted"; 
+                                inverted = "_Inverted";
 
                             info.m_segments[i].SetTextures(
                                 new TextureSet
@@ -31,7 +43,22 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.AsymAvenue5L
                                     (string.Format(@"Roads\Avenues\AsymAvenue5L\Textures\Ground_Segment{0}__MainTex_LOD.png", lodInverted),
                                     string.Format(@"Roads\Avenues\AsymAvenue5L\Textures\Ground_Segment{0}__AlphaMap_LOD.png", lodInverted),
                                     @"Roads\Avenues\AsymAvenue5L\Textures\Ground_Segment__XYSMap_LOD.png"));
-                            }
+                        }
+                    }
+                    for (int i = 0; i < info.m_nodes.Length; i++)
+                    {
+                        var groundP = info.m_nodes[i].m_mesh.name.ToLower().Contains("ground_p");
+                        if (groundP)
+                        {
+                            info.m_nodes[i].SetTextures(
+                            new TextureSet
+                                (@"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_Median__MainTex.png",
+                                $@"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_MedianConcrete{(groundP ? "2" : "")}__AlphaMap.png"),
+                            new LODTextureSet
+                                (@"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_Median_LOD__MainTex.png",
+                                $@"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_MedianConcrete{(groundP ? "2" : "")}_LOD__AlphaMap.png",
+                                @"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_Median_LOD__XYSMap.png"));
+                        }
                     }
                     break;
                 case NetInfoVersion.GroundGrass:
@@ -54,15 +81,16 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.AsymAvenue5L
                     }
                     for (int i = 0; i < info.m_nodes.Length; i++)
                     {
-                        if (info.m_nodes[i].m_mesh.name.ToLower().Contains("ground_p"))
+                        var groundP = info.m_nodes[i].m_mesh.name.ToLower().Contains("ground_p");
+                        if (groundP)
                         {
                             info.m_nodes[i].SetTextures(
                             new TextureSet
                                 (@"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_Median__MainTex.png",
-                                $@"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_MedianConcrete2__AlphaMap.png"),
+                                $@"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_MedianConcrete{(groundP ? "2" : "")}__AlphaMap.png"),
                             new LODTextureSet
                                 (@"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_Median_LOD__MainTex.png",
-                                $@"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_MedianConcrete2_LOD__AlphaMap.png",
+                                $@"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_MedianConcrete{(groundP ? "2" : "")}_LOD__AlphaMap.png",
                                 @"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_Median_LOD__XYSMap.png"));
                         }
                     }
@@ -82,7 +110,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.AsymAvenue5L
                                 (string.Format(@"Roads\Avenues\AsymAvenue5L\Textures\Elevated_Segment{0}__MainTex_LOD.png", inverted),
                                 string.Format(@"Roads\Avenues\AsymAvenue5L\Textures\Elevated_Segment{0}__AlphaMap_LOD.png", inverted),
                                 @"Roads\Avenues\AsymAvenue5L\Textures\Elevated_Segment__XYSMap_LOD.png"));
-                         }
+                        }
                     }
 
                     break;

@@ -7,31 +7,89 @@ using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.Network;
 using UnityEngine;
+using static Transit.Framework.NetInfoExtensions;
 #if DEBUG
 using Debug = Transit.Framework.Debug;
 #endif
 namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue6LM
 {
-    public partial class LargeAvenue6LMBuilder : Activable, INetInfoBuilderPart, INetInfoLateBuilder
+    public partial class LargeAvenue6LMBuilder : Activable, IMultiNetInfoBuilderPart, INetInfoSpecificBaseBuilder, INetInfoLateBuilder
     {
         public int Order { get { return 25; } }
-        public int UIOrder { get { return 1500; } }
-
         public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_4L; } }
         public string Name { get { return "Six-Lane Avenue Median"; } }
         public string DisplayName { get { return "Six-Lane Road with Median"; } }
-        public string Description { get { return "A Six-lane road with paved median. Supports heavy urban traffic."; } }
         public string ShortDescription { get { return "No parking, zoneable, heavy urban traffic"; } }
-        public string UICategory { get { return "RoadsLarge"; } }
-
-        public string ThumbnailsPath { get { return @"Roads\Avenues\LargeAvenue6LM\thumbnails.png"; } }
-        public string InfoTooltipPath { get { return @"Roads\Avenues\LargeAvenue6LM\infotooltip.png"; } }
-        
-        public NetInfoVersion SupportedVersions
+        public NetInfoVersion SupportedVersions { get { return NetInfoVersion.AllWithDecorationAndPavement; } }
+        public string GetSpecificBasedPrefabName(NetInfoVersion version)
         {
-            get { return NetInfoVersion.All; }
+            if (version == NetInfoVersion.GroundGrass || version == NetInfoVersion.GroundTrees || version == NetInfoVersion.GroundPavement)
+            {
+                return "Six-Lane Avenue Median";
+            }
+            return NetInfos.Vanilla.GetPrefabName(BasedPrefabName, version);
+        }
+        public IEnumerable<IMenuItemBuilder> MenuItemBuilders
+        {
+            get
+            {
+                yield return new MenuItemBuilder
+                {
+                    UICategory = "RoadsLarge",
+                    UIOrder = 61,
+                    Name = "Six-Lane Avenue Median",
+                    DisplayName = "Six-Lane Road With Median Road",
+                    Description = "A Six-lane road with paved median. Supports heavy urban traffic.",
+                    ThumbnailsPath = @"Roads\Avenues\LargeAvenue6LM\thumbnails.png",
+                    InfoTooltipPath = @"Roads\Avenues\LargeAvenue6LM\infotooltip.png"
+                };
+                yield return new MenuItemBuilder
+                {
+                    UICategory = "RoadsLarge",
+                    UIOrder = 62,
+                    Name = "Six-Lane Avenue Median Decoration Grass",
+                    DisplayName = "Six-Lane Road With Median Grass",
+                    Description = "A Six-lane road with paved median. Supports heavy urban traffic.",
+                    ThumbnailsPath = @"Roads\Avenues\LargeAvenue6LM\thumbnails.png",
+                    InfoTooltipPath = @"Roads\Avenues\LargeAvenue6LM\infotooltip.png"
+                };
+                yield return new MenuItemBuilder
+                {
+                    UICategory = "RoadsLarge",
+                    UIOrder = 63,
+                    Name = "Six-Lane Avenue Median Decoration Trees",
+                    DisplayName = "Six-Lane Road With Median Trees",
+                    Description = "A Six-lane road with paved median. Supports heavy urban traffic.",
+                    ThumbnailsPath = @"Roads\Avenues\LargeAvenue6LM\thumbnails.png",
+                    InfoTooltipPath = @"Roads\Avenues\LargeAvenue6LM\infotooltip.png"
+                };
+                yield return new MenuItemBuilder
+                {
+                    UICategory = "RoadsLarge",
+                    UIOrder = 64,
+                    Name = "Six-Lane Avenue Median Decoration Pavement",
+                    DisplayName = "Six-Lane Road With Median Pavement",
+                    Description = "A Six-lane road with paved median. Supports heavy urban traffic.",
+                    ThumbnailsPath = @"Roads\Avenues\LargeAvenue6LM\thumbnails.png",
+                    InfoTooltipPath = @"Roads\Avenues\LargeAvenue6LM\infotooltip.png"
+                };
+            }
         }
 
+        public void SetupRoadLanes(NetInfo info, NetInfoVersion version)
+        {
+                info.SetRoadLanes(version, new LanesConfiguration
+                {
+                    IsTwoWay = true,
+                    LaneWidth = 3,
+                    LanesToAdd = version.IsGroundDecorated() ? 0 : 2,
+                    PedPropOffsetX = 1.5f,
+                    CenterLane = CenterLaneType.Median,
+                    CenterLaneWidth = 4,
+                    BusStopOffset = 3
+                });
+            info.DoBuildupMulti(version);
+        }
         public void BuildUp(NetInfo info, NetInfoVersion version)
         {
             ///////////////////////////
@@ -43,7 +101,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue6LM
             // 3DModeling            //
             ///////////////////////////
             info.Setup32m3mSW4mMdnMesh(version);
-
+            
             ///////////////////////////
             // Texturing             //
             ///////////////////////////
@@ -52,7 +110,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue6LM
             ///////////////////////////
             // Set up                //
             ///////////////////////////
-            info.m_hasParkingSpaces = true;
+            info.m_hasParkingSpaces = version == NetInfoVersion.Ground;
             if (version == NetInfoVersion.Ground)
             {
                 info.m_pavementWidth = 3;
@@ -65,9 +123,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue6LM
             {
                 info.m_pavementWidth = 5;
             }
-
             info.m_halfWidth = (version == NetInfoVersion.Tunnel ? 17 : 16);
-
+            info.SetupConnectGroup("3mSW4mMdn", ConnextGroup.ThreePlusThree, ConnextGroup.TwoPlusTwo, ConnextGroup.ThreeMidL, ConnextGroup.FourPlusFour);
             if (version == NetInfoVersion.Tunnel)
             {
                 info.m_setVehicleFlags = Vehicle.Flags.Transition | Vehicle.Flags.Underground;
@@ -80,20 +137,10 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue6LM
             }
 
             // Setting up lanes
-            info.SetRoadLanes(version, new LanesConfiguration
-            {
-                IsTwoWay = true,
-                LaneWidth = 3,
-                LanesToAdd = 2,
-                PedPropOffsetX = version == NetInfoVersion.Slope ? 1.5f : 1f,
-                CenterLane = CenterLaneType.Median,
-                CenterLaneWidth = 4,
-                BusStopOffset = 3
-            });
 
+            SetupRoadLanes(info, version);
+            info.SetupLaneProps(version);
             var medianLane = info.GetMedianLane();
-            var leftPedLane = info.GetLeftRoadShoulder();
-            var rightPedLane = info.GetRightRoadShoulder();
 
             // Fix for T++ legacy support (reordering)
             if (medianLane != null)
@@ -106,8 +153,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue6LM
             }
 
             //Setting Up Props
-            var leftPedLaneProps = leftPedLane.m_laneProps.m_props.ToList();
-            var rightPedLaneProps = rightPedLane.m_laneProps.m_props.ToList();
+
             var medianPedLaneProps = medianLane?.m_laneProps?.m_props.ToList();
 
             if (version != NetInfoVersion.Tunnel)
@@ -115,7 +161,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue6LM
                 var medianStreetLight = medianPedLaneProps?.FirstOrDefault(p => p.m_prop.name.ToLower().Contains("avenue light"));
                 if (medianStreetLight != null)
                 {
-                    medianStreetLight.m_finalProp = 
+                    medianStreetLight.m_finalProp =
                     medianStreetLight.m_prop = Prefabs.Find<PropInfo>(LargeAvenueMedianLightBuilder.NAME);
                 }
             }
@@ -124,21 +170,12 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue6LM
             {
                 medianPedLaneProps.RemoveProps("50 Speed Limit");
             }
-
-            if (version == NetInfoVersion.Slope)
-            {
-                leftPedLaneProps.AddLeftWallLights(info.m_pavementWidth);
-                rightPedLaneProps.AddRightWallLights(info.m_pavementWidth);
-            }
-
-            leftPedLane.m_laneProps.m_props = leftPedLaneProps.ToArray();
-            rightPedLane.m_laneProps.m_props = rightPedLaneProps.ToArray();
             if (medianLane?.m_laneProps != null && medianPedLaneProps != null)
             {
                 medianLane.m_laneProps.m_props = medianPedLaneProps.ToArray();
             }
 
-            
+
             info.TrimAboveGroundProps(version);
 
             // AI
@@ -170,14 +207,14 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue6LM
                         Debug.Log($"PILLARNAME = {building.name}");
                     }
                 }
-                var bridgePillar = PrefabCollection<BuildingInfo>.FindLoaded($"{Tools.PackageName("BridgePillar")}.CableStay32m_Data");
-                
+                var bridgePillar = Prefabs.Find<BuildingInfo>($"{Tools.PackageName("BridgePillar")}.CableStay32m_Data");
+
                 if (bridgePillar == null)
                 {
                     Debug.Log($"{info.name}: CableStay32m Pillar not found!");
                 }
                 else
-                { 
+                {
                     var bridgeAI = info.GetComponent<RoadBridgeAI>();
                     if (bridgeAI != null)
                     {

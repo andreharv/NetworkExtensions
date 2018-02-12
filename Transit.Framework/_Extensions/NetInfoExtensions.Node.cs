@@ -8,7 +8,7 @@ namespace Transit.Framework
     {
         public static NetInfo SetAllNodesTexture(this NetInfo info, TextureSet newTextures, LODTextureSet newLODTextures = null)
         {
-            for(var i = 0; i < info.m_nodes.Length; i++)
+            for (var i = 0; i < info.m_nodes.Length; i++)
             {
                 info.m_nodes[i].SetTextures(newTextures, newLODTextures);
             }
@@ -16,6 +16,26 @@ namespace Transit.Framework
             return info;
         }
 
+        public static NetInfo.Node SetVanillaTextures(this NetInfo.Node node, TextureSet newTextures, LODTextureSet newLODTextures = null)
+        {
+            if (newTextures != null)
+            {
+                if (node.m_nodeMaterial != null)
+                {
+                    node.m_nodeMaterial = newTextures.CreateRoadMaterial(node.m_nodeMaterial);
+                }
+            }
+
+            if (newLODTextures != null)
+            {
+                if (node.m_lodMaterial != null)
+                {
+                    node.m_lodMaterial = newLODTextures.CreateRoadMaterial(node.m_lodMaterial);
+                }
+            }
+
+            return node;
+        }
         public static NetInfo.Node SetTextures(this NetInfo.Node node, TextureSet newTextures, LODTextureSet newLODTextures = null)
         {
             if (newTextures != null)
@@ -23,7 +43,6 @@ namespace Transit.Framework
                 if (node.m_material != null)
                 {
                     node.m_material = newTextures.CreateRoadMaterial(node.m_material);
-                    node.m_nodeMaterial = node.m_material;
                 }
             }
 
@@ -58,7 +77,35 @@ namespace Transit.Framework
 
             return node;
         }
+        public static NetInfo.Node SetDefaultUVs(this NetInfo.Node node)
+        {
+            var colors = new List<Color>();
+            var colors32 = new List<Color32>();
+            Color color;
+            Color32 color32;
 
+            color = new Color(255, 255, 255, 255);
+            color32 = new Color32(255, 255, 255, 255);
+            for (int i = 0; i < node.m_mesh.vertexCount; i++)
+            {
+                colors.Add(color);
+                colors32.Add(color32);
+            }
+            node.m_mesh.colors = colors.ToArray();
+            node.m_mesh.colors32 = colors32.ToArray();
+
+            colors = new List<Color>();
+            colors32 = new List<Color32>();
+            for (int i = 0; i < node.m_lodMesh.vertexCount; i++)
+            {
+                colors.Add(color);
+                colors32.Add(color32);
+            }
+            node.m_lodMesh.colors = colors.ToArray();
+            node.m_lodMesh.colors32 = colors32.ToArray();
+
+            return node;
+        }
         public static NetInfo.Node SetConsistentUVs(this NetInfo.Node node, bool isPowerLines = true)
         {
             var colors = new List<Color>();

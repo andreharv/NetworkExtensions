@@ -18,7 +18,18 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
                             (@"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Segment_LOD__MainTex.png",
                             @"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Segment_LOD__APRMap.png",
                             @"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Segment_LOD__XYSMap.png"));
-                    info.SetAllNodesTexture(
+                    for (var i = 0; i < info.m_nodes.Length; i++)
+                    {
+                        if ((info.m_nodes[i].m_flagsRequired & (NetNode.Flags.AsymBackward | NetNode.Flags.AsymForward)) != NetNode.Flags.None)
+                        {
+                            info.m_nodes[i].SetTextures(
+                            new TextureSet
+                                (@"Roads\Common\Textures\32m\3mSw_MainTex.png",
+                                @"Roads\Common\Textures\32m\3mSw_AlphaMap.png"));
+                        }
+                        else
+                        {
+                            info.m_nodes[i].SetTextures(
                         new TextureSet
                             (@"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Node__MainTex.png",
                             @"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Node__APRMap.png"),
@@ -26,6 +37,9 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
                            (@"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Node_LOD__MainTex.png",
                             @"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Node_LOD__APRMap.png",
                             @"Roads\Avenues\LargeAvenue8LM\Textures\Ground_Segment_LOD__XYSMap.png"));
+                        }
+                    }
+
                     break;
                 case NetInfoVersion.Elevated:
                     info.SetAllSegmentsTexture(
@@ -95,7 +109,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
                             (@"Roads\Avenues\LargeAvenue8LM\Textures\Slope_Segment_LOD__MainTex.png",
                             @"Roads\Avenues\LargeAvenue8LM\Textures\Slope_Segment_LOD__APRMap.png",
                             @"Roads\Avenues\LargeAvenue8LM\Textures\Slope_Segment_LOD__XYSMap.png"));
-            }
+                        }
                         else
                         {
                             info.m_segments[i].SetTextures(
@@ -112,7 +126,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
                     for (int i = 0; i < info.m_nodes.Length; i++)
                     {
                         if (info.m_nodes[i].m_mesh.name == "Slope_U_Node")
-                    {
+                        {
                             info.m_nodes[i].SetTextures(
                                 new TextureSet
                                     (@"Roads\Avenues\LargeAvenue8LM\Textures\Slope_Segment__MainTex.png",
@@ -121,7 +135,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
                                     (@"Roads\Avenues\LargeAvenue8LM\Textures\Slope_Segment_LOD__MainTex.png",
                                     @"Roads\Avenues\LargeAvenue8LM\Textures\Slope_Segment_LOD__APRMap.png",
                                     @"Roads\Avenues\LargeAvenue8LM\Textures\Slope_Segment_LOD__XYSMap.png"));
-            }
+                        }
                         else
                         {
                             info.m_nodes[i].SetTextures(

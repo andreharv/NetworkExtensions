@@ -15,7 +15,7 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallRoads.BasicRoadMdn
                     var suffix = version.ToString().Substring(6).Length > 0 ? "Grass" : "Concrete";
                     for (int i = 0; i < info.m_segments.Length; i++)
                     {
-                        if (info.m_segments[i].m_mesh.name.ToLower().Contains("median"))
+                        if (info.m_segments[i].m_mesh.name.Contains("Median"))
                         {
                             info.m_segments[i].SetTextures(
                             new TextureSet
@@ -40,12 +40,16 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallRoads.BasicRoadMdn
                     }
                     for (int i = 0; i < info.m_nodes.Length; i++)
                     {
-                        if (info.m_nodes[i].m_mesh.name.ToLower().Contains("median"))
+                        if (info.m_nodes[i].m_mesh.name.Contains("Median"))
                         {
                             info.m_nodes[i].SetTextures(
-                                new TextureSet
-                                    (@"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_Median__MainTex.png",
-                                    @"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_MedianConcrete__AlphaMap.png"));
+                            new TextureSet
+                                (@"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_Median__MainTex.png",
+                                $@"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_MedianConcrete__AlphaMap.png"),
+                            new LODTextureSet
+                                (@"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_Median_LOD__MainTex.png",
+                                $@"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_MedianConcrete_LOD__AlphaMap.png",
+                                @"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_Median_LOD__XYSMap.png"));
                         }
                     }
                     break;
@@ -53,7 +57,7 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallRoads.BasicRoadMdn
                 case NetInfoVersion.Bridge:
                     for (int i = 0; i < info.m_segments.Length; i++)
                     {
-                        if (info.m_segments[i].m_mesh.name.ToLower().Contains("median"))
+                        if (info.m_segments[i].m_mesh.name.Contains("Median"))
                         {
                             info.m_segments[i].SetTextures(
                             new TextureSet

@@ -5,6 +5,7 @@ using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.Network;
 using UnityEngine;
+using static Transit.Framework.NetInfoExtensions;
 
 namespace Transit.Addon.RoadExtensions.Roads.SmallRoads.BasicRoadMdn
 {
@@ -70,7 +71,8 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallRoads.BasicRoadMdn
             // 3DModeling            //
             ///////////////////////////
             info.Setup16m3mSW3mMdnMesh(version);
-
+            //info.SetupConnectGroup("3mSW3mMdn", ConnextGroup.OnePlusOne, ConnextGroup.MidS, ConnextGroup.OnePlusTwoS, ConnextGroup.OnePlusThreeS, ConnextGroup.TwoPlusTwo, ConnextGroup.TwoPlusThree);
+            
             ///////////////////////////
             // Texturing             //
             ///////////////////////////
@@ -83,6 +85,7 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallRoads.BasicRoadMdn
 
             info.m_pavementWidth = (version != NetInfoVersion.Slope && version != NetInfoVersion.Tunnel ? 3 : 6);
             info.m_halfWidth = (version != NetInfoVersion.Slope && version != NetInfoVersion.Tunnel ? 8 : 11);
+            info.SetupConnectGroup("3mSW3mMdn", ConnextGroup.OnePlusOne,ConnextGroup.OneMidL,ConnextGroup.TwoPlusTwo, ConnextGroup.TwoPlusThree);
             info.m_canCrossLanes = false;
             if (version == NetInfoVersion.Tunnel)
             {

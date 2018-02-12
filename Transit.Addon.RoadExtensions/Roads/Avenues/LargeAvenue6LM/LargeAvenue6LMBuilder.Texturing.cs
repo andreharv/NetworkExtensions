@@ -10,22 +10,91 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue6LM
             switch (version)
             {
                 case NetInfoVersion.Ground:
-                    info.SetAllSegmentsTexture(
-                        new TextureSet
-                            (@"Roads\Avenues\LargeAvenue6LM\Textures\Ground_Segment__MainTex.png",
-                            @"Roads\Avenues\LargeAvenue6LM\Textures\Ground_Segment__APRMap.png"),
-                    new LODTextureSet
-                            (@"Roads\Avenues\LargeAvenue6LM\Textures\Ground_Segment_LOD__MainTex.png",
-                            @"Roads\Avenues\LargeAvenue6LM\Textures\Ground_Segment_LOD__APRMap.png",
-                            @"Roads\Avenues\LargeAvenue6LM\Textures\Ground_Segment_LOD__XYSMap.png"));
-                    info.SetAllNodesTexture(
-                        new TextureSet
-                            (@"Roads\Avenues\LargeAvenue6LM\Textures\Ground_Node__MainTex.png",
-                            @"Roads\Avenues\LargeAvenue6LM\Textures\Ground_Node__APRMap.png"),
+                    for (int i = 0; i < info.m_segments.Length; i++)
+                    {
+                        if (info.m_segments[i].m_mesh.name.ToLower().Contains("ground_p"))
+                        {
+                            info.m_segments[i].SetTextures(
+                            new TextureSet
+                                (@"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_Median__MainTex.png",
+                                $@"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_MedianConcrete2__AlphaMap.png"),
+                            new LODTextureSet
+                                (@"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_Median_LOD__MainTex.png",
+                                $@"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_MedianConcrete2_LOD__AlphaMap.png",
+                                @"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_Median_LOD__XYSMap.png"));
+                        }
+                        else
+                        {
+                            info.m_segments[i].SetTextures(
+                                new TextureSet
+                                (@"Roads\Avenues\LargeAvenue6LM\Textures\Ground_Segment__MainTex.png",
+                                @"Roads\Avenues\LargeAvenue6LM\Textures\Ground_Segment__APRMap.png"),
                         new LODTextureSet
-                           (@"Roads\Avenues\LargeAvenue6LM\Textures\Ground_Node_LOD__MainTex.png",
-                            @"Roads\Avenues\LargeAvenue6LM\Textures\Ground_Node_LOD__APRMap.png",
-                            @"Roads\Avenues\LargeAvenue6LM\Textures\Ground_Segment_LOD__XYSMap.png"));
+                                (@"Roads\Avenues\LargeAvenue6LM\Textures\Ground_Segment_LOD__MainTex.png",
+                                @"Roads\Avenues\LargeAvenue6LM\Textures\Ground_Segment_LOD__APRMap.png",
+                                @"Roads\Avenues\LargeAvenue6LM\Textures\Ground_Segment_LOD__XYSMap.png"));
+                        }
+                    }
+                    for (int i = 0; i < info.m_nodes.Length; i++)
+                    {
+                        var groundP = info.m_nodes[i].m_mesh.name.ToLower().Contains("ground_p");
+                        if (groundP || info.m_nodes[i].m_mesh.name.Contains("MedCon"))
+                        {
+                            info.m_nodes[i].SetTextures(
+                            new TextureSet
+                                (@"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_Median__MainTex.png",
+                                $@"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_MedianConcrete{(groundP ? "2" : "")}__AlphaMap.png"),
+                            new LODTextureSet
+                                (@"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_Median_LOD__MainTex.png",
+                                $@"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_MedianConcrete{(groundP ? "2" : "")}_LOD__AlphaMap.png",
+                                @"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_Median_LOD__XYSMap.png"));
+                        }
+                        else
+                        {
+                                info.m_nodes[i].SetTextures(
+                                new TextureSet
+                                (@"Roads\Avenues\LargeAvenue6LM\Textures\Ground_Node__MainTex.png",
+                                @"Roads\Avenues\LargeAvenue6LM\Textures\Ground_Node__APRMap.png"),
+                            new LODTextureSet
+                               (@"Roads\Avenues\LargeAvenue6LM\Textures\Ground_Node_LOD__MainTex.png",
+                                @"Roads\Avenues\LargeAvenue6LM\Textures\Ground_Node_LOD__APRMap.png",
+                                @"Roads\Avenues\LargeAvenue6LM\Textures\Ground_Segment_LOD__XYSMap.png"));
+                        }
+                    }
+                    break;
+                case NetInfoVersion.GroundGrass:
+                case NetInfoVersion.GroundTrees:
+                case NetInfoVersion.GroundPavement:
+                    var suffix = version == NetInfoVersion.GroundPavement ? "Concrete2" : "Grass";
+                    for (int i = 0; i < info.m_segments.Length; i++)
+                    {
+                        if (info.m_segments[i].m_mesh.name.ToLower().Contains("ground_p"))
+                        {
+                            info.m_segments[i].SetTextures(
+                            new TextureSet
+                                (@"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_Median__MainTex.png",
+                                $@"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_Median{suffix}__AlphaMap.png"),
+                            new LODTextureSet
+                                (@"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_Median_LOD__MainTex.png",
+                                $@"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_Median{suffix}_LOD__AlphaMap.png",
+                                @"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_Median_LOD__XYSMap.png"));
+                        }
+                    }
+                    for (int i = 0; i < info.m_nodes.Length; i++)
+                    {
+                        var groundP = info.m_nodes[i].m_mesh.name.ToLower().Contains("ground_p");
+                        if (groundP || info.m_nodes[i].m_mesh.name.Contains("MedCon"))
+                        {
+                            info.m_nodes[i].SetTextures(
+                            new TextureSet
+                                (@"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_Median__MainTex.png",
+                                $@"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_MedianConcrete{(groundP ? "2" : "")}__AlphaMap.png"),
+                            new LODTextureSet
+                                (@"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_Median_LOD__MainTex.png",
+                                $@"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_MedianConcrete{(groundP ? "2" : "")}_LOD__AlphaMap.png",
+                                @"Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_Median_LOD__XYSMap.png"));
+                        }
+                    }
                     break;
                 case NetInfoVersion.Elevated:
                     info.SetAllSegmentsTexture(
@@ -95,7 +164,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue6LM
                             (@"Roads\Avenues\LargeAvenue6LM\Textures\Slope_Segment_LOD__MainTex.png",
                             @"Roads\Avenues\LargeAvenue6LM\Textures\Slope_Segment_LOD__APRMap.png",
                             @"Roads\Avenues\LargeAvenue6LM\Textures\Slope_Segment_LOD__XYSMap.png"));
-            }
+                        }
                         else
                         {
                             info.m_segments[i].SetTextures(
@@ -112,7 +181,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue6LM
                     for (int i = 0; i < info.m_nodes.Length; i++)
                     {
                         if (info.m_nodes[i].m_mesh.name == "Slope_U_Node")
-                    {
+                        {
                             info.m_nodes[i].SetTextures(
                                 new TextureSet
                                     (@"Roads\Avenues\LargeAvenue6LM\Textures\Slope_Segment__MainTex.png",
@@ -121,7 +190,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue6LM
                                     (@"Roads\Avenues\LargeAvenue6LM\Textures\Slope_Segment_LOD__MainTex.png",
                                     @"Roads\Avenues\LargeAvenue6LM\Textures\Slope_Segment_LOD__APRMap.png",
                                     @"Roads\Avenues\LargeAvenue6LM\Textures\Slope_Segment_LOD__XYSMap.png"));
-            }
+                        }
                         else
                         {
                             info.m_nodes[i].SetTextures(

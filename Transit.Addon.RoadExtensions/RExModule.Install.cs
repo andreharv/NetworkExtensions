@@ -19,6 +19,11 @@ using ZonablePedestrianTinyGravelRoadBuilder = Transit.Addon.RoadExtensions.Road
 using ZonablePedestrianTinyPavedRoadBuilder = Transit.Addon.RoadExtensions.Roads.PedestrianRoads.PavementTiny.ZonablePedestrianTinyPavedRoadBuilder;
 using ZonablePedestrianTinyStoneRoadBuilder = Transit.Addon.RoadExtensions.Roads.PedestrianRoads.StoneTiny.ZonablePedestrianTinyStoneRoadBuilder;
 using ZonablePedestrianTinyBoardwalkBuilder = Transit.Addon.RoadExtensions.Roads.PedestrianRoads.BoardwalkTiny.ZonablePedestrianBoardwalkRoadBuilder;
+using ColossalFramework.UI;
+using Transit.Framework.UI;
+using Transit.Framework.Network;
+using static Transit.Framework.NetInfoExtensions;
+
 namespace Transit.Addon.RoadExtensions
 {
     public partial class RExModule
@@ -65,7 +70,7 @@ namespace Transit.Addon.RoadExtensions
         {
             _container = new GameObject(REX_OBJECT_NAME);
 
-            var tinyZoneBlockCreators = new []
+            var tinyZoneBlockCreators = new[]
             {
                 Alley2LBuilder.NAME,
                 Oneway1LBuilder.NAME,
@@ -88,11 +93,16 @@ namespace Transit.Addon.RoadExtensions
             _roadsInstaller = _container.AddInstallerComponent<RoadsInstaller>();
             _roadsInstaller.Host = this;
         }
-		
+
         public override void OnLevelLoaded(LoadMode mode)
         {
             base.OnLevelLoaded(mode);
-
+            var basicRoad = Prefabs.Find<NetInfo>("Basic Road");
+            basicRoad.SetupConnectGroup("3mSW", ConnextGroup.OneMidL);
+            var mediumRoad = Prefabs.Find<NetInfo>("Medium Road");
+            mediumRoad.SetupConnectGroup("5mSW", ConnextGroup.TwoPlusTwo);
+            var largeRoad = Prefabs.Find<NetInfo>("Large Road");
+            largeRoad.SetupConnectGroup("5mSW", ConnextGroup.ThreeMidL);
             if (_lateOperations != null)
             {
                 foreach (var op in _lateOperations)
@@ -102,6 +112,7 @@ namespace Transit.Addon.RoadExtensions
 
                 _lateOperations = null;
             }
+            UIView.GetAView().AddUIComponent(typeof(ParkingRoadCustomizerUI));
         }
 
         public override void OnReleased()

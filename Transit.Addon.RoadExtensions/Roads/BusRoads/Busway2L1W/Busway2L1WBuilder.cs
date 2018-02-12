@@ -239,5 +239,10 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L1W
                 roadAI.m_enableZoning = false;
             }
         }
+
+        public void SetupRoadLanes(NetInfo info, NetInfoVersion version)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

@@ -33,8 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\References\Assembly-CSharp.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Cities_Skylines\Cities_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="ColossalManaged">
       <HintPath>..\References\ColossalManaged.dll</HintPath>
@@ -65,7 +64,11 @@
     <Compile Include="Mod\TransitModBase.Install.Localization.cs" />
     <Compile Include="Network\ExtendedNetInfoLane.cs" />
     <Compile Include="Network\ExtendedVehicleType.cs" />
+    <Compile Include="Network\LanesConfiguration.cs" />
+    <Compile Include="Network\LaneTypeEnums.cs" />
     <Compile Include="Network\NetInfoClasses.cs" />
+    <Compile Include="Network\RoadHelper.cs" />
+    <Compile Include="Network\RoadHelper.LaneSetup.cs" />
     <Compile Include="Texturing\ITextureBlenderComponent.cs" />
     <Compile Include="Texturing\PathTextureProvider.cs" />
     <Compile Include="Texturing\Point.cs" />
@@ -103,7 +106,9 @@
     <Compile Include="Assets.cs" />
     <Compile Include="Builders\MenuItemBuilder.cs" />
     <Compile Include="Interfaces\IShortDescriptor.cs" />
+    <Compile Include="UI\ParkingRoadCustomizerUI.cs" />
     <Compile Include="UI\MouseKeyCode.cs" />
+    <Compile Include="_Extensions\ConnectGroupExtensions.cs" />
     <Compile Include="_Extensions\AppDomainExtensions.cs" />
     <Compile Include="_Extensions\AssetManagerExtensions.cs" />
     <Compile Include="_Extensions\CloningExtensions.cs" />

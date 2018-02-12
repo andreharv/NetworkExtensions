@@ -16,7 +16,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Common
                 .ToArray();
 
             // Transforming Pedestrian into None lanes
-            foreach (var lane in hwInfo.m_lanes.Where(l => l.m_laneType == NetInfo.LaneType.Pedestrian))
+            var pedLanes = hwInfo.m_lanes.Where(l => l.m_laneType == NetInfo.LaneType.Pedestrian);
+            foreach (var lane in pedLanes)
             {
                 lane.m_laneType = NetInfo.LaneType.None;
             }

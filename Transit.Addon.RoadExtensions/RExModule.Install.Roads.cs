@@ -8,6 +8,7 @@ using Transit.Framework.Builders;
 using Transit.Framework.Modularity;
 using UnityEngine;
 using System.Diagnostics;
+using static Transit.Framework.NetInfoExtensions;
 
 #if DEBUG
 using Debug = Transit.Framework.Debug;
@@ -122,6 +123,7 @@ namespace Transit.Addon.RoadExtensions
                     .ToArray();
 
                 var lateOperations = new List<Action>();
+
                 foreach (var niBuilder in niBuilders)
                 {
                     var builder = niBuilder;

@@ -4,6 +4,7 @@ using Transit.Addon.RoadExtensions.Roads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.Network;
+using static Transit.Framework.NetInfoExtensions;
 
 namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.AsymRoadL1R2
 {
@@ -44,7 +45,7 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.AsymRoadL1R2
             // Texturing             //
             ///////////////////////////
             SetupTextures(info, version);
-            
+
             ///////////////////////////
             // Set up                //
             ///////////////////////////
@@ -52,7 +53,7 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.AsymRoadL1R2
             info.m_class = roadInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL3L_ROAD);
             info.m_pavementWidth = (version != NetInfoVersion.Slope && version != NetInfoVersion.Tunnel ? 3 : 6);
             info.m_halfWidth = (version != NetInfoVersion.Slope && version != NetInfoVersion.Tunnel ? 8 : 11);
-
+            info.SetupConnectGroup("3mSW", ConnextGroup.OnePlusTwoS, ConnextGroup.OnePlusOne, ConnextGroup.OneMidL, ConnextGroup.TwoMidL, ConnextGroup.TwoPlusTwo, ConnextGroup.OnePlusThreeS, ConnextGroup.TwoPlusThree, ConnextGroup.TwoPlusFour);
             if (version == NetInfoVersion.Tunnel)
             {
                 info.m_setVehicleFlags = Vehicle.Flags.Transition | Vehicle.Flags.Underground;
@@ -87,14 +88,14 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallHeavyRoads.AsymRoadL1R2
                 leftRoadProps.AddLeftWallLights(info.m_pavementWidth);
                 rightRoadProps.AddRightWallLights(info.m_pavementWidth);
             }
-            
+
             leftPedLane.m_laneProps.m_props = leftRoadProps.ToArray();
             rightPedLane.m_laneProps.m_props = rightRoadProps.ToArray();
 
             info.TrimAboveGroundProps(version);
             info.SetupNewSpeedLimitProps(50, 40);
 
-            
+
             // AI
             var owPlayerNetAI = roadInfo.GetComponent<PlayerNetAI>();
             var playerNetAI = info.GetComponent<PlayerNetAI>();

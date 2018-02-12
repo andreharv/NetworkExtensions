@@ -1,32 +1,93 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Transit.Addon.RoadExtensions.Props;
 using Transit.Addon.RoadExtensions.Roads.Common;
 using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.Network;
+using static Transit.Framework.NetInfoExtensions;
 
 namespace Transit.Addon.RoadExtensions.Roads.Avenues.MediumAvenue4L
 {
-    public partial class MediumAvenue4LBuilder : Activable, INetInfoBuilderPart, INetInfoModifier
+    public partial class MediumAvenue4LBuilder : Activable, IMultiNetInfoBuilderPart, INetInfoSpecificBaseBuilder
     {
         public int Order { get { return 20; } }
         public int UIOrder { get { return 4; } }
 
         public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_6L; } }
         public string Name { get { return "Medium Avenue"; } }
-        public string DisplayName { get { return "Four-Lane Road"; } }     
-        public string Description { get { return "A four-lane road with parking spaces. Supports medium traffic."; } }
+        public string DisplayName { get { return "Four-Lane Road"; } }
         public string ShortDescription { get { return "Parkings, zoneable, medium traffic"; } }
-        public string UICategory { get { return "RoadsMedium"; } }
 
-        public string ThumbnailsPath { get { return @"Roads\Avenues\MediumAvenue4L\thumbnails.png"; } }
-        public string InfoTooltipPath { get { return @"Roads\Avenues\MediumAvenue4L\infotooltip.png"; } }
-
-        public NetInfoVersion SupportedVersions
+        public NetInfoVersion SupportedVersions { get { return NetInfoVersion.AllWithDecorationAndPavement; } }
+        public string GetSpecificBasedPrefabName(NetInfoVersion version)
         {
-            get { return NetInfoVersion.All; }
+            if (version == NetInfoVersion.GroundGrass || version == NetInfoVersion.GroundTrees || version == NetInfoVersion.GroundPavement)
+            {
+                return "Medium Avenue";
+            }
+            return NetInfos.Vanilla.GetPrefabName(BasedPrefabName, version);
+        }
+        public IEnumerable<IMenuItemBuilder> MenuItemBuilders
+        {
+            get
+            {
+                yield return new MenuItemBuilder
+                {
+                    UICategory = "RoadsMedium",
+                    UIOrder = 61,
+                    Name = "Medium Avenue",
+                    DisplayName = "Four Lane Avenue",
+                    Description = "A Four-Lane road with parking spaces.Supports medium traffic.",
+                    ThumbnailsPath = @"Roads\Avenues\MediumAvenue4L\thumbnails.png",
+                    InfoTooltipPath = @"Roads\Avenues\MediumAvenue4L\infotooltip.png"
+                };
+                yield return new MenuItemBuilder
+                {
+                    UICategory = "RoadsMedium",
+                    UIOrder = 62,
+                    Name = "Medium Avenue Decoration Grass",
+                    DisplayName = "Four Lane Avenue Grass",
+                    Description = "A Four-Lane road with parking spaces.Supports medium traffic.",
+                    ThumbnailsPath = @"Roads\Avenues\MediumAvenue4L\thumbnails.png",
+                    InfoTooltipPath = @"Roads\Avenues\MediumAvenue4L\infotooltip.png"
+                };
+                yield return new MenuItemBuilder
+                {
+                    UICategory = "RoadsMedium",
+                    UIOrder = 63,
+                    Name = "Medium Avenue Trees",
+                    DisplayName = "Four Lane Avenue Decoration Trees",
+                    Description = "A Four-Lane road with parking spaces.Supports medium traffic.",
+                    ThumbnailsPath = @"Roads\Avenues\MediumAvenue4L\thumbnails.png",
+                    InfoTooltipPath = @"Roads\Avenues\MediumAvenue4L\infotooltip.png"
+                };
+                yield return new MenuItemBuilder
+                {
+                    UICategory = "RoadsMedium",
+                    UIOrder = 64,
+                    Name = "Medium Avenue Pavement",
+                    DisplayName = "Four Lane Avenue Decoration Pavement",
+                    Description = "A Four-Lane road with parking spaces.Supports medium traffic.",
+                    ThumbnailsPath = @"Roads\Avenues\MediumAvenue4L\thumbnails.png",
+                    InfoTooltipPath = @"Roads\Avenues\MediumAvenue4L\infotooltip.png"
+                };
+            }
         }
 
+        public void SetupRoadLanes(NetInfo info, NetInfoVersion version)
+        {
+            info.SetRoadLanes(version, new LanesConfiguration
+            {
+                IsTwoWay = true,
+                LanesToAdd = version.IsGroundDecorated() ? 0 : -2,
+                LaneWidth = 3.4f,
+                BusStopOffset = 2.9f,
+                CenterLane = CenterLaneType.Median,
+                CenterLaneWidth = 4.4f
+            });
+            info.DoBuildupMulti(version);
+        }
         public void BuildUp(NetInfo info, NetInfoVersion version)
         {
             ///////////////////////////
@@ -45,12 +106,27 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.MediumAvenue4L
             // Texturing             //
             ///////////////////////////
             SetupTextures(info, version);
-
+            //info.SetupConnectGroup("5mSW", ConnextGroup.TwoPlusTwo);
             ///////////////////////////
             // Set up                //
             ///////////////////////////
-            info.m_hasParkingSpaces = true;
-            info.m_pavementWidth = (version != NetInfoVersion.Slope && version != NetInfoVersion.Tunnel ? 5 : 7);
+            info.m_hasParkingSpaces = version == NetInfoVersion.Ground;
+            if (version == NetInfoVersion.Ground)
+            {
+                info.m_pavementWidth = 4.8f;
+            }
+            else if (version == NetInfoVersion.Elevated || version == NetInfoVersion.Bridge)
+            {
+                info.m_pavementWidth = 5;
+            }
+            else if (version.IsGroundDecorated())
+            {
+                info.m_pavementWidth = 6.8f;
+            }
+            else
+            {
+                info.m_pavementWidth = 7;
+            }
             info.m_halfWidth = (version == NetInfoVersion.Bridge || version == NetInfoVersion.Elevated ? 14 : 16);
 
             if (version == NetInfoVersion.Tunnel)
@@ -69,15 +145,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.MediumAvenue4L
             }
 
             // Setting up lanes
-            info.SetRoadLanes(version, new LanesConfiguration
-            {
-                IsTwoWay = true,
-                LanesToAdd = -2,
-                LaneWidth = 3.4f,
-                BusStopOffset = 2.9f,
-                CenterLane = CenterLaneType.Median,
-                CenterLaneWidth = 4.4f
-            });
+            SetupRoadLanes(info, version);
+            info.SetupLaneProps(version);
             var leftPedLane = info.GetLeftRoadShoulder();
             var rightPedLane = info.GetRightRoadShoulder();
 
@@ -119,12 +188,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.MediumAvenue4L
                     rightStreetLight.m_finalProp =
                     rightStreetLight.m_prop = Prefabs.Find<PropInfo>(MediumAvenueSideLightBuilder.NAME);
                 }
-            }
-
-            if (version == NetInfoVersion.Slope)
-            {
-                leftRoadProps.AddLeftWallLights(info.m_pavementWidth);
-                rightRoadProps.AddRightWallLights(info.m_pavementWidth);
             }
 
             leftPedLane.m_laneProps.m_props = leftRoadProps.ToArray();

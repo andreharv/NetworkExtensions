@@ -32,8 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\References\Assembly-CSharp.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Cities_Skylines\Cities_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="ColossalManaged">
       <HintPath>..\References\ColossalManaged.dll</HintPath>
@@ -51,6 +50,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AI\TAMRoadAI.UpdateNodeFlags.cs" />
     <Compile Include="AI\TAMRoadAI.CreateZoneBlocks.cs" />
     <Compile Include="AI\TAMNetAI.CheckBuildPosition.cs" />
     <Compile Include="AI\TAMRoadAI.Snapping.cs" />

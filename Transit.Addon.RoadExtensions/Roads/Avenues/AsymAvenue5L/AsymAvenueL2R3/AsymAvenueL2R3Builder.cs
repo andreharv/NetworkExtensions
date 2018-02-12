@@ -8,8 +8,9 @@ using Transit.Framework.Builders;
 using Transit.Framework.Interfaces;
 using Transit.Framework.Network;
 using UnityEngine;
+using static Transit.Framework.NetInfoExtensions;
 
-namespace Transit.Addon.RoadExtensions.Roads.SmallRoads.BasicRoadMdn
+namespace Transit.Addon.RoadExtensions.Roads.Avenues.AsymAvenue5L
 {
     public partial class AsymAvenueL2R3Builder : Activable, IMultiNetInfoBuilderPart, INetInfoSpecificBaseBuilder
     {
@@ -45,7 +46,7 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallRoads.BasicRoadMdn
                 {
                     UICategory = "RoadsMedium",
                     UIOrder = 61,
-                    Name = "AsymAvenueL2R3Grass",
+                    Name = "AsymAvenueL2R3 Decoration Grass",
                     DisplayName = "Five-Lane Asymmetrical Road Grass: (2+3)",
                     Description = "An asymmetrical road with two left lane and three right lanes.  Note, dragging this road backwards reverses its orientation.",
                     ThumbnailsPath = @"Roads\Avenues\AsymAvenue5L\AsymAvenueL2R3\thumbnails.png",
@@ -55,7 +56,7 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallRoads.BasicRoadMdn
                 {
                     UICategory = "RoadsMedium",
                     UIOrder = 62,
-                    Name = "AsymAvenueL2R3Trees",
+                    Name = "AsymAvenueL2R3 Decoration Trees",
                     DisplayName = "Five-Lane Asymmetrical Road Trees: (2+3)",
                     Description = "An asymmetrical road with two left lane and three right lanes.  Note, dragging this road backwards reverses its orientation.",
                     ThumbnailsPath = @"Roads\Avenues\AsymAvenue5L\AsymAvenueL2R3\thumbnails.png",
@@ -64,14 +65,28 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallRoads.BasicRoadMdn
                 yield return new MenuItemBuilder
                 {
                     UICategory = "RoadsMedium",
-                    UIOrder = 62,
-                    Name = "AsymAvenueL2R3Pavement",
+                    UIOrder = 63,
+                    Name = "AsymAvenueL2R3 Decoration Pavement",
                     DisplayName = "Five-Lane Asymmetrical Road Pavement: (2+3)",
                     Description = "An asymmetrical road with two left lane and three right lanes.  Note, dragging this road backwards reverses its orientation.",
                     ThumbnailsPath = @"Roads\Avenues\AsymAvenue5L\AsymAvenueL2R3\thumbnails.png",
                     InfoTooltipPath = @"Roads\Avenues\AsymAvenue5L\AsymAvenueL2R3\infotooltip.png"
                 };
             }
+        }
+
+        public void SetupRoadLanes(NetInfo info, NetInfoVersion version)
+        {
+            info.SetRoadLanes(version, new LanesConfiguration
+            {
+                IsTwoWay = true,
+                LanesToAdd = version.IsGroundDecorated() ? 0 : -1,
+                PedPropOffsetX = 0.5f,
+                BusStopOffset = 3,
+                CenterLane = CenterLaneType.Median,
+                LayoutStyle = LanesLayoutStyle.AsymL2R3
+            });
+            info.DoBuildupMulti(version);
         }
         public void BuildUp(NetInfo info, NetInfoVersion version)
         {
@@ -83,96 +98,51 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallRoads.BasicRoadMdn
             ///////////////////////////
             // 3DModeling            //
             ///////////////////////////
+            info.m_enableMiddleNodes = true;
             info.Setup32m5mSW3mMdn(version, LanesLayoutStyle.AsymL2R3);
-
+            
             ///////////////////////////
             // Texturing             //
             ///////////////////////////
             info.SetupTextures(version, LanesLayoutStyle.AsymL2R3);
-
             ///////////////////////////
             // Set up                //
             ///////////////////////////
             info.m_hasParkingSpaces = (version == NetInfoVersion.Ground);
-            switch (version)
+            if (version == NetInfoVersion.Ground)
             {
-                case NetInfoVersion.Ground:
-                case NetInfoVersion.Elevated:
-                case NetInfoVersion.Bridge:
-                    info.m_pavementWidth = 5;
-                    break;
-                default:
-                    info.m_pavementWidth = 7;
-                    break;
+                info.m_pavementWidth = 4.8f;
+            }
+            else if( version == NetInfoVersion.Elevated || version == NetInfoVersion.Bridge)
+            {
+                info.m_pavementWidth = 5;
+            }
+            else if (version.IsGroundDecorated())
+            {
+                info.m_pavementWidth = 6.8f;
+            }
+            else
+            {
+                info.m_pavementWidth = 7;
             }
 
-                info.m_halfWidth = (version != NetInfoVersion.Elevated && version != NetInfoVersion.Bridge ? 16 : 14);
-                info.m_canCrossLanes = false;
-                if (version == NetInfoVersion.Tunnel)
-                {
-                    info.m_setVehicleFlags = Vehicle.Flags.Transition | Vehicle.Flags.Underground;
-                    info.m_setCitizenFlags = CitizenInstance.Flags.Transition | CitizenInstance.Flags.Underground;
-                    info.m_class = owRoadTunnelInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL4L_ROAD_TUNNEL);
+            info.m_halfWidth = (version != NetInfoVersion.Elevated && version != NetInfoVersion.Bridge ? 16 : 14);
+            info.SetupConnectGroup("5mSw3mMdn", ConnextGroup.TwoPlusThree, ConnextGroup.OneMidL, ConnextGroup.TwoPlusFour, ConnextGroup.TwoPlusTwo, ConnextGroup.ThreeMidL, ConnextGroup.ThreePlusThree);
 
-                }
-                else
-                {
-                    info.m_class = owRoadInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL4L_ROAD);
-                }
-            var isGroundPaved = version == NetInfoVersion.GroundGrass || version == NetInfoVersion.GroundTrees || version == NetInfoVersion.GroundPavement;
-                // Setting up lanes
-                info.SetRoadLanes(version, new LanesConfiguration
-                {
-                    IsTwoWay = true,
-                    LanesToAdd = isGroundPaved ? 0 : -1,
-                    PedPropOffsetX = 0.5f,
-                    BusStopOffset = 3,
-                    CenterLane = CenterLaneType.Median,
-                    LayoutStyle = LanesLayoutStyle.AsymL2R3
-                });
-
-            var leftPedLane = info.GetLeftRoadShoulder();
-            var rightPedLane = info.GetRightRoadShoulder();
-            var leftRoadProps = leftPedLane.m_laneProps.m_props.ToList();
-            var rightRoadProps = rightPedLane.m_laneProps.m_props.ToList();
-            if (isGroundPaved)
+            info.m_canCrossLanes = false;
+            if (version == NetInfoVersion.Tunnel)
             {
-                for (var i = 0; i < rightRoadProps.Count; i++)
-                {
-                    rightRoadProps[i].m_position.x -= 2;
-                }
-                for (var i = 0; i < leftRoadProps.Count; i++)
-                {
-                    leftRoadProps[i].m_position.x += 2;
-                }
+                info.m_setVehicleFlags = Vehicle.Flags.Transition | Vehicle.Flags.Underground;
+                info.m_setCitizenFlags = CitizenInstance.Flags.Transition | CitizenInstance.Flags.Underground;
+                info.m_class = owRoadTunnelInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL4L_ROAD_TUNNEL);
             }
-            if (version == NetInfoVersion.GroundTrees)
+            else
             {
-                var leftTreeProp = new NetLaneProps.Prop()
-                {
-                    m_tree = Prefabs.Find<TreeInfo>("Tree2variant"),
-                    m_repeatDistance = 20,
-                    m_probability = 100,
-                };
-                leftTreeProp.m_position.x = 3.5f;
-                leftRoadProps.Add(leftTreeProp);
-
-                var rightTreeProp = new NetLaneProps.Prop()
-                {
-                    m_tree = Prefabs.Find<TreeInfo>("Tree2variant"),
-                    m_repeatDistance = 20,
-                    m_probability = 100,
-                };
-                rightTreeProp.m_position.x = -3.5f;
-                rightRoadProps.Add(rightTreeProp);
+                info.m_class = owRoadInfo.m_class.Clone(NetInfoClasses.NEXT_SMALL4L_ROAD);
             }
-            else if (version == NetInfoVersion.Slope)
-            {
-                leftRoadProps.AddLeftWallLights(info.m_pavementWidth);
-                rightRoadProps.AddRightWallLights(info.m_pavementWidth);
-            }
-            leftPedLane.m_laneProps.m_props = leftRoadProps.ToArray();
-            rightPedLane.m_laneProps.m_props = rightRoadProps.ToArray();
+            // Setting up lanes
+            SetupRoadLanes(info, version);
+            info.SetupLaneProps(version);
 
             // AI
             var owPlayerNetAI = owRoadInfo.GetComponent<PlayerNetAI>();
