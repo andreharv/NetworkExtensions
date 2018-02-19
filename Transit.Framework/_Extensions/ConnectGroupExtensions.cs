@@ -15,20 +15,20 @@ namespace Transit.Framework
         [Flags]
         public enum ConnextGroup
         {
-            None = 0,
-            OnePlusOne = 1,
-            OnePlusTwoS = 2,
-            OnePlusThreeS = 4,
-            TwoPlusTwo = 8,
-            TwoPlusThree = 16,
-            TwoPlusFour = 32,
-            ThreePlusThree = 64,
-            ThreePlusFour = 128,
-            ThreePlusFive = 256,
-            FourPlusFour = 512,
-            OneMidL = 1024,
-            TwoMidL = 2048,
-            ThreeMidL = 16384
+            None = 0x0,
+            OnePlusOne = 0x1,
+            OnePlusTwoS = 0x2,
+            OnePlusThreeS = 0x4,
+            TwoPlusTwo = 0x8,
+            TwoPlusThree = 0x10,
+            TwoPlusFour = 0x20,
+            ThreePlusThree = 0x40,
+            ThreePlusFour = 0x80,
+            ThreePlusFive = 0x100,
+            FourPlusFour = 0x200,
+            OneMidL = 0x400,
+            TwoMidL = 0x800,
+            ThreeMidL = 0x4000
         }
         public static string GetConnextGroup(this NetInfo.ConnectGroup cGroup)
         {
@@ -36,7 +36,12 @@ namespace Transit.Framework
         }
         public static NetInfo.ConnectGroup GetConnectGroup(this ConnextGroup cGroup)
         {
-            return (NetInfo.ConnectGroup)(int)cGroup;
+            int cg = (int)cGroup;
+            if (cg >= 0x4000)
+            {
+                cg /= 0x4000;
+            }
+            return (NetInfo.ConnectGroup)cg;
         }
     }
 }

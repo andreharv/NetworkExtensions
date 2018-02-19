@@ -60,7 +60,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
             info.m_hasParkingSpaces = false;
             info.m_pavementWidth = (version == NetInfoVersion.Slope || version == NetInfoVersion.Tunnel ? 4 : 3);
             info.m_halfWidth = (version == NetInfoVersion.Tunnel ? 17 : 16);
-            info.SetupConnectGroup("3mSW2mMdn", ConnextGroup.FourPlusFour, ConnextGroup.ThreeMidL);
+            info.SetupConnectGroup("3mSW2mMdn", ConnextGroup.FourPlusFour, ConnextGroup.ThreeMidL, ConnextGroup.TwoPlusTwo);
             if (version == NetInfoVersion.Tunnel)
             {
                 info.m_setVehicleFlags = Vehicle.Flags.Transition | Vehicle.Flags.Underground;

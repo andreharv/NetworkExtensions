@@ -70,7 +70,7 @@ namespace Transit.Framework.Hooks.AI
             float num = startDirection.x * endDirection.x + startDirection.z * endDirection.z;
             float num2 = Mathf.Max(minHalfWidth, info.m_halfWidth);
             float num3 = 32f;
-
+            int distance = Mathf.RoundToInt(num2);
             float num4 = VectorUtils.LengthXZ(endPosition - startPosition);
             bool flag2 = startDirection.x * endDirection.z - startDirection.z * endDirection.x > 0f;
             bool flag3 = num < -0.8f || num4 > 50f;
@@ -120,6 +120,7 @@ namespace Transit.Framework.Hooks.AI
                         position3,
                         angle,
                         num8,
+                        //distance,
                         segment.m_buildIndex);
                 }
                 else
@@ -130,6 +131,7 @@ namespace Transit.Framework.Hooks.AI
                         position3,
                         angle,
                         num8,
+                        //distance,
                         segment.m_buildIndex);
                 }
             }
@@ -150,6 +152,7 @@ namespace Transit.Framework.Hooks.AI
                             position4,
                             angle2,
                             num8,
+                            //distance,
                             segment.m_buildIndex + 1u);
                     }
                     else
@@ -160,6 +163,7 @@ namespace Transit.Framework.Hooks.AI
                             position4,
                             angle2,
                             num8,
+                            //distance,
                             segment.m_buildIndex + 1u);
                     }
                 }
@@ -207,6 +211,7 @@ namespace Transit.Framework.Hooks.AI
                         position5,
                         angle3,
                         num12,
+                        //distance,
                         segment.m_buildIndex);
                 }
                 else
@@ -217,6 +222,7 @@ namespace Transit.Framework.Hooks.AI
                         position5,
                         angle3,
                         num12,
+                        //distance,
                         segment.m_buildIndex);
                 }
             }
@@ -235,6 +241,7 @@ namespace Transit.Framework.Hooks.AI
                         position6,
                         angle4,
                         num12,
+                        //distance,
                         segment.m_buildIndex + 1u);
                 }
                 else
@@ -245,6 +252,7 @@ namespace Transit.Framework.Hooks.AI
                         position6,
                         angle4,
                         num12,
+                        //distance,
                         segment.m_buildIndex + 1u);
                 }
             }
@@ -267,7 +275,7 @@ namespace Transit.Framework.Hooks.AI
             Vector3 endDirection = segment.m_endDirection;
             Vector3 endPosition = endNode.m_position - ROW_UNIT_SIZE * cellOffset * endDirection;
             float num2 = Mathf.Max(minHalfWidth, info.m_halfWidth) + 32f;
-
+            int distance = Mathf.RoundToInt(num2);
             Vector2 magnitudeVector = new Vector2(endPosition.x - startPosition.x, endPosition.z - startPosition.z);
             float magnitude = magnitudeVector.magnitude;
             int rows = Mathf.FloorToInt(magnitude / ROW_UNIT_SIZE + 0.1f);
@@ -287,6 +295,7 @@ namespace Transit.Framework.Hooks.AI
                     position,
                     angle,
                     rowsLeft,
+                    //distance,
                     segment.m_buildIndex);
 
                 position = startPosition + new Vector3(
@@ -299,6 +308,7 @@ namespace Transit.Framework.Hooks.AI
                     position,
                     angle + 3.14159274f,
                     rowsLeft,
+                    //distance,
                     segment.m_buildIndex);
             }
             if (rowsRight > 0)
@@ -316,6 +326,7 @@ namespace Transit.Framework.Hooks.AI
                     position,
                     angle,
                     rowsRight,
+                    //distance,
                     segment.m_buildIndex + 1u);
 
                 position = endPosition + new Vector3(
@@ -328,6 +339,7 @@ namespace Transit.Framework.Hooks.AI
                     position,
                     angle + 3.14159274f,
                     rowsRight,
+                    //distance,
                     segment.m_buildIndex + 1u);
             }
         }

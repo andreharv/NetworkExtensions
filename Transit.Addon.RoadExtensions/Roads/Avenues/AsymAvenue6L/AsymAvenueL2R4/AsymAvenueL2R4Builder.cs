@@ -112,7 +112,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.AsymAvenue6L.AsymAvenueL2R4
             info.m_hasParkingSpaces = version == NetInfoVersion.Ground;
             info.m_pavementWidth = (version == NetInfoVersion.Ground || version == NetInfoVersion.Bridge || version == NetInfoVersion.Elevated ? 4 : 6);
             info.m_halfWidth = (version != NetInfoVersion.Elevated && version != NetInfoVersion.Bridge ? 16 : 14);
-            info.SetupConnectGroup("4mSw2mMdn", ConnextGroup.TwoPlusFour, ConnextGroup.TwoPlusTwo);
+            info.SetupConnectGroup("4mSw2mMdn", ConnextGroup.TwoPlusFour, ConnextGroup.TwoPlusTwo,ConnextGroup.ThreePlusThree, ConnextGroup.ThreeMidL, ConnextGroup.FourPlusFour);
             info.m_canCrossLanes = false;
             if (version == NetInfoVersion.Tunnel)
             {

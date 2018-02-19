@@ -127,7 +127,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.AsymAvenue5L
             }
 
             info.m_halfWidth = (version != NetInfoVersion.Elevated && version != NetInfoVersion.Bridge ? 16 : 14);
-            info.SetupConnectGroup("5mSw3mMdn", ConnextGroup.TwoPlusThree, ConnextGroup.OneMidL, ConnextGroup.TwoPlusFour, ConnextGroup.TwoPlusTwo, ConnextGroup.ThreeMidL, ConnextGroup.ThreePlusThree);
+            info.SetupConnectGroup("5mSw3mMdn", ConnextGroup.TwoPlusThree, ConnextGroup.OneMidL, ConnextGroup.TwoPlusFour, ConnextGroup.TwoPlusTwo, ConnextGroup.ThreeMidL, ConnextGroup.ThreePlusThree, ConnextGroup.FourPlusFour);
 
             info.m_canCrossLanes = false;
             if (version == NetInfoVersion.Tunnel)

@@ -3384,136 +3384,196 @@
     <None Include="Props\WoodBollard.crp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\MedCon_OneMidL_End.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\OneMidL\MedCon_OneMidL_End.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\MedCon_OneMidL_End_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\OneMidL\MedCon_OneMidL_Endx.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\MedCon_OneMidL_Start.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\OneMidL\MedCon_OneMidL_End_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\MedCon_OneMidL_Start_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\OneMidL\MedCon_OneMidL_End_LODx.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\MedCon_TwoMidL_End.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\OneMidL\MedCon_OneMidL_Start.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\MedCon_TwoMidL_End_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\OneMidL\MedCon_OneMidL_Startx.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\MedCon_TwoMidL_Start.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\OneMidL\MedCon_OneMidL_Start_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\MedCon_TwoMidL_Start_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\OneMidL\MedCon_OneMidL_Start_LODx.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\MedCon_TwoPlusFour_End.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\OnePlusOne\MedCon_OnePlusOne_End.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\MedCon_TwoPlusFour_End_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\OnePlusOne\MedCon_OnePlusOne_End_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\MedCon_TwoPlusFour_Start.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\OnePlusOne\MedCon_OnePlusOne_Start.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\MedCon_TwoPlusFour_Start_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\OnePlusOne\MedCon_OnePlusOne_Start_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\MedCon_TwoPlusThree_End.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\TwoMidL\MedCon_TwoMidL_End.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\MedCon_TwoPlusThree_End_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\TwoMidL\MedCon_TwoMidL_End_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\MedCon_TwoPlusThree_Start.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\TwoMidL\MedCon_TwoMidL_Start.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\MedCon_TwoPlusThree_Start_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\TwoMidL\MedCon_TwoMidL_Start_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\MedCon_TwoPlusTwo_End.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\TwoPlusFour\MedCon_TwoPlusFour_End.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\MedCon_TwoPlusTwo_End_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\TwoPlusFour\MedCon_TwoPlusFour_End_Inv.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\MedCon_TwoPlusTwo_Start.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\TwoPlusFour\MedCon_TwoPlusFour_End_Inv_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\MedCon_TwoPlusTwo_Start_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\TwoPlusFour\MedCon_TwoPlusFour_End_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\MedCon_OneMidL_End.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\TwoPlusFour\MedCon_TwoPlusFour_Start.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\MedCon_OneMidL_End_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\TwoPlusFour\MedCon_TwoPlusFour_Start_Inv.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\MedCon_OneMidL_Start.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\TwoPlusFour\MedCon_TwoPlusFour_Start_Inv_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\MedCon_OneMidL_Start_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\TwoPlusFour\MedCon_TwoPlusFour_Start_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\MedCon_ThreeMidL_End.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\TwoPlusThree\MedCon_TwoPlusThree_End.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\MedCon_ThreeMidL_End_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\TwoPlusThree\MedCon_TwoPlusThree_End_Inv.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\MedCon_ThreeMidL_Start.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\TwoPlusThree\MedCon_TwoPlusThree_End_Inv_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\MedCon_ThreeMidL_Start_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\TwoPlusThree\MedCon_TwoPlusThree_End_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\MedCon_ThreePlusThree_End.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\TwoPlusThree\MedCon_TwoPlusThree_Start.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\MedCon_ThreePlusThree_End_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\TwoPlusThree\MedCon_TwoPlusThree_Start_Inv.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\MedCon_ThreePlusThree_Start.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\TwoPlusThree\MedCon_TwoPlusThree_Start_Inv_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\MedCon_ThreePlusThree_Start_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\TwoPlusThree\MedCon_TwoPlusThree_Start_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\MedCon_TwoPlusFour_End.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\TwoPlusTwo\MedCon_TwoPlusTwo_End.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\MedCon_TwoPlusFour_End_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\TwoPlusTwo\MedCon_TwoPlusTwo_End_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\MedCon_TwoPlusFour_Start.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\TwoPlusTwo\MedCon_TwoPlusTwo_Start.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\MedCon_TwoPlusFour_Start_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\TwoPlusTwo\MedCon_TwoPlusTwo_Start_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\MedCon_TwoPlusThree_End.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\OneMidL\MedCon_OneMidL_End.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\MedCon_TwoPlusThree_End_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\OneMidL\MedCon_OneMidL_End_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\MedCon_TwoPlusThree_Start.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\OneMidL\MedCon_OneMidL_Start.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\MedCon_TwoPlusThree_Start_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\OneMidL\MedCon_OneMidL_Start_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\MedCon_TwoPlusTwo_End.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\OnePlusOne\MedCon_OnePlusOne_End.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\MedCon_TwoPlusTwo_End_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\OnePlusOne\MedCon_OnePlusOne_End_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\MedCon_TwoPlusTwo_Start.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\OnePlusOne\MedCon_OnePlusOne_Start.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\MedCon_TwoPlusTwo_Start_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\OnePlusOne\MedCon_OnePlusOne_Start_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\ThreeMidL\MedCon_ThreeMidL_End.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\ThreeMidL\MedCon_ThreeMidL_End_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\ThreeMidL\MedCon_ThreeMidL_Start.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\ThreeMidL\MedCon_ThreeMidL_Start_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\ThreePlusThree\MedCon_ThreePlusThree_End.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\ThreePlusThree\MedCon_ThreePlusThree_End_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\ThreePlusThree\MedCon_ThreePlusThree_Start.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\ThreePlusThree\MedCon_ThreePlusThree_Start_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\TwoPlusFour\MedCon_TwoPlusFour_End.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\TwoPlusFour\MedCon_TwoPlusFour_End_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\TwoPlusFour\MedCon_TwoPlusFour_Start.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\TwoPlusFour\MedCon_TwoPlusFour_Start_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\TwoPlusThree\MedCon_TwoPlusThree_End.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\TwoPlusThree\MedCon_TwoPlusThree_End_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\TwoPlusThree\MedCon_TwoPlusThree_Start.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\TwoPlusThree\MedCon_TwoPlusThree_Start_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\TwoPlusTwo\MedCon_TwoPlusTwo_End.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\TwoPlusTwo\MedCon_TwoPlusTwo_End_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\TwoPlusTwo\MedCon_TwoPlusTwo_Start.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\TwoPlusTwo\MedCon_TwoPlusTwo_Start_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\Common\Meshes\16m\3mSW3mBikeLanes\Elevated.obj">
@@ -3591,148 +3651,160 @@
     <None Include="Roads\Common\Meshes\16m\3mSW3mMdn\Ground_Segment_Median_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\MedCon_OnePlusOne_End.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW3mMdn\OnePlusOne\TwoPlusThree\MedCon_TwoPlusThree_End.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\MedCon_OnePlusOne_End_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW3mMdn\OnePlusOne\TwoPlusThree\MedCon_TwoPlusThree_End_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\MedCon_OnePlusOne_Start.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW3mMdn\OnePlusOne\TwoPlusThree\MedCon_TwoPlusThree_Start.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\TwoMidL\MedCon_OnePlusOne_Start_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW3mMdn\OnePlusOne\TwoPlusThree\MedCon_TwoPlusThree_Start_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\MedCon_OnePlusOne_End.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW3mMdn\OnePlusOne\TwoPlusTwo\MedCon_TwoPlusTwo_End.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\MedCon_OnePlusOne_End_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW3mMdn\OnePlusOne\TwoPlusTwo\MedCon_TwoPlusTwo_End_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\MedCon_OnePlusOne_Start.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW3mMdn\OnePlusOne\TwoPlusTwo\MedCon_TwoPlusTwo_Start.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\2mSW\OnePlusThreeS\MedCon_OnePlusOne_Start_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW3mMdn\OnePlusOne\TwoPlusTwo\MedCon_TwoPlusTwo_Start_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW3mMdn\OnePlusOne\MedCon_TwoPlusThree_End.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW3mMdn\OnePlusOne\OneMidL\MedCon_OneMidL_Start.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW3mMdn\OnePlusOne\MedCon_TwoPlusThree_End_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW3mMdn\OnePlusOne\OneMidL\MedCon_OneMidL_Start_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW3mMdn\OnePlusOne\MedCon_TwoPlusThree_Start.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW3mMdn\OnePlusOne\OneMidL\MedCon_OneMidL_End.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW3mMdn\OnePlusOne\MedCon_TwoPlusThree_Start_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW3mMdn\OnePlusOne\OneMidL\MedCon_OneMidL_End_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW3mMdn\OnePlusOne\MedCon_TwoPlusTwo_End.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\OneMidL\MedCon_OneMidL_End.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW3mMdn\OnePlusOne\MedCon_TwoPlusTwo_End_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\OneMidL\MedCon_OneMidL_End_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW3mMdn\OnePlusOne\MedCon_TwoPlusTwo_Start.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\OneMidL\MedCon_OneMidL_Start.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW3mMdn\OnePlusOne\MedCon_TwoPlusTwo_Start_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\OneMidL\MedCon_OneMidL_Start_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW3mMdn\OnePlusOne\MedCon_OneMidL_Start.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\OnePlusOne\MedCon_OnePlusOne_End.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW3mMdn\OnePlusOne\MedCon_OneMidL_Start_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\OnePlusOne\MedCon_OnePlusOne_End_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW3mMdn\OnePlusOne\MedCon_OneMidL_End.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\OnePlusOne\MedCon_OnePlusOne_Start.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW3mMdn\OnePlusOne\MedCon_OneMidL_End_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\OnePlusOne\MedCon_OnePlusOne_Start_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\MedCon_OneMidL_End.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\OnePlusThreeS\MedCon_OnePlusThreeS_End.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\MedCon_OneMidL_End_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\OnePlusThreeS\MedCon_OnePlusThreeS_End_Inv.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\MedCon_OneMidL_Start.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\OnePlusThreeS\MedCon_OnePlusThreeS_End_Inv_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\MedCon_OneMidL_Start_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\OnePlusThreeS\MedCon_OnePlusThreeS_End_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\MedCon_OnePlusOne_End.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\OnePlusThreeS\MedCon_OnePlusThreeS_Start.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\MedCon_OnePlusOne_End_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\OnePlusThreeS\MedCon_OnePlusThreeS_Start_Inv.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\MedCon_OnePlusOne_Start.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\OnePlusThreeS\MedCon_OnePlusThreeS_Start_Inv_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\MedCon_OnePlusOne_Start_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\OnePlusThreeS\MedCon_OnePlusThreeS_Start_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\MedCon_OnePlusThreeS_End.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\TwoMIdL\MedCon_TwoMidL_End.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\MedCon_OnePlusThreeS_End_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\TwoMIdL\MedCon_TwoMidL_End_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\MedCon_OnePlusThreeS_Start.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\TwoMIdL\MedCon_TwoMidL_Start.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\MedCon_OnePlusThreeS_Start_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\TwoMIdL\MedCon_TwoMidL_Start_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\MedCon_TwoMidL_End.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\TwoPlusFour\MedCon_TwoPlusFour_End.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\MedCon_TwoMidL_End_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\TwoPlusFour\MedCon_TwoPlusFour_End_Inv.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\MedCon_TwoMidL_Start.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\TwoPlusFour\MedCon_TwoPlusFour_End_Inv_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\MedCon_TwoMidL_Start_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\TwoPlusFour\MedCon_TwoPlusFour_End_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\MedCon_TwoPlusFour_End.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\TwoPlusFour\MedCon_TwoPlusFour_Start.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\MedCon_TwoPlusFour_End_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\TwoPlusFour\MedCon_TwoPlusFour_Start_Inv.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\MedCon_TwoPlusFour_Start.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\TwoPlusFour\MedCon_TwoPlusFour_Start_Inv_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\MedCon_TwoPlusFour_Start_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\TwoPlusFour\MedCon_TwoPlusFour_Start_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\MedCon_TwoPlusThree_End.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\TwoPlusThree\MedCon_TwoPlusThree_End.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\MedCon_TwoPlusThree_End_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\TwoPlusThree\MedCon_TwoPlusThree_End_Inv.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\MedCon_TwoPlusThree_Start.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\TwoPlusThree\MedCon_TwoPlusThree_End_Inv_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\MedCon_TwoPlusThree_Start_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\TwoPlusThree\MedCon_TwoPlusThree_End_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\MedCon_TwoPlusTwo_End.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\TwoPlusThree\MedCon_TwoPlusThree_Start.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\MedCon_TwoPlusTwo_End_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\TwoPlusThree\MedCon_TwoPlusThree_Start_Inv.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\MedCon_TwoPlusTwo_Start.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\TwoPlusThree\MedCon_TwoPlusThree_Start_Inv_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\MedCon_TwoPlusTwo_Start_LOD.obj">
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\TwoPlusThree\MedCon_TwoPlusThree_Start_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\TwoPlusTwo\MedCon_TwoPlusTwo_End.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\TwoPlusTwo\MedCon_TwoPlusTwo_End_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\TwoPlusTwo\MedCon_TwoPlusTwo_Start.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\TwoPlusTwo\MedCon_TwoPlusTwo_Start_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\Common\Meshes\16m\NoSw\Elevated.obj">
@@ -3786,16 +3858,28 @@
     <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\Elevated_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\FourPlusFour\MedCon_ThreeMidL_End.obj">
+    <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\FourPlusFour\ThreeMidL\MedCon_ThreeMidL_End.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\FourPlusFour\MedCon_ThreeMidL_End_LOD.obj">
+    <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\FourPlusFour\ThreeMidL\MedCon_ThreeMidL_End_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\FourPlusFour\MedCon_ThreeMidL_Start.obj">
+    <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\FourPlusFour\ThreeMidL\MedCon_ThreeMidL_Start.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\FourPlusFour\MedCon_ThreeMidL_Start_LOD.obj">
+    <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\FourPlusFour\ThreeMidL\MedCon_ThreeMidL_Start_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\FourPlusFour\TwoPlusTwo\MedCon_TwoPlusTwo_End.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\FourPlusFour\TwoPlusTwo\MedCon_TwoPlusTwo_End_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\FourPlusFour\TwoPlusTwo\MedCon_TwoPlusTwo_Start.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\FourPlusFour\TwoPlusTwo\MedCon_TwoPlusTwo_Start_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\Common\Meshes\32m\3mSW2mMdn\Ground.obj">
@@ -3906,40 +3990,40 @@
     <None Include="Roads\Common\Meshes\32m\3mSW4mMdn\Slope_U_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\32m\3mSW4mMdn\ThreePlusThree\MedCon_FourPlusFour_End.obj">
+    <None Include="Roads\Common\Meshes\32m\3mSW4mMdn\ThreePlusThree\FourPlusFour\MedCon_FourPlusFour_End.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\32m\3mSW4mMdn\ThreePlusThree\MedCon_FourPlusFour_End_LOD.obj">
+    <None Include="Roads\Common\Meshes\32m\3mSW4mMdn\ThreePlusThree\FourPlusFour\MedCon_FourPlusFour_End_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\32m\3mSW4mMdn\ThreePlusThree\MedCon_FourPlusFour_Start.obj">
+    <None Include="Roads\Common\Meshes\32m\3mSW4mMdn\ThreePlusThree\FourPlusFour\MedCon_FourPlusFour_Start.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\32m\3mSW4mMdn\ThreePlusThree\MedCon_FourPlusFour_Start_LOD.obj">
+    <None Include="Roads\Common\Meshes\32m\3mSW4mMdn\ThreePlusThree\FourPlusFour\MedCon_FourPlusFour_Start_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\32m\3mSW4mMdn\ThreePlusThree\MedCon_ThreeMidL_End.obj">
+    <None Include="Roads\Common\Meshes\32m\3mSW4mMdn\ThreePlusThree\ThreeMidL\MedCon_ThreeMidL_End.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\32m\3mSW4mMdn\ThreePlusThree\MedCon_ThreeMidL_End_LOD.obj">
+    <None Include="Roads\Common\Meshes\32m\3mSW4mMdn\ThreePlusThree\ThreeMidL\MedCon_ThreeMidL_End_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\32m\3mSW4mMdn\ThreePlusThree\MedCon_ThreeMidL_Start.obj">
+    <None Include="Roads\Common\Meshes\32m\3mSW4mMdn\ThreePlusThree\ThreeMidL\MedCon_ThreeMidL_Start.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\32m\3mSW4mMdn\ThreePlusThree\MedCon_ThreeMidL_Start_LOD.obj">
+    <None Include="Roads\Common\Meshes\32m\3mSW4mMdn\ThreePlusThree\ThreeMidL\MedCon_ThreeMidL_Start_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\32m\3mSW4mMdn\ThreePlusThree\MedCon_TwoPlusTwo_End.obj">
+    <None Include="Roads\Common\Meshes\32m\3mSW4mMdn\ThreePlusThree\TwoPlusTwo\MedCon_TwoPlusTwo_End.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\32m\3mSW4mMdn\ThreePlusThree\MedCon_TwoPlusTwo_End_LOD.obj">
+    <None Include="Roads\Common\Meshes\32m\3mSW4mMdn\ThreePlusThree\TwoPlusTwo\MedCon_TwoPlusTwo_End_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\32m\3mSW4mMdn\ThreePlusThree\MedCon_TwoPlusTwo_Start.obj">
+    <None Include="Roads\Common\Meshes\32m\3mSW4mMdn\ThreePlusThree\TwoPlusTwo\MedCon_TwoPlusTwo_Start.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\32m\3mSW4mMdn\ThreePlusThree\MedCon_TwoPlusTwo_Start_LOD.obj">
+    <None Include="Roads\Common\Meshes\32m\3mSW4mMdn\ThreePlusThree\TwoPlusTwo\MedCon_TwoPlusTwo_Start_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\Common\Meshes\32m\3mSW4mMdn\Tunnel.obj">
@@ -4041,16 +4125,52 @@
     <None Include="Roads\Common\Meshes\32m\4mSW2mMdn\Tunnel_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\32m\4mSW2mMdn\TwoPlusFour\MedCon_TwoPlusTwo_End.obj">
+    <None Include="Roads\Common\Meshes\32m\4mSW2mMdn\TwoPlusFour\FourPlusFour\MedCon_FourPlusFour_End.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\32m\4mSW2mMdn\TwoPlusFour\MedCon_TwoPlusTwo_End_LOD.obj">
+    <None Include="Roads\Common\Meshes\32m\4mSW2mMdn\TwoPlusFour\FourPlusFour\MedCon_FourPlusFour_End_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\32m\4mSW2mMdn\TwoPlusFour\MedCon_TwoPlusTwo_Start.obj">
+    <None Include="Roads\Common\Meshes\32m\4mSW2mMdn\TwoPlusFour\FourPlusFour\MedCon_FourPlusFour_Start.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\32m\4mSW2mMdn\TwoPlusFour\MedCon_TwoPlusTwo_Start_LOD.obj">
+    <None Include="Roads\Common\Meshes\32m\4mSW2mMdn\TwoPlusFour\FourPlusFour\MedCon_FourPlusFour_Start_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\4mSW2mMdn\TwoPlusFour\ThreeMidL\MedCon_ThreeMidL_End.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\4mSW2mMdn\TwoPlusFour\ThreeMidL\MedCon_ThreeMidL_End_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\4mSW2mMdn\TwoPlusFour\ThreeMidL\MedCon_ThreeMidL_Start.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\4mSW2mMdn\TwoPlusFour\ThreeMidL\MedCon_ThreeMidL_Start_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\4mSW2mMdn\TwoPlusFour\ThreePlusThree\MedCon_ThreePlusThree_End.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\4mSW2mMdn\TwoPlusFour\ThreePlusThree\MedCon_ThreePlusThree_End_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\4mSW2mMdn\TwoPlusFour\ThreePlusThree\MedCon_ThreePlusThree_Start.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\4mSW2mMdn\TwoPlusFour\ThreePlusThree\MedCon_ThreePlusThree_Start_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\4mSW2mMdn\TwoPlusFour\TwoPlusTwo\MedCon_TwoPlusTwo_End.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\4mSW2mMdn\TwoPlusFour\TwoPlusTwo\MedCon_TwoPlusTwo_End_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\4mSW2mMdn\TwoPlusFour\TwoPlusTwo\MedCon_TwoPlusTwo_Start.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\4mSW2mMdn\TwoPlusFour\TwoPlusTwo\MedCon_TwoPlusTwo_Start_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\Common\Meshes\32m\4mSW\Ground_Node_Parking.obj">
@@ -4098,66 +4218,6 @@
     <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\Ground_Inverted.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\MedCon_OneMidL_Start.obj">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\MedCon_OneMidL_End.obj">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\MedCon_OneMidL_End_LOD.obj">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\MedCon_OneMidL_Start_LOD.obj">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\MedCon_ThreeMidL_End.obj">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\MedCon_ThreeMidL_End_LOD.obj">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\MedCon_ThreeMidL_Start.obj">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\MedCon_ThreeMidL_Start_LOD.obj">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\MedCon_ThreePlusThree_End.obj">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\MedCon_ThreePlusThree_End_LOD.obj">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\MedCon_ThreePlusThree_Start.obj">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\MedCon_ThreePlusThree_Start_LOD.obj">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\MedCon_TwoPlusFour_End.obj">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\MedCon_TwoPlusFour_End_LOD.obj">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\MedCon_TwoPlusFour_Start.obj">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\MedCon_TwoPlusFour_Start_LOD.obj">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\MedCon_TwoPlusTwo_End.obj">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\MedCon_TwoPlusTwo_End_LOD.obj">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\MedCon_TwoPlusTwo_Start.obj">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\MedCon_TwoPlusTwo_Start_LOD.obj">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\Slope.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -4176,16 +4236,100 @@
     <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\Tunnel_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\MedCon_TwoMidL_Start.obj">
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\FourPlusFour\MedCon_FourPlusFour_End.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\MedCon_TwoMidL_Start_LOD.obj">
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\FourPlusFour\MedCon_FourPlusFour_End_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\MedCon_TwoMidL_End.obj">
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\FourPlusFour\MedCon_FourPlusFour_Start.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\MedCon_TwoMidL_End_LOD.obj">
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\FourPlusFour\MedCon_FourPlusFour_Start_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\OneMidL\MedCon_OneMidL_End.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\OneMidL\MedCon_OneMidL_End_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\OneMidL\MedCon_OneMidL_Start.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\OneMidL\MedCon_OneMidL_Start_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\ThreeMidL\MedCon_ThreeMidL_End.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\ThreeMidL\MedCon_ThreeMidL_End_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\ThreeMidL\MedCon_ThreeMidL_Start.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\ThreeMidL\MedCon_ThreeMidL_Start_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\ThreePlusThree\MedCon_ThreePlusThree_End.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\ThreePlusThree\MedCon_ThreePlusThree_End_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\ThreePlusThree\MedCon_ThreePlusThree_Start.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\ThreePlusThree\MedCon_ThreePlusThree_Start_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\TwoMidL\MedCon_TwoMidL_End.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\TwoMidL\MedCon_TwoMidL_End_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\TwoMidL\MedCon_TwoMidL_Start.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\TwoMidL\MedCon_TwoMidL_Start_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\TwoPlusFour\MedCon_TwoPlusFour_End.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\TwoPlusFour\MedCon_TwoPlusFour_End_Inv.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\TwoPlusFour\MedCon_TwoPlusFour_End_Inv_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\TwoPlusFour\MedCon_TwoPlusFour_End_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\TwoPlusFour\MedCon_TwoPlusFour_Start.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\TwoPlusFour\MedCon_TwoPlusFour_Start_Inv.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\TwoPlusFour\MedCon_TwoPlusFour_Start_Inv_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\TwoPlusFour\MedCon_TwoPlusFour_Start_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\TwoPlusTwo\MedCon_TwoPlusTwo_End.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\TwoPlusTwo\MedCon_TwoPlusTwo_End_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\TwoPlusTwo\MedCon_TwoPlusTwo_Start.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\5mSw3mMdn\TwoPlusThree\TwoPlusTwo\MedCon_TwoPlusTwo_Start_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\Common\Meshes\32m\5mSWb\Ground_Node_Parking.obj">

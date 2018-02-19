@@ -225,15 +225,15 @@ namespace Transit.Framework
             newNode.m_flagsRequired |= NetNode.Flags.AsymForward;
             newNode2.m_flagsRequired |= NetNode.Flags.AsymBackward;
 
-            RemoveCrosswalks(newNode, myWidth, paveWidth,isVanilla);
+            RemoveCrosswalks(newNode, myWidth, paveWidth, isVanilla);
             nodeList.Add(newNode);
-            RemoveCrosswalks(newNode2, myWidth, paveWidth,isVanilla);
+            RemoveCrosswalks(newNode2, myWidth, paveWidth, isVanilla);
             nodeList.Add(newNode2);
 
 
             if (cnGroups != null && cnGroups.Count() > 0)
             {
-                //var symGroups = new[] { ConnextGroup.OneMidL, ConnextGroup.TwoMidL, ConnextGroup.ThreeMidL, ConnextGroup.OnePlusOne, ConnextGroup.TwoPlusTwo, ConnextGroup.ThreePlusThree, ConnextGroup.FourPlusFour };
+                var symGroups = new[] { ConnextGroup.OneMidL, ConnextGroup.TwoMidL, ConnextGroup.ThreeMidL, ConnextGroup.OnePlusOne, ConnextGroup.TwoPlusTwo, ConnextGroup.ThreePlusThree, ConnextGroup.FourPlusFour };
                 for (var i = 0; i < cnGroups.Count(); i++)
                 {
                     if (i == 0)
@@ -244,64 +244,66 @@ namespace Transit.Framework
                     {
                         info.m_nodeConnectGroups |= cnGroups[i].GetConnectGroup();
                     }
-
                 }
                 if (!isVanilla)
-                    info.m_halfWidth += ((float)(ciGroup) / 10000);
+                    info.m_halfWidth += (float)((Math.Log((float)ciGroup)) / 10000);
                 var myCnxName = ciGroup.ToString();
                 var meshTextureName = $@"Roads\Common\Textures\{myWidth}m\Median";
+                var brElMaterial = brElInfo.m_segments[0].m_material;
+                var brElLODMaterial = brElInfo.m_segments[0].m_lodMaterial;
+                var wildCard = NetNode.Flags.Ambiguous;
                 for (var i = 0; i < cnGroups.Count(); i++)
                 {
-                    var newNodeStart = info.m_nodes[0].ShallowClone();
-                    var newNodeEnd = info.m_nodes[0].ShallowClone();
+                    var newNodeStartForward = info.m_nodes[0].ShallowClone();
+                    var newNodeEndForward = info.m_nodes[0].ShallowClone();
+                    var newNodeStartBackward = info.m_nodes[0].ShallowClone();
+                    var newNodeEndBackward = info.m_nodes[0].ShallowClone();
                     var aCnxName = cnGroups[i].ToString();
-                    var meshBaseName = $@"Roads\Common\Meshes\{myWidth}m\{meshCat}\{myCnxName}\MedCon_{aCnxName}";
+                    var meshBaseName = $@"Roads\Common\Meshes\{myWidth}m\{meshCat}\{myCnxName}\{aCnxName}\MedCon_{aCnxName}";
                     //var required = symGroups.Contains(cnGroups[i]) ? NetNode.Flags.None : NetNode.Flags.AsymForward;
-                    newNodeStart.m_material = brElInfo.m_segments[0].m_material;
-                    newNodeStart.m_lodMaterial = brElInfo.m_segments[0].m_lodMaterial;
 
-
-                    newNodeStart
-                        .SetFlags(NetNode.Flags.AsymForward, NetNode.Flags.None)
-                        .SetMeshes(
-                        $"{meshBaseName}_Start.obj",
-                        $"{meshBaseName}_Start_LOD.obj")
-                        .SetConsistentUVs()
-                        .SetTextures(
-                    new TextureSet
-                        ($@"{meshTextureName}__MainTex.png",
-                       $@"{meshTextureName}__AlphaMap.png"),
-                    new LODTextureSet
-                        ($@"{meshTextureName}__MainTex_LOD.png",
-                       $@"{meshTextureName}__AlphaMap_LOD.png",
-                       $@"{meshTextureName}__XYSMap_LOD.png"));
-                    newNodeStart.m_connectGroup = cnGroups[i].GetConnectGroup() | NetInfo.ConnectGroup.OnewayStart;
-                    newNodeStart.m_directConnect = true;
-
-                    newNodeEnd.m_material = brElInfo.m_segments[0].m_material;
-                    newNodeEnd.m_lodMaterial = brElInfo.m_segments[0].m_lodMaterial;
-
-                    newNodeEnd
-                        .SetFlags(NetNode.Flags.AsymForward, NetNode.Flags.None)
-                        .SetMeshes(
-                        $"{meshBaseName}_End.obj",
-                        $"{meshBaseName}_End_LOD.obj")
-                        .SetConsistentUVs()
-                        .SetTextures(
-                    new TextureSet
-                        ($@"{meshTextureName}__MainTex.png",
-                       $@"{meshTextureName}__AlphaMap.png"),
-                    new LODTextureSet
-                        ($@"{meshTextureName}__MainTex_LOD.png",
-                       $@"{meshTextureName}__AlphaMap_LOD.png",
-                       $@"{meshTextureName}__XYSMap_LOD.png"));
-                    newNodeEnd.m_connectGroup = cnGroups[i].GetConnectGroup() | NetInfo.ConnectGroup.OnewayEnd;
-                    newNodeEnd.m_directConnect = true;
-
-                    nodeList.Add(newNodeStart);
-                    nodeList.Add(newNodeEnd);
+                    var sym = (symGroups.Contains(ciGroup) || symGroups.Contains(cnGroups[i]));
+                    //if (sym)
+                    //{
+                    //    var flag = NetNode.Flags.AsymForward | NetNode.Flags.AsymBackward;
+                    //    var flaga = NetNode.Flags.None;
+                    //    if (ciGroup == ConnextGroup.ThreeMidL || cnGroups[i] == ConnextGroup.ThreeMidL)
+                    //    {
+                    //        flag |= wildCard;
+                    //    }
+                    //    else
+                    //    {
+                    //        flaga = wildCard;
+                    //    }
+                    //    DoStartEndStuff(newNodeStartForward, meshBaseName, meshTextureName, true,sym, flag, flaga, cnGroups[i], brElMaterial, brElLODMaterial);
+                    //    DoStartEndStuff(newNodeEndForward, meshBaseName, meshTextureName, false,sym, flag, flaga, cnGroups[i], brElMaterial, brElLODMaterial);
+                    //    nodeList.Add(newNodeStartForward);
+                    //    nodeList.Add(newNodeEndForward);
+                    //}
+                    //else
+                    //{
+                    var flag1 = NetNode.Flags.AsymForward;
+                    var flag2 = NetNode.Flags.AsymBackward;
+                    var flaga = NetNode.Flags.None;
+                    if (ciGroup == ConnextGroup.ThreeMidL || cnGroups[i] == ConnextGroup.ThreeMidL || ciGroup == ConnextGroup.ThreePlusThree || cnGroups[i] == ConnextGroup.ThreePlusThree || ciGroup == ConnextGroup.FourPlusFour || cnGroups[i] == ConnextGroup.FourPlusFour)
+                    {
+                        flag1 |= wildCard;
+                        flag2 |= wildCard;
+                    }
+                    else
+                    {
+                        flaga = wildCard;
+                    }
+                    DoStartEndStuff(newNodeStartForward, meshBaseName, meshTextureName, true, sym, flag1, flaga, cnGroups[i], brElMaterial, brElLODMaterial);
+                    DoStartEndStuff(newNodeEndForward, meshBaseName, meshTextureName, false, sym, flag1, flaga, cnGroups[i], brElMaterial, brElLODMaterial);
+                    nodeList.Add(newNodeStartForward);
+                    nodeList.Add(newNodeEndForward);
+                    DoStartEndStuff(newNodeStartBackward, meshBaseName, meshTextureName, true, sym, flag2, flaga, cnGroups[i], brElMaterial, brElLODMaterial);
+                    DoStartEndStuff(newNodeEndBackward, meshBaseName, meshTextureName, false, sym, flag2, flaga, cnGroups[i], brElMaterial, brElLODMaterial);
+                    nodeList.Add(newNodeStartBackward);
+                    nodeList.Add(newNodeEndBackward);
+                    //}
                 }
-
             }
             info.m_nodes = nodeList.ToArray();
             if (baseInfoName == "Basic Road")
@@ -320,6 +322,41 @@ namespace Transit.Framework
                 info.m_nodes[0].SetMeshes(
                     $@"Roads\Common\Meshes\32m\5mSW\Ground_Node_Parking.obj");
             }
+        }
+
+        private static void DoStartEndStuff(NetInfo.Node node, string meshBaseName, string meshTextureName, bool startEnd, bool sym, NetNode.Flags flag, NetNode.Flags flaga, ConnextGroup cnGroup, Material brElMaterial, Material brElLODMaterial)
+        {
+            node.m_material = brElMaterial;
+            node.m_lodMaterial = brElLODMaterial;
+            string se = "";
+            string inv = !sym && flag == NetNode.Flags.AsymBackward ? "_Inv" : "";
+            NetInfo.ConnectGroup owGroup;
+            if (startEnd)
+            {
+                se = "Start";
+                owGroup = NetInfo.ConnectGroup.OnewayStart;
+            }
+            else
+            {
+                se = "End";
+                owGroup = NetInfo.ConnectGroup.OnewayEnd;
+            }
+            node
+                .SetFlags(flag, flaga)
+                .SetMeshes(
+                $"{meshBaseName}_{se}{inv}.obj",
+                $"{meshBaseName}_{se}{inv}_LOD.obj")
+                .SetConsistentUVs()
+                .SetTextures(
+            new TextureSet
+                ($@"{meshTextureName}__MainTex.png",
+               $@"{meshTextureName}__AlphaMap.png"),
+            new LODTextureSet
+                ($@"{meshTextureName}__MainTex_LOD.png",
+               $@"{meshTextureName}__AlphaMap_LOD.png",
+               $@"{meshTextureName}__XYSMap_LOD.png"));
+            node.m_connectGroup = cnGroup.GetConnectGroup() | owGroup;
+            node.m_directConnect = true;
         }
         private static void RemoveCrosswalks(NetInfo.Node node, float rWidth, float pWidth, bool isVanilla)
         {

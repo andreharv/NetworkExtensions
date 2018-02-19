@@ -26,11 +26,14 @@ namespace Transit.Framework.Hooks.AI
             bool flag3 = false;
             bool flag4 = false;
             bool flag5 = false;
+            bool flag6 = false;
             int num6 = 0;
             int num7 = 0;
             int num11 = 0;
             int num12 = 0;
             int num13 = 0;
+            int num14 = 0;
+            int num15 = 0;
             for (int i = 0; i < 8; i++)
             {
                 ushort segment = data.GetSegment(i);
@@ -66,6 +69,7 @@ namespace Transit.Framework.Hooks.AI
                                 {
                                     num13++;
                                     flag3 = true;
+                                    flag5 = info.m_class.m_level == ItemClass.Level.Level4;
                                 }
                             }
                         }
@@ -77,6 +81,7 @@ namespace Transit.Framework.Hooks.AI
                             {
                                 num13++;
                                 flag4 = true;
+                                flag5 = info.m_class.m_level == ItemClass.Level.Level4;
                             }
                         }
                         if (num9 != 0 || num10 != 0)
@@ -150,22 +155,32 @@ namespace Transit.Framework.Hooks.AI
                 }
                 if (num6 == 2 && num13 == 2)
                 {
-                    //if ((flags & NetNode.Flags.CustomTrafficLights) == NetNode.Flags.None)
-                    //{
-                    if ((flags & NetNode.Flags.TrafficLights) == NetNode.Flags.None)
+                    if (num7 == 0)
                     {
-                        if (flag3 && flag4)
+                        if ((flags & NetNode.Flags.TrafficLights) == NetNode.Flags.None)
                         {
-                            flags |= NetNode.Flags.AsymForward;
-                            flags &= ~NetNode.Flags.AsymBackward;
-                        }
-                        else if (flag3 != flag4)
-                        {
-                            flags |= NetNode.Flags.AsymBackward;
-                            flags &= ~NetNode.Flags.AsymForward;
+                            if (flag3 && flag4)
+                            {
+                                flags |= NetNode.Flags.AsymForward;
+                                flags &= ~NetNode.Flags.AsymBackward;
+                                flag6 = true;
+                            }
+                            else if (flag3 != flag4)
+                            {
+                                flags |= NetNode.Flags.AsymBackward;
+                                flags &= ~NetNode.Flags.AsymForward;
+                                flag6 = true;
+                            }
+                            if (flag5 && flag6)
+                            {
+                                flags |= NetNode.Flags.Ambiguous;
+                            }
+                            else
+                            {
+                                flags &= ~NetNode.Flags.Ambiguous;
+                            }
                         }
                     }
-                    //}
                 }
             }
             data.m_flags = flags;
