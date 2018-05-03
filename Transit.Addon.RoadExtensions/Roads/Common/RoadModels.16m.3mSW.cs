@@ -17,9 +17,9 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                 case NetInfoVersion.GroundGrass:
                 case NetInfoVersion.GroundTrees:
                     {
-                        var segments0 = info.m_segments[0].SetConsistentUVs();
-                        var segments1 = info.m_segments[1].SetConsistentUVs();
-                        var segments2 = info.m_segments[2].SetConsistentUVs();
+                        var segments0 = info.m_segments[0];
+                        var segments1 = info.m_segments[1];
+                        var segments2 = info.m_segments[2];
                         if (lanesLayoutStyle != LanesLayoutStyle.Symmetrical)
                         {
                             var segments3 = info.m_segments[1].ShallowClone().SetConsistentUVs();

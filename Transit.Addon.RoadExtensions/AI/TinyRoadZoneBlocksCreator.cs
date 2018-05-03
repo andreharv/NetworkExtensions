@@ -51,7 +51,7 @@ namespace Transit.Addon.RoadExtensions.AI
             float num = startDirection.x * endDirection.x + startDirection.z * endDirection.z;
             float num2 = Mathf.Max(minHalfWidth, info.m_halfWidth);
             float num3 = 32f;
-
+            int distance = Mathf.RoundToInt(num2);
             float num4 = VectorUtils.LengthXZ(endPosition - startPosition);
             bool flag2 = startDirection.x * endDirection.z - startDirection.z * endDirection.x > 0f;
             bool flag3 = num < -0.8f || num4 > 50f;
@@ -101,6 +101,7 @@ namespace Transit.Addon.RoadExtensions.AI
                         position3, 
                         angle, 
                         num8, 
+                        distance,
                         segment.m_buildIndex);
                 }
                 else
@@ -110,7 +111,8 @@ namespace Transit.Addon.RoadExtensions.AI
                         ref randomizer, 
                         position3, 
                         angle, 
-                        num8, 
+                        num8,
+                        distance,
                         segment.m_buildIndex);
                 }
             }
@@ -130,7 +132,8 @@ namespace Transit.Addon.RoadExtensions.AI
                             ref randomizer, 
                             position4, 
                             angle2, 
-                            num8, 
+                            num8,
+                        distance,
                             segment.m_buildIndex + 1u);
                     }
                     else
@@ -140,7 +143,8 @@ namespace Transit.Addon.RoadExtensions.AI
                             ref randomizer, 
                             position4, 
                             angle2, 
-                            num8, 
+                            num8,
+                        distance,
                             segment.m_buildIndex + 1u);
                     }
                 }
@@ -187,7 +191,8 @@ namespace Transit.Addon.RoadExtensions.AI
                         ref randomizer, 
                         position5, 
                         angle3, 
-                        num12, 
+                        num12,
+                        distance,
                         segment.m_buildIndex);
                 }
                 else
@@ -197,7 +202,8 @@ namespace Transit.Addon.RoadExtensions.AI
                         ref randomizer, 
                         position5, 
                         angle3, 
-                        num12, 
+                        num12,
+                        distance,
                         segment.m_buildIndex);
                 }
             }
@@ -215,7 +221,8 @@ namespace Transit.Addon.RoadExtensions.AI
                         ref randomizer, 
                         position6, 
                         angle4, 
-                        num12, 
+                        num12,
+                        distance,
                         segment.m_buildIndex + 1u);
                 }
                 else
@@ -225,7 +232,8 @@ namespace Transit.Addon.RoadExtensions.AI
                         ref randomizer, 
                         position6, 
                         angle4, 
-                        num12, 
+                        num12,
+                        distance,
                         segment.m_buildIndex + 1u);
                 }
             }
@@ -235,6 +243,7 @@ namespace Transit.Addon.RoadExtensions.AI
         {
             var minHalfWidth = MIN_HALFWIDTH_TINY_STRAIGHT;
             float num2 = Mathf.Max(minHalfWidth, info.m_halfWidth) + 32f;
+            int distance = Mathf.RoundToInt(num2);
             var cellOffset = 0f;
 
             if (ZoneBlocksOffset.Mode == ZoneBlocksOffsetMode.HalfCell)
@@ -269,7 +278,8 @@ namespace Transit.Addon.RoadExtensions.AI
                     ref randomizer, 
                     position, 
                     startAngle, 
-                    startRows, 
+                    startRows,
+                        distance,
                     segment.m_buildIndex);
 
                 position = startPosition + new Vector3(
@@ -281,7 +291,8 @@ namespace Transit.Addon.RoadExtensions.AI
                     ref randomizer, 
                     position, 
                     startAngle + 3.14159274f, 
-                    startRows, 
+                    startRows,
+                        distance,
                     segment.m_buildIndex);
             }
 
@@ -299,6 +310,7 @@ namespace Transit.Addon.RoadExtensions.AI
                     position,
                     endAngle,
                     endRows,
+                        distance,
                     segment.m_buildIndex + 1u);
 
                 position = endPosition + new Vector3(
@@ -311,6 +323,7 @@ namespace Transit.Addon.RoadExtensions.AI
                     position,
                     endAngle + 3.14159274f,
                     endRows,
+                        distance,
                     segment.m_buildIndex + 1u);
             }
         }
