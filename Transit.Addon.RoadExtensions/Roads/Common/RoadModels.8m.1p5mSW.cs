@@ -10,8 +10,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             {
                 case NetInfoVersion.Ground:
                     {
-                        var segments0 = info.m_segments[0];
-                        var nodes0 = info.m_nodes[0];
+                        var segments0 = info.m_segments[0].ShallowClone();
+                        var nodes0 = info.m_nodes[0].ShallowClone();
                         var nodes1 = info.m_nodes[0].ShallowClone();
 
                         segments0
@@ -31,8 +31,9 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                             .SetMeshes
                             (@"Roads\Common\Meshes\8m\1p5mSW\Ground_Trans.obj",
                              @"Roads\Common\Meshes\8m\1p5mSW\Ground_Node_LOD.obj");
-                        
-                        RoadHelper.HandleAsymSegmentFlags(segments0);
+
+                        if (laneStyle != LanesLayoutStyle.Symmetrical)
+                            RoadHelper.HandleAsymSegmentFlags(segments0);
 
                         info.m_segments = new[] { segments0 };
                         info.m_nodes = new[] { nodes0, nodes1 };

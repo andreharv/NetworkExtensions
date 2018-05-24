@@ -512,7 +512,7 @@ namespace TrafficManager.Custom.AI {
 			uint num2 = data.m_lanes;
 			int num3 = 0;
 			while (num3 < this.m_info.m_lanes.Length && num2 != 0u) {
-				NetInfo.Lane lane = this.m_info.m_lanes[num3];
+				NetInfo.Lane lane = this.m_info.m_lanes[num3].ShallowClone();
 				if ((byte)(lane.m_laneType & (NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle)) != 0 && (lane.m_vehicleType & ~VehicleInfo.VehicleType.Bicycle) != VehicleInfo.VehicleType.None) {
 					num += instance2.m_lanes.m_buffer[(int)((UIntPtr)num2)].m_length;
 				}

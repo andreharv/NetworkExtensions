@@ -24,10 +24,12 @@ namespace Transit.Addon.RoadExtensions
         {
             protected override bool ValidatePrerequisites()
             {
-                var roadObject = GameObject.Find(ROAD_NETCOLLECTION);
-                if (roadObject == null)
+                foreach (var req in RequiredNetCollections)
                 {
-                    return false;
+                    if(GameObject.Find(req) == null)
+                    {
+                        return false;
+                    }
                 }
 
                 var netColl = FindObjectsOfType<NetCollection>();
@@ -35,17 +37,7 @@ namespace Transit.Addon.RoadExtensions
                 {
                     return false;
                 }
-
-                var roadCollFound = false;
-                foreach (var col in netColl)
-                {
-                    if (col.name == ROAD_NETCOLLECTION)
-                    {
-                        roadCollFound = true;
-                    }
-                }
-
-                if (!roadCollFound)
+                if (RequiredNetCollections.Any(r=>netColl.Any(n=>n.name == r)==false))
                 {
                     return false;
                 }
@@ -60,7 +52,7 @@ namespace Transit.Addon.RoadExtensions
                 swAll.Start();
                 InstallNetInfos(host);
                 swAll.Stop();
-                Debug.Log($"All NetInfos in {swAll.ElapsedMilliseconds}ms");
+                Debug.Log($"All RExModule NetInfos in {swAll.ElapsedMilliseconds}ms");
                 InstallNetInfosModifiers(host);
                 InstallCompatibilities(host);
             }
@@ -109,7 +101,7 @@ namespace Transit.Addon.RoadExtensions
                 Loading.QueueAction(() =>
                 {
                     var props = host._props = host._container.AddComponent<PropCollection>();
-                    props.name = REX_PROPCOLLECTION;
+                    props.name = PROP_COLLECTION_NAME;
                     if (newInfos.Count > 0)
                     {
                         props.m_prefabs = newInfos.ToArray();
@@ -248,7 +240,7 @@ namespace Transit.Addon.RoadExtensions
                 Loading.QueueAction(() =>
                 {
                     var roads = host._roads = host._container.AddComponent<NetCollection>();
-                    roads.name = REX_NETCOLLECTION;
+                    roads.name = NET_COLLECTION_NAME;
                     if (newInfos.Count > 0)
                     {
                         roads.m_prefabs = newInfos.ToArray();

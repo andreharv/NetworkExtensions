@@ -9,6 +9,7 @@ using static ColossalFramework.Plugins.PluginManager;
 using ColossalFramework.Plugins;
 using System.Linq;
 using System;
+using System.Collections.Generic;
 
 #if DEBUG
 using Debug = Transit.Framework.Debug;

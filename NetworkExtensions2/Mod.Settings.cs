@@ -28,13 +28,6 @@ namespace NetworkExtensions
             _optionsPanel = ((UIHelper)helper).self as UIScrollablePanel;
             _optionsPanel.autoLayout = false;
 
-            if (IsTAMInstalled)
-            {
-                UILabel label = _optionsPanel.AddUIComponent<UILabel>();
-                label.text = "Transit Addons Mod (TAM) has been detected - Network Extensions 2 have been disabled";
-                return;
-            }
-
             UITabstrip strip = _optionsPanel.AddUIComponent<UITabstrip>();
             strip.relativePosition = new Vector3(0, 0);
             strip.size = new Vector2(744, 40);
@@ -48,18 +41,18 @@ namespace NetworkExtensions
             {
                 if (module.Name == "Roads")
                 {
-                    addTab(strip, 0, module, tabTemplate, "Tiny", "RoadsTiny");
-                    addTab(strip, 1, module, tabTemplate, "Small", "RoadsSmall");
-                    addTab(strip, 2, module, tabTemplate, "Sml Hvy", "RoadsSmallHV");
-                    addTab(strip, 3, module, tabTemplate, "Medium", "RoadsMedium");
-                    addTab(strip, 4, module, tabTemplate, "Large", "RoadsLarge");
-                    addTab(strip, 5, module, tabTemplate, "Highway", "RoadsHighway");
-                    addTab(strip, 6, module, tabTemplate, "Ped", "RoadsPedestrians");
-                    addTab(strip, 7, module, tabTemplate, "Bus", "RoadsBusways");
+                    addTab(strip, strip.tabCount, module, tabTemplate, "Tiny", "RoadsTiny");
+                    addTab(strip, strip.tabCount, module, tabTemplate, "Small", "RoadsSmall");
+                    addTab(strip, strip.tabCount, module, tabTemplate, "Sml Hvy", "RoadsSmallHV");
+                    addTab(strip, strip.tabCount, module, tabTemplate, "Medium", "RoadsMedium");
+                    addTab(strip, strip.tabCount, module, tabTemplate, "Large", "RoadsLarge");
+                    addTab(strip, strip.tabCount, module, tabTemplate, "Highway", "RoadsHighway");
+                    addTab(strip, strip.tabCount, module, tabTemplate, "Ped", "RoadsPedestrians");
+                    addTab(strip, strip.tabCount, module, tabTemplate, "Bus", "RoadsBusways");
                 }
-                else
+                else if (module.Name == "Tools")
                 {
-                    addTab(strip, 8, module, tabTemplate);
+                    addTab(strip, strip.tabCount, module, tabTemplate);
                 }
             }
         }

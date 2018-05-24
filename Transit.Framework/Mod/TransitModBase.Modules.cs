@@ -30,7 +30,31 @@ namespace Transit.Framework.Mod
             {
                 var moduleType = typeof(IModule);
                 var modType = this.GetType();
+                //// Debug.Log( "Name: " + Name);
+                //var him = AppDomain.CurrentDomain.GetAssemblies()
+                //                        .SelectMany(a =>
+                //                        {
+                //                            try
+                //                            {
+                //                                return a.GetTypes();
+                //                            }
+                //                            catch (Exception ex)
+                //                            {
+                //                                Debug.Log("TFW: LoadModulesIfNeeded looking into assembly " + a.FullName);
+                //                                Debug.Log("TFW: " + ex.Message);
+                //                                Debug.Log("TFW: " + ex.ToString());
+                //                                return new Type[] { };
+                //                            }
+                //                        })
+                //    .Where(t => !t.IsAbstract && !t.IsInterface)
+                //    .Where(t => moduleType.IsAssignableFrom(t))
+                //    .ToList();
 
+                //foreach (var t in him)
+                //{
+                //    // if (t.Name == "RExATModule")
+                //    Debug.Log(Name + "......." + t.Name);
+                //}
                 _modules = AppDomain.CurrentDomain.GetAssemblies()
                     .SelectMany(a =>
                     {
@@ -73,6 +97,10 @@ namespace Transit.Framework.Mod
                     .Where(t => t != null)
                     .OrderBy(m => m.Order)
                     .ToArray();
+                foreach (var m in _modules)
+                {
+                    Debug.Log(m.Name);
+                }
             }
             catch (Exception ex)
             {

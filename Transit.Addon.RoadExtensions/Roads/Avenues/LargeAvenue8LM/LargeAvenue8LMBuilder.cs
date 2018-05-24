@@ -14,7 +14,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LM
 {
     public partial class LargeAvenue8LMBuilder : Activable, INetInfoBuilderPart, INetInfoLateBuilder
     {
-        public int Order { get { return 25; } }
+        public int Order { get { return 26; } }
         public int UIOrder { get { return 1500; } }
 
         public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_4L; } }

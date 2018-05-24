@@ -48,7 +48,7 @@ namespace TrafficManager.Traffic {
 			int numLanes = segmentInfo.m_lanes.Length;
 			uint laneIndex = 0;
 			while (laneIndex < numLanes && curLaneId != 0u) {
-				NetInfo.Lane laneInfo = segmentInfo.m_lanes[laneIndex];
+				NetInfo.Lane laneInfo = segmentinfo.m_lanes[laneIndex].ShallowClone();
 				ushort toNodeId = (laneInfo.m_direction == dir3) ? netManager.m_segments.m_buffer[segmentId].m_endNode : netManager.m_segments.m_buffer[segmentId].m_startNode;
 
 				if (toNodeId == nodeId) {

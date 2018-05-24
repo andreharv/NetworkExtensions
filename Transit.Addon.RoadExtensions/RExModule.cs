@@ -1,4 +1,5 @@
-﻿using Transit.Framework.Modularity;
+﻿using System;
+using Transit.Framework.Modularity;
 
 namespace Transit.Addon.RoadExtensions
 {
@@ -7,9 +8,13 @@ namespace Transit.Addon.RoadExtensions
     {
         public const string REX_OBJECT_NAME = "Road Extensions";
 
-        public const string ROAD_NETCOLLECTION = "Road";
-        public const string REX_NETCOLLECTION = "TAM Road";
-        public const string REX_PROPCOLLECTION = "TAM Prop";
+        public const string NET_COLLECTION_NAME = "TAM Road";
+        public const string PROP_COLLECTION_NAME = "TAM Prop";
+
+        public static string[] RequiredNetCollections
+        {
+            get { return new[] { "Road" }; }
+        }
 
         public override string Name
         {

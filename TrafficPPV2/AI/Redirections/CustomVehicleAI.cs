@@ -45,7 +45,7 @@ namespace CSL_Traffic
         //        return;
         //    }
         //    uint num3 = PathManager.GetLaneID(position);
-        //    NetInfo.Lane lane = info.m_lanes[(int)position.m_lane];
+        //    NetInfo.Lane lane = info.m_lanes[(int)position.m_lane].ShallowClone();
         //    Bezier3 bezier;
         //    while (true)
         //    {

@@ -7,7 +7,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways
 {
     public class VanillaHighwayMenuModifier : IModulePart, INetInfoModifier
     {
-        public string Name{ get { return "Vanilla Highway Menu Modifier"; } }
+        public string Name { get { return "Vanilla Highway Menu Modifier"; } }
 
         public void ModifyExistingNetInfo()
         {

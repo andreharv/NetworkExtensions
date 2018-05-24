@@ -902,8 +902,8 @@ namespace TrafficManager.Traffic {
 			try {
 				NetInfo segmentInfo = Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].Info;
 				NetInfo.Direction normDirection = IsLeftHandDrive() ? NetInfo.Direction.Forward : NetInfo.Direction.Backward; // direction to normalize indices to
-				NetInfo.Lane leftLane = segmentInfo.m_lanes[leftLaneIndex];
-				NetInfo.Lane rightLane = segmentInfo.m_lanes[rightLaneIndex];
+				NetInfo.Lane leftLane = segmentinfo.m_lanes[leftLaneIndex].ShallowClone();
+				NetInfo.Lane rightLane = segmentinfo.m_lanes[rightLaneIndex].ShallowClone();
 
 				// forward (right-hand traffic system): left < right
 				// backward (right-hand traffic system): left > right

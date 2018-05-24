@@ -8,9 +8,9 @@ namespace Transit.Framework
     {
         public static NetInfo SetAllSegmentsTexture(this NetInfo info, TextureSet newTextures, LODTextureSet newLODTextures = null)
         {
-            foreach (var segment in info.m_segments)
+            for (var i = 0; i < info.m_segments.Length;i++)
             {
-                segment.SetTextures(newTextures, newLODTextures);
+                info.m_segments[i].SetTextures(newTextures, newLODTextures);
             }
 
             return info;
@@ -23,6 +23,7 @@ namespace Transit.Framework
                 if (segment.m_material != null)
                 {
                     segment.m_material = newTextures.CreateRoadMaterial(segment.m_material);
+                    segment.m_segmentMaterial = segment.m_material;
                 }
             }
 
@@ -40,7 +41,7 @@ namespace Transit.Framework
         public static NetInfo.Segment SetMeshes(this NetInfo.Segment segment, string newMeshPath, string newLODMeshPath = null)
         {
             segment.m_mesh = AssetManager.instance.GetMesh(newMeshPath);
-
+            segment.m_segmentMesh = segment.m_mesh;
             if (newLODMeshPath != null)
             {
                 segment.m_lodMesh = AssetManager.instance.GetMesh(newLODMeshPath);
@@ -61,14 +62,27 @@ namespace Transit.Framework
             return segment;
         }
 
-        public static NetInfo.Segment SetConsistentUVs(this NetInfo.Segment segment)
+        public static NetInfo.Segment SetConsistentUVs(this NetInfo.Segment segment, bool isPowerLines = true)
         {
             var colors = new List<Color>();
             var colors32 = new List<Color32>();
+            Color color;
+            Color32 color32;
+            if (isPowerLines)
+            {
+                color = new Color(0, 0, 0, 255);
+                color32 = new Color32(0, 0, 0, 255);
+            }
+            else
+            {
+                color = new Color(255, 0, 255, 255);
+                color32 = new Color32(255, 0, 255, 255);
+            }
+
             for (int i = 0; i < segment.m_mesh.vertexCount; i++)
             {
-                colors.Add(new Color(255, 0, 255, 255));
-                colors32.Add(new Color32(255, 0, 255, 255));
+                colors.Add(color);
+                colors32.Add(color32);
             }
             segment.m_mesh.colors = colors.ToArray();
             segment.m_mesh.colors32 = colors32.ToArray();
@@ -77,8 +91,8 @@ namespace Transit.Framework
             colors32 = new List<Color32>();
             for (int i = 0; i < segment.m_lodMesh.vertexCount; i++)
             {
-                colors.Add(new Color(255, 0, 255, 255));
-                colors32.Add(new Color32(255, 0, 255, 255));
+                colors.Add(color);
+                colors32.Add(color32);
             }
             segment.m_lodMesh.colors = colors.ToArray();
             segment.m_lodMesh.colors32 = colors32.ToArray();
