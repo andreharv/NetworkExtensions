@@ -18,247 +18,217 @@ namespace Transit.Framework.Hooks.UI
         private const string kSubbarButtonTemplate = "SubbarButtonTemplate";
         private const string kSubbarPanelTemplate = "SubbarPanelTemplate";
 
-        [RedirectFrom(typeof (GeneratedGroupPanel))]
+        [RedirectFrom(typeof(GeneratedGroupPanel))]
 #pragma warning disable 108,114
         protected UIButton SpawnButtonEntry(UITabstrip strip, string name, string category, bool isDefaultCategory,
 #pragma warning restore 108,114
             string localeID, string unlockText, string spriteBase, bool enabled, bool forceFillContainer)
         {
             int objectIndex = (int)typeof(GeneratedGroupPanel).GetField("m_ObjectIndex", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(this);
-
+            Debug.Log($"GENERATEGROUPPANEL {name}Panel");
             // TAM Edit Start
             Type type = typeof(GeneratedScrollPanel)
                 .Assembly
                 .GetTypes()
                 .FirstOrDefault(t => string.Equals(t.Name, name + "Panel", StringComparison.InvariantCultureIgnoreCase));
             // TAM Edit End
-
             if (type != null && !type.IsSubclassOf(typeof(GeneratedScrollPanel)))
-            {
-                type = null;
-            }
-
-            UIButton uIButton;
+                type = (System.Type)null;
+            UIButton uiButton;
             if (strip.childCount > objectIndex)
             {
-                uIButton = (strip.components[objectIndex] as UIButton);
+                uiButton = strip.components[objectIndex] as UIButton;
             }
             else
             {
-                GameObject asGameObject = UITemplateManager.GetAsGameObject(kSubbarButtonTemplate);
+                GameObject asGameObject1 = UITemplateManager.GetAsGameObject(kSubbarButtonTemplate);
                 GameObject asGameObject2 = UITemplateManager.GetAsGameObject(kSubbarPanelTemplate);
-                uIButton = (strip.AddTab(category, asGameObject, asGameObject2, type) as UIButton);
+                uiButton = strip.AddTab(category, asGameObject1, asGameObject2, type) as UIButton;
             }
-
-            uIButton.isEnabled = enabled;
-            uIButton.gameObject.GetComponent<TutorialUITag>().tutorialTag = category;
-            GeneratedScrollPanel generatedScrollPanel = strip.GetComponentInContainer(uIButton, type) as GeneratedScrollPanel;
-            if (generatedScrollPanel != null)
+            uiButton.isEnabled = enabled;
+            uiButton.gameObject.GetComponent<TutorialUITag>().tutorialTag = category + "Group";
+            GeneratedScrollPanel componentInContainer = strip.GetComponentInContainer((UIComponent)uiButton, type) as GeneratedScrollPanel;
+            if (componentInContainer != null)
             {
-                generatedScrollPanel.component.isInteractive = true;
-                generatedScrollPanel.m_OptionsBar = this.m_OptionsBar;
-                generatedScrollPanel.m_DefaultInfoTooltipAtlas = this.m_DefaultInfoTooltipAtlas;
+                componentInContainer.component.isInteractive = true;
+                componentInContainer.m_OptionsBar = this.m_OptionsBar;
+                componentInContainer.m_DefaultInfoTooltipAtlas = this.m_DefaultInfoTooltipAtlas;
                 if (forceFillContainer || enabled)
                 {
-                    generatedScrollPanel.category = ((!isDefaultCategory) ? category : string.Empty);
-                    generatedScrollPanel.RefreshPanel();
+                    componentInContainer.category = !isDefaultCategory ? category : string.Empty;
+                    componentInContainer.RefreshPanel();
                 }
             }
-
             // TAM Edit Start
             var customAtlas = AtlasManager.instance.GetAtlas(category);
             if (customAtlas != null)
             {
-                uIButton.atlas = customAtlas;
+                uiButton.atlas = customAtlas;
             }
             // TAM Edit End
-
-            string text = spriteBase + category;
-            uIButton.normalFgSprite = text;
-            uIButton.focusedFgSprite = text + "Focused";
-            uIButton.hoveredFgSprite = text + "Hovered";
-            uIButton.pressedFgSprite = text + "Pressed";
-            uIButton.disabledFgSprite = text + "Disabled";
-
+            string str = spriteBase + category;
+            uiButton.normalFgSprite = str;
+            uiButton.focusedFgSprite = str + "Focused";
+            uiButton.hoveredFgSprite = str + "Hovered";
+            uiButton.pressedFgSprite = str + "Pressed";
+            uiButton.disabledFgSprite = str + "Disabled";
             if (!string.IsNullOrEmpty(localeID) && !string.IsNullOrEmpty(unlockText))
-            {
-                uIButton.tooltip = Locale.Get(localeID, category) + " - " + unlockText;
-            }
+                uiButton.tooltip = ColossalFramework.Globalization.Locale.Get(localeID, category) + " - " + unlockText;
             else if (!string.IsNullOrEmpty(localeID))
-            {
-                uIButton.tooltip = Locale.Get(localeID, category);
-            }
-
+                uiButton.tooltip = ColossalFramework.Globalization.Locale.Get(localeID, category);
             typeof(GeneratedGroupPanel).GetField("m_ObjectIndex", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(this, objectIndex + 1);
-            return uIButton;
+            return uiButton;
+
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        [RedirectFrom(typeof(GeneratedGroupPanel))]
-        private PoolList<GroupInfo> CollectAssets(GroupFilter filter, Comparison<GroupInfo> comparison)
-        {
-            PoolList<GroupInfo> poolList = PoolList<GroupInfo>.Obtain();
-            if (filter.IsFlagSet(GroupFilter.Net))
-            {
-                // TAM Edit Start
-                poolList.AddRange(CollectAssetsNetInfoGroups().ToArray());
-                // TAM Edit End
-            }
+        //[MethodImpl(MethodImplOptions.NoInlining)]
+        //[RedirectFrom(typeof(GeneratedGroupPanel))]
+        //private PoolList<GroupInfo> CollectAssets(GroupFilter filter, Comparison<GroupInfo> comparison)
+        //{
+        //    PoolList<GeneratedGroupPanel.GroupInfo> groupItems = PoolList<GroupInfo>.Obtain();
+        //    if (filter.IsFlagSet(GroupFilter.Net))
+        //    {
+        //        // TAM Edit Start
+        //        //groupItems.AddRange(CollectAssetsNetInfoGroups().ToArray());
+        //        // TAM Edit End
+        //    }
+        //    if (filter.IsFlagSet(GeneratedGroupPanel.GroupFilter.Net))
+        //    {
+        //        for (uint index = 0; (long)index < (long)PrefabCollection<NetInfo>.LoadedCount(); ++index)
+        //        {
+        //            NetInfo loaded = PrefabCollection<NetInfo>.GetLoaded(index);
+        //            if (loaded != null && this.IsServiceValid((PrefabInfo)loaded) && this.IsPlacementRelevant(loaded))
+        //                this.AddGroup(groupItems, (PrefabInfo)loaded);
+        //        }
+        //    }
+        //    if (filter.IsFlagSet(GeneratedGroupPanel.GroupFilter.Building) || filter.IsFlagSet(GeneratedGroupPanel.GroupFilter.Wonder))
+        //    {
+        //        for (uint index = 0; (long)index < (long)PrefabCollection<BuildingInfo>.LoadedCount(); ++index)
+        //        {
+        //            BuildingInfo loaded = PrefabCollection<BuildingInfo>.GetLoaded(index);
+        //            if (loaded != null && this.FilterWonders(filter, loaded) && (this.IsServiceValid((PrefabInfo)loaded) && this.IsPlacementRelevant(loaded)))
+        //                this.AddGroup(groupItems, (PrefabInfo)loaded);
+        //        }
+        //    }
+        //    if (filter.IsFlagSet(GeneratedGroupPanel.GroupFilter.Transport))
+        //    {
+        //        for (uint index = 0; (long)index < (long)PrefabCollection<TransportInfo>.LoadedCount(); ++index)
+        //        {
+        //            TransportInfo loaded = PrefabCollection<TransportInfo>.GetLoaded(index);
+        //            if (loaded != null && this.IsServiceValid((PrefabInfo)loaded) && this.IsPlacementRelevant(loaded))
+        //                this.AddGroup(groupItems, (PrefabInfo)loaded);
+        //        }
+        //    }
+        //    if (filter.IsFlagSet(GeneratedGroupPanel.GroupFilter.Tree))
+        //    {
+        //        for (uint index = 0; (long)index < (long)PrefabCollection<TreeInfo>.LoadedCount(); ++index)
+        //        {
+        //            TreeInfo loaded = PrefabCollection<TreeInfo>.GetLoaded(index);
+        //            if (loaded != null && this.IsServiceValid((PrefabInfo)loaded) && this.IsPlacementRelevant(loaded))
+        //                this.AddGroup(groupItems, (PrefabInfo)loaded);
+        //        }
+        //    }
+        //    if (filter.IsFlagSet(GeneratedGroupPanel.GroupFilter.Prop))
+        //    {
+        //        for (uint index = 0; (long)index < (long)PrefabCollection<PropInfo>.LoadedCount(); ++index)
+        //        {
+        //            PropInfo loaded = PrefabCollection<PropInfo>.GetLoaded(index);
+        //            if (loaded != null && this.IsServiceValid((PrefabInfo)loaded) && this.IsPlacementRelevant(loaded))
+        //                this.AddGroup(groupItems, (PrefabInfo)loaded);
+        //        }
+        //    }
+        //    if (filter.IsFlagSet(GeneratedGroupPanel.GroupFilter.Disaster))
+        //    {
+        //        for (uint index = 0; (long)index < (long)PrefabCollection<DisasterInfo>.LoadedCount(); ++index)
+        //        {
+        //            DisasterInfo loaded = PrefabCollection<DisasterInfo>.GetLoaded(index);
+        //            if (loaded != null && this.IsPlacementRelevant(loaded))
+        //                this.AddGroup(groupItems, (PrefabInfo)loaded);
+        //        }
+        //    }
+        //    groupItems.Sort(comparison);
+        //    return groupItems;
+        //}
 
-            if (filter.IsFlagSet(GroupFilter.Building) || 
-                filter.IsFlagSet(GroupFilter.Wonder))
-            {
-                uint num2 = 0u;
-                while ((ulong)num2 < (ulong)((long)PrefabCollection<BuildingInfo>.LoadedCount()))
-                {
-                    BuildingInfo loaded2 = PrefabCollection<BuildingInfo>.GetLoaded(num2);
-                    if (loaded2 != null && this.FilterWonders(filter, loaded2) && this.IsServiceValid(loaded2) && this.IsPlacementRelevant(loaded2))
-                    {
-                        this.AddGroup(poolList, loaded2);
-                    }
-                    num2 += 1u;
-                }
-            }
+        //private IEnumerable<GroupInfo> CollectAssetsNetInfoGroups()
+        //{
+        //    foreach (var category in CollectAssetsNetInfoCategories().Distinct())
+        //    {
+        //        yield return new GroupInfo(category, GetCategoryOrder(category));
+        //    }
+        //}
 
-            if (filter.IsFlagSet(GroupFilter.Transport))
-            {
-                uint num3 = 0u;
-                while ((ulong)num3 < (ulong)((long)PrefabCollection<TransportInfo>.LoadedCount()))
-                {
-                    TransportInfo loaded3 = PrefabCollection<TransportInfo>.GetLoaded(num3);
-                    if (loaded3 != null && this.IsServiceValid(loaded3) && this.IsPlacementRelevant(loaded3))
-                    {
-                        this.AddGroup(poolList, loaded3);
-                    }
-                    num3 += 1u;
-                }
-            }
+        //private IEnumerable<string> CollectAssetsNetInfoCategories()
+        //{
+        //    for (uint num = 0; num < PrefabCollection<NetInfo>.LoadedCount(); num++)
+        //    {
+        //        var loaded = PrefabCollection<NetInfo>.GetLoaded(num);
+        //        if (loaded != null && this.IsServiceValid(loaded) && this.IsPlacementRelevant(loaded))
+        //        {
+        //            yield return loaded.category;
+        //        }
+        //    }
 
-            if (filter.IsFlagSet(GroupFilter.Tree))
-            {
-                uint num4 = 0u;
-                while ((ulong)num4 < (ulong)((long)PrefabCollection<TreeInfo>.LoadedCount()))
-                {
-                    TreeInfo loaded4 = PrefabCollection<TreeInfo>.GetLoaded(num4);
-                    if (loaded4 != null && this.IsServiceValid(loaded4) && this.IsPlacementRelevant(loaded4))
-                    {
-                        this.AddGroup(poolList, loaded4);
-                    }
-                    num4 += 1u;
-                }
-            }
+        //    foreach (var cat in ExtendedMenuManager.GetNewCategories(GroupFilter.Net, service))
+        //    {
+        //        yield return cat;
+        //    }
+        //}
 
-            if (filter.IsFlagSet(GroupFilter.Prop))
-            {
-                uint num5 = 0u;
-                while ((ulong)num5 < (ulong)((long)PrefabCollection<PropInfo>.LoadedCount()))
-                {
-                    PropInfo loaded5 = PrefabCollection<PropInfo>.GetLoaded(num5);
-                    if (loaded5 != null && this.IsServiceValid(loaded5) && this.IsPlacementRelevant(loaded5))
-                    {
-                        this.AddGroup(poolList, loaded5);
-                    }
-                    num5 += 1u;
-                }
-            }
+        //[MethodImpl(MethodImplOptions.NoInlining)]
+        //[RedirectTo(typeof(GeneratedGroupPanel))]
+        //private bool IsPlacementRelevant(NetInfo info)
+        //{
+        //    throw new NotImplementedException("IsPlacementRelevant is target of redirection and is not implemented.");
+        //}
 
-            if (filter.IsFlagSet(GeneratedGroupPanel.GroupFilter.Disaster))
-            {
-                uint num6 = 0u;
-                while ((ulong)num6 < (ulong)((long)PrefabCollection<DisasterInfo>.LoadedCount()))
-                {
-                    DisasterInfo loaded6 = PrefabCollection<DisasterInfo>.GetLoaded(num6);
-                    if (loaded6 != null && this.IsPlacementRelevant(loaded6))
-                    {
-                        this.AddGroup(poolList, loaded6);
-                    }
-                    num6 += 1u;
-                }
-            }
+        //[MethodImpl(MethodImplOptions.NoInlining)]
+        //[RedirectTo(typeof(GeneratedGroupPanel))]
+        //private bool IsPlacementRelevant(BuildingInfo info)
+        //{
+        //    throw new NotImplementedException("IsPlacementRelevant is target of redirection and is not implemented.");
+        //}
 
-            poolList.Sort(comparison);
-            return poolList;
-        }
+        //[MethodImpl(MethodImplOptions.NoInlining)]
+        //[RedirectTo(typeof(GeneratedGroupPanel))]
+        //private bool IsPlacementRelevant(TransportInfo info)
+        //{
+        //    throw new NotImplementedException("IsPlacementRelevant is target of redirection and is not implemented.");
+        //}
 
-        private IEnumerable<GroupInfo> CollectAssetsNetInfoGroups()
-        {
-            foreach (var category in CollectAssetsNetInfoCategories().Distinct())
-            {
-                yield return new GroupInfo(category, GetCategoryOrder(category));
-            }
-        }
+        //[MethodImpl(MethodImplOptions.NoInlining)]
+        //[RedirectTo(typeof(GeneratedGroupPanel))]
+        //private bool IsPlacementRelevant(TreeInfo info)
+        //{
+        //    throw new NotImplementedException("IsPlacementRelevant is target of redirection and is not implemented.");
+        //}
 
-        private IEnumerable<string> CollectAssetsNetInfoCategories()
-        {
-            for (uint num = 0; num < PrefabCollection<NetInfo>.LoadedCount(); num++)
-            {
-                var loaded = PrefabCollection<NetInfo>.GetLoaded(num);
-                if (loaded != null && this.IsServiceValid(loaded) && this.IsPlacementRelevant(loaded))
-                {
-                    yield return loaded.category;
-                }
-            }
+        //[MethodImpl(MethodImplOptions.NoInlining)]
+        //[RedirectTo(typeof(GeneratedGroupPanel))]
+        //private bool IsPlacementRelevant(PropInfo info)
+        //{
+        //    throw new NotImplementedException("IsPlacementRelevant is target of redirection and is not implemented.");
+        //}
 
-            foreach (var cat in ExtendedMenuManager.GetNewCategories(GroupFilter.Net, service))
-            {
-                yield return cat;
-            }
-        }
+        //[MethodImpl(MethodImplOptions.NoInlining)]
+        //[RedirectTo(typeof(GeneratedGroupPanel))]
+        //private bool IsPlacementRelevant(DisasterInfo info)
+        //{
+        //    throw new NotImplementedException("IsPlacementRelevant is target of redirection and is not implemented.");
+        //}
 
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        [RedirectTo(typeof(GeneratedGroupPanel))]
-        private bool IsPlacementRelevant(NetInfo info)
-        {
-            throw new NotImplementedException("IsPlacementRelevant is target of redirection and is not implemented.");
-        }
+        //[MethodImpl(MethodImplOptions.NoInlining)]
+        //[RedirectTo(typeof(GeneratedGroupPanel))]
+        //private bool FilterWonders(GroupFilter filter, BuildingInfo info)
+        //{
+        //    throw new NotImplementedException("FilterWonders is target of redirection and is not implemented.");
+        //}
 
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        [RedirectTo(typeof(GeneratedGroupPanel))]
-        private bool IsPlacementRelevant(BuildingInfo info)
-        {
-            throw new NotImplementedException("IsPlacementRelevant is target of redirection and is not implemented.");
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        [RedirectTo(typeof(GeneratedGroupPanel))]
-        private bool IsPlacementRelevant(TransportInfo info)
-        {
-            throw new NotImplementedException("IsPlacementRelevant is target of redirection and is not implemented.");
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        [RedirectTo(typeof(GeneratedGroupPanel))]
-        private bool IsPlacementRelevant(TreeInfo info)
-        {
-            throw new NotImplementedException("IsPlacementRelevant is target of redirection and is not implemented.");
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        [RedirectTo(typeof(GeneratedGroupPanel))]
-        private bool IsPlacementRelevant(PropInfo info)
-        {
-            throw new NotImplementedException("IsPlacementRelevant is target of redirection and is not implemented.");
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        [RedirectTo(typeof(GeneratedGroupPanel))]
-        private bool IsPlacementRelevant(DisasterInfo info)
-        {
-            throw new NotImplementedException("IsPlacementRelevant is target of redirection and is not implemented.");
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        [RedirectTo(typeof(GeneratedGroupPanel))]
-        private bool FilterWonders(GroupFilter filter, BuildingInfo info)
-        {
-            throw new NotImplementedException("FilterWonders is target of redirection and is not implemented.");
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        [RedirectTo(typeof(GeneratedGroupPanel))]
-        private void AddGroup(PoolList<GroupInfo> groupItems, PrefabInfo info)
-        {
-            throw new NotImplementedException("AddGroup is target of redirection and is not implemented.");
-        }
+        //[MethodImpl(MethodImplOptions.NoInlining)]
+        //[RedirectTo(typeof(GeneratedGroupPanel))]
+        //private void AddGroup(PoolList<GroupInfo> groupItems, PrefabInfo info)
+        //{
+        //    throw new NotImplementedException("AddGroup is target of redirection and is not implemented.");
+        //}
     }
 }

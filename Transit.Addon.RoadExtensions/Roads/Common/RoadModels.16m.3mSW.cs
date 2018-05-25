@@ -48,8 +48,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                         segments0
                             .SetMeshes
                                 (@"Roads\Common\Meshes\16m\3mSW\Elevated.obj",
-                                @"Roads\Common\Meshes\16m\3mSW\Elevated_LOD.obj")
-                                .SetConsistentUVs();
+                                @"Roads\Common\Meshes\16m\3mSW\Elevated_LOD.obj");
 
                         nodes0.SetMeshes
                             (@"Roads\Common\Meshes\16m\3mSW\Elevated_Node.obj",

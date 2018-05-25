@@ -113,6 +113,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.HighwayL1R2
                 rightPedLane.m_laneProps.m_props = rightRoadProps.ToArray();
 
             info.TrimNonHighwayProps(version == NetInfoVersion.Ground);
+
             ///////////////////////////
             // AI                    //
             ///////////////////////////

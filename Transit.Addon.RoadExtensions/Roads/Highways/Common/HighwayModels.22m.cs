@@ -75,7 +75,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways
                 //nodes1.m_material = defaultMaterial;
                 //nodes1.m_lodMaterial = defaultLODMaterial;
 
-                info.m_segments = new[] { segments0, segments1, segments2 };
+                info.m_segments = new[] { segments0, segments1 };
                 info.m_nodes = new[] { nodes0, nodes1, nodes2 };
             }
             else if (version == NetInfoVersion.Tunnel)

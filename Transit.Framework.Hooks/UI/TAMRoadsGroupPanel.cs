@@ -39,6 +39,14 @@ namespace Transit.Framework.Hooks.UI
                         return 100;
                     case "PublicTransportPlane":
                         return 110;
+                    case "PublicTransportTaxi":
+                        return 120;
+                    case "PublicTransportTram":
+                        return 130;
+                    case "PublicTransportMonorail":
+                        return 140;
+                    case "PublicTransportCableCar":
+                        return 150;
                 }
                 return 2147483647;
             }
