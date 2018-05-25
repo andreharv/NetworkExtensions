@@ -152,7 +152,7 @@
     <ProjectReference Include="..\ObjUnity3D\ObjUnity3D.csproj">
       <Project>{97D70503-6567-41A1-92FC-66D813A53370}</Project>
       <Name>ObjUnity3D</Name>
-      <Private>False</Private>
+      <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
