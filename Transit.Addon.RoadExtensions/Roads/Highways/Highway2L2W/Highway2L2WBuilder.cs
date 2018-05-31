@@ -74,13 +74,12 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway2L2W
                 info.m_class = highwayInfo.m_class.Clone(info.name + version.ToString() + "Class");
             }
 
-
             ///////////////////////////
             // Set up lanes          //
             ///////////////////////////
             info.SetRoadLanes(version, new LanesConfiguration
             {
-                LanePositionOffst = -2,
+                LanePositionOffst = (version == NetInfoVersion.Bridge || version == NetInfoVersion.Elevated) ? -1 : -2,
                 IsTwoWay = true,
                 LaneWidth = 4,
                 LanesToAdd = 1,
@@ -106,6 +105,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway2L2W
             if (rightPedLane != null && rightPedLane.m_laneProps != null)
                 rightPedLane.m_laneProps.m_props = rightRoadProps.ToArray();
             info.TrimNonHighwayProps(version == NetInfoVersion.Ground);
+
             ///////////////////////////
             // AI                    //
             ///////////////////////////
