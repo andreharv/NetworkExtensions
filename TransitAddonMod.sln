@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_References", "_References", "{FC5D316C-D7B8-4986-9E91-D3784D4A8CBB}"
 	ProjectSection(SolutionItems) = preProject
 		References\Assembly-CSharp-firstpass.dll = References\Assembly-CSharp-firstpass.dll
-		References\Assembly-CSharp.dll = References\Assembly-CSharp.dll
+		..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Cities_Skylines\Cities_Data\Managed\Assembly-CSharp.dll = ..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Cities_Skylines\Cities_Data\Managed\Assembly-CSharp.dll
 		References\Assembly-UnityScript-firstpass.dll = References\Assembly-UnityScript-firstpass.dll
-		References\ColossalManaged.dll = References\ColossalManaged.dll
-		References\ICities.dll = References\ICities.dll
+		..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Cities_Skylines\Cities_Data\Managed\ColossalManaged.dll = ..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Cities_Skylines\Cities_Data\Managed\ColossalManaged.dll
+		..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Cities_Skylines\Cities_Data\Managed\ICities.dll = ..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Cities_Skylines\Cities_Data\Managed\ICities.dll
 		References\Mono.Posix.dll = References\Mono.Posix.dll
 		References\Mono.Security.dll = References\Mono.Security.dll
 		References\UnityEngine.Analytics.dll = References\UnityEngine.Analytics.dll
@@ -42,21 +42,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Addon.PathFinding",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Addon.RoadExtensions", "Transit.Addon.RoadExtensions\Transit.Addon.RoadExtensions.csproj", "{19FA21B2-39CC-4B90-BE7E-B6BDCCB09208}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Addon.Deploy", "Transit.Addon.Deploy\Transit.Addon.Deploy.csproj", "{7DFBABEB-DED8-4E16-8AA5-B38C3EF64305}"
-	ProjectSection(ProjectDependencies) = postProject
-		{97D70503-6567-41A1-92FC-66D813A53370} = {97D70503-6567-41A1-92FC-66D813A53370}
-		{20F6A0DC-131C-49CD-9D9B-95B6E41CDDFF} = {20F6A0DC-131C-49CD-9D9B-95B6E41CDDFF}
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Addon", "Transit.Addon\Transit.Addon.csproj", "{80C47696-4D41-4BB6-9CAE-C477FE528ADF}"
-	ProjectSection(ProjectDependencies) = postProject
-		{4499042E-DCD1-4F9F-A3C8-4830108169CD} = {4499042E-DCD1-4F9F-A3C8-4830108169CD}
-		{A700F186-B123-45B5-ADFE-B865DF5A0F39} = {A700F186-B123-45B5-ADFE-B865DF5A0F39}
-		{2E44ECA3-D750-4115-B16B-FCA94C49BBA0} = {2E44ECA3-D750-4115-B16B-FCA94C49BBA0}
-		{19FA21B2-39CC-4B90-BE7E-B6BDCCB09208} = {19FA21B2-39CC-4B90-BE7E-B6BDCCB09208}
-		{20F6A0DC-131C-49CD-9D9B-95B6E41CDDFF} = {20F6A0DC-131C-49CD-9D9B-95B6E41CDDFF}
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deploy", "Deploy", "{309D6357-1B62-4C4B-9239-4E2FD95FE267}"
 	ProjectSection(SolutionItems) = preProject
 		NetworkExtensions2\NetworkExtensions2.csproj = NetworkExtensions2\NetworkExtensions2.csproj
@@ -68,10 +53,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Framework.Extension
 	ProjectSection(ProjectDependencies) = postProject
 		{8891467E-C88E-46B0-96F9-4413DF6DC205} = {8891467E-C88E-46B0-96F9-4413DF6DC205}
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TLM", "TLM\TLM.csproj", "{7422AE58-8B0A-401C-9404-F4A438EFFE10}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrafficPPV2", "TrafficPPV2\TrafficPPV2.csproj", "{2CC6D3B7-B483-413C-9DB1-943C63B0CCE4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkExtensions2", "NetworkExtensions2\NetworkExtensions2.csproj", "{DCD9DD56-9C49-4BA9-8F37-7567444FE7CB}"
 EndProject
@@ -149,26 +130,6 @@ Global
 		{19FA21B2-39CC-4B90-BE7E-B6BDCCB09208}.Release|ARM.ActiveCfg = Release|Any CPU
 		{19FA21B2-39CC-4B90-BE7E-B6BDCCB09208}.Release|x64.ActiveCfg = Release|Any CPU
 		{19FA21B2-39CC-4B90-BE7E-B6BDCCB09208}.Release|x86.ActiveCfg = Release|Any CPU
-		{7DFBABEB-DED8-4E16-8AA5-B38C3EF64305}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7DFBABEB-DED8-4E16-8AA5-B38C3EF64305}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7DFBABEB-DED8-4E16-8AA5-B38C3EF64305}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{7DFBABEB-DED8-4E16-8AA5-B38C3EF64305}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{7DFBABEB-DED8-4E16-8AA5-B38C3EF64305}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{7DFBABEB-DED8-4E16-8AA5-B38C3EF64305}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7DFBABEB-DED8-4E16-8AA5-B38C3EF64305}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7DFBABEB-DED8-4E16-8AA5-B38C3EF64305}.Release|ARM.ActiveCfg = Release|Any CPU
-		{7DFBABEB-DED8-4E16-8AA5-B38C3EF64305}.Release|x64.ActiveCfg = Release|Any CPU
-		{7DFBABEB-DED8-4E16-8AA5-B38C3EF64305}.Release|x86.ActiveCfg = Release|Any CPU
-		{80C47696-4D41-4BB6-9CAE-C477FE528ADF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{80C47696-4D41-4BB6-9CAE-C477FE528ADF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{80C47696-4D41-4BB6-9CAE-C477FE528ADF}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{80C47696-4D41-4BB6-9CAE-C477FE528ADF}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{80C47696-4D41-4BB6-9CAE-C477FE528ADF}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{80C47696-4D41-4BB6-9CAE-C477FE528ADF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{80C47696-4D41-4BB6-9CAE-C477FE528ADF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{80C47696-4D41-4BB6-9CAE-C477FE528ADF}.Release|ARM.ActiveCfg = Release|Any CPU
-		{80C47696-4D41-4BB6-9CAE-C477FE528ADF}.Release|x64.ActiveCfg = Release|Any CPU
-		{80C47696-4D41-4BB6-9CAE-C477FE528ADF}.Release|x86.ActiveCfg = Release|Any CPU
 		{A700F186-B123-45B5-ADFE-B865DF5A0F39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A700F186-B123-45B5-ADFE-B865DF5A0F39}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A700F186-B123-45B5-ADFE-B865DF5A0F39}.Debug|ARM.ActiveCfg = Debug|Any CPU
@@ -189,26 +150,6 @@ Global
 		{2E44ECA3-D750-4115-B16B-FCA94C49BBA0}.Release|ARM.ActiveCfg = Release|Any CPU
 		{2E44ECA3-D750-4115-B16B-FCA94C49BBA0}.Release|x64.ActiveCfg = Release|Any CPU
 		{2E44ECA3-D750-4115-B16B-FCA94C49BBA0}.Release|x86.ActiveCfg = Release|Any CPU
-		{7422AE58-8B0A-401C-9404-F4A438EFFE10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7422AE58-8B0A-401C-9404-F4A438EFFE10}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7422AE58-8B0A-401C-9404-F4A438EFFE10}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{7422AE58-8B0A-401C-9404-F4A438EFFE10}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{7422AE58-8B0A-401C-9404-F4A438EFFE10}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{7422AE58-8B0A-401C-9404-F4A438EFFE10}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7422AE58-8B0A-401C-9404-F4A438EFFE10}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7422AE58-8B0A-401C-9404-F4A438EFFE10}.Release|ARM.ActiveCfg = Release|Any CPU
-		{7422AE58-8B0A-401C-9404-F4A438EFFE10}.Release|x64.ActiveCfg = Release|Any CPU
-		{7422AE58-8B0A-401C-9404-F4A438EFFE10}.Release|x86.ActiveCfg = Release|Any CPU
-		{2CC6D3B7-B483-413C-9DB1-943C63B0CCE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2CC6D3B7-B483-413C-9DB1-943C63B0CCE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2CC6D3B7-B483-413C-9DB1-943C63B0CCE4}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{2CC6D3B7-B483-413C-9DB1-943C63B0CCE4}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{2CC6D3B7-B483-413C-9DB1-943C63B0CCE4}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{2CC6D3B7-B483-413C-9DB1-943C63B0CCE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2CC6D3B7-B483-413C-9DB1-943C63B0CCE4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2CC6D3B7-B483-413C-9DB1-943C63B0CCE4}.Release|ARM.ActiveCfg = Release|Any CPU
-		{2CC6D3B7-B483-413C-9DB1-943C63B0CCE4}.Release|x64.ActiveCfg = Release|Any CPU
-		{2CC6D3B7-B483-413C-9DB1-943C63B0CCE4}.Release|x86.ActiveCfg = Release|Any CPU
 		{DCD9DD56-9C49-4BA9-8F37-7567444FE7CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DCD9DD56-9C49-4BA9-8F37-7567444FE7CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCD9DD56-9C49-4BA9-8F37-7567444FE7CB}.Debug|ARM.ActiveCfg = Debug|Any CPU
@@ -246,11 +187,10 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{7DFBABEB-DED8-4E16-8AA5-B38C3EF64305} = {309D6357-1B62-4C4B-9239-4E2FD95FE267}
-		{80C47696-4D41-4BB6-9CAE-C477FE528ADF} = {309D6357-1B62-4C4B-9239-4E2FD95FE267}
-		{7422AE58-8B0A-401C-9404-F4A438EFFE10} = {309D6357-1B62-4C4B-9239-4E2FD95FE267}
-		{2CC6D3B7-B483-413C-9DB1-943C63B0CCE4} = {309D6357-1B62-4C4B-9239-4E2FD95FE267}
 		{DCD9DD56-9C49-4BA9-8F37-7567444FE7CB} = {309D6357-1B62-4C4B-9239-4E2FD95FE267}
 		{D2DA5492-3DE6-4E7D-AFF1-BB62C950632D} = {309D6357-1B62-4C4B-9239-4E2FD95FE267}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CA6D43CE-8EE4-4B1E-9493-A81933614ADA}
 	EndGlobalSection
 EndGlobal

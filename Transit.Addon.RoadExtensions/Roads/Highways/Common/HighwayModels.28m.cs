@@ -1,4 +1,5 @@
-﻿using Transit.Framework;
+﻿using Transit.Addon.RoadExtensions.Roads.Common;
+using Transit.Framework;
 using Transit.Framework.Network;
 
 namespace Transit.Addon.RoadExtensions.Roads.Highways
@@ -15,8 +16,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways
 
             if (version == NetInfoVersion.Ground)
             {
-                var segments0 = info.m_segments[0];
-                var nodes0 = info.m_nodes[0];
+                var segments0 = info.m_segments[0].ShallowClone();
+                var nodes0 = info.m_nodes[0].ShallowClone();
 
                 segments0.m_backwardForbidden = NetSegment.Flags.None;
                 segments0.m_backwardRequired = NetSegment.Flags.None;
@@ -43,14 +44,14 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways
                 nodes1.SetMeshes
                     (@"Roads\Highways\Common\Meshes\28m\Ground_Trans.obj",
                      @"Roads\Highways\Common\Meshes\28m\Ground_Trans_LOD.obj");
-
+                
                 info.m_segments = new[] { segments0 };
                 info.m_nodes = new[] { nodes0, nodes1 };
             }
             else if (version == NetInfoVersion.Elevated)
             {
-                var segments0 = info.m_segments[0];
-                var nodes0 = info.m_nodes[0];
+                var segments0 = info.m_segments[0].ShallowClone();
+                var nodes0 = info.m_nodes[0].ShallowClone();
 
                 segments0.m_backwardForbidden = NetSegment.Flags.None;
                 segments0.m_backwardRequired = NetSegment.Flags.None;
@@ -83,9 +84,9 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways
             }
             else if (version == NetInfoVersion.Bridge)
             {
-                var segments0 = info.m_segments[0];
-                var segments1 = info.m_segments[1];
-                var nodes0 = info.m_nodes[0];
+                var segments0 = info.m_segments[0].ShallowClone();
+                var segments1 = info.m_segments[1].ShallowClone();
+                var nodes0 = info.m_nodes[0].ShallowClone();
 
                 segments0.m_backwardForbidden = NetSegment.Flags.None;
                 segments0.m_backwardRequired = NetSegment.Flags.None;
@@ -118,11 +119,11 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways
             }
             else if (version == NetInfoVersion.Slope)
             {
-                var segments0 = info.m_segments[0];
-                var segments1 = info.m_segments[1];
+                var segments0 = info.m_segments[0].ShallowClone();
+                var segments1 = info.m_segments[1].ShallowClone();
                 var segments2 = segments1.ShallowClone();
-                var nodes0 = info.m_nodes[0];
-                var nodes1 = info.m_nodes[1];
+                var nodes0 = info.m_nodes[0].ShallowClone();
+                var nodes1 = info.m_nodes[1].ShallowClone();
                 var nodes2 = nodes0.ShallowClone();
                 var nodes3 = nodes1.ShallowClone();
 
@@ -182,9 +183,9 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways
             }
             else if (version == NetInfoVersion.Tunnel)
             {
-                var segments0 = info.m_segments[0];
+                var segments0 = info.m_segments[0].ShallowClone();
                 var segments1 = segments0.ShallowClone();
-                var nodes0 = info.m_nodes[0];
+                var nodes0 = info.m_nodes[0].ShallowClone();
                 var nodes1 = nodes0.ShallowClone();
                 //var nodes2 = nodes1.ShallowClone();
 

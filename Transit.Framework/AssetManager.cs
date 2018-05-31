@@ -30,6 +30,7 @@ namespace Transit.Framework
 
         public IEnumerable<Action> CreateLoadingSequence(string modPath)
         {
+            Debug.Log(string.Format($"{modPath} : {_allTexturesRaw.Count}"));
             var modDirectory = new DirectoryInfo(modPath);
 
             var files = new List<FileInfo>();
@@ -83,7 +84,11 @@ namespace Transit.Framework
 
             if (mesh.name != null && !mesh.name.Contains("LOD") && !mesh.name.Contains("NoCom"))
             {
-                mesh.UploadMeshData(true);
+                //var isReadable = false;
+#if DEBUG
+                //isReadable = true;
+#endif
+                //mesh.UploadMeshData(isReadable);
             }
 
             return mesh;

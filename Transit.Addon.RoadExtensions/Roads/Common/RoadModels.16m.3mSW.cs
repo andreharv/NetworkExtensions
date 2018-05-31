@@ -17,12 +17,12 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                 case NetInfoVersion.GroundGrass:
                 case NetInfoVersion.GroundTrees:
                     {
-                        var segments0 = info.m_segments[0].SetConsistentUVs();
-                        var segments1 = info.m_segments[1].SetConsistentUVs();
-                        var segments2 = info.m_segments[2].SetConsistentUVs();
+                        var segments0 = info.m_segments[0].ShallowClone();
+                        var segments1 = info.m_segments[1].ShallowClone();
+                        var segments2 = info.m_segments[2].ShallowClone();
                         if (lanesLayoutStyle != LanesLayoutStyle.Symmetrical)
                         {
-                            var segments3 = info.m_segments[1].ShallowClone().SetConsistentUVs();
+                            var segments3 = info.m_segments[1].ShallowClone();
 
                             segments3.SetMeshes(@"Roads\Common\Meshes\16m\3mSW\BusStopInv.obj");
 
@@ -42,14 +42,13 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                 case NetInfoVersion.Elevated:
                 case NetInfoVersion.Bridge:
                     {
-                        var segments0 = info.m_segments[0];
-                        var nodes0 = info.m_nodes[0];
+                        var segments0 = info.m_segments[0].ShallowClone();
+                        var nodes0 = info.m_nodes[0].ShallowClone();
 
                         segments0
                             .SetMeshes
                                 (@"Roads\Common\Meshes\16m\3mSW\Elevated.obj",
-                                @"Roads\Common\Meshes\16m\3mSW\Elevated_LOD.obj")
-                                .SetConsistentUVs();
+                                @"Roads\Common\Meshes\16m\3mSW\Elevated_LOD.obj");
 
                         nodes0.SetMeshes
                             (@"Roads\Common\Meshes\16m\3mSW\Elevated_Node.obj",
@@ -62,12 +61,12 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                     }
                 case NetInfoVersion.Slope:
                     {
-                        var segment0 = info.m_segments[0];
+                        var segment0 = info.m_segments[0].ShallowClone();
                         var segment1 = highwaySlopeInfo.m_segments[1].ShallowClone();
-                        var segment2 = info.m_segments[1];
+                        var segment2 = info.m_segments[1].ShallowClone();
 
-                        var node0 = info.m_nodes[0];
-                        var node1 = info.m_nodes[1];
+                        var node0 = info.m_nodes[0].ShallowClone();
+                        var node1 = info.m_nodes[1].ShallowClone();
                         var node2 = node0.ShallowClone();
 
                         segment2
@@ -97,10 +96,10 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                     }
                 case NetInfoVersion.Tunnel:
                     {
-                        var segments0 = info.m_segments[0];
+                        var segments0 = info.m_segments[0].ShallowClone();
                         var segments1 = segments0.ShallowClone();
 
-                        var nodes0 = info.m_nodes[0];
+                        var nodes0 = info.m_nodes[0].ShallowClone();
                         var nodes1 = nodes0.ShallowClone();
 
                         segments1

@@ -10,7 +10,7 @@ namespace Transit.Framework
             where T : PrefabInfo
         {
             var prefab = Resources.FindObjectsOfTypeAll<T>().FirstOrDefault(p => p.name == prefabName);
-
+            
             if (prefab == null)
             {
                 if (crashOnNotFound)

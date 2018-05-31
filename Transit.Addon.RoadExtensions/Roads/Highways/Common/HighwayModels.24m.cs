@@ -1,11 +1,12 @@
-﻿using Transit.Framework;
+﻿using Transit.Addon.RoadExtensions.Roads.Common;
+using Transit.Framework;
 using Transit.Framework.Network;
 
 namespace Transit.Addon.RoadExtensions.Roads.Highways
 {
     public static partial class HighwayModels
     {
-        public static void Setup24mMesh(this NetInfo info, NetInfoVersion version)
+        public static void Setup24mMesh(this NetInfo info, NetInfoVersion version, LanesLayoutStyle lanesLayoutStyle = LanesLayoutStyle.Symmetrical)
         {
             ///////////////////////////
             // Template              //
@@ -15,9 +16,9 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways
 
             if (version == NetInfoVersion.Ground)
             {
-                var segments0 = info.m_segments[0];
-                var nodes0 = info.m_nodes[0];
-                var nodes1 = info.m_nodes[1];
+                var segments0 = info.m_segments[0].ShallowClone();
+                var nodes0 = info.m_nodes[0].ShallowClone();
+                var nodes1 = info.m_nodes[1].ShallowClone();
                 segments0.SetMeshes(
                     @"Roads\Highways\Common\Meshes\24m\Ground.obj",
                     @"Roads\Highways\Common\Meshes\24m\Ground_LOD.obj");
@@ -30,16 +31,21 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways
                     @"Roads\Highways\Common\Meshes\24m\Ground_Trans.obj",
                     @"Roads\Highways\Common\Meshes\24m\Ground_Trans_LOD.obj");
 
+                if (lanesLayoutStyle != LanesLayoutStyle.Symmetrical)
+                {
+                    RoadHelper.HandleAsymSegmentFlags(segments0);
+                }
+
                 info.m_segments = new[] { segments0 };
                 info.m_nodes = new[] { nodes0, nodes1 };
             }
             if (version == NetInfoVersion.Slope)
             {
-                var segments0 = info.m_segments[0];
-                var segments1 = info.m_segments[1];
+                var segments0 = info.m_segments[0].ShallowClone();
+                var segments1 = info.m_segments[1].ShallowClone();
                 var segments2 = segments1.ShallowClone();
-                var nodes0 = info.m_nodes[0];
-                var nodes1 = info.m_nodes[1];
+                var nodes0 = info.m_nodes[0].ShallowClone();
+                var nodes1 = info.m_nodes[1].ShallowClone();
                 var nodes2 = nodes0.ShallowClone();
                 var nodes3 = nodes1.ShallowClone();
 
@@ -87,14 +93,14 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways
 
                 nodes2.m_material = defaultMaterial;
 
-                info.m_segments = new[] { segments0, segments1, segments2 };
+                info.m_segments = new[] { segments0, segments1 };
                 info.m_nodes = new[] { nodes0, nodes1, nodes2, nodes3 };
             }
             else if (version == NetInfoVersion.Tunnel)
             {
-                var segments0 = info.m_segments[0];
+                var segments0 = info.m_segments[0].ShallowClone();
                 var segments1 = segments0.ShallowClone();
-                var nodes0 = info.m_nodes[0];
+                var nodes0 = info.m_nodes[0].ShallowClone();
                 var nodes1 = nodes0.ShallowClone();
                 //var nodes2 = nodes1.ShallowClone();
 

@@ -561,7 +561,7 @@ namespace TrafficManager.Custom.PathFinding {
 			NetInfo prevSegmentInfo = instance.m_segments.m_buffer[(int)item.m_position.m_segment].Info;
 			int prevSimiliarLaneCount = 0;
 			if ((int)item.m_position.m_lane < prevSegmentInfo.m_lanes.Length) {
-				NetInfo.Lane prevLane = prevSegmentInfo.m_lanes[(int)item.m_position.m_lane];
+				NetInfo.Lane prevLane = prevSegmentinfo.m_lanes[(int)item.m_position.m_lane].ShallowClone();
 				isPedestrianLane = (prevLane.m_laneType == NetInfo.LaneType.Pedestrian);
 				isBicycleLane = (prevLane.m_laneType == NetInfo.LaneType.Vehicle && prevLane.m_vehicleType == VehicleInfo.VehicleType.Bicycle);
 				isCenterPlatform = prevLane.m_centerPlatform;
@@ -672,7 +672,7 @@ namespace TrafficManager.Custom.PathFinding {
 				int num15;
 				uint lane4;
 				if (laneType != NetInfo.LaneType.None && vehicleType != VehicleInfo.VehicleType.None && instance.m_segments.m_buffer[(int)prevSegmentId].GetClosestLane(prevLaneIndex, laneType, vehicleType, out num15, out lane4)) {
-					NetInfo.Lane lane5 = prevSegmentInfo.m_lanes[num15];
+					NetInfo.Lane lane5 = prevSegmentinfo.m_lanes[num15].ShallowClone();
 					byte connectOffset2;
 					if ((instance.m_segments.m_buffer[(int)prevSegmentId].m_flags & NetSegment.Flags.Invert) != NetSegment.Flags.None == ((byte)(lane5.m_finalDirection & NetInfo.Direction.Backward) != 0)) {
 						connectOffset2 = 1;
@@ -725,7 +725,7 @@ namespace TrafficManager.Custom.PathFinding {
 				int prevRightSimilarLaneIndex;
 				int prevLeftSimilarLaneIndex;
 
-				NetInfo.Lane lane = prevSegmentInfo.m_lanes[(int)item.m_position.m_lane];
+				NetInfo.Lane lane = prevSegmentinfo.m_lanes[(int)item.m_position.m_lane].ShallowClone();
 				if ((byte)(lane.m_direction & normDirection) != 0) {
 					prevRightSimilarLaneIndex = lane.m_similarLaneIndex;
 					prevLeftSimilarLaneIndex = lane.m_similarLaneCount - lane.m_similarLaneIndex - 1;
@@ -956,7 +956,7 @@ namespace TrafficManager.Custom.PathFinding {
 #endif
 
 							// determine valid lanes based on lane arrows
-							NetInfo.Lane nextLane = nextSegmentInfo.m_lanes[laneIndex];
+							NetInfo.Lane nextLane = nextSegmentinfo.m_lanes[laneIndex].ShallowClone();
 							bool incomingLane = (byte)(nextLane.m_finalDirection & nextDir2) != 0;
 							bool compatibleLane = nextLane.CheckType(drivingEnabledLaneTypes, _vehicleTypes);
 
@@ -1482,7 +1482,7 @@ namespace TrafficManager.Custom.PathFinding {
 			bool prevIsJunction = instance.m_nodes.m_buffer[sourceNodeId].CountSegments() > 2;
 			// NON-STOCK CODE END //
 			if ((int)item.m_position.m_lane < prevSegmentInfo.m_lanes.Length) {
-				NetInfo.Lane lane2 = prevSegmentInfo.m_lanes[(int)item.m_position.m_lane];
+				NetInfo.Lane lane2 = prevSegmentinfo.m_lanes[(int)item.m_position.m_lane].ShallowClone();
 				prevMaxSpeed = GetLaneSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, item.m_laneID, lane2); // SpeedLimitManager.GetLockFreeGameSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, item.m_laneID, ref lane2); // NON-STOCK CODE
 				laneType = lane2.m_laneType;
 				if ((byte)(laneType & (NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle)) != 0) {
@@ -1509,7 +1509,7 @@ namespace TrafficManager.Custom.PathFinding {
 #endif
 
 				if (lane == curLaneId) {
-					NetInfo.Lane lane3 = nextSegmentInfo.m_lanes[laneIndex];
+					NetInfo.Lane lane3 = nextSegmentinfo.m_lanes[laneIndex].ShallowClone();
 					if (lane3.CheckType(this._laneTypes, this._vehicleTypes)) {
 						Vector3 a = instance.m_lanes.m_buffer[(int)((UIntPtr)lane)].CalculatePosition((float)offset * 0.003921569f);
 						float num9 = Vector3.Distance(a, b);
@@ -1624,7 +1624,7 @@ namespace TrafficManager.Custom.PathFinding {
 			//sCurrentState = 3;
 			// NON-STOCK CODE END //
 			if ((int)item.m_position.m_lane < prevSegmentInfo.m_lanes.Length) {
-				lane = prevSegmentInfo.m_lanes[(int)item.m_position.m_lane];
+				lane = prevSegmentinfo.m_lanes[(int)item.m_position.m_lane].ShallowClone();
 				laneType = lane.m_laneType;
 				vehicleType = lane.m_vehicleType;
 				prevMaxSpeed = GetLaneSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, item.m_laneID, lane); // SpeedLimitManager.GetLockFreeGameSpeedLimit(item.m_position.m_segment, item.m_position.m_lane, item.m_laneID, ref lane); // NON-STOCK CODE
@@ -1728,7 +1728,7 @@ namespace TrafficManager.Custom.PathFinding {
 				uint currentLaneId = nextSegment.m_lanes;
 				uint nextCompatibleLanes = 0;
 				while (lIndex < nextNumLanes && currentLaneId != 0u) {
-					NetInfo.Lane nextLane = nextSegmentInfo.m_lanes[lIndex];
+					NetInfo.Lane nextLane = nextSegmentinfo.m_lanes[lIndex].ShallowClone();
 					if (nextLane.CheckType(laneType2, vehicleType2) && (nextSegmentId != item.m_position.m_segment || lIndex != (int)item.m_position.m_lane) && (byte)(nextLane.m_finalDirection & nextDir2) != 0) {
 						++nextCompatibleLanes;
 						nextDensitySum += CustomRoadAI.currentLaneDensities[currentLaneId];
@@ -1752,7 +1752,7 @@ namespace TrafficManager.Custom.PathFinding {
 				if (forceLaneIndex != null && laneIndex != forceLaneIndex)
 					break;
 				// NON-STOCK CODE END //
-				NetInfo.Lane nextLane = nextSegmentInfo.m_lanes[laneIndex];
+				NetInfo.Lane nextLane = nextSegmentinfo.m_lanes[laneIndex].ShallowClone();
 
 #if DEBUGCOSTS
 				bool costDebug = debug;
@@ -2141,7 +2141,7 @@ namespace TrafficManager.Custom.PathFinding {
 			bool prevIsJunction = instance.m_nodes.m_buffer[sourceNodeId].CountSegments() > 2;
 			// NON-STOCK CODE END //
 			if (laneIndex < num) {
-				NetInfo.Lane lane3 = info.m_lanes[laneIndex];
+				NetInfo.Lane lane3 = info.m_lanes[laneIndex].ShallowClone();
 				BufferItem item2;
 				item2.m_position.m_segment = segmentID;
 				item2.m_position.m_lane = (byte)laneIndex;
@@ -2388,7 +2388,7 @@ namespace TrafficManager.Custom.PathFinding {
 				return true;
 
 			if (laneInfo == null)
-				laneInfo = Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].Info.m_lanes[laneIndex];
+				laneInfo = Singleton<NetManager>.instance.m_segments.m_buffer[segmentId].info.m_lanes[laneIndex].ShallowClone();
 
 			if ((laneInfo.m_vehicleType & (VehicleInfo.VehicleType.Car | VehicleInfo.VehicleType.Train)) == VehicleInfo.VehicleType.None)
 				return true;

@@ -530,7 +530,7 @@ namespace CSL_Traffic
             NetInfo info = instance.m_segments.m_buffer[(int)item.m_position.m_segment].Info;
             if ((int)item.m_position.m_lane < info.m_lanes.Length)
             {
-                NetInfo.Lane lane = info.m_lanes[(int)item.m_position.m_lane];
+                NetInfo.Lane lane = info.m_lanes[(int)item.m_position.m_lane].ShallowClone();
                 flag = (lane.m_laneType == NetInfo.LaneType.Pedestrian);
                 flag2 = (lane.m_laneType == NetInfo.LaneType.Vehicle && (lane.m_vehicleType & this.m_vehicleTypes) == VehicleInfo.VehicleType.Bicycle);
                 flag3 = lane.m_centerPlatform;
@@ -657,7 +657,7 @@ namespace CSL_Traffic
                 uint lane4;
                 if (laneType != NetInfo.LaneType.None && vehicleType != VehicleInfo.VehicleType.None && instance.m_segments.m_buffer[(int)segment2].GetClosestLane(lane2, laneType, vehicleType, out num15, out lane4))
                 {
-                    NetInfo.Lane lane5 = info.m_lanes[num15];
+                    NetInfo.Lane lane5 = info.m_lanes[num15].ShallowClone();
                     byte connectOffset2;
                     if ((instance.m_segments.m_buffer[(int)segment2].m_flags & NetSegment.Flags.Invert) != NetSegment.Flags.None == ((byte)(lane5.m_finalDirection & NetInfo.Direction.Backward) != 0))
                     {
@@ -811,7 +811,7 @@ namespace CSL_Traffic
             {
                 if (lane == num2)
                 {
-                    NetInfo.Lane lane3 = info.m_lanes[num8];
+                    NetInfo.Lane lane3 = info.m_lanes[num8].ShallowClone();
                     if (lane3.CheckType(this.m_laneTypes, this.m_vehicleTypes))
                     {
                         Vector3 a = instance.m_lanes.m_buffer[(int)((UIntPtr)lane)].CalculatePosition((float)offset * 0.003921569f);
@@ -987,7 +987,7 @@ namespace CSL_Traffic
             int num12 = 0;
             while (num12 < num && num2 != 0u)
             {
-                NetInfo.Lane lane2 = info.m_lanes[num12];
+                NetInfo.Lane lane2 = info.m_lanes[num12].ShallowClone();
 
                 if ((byte)(lane2.m_finalDirection & direction2) != 0 &&
                 // TAM Restrictions
@@ -1150,7 +1150,7 @@ namespace CSL_Traffic
             float num7 = item.m_comparisonValue + num5 / (num4 * this.m_maxLength);
             if (laneIndex < num)
             {
-                NetInfo.Lane lane3 = info.m_lanes[laneIndex];
+                NetInfo.Lane lane3 = info.m_lanes[laneIndex].ShallowClone();
                 BufferItem item2;
                 item2.m_position.m_segment = segmentID;
                 item2.m_position.m_lane = (byte)laneIndex;

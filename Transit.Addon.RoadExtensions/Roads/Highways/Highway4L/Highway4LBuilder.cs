@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Transit.Addon.RoadExtensions.Roads.Highways;
 using Transit.Addon.RoadExtensions.Roads.Highways.Common;
+using Transit.Addon.RoadExtensions.Roads.Highways.Highway3L;
 using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.Network;
@@ -107,6 +108,22 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway4L
 
             info.TrimNonHighwayProps();
 
+            //var highway3LSlope = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L_SLOPE, true);
+            //var highway3LTunnel = Prefabs.Find<NetInfo>(NetInfos.Vanilla.HIGHWAY_3L_TUNNEL, true);
+
+            //if (highway3LSlope != null)
+            //{
+            //    highway3LSlope.m_requireSurfaceMaps = true;
+            //    highway3LSlope.Setup22mMesh(NetInfoVersion.Slope);
+            //    Highway3LBuilder.SetupTextures(highway3LSlope, NetInfoVersion.Slope);
+            //}
+            //if (highway3LTunnel != null)
+            //{
+            //    highway3LTunnel.m_requireSurfaceMaps = true;
+            //    highway3LTunnel.Setup22mMesh(NetInfoVersion.Tunnel);
+            //    Highway3LBuilder.SetupTextures(highway3LTunnel, NetInfoVersion.Tunnel);
+            //    highway3LTunnel.m_setVehicleFlags = Vehicle.Flags.Transition | Vehicle.Flags.Underground;
+            //}
 
             ///////////////////////////
             // AI                    //

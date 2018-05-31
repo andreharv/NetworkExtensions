@@ -200,7 +200,7 @@ namespace Transit.Addon.RoadExtensions.Roads.BusRoads.Busway2L1W
             info.m_lanes = info.m_lanes.Where(l => l.m_laneType != NetInfo.LaneType.Parking).ToArray();
             for (int i = 0; i < info.m_lanes.Count(); i++)
             {
-                var lane = info.m_lanes[i];
+                var lane = info.m_lanes[i].ShallowClone();
 
                 if (lane.m_laneType == NetInfo.LaneType.Vehicle)
                 {

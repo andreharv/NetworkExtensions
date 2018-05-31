@@ -1545,7 +1545,7 @@ namespace TrafficManager.UI {
 				if (curLaneId == 0)
 					break;
 
-				NetInfo.Lane laneInfo = segmentInfo.m_lanes[i];
+				NetInfo.Lane laneInfo = segmentinfo.m_lanes[i].ShallowClone();
 
 				labelStr += "Lane idx " + i + ", id " + curLaneId;
 #if DEBUG
@@ -1625,7 +1625,7 @@ namespace TrafficManager.UI {
 					uint laneId = segments.m_buffer[i].m_lanes;
 					int validLanes = 0;
 					while (lIndex < segmentInfo.m_lanes.Length && laneId != 0u) {
-						NetInfo.Lane lane = segmentInfo.m_lanes[lIndex];
+						NetInfo.Lane lane = segmentinfo.m_lanes[lIndex].ShallowClone();
 						if (lane.CheckType(NetInfo.LaneType.Vehicle | NetInfo.LaneType.TransportVehicle, VehicleInfo.VehicleType.Car)) {
 							if (CustomRoadAI.laneMeanSpeeds[laneId] >= 0) {
 								meanLaneSpeed += (float)CustomRoadAI.laneMeanSpeeds[laneId];
@@ -2904,7 +2904,7 @@ namespace TrafficManager.UI {
 				uint laneId = (uint)laneData[0];
 				uint laneIndex = (uint)laneData[2];
 
-				NetInfo.Lane laneInfo = segmentInfo.m_lanes[laneIndex];
+				NetInfo.Lane laneInfo = segmentinfo.m_lanes[laneIndex].ShallowClone();
 				if (!directions.Contains(laneInfo.m_direction)) {
 					if (directions.Count > 0)
 						++x; // space between different directions

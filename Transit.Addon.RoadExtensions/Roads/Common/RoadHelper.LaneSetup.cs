@@ -93,12 +93,12 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             //}
 
             //positionStart -= config.LaneWidth * (nbLanesBeforeMedian - (isNotSymmetrical && config.CenterLane != CenterLaneType.None ? 0 : 1)) + config.LaneWidth / 2;
-            //Debug.Log(">>>> NbLanes : " + nbLanes);
-            //Debug.Log(">>>> NbUsableLanes : " + nbUsableLanes);
-            //Debug.Log(">>>> NbUsableLanesPerSide : " + nbUsableLanesPerSide);
-            //Debug.Log(">>>> HasCenterLane : " + hasCenterLane);
-            //Debug.Log(">>>> LaneWidth : " + config.LaneWidth);
-            //Debug.Log(">>>> PositionStart : " + positionStart);
+            //Transit.Framework.Debug.Log(">>>> NbLanes : " + nbLanes);
+            //Transit.Framework.Debug.Log(">>>> NbUsableLanes : " + nbUsableLanes);
+            //Transit.Framework.Debug.Log(">>>> NbUsableLanesPerSide : " + nbUsableLanesPerSide);
+            //Transit.Framework.Debug.Log(">>>> HasCenterLane : " + hasCenterLane);
+            //Transit.Framework.Debug.Log(">>>> LaneWidth : " + config.LaneWidth);
+            //Transit.Framework.Debug.Log(">>>> PositionStart : " + positionStart);
 
             for (var i = 0; i < nbLanes; i++)
             {
@@ -148,7 +148,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                     }
                 }
 
-                //Debug.Log(">>>> Lane Id : " + i + " Position : " + l.m_position);
+                //Transit.Framework.Debug.Log(">>>> Lane Id : " + i + " Position : " + l.m_position);
                 l.m_stopType = VehicleInfo.VehicleType.None;
                 l.m_width = config.LaneWidth;
 

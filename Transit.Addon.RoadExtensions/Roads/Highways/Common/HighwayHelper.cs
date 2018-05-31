@@ -26,82 +26,85 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Common
 
         public static NetInfo.Lane SetHighwayLeftShoulder(this NetInfo hwInfo, NetInfo hwInfoTemplate, NetInfoVersion version)
         {
-            var leftHwLaneTemplate = hwInfoTemplate.m_lanes.First(l => l.m_laneType == NetInfo.LaneType.None);
-            var leftHwLane = hwInfo.m_lanes.First(l => l.m_laneType == NetInfo.LaneType.None);
-
-            leftHwLane.m_laneProps = leftHwLaneTemplate.m_laneProps.Clone("Highway Left Props");
-
-            leftHwLane.m_width = 2;
-            leftHwLane.m_position = hwInfo.m_halfWidth - leftHwLane.m_width;
-            leftHwLane.m_position = -leftHwLane.m_position;
-
-            // Default props position
-            switch (version)
+            var leftHwLaneTemplate = hwInfoTemplate.m_lanes.FirstOrDefault(l => l.m_laneType == NetInfo.LaneType.None);
+            var leftHwLane = hwInfo.m_lanes.FirstOrDefault(l => l.m_laneType == NetInfo.LaneType.None);
+            if (leftHwLane != null)
             {
-                case NetInfoVersion.Ground:
-                    foreach (var prop in leftHwLane.m_laneProps.m_props)
+                leftHwLane.m_width = 2;
+                leftHwLane.m_position = hwInfo.m_halfWidth - leftHwLane.m_width;
+                leftHwLane.m_position = -leftHwLane.m_position;
+                leftHwLane.m_laneProps = leftHwLaneTemplate?.m_laneProps.Clone("Highway Left Props");
+                if (leftHwLane.m_laneProps != null) {
+                    // Default props position
+                    switch (version)
                     {
-                        prop.m_position.x = -1f;
-                    }
-                    break;
+                        case NetInfoVersion.Ground:
+                            foreach (var prop in leftHwLane.m_laneProps.m_props)
+                            {
+                                prop.m_position.x = -1f;
+                            }
+                            break;
 
-                case NetInfoVersion.Elevated:
-                case NetInfoVersion.Bridge:
-                    foreach (var prop in leftHwLane.m_laneProps.m_props)
-                    {
-                        prop.m_position.x = -0.6f;
-                    }
-                    break;
+                        case NetInfoVersion.Elevated:
+                        case NetInfoVersion.Bridge:
+                            foreach (var prop in leftHwLane.m_laneProps.m_props)
+                            {
+                                prop.m_position.x = -0.6f;
+                            }
+                            break;
 
-                case NetInfoVersion.Slope:
-                case NetInfoVersion.Tunnel:
-                    foreach (var prop in leftHwLane.m_laneProps.m_props)
-                    {
-                        prop.m_position.x = 1f;
+                        case NetInfoVersion.Slope:
+                        case NetInfoVersion.Tunnel:
+                            foreach (var prop in leftHwLane.m_laneProps.m_props)
+                            {
+                                prop.m_position.x = 1f;
+                            }
+                            break;
                     }
-                    break;
+                }
             }
-
             return leftHwLane;
         }
 
         public static NetInfo.Lane SetHighwayRightShoulder(this NetInfo hwInfo, NetInfo hwInfoTemplate, NetInfoVersion version)
         {
-            var rightHwLaneTemplate = hwInfoTemplate.m_lanes.Last(l => l.m_laneType == NetInfo.LaneType.None);
-            var rightHwLane = hwInfo.m_lanes.Last(l => l.m_laneType == NetInfo.LaneType.None);
-
-            rightHwLane.m_laneProps = rightHwLaneTemplate.m_laneProps.Clone("Highway Right Props");
-
-            rightHwLane.m_width = 2;
-            rightHwLane.m_position = hwInfo.m_halfWidth - rightHwLane.m_width;
-
-            // Default props position
-            switch (version)
+            var rightHwLaneTemplate = hwInfoTemplate.m_lanes.LastOrDefault(l => l.m_laneType == NetInfo.LaneType.None);
+            var rightHwLane = hwInfo.m_lanes.LastOrDefault(l => l.m_laneType == NetInfo.LaneType.None);
+            if (rightHwLane != null)
             {
-                case NetInfoVersion.Ground:
-                    foreach (var prop in rightHwLane.m_laneProps.m_props)
+                rightHwLane.m_width = 2;
+                rightHwLane.m_position = hwInfo.m_halfWidth - rightHwLane.m_width;
+                rightHwLane.m_laneProps = rightHwLaneTemplate?.m_laneProps.Clone("Highway Right Props");
+                if (rightHwLane.m_laneProps != null)
+                {
+                    // Default props position
+                    switch (version)
                     {
-                        prop.m_position.x = 1f;
-                    }
-                    break;
+                        case NetInfoVersion.Ground:
+                            foreach (var prop in rightHwLane.m_laneProps.m_props)
+                            {
+                                prop.m_position.x = 1f;
+                            }
+                            break;
 
-                case NetInfoVersion.Elevated:
-                case NetInfoVersion.Bridge:
-                    foreach (var prop in rightHwLane.m_laneProps.m_props)
-                    {
-                        prop.m_position.x = 0.6f;
-                    }
-                    break;
+                        case NetInfoVersion.Elevated:
+                        case NetInfoVersion.Bridge:
+                            foreach (var prop in rightHwLane.m_laneProps.m_props)
+                            {
+                                prop.m_position.x = 0.6f;
+                            }
+                            break;
 
-                case NetInfoVersion.Slope:
-                case NetInfoVersion.Tunnel:
-                    foreach (var prop in rightHwLane.m_laneProps.m_props)
-                    {
-                        prop.m_position.x = -1f;
+                        case NetInfoVersion.Slope:
+                        case NetInfoVersion.Tunnel:
+                            foreach (var prop in rightHwLane.m_laneProps.m_props)
+                            {
+                                prop.m_position.x = -1f;
+                            }
+                            break;
                     }
-                    break;
+                }
             }
-
             return rightHwLane;
         }
 
@@ -377,6 +380,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Common
 
                 foreach (var prop in laneProps.m_props.Where(p => p.m_prop != null))
                 {
+                    var newProp = prop.ShallowClone();
                     if (prop.m_prop == randomProp)
                     {
                         continue;
@@ -392,13 +396,15 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Common
                         if (prop.m_prop == streetLight &&
                             laneProps.name.Contains("Left"))
                         {
-                            continue;
+                            prop.m_probability = 0;
+                            //continue;
                         }
 
                         if (prop.m_prop == streetLightHw &&
                             laneProps.name.Contains("Left"))
                         {
-                            continue;
+                            prop.m_probability = 0;
+                            //continue;
                         }
                     }
 
@@ -407,13 +413,15 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Common
                         if (prop.m_prop == streetLight &&
                             laneProps.name.Contains("Right"))
                         {
-                            continue;
+                            prop.m_probability = 0;
+                            //continue;
                         }
 
                         if (prop.m_prop == streetLightHw &&
                             laneProps.name.Contains("Right"))
                         {
-                            continue;
+                            prop.m_probability = 0;
+                            //continue;
                         }
                     }
 
