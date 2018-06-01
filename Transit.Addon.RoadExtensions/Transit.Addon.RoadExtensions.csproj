@@ -1935,6 +1935,12 @@
     <Content Include="Roads\SmallRoads\BasicRoadMdn\infotooltip.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_MedianConcrete2_LOD__AlphaMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_MedianConcrete2__AlphaMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Roads\SmallRoads\BasicRoadMdn\Textures\Ground_Segment_MedianConcrete_LOD__AlphaMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
