@@ -378,38 +378,43 @@ namespace Transit.Framework
         }
         public static string StripName(this NetInfo info)
         {
-            var retval = info.name;
-            var suffix = "";
-            if (retval.EndsWith("Decoration Grass"))
+
+            var retval = info?.name;
+            if (retval != null)
             {
-                suffix = "Decoration Grass";
+                var suffix = "";
+                if (retval.EndsWith("Decoration Grass"))
+                {
+                    suffix = "Decoration Grass";
+                }
+                else if (retval.EndsWith("Decoration Trees"))
+                {
+                    suffix = "Decoration Trees";
+                }
+                else if (retval.EndsWith("Decoration Pavement"))
+                {
+                    suffix = "Decoration Pavement";
+                }
+                else if (retval.EndsWith("Elevated"))
+                {
+                    suffix = "Elevated";
+                }
+                else if (retval.EndsWith("Bridge"))
+                {
+                    suffix = "Bridge";
+                }
+                else if (retval.EndsWith("Slope"))
+                {
+                    suffix = "Slope";
+                }
+                else if (retval.EndsWith("Tunnel"))
+                {
+                    suffix = "Tunnel";
+                }
+                if (suffix.Length > 0)
+                    retval = retval.Substring(0, retval.LastIndexOf(suffix)).Trim();
             }
-            else if (retval.EndsWith("Decoration Trees"))
-            {
-                suffix = "Decoration Trees";
-            }
-            else if (retval.EndsWith("Decoration Pavement"))
-            {
-                suffix = "Decoration Pavement";
-            }
-            else if (retval.EndsWith("Elevated"))
-            {
-                suffix = "Elevated";
-            }
-            else if (retval.EndsWith("Bridge"))
-            {
-                suffix = "Bridge";
-            }
-            else if (retval.EndsWith("Slope"))
-            {
-                suffix = "Slope";
-            }
-            else if (retval.EndsWith("Tunnel"))
-            {
-                suffix = "Tunnel";
-            }
-            if (suffix.Length > 0)
-                retval = retval.Substring(0, retval.LastIndexOf(suffix)).Trim();
+
 
             return retval;
         }

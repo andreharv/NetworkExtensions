@@ -136,7 +136,7 @@ namespace Transit.Framework.Hooks.AI
                 }
                 if ((flags & NetNode.Flags.CustomTrafficLights) != NetNode.Flags.None)
                 {
-                    if (!this.CanEnableTrafficLights(nodeID, ref data))
+                    if (!CanEnableTrafficLights(nodeID, ref data))
                     {
                         flags &= (NetNode.Flags.Created | NetNode.Flags.Deleted | NetNode.Flags.Original | NetNode.Flags.Disabled | NetNode.Flags.End | NetNode.Flags.Middle | NetNode.Flags.Bend | NetNode.Flags.Junction | NetNode.Flags.Moveable | NetNode.Flags.Untouchable | NetNode.Flags.Outside | NetNode.Flags.Temporary | NetNode.Flags.Double | NetNode.Flags.Fixed | NetNode.Flags.OnGround | NetNode.Flags.Ambiguous | NetNode.Flags.Water | NetNode.Flags.Sewage | NetNode.Flags.ForbidLaneConnection | NetNode.Flags.Underground | NetNode.Flags.Transition | NetNode.Flags.LevelCrossing | NetNode.Flags.OneWayOut | NetNode.Flags.OneWayIn | NetNode.Flags.Heating | NetNode.Flags.Electricity | NetNode.Flags.Collapsed | NetNode.Flags.DisableOnlyMiddle | NetNode.Flags.AsymForward | NetNode.Flags.AsymBackward);
                     }
@@ -202,17 +202,20 @@ namespace Transit.Framework.Hooks.AI
                 if (segment != 0)
                 {
                     NetInfo info = instance.m_segments.m_buffer[(int)segment].Info;
-                    if (info.m_class.m_service == ItemClass.Service.Road)
+                    if (info != null)
                     {
-                        num++;
-                    }
-                    else if ((info.m_vehicleTypes & VehicleInfo.VehicleType.Train) != VehicleInfo.VehicleType.None)
-                    {
-                        num2++;
-                    }
-                    if (info.m_hasPedestrianLanes)
-                    {
-                        num3++;
+                        if (info.m_class.m_service == ItemClass.Service.Road)
+                        {
+                            num++;
+                        }
+                        else if ((info.m_vehicleTypes & VehicleInfo.VehicleType.Train) != VehicleInfo.VehicleType.None)
+                        {
+                            num2++;
+                        }
+                        if (info.m_hasPedestrianLanes)
+                        {
+                            num3++;
+                        }
                     }
                 }
             }
