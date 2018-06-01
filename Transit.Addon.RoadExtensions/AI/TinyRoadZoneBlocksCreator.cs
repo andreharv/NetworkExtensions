@@ -101,7 +101,7 @@ namespace Transit.Addon.RoadExtensions.AI
                         position3, 
                         angle, 
                         num8, 
-                      //distance,
+                      distance,
                         segment.m_buildIndex);
                 }
                 else
@@ -112,7 +112,7 @@ namespace Transit.Addon.RoadExtensions.AI
                         position3, 
                         angle, 
                         num8, 
-                      //distance,
+                      distance,
                         segment.m_buildIndex);
                 }
             }
@@ -133,7 +133,7 @@ namespace Transit.Addon.RoadExtensions.AI
                             position4, 
                             angle2, 
                             num8, 
-                          //distance,
+                          distance,
                             segment.m_buildIndex + 1u);
                     }
                     else
@@ -144,7 +144,7 @@ namespace Transit.Addon.RoadExtensions.AI
                             position4, 
                             angle2, 
                             num8, 
-                          //distance,
+                          distance,
                             segment.m_buildIndex + 1u);
                     }
                 }
@@ -192,7 +192,7 @@ namespace Transit.Addon.RoadExtensions.AI
                         position5, 
                         angle3, 
                         num12, 
-                      //distance,
+                      distance,
                         segment.m_buildIndex);
                 }
                 else
@@ -203,7 +203,7 @@ namespace Transit.Addon.RoadExtensions.AI
                         position5, 
                         angle3, 
                         num12, 
-                      //distance,
+                      distance,
                         segment.m_buildIndex);
                 }
             }
@@ -222,7 +222,7 @@ namespace Transit.Addon.RoadExtensions.AI
                         position6, 
                         angle4, 
                         num12, 
-                      //distance,
+                      distance,
                         segment.m_buildIndex + 1u);
                 }
                 else
@@ -233,7 +233,7 @@ namespace Transit.Addon.RoadExtensions.AI
                         position6, 
                         angle4, 
                         num12, 
-                      //distance,
+                      distance,
                         segment.m_buildIndex + 1u);
                 }
             }
@@ -278,7 +278,7 @@ namespace Transit.Addon.RoadExtensions.AI
                     position, 
                     startAngle, 
                     startRows, 
-                  //distance,
+                  distance,
                     segment.m_buildIndex);
 
                 position = startPosition + new Vector3(
@@ -291,7 +291,7 @@ namespace Transit.Addon.RoadExtensions.AI
                     position, 
                     startAngle + 3.14159274f, 
                     startRows, 
-                  //distance,
+                  distance,
                     segment.m_buildIndex);
             }
 
@@ -309,7 +309,7 @@ namespace Transit.Addon.RoadExtensions.AI
                     position,
                     endAngle,
                     endRows,
-                  //distance,
+                  distance,
                     segment.m_buildIndex + 1u);
 
                 position = endPosition + new Vector3(
@@ -322,7 +322,7 @@ namespace Transit.Addon.RoadExtensions.AI
                     position,
                     endAngle + 3.14159274f,
                     endRows,
-                  //distance,
+                  distance,
                     segment.m_buildIndex + 1u);
             }
         }

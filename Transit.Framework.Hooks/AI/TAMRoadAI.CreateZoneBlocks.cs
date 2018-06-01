@@ -120,7 +120,7 @@ namespace Transit.Framework.Hooks.AI
                         position3,
                         angle,
                         num8,
-                        //distance,
+                        distance,
                         segment.m_buildIndex);
                 }
                 else
@@ -131,7 +131,7 @@ namespace Transit.Framework.Hooks.AI
                         position3,
                         angle,
                         num8,
-                        //distance,
+                        distance,
                         segment.m_buildIndex);
                 }
             }
@@ -152,7 +152,7 @@ namespace Transit.Framework.Hooks.AI
                             position4,
                             angle2,
                             num8,
-                            //distance,
+                            distance,
                             segment.m_buildIndex + 1u);
                     }
                     else
@@ -163,7 +163,7 @@ namespace Transit.Framework.Hooks.AI
                             position4,
                             angle2,
                             num8,
-                            //distance,
+                            distance,
                             segment.m_buildIndex + 1u);
                     }
                 }
@@ -211,7 +211,7 @@ namespace Transit.Framework.Hooks.AI
                         position5,
                         angle3,
                         num12,
-                        //distance,
+                        distance,
                         segment.m_buildIndex);
                 }
                 else
@@ -222,7 +222,7 @@ namespace Transit.Framework.Hooks.AI
                         position5,
                         angle3,
                         num12,
-                        //distance,
+                        distance,
                         segment.m_buildIndex);
                 }
             }
@@ -241,7 +241,7 @@ namespace Transit.Framework.Hooks.AI
                         position6,
                         angle4,
                         num12,
-                        //distance,
+                        distance,
                         segment.m_buildIndex + 1u);
                 }
                 else
@@ -252,7 +252,7 @@ namespace Transit.Framework.Hooks.AI
                         position6,
                         angle4,
                         num12,
-                        //distance,
+                        distance,
                         segment.m_buildIndex + 1u);
                 }
             }
@@ -295,7 +295,7 @@ namespace Transit.Framework.Hooks.AI
                     position,
                     angle,
                     rowsLeft,
-                    //distance,
+                    distance,
                     segment.m_buildIndex);
 
                 position = startPosition + new Vector3(
@@ -308,7 +308,7 @@ namespace Transit.Framework.Hooks.AI
                     position,
                     angle + 3.14159274f,
                     rowsLeft,
-                    //distance,
+                    distance,
                     segment.m_buildIndex);
             }
             if (rowsRight > 0)
@@ -326,7 +326,7 @@ namespace Transit.Framework.Hooks.AI
                     position,
                     angle,
                     rowsRight,
-                    //distance,
+                    distance,
                     segment.m_buildIndex + 1u);
 
                 position = endPosition + new Vector3(
@@ -339,7 +339,7 @@ namespace Transit.Framework.Hooks.AI
                     position,
                     angle + 3.14159274f,
                     rowsRight,
-                    //distance,
+                    distance,
                     segment.m_buildIndex + 1u);
             }
         }
