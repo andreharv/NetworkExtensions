@@ -98,7 +98,7 @@ namespace Transit.Addon.RoadExtensions
         {
             base.OnLevelLoaded(mode);
             var basicRoad = Prefabs.Find<NetInfo>("Basic Road");
-            basicRoad.SetupConnectGroup("3mSW", ConnextGroup.OneMidL);
+            basicRoad.SetupConnectGroup("3mSW", ConnextGroup.OneMidL,ConnextGroup.TwoPlusTwo);
             var mediumRoad = Prefabs.Find<NetInfo>("Medium Road");
             mediumRoad.SetupConnectGroup("5mSW", ConnextGroup.TwoPlusTwo);
             var largeRoad = Prefabs.Find<NetInfo>("Large Road");

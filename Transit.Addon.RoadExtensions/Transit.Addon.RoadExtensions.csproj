@@ -3568,6 +3568,18 @@
     <None Include="Roads\Common\Meshes\16m\3mSW3mMdn\OnePlusOne\OneMidL\MedCon_OneMidL_End_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Roads\Common\Meshes\16m\3mSW\OneMidL\TwoPlusTwo\MedCon_TwoPlusTwo_End.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\16m\3mSW\OneMidL\TwoPlusTwo\MedCon_TwoPlusTwo_End_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\16m\3mSW\OneMidL\TwoPlusTwo\MedCon_TwoPlusTwo_Start.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\16m\3mSW\OneMidL\TwoPlusTwo\MedCon_TwoPlusTwo_Start_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Roads\Common\Meshes\16m\3mSW\OnePlusTwoS\OneMidL\MedCon_OneMidL_End.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

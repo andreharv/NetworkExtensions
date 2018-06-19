@@ -233,7 +233,7 @@ namespace Transit.Framework
 
             if (cnGroups != null && cnGroups.Count() > 0)
             {
-                var symGroups = new[] { ConnextGroup.OneMidL, ConnextGroup.TwoMidL, ConnextGroup.ThreeMidL, ConnextGroup.OnePlusOne, ConnextGroup.TwoPlusTwo, ConnextGroup.ThreePlusThree, ConnextGroup.FourPlusFour };
+                var symGroups = new[] { ConnextGroup.OneMidL, ConnextGroup.OnePlusOne, ConnextGroup.TwoMidL, ConnextGroup.TwoPlusTwo, ConnextGroup.ThreeMidL, ConnextGroup.ThreePlusThree, ConnextGroup.FourPlusFour };
                 for (var i = 0; i < cnGroups.Count(); i++)
                 {
                     if (i == 0)
@@ -246,7 +246,10 @@ namespace Transit.Framework
                     }
                 }
                 if (!isVanilla)
-                    info.m_halfWidth += (float)((Math.Log((float)ciGroup)) / 10000);
+                {
+                    info.m_halfWidth += (float)((Math.Log((float)ciGroup) * 2) + 2) / 10000;
+                    info.m_pavementWidth += (float)((Math.Log((float)ciGroup) * 2) + 2) / 10000;
+                }
                 var myCnxName = ciGroup.ToString();
                 var meshTextureName = $@"Roads\Common\Textures\{myWidth}m\Median";
                 var brElMaterial = brElInfo.m_segments[0].m_material;
@@ -263,28 +266,9 @@ namespace Transit.Framework
                     //var required = symGroups.Contains(cnGroups[i]) ? NetNode.Flags.None : NetNode.Flags.AsymForward;
 
                     var sym = (symGroups.Contains(ciGroup) || symGroups.Contains(cnGroups[i]));
-                    //if (sym)
-                    //{
-                    //    var flag = NetNode.Flags.AsymForward | NetNode.Flags.AsymBackward;
-                    //    var flaga = NetNode.Flags.None;
-                    //    if (ciGroup == ConnextGroup.ThreeMidL || cnGroups[i] == ConnextGroup.ThreeMidL)
-                    //    {
-                    //        flag |= wildCard;
-                    //    }
-                    //    else
-                    //    {
-                    //        flaga = wildCard;
-                    //    }
-                    //    DoStartEndStuff(newNodeStartForward, meshBaseName, meshTextureName, true,sym, flag, flaga, cnGroups[i], brElMaterial, brElLODMaterial);
-                    //    DoStartEndStuff(newNodeEndForward, meshBaseName, meshTextureName, false,sym, flag, flaga, cnGroups[i], brElMaterial, brElLODMaterial);
-                    //    nodeList.Add(newNodeStartForward);
-                    //    nodeList.Add(newNodeEndForward);
-                    //}
-                    //else
-                    //{
-                    var flag1 = NetNode.Flags.AsymForward;
-                    var flag2 = NetNode.Flags.AsymBackward;
-                    var flaga = NetNode.Flags.None;
+                    var flag1 = sym ? NetNode.Flags.None : NetNode.Flags.AsymForward;
+                    var flag2 = sym ? NetNode.Flags.None : NetNode.Flags.AsymBackward;
+                    var flaga = sym ? NetNode.Flags.TrafficLights : NetNode.Flags.None;
                     if (ciGroup == ConnextGroup.ThreeMidL || cnGroups[i] == ConnextGroup.ThreeMidL || ciGroup == ConnextGroup.ThreePlusThree || cnGroups[i] == ConnextGroup.ThreePlusThree || ciGroup == ConnextGroup.FourPlusFour || cnGroups[i] == ConnextGroup.FourPlusFour)
                     {
                         flag1 |= wildCard;
