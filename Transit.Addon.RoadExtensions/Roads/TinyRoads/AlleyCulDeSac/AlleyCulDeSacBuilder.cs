@@ -71,6 +71,7 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.AlleyCulDeSac
 							@"Roads\TinyRoads\AlleyCulDeSac\Textures\Ground_LOD__XYSMap.png"));
 					break;
 			}
+            info.m_availableIn = ItemClass.Availability.None;
 			info.m_hasParkingSpaces = true;
 			info.m_connectGroup = NetInfo.ConnectGroup.SingleTrain;
 			info.m_nodeConnectGroups = NetInfo.ConnectGroup.SingleTrain;
