@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Transit.Framework;
 using UnityEngine;
-
+#if DEBUG
+using Debug = Transit.Framework.Debug;
+#endif
 namespace Transit.Addon.RoadExtensions.Roads.Common
 {
     public static partial class RoadHelper
@@ -205,7 +207,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
 
             if (prop == null)
             {
-                Framework.Debug.Log("BikeLaneText doesnt exist");
+                Debug.Log("BikeLaneText doesnt exist");
                 return;
             }
 
