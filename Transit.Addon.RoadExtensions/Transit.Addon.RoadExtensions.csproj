@@ -120,6 +120,7 @@
     <Compile Include="Roads\SmallRoads\BasicRoadMdn\BasicRoadMdnBuilder.Texturing.cs" />
     <Compile Include="Roads\SmallRoads\BasicRoadPntMdn\BasicRoadPntMdnBuilder.cs" />
     <Compile Include="Roads\SmallRoads\BasicRoadPntMdn\BasicRoadPntMdnBuilder.Texturing.cs" />
+    <Compile Include="Roads\TinyRoads\AlleyCulDeSac\AlleyCulDeSacBuilder.cs" />
     <Compile Include="Roads\TinyRoads\Oneway1LParking\Oneway1LParkingBuilder.cs" />
     <Compile Include="Roads\TinyRoads\Plain2L\PlainStreetBuilder.cs" />
     <Compile Include="Roads\TinyRoads\Plain2L\PlainStreetBuilder.Texturing.cs" />
@@ -3047,6 +3048,39 @@
     <Content Include="Roads\SmallHeavyRoads\SmallAvenue4L\thumbnails.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Roads\TinyRoads\AlleyCulDeSac\infotooltip.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\AlleyCulDeSac\Textures\Ground_LOD__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\AlleyCulDeSac\Textures\Ground_Node_LOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\AlleyCulDeSac\Textures\Ground_Node_LOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\AlleyCulDeSac\Textures\Ground_Node__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\AlleyCulDeSac\Textures\Ground_Node__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\AlleyCulDeSac\Textures\Ground_Segment_LOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\AlleyCulDeSac\Textures\Ground_Segment_LOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\AlleyCulDeSac\Textures\Ground_Segment__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\AlleyCulDeSac\Textures\Ground_Segment__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\AlleyCulDeSac\thumbnails.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Roads\TinyRoads\Oneway1LParking\infotooltip.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -3490,6 +3524,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\Common\Meshes\8m\1p5mSW1S\Ground_Node.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\8m\1p5mSW1S\Ground_Node1.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\Common\Meshes\8m\1p5mSW1S\Ground_Node2.obj">

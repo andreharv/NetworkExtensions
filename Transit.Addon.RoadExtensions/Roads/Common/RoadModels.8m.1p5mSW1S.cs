@@ -13,7 +13,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                         var segments0 = info.m_segments[0].ShallowClone();
                         var nodes0 = info.m_nodes[0].ShallowClone();
                         var nodes1 = info.m_nodes[0].ShallowClone();
-                        var nodes2 = info.m_nodes[0].ShallowClone();
                         segments0
                             .SetFlagsDefault()
                             .SetMeshes
@@ -24,25 +23,16 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                             .SetMeshes
                             (@"Roads\Common\Meshes\8m\1p5mSW1S\Ground_Node.obj",
                              @"Roads\Common\Meshes\8m\1p5mSW1S\Ground_Node_LOD.obj");
-
                         nodes1
                             .SetMeshes
-                            (@"Roads\Common\Meshes\8m\1p5mSW1S\Ground_Node2.obj",
+                            (@"Roads\Common\Meshes\8m\1p5mSW1S\Ground_Node1.obj",
                              @"Roads\Common\Meshes\8m\1p5mSW1S\Ground_Node_LOD.obj");
-                        nodes2
-                            .SetMeshes
-                            (@"Roads\Common\Meshes\8m\1p5mSW1S\Ground_Node3.obj",
-                             @"Roads\Common\Meshes\8m\1p5mSW1S\Ground_Node_LOD.obj");
-
                         if (laneStyle != LanesLayoutStyle.Symmetrical)
                             RoadHelper.HandleAsymSegmentFlags(segments0);
-
                         nodes1.m_directConnect = true;
-                        nodes1.m_connectGroup = NetInfo.ConnectGroup.NarrowTram | NetInfo.ConnectGroup.OnewayStart | NetInfo.ConnectGroup.OnewayEnd;
-                        nodes2.m_directConnect = true;
-                        nodes2.m_connectGroup = NetInfo.ConnectGroup.NarrowTram | NetInfo.ConnectGroup.OnewayEnd;
+                        nodes1.m_connectGroup = NetInfo.ConnectGroup.SingleTrain | NetInfo.ConnectGroup.OnewayStart | NetInfo.ConnectGroup.OnewayEnd;
                         info.m_segments = new[] { segments0 };
-                        info.m_nodes = new[] { nodes0, nodes1 };
+                        info.m_nodes = new[] { nodes0,nodes1 };
                         break;
                     }
             }

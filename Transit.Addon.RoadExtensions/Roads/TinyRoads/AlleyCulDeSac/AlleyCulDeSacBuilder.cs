@@ -72,8 +72,8 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.AlleyCulDeSac
 					break;
 			}
 			info.m_hasParkingSpaces = true;
-			info.m_connectGroup = NetInfo.ConnectGroup.NarrowTram;
-			info.m_nodeConnectGroups = NetInfo.ConnectGroup.NarrowTram;
+			info.m_connectGroup = NetInfo.ConnectGroup.SingleTrain;
+			info.m_nodeConnectGroups = NetInfo.ConnectGroup.SingleTrain;
 			info.m_halfWidth = 4f;
 			info.m_pavementWidth = 1.5f;
 			info.m_surfaceLevel = 0;

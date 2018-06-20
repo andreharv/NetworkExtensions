@@ -21,10 +21,6 @@ namespace NetworkExtensions
 
         public void OnSettingsUI(UIHelperBase helper)
         {
-            UIButton tabTemplate = Resources
-                .FindObjectsOfTypeAll<UITabstrip>()[1]
-                .GetComponentInChildren<UIButton>();
-
             _optionsPanel = ((UIHelper)helper).self as UIScrollablePanel;
             _optionsPanel.autoLayout = false;
 
@@ -41,30 +37,39 @@ namespace NetworkExtensions
             {
                 if (module.Name == "Roads")
                 {
-                    addTab(strip, strip.tabCount, module, tabTemplate, "Tiny", "RoadsTiny");
-                    addTab(strip, strip.tabCount, module, tabTemplate, "Small", "RoadsSmall");
-                    addTab(strip, strip.tabCount, module, tabTemplate, "Sml Hvy", "RoadsSmallHV");
-                    addTab(strip, strip.tabCount, module, tabTemplate, "Medium", "RoadsMedium");
-                    addTab(strip, strip.tabCount, module, tabTemplate, "Large", "RoadsLarge");
-                    addTab(strip, strip.tabCount, module, tabTemplate, "Highway", "RoadsHighway");
-                    addTab(strip, strip.tabCount, module, tabTemplate, "Ped", "RoadsPedestrians");
-                    addTab(strip, strip.tabCount, module, tabTemplate, "Bus", "RoadsBusways");
+                    addTab(strip, strip.tabCount, module, "Tiny", "RoadsTiny");
+                    addTab(strip, strip.tabCount, module, "Small", "RoadsSmall");
+                    addTab(strip, strip.tabCount, module, "Sml Hvy", "RoadsSmallHV");
+                    addTab(strip, strip.tabCount, module, "Medium", "RoadsMedium");
+                    addTab(strip, strip.tabCount, module, "Large", "RoadsLarge");
+                    addTab(strip, strip.tabCount, module, "Highway", "RoadsHighway");
+                    addTab(strip, strip.tabCount, module, "Ped", "RoadsPedestrians");
+                    addTab(strip, strip.tabCount, module, "Bus", "RoadsBusways");
                 }
                 else if (module.Name == "Tools")
                 {
-                    addTab(strip, strip.tabCount, module, tabTemplate);
+                    addTab(strip, strip.tabCount, module);
                 }
             }
         }
-        private static void addTab(UITabstrip strip, int tabIndex, IModule module, UIButton tabTemplate, string moduleName = "", string uiCategory = "")
+        private static void addTab(UITabstrip strip, int tabIndex, IModule module, string moduleName = "", string uiCategory = "")
         {
             if (moduleName == "")
             {
                 moduleName = module.Name;
             }
-            strip.AddTab(moduleName, tabTemplate, true);
-            strip.selectedIndex = tabIndex;
+            UIButton tabButton = strip.AddTab(moduleName);
+            tabButton.normalBgSprite = "SubBarButtonBase";
+            tabButton.disabledBgSprite = "SubBarButtonBaseDisabled";
+            tabButton.focusedBgSprite = "SubBarButtonBaseFocused";
+            tabButton.hoveredBgSprite = "SubBarButtonBaseHovered";
+            tabButton.pressedBgSprite = "SubBarButtonBasePressed";
 
+            tabButton.textPadding = new RectOffset(10,10,10,10);
+            tabButton.autoSize = true;
+            tabButton.tooltip = moduleName;
+
+            strip.selectedIndex = tabIndex;
             // Get the current container and use the UIHelper to have something in there
             UIPanel stripRoot = strip.tabContainer.components[tabIndex] as UIPanel;
             stripRoot.autoLayout = true;
