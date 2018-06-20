@@ -121,6 +121,7 @@
     <Compile Include="Roads\SmallRoads\BasicRoadPntMdn\BasicRoadPntMdnBuilder.cs" />
     <Compile Include="Roads\SmallRoads\BasicRoadPntMdn\BasicRoadPntMdnBuilder.Texturing.cs" />
     <Compile Include="Roads\TinyRoads\AlleyCulDeSac\AlleyCulDeSacBuilder.cs" />
+    <Compile Include="Roads\TinyRoads\Oneway1LBicycle\Oneway1LBicycleBuilder.cs" />
     <Compile Include="Roads\TinyRoads\Oneway1LParking\Oneway1LParkingBuilder.cs" />
     <Compile Include="Roads\TinyRoads\Plain2L\PlainStreetBuilder.cs" />
     <Compile Include="Roads\TinyRoads\Plain2L\PlainStreetBuilder.Texturing.cs" />
@@ -3081,6 +3082,51 @@
     <Content Include="Roads\TinyRoads\AlleyCulDeSac\thumbnails.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Roads\TinyRoads\Oneway1LBicycle\infotooltip.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1LBicycle\Textures\Ground_LOD__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1LBicycle\Textures\Ground_Node_LOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1LBicycle\Textures\Ground_Node_LOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1LBicycle\Textures\Ground_Node__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1LBicycle\Textures\Ground_Node__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1LBicycle\Textures\Ground_Segment_LOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1LBicycle\Textures\Ground_Segment_LOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1LBicycle\Textures\Ground_Segment__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1LBicycle\Textures\Ground_Segment__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1LBicycle\Textures\Ground_Trans_LOD__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1LBicycle\Textures\Ground_Trans_LOD__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1LBicycle\Textures\Ground_Trans__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1LBicycle\Textures\Ground_Trans__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\TinyRoads\Oneway1LBicycle\thumbnails.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Roads\TinyRoads\Oneway1LParking\infotooltip.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -4076,6 +4122,7 @@
     <None Include="Roads\Common\Meshes\16m\3mSW\Tunnel_Node_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Roads\TinyRoads\Oneway1LBicycle\thumbnails.psd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Transit.Framework.ExtensionPoints\Transit.Framework.ExtensionPoints.csproj">
