@@ -23,5 +23,16 @@ namespace Transit.Framework
 
             return newLane;
         }
+        public static NetInfo.Lane FullClone(this NetInfo.Lane templateLane, string newName = null)
+        {
+            var newLane = CloneWithoutStops(templateLane, newName);
+
+            newLane.m_centerPlatform = templateLane.m_centerPlatform;
+            newLane.m_position = templateLane.m_position;
+            newLane.m_similarLaneCount = templateLane.m_similarLaneCount;
+            newLane.m_similarLaneIndex = templateLane.m_similarLaneIndex;
+            newLane.m_useTerrainHeight = templateLane.m_useTerrainHeight;
+            return newLane;
+        }
     }
 }
