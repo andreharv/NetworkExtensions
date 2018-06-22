@@ -8,7 +8,7 @@ using Transit.Framework.Builders;
 using Transit.Framework.Network;
 using UnityEngine;
 
-namespace Transit.Addon.RoadExtensions.Roads.SmallRoads.OneWay1LParkingBicycle
+namespace TransitPlus.Addon.RoadExtensions.Roads.SmallRoads.OneWay1LParkingBicycle
 {
     public partial class OneWay1LParkingBicycleBuilder : Activable, INetInfoBuilderPart
     {
@@ -16,10 +16,10 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallRoads.OneWay1LParkingBicycle
         public int UIOrder { get { return 12; } }
 
         public string BasedPrefabName { get { return NetInfos.Vanilla.ROAD_2L; } }
-        public string Name { get { return "Oneway with bicycle lanes"; } }
-        public string DisplayName { get { return "Small Oneway road with bicycle lanes "; } }
+        public string Name { get { return "One-Lane Oneway with bicycle lanes and parking"; } }
+        public string DisplayName { get { return "Small Oneway road with bicycle lanes and parking"; } }
         public string Description { get { return "A one-lane road with parkings spaces and bicycle lanes. Supports low traffic."; } }
-        public string ShortDescription { get { return "Zoneable, medium traffic"; } }
+        public string ShortDescription { get { return "Zoneable, parking, neighborhood traffic"; } }
         public string UICategory { get { return "RoadsSmall"; } }
 
         public string ThumbnailsPath    { get { return @"Roads\SmallRoads\OneWay1LParkingBicycle\thumbnails.png"; } }
@@ -112,9 +112,8 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallRoads.OneWay1LParkingBicycle
                 bikeLanes[i].m_speedLimit = 0.6f;
                 bikeLanes[i].m_verticalOffset = -0.2f;
                 bikeLanes[i].m_stopType = VehicleInfo.VehicleType.None;
-                var tempProps = bikeLanes[i].m_laneProps.m_props.ToList();
-                tempProps.RemoveProps("arrow");
-                bikeLanes[i].m_laneProps.m_props = tempProps.ToArray();
+            
+                bikeLanes[i].SetBikeLaneProps();
             }
 
 

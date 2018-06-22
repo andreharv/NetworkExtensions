@@ -1,7 +1,7 @@
 ﻿using Transit.Framework;
 using Transit.Framework.Texturing;
 
-namespace Transit.Addon.RoadExtensions.Roads.SmallRoads.OneWay1LParkingBicycle
+namespace TransitPlus.Addon.RoadExtensions.Roads.SmallRoads.OneWay1LParkingBicycle
 {
     public partial class OneWay1LParkingBicycleBuilder
     {

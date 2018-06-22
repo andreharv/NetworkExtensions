@@ -9,7 +9,7 @@ using Transit.Framework.Builders;
 using Transit.Framework.Network;
 using Transit.Framework.Texturing;
 
-namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.Oneway1LBicycle
+namespace TransitPlus.Addon.RoadExtensions.Roads.TinyRoads.Oneway1LBicycle
 {
     public class Oneway1LBicycleBuilder : Activable, INetInfoBuilderPart, INetInfoLateBuilder
     {
@@ -118,7 +118,6 @@ namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.Oneway1LBicycle
             var vehicleLanes = info.m_lanes.Where(l => l.m_laneType == NetInfo.LaneType.Vehicle).ToList();
 
             var bikeLaneWidth =  1f;
-            var bikeLanePosAbs = 3;
             var carLanes = new List<NetInfo.Lane>();
             var bikeLanes = new List<NetInfo.Lane>();
             bikeLanes.AddRange(vehicleLanes.Skip(1).Take(1));

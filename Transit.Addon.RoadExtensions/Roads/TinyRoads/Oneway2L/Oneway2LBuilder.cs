@@ -8,7 +8,7 @@ using Transit.Framework.Builders;
 using Transit.Framework.Network;
 using Transit.Framework.Texturing;
 
-namespace Transit.Addon.RoadExtensions.Roads.TinyRoads.Oneway2L
+namespace TransitPlus.Addon.RoadExtensions.Roads.TinyRoads.Oneway2L
 {
     public class Oneway2LBuilder : Activable, INetInfoBuilderPart
     {

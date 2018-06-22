@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D2DA5492-3DE6-4E7D-AFF1-BB62C950632D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NetworkExtensionsPlus.Deploy</RootNamespace>
+    <AssemblyName>NetworkExtensionsPlus.Deploy</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NetworkExtensionsPlus\NetworkExtensionsPlus.csproj">
+      <Project>{dcd9dd56-9c49-4ba9-8f37-7567444fe7cb}</Project>
+      <Name>NetworkExtensionsPlus</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Transit.Addon.RoadExtensions\TransitPlus.Addon.RoadExtensions.csproj">
+      <Project>{19FA21B2-39CC-4B90-BE7E-B6BDCCB09208}</Project>
+      <Name>TransitPlus.Addon.RoadExtensions</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Transit.Addon.Tools, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\NetworkExtensions\Transit.Addon.Tools\bin\Debug\Transit.Addon.Tools.dll</HintPath>
+    </Reference>
+    <Reference Include="Transit.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\NetworkExtensions\Transit.Framework\bin\Debug\Transit.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Transit.Framework.ExtensionPoints, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\NetworkExtensions\Transit.Framework.ExtensionPoints\bin\Debug\Transit.Framework.ExtensionPoints.dll</HintPath>
+    </Reference>
+    <Reference Include="Transit.Framework.Hooks, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\NetworkExtensions\Transit.Framework.Hooks\bin\Debug\Transit.Framework.Hooks.dll</HintPath>
+    </Reference>
+    <Reference Include="Transit.Framework.Redirection, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\NetworkExtensions\Transit.Framework.Redirection\bin\Debug\Transit.Framework.Redirection.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>del "$(TargetDir)NetworkExtensionsPlus.Deploy.dll"
+del "$(TargetDir)*.pdb"
+
+if $(ConfigurationName) == Debug (
+rd /s /q  "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\NetworkExtensions2-Plus"
+mkdir "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\NetworkExtensions2-Plus"
+xcopy /q /y /e "$(ProjectDir)bin\$(ConfigurationName)" "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\NetworkExtensions2-Plus"
+) else (
+rd /s /q  "D:\Games\Steam\SteamApps\workshop\content\255710\478820060"
+mkdir "D:\Games\Steam\SteamApps\workshop\content\255710\478820060"
+xcopy /q /y /e "$(ProjectDir)bin\$(ConfigurationName)" "D:\Games\Steam\SteamApps\workshop\content\255710\478820060"
+)</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>del /f /q "$(TargetDir)"</PreBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

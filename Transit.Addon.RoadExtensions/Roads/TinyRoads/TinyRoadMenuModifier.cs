@@ -5,7 +5,7 @@ using Transit.Framework.Builders;
 using Transit.Framework.Modularity;
 using Transit.Framework.Network;
 
-namespace Transit.Addon.RoadExtensions.Roads.TinyRoads
+namespace TransitPlus.Addon.RoadExtensions.Roads.TinyRoads
 {
     public class TinyRoadMenuModifier : IModulePart, INetInfoModifier
     {
