@@ -11,6 +11,8 @@ using Transit.Addon.RoadExtensions.Roads.TinyRoads.Alley2L;
 using Transit.Addon.RoadExtensions.Roads.TinyRoads.Oneway1L;
 using Transit.Addon.RoadExtensions.Roads.TinyRoads.Oneway1LParking;
 using Transit.Addon.RoadExtensions.Roads.TinyRoads.Oneway1LBicycle;
+using Transit.Addon.RoadExtensions.Roads.TinyRoads.Oneway1LParkingBicycle;
+using Transit.Addon.RoadExtensions.Roads.TinyRoads.Oneway2L;
 using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.ExtensionPoints.AI;
@@ -72,6 +74,8 @@ namespace Transit.Addon.RoadExtensions
                 Oneway1LBuilder.NAME,
                 Oneway1LParkingBuilder.NAME,
                 Oneway1LBicycleBuilder.NAME,
+                Oneway1LParkingBicycleBuilder.NAME,
+                Oneway2LBuilder.NAME,
                 ZonablePedestrianTinyGravelRoadBuilder.NAME,
                 ZonablePedestrianTinyPavedRoadBuilder.NAME,
                 ZonablePedestrianTinyStoneRoadBuilder.NAME,

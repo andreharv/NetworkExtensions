@@ -91,7 +91,20 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                 }
             }
         }
-
+        public static void RemoveTrees(this ICollection<NetLaneProps.Prop> props, params string[] namesOfPropsToRemove)
+        {
+            foreach (var t in namesOfPropsToRemove)
+            {
+                var propsToRemove = props.Where(p => p.m_tree != null && p.m_tree.name.ToLower().Contains(t.ToLower())).ToList();
+                if (propsToRemove.Count > 0)
+                {
+                    foreach (var t1 in propsToRemove)
+                    {
+                        props.Remove(t1);
+                    }
+                }
+            }
+        }
         public static void AddProps(this ICollection<NetLaneProps.Prop> props, ICollection<NetLaneProps.Prop> propsToAdd)
         {
             foreach (var propToAdd in propsToAdd)
