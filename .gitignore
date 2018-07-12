@@ -215,3 +215,4 @@ pip-log.txt
 /.vs/
 *.dll
 /Transit.Addon.RoadExtensions/Roads/TinyRoads/Oneway1LParking/Textures - Copy
+/Transit.Addon.RoadExtensions/Roads/Avenues/X

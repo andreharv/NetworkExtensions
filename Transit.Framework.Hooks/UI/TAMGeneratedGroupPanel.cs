@@ -25,7 +25,6 @@ namespace Transit.Framework.Hooks.UI
             string localeID, string unlockText, string spriteBase, bool enabled, bool forceFillContainer)
         {
             int objectIndex = (int)typeof(GeneratedGroupPanel).GetField("m_ObjectIndex", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(this);
-            Debug.Log($"GENERATEGROUPPANEL {name}Panel");
             // TAM Edit Start
             Type type = typeof(GeneratedScrollPanel)
                 .Assembly

@@ -111,7 +111,6 @@ namespace Transit.Addon.RoadExtensions.Roads.Avenues.LargeAvenue8LSideParking
             //    parking
             //}
 
-
             var maxPosition = carLanes.Max(l => l.m_position);
             var outerCarlanes = carLanes.Where(l => Math.Abs(l.m_position) == maxPosition).ToList();
             for (int i = 0; i < carLanes.Count; i++)
