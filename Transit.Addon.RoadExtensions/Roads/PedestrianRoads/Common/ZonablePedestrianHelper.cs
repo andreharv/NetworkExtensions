@@ -68,8 +68,8 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
 
             var pedLaneProps = pedLane.m_laneProps.m_props.ToList();
             pedLaneProps.RemoveProps("random", "bus", "limit");
-            pedLaneProps.ReplacePropInfo(new KeyValuePair<string, PropInfo>("street light", Prefabs.Find<PropInfo>("StreetLamp02")));
-            pedLaneProps.ReplacePropInfo(new KeyValuePair<string, PropInfo>("traffic light 01", Prefabs.Find<PropInfo>("Traffic Light 01 Mirror")));
+            pedLaneProps.ReplacePropInfo("street light","StreetLamp02");
+            pedLaneProps.ReplacePropInfo("traffic light 01","Traffic Light 01 Mirror");
             var pedLightProp = pedLaneProps.First(tp => tp.m_prop.name == "Traffic Light 01 Mirror").ShallowClone();
             var pedLightPropInfo = Prefabs.Find<PropInfo>("Traffic Light Pedestrian");
             pedLightProp.m_prop = pedLightPropInfo;
@@ -89,7 +89,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Common
             var pedLightProp2 = pedLaneProps.First(tp => tp.m_prop.name == "Traffic Light 02").ShallowClone();
             pedLightProp2.m_prop = pedLightPropInfo;
             pedLightProp2.m_position.x = 3.5f;
-            pedLaneProps.ReplacePropInfo(new KeyValuePair<string, PropInfo>("traffic light 02", Prefabs.Find<PropInfo>("Traffic Light 01 Mirror")));
+            pedLaneProps.ReplacePropInfo("traffic light 02","Traffic Light 01 Mirror");
             pedLaneProps.Add(pedLightProp);
             pedLaneProps.Add(pedLightProp2);
             pedLane.m_laneProps.m_props = pedLaneProps.ToArray();

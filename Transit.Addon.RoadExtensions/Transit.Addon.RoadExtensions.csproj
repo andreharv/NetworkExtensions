@@ -795,22 +795,22 @@
     <Content Include="Roads\Avenues\LargeAvenue8L2BusLanes\Textures\Ground_Node__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Avenues\LargeAvenue8L2BusLanes\Textures\Ground_SegmentConcrete_LOD__APRMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Avenues\LargeAvenue8L2BusLanes\Textures\Ground_SegmentConcrete__APRMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Avenues\LargeAvenue8L2BusLanes\Textures\Ground_SegmentGrass_LOD__APRMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Avenues\LargeAvenue8L2BusLanes\Textures\Ground_SegmentGrass__APRMap.png">
+    <Content Include="Roads\Avenues\LargeAvenue8L2BusLanes\Textures\Ground_Segment_LOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\Avenues\LargeAvenue8L2BusLanes\Textures\Ground_Segment_LOD__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\Avenues\LargeAvenue8L2BusLanes\Textures\Ground_Segment_LOD__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8L2BusLanes\Textures\Ground_Segment_Pavement__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8L2BusLanes\Textures\Ground_Segment_Pavement__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8L2BusLanes\Textures\Ground_Segment__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\Avenues\LargeAvenue8L2BusLanes\Textures\Ground_Segment__MainTex.png">
@@ -918,34 +918,28 @@
     <Content Include="Roads\Avenues\LargeAvenue8LSideParking\Textures\Ground_Node_LOD__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Avenues\LargeAvenue8LSideParking\Textures\Ground_Node_Simple__APRMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Avenues\LargeAvenue8LSideParking\Textures\Ground_Node_Simple__MainTex.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Roads\Avenues\LargeAvenue8LSideParking\Textures\Ground_Node__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\Avenues\LargeAvenue8LSideParking\Textures\Ground_Node__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Roads\Avenues\LargeAvenue8LSideParking\Textures\Ground_SegmentConcrete_LOD__APRMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Avenues\LargeAvenue8LSideParking\Textures\Ground_SegmentConcrete__APRMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Avenues\LargeAvenue8LSideParking\Textures\Ground_SegmentGrass_LOD__APRMap.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Roads\Avenues\LargeAvenue8LSideParking\Textures\Ground_SegmentGrass__APRMap.png">
+    <Content Include="Roads\Avenues\LargeAvenue8LSideParking\Textures\Ground_Segment_LOD__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\Avenues\LargeAvenue8LSideParking\Textures\Ground_Segment_LOD__MainTex.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\Avenues\LargeAvenue8LSideParking\Textures\Ground_Segment_LOD__XYSMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LSideParking\Textures\Ground_Segment_Pavement__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LSideParking\Textures\Ground_Segment_Pavement__MainTex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Roads\Avenues\LargeAvenue8LSideParking\Textures\Ground_Segment__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\Avenues\LargeAvenue8LSideParking\Textures\Ground_Segment__MainTex.png">
@@ -4502,10 +4496,34 @@
     <None Include="Roads\Common\Meshes\32m\3mSW2x3mMdnBus\Ground.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2x3mMdnBus\Ground_Bus.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2x3mMdnBus\Ground_BusBoth.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2x3mMdnBus\Ground_Gap.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2x3mMdnBus\Ground_Median.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2x3mMdnBus\Ground_Median_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Roads\Common\Meshes\32m\3mSW2x3mMdnBus\Ground_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\Common\Meshes\32m\3mSW2x3mMdnBus\Ground_Node_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2x3mMdnBus\Ground_Node_Median.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2x3mMdnBus\Ground_Parking.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2x3mMdnBus\Ground_Pavement.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\Common\Meshes\32m\3mSW2x3mMdnBus\Slope.obj">
@@ -4568,13 +4586,34 @@
     <None Include="Roads\Common\Meshes\32m\3mSW2x3mMdn\Ground_BusBoth.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2x3mMdn\Ground_BusBoth_Pavement.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2x3mMdn\Ground_Bus_Pavement.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Roads\Common\Meshes\32m\3mSW2x3mMdn\Ground_Gap.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2x3mMdn\Ground_Median.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2x3mMdn\Ground_Median_LOD.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\Common\Meshes\32m\3mSW2x3mMdn\Ground_Node.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\Common\Meshes\32m\3mSW2x3mMdn\Ground_Node_LOD.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2x3mMdn\Ground_Node_Median.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2x3mMdn\Ground_Parking.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Roads\Common\Meshes\32m\3mSW2x3mMdn\Ground_Pavement.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\Common\Meshes\32m\3mSW2x3mMdn\Slope.obj">

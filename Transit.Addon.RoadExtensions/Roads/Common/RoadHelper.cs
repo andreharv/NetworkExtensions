@@ -121,17 +121,19 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
         /// </summary>
         /// <param name="props"></param>
         /// <param name="replacementPairs">key=prop name part to remove, value = propinfo to add</param>
-        public static void ReplacePropInfo(this ICollection<NetLaneProps.Prop> props, KeyValuePair<string, PropInfo> replacementPair)
+        public static void ReplacePropInfo(this ICollection<NetLaneProps.Prop> props, string replacePropName, string withPropName)
         {
-            if (props.Any(p => p.m_prop.name.ToLower().Contains(replacementPair.Key.ToLower())))
+            if (props.Any(p => p.m_prop.name.ToLower().Contains(replacePropName.ToLower())))
             {
                 var tempProp = new NetLaneProps.Prop();
-                var propsToReplace = props.Where(p => p.m_prop.name.ToLower().Contains(replacementPair.Key.ToLower())).ToList();
+                var propsToReplace = props.Where(p => p?.m_prop != null && p.m_prop.name.ToLower().Contains(replacePropName.ToLower())).ToList();
+                var withProp = Prefabs.Find<PropInfo>(withPropName, false);
                 for (var i = 0; i < propsToReplace.Count; i++)
                 {
                     tempProp = propsToReplace[i].ShallowClone();
                     props.Remove(propsToReplace[i]);
-                    tempProp.m_prop = replacementPair.Value;
+                    tempProp.m_prop = withProp;
+                    tempProp.m_finalProp = withProp;
                     props.Add(tempProp);
                 }
             }

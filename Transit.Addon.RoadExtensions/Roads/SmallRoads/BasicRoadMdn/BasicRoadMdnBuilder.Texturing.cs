@@ -167,14 +167,6 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallRoads.BasicRoadMdn
                                     @"Roads\SmallHeavyRoads\BasicRoadTL\Textures\Tunnel_LOD__XYSMap.png"));
                         }
                     }
-                    //info.SetAllNodesTexture(
-                    //new TextureSet
-                    //    (@"Roads\Highways\Highway4L\Textures\Slope_Node__MainTex.png",
-                    //    @"Roads\Highways\Highway4L\Textures\Ground_Node__APRMap.png"),
-                    //new LODTextureSet
-                    //    (@"Roads\Highways\Highway4L\Textures\Ground_NodeLOD__MainTex.png",
-                    //    @"Roads\Highways\Highway4L\Textures\Ground_NodeLOD__APRMap.png",
-                    //    @"Roads\Highways\Highway4L\Textures\Ground_LOD__XYSMap.png"));
                     break;
                 case NetInfoVersion.Tunnel:
                     {

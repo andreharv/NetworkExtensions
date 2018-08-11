@@ -100,57 +100,57 @@ namespace Transit.Framework.Hooks.AI
                     flags2 &= NetNode.Flags.UndergroundTransition | NetNode.Flags.Created | NetNode.Flags.Deleted | NetNode.Flags.Original | NetNode.Flags.Disabled | NetNode.Flags.End | NetNode.Flags.Middle | NetNode.Flags.Bend | NetNode.Flags.Junction | NetNode.Flags.Moveable | NetNode.Flags.Untouchable | NetNode.Flags.Outside | NetNode.Flags.Temporary | NetNode.Flags.Double | NetNode.Flags.Fixed | NetNode.Flags.OnGround | NetNode.Flags.Ambiguous | NetNode.Flags.Water | NetNode.Flags.Sewage | NetNode.Flags.ForbidLaneConnection | NetNode.Flags.LevelCrossing | NetNode.Flags.OneWayOut | NetNode.Flags.OneWayIn | NetNode.Flags.Heating | NetNode.Flags.Electricity | NetNode.Flags.Collapsed | NetNode.Flags.DisableOnlyMiddle | NetNode.Flags.AsymForward | NetNode.Flags.AsymBackward | NetNode.Flags.CustomTrafficLights;
             }
             data.m_flags = flags2;
-            if (num9 == 2)
-            {
-                System.Reflection.MethodInfo getLanesMethod = LaneConnectionManager.Instance.GetType().GetMethod("GetLaneConnections", BindingFlags.NonPublic | BindingFlags.Instance);
-                System.Reflection.MethodInfo removeLaneMethod = LaneConnectionManager.Instance.GetType().GetMethod("RemoveLaneConnection", BindingFlags.NonPublic | BindingFlags.Instance);
-                if (getLanesMethod != null && removeLaneMethod != null)
-                {
-                    UnityEngine.Debug.Log("YOUR METHOD IS GOOOOOOD");
-                    for (int i = 0; i < 2; i++)
-                    {
-                        ushort segment = data.GetSegment(i);
-                        if ((int)segment != 0)
-                        {
-                            uint num10 = instance.m_segments.m_buffer[(int)segment].m_lanes;
-                            for (int j = 0; j <= 1; j++)
-                            {
-                                bool isStartNode = j == 0;
-                                object[] args = new object[2];
-                                args[0] = num10;
-                                args[1] = isStartNode;
-                                object lanesObj = getLanesMethod.Invoke(LaneConnectionManager.Instance, args);
-                                IEnumerable<uint> ie = lanesObj as IEnumerable<uint>;
-                                if (ie != null)
-                                {
-                                    uint[] lanes = ie.ToArray();
-                                    Debug.Log(lanes.Count() + "To Remove");
-                                    if (lanes.Length > 0)
-                                    {
-                                        for (int k = 0; k < lanes.Length; k++)
-                                        {
-                                            uint ln = lanes[k];
-                                            object[] args2 = new object[3];
-                                            args2[0] = num10;
-                                            args2[1] = ln;
-                                            args2[2] = isStartNode;
-                                            removeLaneMethod.Invoke(LaneConnectionManager.Instance, args2);
-                                            UnityEngine.Debug.Log("Removed!!!");
-                                            //Transit.Framework.Debug.Log("TIS LANE" + ln + "FOR " + m_info.name);
-                                        }
-                                    }
-                                }
+            //if (num9 == 2)
+            //{
+            //    System.Reflection.MethodInfo getLanesMethod = LaneConnectionManager.Instance.GetType().GetMethod("GetLaneConnections", BindingFlags.NonPublic | BindingFlags.Instance);
+            //    System.Reflection.MethodInfo removeLaneMethod = LaneConnectionManager.Instance.GetType().GetMethod("RemoveLaneConnection", BindingFlags.NonPublic | BindingFlags.Instance);
+            //    if (getLanesMethod != null && removeLaneMethod != null)
+            //    {
+            //        UnityEngine.Debug.Log("YOUR METHOD IS GOOOOOOD");
+            //        for (int i = 0; i < 2; i++)
+            //        {
+            //            ushort segment = data.GetSegment(i);
+            //            if ((int)segment != 0)
+            //            {
+            //                uint num10 = instance.m_segments.m_buffer[(int)segment].m_lanes;
+            //                for (int j = 0; j <= 1; j++)
+            //                {
+            //                    bool isStartNode = j == 0;
+            //                    object[] args = new object[2];
+            //                    args[0] = num10;
+            //                    args[1] = isStartNode;
+            //                    object lanesObj = getLanesMethod.Invoke(LaneConnectionManager.Instance, args);
+            //                    IEnumerable<uint> ie = lanesObj as IEnumerable<uint>;
+            //                    if (ie != null)
+            //                    {
+            //                        uint[] lanes = ie.ToArray();
+            //                        Debug.Log(lanes.Count() + "To Remove");
+            //                        if (lanes.Length > 0)
+            //                        {
+            //                            for (int k = 0; k < lanes.Length; k++)
+            //                            {
+            //                                uint ln = lanes[k];
+            //                                object[] args2 = new object[3];
+            //                                args2[0] = num10;
+            //                                args2[1] = ln;
+            //                                args2[2] = isStartNode;
+            //                                removeLaneMethod.Invoke(LaneConnectionManager.Instance, args2);
+            //                                UnityEngine.Debug.Log("Removed!!!");
+            //                                //Transit.Framework.Debug.Log("TIS LANE" + ln + "FOR " + m_info.name);
+            //                            }
+            //                        }
+            //                    }
 
-                            }
-                            num10 = instance.m_lanes.m_buffer[num10].m_nextLane;
-                        }
-                    }
-                }
-                else
-                {
-                    UnityEngine.Debug.Log("METHODS MALLOOOOO!!!");
-                }
-            }
+            //                }
+            //                num10 = instance.m_lanes.m_buffer[num10].m_nextLane;
+            //            }
+            //        }
+            //    }
+            //    else
+            //    {
+            //        UnityEngine.Debug.Log("METHODS MALLOOOOO!!!");
+            //    }
+            //}
         }
 
         private bool CanEnableTrafficLights(ushort nodeID, ref NetNode data)

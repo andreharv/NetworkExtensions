@@ -145,7 +145,7 @@ namespace Transit.Addon.RoadExtensions.Roads.PedestrianRoads.Promenade
                 var tempPropProps = tempProps.Where(tp => tp.m_prop != null);
                 if (tempPropProps.Any(tp => tp.m_prop.name.ToLower().IndexOf("street light", StringComparison.Ordinal) != -1))
                 {
-                    tempProps.ReplacePropInfo(new KeyValuePair<string, PropInfo>("street light", Prefabs.Find<PropInfo>("StreetLamp02")));
+                    tempProps.ReplacePropInfo("street light", "StreetLamp02");
                     var lightProp = tempProps.First(tp => tp.m_prop.name == "StreetLamp02");
                     lightProp.m_repeatDistance = 80;
                     lightProp.m_segmentOffset = i;
