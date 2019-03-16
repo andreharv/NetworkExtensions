@@ -112,4 +112,4 @@ Apply Appliquer
 Select_a_timed_traffic_light_program Sélectionnez un programme de feux de circulation chronométré
 The_chosen_traffic_light_program_is_incompatible_to_this_junction Le modèle de feux de circulation choisi est incompatible avec cette intersection
 Advanced_AI_cannot_be_activated L'IA avancée ne peut pas être activée
-The_Advanced_Vehicle_AI_cannot_be_activated L'IA avancé du véhicule ne peut pas être activé car vous utilisez déjà un autre mod qui modifie le comportement du véhicule (e.g. Improved AI ou Traffic++).
+The_Advanced_Vehicle_AI_cannot_be_activated L'IA avancé du véhicule ne peut pas être activé car vous utilisez déjà un autre mod qui modifie le comportement du véhicule (exemple Amélioré l'AI ou Traffic++).
