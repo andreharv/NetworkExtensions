@@ -82,7 +82,7 @@ namespace Transit.Framework
                 GameObject.Destroy(_cancelButton.GetComponent<BindEvent>());
 
                 // Get fireworks
-                ParadoxUnlockPanel paradoxPanel = UIView.GetAView().GetComponentInChildren<ParadoxUnlockPanel>();
+                UnlockingPanel paradoxPanel = UIView.GetAView().GetComponentInChildren<UnlockingPanel>();
                 if (paradoxPanel != null)
                 {
                     m_fireworks = paradoxPanel.m_Fireworks;
