@@ -4,8 +4,6 @@ using ColossalFramework.Plugins;
 using Transit.Framework;
 using Transit.Framework.Mod;
 using Transit.Framework.Modularity;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace NetworkExtensions
 {

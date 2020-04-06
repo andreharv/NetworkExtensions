@@ -64,7 +64,6 @@ namespace NetworkExtensions
             tabButton.focusedBgSprite = "SubBarButtonBaseFocused";
             tabButton.hoveredBgSprite = "SubBarButtonBaseHovered";
             tabButton.pressedBgSprite = "SubBarButtonBasePressed";
-
             tabButton.textPadding = new RectOffset(10,10,10,10);
             tabButton.autoSize = true;
             tabButton.tooltip = moduleName;

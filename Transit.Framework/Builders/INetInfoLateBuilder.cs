@@ -1,4 +1,6 @@
-﻿namespace Transit.Framework.Builders
+﻿using Transit.Framework.Network;
+
+namespace Transit.Framework.Builders
 {
     public interface INetInfoLateBuilder : INetInfoBuilder
     {
