@@ -36,6 +36,7 @@
     <Reference Include="System.Core" />
     <Reference Include="UnityEngine">
       <HintPath>D:\Program Files\SteamLibrary\steamapps\common\Cities_Skylines\Cities_Data\Managed\UnityEngine.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
