@@ -191,6 +191,7 @@
     <EmbeddedResource Include="Resources\lang.txt" />
     <EmbeddedResource Include="Resources\lang_de.txt" />
     <EmbeddedResource Include="Resources\lang_ja.txt" />
+    <EmbeddedResource Include="Resources\lang_es.txt" />
     <EmbeddedResource Include="Resources\light_counter_ja.png" />
     <EmbeddedResource Include="Resources\light_mode_ja.png" />
     <Content Include="NLog.config">
