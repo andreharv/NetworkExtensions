@@ -36,7 +36,7 @@ namespace Transit.Framework.Mod
                 //                        {
                 //                            try
                 //                            {
-                //                                return a.GetTypes();
+                //                                return a.GetExportedTypes();
                 //                            }
                 //                            catch (Exception ex)
                 //                            {
@@ -60,7 +60,7 @@ namespace Transit.Framework.Mod
                     {
                         try
                         {
-                            return a.GetTypes();
+                            return a.GetExportedTypes();
                         }
                         catch (Exception ex)
                         {

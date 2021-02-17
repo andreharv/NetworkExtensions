@@ -14,7 +14,7 @@ namespace Transit.Framework
                 {
                     try
                     {
-                        return a.GetTypes();
+                        return a.GetExportedTypes();
                     }
                     catch (Exception ex)
                     {
