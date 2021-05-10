@@ -15,8 +15,8 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway2L2W
 
         public string BasedPrefabName { get { return NetInfos.Vanilla.HIGHWAY_3L; } }
         public string Name { get { return "Highway2L2W"; } }
-        public string DisplayName { get { return "Four-Lane National Highway"; } }
-        public string Description { get { return "A four-lane national highway accommodating medium traffic. Highway does not allow zoning next to it!"; } }
+        public string DisplayName { get { return "2+2 Lane Highway"; } }
+        public string Description { get { return "A two way two lane highway suitable for medium traffic."; } }
         public string ShortDescription { get { return "No parking, not zoneable, medium traffic"; } }
         public string UICategory { get { return "RoadsHighway"; } }
 
@@ -42,6 +42,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway2L2W
             ///////////////////////////
             info.Setup24mMesh(version);
 
+
             ///////////////////////////
             // Texturing             //
             ///////////////////////////
@@ -61,50 +62,60 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Highway2L2W
             info.m_hasPedestrianLanes = false;
             info.m_UnlockMilestone = highwayInfo.m_UnlockMilestone;
             info.m_halfWidth = (version == NetInfoVersion.Bridge || version == NetInfoVersion.Elevated) ? 11 : 12;
-            info.m_pavementWidth = 2f;
+            info.m_pavementWidth = 2;
             info.m_maxBuildAngle = 90;
             info.m_maxBuildAngleCos = 0;
             if (version == NetInfoVersion.Tunnel)
             {
                 info.m_setVehicleFlags = Vehicle.Flags.Transition | Vehicle.Flags.Underground;
-                info.m_class = highwayTunnelInfo.m_class.Clone(info.name + version.ToString() + "Class");
+                info.m_class = highwayTunnelInfo.m_class.Clone(NetInfoClasses.NEXT_HIGHWAY2L2W_TUNNEL);
             }
             else
             {
-                info.m_class = highwayInfo.m_class.Clone(info.name + version.ToString() + "Class");
+                info.m_class = highwayInfo.m_class.Clone(NetInfoClasses.NEXT_HIGHWAY2L2W);
             }
+
 
             ///////////////////////////
             // Set up lanes          //
             ///////////////////////////
-            info.SetRoadLanes(version, new LanesConfiguration
+            info.SetupHighwayLanes();
+            var leftHwLane = info.SetHighwayLeftShoulder(highwayInfo, version);
+            var rightHwLane = info.SetHighwayRightShoulder(highwayInfo, version);
+            var vehicleLanes = info.SetHighwayVehicleLanes(1, true);
+            foreach (var lane in vehicleLanes)
             {
-                LanePositionOffst = (version == NetInfoVersion.Bridge || version == NetInfoVersion.Elevated) ? -1 : -2,
-                IsTwoWay = true,
-                LaneWidth = 4,
-                LanesToAdd = 1,
-                SpeedLimit = 1.8f
-            });
+                lane.m_speedLimit = 1.8f;
+            }
+
 
             ///////////////////////////
             // Set up props          //
             ///////////////////////////
-            var leftPedLane = info.GetLeftRoadShoulder();
-            var rightPedLane = info.GetRightRoadShoulder();
-
-            var leftRoadProps = leftPedLane?.m_laneProps.m_props.ToList();
-            var rightRoadProps = rightPedLane?.m_laneProps.m_props.ToList();
+            var leftHwLaneProps = leftHwLane.m_laneProps.m_props.ToList();
+            var rightHwLaneProps = rightHwLane.m_laneProps.m_props.ToList();
 
             if (version == NetInfoVersion.Slope)
             {
-                leftRoadProps?.AddLeftWallLights(info.m_pavementWidth);
-                rightRoadProps?.AddRightWallLights(info.m_pavementWidth);
+                leftHwLaneProps.SetHighwaySignsSlope();
+                rightHwLaneProps.SetHighwaySignsSlope();
             }
-            if (leftPedLane != null && leftPedLane.m_laneProps != null)
-                leftPedLane.m_laneProps.m_props = leftRoadProps.ToArray();
-            if (rightPedLane != null && rightPedLane.m_laneProps != null)
-                rightPedLane.m_laneProps.m_props = rightRoadProps.ToArray();
-            info.TrimNonHighwayProps(version == NetInfoVersion.Ground);
+
+            // Lightning
+            rightHwLaneProps.SetHighwayRightLights(version);
+            if (version == NetInfoVersion.Slope)
+            {
+                leftHwLaneProps.AddLeftWallLights(1);
+                rightHwLaneProps.AddRightWallLights(-1);
+            }
+
+            leftHwLaneProps.RemoveProps("100 Speed Limit"); // Since we dont have the 90km/h limit prop
+            rightHwLaneProps.RemoveProps("100 Speed Limit"); // Since we dont have the 90km/h limit prop
+
+            leftHwLane.m_laneProps.m_props = leftHwLaneProps.ToArray();
+            rightHwLane.m_laneProps.m_props = rightHwLaneProps.ToArray();
+
+            info.TrimNonHighwayProps(false, false, true);
 
             ///////////////////////////
             // AI                    //

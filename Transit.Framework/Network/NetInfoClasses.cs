@@ -11,6 +11,10 @@ namespace Transit.Framework.Network
         public const string NEXT_HIGHWAY1L_TUNNEL = "NExtHighwayTunnel1LTunnel";
         public const string NEXT_HIGHWAY2L = "NExtHighway2L";
         public const string NEXT_HIGHWAY2L_TUNNEL = "NExtHighwayTunnel2LTunnel";
+        public const string NEXT_HIGHWAY2L2W = "NExtHighway2L2W";
+        public const string NEXT_HIGHWAY2L2W_TUNNEL = "NExtHighwayTunnel2L2W";
+        public const string NEXT_HIGHWAYL1R2 = "NExtHighwayL1R2";
+        public const string NEXT_HIGHWAYL1R2_TUNNEL = "NExtHighwayTunnelL1R2";
         public const string NEXT_HIGHWAY4L = "NExtHighway4L";
         public const string NEXT_HIGHWAY4L_TUNNEL = "NExtHighwayTunnel4LTunnel";
         public const string NEXT_HIGHWAY5L = "NExtHighway5L";
