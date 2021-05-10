@@ -108,7 +108,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Common
             return rightHwLane;
         }
 
-        public static IEnumerable<NetInfo.Lane> SetHighwayVehicleLanes(this NetInfo hwInfo, int lanesToAdd = 0)
+        public static IEnumerable<NetInfo.Lane> SetHighwayVehicleLanes(this NetInfo hwInfo, int lanesToAdd = 0, bool isTwoWay = false)
         {
             if (lanesToAdd < 0)
             {
@@ -145,7 +145,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Common
             var nbLanes = vehicleLanes.Count();
             var positionStart = laneWidth * ((1f - nbLanes) / 2f);
 
-            for (var i = 0; i < vehicleLanes.Length; i++)
+            for (var i = 0; i < nbLanes; i++)
             {
                 var l = vehicleLanes[i];
                 l.m_stopType = VehicleInfo.VehicleType.None;
@@ -158,6 +158,17 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Common
                 foreach (var prop in l.m_laneProps.m_props)
                 {
                     prop.m_position = new Vector3(0, 0, 0);
+                }
+                if (isTwoWay)
+                {
+                    if (l.m_position < 0.0f)
+                    {
+                        l.m_direction = NetInfo.Direction.Backward;
+                    }
+                    else
+                    {
+                        l.m_direction = NetInfo.Direction.Forward;
+                    }
                 }
             }
 
@@ -325,26 +336,30 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Common
         public static void AddLeftWallLights(this ICollection<NetLaneProps.Prop> props, int xPos = 0)
         {
             var wallLightPropInfo = Prefabs.Find<PropInfo>("Wall Light Orange");
-            var wallLightProp = new NetLaneProps.Prop();
-            wallLightProp.m_prop = wallLightPropInfo.ShallowClone();
-            wallLightProp.m_probability = 100;
-            wallLightProp.m_repeatDistance = 20;
-            wallLightProp.m_segmentOffset = 0;
-            wallLightProp.m_angle = 270;
-            wallLightProp.m_position = new Vector3(xPos, 1.5f, 0);
+            var wallLightProp = new NetLaneProps.Prop
+            {
+                m_prop = wallLightPropInfo.ShallowClone(),
+                m_probability = 100,
+                m_repeatDistance = 20,
+                m_segmentOffset = 0,
+                m_angle = 270,
+                m_position = new Vector3(xPos, 1.5f, 0)
+            };
             props.Add(wallLightProp);
         }
 
         public static void AddRightWallLights(this ICollection<NetLaneProps.Prop> props, int xPos = 0)
         {
             var wallLightPropInfo = Prefabs.Find<PropInfo>("Wall Light Orange");
-            var wallLightProp = new NetLaneProps.Prop();
-            wallLightProp.m_prop = wallLightPropInfo.ShallowClone();
-            wallLightProp.m_probability = 100;
-            wallLightProp.m_repeatDistance = 20;
-            wallLightProp.m_segmentOffset = 0;
-            wallLightProp.m_angle = 90;
-            wallLightProp.m_position = new Vector3(xPos, 1.5f, 0);
+            var wallLightProp = new NetLaneProps.Prop
+            {
+                m_prop = wallLightPropInfo.ShallowClone(),
+                m_probability = 100,
+                m_repeatDistance = 20,
+                m_segmentOffset = 0,
+                m_angle = 90,
+                m_position = new Vector3(xPos, 1.5f, 0)
+            };
             props.Add(wallLightProp);
         }
 
@@ -367,12 +382,14 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Common
             }
         }
 
-        public static void TrimNonHighwayProps(this NetInfo info, bool removeRightStreetLights = false, bool removeLeftStreetLights = true)
+        public static void TrimNonHighwayProps(this NetInfo info, bool removeRightStreetLights = false, bool removeLeftStreetLights = true, bool removeMotorwaySigns = false)
         {
             var randomProp = Prefabs.Find<PropInfo>("Random Street Prop", false);
             var streetLight = Prefabs.Find<PropInfo>("New Street Light", false);
             var streetLightHw = Prefabs.Find<PropInfo>("New Street Light Highway", false);
             var manhole = Prefabs.Find<PropInfo>("Manhole", false);
+            var motorwaySign = Prefabs.Find<PropInfo>("Motorway Sign", false);
+            var motorwayOverroadSigns = Prefabs.Find<PropInfo>("Motorway Overroad Signs", false);
 
             foreach (var laneProps in info.m_lanes.Select(l => l.m_laneProps).Where(lpi => lpi != null))
             {
@@ -422,6 +439,14 @@ namespace Transit.Addon.RoadExtensions.Roads.Highways.Common
                         {
                             prop.m_probability = 0;
                             //continue;
+                        }
+                    }
+
+                    if (removeMotorwaySigns)
+                    {
+                        if (prop.m_prop == motorwaySign || prop.m_prop == motorwayOverroadSigns)
+                        {
+                            continue;
                         }
                     }
 
