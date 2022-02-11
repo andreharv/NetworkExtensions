@@ -3,21 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28917.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_References", "_References", "{FC5D316C-D7B8-4986-9E91-D3784D4A8CBB}"
-	ProjectSection(SolutionItems) = preProject
-		D:\Program Files\SteamLibrary\steamapps\common\Cities_Skylines\Cities_Data\Managed\Assembly-CSharp-firstpass.dll = D:\Program Files\SteamLibrary\steamapps\common\Cities_Skylines\Cities_Data\Managed\Assembly-CSharp-firstpass.dll
-		D:\Program Files\SteamLibrary\steamapps\common\Cities_Skylines\Cities_Data\Managed\Assembly-CSharp.dll = D:\Program Files\SteamLibrary\steamapps\common\Cities_Skylines\Cities_Data\Managed\Assembly-CSharp.dll
-		D:\Program Files\SteamLibrary\steamapps\common\Cities_Skylines\Cities_Data\Managed\ColossalManaged.dll = D:\Program Files\SteamLibrary\steamapps\common\Cities_Skylines\Cities_Data\Managed\ColossalManaged.dll
-		D:\Program Files\SteamLibrary\steamapps\common\Cities_Skylines\Cities_Data\Managed\ICities.dll = D:\Program Files\SteamLibrary\steamapps\common\Cities_Skylines\Cities_Data\Managed\ICities.dll
-		References\Mono.Posix.dll = References\Mono.Posix.dll
-		References\Mono.Security.dll = References\Mono.Security.dll
-		References\UnityEngine.Analytics.dll = References\UnityEngine.Analytics.dll
-		D:\Program Files\SteamLibrary\steamapps\common\Cities_Skylines\Cities_Data\Managed\UnityEngine.dll = D:\Program Files\SteamLibrary\steamapps\common\Cities_Skylines\Cities_Data\Managed\UnityEngine.dll
-		D:\Program Files\SteamLibrary\steamapps\common\Cities_Skylines\Cities_Data\Managed\UnityEngine.Networking.dll = D:\Program Files\SteamLibrary\steamapps\common\Cities_Skylines\Cities_Data\Managed\UnityEngine.Networking.dll
-		D:\Program Files\SteamLibrary\steamapps\common\Cities_Skylines\Cities_Data\Managed\UnityEngine.UI.dll = D:\Program Files\SteamLibrary\steamapps\common\Cities_Skylines\Cities_Data\Managed\UnityEngine.UI.dll
-		References\UnityEngine.xml = References\UnityEngine.xml
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjUnity3D", "ObjUnity3D\ObjUnity3D.csproj", "{97D70503-6567-41A1-92FC-66D813A53370}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Framework.Redirection", "Transit.Framework.Redirection\Transit.Framework.Redirection.csproj", "{7DCC08EF-DC85-47A4-BD6F-79FC52C7EF13}"
