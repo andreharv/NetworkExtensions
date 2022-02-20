@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,6 +36,10 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="0Harmony, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Lib.Harmony.2.2.0\lib\net35\0Harmony.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>..\References\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
@@ -47,11 +52,15 @@
       <HintPath>..\References\ICities.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="ObjUnity3D">
+      <HintPath>D:\Program Files\SteamLibrary\steamapps\common\Cities_Skylines\Cities_Data\Managed\ObjUnity3D.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
-      <HintPath>..\References\UnityEngine.dll</HintPath>
+      <HintPath>D:\Program Files\SteamLibrary\steamapps\common\Cities_Skylines\Cities_Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -157,15 +166,14 @@
     <Compile Include="Framework\_Extensions\TypeExtensions.cs" />
     <Compile Include="Framework\_Extensions\UIHelperBaseExtensions.cs" />
     <Compile Include="Framework\_Extensions\XmlExtensions.cs" />
-    <Compile Include="Hooks\AI\TAMNetAI.CheckBuildPosition.cs" />
-    <Compile Include="Hooks\AI\TAMRoadAI.CreateZoneBlocks.cs" />
-    <Compile Include="Hooks\AI\TAMRoadAI.Snapping.cs" />
-    <Compile Include="Hooks\HooksInstaller.cs" />
-    <Compile Include="Hooks\UI\TAMGeneratedGroupPanel.cs" />
-    <Compile Include="Hooks\UI\TAMRoadsGroupPanel.cs" />
     <Compile Include="Menus\Roads\RExExtendedMenus.cs" />
     <Compile Include="Mod.cs" />
     <Compile Include="Mod.Settings.cs" />
+    <Compile Include="Patching\AI\CheckBuildPositionPatch.cs" />
+    <Compile Include="Patching\AI\CreateZoneBlocksPatch.cs" />
+    <Compile Include="Patching\AI\GetLengthSnapPatch.cs" />
+    <Compile Include="Patching\UI\GetCategoryOrderPatch.cs" />
+    <Compile Include="Patching\UI\SpawnButtonEntryPatch.cs" />
     <Compile Include="Props\MediumAvenueSideLightBuilder.cs" />
     <Compile Include="Props\LargeAvenueMedianLightBuilder.cs" />
     <Compile Include="Redirection\RedirectionHelper.cs" />
@@ -3327,6 +3335,7 @@
     <None Include="Buildings\Wood8mEPillar.crp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="packages.config" />
     <None Include="Props\RetractBollard.crp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -4231,15 +4240,25 @@
     <None Include="Roads\TinyRoads\Oneway1LBicycle\thumbnails.psd" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ObjUnity3D\ObjUnity3D.csproj">
-      <Project>{97d70503-6567-41a1-92fc-66d813a53370}</Project>
-      <Name>ObjUnity3D</Name>
-    </ProjectReference>
+    <Folder Include="Hooks\AI\" />
+    <Folder Include="Hooks\UI\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>forfiles /P "$(ProjectDir)bin\$(ConfigurationName)" /S /M *.CRP /C "cmd /c move @file "$(ProjectDir)bin\$(ConfigurationName)""
+
+if $(ConfigurationName) == Debug (
+rd /s /q  "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\NetworkExtensions2"
+mkdir "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\NetworkExtensions2"
+xcopy /q /y /e "$(ProjectDir)bin\$(ConfigurationName)" "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\NetworkExtensions2"
+) else (
+rd /s /q  "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\NetworkExtensions2"
+mkdir "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\NetworkExtensions2"
+xcopy /q /y /e "$(ProjectDir)bin\$(ConfigurationName)" "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\NetworkExtensions2"
+)</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>del /f /q "$(TargetDir)"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -90,7 +90,7 @@ namespace Transit.Addon.RoadExtensions
             _roadsInstaller = _container.AddInstallerComponent<RoadsInstaller>();
             _roadsInstaller.Host = this;
         }
-		
+
         public override void OnLevelLoaded(LoadMode mode)
         {
             base.OnLevelLoaded(mode);

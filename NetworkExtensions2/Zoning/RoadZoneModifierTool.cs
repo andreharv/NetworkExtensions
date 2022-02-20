@@ -1,5 +1,6 @@
 ﻿using ColossalFramework;
 using ICities;
+using NetworkExtensions;
 using Transit.Framework.ExtensionPoints.AI;
 using UnityEngine;
 
@@ -14,12 +15,7 @@ namespace Transit.Addon.Tools.Zoning
         private static bool GetIsUpgradeNetToolActive()
         {
             var tool = ToolsModifierControl.toolController.CurrentTool as NetTool;
-            if (tool == null)
-            {
-                return false;
-            }
-
-            if (tool.m_mode != NetTool.Mode.Upgrade)
+            if (tool == null || tool.m_mode != NetTool.Mode.Upgrade)
             {
                 return false;
             }
@@ -29,12 +25,7 @@ namespace Transit.Addon.Tools.Zoning
 
         public override void OnUpdate(float realTimeDelta, float simulationTimeDelta)
         {
-            if (!ToolModule.ActiveOptions.IsFlagSet(ToolModule.ModOptions.RoadZoneModifier))
-            {
-                return;
-            }
-
-            if (ToolsModifierControl.toolController == null)
+            if (Mod.FoundZoningAdjuster || ToolsModifierControl.toolController == null || !ToolModule.ActiveOptions.IsFlagSet(ToolModule.ModOptions.RoadZoneModifier))
             {
                 return;
             }
