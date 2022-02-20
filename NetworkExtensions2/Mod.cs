@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using ColossalFramework;
 using ColossalFramework.Plugins;
 using Transit.Framework;
@@ -38,6 +39,37 @@ namespace NetworkExtensions
 
                 return _isNEXT2Installed.Value;
             }
+        }
+        public static bool FoundZoningAdjuster => ConflictingMods().HasFlag(ConflictingModFlag.ZoningAdjuster);
+
+        private static bool m_ConflictingModNeedPerformSearch = true;
+        private static ConflictingModFlag m_ConflictingMods = ConflictingModFlag.None;
+        public static ConflictingModFlag ConflictingMods()
+        {
+            if (m_ConflictingMods == ConflictingModFlag.None && m_ConflictingModNeedPerformSearch)
+            {
+                m_ConflictingModNeedPerformSearch = false;
+                foreach (PluginManager.PluginInfo plugin in PluginManager.instance.GetPluginsInfo())
+                {
+                    foreach (Assembly assembly in plugin.GetAssemblies())
+                    {
+                        switch (assembly.GetName().Name)
+                        {
+                            case "ZoningAdjuster":
+                                m_ConflictingMods |= ConflictingModFlag.ZoningAdjuster;
+                                break;
+                        }
+                    }
+                }
+            }
+            return m_ConflictingMods;
+        }
+
+        [Flags]
+        public enum ConflictingModFlag : short
+        {
+            None = 0,
+            ZoningAdjuster = 1
         }
     }
 }
