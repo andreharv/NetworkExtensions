@@ -53,8 +53,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="ObjUnity3D">
-      <HintPath>D:\Program Files\SteamLibrary\steamapps\common\Cities_Skylines\Cities_Data\Managed\ObjUnity3D.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\References\ObjUnity3D.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
