@@ -36,12 +36,15 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Lib.Harmony.2.2.0\lib\net35\0Harmony.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>..\References\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="CitiesHarmony.API, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CitiesHarmony.API.2.1.0\lib\net35\CitiesHarmony.API.dll</HintPath>
+    </Reference>
+    <Reference Include="CitiesHarmony.Harmony, Version=2.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CitiesHarmony.Harmony.2.2.0\lib\net35\CitiesHarmony.Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="ColossalManaged">
@@ -173,6 +176,7 @@
     <Compile Include="Patching\AI\CheckBuildPositionPatch.cs" />
     <Compile Include="Patching\AI\CreateZoneBlocksPatch.cs" />
     <Compile Include="Patching\AI\GetLengthSnapPatch.cs" />
+    <Compile Include="Patching\Patcher.cs" />
     <Compile Include="Patching\UI\GetCategoryOrderPatch.cs" />
     <Compile Include="Patching\UI\SpawnButtonEntryPatch.cs" />
     <Compile Include="Props\MediumAvenueSideLightBuilder.cs" />
@@ -4240,10 +4244,7 @@
     </None>
     <None Include="Roads\TinyRoads\Oneway1LBicycle\thumbnails.psd" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Hooks\AI\" />
-    <Folder Include="Hooks\UI\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>forfiles /P "$(ProjectDir)bin\$(ConfigurationName)" /S /M *.CRP /C "cmd /c move @file "$(ProjectDir)bin\$(ConfigurationName)""
