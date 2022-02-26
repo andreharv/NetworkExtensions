@@ -1,8 +1,5 @@
-﻿using ColossalFramework;
-using ColossalFramework.Math;
-using HarmonyLib;
+﻿using HarmonyLib;
 using System;
-using System.Linq;
 using System.Reflection;
 using Transit.Framework.ExtensionPoints.AI;
 using UnityEngine;
