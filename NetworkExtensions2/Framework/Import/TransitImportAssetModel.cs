@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace NetworkExtensions2.Framework.Import
 {
-	internal class ImportTransitModel : ImportAssetLodded
+	internal class TransitImportAssetModel : ImportAssetLodded
 	{
 		private Shader m_TemplateShader;
 
@@ -68,7 +68,7 @@ namespace NetworkExtensions2.Framework.Import
 			}
 		}
 
-		public ImportTransitModel(GameObject template, PreviewCamera camera, Shader templateShader) : base(template, camera)
+		public TransitImportAssetModel(GameObject template, PreviewCamera camera, Shader templateShader) : base(template, camera)
 		{
 			this.m_LodTriangleTarget = 50;
 			this.m_TemplateShader = templateShader;

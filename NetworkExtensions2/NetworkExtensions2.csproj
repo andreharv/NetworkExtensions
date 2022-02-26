@@ -95,7 +95,7 @@
     <Compile Include="Framework\Debug.cs" />
     <Compile Include="Framework\ExtendedToolBase.cs" />
     <Compile Include="Framework\Import\ImportTransitAsset.cs" />
-    <Compile Include="Framework\Import\ImportTransitModel.cs" />
+    <Compile Include="Framework\Import\TransitImportAssetModel.cs" />
     <Compile Include="Framework\Installer.cs" />
     <Compile Include="Framework\Interfaces\IActivable.cs" />
     <Compile Include="Framework\Interfaces\IDescriptor.cs" />
