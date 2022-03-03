@@ -24,7 +24,7 @@ namespace Transit.Framework.Mod
         {
             private static bool Done { get; set; } //Only one localization throughout the application
 
-            protected override bool ValidatePrerequisites()
+            protected override bool ValidatePrerequisites(TransitModBase host)
             {
                 var localeManager = SingletonLite<LocaleManager>.instance;
                 if (localeManager == null)

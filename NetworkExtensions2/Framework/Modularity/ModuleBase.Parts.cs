@@ -13,13 +13,11 @@ namespace Transit.Framework.Modularity
             {
                 if (_parts == null)
                 {
-                    var partType = typeof(IModulePart);
-
                     _parts = GetType()
                         .Assembly
                         .GetTypes()
                         .Where(t => !t.IsAbstract && !t.IsInterface)
-                        .Where(partType.IsAssignableFrom)
+                        .Where(typeof(IModulePart).IsAssignableFrom)
                         .Select(t => (IModulePart)Activator.CreateInstance(t))
                         .WhereMeetRequirements()
                         .OrderOrderables()

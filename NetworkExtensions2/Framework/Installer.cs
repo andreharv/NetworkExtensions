@@ -83,7 +83,7 @@ namespace Transit.Framework
         {
             if (!_doneWithInstall)
             {
-                if (ValidatePrerequisites())
+                if (ValidatePrerequisites(Host))
                 {
                     Install(Host); // Host is copyied locally to the function, the current object will be destroyed
                     Debug.Log(string.Format("TFW: {0} completed", GetType().Name));
@@ -101,7 +101,7 @@ namespace Transit.Framework
             }
         }
 
-        protected abstract bool ValidatePrerequisites();
+        protected abstract bool ValidatePrerequisites(THost host);
         protected abstract void Install(THost host);
     }
 }

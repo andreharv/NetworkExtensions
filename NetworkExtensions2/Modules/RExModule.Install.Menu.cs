@@ -16,7 +16,7 @@ namespace Transit.Addon.RoadExtensions
         {
             private static bool Done { get; set; } //Only one MenuAssets throughout the application
 
-            protected override bool ValidatePrerequisites()
+            protected override bool ValidatePrerequisites(RExModule host)
             {
                 return true;
             }

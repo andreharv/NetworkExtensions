@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
-using Transit.Addon.RoadExtensions.Compatibility;
 using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.Modularity;
 using UnityEngine;
 using System.Diagnostics;
+using NetworkExtensions2.Framework.Import;
+using System.IO;
 
 #if DEBUG
 using Debug = Transit.Framework.Debug;
@@ -19,14 +20,37 @@ namespace Transit.Addon.RoadExtensions
 {
     public partial class RExModule
     {
+        private const string ROAD_RESOURCES = @"Resources\Roads\";
+        private static Dictionary<string, ResourceUnit> m_NewInfoResources;
+        protected static Dictionary<string, ResourceUnit> NewInfoResources
+        {
+            get
+            {
+                if (m_NewInfoResources == null)
+                    m_NewInfoResources = new Dictionary<string, ResourceUnit>();
+                return m_NewInfoResources;
+            }
+            set { m_NewInfoResources = value; }
+        }
+
         [UsedImplicitly]
         private class RoadsInstaller : Installer<RExModule>
         {
-            protected override bool ValidatePrerequisites()
+            private static bool m_CallbackSet;
+            private static bool m_ImportFinished;
+            private static string m_ResourcePath;
+            private static string[] m_Filenames;
+            private static int m_FilenamesLength;
+            private static ImportTransitAsset[] m_ImportTransitAssets;
+            protected override bool ValidatePrerequisites(RExModule host)
+            {
+                return ValidateRequiredNetCollections() && ValidateResourceImports(host);
+            }
+            private static bool ValidateRequiredNetCollections()
             {
                 foreach (var req in RequiredNetCollections)
                 {
-                    if(GameObject.Find(req) == null)
+                    if (GameObject.Find(req) == null)
                     {
                         return false;
                     }
@@ -37,12 +61,101 @@ namespace Transit.Addon.RoadExtensions
                 {
                     return false;
                 }
-                if (RequiredNetCollections.Any(r=>netColl.Any(n=>n.name == r)==false))
+                if (RequiredNetCollections.Any(r => netColl.Any(n => n.name == r) == false))
                 {
                     return false;
                 }
-
                 return true;
+            }
+            private static bool ValidateResourceImports(RExModule host)
+            {
+                var swAll = new Stopwatch();
+                swAll.Start();
+                Debug.Log("Checkpoint1");
+                if (!m_ImportFinished)
+                {
+                    Debug.Log("Checkpoint2");
+                    if (!m_CallbackSet)
+                    {
+                        Debug.Log("Checkpoint3");
+                        m_CallbackSet = true;
+                        ImportTransitAsset.CallbackCalled += (sender, args) =>
+                        {
+                            Debug.Log("Checkpoint4");
+                            NewInfoResources.Add(args.Name, args.ResourceUnit);
+                            Debug.Log("netinforesource added!");
+                            var fileCount = ImportAllTransitAssets.FileCount;
+                            if (fileCount > 0 && NewInfoResources.Count == fileCount)
+                            {
+                                Debug.Log("Checkpoint5");
+                                m_ImportFinished = true;
+                            }
+                        };
+                    }
+
+                    Debug.Log("Checkpoint6");
+                    if (string.IsNullOrEmpty(m_ResourcePath))
+                        m_ResourcePath = Path.Combine(host.AssetPath, ROAD_RESOURCES);
+                    if (m_ImportTransitAssets != null || Directory.Exists(m_ResourcePath))
+                    {
+                        Debug.Log("Checkpoint7");
+                        if (m_Filenames == null)
+                        {
+                            m_Filenames = Directory.GetFiles(m_ResourcePath, "*.fbx");
+                            m_FilenamesLength = m_Filenames.Length;
+                        }
+
+                        if (m_FilenamesLength > 0)
+                        {
+                            Debug.Log("Checkpoint8");
+                            var shader = Shader.Find("Custom/Net/Road");
+                            if (m_ImportTransitAssets == null)
+                            {
+                                Debug.Log("Checkpoint9");
+                                m_ImportTransitAssets = new ImportTransitAsset[m_FilenamesLength];
+                            }
+                            for (int i = 0; i < m_FilenamesLength; i++)
+                            {
+                                Debug.Log("Checkpoint10");
+                                var importTransitAsset = m_ImportTransitAssets[i];
+                                var filename = m_Filenames[i];
+                                if (importTransitAsset == null)
+                                {
+                                    Debug.Log("Checkpoint11");
+                                    importTransitAsset = new ImportTransitAsset();
+                                    importTransitAsset.ImportAsset(shader, m_ResourcePath, filename);
+                                    m_ImportTransitAssets[i] = importTransitAsset;
+                                }
+                                else if (!m_NewInfoResources.ContainsKey(filename))
+                                {
+                                    Debug.Log("Checkpoint12");
+                                    m_ImportTransitAssets[i].Update();
+                                }
+                            }
+                            if (NewInfoResources.Count == m_FilenamesLength)
+                            {
+                                Debug.Log("Checkpoint13");
+                                Debug.Log("newInfoResources Count:" + NewInfoResources.Count);
+                                if (NewInfoResources.Count > 0)
+                                {
+                                    var hi = NewInfoResources.First().Value;
+                                    Debug.Log("Mesh exists " + (hi.Mesh != null));
+                                    Debug.Log("lodMesh exists " + (hi.LodMesh != null));
+                                    Debug.Log("Material exists " + (hi.Material != null));
+                                    Debug.Log("lodMaterial exists " + (hi.LodMaterial != null));
+                                }
+                                swAll.Stop();
+                                Debug.Log($"All RExModule Prereqs loaded in {swAll.ElapsedMilliseconds}ms");
+                                return true;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError("The specified path: " + m_ResourcePath + " does not exist");
+                    }
+                }
+                return false;
             }
 
             protected override void Install(RExModule host)
@@ -59,7 +172,6 @@ namespace Transit.Addon.RoadExtensions
             private static void InstallPropInfos(RExModule host)
             {
                 var newInfos = new List<PropInfo>();
-
                 var piBuilders = host.Parts
                     .OfType<IPrefabBuilder<PropInfo>>()
                     .WhereActivated()
@@ -110,6 +222,7 @@ namespace Transit.Addon.RoadExtensions
                     }
                 });
             }
+
             private static readonly Dictionary<string, NetInfo> m_BasedPrefabs = new Dictionary<string, NetInfo>();
             private static readonly Dictionary<NetInfoVersion, NetInfo> m_Infos = new Dictionary<NetInfoVersion, NetInfo>();
             private void InstallNetInfos(RExModule host)

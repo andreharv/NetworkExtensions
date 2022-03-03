@@ -94,7 +94,10 @@
     <Compile Include="Framework\Builders\_Extensions\PrefabBuilderExtensions.cs" />
     <Compile Include="Framework\Debug.cs" />
     <Compile Include="Framework\ExtendedToolBase.cs" />
+    <Compile Include="Framework\Import\IImportable.cs" />
+    <Compile Include="Framework\Import\ImportAllTransitAssets.cs" />
     <Compile Include="Framework\Import\ImportTransitAsset.cs" />
+    <Compile Include="Framework\Import\ResourceUnit.cs" />
     <Compile Include="Framework\Import\TransitImportAssetModel.cs" />
     <Compile Include="Framework\Installer.cs" />
     <Compile Include="Framework\Interfaces\IActivable.cs" />
@@ -215,9 +218,9 @@
     <Compile Include="Roads\Common\RoadModels.8m.2mSW.cs" />
     <Compile Include="Roads\Common\RoadModels.8m.1p5mSW.cs" />
     <Compile Include="Roads\Common\RoadModels.32m.3mSW2mMdn.cs" />
-    <Compile Include="RExModule.Install.Menu.cs" />
-    <Compile Include="RExModule.Install.Roads.cs" />
-    <Compile Include="RExModule.Install.Init.cs" />
+    <Compile Include="Modules\RExModule.Install.Menu.cs" />
+    <Compile Include="Modules\RExModule.Install.Roads.cs" />
+    <Compile Include="Modules\RExModule.Install.Init.cs" />
     <Compile Include="Roads\PedestrianRoads\BoardwalkTiny\ZonablePedestrianTinyBoardwalkRoadBuilder.cs" />
     <Compile Include="Roads\PedestrianRoads\Common\ZonablePedestrianHelper.Props.cs" />
     <Compile Include="Roads\PedestrianRoads\Common\ZonablePedestrianHelper.Texturing.cs" />
@@ -275,7 +278,7 @@
     <Compile Include="Roads\Common\RoadModels.16m.2mSW.cs" />
     <Compile Include="Roads\Common\RoadModels.16m.3mSW.cs" />
     <Compile Include="Roads\SmallHeavyRoads\OneWay3L\OneWay3LBuilder.cs" />
-    <Compile Include="RExModule.Install.cs" />
+    <Compile Include="Modules\RExModule.Install.cs" />
     <Compile Include="Roads\Highways\Highway1L\Highway1LBuilder.cs" />
     <Compile Include="Roads\SmallHeavyRoads\OneWay4L\OneWay4LBuilder.cs" />
     <Compile Include="Roads\SmallHeavyRoads\OneWay4L\OneWay4LBuilder.Texturing.cs" />
@@ -283,14 +286,14 @@
     <Compile Include="Roads\SmallHeavyRoads\SmallAvenue4L\SmallAvenue4LBuilder.cs" />
     <Compile Include="Roads\Highways\Common\HighwayHelper.cs" />
     <Compile Include="Roads\Highways\Highway2L\Highway2LBuilder.cs" />
-    <Compile Include="RExModule.cs" />
+    <Compile Include="Modules\RExModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Roads\Highways\Highway6L\Highway6LBuilder.cs" />
     <Compile Include="Roads\TinyRoads\Oneway1L\Oneway1LBuilder.cs" />
     <Compile Include="SomeRoads\PlanningRoadLargeBuilder.cs" />
     <Compile Include="SomeRoads\PlanningRoadSmallBuilder.cs" />
-    <Compile Include="ToolModule.cs" />
-    <Compile Include="ToolModule.Settings.cs" />
+    <Compile Include="Modules\ToolModule.cs" />
+    <Compile Include="Modules\ToolModule.Settings.cs" />
     <Compile Include="Zoning\RoadZoneModifierTool.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -496,6 +499,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway6L\Textures\Tunnel_Segment__APRMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Roads\GroundPavement2L_a.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Roads\GroundPavement2L_d.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Roads\GroundPavement2L_n.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\Avenues\AsymAvenue5L\AsymAvenueL2R3\infotooltip.png">
@@ -3351,6 +3363,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Props\WoodBollard.crp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Roads\GroundPavement2L.fbx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\Common\Meshes\16m\3mSW3mBikeLanes\Elevated.obj">

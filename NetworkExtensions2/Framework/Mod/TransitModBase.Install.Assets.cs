@@ -22,7 +22,7 @@ namespace Transit.Framework.Mod
         {
             private static bool Done { get; set; } // Only one Assets installation throughout the application
 
-            protected override bool ValidatePrerequisites()
+            protected override bool ValidatePrerequisites(TransitModBase host)
             {
                 return true;
             }
