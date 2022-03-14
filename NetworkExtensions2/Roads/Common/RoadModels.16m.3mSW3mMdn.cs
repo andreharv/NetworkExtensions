@@ -22,15 +22,16 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                         var segments1 = info.m_segments[1].ShallowClone();
                         var segments2 = info.m_segments[2].ShallowClone();
                         var segments3 = info.m_segments[0].ShallowClone();
-
-                        segments3.SetFlagsDefault().SetMeshes(@"Roads\Common\Meshes\16m\3mSW3mMdn\Ground_Segment_Median.obj", @"Roads\Common\Meshes\16m\3mSW3mMdn\Ground_Segment_Median_LOD.obj");
+                        segments3.SetFlagsDefault().SetResources("Road3");
+                        
+                        //segments3.SetFlagsDefault().SetMeshes(@"Roads\Common\Meshes\16m\3mSW3mMdn\Ground_Segment_Median.obj", @"Roads\Common\Meshes\16m\3mSW3mMdn\Ground_Segment_Median_LOD.obj");
 
                         var theNodes = new List<NetInfo.Node>();
                         theNodes.AddRange(info.m_nodes);
                         var medianNode = info.m_nodes[0].ShallowClone();
                         medianNode.SetMeshes(@"Roads\Common\Meshes\16m\3mSW3mMdn\Ground_Node_Median.obj", @"Roads\Common\Meshes\blank.obj");
                         theNodes.Add(medianNode);
-                        info.m_segments = new[] { segments0, segments1, segments2, segments3 };
+                        info.m_segments = new[] { /*segments0, segments1, segments2,*/ segments3 };
                         info.m_nodes = theNodes.ToArray();
                         break;
                     }

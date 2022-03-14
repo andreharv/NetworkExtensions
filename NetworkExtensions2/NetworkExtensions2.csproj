@@ -55,6 +55,9 @@
       <HintPath>..\References\ICities.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net35\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="ObjUnity3D">
       <HintPath>..\References\ObjUnity3D.dll</HintPath>
     </Reference>
@@ -95,8 +98,8 @@
     <Compile Include="Framework\Debug.cs" />
     <Compile Include="Framework\ExtendedToolBase.cs" />
     <Compile Include="Framework\Import\IImportable.cs" />
-    <Compile Include="Framework\Import\ImportAllTransitAssets.cs" />
     <Compile Include="Framework\Import\ImportTransitAsset.cs" />
+    <Compile Include="Framework\Import\ModelImporter.cs" />
     <Compile Include="Framework\Import\ResourceUnit.cs" />
     <Compile Include="Framework\Import\TransitImportAssetModel.cs" />
     <Compile Include="Framework\Installer.cs" />
@@ -501,13 +504,16 @@
     <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway6L\Textures\Tunnel_Segment__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Roads\GroundPavement2L_a.png">
+    <Content Include="Resources\Roads\Road3_a.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Roads\GroundPavement2L_d.png">
+    <Content Include="Resources\Roads\Road3_d.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Roads\GroundPavement2L_n.png">
+    <Content Include="Resources\Roads\Road3_p.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Roads\Road3_r.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Roads\Avenues\AsymAvenue5L\AsymAvenueL2R3\infotooltip.png">
@@ -3365,7 +3371,7 @@
     <None Include="Props\WoodBollard.crp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Roads\GroundPavement2L.fbx">
+    <None Include="Resources\Roads\Road3.fbx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Roads\Common\Meshes\16m\3mSW3mBikeLanes\Elevated.obj">

@@ -74,7 +74,7 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallRoads.BasicRoadMdn
             ///////////////////////////
             // Texturing             //
             ///////////////////////////
-            SetupTextures(info, version);
+            //SetupTextures(info, version);
 
             ///////////////////////////
             // Set up                //

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using ColossalFramework;
+using NetworkExtensions2.Framework.Import;
 using ObjUnity3D;
 using Transit.Framework.Texturing;
 using UnityEngine;
@@ -23,7 +24,7 @@ namespace Transit.Framework
         private readonly ICollection<Texture2D> _specialTextures = new List<Texture2D>();
         public ICollection<Texture2D> SpecialTextures { get { return _specialTextures; } }
 #endif
-
+        private readonly IDictionary<string, ResourceUnit> _allResourceUnits = new Dictionary<string, ResourceUnit>(StringComparer.InvariantCultureIgnoreCase);
         private readonly IDictionary<string, byte[]> _allTexturesRaw = new Dictionary<string, byte[]>(StringComparer.InvariantCultureIgnoreCase);
         private readonly IDictionary<string, Texture2D> _allTextures = new Dictionary<string, Texture2D>(StringComparer.InvariantCultureIgnoreCase);
         private readonly IDictionary<string, Mesh> _allMeshes = new Dictionary<string, Mesh>(StringComparer.InvariantCultureIgnoreCase);

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using NetworkExtensions2.Framework.Import;
+using System.Collections.Generic;
 using Transit.Framework.Texturing;
 using UnityEngine;
 
@@ -38,6 +39,22 @@ namespace Transit.Framework
             return segment;
         }
 
+        public static NetInfo.Segment SetTextures(this NetInfo.Segment segment, Material newMaterial, Material newLodMaterial = null)
+        {
+            if (newMaterial != null)
+            {
+                segment.m_material = newMaterial.CreateRoadMaterial(segment.m_material);
+                segment.m_segmentMaterial = segment.m_material;
+            }
+
+            if (newLodMaterial != null && segment.m_lodMaterial != null)
+            {
+                segment.m_lodMaterial = newMaterial.CreateRoadMaterial(segment.m_lodMaterial);
+            }
+
+            return segment;
+        }
+
         public static NetInfo.Segment SetMeshes(this NetInfo.Segment segment, string newMeshPath, string newLODMeshPath = null)
         {
             segment.m_mesh = AssetManager.instance.GetMesh(newMeshPath);
@@ -50,7 +67,24 @@ namespace Transit.Framework
             return segment;
         }
 
+        public static NetInfo.Segment SetMeshes2(this NetInfo.Segment segment, string newMeshPath)
+        {
+            var mesh = ImportTransitAsset.GetMesh(newMeshPath);
+            segment.m_mesh = mesh;
+            segment.m_segmentMesh = mesh;
 
+            return segment;
+        }
+        public static NetInfo.Segment SetResources(this NetInfo.Segment segment, string resourcePath)
+        {
+            var mesh = ImportTransitAsset.GetMesh(resourcePath);
+            var material = ImportTransitAsset.GetMaterial(resourcePath);
+            segment.m_mesh = mesh;
+            segment.m_segmentMesh = mesh;
+            segment.SetTextures(material);
+            return segment;
+
+        }
         public static NetInfo.Segment SetFlagsDefault(this NetInfo.Segment segment)
         {
             segment.m_backwardForbidden = NetSegment.Flags.None;
