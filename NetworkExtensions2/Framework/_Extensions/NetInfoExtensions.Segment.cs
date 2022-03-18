@@ -1,4 +1,5 @@
-﻿using NetworkExtensions2.Framework.Import;
+﻿using NetworkExtensions2.Framework._Extensions;
+using NetworkExtensions2.Framework.Import;
 using System.Collections.Generic;
 using Transit.Framework.Texturing;
 using UnityEngine;
@@ -9,7 +10,7 @@ namespace Transit.Framework
     {
         public static NetInfo SetAllSegmentsTexture(this NetInfo info, TextureSet newTextures, LODTextureSet newLODTextures = null)
         {
-            for (var i = 0; i < info.m_segments.Length;i++)
+            for (var i = 0; i < info.m_segments.Length; i++)
             {
                 info.m_segments[i].SetTextures(newTextures, newLODTextures);
             }
@@ -69,16 +70,19 @@ namespace Transit.Framework
 
         public static NetInfo.Segment SetMeshes2(this NetInfo.Segment segment, string newMeshPath)
         {
-            var mesh = ImportTransitAsset.GetMesh(newMeshPath);
+            var mesh = ImportAllAssets.GetMesh(newMeshPath);
             segment.m_mesh = mesh;
             segment.m_segmentMesh = mesh;
 
             return segment;
         }
-        public static NetInfo.Segment SetResources(this NetInfo.Segment segment, string resourcePath)
+        public static NetInfo.Segment SetResources(this NetInfo.Segment segment, string baseMeshName, string baseTextureName, float offset = 0)
         {
-            var mesh = ImportTransitAsset.GetMesh(resourcePath);
-            var material = ImportTransitAsset.GetMaterial(resourcePath);
+            var resourcePath = baseMeshName + baseTextureName;
+            var mesh = ImportAllAssets.GetMesh(resourcePath);
+            if (offset != 0)
+                mesh.Transform(mesh, new Vector3(offset, 0, 0));
+            var material = ImportAllAssets.GetMaterial(resourcePath);
             segment.m_mesh = mesh;
             segment.m_segmentMesh = mesh;
             segment.SetTextures(material);

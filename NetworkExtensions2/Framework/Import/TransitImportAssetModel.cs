@@ -1,7 +1,7 @@
 ﻿using ColossalFramework;
 using ColossalFramework.Importers;
+using ColossalFramework.IO;
 using ColossalFramework.Threading;
-using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,17 +15,8 @@ namespace NetworkExtensions2.Framework.Import
 {
     internal class TransitImportAssetModel : ImportAssetLodded
     {
+        public ResourceUnit ResourceUnit { get; private set; }
         private Shader m_TemplateShader;
-
-        //protected static Dictionary<AssetImporterTextureLoader.ResultType, string[]> m_NeedSources = new Dictionary<AssetImporterTextureLoader.ResultType, string[]>
-        //{
-        //    { AssetImporterTextureLoader.ResultType.RGB, new string[]{"_d"} },
-        //    { AssetImporterTextureLoader.ResultType.XYS, new string[]{"_n", "_s" } },
-        //    { AssetImporterTextureLoader.ResultType.ACI, new string[]{"_a", "_c", "_i" } },
-        //    { AssetImporterTextureLoader.ResultType.XYCA, new string[]{"_n", "_c", "_a" } },
-        //    { AssetImporterTextureLoader.ResultType.APR, new string[]{"_a", "_p", "_r"} }
-        //};
-
         protected override AssetImporterTextureLoader.ResultType[] textureTypes
         {
             get
@@ -42,6 +33,37 @@ namespace NetworkExtensions2.Framework.Import
                 };
             }
         }
+
+        protected static readonly List<AssetImporterTextureLoader.SourceType>[] NeededSources = new List<AssetImporterTextureLoader.SourceType>[]
+        {
+            new List<AssetImporterTextureLoader.SourceType>
+            {
+                AssetImporterTextureLoader.SourceType.DIFFUSE
+            },
+            new List<AssetImporterTextureLoader.SourceType>
+            {
+                AssetImporterTextureLoader.SourceType.NORMAL,
+                AssetImporterTextureLoader.SourceType.SPECULAR
+            },
+            new List<AssetImporterTextureLoader.SourceType>
+            {
+                AssetImporterTextureLoader.SourceType.ALPHA,
+                AssetImporterTextureLoader.SourceType.COLOR,
+                AssetImporterTextureLoader.SourceType.ILLUMINATION
+            },
+            new List<AssetImporterTextureLoader.SourceType>
+            {
+                AssetImporterTextureLoader.SourceType.NORMAL,
+                AssetImporterTextureLoader.SourceType.COLOR,
+                AssetImporterTextureLoader.SourceType.ALPHA
+            },
+            new List<AssetImporterTextureLoader.SourceType>
+            {
+                AssetImporterTextureLoader.SourceType.ALPHA,
+                AssetImporterTextureLoader.SourceType.PAVEMENT,
+                AssetImporterTextureLoader.SourceType.ROAD
+            }
+        };
 
         protected override int textureAnisoLevel
         {
@@ -124,40 +146,6 @@ namespace NetworkExtensions2.Framework.Import
                 return m_ResultDefaults;
             }
         }
-
-        // AssetImporterTextureLoader
-        protected static readonly List<AssetImporterTextureLoader.SourceType>[] NeededSources = new List<AssetImporterTextureLoader.SourceType>[]
-        {
-            new List<AssetImporterTextureLoader.SourceType>
-            {
-                AssetImporterTextureLoader.SourceType.DIFFUSE
-            },
-            new List<AssetImporterTextureLoader.SourceType>
-            {
-                AssetImporterTextureLoader.SourceType.NORMAL,
-                AssetImporterTextureLoader.SourceType.SPECULAR
-            },
-            new List<AssetImporterTextureLoader.SourceType>
-            {
-                AssetImporterTextureLoader.SourceType.ALPHA,
-                AssetImporterTextureLoader.SourceType.COLOR,
-                AssetImporterTextureLoader.SourceType.ILLUMINATION
-            },
-            new List<AssetImporterTextureLoader.SourceType>
-            {
-                AssetImporterTextureLoader.SourceType.NORMAL,
-                AssetImporterTextureLoader.SourceType.COLOR,
-                AssetImporterTextureLoader.SourceType.ALPHA
-            },
-            new List<AssetImporterTextureLoader.SourceType>
-            {
-                AssetImporterTextureLoader.SourceType.ALPHA,
-                AssetImporterTextureLoader.SourceType.PAVEMENT,
-                AssetImporterTextureLoader.SourceType.ROAD
-            }
-        };
-
-
         private static Dictionary<string, bool> m_ResultLinear;
 
         protected static Dictionary<string, bool> ResultLinear
@@ -176,6 +164,7 @@ namespace NetworkExtensions2.Framework.Import
                 return m_ResultLinear;
             }
         }
+
         private static FieldInfo GetTextureLoaderField(string fieldName)
         {
             return typeof(AssetImporterTextureLoader).GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Static);
@@ -227,63 +216,104 @@ namespace NetworkExtensions2.Framework.Import
             this.m_TemplateShader = templateShader;
         }
 
-        public override void Import(string path, string filename)
+        private string m_TextureFilenameBase;
+
+        public void ImportAsset(string path, string modelFilename, string textureFileNameBase)
         {
             if (this.m_Object != null)
             {
+                Debug.Log("Doing another runnn");
                 this.DestroyAsset();
                 this.m_Object = null;
             }
-            this.m_Filename = filename;
+            this.m_Filename = modelFilename;
+            m_TextureFilenameBase = textureFileNameBase;
             this.m_Path = path;
-            GetTextureBaseNames(path);
             this.m_IsLoadingModel = true;
             this.m_IsImportedAsset = true;
             this.m_Importer = new SceneImporter();
             this.CreateLODObject();
-            this.m_Importer.filePath = Path.Combine(path, filename);
+            this.m_Importer.filePath = Path.Combine(path, modelFilename);
             this.m_Importer.importSkinMesh = true;
-            if (m_GameObjectTaskDict == null)
-                m_GameObjectTaskDict = new Dictionary<string, Task<GameObject>>();
-            if (m_GameObjectTaskDict.ContainsKey(filename))
-            {
-                GenerateAssetData(m_GameObjectTaskDict[filename].result);
-            }
-            else
-            {
-                m_GameObjectTaskDict[filename] = m_Importer.ImportAsync(new Action<GameObject>(this.GenerateAssetData));
-            }
-            ImportTextures(m_GameObjectTaskDict[filename]);
+            CreateModelAndTextures(modelFilename);
         }
-        private static string[] m_TextureBaseNames;
-        private static void GetTextureBaseNames(string path)
+        public void CreateModelAndTextures(string modelFilename)
         {
-            var pngFiles = Directory.GetFiles(path, "*.png");
-            var textureBaseNames = new List<string>();
-            foreach (var pngFile in pngFiles)
-            {
-                if (!pngFile.Contains("_"))
-                {
-                    Debug.LogError("png file " + pngFile + " not of the proper format and will be omitted");
-                    continue;
-                }
-                var pngFileTrimmed = pngFile.Substring(0, pngFile.LastIndexOf("_"));
-                if (textureBaseNames.IndexOf(pngFileTrimmed) == -1)
-                {
-                    textureBaseNames.Add(pngFileTrimmed);
-                }
-            }
-            m_TextureBaseNames = textureBaseNames.ToArray();
-            Debug.Log("textureBaseNames: " + m_TextureBaseNames.Length);
+            var modelLoad = m_Importer.ImportAsync(new Action<GameObject>(GenerateAssetData));
+            ImportTextures(modelLoad);
+            //if (m_GameObjectTaskDict == null)
+            //    m_GameObjectTaskDict = new Dictionary<string, Task<GameObject>>();
+            //if (!m_GameObjectTaskDict.ContainsKey(modelFilename))
+            //{
+            //    m_GameObjectTaskDict.Add(modelFilename, m_Importer.ImportAsync(null));
+            //}
+            //Debug.Log("gameObjectTaskDict Count " + m_GameObjectTaskDict.Count);
+            //ImportTextures(m_GameObjectTaskDict[modelFilename]);
         }
 
-        public void ImportTextures(Task<GameObject> modelLoad)
+        protected void GenerateAssetData2(GameObject instance)
         {
-            this.m_TextureTask = LoadTextures(modelLoad, null, textureTypes, this.m_Path, this.m_Filename, false, this.textureAnisoLevel, true, false);
+            GenerateAssetData(UnityEngine.Object.Instantiate(instance));
+        }
+        protected override void GenerateAssetData(GameObject instance)
+        {
+            Debug.Log("CheckpointZ");
+            if (instance == null)
+            {
+                Debug.Log("CheckpointY");
+                m_IsLoadingModel = false;
+                m_ReadyForEditing = false;
+                return;
+            }
+            
+            m_Object = instance;
+            Debug.Log("m_Object in " + GetResourceName());
+            Debug.Log("m_Object is null " + (m_Object == null));
+            m_Object.SetActive(value: false);
+            instance.transform.localScale = Vector3.one;
+            Mesh sharedMesh = GetSharedMesh(m_Object);
+            if (sharedMesh == null)
+            {
+                Debug.Log("CheckpointW");
+                m_IsLoadingModel = false;
+                m_ReadyForEditing = false;
+                return;
+            }
+            Debug.Log("CheckpointV");
+            m_OriginalMesh = RuntimeMeshUtils.CopyMesh(sharedMesh);
+            Debug.Log("CheckpointU");
+            CreateInfo();
+            Debug.Log("CheckpointT");
+            //CopyMaterialProperties();
+            Debug.Log("CheckpointS");
+            m_IsLoadingModel = false;
+            m_ReadyForEditing = true;
+            Debug.Log("CheckpointR");
+        }
+        public string GetResourceName()
+        {
+            return Path.GetFileNameWithoutExtension(m_Filename) + m_TextureFilenameBase;
         }
 
-        private static Dictionary<string, Task<GameObject>> m_GameObjectTaskDict;
-        public static Task LoadTextures(Task<GameObject> modelLoad, GameObject model, AssetImporterTextureLoader.ResultType[] results, string path, string modelName, bool lod, int anisoLevel = 1, bool generateDummy = false, bool generatePadding = false)
+        private static Dictionary<string, Texture2D> m_TextureDict;
+        protected static Dictionary<string, Texture2D> TextureDict
+        {
+            get
+            {
+                if (m_TextureDict == null)
+                    m_TextureDict = new Dictionary<string, Texture2D>();
+                return m_TextureDict;
+            }
+        }
+
+        public void ImportTextures(Task<GameObject> modelLoad, Action<GameObject> callback = null)
+        {
+            this.m_TextureTask = LoadTextures(this, modelLoad, null, textureTypes, this.m_Path, m_TextureFilenameBase, false, this.textureAnisoLevel, true, callback);
+        }
+
+        //private static Dictionary<string, Task<GameObject>> m_GameObjectTaskDict;
+
+        public static Task LoadTextures(TransitImportAssetModel instance, Task<GameObject> modelLoad, GameObject model, AssetImporterTextureLoader.ResultType[] results, string path, string textureFileNameBase, bool lod, int anisoLevel = 1, bool generateDummy = false, Action<GameObject> callback = null)
         {
             CODebugBase<LogChannel>.VerboseLog(LogChannel.AssetImporter, string.Concat(new object[]
             {
@@ -303,7 +333,7 @@ namespace NetworkExtensions2.Framework.Import
                         Thread.CurrentThread.ManagedThreadId,
                         "]"
                     }));
-                    string baseName = Path.Combine(path, Path.GetFileNameWithoutExtension(modelName)) + ((!lod) ? string.Empty : "_lod");
+                    string baseName = Path.Combine(path, textureFileNameBase) + ((!lod) ? string.Empty : "_lod");
                     bool[] array = new bool[8];
                     for (int i = 0; i < results.Length; i++)
                     {
@@ -321,11 +351,13 @@ namespace NetworkExtensions2.Framework.Import
                             array2[k] = CallLoadTexture((AssetImporterTextureLoader.SourceType)k, baseName);
                         }
                     }
+                    
                     array2.WaitAll();
                     if (modelLoad != null)
                     {
                         modelLoad.Wait();
                         model = modelLoad.result;
+                        instance.GenerateAssetData2(model);
                     }
                     CODebugBase<LogChannel>.VerboseLog(LogChannel.AssetImporter, string.Concat(new object[]
                     {
@@ -348,59 +380,68 @@ namespace NetworkExtensions2.Framework.Import
                     }
                     for (int m = 0; m < results.Length; m++)
                     {
-                        Color[] texData = CallBuildTexture(array3, results[m], width, height, !lod);
+                        Debug.Log("CheckpointA");
                         AssetImporterTextureLoader.ResultType result = results[m];
+                        Debug.Log("CheckpointB");
                         string sampler = ResultSamplers[(int)result];
+                        Debug.Log("CheckpointC");
                         Color def = ResultDefaults[(int)result];
+                        Debug.Log("CheckpointD");
                         bool resultLinear = ResultLinear[sampler];
+                        Debug.Log("CheckpointE");
+                        string textureKey = baseName + sampler;
+                        Debug.Log("CheckpointF");
+                        Color[] texData = CallBuildTexture(array3, results[m], width, height, !lod);
                         ThreadHelper.dispatcher.Dispatch(delegate
                         {
                             Texture2D texture2D;
-                            if (texData != null)
+                            if (TextureDict.ContainsKey(textureKey))
                             {
-                                if (sampler.Equals("_APRMap"))
-                                {
-                                    Debug.Log("APR has texdata");
-                                }
-                                texture2D = new Texture2D(width, height, sampler.Equals("_XYCAMap") ? TextureFormat.RGBA32 : TextureFormat.RGB24, false, resultLinear);
-                                texture2D.SetPixels(texData);
-                                texture2D.anisoLevel = anisoLevel;
-                                texture2D.Apply();
-                            }
-                            else if (generateDummy && width > 0 && height > 0)
-                            {
-                                if (sampler.Equals("_APRMap"))
-                                {
-                                    Debug.Log("APR hasn't texdata");
-                                }
-                                texture2D = new Texture2D(width, height, TextureFormat.RGB24, false, ResultLinear[sampler]);
-                                if (result == AssetImporterTextureLoader.ResultType.XYS)
-                                {
-                                    def.b = 1f - def.b;
-                                }
-                                else if (result == AssetImporterTextureLoader.ResultType.APR)
-                                {
-                                    def.r = 1f - def.r;
-                                    def.g = 1f - def.g;
-                                }
-                                for (int n = 0; n < height; n++)
-                                {
-                                    for (int num2 = 0; num2 < width; num2++)
-                                    {
-                                        texture2D.SetPixel(num2, n, def);
-                                    }
-                                }
-                                texture2D.anisoLevel = anisoLevel;
-                                texture2D.Apply();
+                                Debug.Log(sampler + " was cached");
+                                texture2D = TextureDict[textureKey];
                             }
                             else
                             {
-                                if (sampler.Equals("_APRMap"))
+
+                                if (texData != null)
                                 {
-                                    Debug.Log("APR is null");
+                                    Debug.Log(sampler + " has texdata");
+                                    texture2D = new Texture2D(width, height, sampler.Equals("_XYCAMap") ? TextureFormat.RGBA32 : TextureFormat.RGB24, false, resultLinear);
+                                    texture2D.SetPixels(texData);
+                                    texture2D.anisoLevel = anisoLevel;
+                                    texture2D.Apply();
                                 }
-                                texture2D = null;
+                                else if (generateDummy && width > 0 && height > 0)
+                                {
+                                    Debug.Log(sampler + " hasn't texdata");
+                                    texture2D = new Texture2D(width, height, TextureFormat.RGB24, false, ResultLinear[sampler]);
+                                    if (result == AssetImporterTextureLoader.ResultType.XYS)
+                                    {
+                                        def.b = 1f - def.b;
+                                    }
+                                    else if (result == AssetImporterTextureLoader.ResultType.APR)
+                                    {
+                                        def.r = 1f - def.r;
+                                        def.g = 1f - def.g;
+                                    }
+                                    for (int n = 0; n < height; n++)
+                                    {
+                                        for (int num2 = 0; num2 < width; num2++)
+                                        {
+                                            texture2D.SetPixel(num2, n, def);
+                                        }
+                                    }
+                                    texture2D.anisoLevel = anisoLevel;
+                                    texture2D.Apply();
+                                }
+                                else
+                                {
+                                    Debug.Log(sampler + " is null");
+                                    texture2D = null;
+                                }
+                                TextureDict.Add(textureKey, texture2D);
                             }
+                            Debug.Log("CheckpointG");
                             AssetImporterTextureLoader.ApplyTexture(model, sampler, texture2D);
                         });
                     }
@@ -434,345 +475,6 @@ namespace NetworkExtensions2.Framework.Import
             return taskResult;
         }
 
-        //protected static Task LoadTextures1(Task<GameObject> modelLoad, string path, string filename, bool lod, int textureAnisoLevel, AssetImporterTextureLoader.ResultType[] argTextureTypes)
-        //{
-        //    CODebugBase<LogChannel>.VerboseLog(LogChannel.AssetImporter, string.Concat(new object[]
-        //    {
-        //            "***Creating Texture processing Thread  [",
-        //            Thread.CurrentThread.Name,
-        //            Thread.CurrentThread.ManagedThreadId,
-        //            "]"
-        //    }));
-        //    Task result = ThreadHelper.taskDistributor.Dispatch(delegate
-        //    {
-        //        try
-        //        {
-        //            CODebugBase<LogChannel>.VerboseLog(LogChannel.AssetImporter, string.Concat(new object[]
-        //            {
-        //            "******Loading Textures [",
-        //            Thread.CurrentThread.Name,
-        //            Thread.CurrentThread.ManagedThreadId,
-        //            "]"
-        //            }));
-        //            var filenameWithoutExtension = filename.Substring(filename.LastIndexOf("\\") + 1, filename.LastIndexOf(".") - filename.LastIndexOf("\\") - 1);
-        //            Debug.Log("filenamewithoutextension " + filenameWithoutExtension);
-        //            var modelNameValue = filenameWithoutExtension.Split('_');
-        //            if (modelNameValue.Length > 1)
-        //            {
-        //                var resourceType = modelNameValue[0];
-        //                Debug.Log("parts " + modelNameValue[0] + " & " + modelNameValue[1]);
-        //                var num = -1;
-        //                var canParse = int.TryParse(modelNameValue[1], out num);
-        //                Debug.Log("trying to parse " + modelNameValue[1] + " to int. Passed? " + canParse + ". The result is " + num);
-        //                var size = int.Parse(modelNameValue[1]);
-        //                var textureRequiredSignatures = new List<string>();
-        //                for (int i = 0; i < argTextureTypes.Length; i++)
-        //                {
-        //                    textureRequiredSignatures.AddRange(m_NeedSources[argTextureTypes[i]]);
-        //                }
-        //                if (textureRequiredSignatures.Count > 0)
-        //                {
-        //                    if (m_TextureTaskDict == null)
-        //                        m_TextureTaskDict = new Dictionary<string, Task<Image>>();
-        //                    for (int i = 0; i < m_TextureBaseNames.Length; i++)
-        //                    {
-        //                        for (int j = 0; j < textureRequiredSignatures.Count; j++)
-        //                        {
-        //                            var textureFile = Path.Combine(path, m_TextureBaseNames[i] + textureRequiredSignatures[j] + ".png");
-        //                            if (!m_TextureTaskDict.ContainsKey(textureFile))
-        //                            {
-        //                                m_TextureTaskDict[textureFile] = LoadTexture(textureFile);
-        //                            }
-        //                        }
-        //                    }
-        //                    m_TextureTaskDict.Values.ToArray().WaitAll();
-        //                }
-        //            }
-        //            modelLoad.Wait();
-        //            var model = modelLoad.result;
-        //            CODebugBase<LogChannel>.VerboseLog(LogChannel.AssetImporter, string.Concat(new object[]
-        //            {
-        //                "******Finished loading Textures  [",
-        //                Thread.CurrentThread.Name,
-        //                Thread.CurrentThread.ManagedThreadId,
-        //                "]"
-        //            }));
-        //            Image[] images = ExtractImages(m_TextureTaskDict.Values.ToArray());
-        //            int width = 0;
-        //            int height = 0;
-        //            for (int l = 0; l < images.Length; l++)
-        //            {
-        //                if (images[l] != null && images[l].width > 0 && images[l].height > 0)
-        //                {
-        //                    width = images[l].width;
-        //                    height = images[l].height;
-        //                    break;
-        //                }
-        //            }
-        //            for (int m = 0; m < argTextureTypes.Length; m++)
-        //            {
-        //                Color[] texData = BuildTexture(images, argTextureTypes[m], width, height, !lod);
-        //                AssetImporterTextureLoader.ResultType resultType = argTextureTypes[m];
-        //                string sampler = ResultSamplers[(int)resultType];
-        //                Color def = ResultDefaults[(int)resultType];
-        //                bool resultLinear = ResultLinear[sampler];
-        //                ThreadHelper.dispatcher.Dispatch(delegate
-        //                {
-        //                    Texture2D texture2D;
-        //                    if (texData != null)
-        //                    {
-        //                        if (sampler.Equals("_XYCAMap"))
-        //                        {
-        //                            texture2D = new Texture2D(width, height, TextureFormat.RGBA32, false, resultLinear);
-        //                        }
-        //                        else
-        //                        {
-        //                            texture2D = new Texture2D(width, height, TextureFormat.RGB24, false, resultLinear);
-        //                        }
-        //                        texture2D.SetPixels(texData);
-        //                        texture2D.anisoLevel = textureAnisoLevel;
-        //                        texture2D.Apply();
-        //                    }
-        //                    else if (width > 0 && height > 0)
-        //                    {
-        //                        texture2D = new Texture2D(width, height, TextureFormat.RGB24, false, resultLinear);
-        //                        if (resultType == AssetImporterTextureLoader.ResultType.XYS)
-        //                        {
-        //                            def.b = 1f - def.b;
-        //                        }
-        //                        else if (resultType == AssetImporterTextureLoader.ResultType.APR)
-        //                        {
-        //                            def.r = 1f - def.r;
-        //                            def.g = 1f - def.g;
-        //                        }
-        //                        for (int n = 0; n < height; n++)
-        //                        {
-        //                            for (int num2 = 0; num2 < width; num2++)
-        //                            {
-        //                                texture2D.SetPixel(num2, n, def);
-        //                            }
-        //                        }
-        //                        texture2D.anisoLevel = textureAnisoLevel;
-        //                        texture2D.Apply();
-        //                    }
-        //                    else
-        //                    {
-        //                        texture2D = null;
-        //                    }
-
-        //                    AssetImporterTextureLoader.ApplyTexture(model, sampler, texture2D);
-        //                });
-        //            }
-        //            CODebugBase<LogChannel>.VerboseLog(LogChannel.AssetImporter, string.Concat(new object[]
-        //            {
-        //        "******Finished applying Textures  [",
-        //        Thread.CurrentThread.Name,
-        //        Thread.CurrentThread.ManagedThreadId,
-        //        "]"
-        //            }));
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            CODebugBase<LogChannel>.Error(LogChannel.AssetImporter, string.Concat(new object[]
-        //            {
-        //        ex.GetType(),
-        //        " ",
-        //        ex.Message,
-        //        " ",
-        //        ex.StackTrace
-        //            }));
-        //        }
-        //    });
-        //    CODebugBase<LogChannel>.VerboseLog(LogChannel.AssetImporter, string.Concat(new object[]
-        //    {
-        //"***Created Texture processing Thread [",
-        //Thread.CurrentThread.Name,
-        //Thread.CurrentThread.ManagedThreadId,
-        //"]"
-        //    }));
-        //    return result;
-        //}
-        // AssetImporterTextureLoader
-        //protected static void CombineChannels(Color[] output, Color[] r, Color[] g, Color[] b, Color[] a, bool ralpha, bool galpha, bool balpha, bool rinvert, bool ginvert, bool binvert, bool ainvert, Color defaultColor)
-        //{
-        //    for (int i = 0; i < output.Length; i++)
-        //    {
-        //        float num = (r == null) ? defaultColor.r : ((!ralpha) ? r[i].r : r[i].a);
-        //        float num2 = (g == null) ? defaultColor.g : ((!galpha) ? g[i].g : g[i].a);
-        //        float num3 = (b == null) ? defaultColor.b : ((!balpha) ? b[i].b : b[i].a);
-        //        float num4 = (a == null) ? defaultColor.a : a[i].a;
-        //        if (rinvert)
-        //        {
-        //            num = 1f - num;
-        //        }
-        //        if (ginvert)
-        //        {
-        //            num2 = 1f - num2;
-        //        }
-        //        if (ainvert)
-        //        {
-        //            num4 = 1f - num4;
-        //        }
-        //        if (binvert)
-        //        {
-        //            num3 = 1f - num3;
-        //        }
-        //        output[i] = new Color(num, num2, num3, num4);
-        //    }
-        //}
-        //// AssetImporterTextureLoader
-        //protected static bool CheckResolutions(int width, int height, params Image[] images)
-        //{
-        //    for (int i = 0; i < images.Length; i++)
-        //    {
-        //        if (images[i] != null && (images[i].width != width || images[i].height != height))
-        //        {
-        //            return false;
-        //        }
-        //    }
-        //    return true;
-        //}
-
-        //protected static Color[] BuildTexture(Image[] sources, AssetImporterTextureLoader.ResultType type, int width, int height, bool nullAllowed)
-        //{
-        //    Debug.Log("Checkpointa");
-        //    List<AssetImporterTextureLoader.SourceType> list = NeededSources[(int)type];
-        //    Debug.Log("Checkpointb");
-        //    Image[] array = new Image[list.Count];
-        //    Debug.Log("Checkpointc count " + list.Count());
-        //    for (int i = 0; i < list.Count; i++)
-        //    {
-        //        Debug.Log("Checkpointc_" + i + " sources[" + list[i] + "]");
-        //        array[i] = sources[(int)list[i]];
-        //    }
-        //    Debug.Log("Checkpointd");
-        //    if (nullAllowed)
-        //    {
-        //        Debug.Log("Checkpointe");
-        //        bool flag = false;
-        //        Debug.Log("Checkpointf");
-        //        for (int j = 0; j < array.Length; j++)
-        //        {
-        //            if (array[j] != null)
-        //            {
-        //                flag = true;
-        //            }
-        //        }
-        //        Debug.Log("Checkpointg");
-        //        if (!flag)
-        //        {
-        //            return null;
-        //        }
-        //        Debug.Log("Checkpointh");
-        //    }
-        //    if (CheckResolutions(width, height, array))
-        //    {
-        //        Debug.Log("Checkpointi");
-        //        Color[] array2 = new Color[width * height];
-        //        switch (type)
-        //        {
-        //            case AssetImporterTextureLoader.ResultType.RGB:
-        //                {
-        //                    Debug.Log("In RGB");
-        //                    Color[] array3 = (array[0] == null) ? null : array[0].GetColors();
-        //                    Debug.Log("In RGB2 " + ResultDefaults.Length + " " + (int)type);
-        //                    CombineChannels(array2, array3, array3, array3, null, false, false, false, false, false, false, false, ResultDefaults[(int)type]);
-        //                    Debug.Log("In RGB3");
-        //                    break;
-        //                }
-        //            case AssetImporterTextureLoader.ResultType.XYS:
-        //                {
-        //                    Debug.Log("In XYS");
-        //                    Color[] array4 = (array[0] == null) ? null : array[0].GetColors();
-        //                    Debug.Log("In XYS2");
-        //                    if (array[1] != null)
-        //                    {
-        //                        array[1].Convert(TextureFormat.Alpha8);
-        //                    }
-        //                    Debug.Log("In XYS3");
-        //                    Color[] b = (array[1] == null) ? null : array[1].GetColors();
-        //                    Debug.Log("In XYS4");
-        //                    CombineChannels(array2, array4, array4, b, null, false, false, true, false, false, true, false, ResultDefaults[(int)type]);
-        //                    Debug.Log("In XYS5");
-        //                    break;
-        //                }
-        //            case AssetImporterTextureLoader.ResultType.ACI:
-        //                {
-        //                    if (array[0] != null)
-        //                    {
-        //                        array[0].Convert(TextureFormat.Alpha8);
-        //                    }
-        //                    Color[] array5 = (array[0] == null) ? null : array[0].GetColors();
-        //                    if (array[1] != null)
-        //                    {
-        //                        array[1].Convert(TextureFormat.Alpha8);
-        //                    }
-        //                    Color[] array6 = (array[1] == null) ? null : array[1].GetColors();
-        //                    if (array[2] != null)
-        //                    {
-        //                        array[2].Convert(TextureFormat.Alpha8);
-        //                    }
-        //                    Color[] b2 = (array[2] == null) ? null : array[2].GetColors();
-        //                    CombineChannels(array2, array5, array6, b2, null, true, true, true, true, true, false, false, ResultDefaults[(int)type]);
-        //                    break;
-        //                }
-        //            case AssetImporterTextureLoader.ResultType.XYCA:
-        //                {
-        //                    Color[] array4 = (array[0] == null) ? null : array[0].GetColors();
-        //                    if (array[1] != null)
-        //                    {
-        //                        array[1].Convert(TextureFormat.Alpha8);
-        //                    }
-        //                    Color[] array6 = (array[1] == null) ? null : array[1].GetColors();
-        //                    if (array[2] != null)
-        //                    {
-        //                        array[2].Convert(TextureFormat.Alpha8);
-        //                    }
-        //                    Color[] array5 = (array[2] == null) ? null : array[2].GetColors();
-        //                    CombineChannels(array2, array4, array4, array6, array5, false, false, true, false, false, true, true, ResultDefaults[(int)type]);
-        //                    break;
-        //                }
-        //            case AssetImporterTextureLoader.ResultType.APR:
-        //                {
-        //                    Debug.Log("In APR");
-        //                    if (array[0] != null)
-        //                    {
-        //                        array[0].Convert(TextureFormat.Alpha8);
-        //                    }
-        //                    Debug.Log("In APR2");
-        //                    Color[] array5 = (array[0] == null) ? null : array[0].GetColors();
-        //                    Debug.Log("In APR3");
-        //                    if (array[1] != null)
-        //                    {
-        //                        array[1].Convert(TextureFormat.Alpha8);
-        //                    }
-        //                    Debug.Log("In APR4");
-        //                    Color[] g = (array[1] == null) ? null : array[1].GetColors();
-        //                    Debug.Log("In APR5");
-        //                    if (array[2] != null)
-        //                    {
-        //                        array[2].Convert(TextureFormat.Alpha8);
-        //                    }
-        //                    Debug.Log("In APR6");
-        //                    Color[] b3 = (array[2] == null) ? null : array[2].GetColors();
-        //                    Debug.Log("In APR7");
-        //                    CombineChannels(array2, array5, g, b3, null, true, true, true, true, true, false, false, ResultDefaults[(int)type]);
-        //                    Debug.Log("In APR8");
-        //                    break;
-        //                }
-        //        }
-        //        CODebugBase<LogChannel>.VerboseLog(LogChannel.AssetImporter, string.Concat(new object[]
-        //        {
-        //    "******Finished loading & processing textures [",
-        //    Thread.CurrentThread.Name,
-        //    Thread.CurrentThread.ManagedThreadId,
-        //    "]"
-        //        }));
-        //        return array2;
-        //    }
-        //    CODebugBase<LogChannel>.Error(LogChannel.AssetImporter, "Texture error: resolutions don't match or textures missing");
-        //    return null;
-        //}
         protected static Image[] ExtractImages(Task<Image>[] tasks)
         {
             Image[] array = new Image[tasks.Length];
@@ -786,59 +488,6 @@ namespace NetworkExtensions2.Framework.Import
             return array;
         }
 
-        protected static Task<Image> LoadTexture(string textureFile)
-        {
-            if (!File.Exists(textureFile))
-            {
-                CODebugBase<LogChannel>.Warn(LogChannel.AssetImporter, "Texture missing");
-                return null;
-            }
-
-            Task<Image> task = new Task<Image>(() =>
-            {
-                try
-                {
-                    CODebugBase<LogChannel>.VerboseLog(LogChannel.AssetImporter, string.Concat(new object[]
-                    {
-                        "*********Loading texture [",
-                        Thread.CurrentThread.Name,
-                        Thread.CurrentThread.ManagedThreadId,
-                        "]"
-                    }));
-                    Image image = new Image(textureFile);
-                    Image result;
-                    if (image != null && image.width > 0 && image.height > 0)
-                    {
-                        CODebugBase<LogChannel>.VerboseLog(LogChannel.AssetImporter, string.Concat(new object[]
-                        {
-                            "*********Finished loading texture [",
-                            Thread.CurrentThread.Name,
-                            Thread.CurrentThread.ManagedThreadId,
-                            "]"
-                        }));
-                        result = image;
-                        return result;
-                    }
-                    CODebugBase<LogChannel>.Warn(LogChannel.AssetImporter, "Texture: resolution error or texture missing");
-                    result = null;
-                    return result;
-                }
-                catch (Exception ex)
-                {
-                    CODebugBase<LogChannel>.Error(LogChannel.AssetImporter, string.Concat(new object[]
-                    {
-                        ex.GetType(),
-                        " ",
-                        ex.Message,
-                        " ",
-                        ex.StackTrace
-                    }));
-                }
-                return null;
-            });
-            sTaskDistributor.Dispatch(task);
-            return task;
-        }
         protected static TaskDistributor sTaskDistributor = new TaskDistributor("SubTaskDistributor");
         protected override void InitializeObject()
         {
@@ -864,13 +513,21 @@ namespace NetworkExtensions2.Framework.Import
 
         public override void FinalizeImport()
         {
-            //this.FinalizeLOD();
+            Debug.Log(m_Filename + " Checkpoint1");
+            this.FinalizeLOD();
+            Debug.Log(m_Filename + " Checkpoint2");
+            if (m_Object == null)
+            {
+                Debug.Log("m_Object is null");
+            }
             if (this.m_Object.GetComponent<Renderer>() != null)
             {
+                Debug.Log(m_Filename + " Checkpoint3");
                 this.CompressTextures();
+                Debug.Log(m_Filename + " Checkpoint4");
             }
             this.m_TaskWrapper = new MultiAsyncTaskWrapper(this.m_TaskNames, this.m_Tasks);
-            LoadSaveStatus.activeTask = this.m_TaskWrapper;
+            Debug.Log(m_Filename + " Checkpoint5");
         }
 
         protected override void CompressTextures()
@@ -890,11 +547,6 @@ namespace NetworkExtensions2.Framework.Import
             }
         }
 
-        protected override void LoadTextures(Task<GameObject> modelLoad)
-        {
-            this.m_TextureTask = AssetImporterTextureLoader.LoadTextures(modelLoad, null, this.textureTypes, this.m_Path, this.m_Filename, false, this.textureAnisoLevel, true, false);
-        }
-
         public override void DestroyAsset()
         {
             if (this.m_OriginalMesh != null)
@@ -909,6 +561,7 @@ namespace NetworkExtensions2.Framework.Import
             }
             if (this.m_Object != null)
             {
+                Debug.Log("m_Object nulled " + GetResourceName());
                 UnityEngine.Object.DestroyImmediate(this.m_Object);
                 this.m_Object = null;
             }

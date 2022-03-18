@@ -25,7 +25,7 @@ namespace Transit.Addon.RoadExtensions
         {
             protected override bool ValidatePrerequisites(RExModule host)
             {
-                return ValidateRequiredNetCollections() && ImportTransitAsset.UptakeImportFiles(host.AssetPath, AssetType.Roads);
+                return ValidateRequiredNetCollections() && ImportAllAssets.UptakeImportFiles(host.AssetPath, AssetType.Roads);
             }
             private static bool ValidateRequiredNetCollections()
             {
@@ -48,7 +48,7 @@ namespace Transit.Addon.RoadExtensions
                 }
                 return true;
             }
-
+            
             protected override void Install(RExModule host)
             {
                 InstallPropInfos(host);
