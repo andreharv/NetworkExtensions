@@ -97,7 +97,9 @@
     <Compile Include="Framework\Builders\_Extensions\PrefabBuilderExtensions.cs" />
     <Compile Include="Framework\Debug.cs" />
     <Compile Include="Framework\ExtendedToolBase.cs" />
+    <Compile Include="Framework\Import\NEXTImportAssetTextures.cs" />
     <Compile Include="Framework\Import\IImportable.cs" />
+    <Compile Include="Framework\Import\NEXTImportAssetModel.cs" />
     <Compile Include="Framework\Import\ImportTransitAsset.cs" />
     <Compile Include="Framework\Import\ModelImporter.cs" />
     <Compile Include="Framework\Import\ResourceUnit.cs" />

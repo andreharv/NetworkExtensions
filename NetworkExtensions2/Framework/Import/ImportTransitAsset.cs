@@ -12,18 +12,19 @@ namespace NetworkExtensions2.Framework.Import
     {
         private static bool m_ImportFinished;
         private static string m_ResourcePath;
-        private static List<string> m_Filenames;
-        private static int m_FilenamesLength;
+        private static string[] m_ModelFilenames;
+        private static string[] m_TextureFileBaseNames;
         private static ImportTransitAsset[] m_ImportTransitAssets;
 
         private static Shader m_DefaultShader;
 
         public static Shader DefaultShader
         {
-            get { 
+            get
+            {
                 if (m_DefaultShader == null)
                     m_DefaultShader = Shader.Find("Custom/Net/Road");
-                return m_DefaultShader; 
+                return m_DefaultShader;
             }
         }
 
@@ -64,7 +65,8 @@ namespace NetworkExtensions2.Framework.Import
         }
 
         private bool m_ModelReady;
-        private string m_ModelName;
+        private static Dictionary<string, NEXTImportAssetModel> m_Models;
+        private static Dictionary<string, NEXTImportAssetTextures> m_Textures;
         public static bool UptakeImportFiles(string path, AssetType type)
         {
             var swAll = new Stopwatch();
@@ -75,65 +77,93 @@ namespace NetworkExtensions2.Framework.Import
                 Debug.Log("Checkpoint6");
                 if (string.IsNullOrEmpty(m_ResourcePath))
                     m_ResourcePath = Path.Combine(path, GetAssetPath(type));
-                if (m_ImportTransitAssets != null || Directory.Exists(m_ResourcePath))
+                if (Directory.Exists(m_ResourcePath))
                 {
                     Debug.Log("Checkpoint7");
-                    if (m_Filenames == null)
+                    if (m_ModelFilenames == null)
                     {
-                        m_Filenames = Directory.GetFiles(m_ResourcePath, "*.fbx").ToList();
-                        m_FilenamesLength = m_Filenames.Count;
+                        m_ModelFilenames = Directory.GetFiles(m_ResourcePath, "*.fbx");
+                    }
+                    if (m_TextureFileBaseNames == null)
+                    {
+                        m_TextureFileBaseNames = Directory.GetFiles(m_ResourcePath, "*.png");
                     }
 
-                    if (m_FilenamesLength > 0)
+
+                    m_Models = new Dictionary<string, NEXTImportAssetModel>();
+                    for (int i = 0; i < m_ModelFilenames.Length; i++)
                     {
-                        Debug.Log("Checkpoint8");
-                        if (m_ImportTransitAssets == null)
+                        if (!m_Models.ContainsKey(m_ModelFilenames[i]))
                         {
-                            Debug.Log("Checkpoint9");
-                            m_ImportTransitAssets = new ImportTransitAsset[m_FilenamesLength];
+                            m_Models.Add(m_ModelFilenames[i], new NEXTImportAssetModel(null, new PreviewCamera(), DefaultShader));
                         }
-                        for (int i = 0; i < m_FilenamesLength; i++)
+                    }
+                    for (int i = 0; i < m_TextureFileBaseNames.Length; i++)
+                    {
+                        var textureKey = m_TextureFileBaseNames[i].Substring(0, m_TextureFileBaseNames[i].LastIndexOf("_"));
+                        if (!m_Textures.ContainsKey(textureKey))
                         {
-                            Debug.Log("Checkpoint10");
-                            var importTransitAsset = m_ImportTransitAssets[i];
-                            var filename = m_Filenames[i];
-                            if (importTransitAsset == null)
-                            {
-                                Debug.Log("Checkpoint11");
-                                importTransitAsset = new ImportTransitAsset();
-                                importTransitAsset.ImportAsset(DefaultShader, m_ResourcePath, filename);
-                                m_ImportTransitAssets[i] = importTransitAsset;
-                            }
-                            else if (!m_NewInfoResources.ContainsKey(filename))
-                            {
-                                Debug.Log("Checkpoint12");
-                                m_ImportTransitAssets[i].Update();
-                            }
-                        }
-                        if (NewInfoResources.Count == m_FilenamesLength)
-                        {
-                            Debug.Log("Checkpoint13");
-                            Debug.Log("newInfoResources Count:" + NewInfoResources.Count);
-                            if (NewInfoResources.Count > 0)
-                            {
-                                var hi = NewInfoResources.First().Value;
-                                Debug.Log("Mesh exists " + (hi.Mesh != null));
-                                Debug.Log("lodMesh exists " + (hi.LodMesh != null));
-                                Debug.Log("Material exists " + (hi.Material != null));
-                                Debug.Log("lodMaterial exists " + (hi.LodMaterial != null));
-                            }
-                            swAll.Stop();
-                            Debug.Log($"All RExModule Prereqs loaded in {swAll.ElapsedMilliseconds}ms");
-                            return true;
+                            m_Textures.Add(m_TextureFileBaseNames[i], new NEXTImportAssetTextures(textureKey));
                         }
                     }
                 }
+                //Debug.Log("Checkpoint8");
+                //if (m_ImportTransitAssets == null)
+                //{
+                //    Debug.Log("Checkpoint9");
+                //    m_ImportTransitAssets = new ImportTransitAsset[m_FilenamesLength];
+                //}
+                //for (int i = 0; i < m_FilenamesLength; i++)
+                //{
+                //    Debug.Log("Checkpoint10");
+                //    var importTransitAsset = m_ImportTransitAssets[i];
+                //    var filename = m_ModelFilenames[i];
+                //    if (importTransitAsset == null)
+                //    {
+                //        Debug.Log("Checkpoint11");
+                //        importTransitAsset = new ImportTransitAsset();
+                //        importTransitAsset.ImportAsset(DefaultShader, m_ResourcePath, filename);
+                //        m_ImportTransitAssets[i] = importTransitAsset;
+                //    }
+                //    else if (!m_NewInfoResources.ContainsKey(filename))
+                //    {
+                //        Debug.Log("Checkpoint12");
+                //        m_ImportTransitAssets[i].Update();
+                //    }
+                //}
+                //if (NewInfoResources.Count == m_FilenamesLength)
+                //{
+                //    Debug.Log("Checkpoint13");
+                //    Debug.Log("newInfoResources Count:" + NewInfoResources.Count);
+                //    if (NewInfoResources.Count > 0)
+                //    {
+                //        var hi = NewInfoResources.First().Value;
+                //        Debug.Log("Mesh exists " + (hi.Mesh != null));
+                //        Debug.Log("lodMesh exists " + (hi.LodMesh != null));
+                //        Debug.Log("Material exists " + (hi.Material != null));
+                //        Debug.Log("lodMaterial exists " + (hi.LodMaterial != null));
+                //    }
+                //    swAll.Stop();
+                //    Debug.Log($"All RExModule Prereqs loaded in {swAll.ElapsedMilliseconds}ms");
+                //    return true;
+                //}
+
+
                 else
                 {
                     Debug.LogError("The specified path: " + m_ResourcePath + " does not exist");
                 }
             }
             return false;
+        }
+        private static string GetModelBasename(string modelFilename)
+        {
+            return Path.GetFileNameWithoutExtension(modelFilename);
+        }
+        private static string GetTextureBasename(string textureFilename)
+        {
+            var filename = Path.GetFileNameWithoutExtension(textureFilename);
+            return filename.Substring(0, filename.LastIndexOf('_'));
         }
         public void ImportAsset(Shader shader, string path, string filename)
         {
@@ -200,7 +230,7 @@ namespace NetworkExtensions2.Framework.Import
         private static string GetAssetPath(AssetType type)
         {
             return $@"Resources\{type}\";
-    }
+        }
         private void ResourcesReady()
         {
             m_ModelReady = false;
