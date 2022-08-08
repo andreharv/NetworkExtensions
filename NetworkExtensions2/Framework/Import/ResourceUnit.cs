@@ -12,5 +12,13 @@ namespace NetworkExtensions2.Framework.Import
         public Mesh LodMesh { get; set; }
         public Material Material { get; set; }
         public Material LodMaterial { get; set; }
+
+        public ResourceUnit(Mesh argMesh, Material argMaterial, Mesh argLodMesh, Material argLodMaterial)
+        {
+            Mesh = argMesh;
+            Material = argMaterial;
+            LodMesh = argLodMesh;
+            LodMaterial = argLodMaterial;
+        }
     }
 }

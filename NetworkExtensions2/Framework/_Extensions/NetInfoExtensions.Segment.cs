@@ -1,4 +1,6 @@
-﻿using NetworkExtensions2.Framework.Import;
+﻿using ColossalFramework;
+using NetworkExtensions2.Framework._Extensions;
+using NetworkExtensions2.Framework.Import;
 using System.Collections.Generic;
 using Transit.Framework.Texturing;
 using UnityEngine;
@@ -9,7 +11,7 @@ namespace Transit.Framework
     {
         public static NetInfo SetAllSegmentsTexture(this NetInfo info, TextureSet newTextures, LODTextureSet newLODTextures = null)
         {
-            for (var i = 0; i < info.m_segments.Length;i++)
+            for (var i = 0; i < info.m_segments.Length; i++)
             {
                 info.m_segments[i].SetTextures(newTextures, newLODTextures);
             }
@@ -43,13 +45,14 @@ namespace Transit.Framework
         {
             if (newMaterial != null)
             {
-                segment.m_material = newMaterial.CreateRoadMaterial(segment.m_material);
-                segment.m_segmentMaterial = segment.m_material;
+                var newMaterialClone = newMaterial.CreateRoadMaterial(segment.m_material);
+                segment.m_material = newMaterialClone;
+                segment.m_segmentMaterial = newMaterialClone;
             }
 
             if (newLodMaterial != null && segment.m_lodMaterial != null)
             {
-                segment.m_lodMaterial = newMaterial.CreateRoadMaterial(segment.m_lodMaterial);
+                segment.m_lodMaterial = newLodMaterial.CreateRoadMaterial(segment.m_lodMaterial);
             }
 
             return segment;
@@ -75,12 +78,28 @@ namespace Transit.Framework
 
             return segment;
         }
-        public static NetInfo.Segment SetResources(this NetInfo.Segment segment, string resourcePath)
+        public static NetInfo.Segment SetNetResources(this NetInfo.Segment segment, string baseMeshName, string baseTextureName, float offset = 0, bool invert = false)
         {
-            var mesh = ImportTransitAsset.GetMesh(resourcePath);
-            var material = ImportTransitAsset.GetMaterial(resourcePath);
-            segment.m_mesh = mesh;
-            segment.m_segmentMesh = mesh;
+            return segment.SetResources(@"Resources\Roads\", baseMeshName, baseTextureName, offset, invert);
+        }
+        public static NetInfo.Segment SetResources(this NetInfo.Segment segment, string subDir, string baseMeshName, string baseTextureName, float offset = 0, bool invert = false)
+        {
+            baseMeshName = subDir + baseMeshName;
+            baseTextureName = subDir + baseTextureName;
+            var resourceName = NEXTImportAssetModel.GetResourceName(baseMeshName, baseTextureName);
+            var mesh = ImportTransitAsset.GetMesh(resourceName);
+            var newMesh = RuntimeMeshUtils.CopyMesh(mesh);
+            if (offset != 0)
+                mesh.Transform(newMesh, new Vector3(offset, 0, 0), invert);
+            if (!mesh.name.EndsWith("1"))
+            {
+                newMesh.name = newMesh.name + "1";
+            }
+
+            var material = ImportTransitAsset.GetMaterial(resourceName);
+
+            segment.m_mesh = newMesh.ShallowClone();
+            segment.m_segmentMesh = newMesh.ShallowClone();
             segment.SetTextures(material);
             return segment;
 

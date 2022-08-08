@@ -25,7 +25,9 @@ namespace Transit.Addon.RoadExtensions
         {
             protected override bool ValidatePrerequisites(RExModule host)
             {
-                return ValidateRequiredNetCollections() && ImportTransitAsset.UptakeImportFiles(host.AssetPath, AssetType.Roads);
+                var prereq = ValidateRequiredNetCollections() && ImportTransitAsset.UptakeImportFiles(host.AssetPath, AssetType.Roads);
+                Debug.Log("Cx prereq is: " + prereq);
+                    return prereq;
             }
             private static bool ValidateRequiredNetCollections()
             {

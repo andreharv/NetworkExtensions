@@ -1,4 +1,5 @@
 ﻿using ColossalFramework;
+using NetworkExtensions2.Roads.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -283,6 +284,40 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                         m_startFlagsRequired = NetNode.Flags.Junction
                     })
                 .ToArray();
+        }
+        public static NetInfo.Segment[] CreateSegments(out float totalWidth, params LaneRecipe[] laneRecipes)
+        {
+            var segments = new NetInfo.Segment[laneRecipes.Length];
+            float previousModelWidth = 0;
+            totalWidth = 0f;
+            for (int i = 0; i < laneRecipes.Length; i++)
+            {
+                var laneRecipe = laneRecipes[i];
+                var modelWidth = GetModelWidth(laneRecipe.ModelName);
+                totalWidth += modelWidth;
+            }
+            var currentPosition = 0.5f * -totalWidth;
+            for (int i = 0; i < laneRecipes.Length; i++)
+            {
+                var laneRecipe = laneRecipes[i];
+                var modelWidth = GetModelWidth(laneRecipe.ModelName);
+                currentPosition += 0.5f * (previousModelWidth + modelWidth);
+                previousModelWidth = modelWidth;
+                var inverted = currentPosition > 0;
+                var segment = laneRecipe.TemplateSegment.ShallowClone();
+                segments[i] = segment.SetFlagsDefault().SetNetResources(laneRecipe.ModelName, laneRecipe.TextureName, currentPosition, inverted);
+            }
+            return segments;
+        }
+
+        private static float GetModelWidth(string modelName)
+        {
+            if (modelName != null && modelName.Contains("_"))
+            {
+                var numString = modelName.Substring(modelName.LastIndexOf("_") + 1);
+                return float.Parse(numString);
+            }
+            return -1;
         }
     }
 }

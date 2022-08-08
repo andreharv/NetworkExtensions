@@ -90,6 +90,7 @@ namespace Transit.Framework
 
                     _doneWithInstall = true;
                 }
+                Debug.Log("Cx UpdateInternal");
             }
 
             if (_doneWithInstall)
