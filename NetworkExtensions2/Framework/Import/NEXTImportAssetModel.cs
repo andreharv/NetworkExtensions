@@ -8,7 +8,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using Transit.Framework;
 using UnityEngine;
-
+using Debug = UnityEngine.Debug;
 namespace NetworkExtensions2.Framework.Import
 {
     public class NEXTImportAssetModel : ImportAssetLodded
