@@ -31,15 +31,15 @@ namespace Transit.Addon.RoadExtensions.AI
 
             if (isCurve)
             {
-                CreateZoneBlocksTiny_Curve(info, randomizer, ref segment);
+                CreateZoneBlocksTiny_Curve(info, randomizer, segmentId, ref segment);
             }
             else
             {
-                CreateZoneBlocksTiny_Straight(info, randomizer, ref segment, startNode, endNode);
+                CreateZoneBlocksTiny_Straight(info, randomizer, segmentId, ref segment, startNode, endNode);
             }
         }
 
-        private static void CreateZoneBlocksTiny_Curve(NetInfo info, Randomizer randomizer, ref NetSegment segment)
+        private static void CreateZoneBlocksTiny_Curve(NetInfo info, Randomizer randomizer, ushort segmentId, ref NetSegment segment)
         {
             var minHalfWidth = MIN_HALFWIDTH_TINY_CURVE;
 
@@ -96,21 +96,23 @@ namespace Transit.Addon.RoadExtensions.AI
                 if (flag2)
                 {
                     Singleton<ZoneManager>.instance.CreateBlock(
-                        out segment.m_blockStartRight, 
-                        ref randomizer, 
-                        position3, 
-                        angle, 
-                        num8, 
+                        out segment.m_blockStartRight,
+                        ref randomizer,
+                        segmentId,
+                        position3,
+                        angle,
+                        num8,
                         distance,
                         segment.m_buildIndex);
                 }
                 else
                 {
                     Singleton<ZoneManager>.instance.CreateBlock(
-                        out segment.m_blockStartLeft, 
-                        ref randomizer, 
-                        position3, 
-                        angle, 
+                        out segment.m_blockStartLeft,
+                        ref randomizer,
+                        segmentId,
+                        position3,
+                        angle,
                         num8,
                         distance,
                         segment.m_buildIndex);
@@ -128,10 +130,11 @@ namespace Transit.Addon.RoadExtensions.AI
                     if (flag2)
                     {
                         Singleton<ZoneManager>.instance.CreateBlock(
-                            out segment.m_blockEndRight, 
-                            ref randomizer, 
-                            position4, 
-                            angle2, 
+                            out segment.m_blockEndRight,
+                            ref randomizer,
+                            segmentId,
+                            position4,
+                            angle2,
                             num8,
                         distance,
                             segment.m_buildIndex + 1u);
@@ -139,10 +142,11 @@ namespace Transit.Addon.RoadExtensions.AI
                     else
                     {
                         Singleton<ZoneManager>.instance.CreateBlock(
-                            out segment.m_blockEndLeft, 
-                            ref randomizer, 
-                            position4, 
-                            angle2, 
+                            out segment.m_blockEndLeft,
+                            ref randomizer,
+                            segmentId,
+                            position4,
+                            angle2,
                             num8,
                         distance,
                             segment.m_buildIndex + 1u);
@@ -187,10 +191,11 @@ namespace Transit.Addon.RoadExtensions.AI
                 if (flag2)
                 {
                     Singleton<ZoneManager>.instance.CreateBlock(
-                        out segment.m_blockStartLeft, 
-                        ref randomizer, 
-                        position5, 
-                        angle3, 
+                        out segment.m_blockStartLeft,
+                        ref randomizer,
+                        segmentId,
+                        position5,
+                        angle3,
                         num12,
                         distance,
                         segment.m_buildIndex);
@@ -198,10 +203,11 @@ namespace Transit.Addon.RoadExtensions.AI
                 else
                 {
                     Singleton<ZoneManager>.instance.CreateBlock(
-                        out segment.m_blockStartRight, 
-                        ref randomizer, 
-                        position5, 
-                        angle3, 
+                        out segment.m_blockStartRight,
+                        ref randomizer,
+                        segmentId,
+                        position5,
+                        angle3,
                         num12,
                         distance,
                         segment.m_buildIndex);
@@ -217,10 +223,11 @@ namespace Transit.Addon.RoadExtensions.AI
                 if (flag2)
                 {
                     Singleton<ZoneManager>.instance.CreateBlock(
-                        out segment.m_blockEndLeft, 
-                        ref randomizer, 
-                        position6, 
-                        angle4, 
+                        out segment.m_blockEndLeft,
+                        ref randomizer,
+                        segmentId,
+                        position6,
+                        angle4,
                         num12,
                         distance,
                         segment.m_buildIndex + 1u);
@@ -228,10 +235,11 @@ namespace Transit.Addon.RoadExtensions.AI
                 else
                 {
                     Singleton<ZoneManager>.instance.CreateBlock(
-                        out segment.m_blockEndRight, 
-                        ref randomizer, 
-                        position6, 
-                        angle4, 
+                        out segment.m_blockEndRight,
+                        ref randomizer,
+                        segmentId,
+                        position6,
+                        angle4,
                         num12,
                         distance,
                         segment.m_buildIndex + 1u);
@@ -239,7 +247,7 @@ namespace Transit.Addon.RoadExtensions.AI
             }
         }
 
-        private static void CreateZoneBlocksTiny_Straight(NetInfo info, Randomizer randomizer, ref NetSegment segment, NetNode startNode, NetNode endNode)
+        private static void CreateZoneBlocksTiny_Straight(NetInfo info, Randomizer randomizer, ushort segmentId, ref NetSegment segment, NetNode startNode, NetNode endNode)
         {
             var minHalfWidth = MIN_HALFWIDTH_TINY_STRAIGHT;
             float num2 = Mathf.Max(minHalfWidth, info.m_halfWidth) + 32f;
@@ -270,27 +278,29 @@ namespace Transit.Addon.RoadExtensions.AI
             {
 
                 Vector3 position = startPosition + new Vector3(
-                    startDirection.x * 32f - startDirection.z * num2, 
-                    0f, 
+                    startDirection.x * 32f - startDirection.z * num2,
+                    0f,
                     startDirection.z * 32f + startDirection.x * num2);
                 Singleton<ZoneManager>.instance.CreateBlock(
-                    out segment.m_blockStartLeft, 
-                    ref randomizer, 
-                    position, 
-                    startAngle, 
+                    out segment.m_blockStartLeft,
+                    ref randomizer,
+                    segmentId,
+                    position,
+                    startAngle,
                     startRows,
                         distance,
                     segment.m_buildIndex);
 
                 position = startPosition + new Vector3(
-                    startDirection.x * (float)(startRows - 4) * 8f + startDirection.z * num2, 
-                    0f, 
+                    startDirection.x * (float)(startRows - 4) * 8f + startDirection.z * num2,
+                    0f,
                     startDirection.z * (float)(startRows - 4) * 8f - startDirection.x * num2);
                 Singleton<ZoneManager>.instance.CreateBlock(
-                    out segment.m_blockStartRight, 
-                    ref randomizer, 
-                    position, 
-                    startAngle + 3.14159274f, 
+                    out segment.m_blockStartRight,
+                    ref randomizer,
+                    segmentId,
+                    position,
+                    startAngle + 3.14159274f,
                     startRows,
                         distance,
                     segment.m_buildIndex);
@@ -307,6 +317,7 @@ namespace Transit.Addon.RoadExtensions.AI
                 Singleton<ZoneManager>.instance.CreateBlock(
                     out segment.m_blockEndLeft,
                     ref randomizer,
+                    segmentId,
                     position,
                     endAngle,
                     endRows,
@@ -320,6 +331,7 @@ namespace Transit.Addon.RoadExtensions.AI
                 Singleton<ZoneManager>.instance.CreateBlock(
                     out segment.m_blockEndRight,
                     ref randomizer,
+                    segmentId,
                     position,
                     endAngle + 3.14159274f,
                     endRows,
