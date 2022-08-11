@@ -20,10 +20,6 @@ namespace Transit.Addon.Tools
         {
             if (!Mod.FoundZoningAdjuster)
                 CreateZoneBlocksPatch.Apply(harmony);
-            CheckBuildPositionPatch.Apply(harmony);
-            GetLengthSnapPatch.Apply(harmony);
-            GetCategoryOrderPatch.Apply(harmony);
-            SpawnButtonEntryPatch.Apply(harmony);
         }
         public override void OnReleased()
         {

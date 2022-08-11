@@ -8,8 +8,6 @@ namespace NetworkExtensions2.Patching
         private static Harmony harmony => new Harmony("andreharv.CSL.NetworkExtensions2");
         internal static void PatchAll()
         {
-            if (!Mod.FoundZoningAdjuster)
-                CreateZoneBlocksPatch.Apply(harmony);
             CheckBuildPositionPatch.Apply(harmony);
             GetLengthSnapPatch.Apply(harmony);
             GetCategoryOrderPatch.Apply(harmony);
