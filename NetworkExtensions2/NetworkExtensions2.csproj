@@ -3395,7 +3395,9 @@
     <None Include="Resources\Roads\Median_6.fbx" />
     <None Include="Resources\Roads\Road_1.fbx" />
     <None Include="Resources\Roads\Road_2.fbx" />
-    <None Include="Resources\Roads\Road_3.fbx" />
+    <None Include="Resources\Roads\Road_3.fbx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\Roads\Road_4.fbx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

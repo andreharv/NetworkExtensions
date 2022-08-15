@@ -19,7 +19,21 @@ namespace NetworkExtensions2.Framework.Import
         private static string[] m_ModelFilenames;
         private static string[] m_TextureFilenames;
         private static ImportTransitAsset[] m_ImportTransitAssets;
+        private static Dictionary<string, Material> m_MaterialDict;
+        public static Material FetchMaterial(string textureName)
+        {
+            if (m_MaterialDict == null)
+                m_MaterialDict = new Dictionary<string, Material>();
+            if (!m_MaterialDict.ContainsKey(textureName))
+            {
+                m_MaterialDict[textureName] = new Material(DefaultShader);
+                if (m_MaterialDict[textureName].HasProperty("_Color"))
+                    m_MaterialDict[textureName].SetColor("_Color", Color.gray);
+            }
 
+            return m_MaterialDict[textureName];
+
+        }
         private static Shader m_DefaultShader;
 
         public static Shader DefaultShader

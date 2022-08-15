@@ -22,9 +22,9 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                         UnityEngine.Debug.Log("WE MADE IT HERE");
                         var segments = RoadHelper.CreateSegments(out float halfWidth,
                             //new LaneRecipe(info.m_segments[0], "WalkCurb_3", "WalkCurb_ConcreteSegmented_p5-6"),
-                            //new LaneRecipe(info.m_segments[0], "Road_3", "Road_Median_Turn_2-6"),
-                            new LaneRecipe(info.m_segments[0], "Road_4", "Road_Median_Turn_2-6")
-                            //new LaneRecipe(info.m_segments[0], "Road_3", "Road_Lane_Unmarked_1-6")
+                            new LaneRecipe(info.m_segments[0], "Road_3", "Road_Median_Turn_2-6"),
+                            new LaneRecipe(info.m_segments[0], "Road_4", "Road_Median_Turn_2-6"),
+                            new LaneRecipe(info.m_segments[0], "Road_3", "Road_Median_Turn_2-6")
                             //new LaneRecipe(info.m_segments[0], "WalkCurb_3", "WalkCurb_ConcreteSegmented_p5-6"
                             );
                         info.m_halfWidth = halfWidth;

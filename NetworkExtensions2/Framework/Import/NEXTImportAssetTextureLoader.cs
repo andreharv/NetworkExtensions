@@ -88,6 +88,7 @@ namespace NetworkExtensions2.Framework.Import
                     }
 
                     var texture2dTasks = new Task[results.Length];
+                    var matx = NEXTImportAssetModel.MatX;
                     for (int m = 0; m < results.Length; m++)
                     {
                         Color[] texData = BuildTexture(array3, results[m], width, height, !lod);
@@ -131,11 +132,28 @@ namespace NetworkExtensions2.Framework.Import
                             {
                                 texture2D = null;
                             }
-                            Debug.Log("Sampler " + sampler + " is null " + (texture2D == null));
+                            //Debug.Log("Tex2ds " + sampler + " is null " + (texture2D == null));
+                            //matx.SetTexture(sampler, texture2D);
+                            //Debug.Log("Matxs " + sampler + " is null " + (matx.GetTexture(sampler) == null));
+
                             ApplyTexture(model, sampler, texture2D);
+
                         });
                     }
                     texture2dTasks.WaitAll();
+                    //Renderer[] componentsInChildren = model.GetComponentsInChildren<MeshRenderer>(includeInactive: true);
+                    //Debug.Log("There are " + componentsInChildren.Length + " renderers");
+                    //for (int i = 0; i < componentsInChildren.Length; i++)
+                    //{
+                    //    for (int j = 0; j < componentsInChildren[i].sharedMaterials.Length; j++)
+                    //    {
+                    //        var mat = componentsInChildren[i].sharedMaterials[j];
+                    //        Debug.Log("MainTex" + j + " is nullx " + (mat.GetTexture("_MainTex") == null));
+                    //        Debug.Log("APRMap" + j + " is nullx " + (mat.GetTexture("_APRMap") == null));
+                    //        Debug.Log("XYSMap" + j + " is nullx " + (mat.GetTexture("_XYSMap") == null));
+                    //    }
+                    //}
+
                     CODebugBase<LogChannel>.VerboseLog(LogChannel.AssetImporter, string.Concat(new object[]
                     {
                         "******Finished applying Textures  [",

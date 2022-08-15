@@ -15,20 +15,11 @@ namespace NetworkExtensions2.Framework.Import
     {
         public delegate void ImportAssetResourceCallback(string resourceName, ResourceUnit resourceUnit);
         public delegate GameObject TextureLoaderModelCallback(GameObject go);
-        private Material m_TemplateMaterial;
-        private Shader m_TemplateShader;
+        private static Shader m_TemplateShader;
         public static string AssetPath { get; set; }
 
-        private Material m_NewMaterial;
-        private Material NewMaterial
-        {
-            get
-            {
-                if (m_NewMaterial == null)
-                    m_NewMaterial = new Material(m_TemplateShader);
-                return m_NewMaterial;
-            }
-        }
+
+
         private GameObject m_GameObject;
         public string ResourceName { get; private set; }
         //private static Dictionary<string, Task<Task<GameObject>>> m_GameObjectCache;
@@ -37,7 +28,7 @@ namespace NetworkExtensions2.Framework.Import
         {
             get
             {
-                if (this.m_TemplateShader.name == "Custom/Net/Electricity")
+                if (m_TemplateShader.name == "Custom/Net/Electricity")
                 {
                     return new AssetImporterTextureLoader.ResultType[0];
                 }
@@ -56,11 +47,22 @@ namespace NetworkExtensions2.Framework.Import
                 };
             }
         }
+        private static Material m_MatX = null;
+        public static Material MatX
+        {
+            get
+            {
+                if (m_MatX == null)
+                    m_MatX = new Material(Shader.Find("Custom/Net/Road"));
+                return m_MatX;
+            }
+        }
         public NEXTImportAssetModel(PreviewCamera camera, Shader templateShader, GameObject template = null) : base(template, camera)
         {
+            var hi = MatX;
             this.m_LodTriangleTarget = 50;
             //this.m_TemplateMaterial = templateMaterial;
-            this.m_TemplateShader = templateShader;
+            m_TemplateShader = templateShader;
         }
 
         public Task ImportAsyncTask { get; set; }
@@ -119,10 +121,12 @@ namespace NetworkExtensions2.Framework.Import
             }
             set { m_TextureLoaderCache = value; }
         }
-
+        private string m_TextureName;
         public void LoadTextures(string modelName, string textureName)
         {
-            ResourceName = GetResourceName(modelName, textureName);              
+            ResourceName = GetResourceName(modelName, textureName);
+            m_TextureName = textureName;
+            ImportTransitAsset.FetchMaterial(m_TextureName);
             var baseTextureName = textureName.Substring(0, textureName.LastIndexOf("_"));
             var callback = new TextureLoaderModelCallback(GenerateAssetData2);
             var taskDistributor = new TaskDistributor(baseTextureName);
@@ -242,7 +246,7 @@ namespace NetworkExtensions2.Framework.Import
             Debug.Log("CPcb2b");
             CreateInfo();
             Debug.Log("CPcb2c");
-            //CopyMaterialProperties();
+            this.material = ImportTransitAsset.FetchMaterial(m_TextureName);
             Debug.Log("CPcb3");
             m_IsLoadingModel = false;
             m_ReadyForEditing = true;
@@ -286,15 +290,6 @@ namespace NetworkExtensions2.Framework.Import
             Debug.Log("CPFI4");
             LoadSaveStatus.activeTask = this.m_TaskWrapper;
             Debug.Log("CPFI5");
-        }
-
-        protected override void CopyMaterialProperties()
-        {
-            this.material = new Material(this.m_TemplateShader);
-            if (this.material.HasProperty("_Color"))
-            {
-                this.material.SetColor("_Color", Color.gray);
-            }
         }
 
         public override void DestroyAsset()
