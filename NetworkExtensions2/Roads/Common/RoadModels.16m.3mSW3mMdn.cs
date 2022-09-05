@@ -16,17 +16,21 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
             switch (version)
             {
                 case NetInfoVersion.Ground:
-                //case NetInfoVersion.GroundGrass:
-                //case NetInfoVersion.GroundTrees:
+                    //case NetInfoVersion.GroundGrass:
+                    //case NetInfoVersion.GroundTrees:
                     {
                         UnityEngine.Debug.Log("WE MADE IT HERE");
-                        var segments = RoadHelper.CreateSegments(out float halfWidth,
-                            //new LaneRecipe(info.m_segments[0], "WalkCurb_3", "WalkCurb_ConcreteSegmented_p5-6"),
-                            new LaneRecipe(info.m_segments[0], "Road_3", "Road_Median_Turn_2-6"),
-                            new LaneRecipe(info.m_segments[0], "Road_4", "Road_Median_Turn_2-6"),
-                            new LaneRecipe(info.m_segments[0], "Road_3", "Road_Median_Turn_2-6")
-                            //new LaneRecipe(info.m_segments[0], "WalkCurb_3", "WalkCurb_ConcreteSegmented_p5-6"
+                        var segments = RoadHelper.CreateSegments(out float halfWidth, info.m_segments[0],
+                            new NetStrip("Curb_3", "Curb_ConcreteSegmented_p5-6"),
+                            //new NetStrip("Road_3", "Road_Lane_Unmarked_1-6"),
+                            new NetStrip("Road_3", "Road_Lane_Solid_1-6"),
+                            new NetStrip("Median_4", "Median_ConcreteSegmented_1-6"),
+                            new NetStrip("Road_4", "Road_Median_Turn_2-6", true),
+                            new NetStrip("Road_3", "Road_Lane_Solid_1-6"),
+                            //new NetStrip("Road_3", "Road_Lane_Unmarked_1-6"),
+                            new NetStrip("Curb_3", "Curb_ConcreteSegmented_p5-6")
                             );
+
                         info.m_halfWidth = halfWidth;
                         var theNodes = new List<NetInfo.Node>();
                         theNodes.AddRange(info.m_nodes);
@@ -44,7 +48,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                         var segments1 = info.m_segments[0].ShallowClone();
                         var nodes0 = info.m_nodes[0].ShallowClone();
                         var nodes1 = info.m_nodes[0].ShallowClone();
-                        
+
                         segments0
                             .SetMeshes
                                 (@"Roads\Common\Meshes\16m\3mSW\Elevated.obj",

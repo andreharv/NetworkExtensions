@@ -97,10 +97,7 @@ namespace NetworkExtensions2.Framework.Import
                     }
                     if (m_ImportAssetModels == null)
                     {
-                        Debug.Log("Checkpoint8");
                         NEXTImportAssetModel.AssetPath = path;
-                        //InitializeModels();
-                        //InitializeTextures(); 
                         DevelopModels();
                     }
                     else
@@ -139,7 +136,6 @@ namespace NetworkExtensions2.Framework.Import
                         var textureBaseName = NEXTImportAssetModel.GetResourceTextureName(textureName);
                         if (textureBaseName.StartsWith(modelSuperBaseName))
                         {
-                            Debug.Log("Model: " + modelBaseName + " Texture: " + textureBaseName);
                             var importAssetModel = new NEXTImportAssetModel(camera, DefaultShader);
                             if (modelTask == null)
                                 importAssetModel.Import(path, modelName);

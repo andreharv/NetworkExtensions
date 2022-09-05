@@ -61,8 +61,10 @@ namespace NetworkExtensions2.Framework.Import
 
                     if (!gameObjectLoader.hasEnded)
                     {
+                        Debug.Log("Waiting for model to finish");
                         gameObjectLoader.Wait();
                         Threading.SetAre(Threading.AreType.Model);
+                        Debug.Log("Model Finished Loading");
                     }
                     GameObject model = callback(gameObjectLoader.result);
 

@@ -129,9 +129,11 @@
     <Compile Include="Framework\Network\NetInfos.cs" />
     <Compile Include="Framework\Network\NetInfoVersion.cs" />
     <Compile Include="Framework\Notification.cs" />
+    <Compile Include="Framework\PackageX.cs" />
     <Compile Include="Framework\Prefabs.cs" />
     <Compile Include="Framework\Prerequisites\IModPrerequisite.cs" />
     <Compile Include="Framework\Prerequisites\ModPrerequisites.cs" />
+    <Compile Include="Framework\Saving.cs" />
     <Compile Include="Framework\Selector.cs" />
     <Compile Include="Framework\Texturing\ITextureBlenderComponent.cs" />
     <Compile Include="Framework\Texturing\ITextureProvider.cs" />
@@ -148,6 +150,7 @@
     <Compile Include="Framework\Threading.cs" />
     <Compile Include="Framework\Tools.cs" />
     <Compile Include="Framework\UI\MouseKeyCode.cs" />
+    <Compile Include="Framework\UI\TestUI.cs" />
     <Compile Include="Framework\_Extensions\AssetManagerExtensions.cs" />
     <Compile Include="Framework\_Extensions\CloningExtensions.cs" />
     <Compile Include="Framework\_Extensions\CollectionExtensions.cs" />
@@ -195,7 +198,7 @@
     <Compile Include="Roads\Avenues\AsymAvenue6L\AsymAvenueL2R4\AsymAvenueL2R4Builder.cs" />
     <Compile Include="Roads\Avenues\LargeAvenue6LM\LargeAvenue6LMBuilder.cs" />
     <Compile Include="Roads\Avenues\LargeAvenue6LM\LargeAvenue6LMBuilder.Texturing.cs" />
-    <Compile Include="Roads\Common\LaneRecipe.cs" />
+    <Compile Include="Roads\Common\NetStrip.cs" />
     <Compile Include="Roads\Common\RoadModels.16m.3mSWBikelanes.cs" />
     <Compile Include="Roads\Common\RoadModels.16m.3mSW3mMdn.cs" />
     <Compile Include="Roads\Common\RoadModels.32m.3mSW4mMdn.cs" />
@@ -504,18 +507,50 @@
     <Content Include="Compatibility\RoadColorChanger\Roads\Highways\Highway6L\Textures\Tunnel_Segment__APRMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\Roads\Curb_Concrete_p5-6_a.png" />
+    <Content Include="Resources\Roads\Curb_Concrete_p5-6_d.png" />
+    <Content Include="Resources\Roads\Curb_Concrete_p5-6_p.png" />
+    <Content Include="Resources\Roads\Curb_Concrete_p5-6_r.png" />
+    <Content Include="Resources\Roads\Median_ConcreteSegmented_1-6_a.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Roads\Median_ConcreteSegmented_1-6_d.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Roads\Median_ConcreteSegmented_1-6_p.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Roads\Median_ConcreteSegmented_1-6_r.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Roads\Road_Lane_Dashed_1-6_a.png" />
     <Content Include="Resources\Roads\Road_Lane_Dashed_1-6_d.png" />
     <Content Include="Resources\Roads\Road_Lane_Dashed_1-6_p.png" />
     <Content Include="Resources\Roads\Road_Lane_Dashed_1-6_r.png" />
-    <Content Include="Resources\Roads\Road_Lane_Solid_1-6_a.png" />
-    <Content Include="Resources\Roads\Road_Lane_Solid_1-6_d.png" />
-    <Content Include="Resources\Roads\Road_Lane_Solid_1-6_p.png" />
-    <Content Include="Resources\Roads\Road_Lane_Solid_1-6_r.png" />
-    <Content Include="Resources\Roads\Road_Lane_Unmarked_1-6_a.png" />
-    <Content Include="Resources\Roads\Road_Lane_Unmarked_1-6_d.png" />
-    <Content Include="Resources\Roads\Road_Lane_Unmarked_1-6_p.png" />
-    <Content Include="Resources\Roads\Road_Lane_Unmarked_1-6_r.png" />
+    <Content Include="Resources\Roads\Road_Lane_Solid_1-6_a.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Roads\Road_Lane_Solid_1-6_d.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Roads\Road_Lane_Solid_1-6_p.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Roads\Road_Lane_Solid_1-6_r.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Roads\Road_Lane_Unmarked_1-6_a.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Roads\Road_Lane_Unmarked_1-6_d.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Roads\Road_Lane_Unmarked_1-6_p.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Roads\Road_Lane_Unmarked_1-6_r.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Roads\Road_Median_Turn_2-6_a.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -528,10 +563,18 @@
     <Content Include="Resources\Roads\Road_Median_Turn_2-6_r.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Roads\WalkCurb_ConcreteSegmented_p5-6_a.png" />
-    <Content Include="Resources\Roads\WalkCurb_ConcreteSegmented_p5-6_d.png" />
-    <Content Include="Resources\Roads\WalkCurb_ConcreteSegmented_p5-6_p.png" />
-    <Content Include="Resources\Roads\WalkCurb_ConcreteSegmented_p5-6_r.png" />
+    <Content Include="Resources\Roads\Curb_ConcreteSegmented_p5-6_a.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Roads\Curb_ConcreteSegmented_p5-6_d.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Roads\Curb_ConcreteSegmented_p5-6_p.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Roads\Curb_ConcreteSegmented_p5-6_r.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Roads\Avenues\AsymAvenue5L\AsymAvenueL2R3\infotooltip.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -3387,12 +3430,24 @@
     <None Include="Props\WoodBollard.crp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Roads\Median_1.fbx" />
-    <None Include="Resources\Roads\Median_2.fbx" />
-    <None Include="Resources\Roads\Median_3.fbx" />
-    <None Include="Resources\Roads\Median_4.fbx" />
-    <None Include="Resources\Roads\Median_5.fbx" />
-    <None Include="Resources\Roads\Median_6.fbx" />
+    <None Include="Resources\Roads\Median_1.fbx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Roads\Median_2.fbx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Roads\Median_3.fbx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Roads\Median_4.fbx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Roads\Median_5.fbx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Roads\Median_6.fbx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\Roads\Road_1.fbx" />
     <None Include="Resources\Roads\Road_2.fbx" />
     <None Include="Resources\Roads\Road_3.fbx">
@@ -3403,12 +3458,14 @@
     </None>
     <None Include="Resources\Roads\Road_5.fbx" />
     <None Include="Resources\Roads\Road_6.fbx" />
-    <None Include="Resources\Roads\WalkCurb_1.fbx" />
-    <None Include="Resources\Roads\WalkCurb_2.fbx" />
-    <None Include="Resources\Roads\WalkCurb_3.fbx" />
-    <None Include="Resources\Roads\WalkCurb_4.fbx" />
-    <None Include="Resources\Roads\WalkCurb_5.fbx" />
-    <None Include="Resources\Roads\WalkCurb_6.fbx" />
+    <None Include="Resources\Roads\Curb_1.fbx" />
+    <None Include="Resources\Roads\Curb_2.fbx" />
+    <None Include="Resources\Roads\Curb_3.fbx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Roads\Curb_4.fbx" />
+    <None Include="Resources\Roads\Curb_5.fbx" />
+    <None Include="Resources\Roads\Curb_6.fbx" />
     <None Include="Roads\Common\Meshes\16m\3mSW3mBikeLanes\Elevated.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

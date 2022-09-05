@@ -20,6 +20,9 @@ using ZonablePedestrianTinyGravelRoadBuilder = Transit.Addon.RoadExtensions.Road
 using ZonablePedestrianTinyPavedRoadBuilder = Transit.Addon.RoadExtensions.Roads.PedestrianRoads.PavementTiny.ZonablePedestrianTinyPavedRoadBuilder;
 using ZonablePedestrianTinyStoneRoadBuilder = Transit.Addon.RoadExtensions.Roads.PedestrianRoads.StoneTiny.ZonablePedestrianTinyStoneRoadBuilder;
 using ZonablePedestrianTinyBoardwalkBuilder = Transit.Addon.RoadExtensions.Roads.PedestrianRoads.BoardwalkTiny.ZonablePedestrianBoardwalkRoadBuilder;
+using ColossalFramework.UI;
+using NetworkExtensions2.Framework.UI;
+
 namespace Transit.Addon.RoadExtensions
 {
     public partial class RExModule
@@ -94,7 +97,7 @@ namespace Transit.Addon.RoadExtensions
         public override void OnLevelLoaded(LoadMode mode)
         {
             base.OnLevelLoaded(mode);
-
+            UIView.GetAView().AddUIComponent(typeof(TestUI));
             if (_lateOperations != null)
             {
                 foreach (var op in _lateOperations)

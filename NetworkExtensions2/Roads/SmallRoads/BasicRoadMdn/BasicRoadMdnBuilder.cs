@@ -63,7 +63,11 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallRoads.BasicRoadMdn
                 var roadInfo = Prefabs.Find<NetInfo>(NetInfos.Vanilla.ROAD_2L);
                 info.m_segments = roadInfo.m_segments.Select(x => x.ShallowClone()).ToArray();
                 info.m_nodes = roadInfo.m_nodes.Select(x => x.ShallowClone()).ToArray();
-                info.m_lanes = roadInfo.m_lanes.Select(x => x.ShallowClone()).ToArray();
+                for (int i = 0; i < info.m_lanes.Length; i++)
+                {
+                    info.m_lanes[i].m_laneProps = null;
+                }
+               // info.m_lanes = lanex.ToArray();// roadInfo.m_lanes.Select(x => x.ShallowClone()).ToArray();
             }
 
             ///////////////////////////
@@ -82,7 +86,7 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallRoads.BasicRoadMdn
             info.m_hasParkingSpaces = false;
 
             info.m_pavementWidth = (version != NetInfoVersion.Slope && version != NetInfoVersion.Tunnel ? 3 : 6);
-            info.m_halfWidth = (version != NetInfoVersion.Slope && version != NetInfoVersion.Tunnel ? 8 : 11);
+            //info.m_halfWidth = (version != NetInfoVersion.Slope && version != NetInfoVersion.Tunnel ? 8 : 11);
             info.m_canCrossLanes = false;
             if (version == NetInfoVersion.Tunnel)
             {
@@ -95,15 +99,15 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallRoads.BasicRoadMdn
                 info.m_class = info.m_class.Clone("NEXTbasicroadmedian" + version.ToString());
             }
 
-            // Setting up lanes
-            info.SetRoadLanes(version, new LanesConfiguration
-            {
-                IsTwoWay = true,
-                LaneWidth = 3.3f,
-                SpeedLimit = 0.8f,
-                CenterLane = CenterLaneType.Median,
-                CenterLaneWidth = 3.3f
-            });
+            //// Setting up lanes
+            //info.SetRoadLanes(version, new LanesConfiguration
+            //{
+            //    IsTwoWay = true,
+            //    LaneWidth = 3.3f,
+            //    SpeedLimit = 0.8f,
+            //    CenterLane = CenterLaneType.Median,
+            //    CenterLaneWidth = 3.3f
+            //});
             var leftPedLane = info.GetLeftRoadShoulder();
             var rightPedLane = info.GetRightRoadShoulder();
 

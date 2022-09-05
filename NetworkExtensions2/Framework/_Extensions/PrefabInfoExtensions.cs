@@ -13,7 +13,7 @@ namespace Transit.Framework
         {
             var instance = Object.Instantiate(originalPrefabInfo.gameObject);
             instance.name = newName;
-            instance.transform.SetParent(parentTransform);
+            //instance.transform.SetParent(parentTransform);
             instance.transform.localPosition = new Vector3(-7500, -7500, -7500);
             var newPrefab = instance.GetComponent<T>();
             instance.SetActive(false);
@@ -24,7 +24,8 @@ namespace Transit.Framework
     where T : PrefabInfo
         {
             var gameObject = Object.Instantiate(originalPrefabInfo.gameObject);
-            gameObject.transform.parent = originalPrefabInfo.gameObject.transform; // N.B. This line is evil and removing it is killoing the game's performances
+            //gameObject.transform.SetParent(originalPrefabInfo.gameObject.transform);
+            //ameObject.transform.parent = originalPrefabInfo.gameObject.transform; // N.B. This line is evil and removing it is killoing the game's performances
             gameObject.name = newName;
 
             var info = gameObject.GetComponent<T>();

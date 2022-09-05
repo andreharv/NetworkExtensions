@@ -285,27 +285,32 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                     })
                 .ToArray();
         }
-        public static NetInfo.Segment[] CreateSegments(out float totalWidth, params LaneRecipe[] laneRecipes)
+        public static NetInfo.Segment[] CreateSegments(out float halfWidth, NetInfo.Segment defaultSegment, params NetStrip[] netStrips)
         {
-            var segments = new NetInfo.Segment[laneRecipes.Length];
+            var segments = new NetInfo.Segment[netStrips.Length];
             float previousModelWidth = 0;
-            totalWidth = 0f;
-            for (int i = 0; i < laneRecipes.Length; i++)
+            var totalWidth = 0f;
+            for (int i = 0; i < netStrips.Length; i++)
             {
-                var laneRecipe = laneRecipes[i];
-                var modelWidth = GetModelWidth(laneRecipe.ModelName);
-                totalWidth += modelWidth;
+                var netStrip = netStrips[i];
+                if (!netStrip.OverlayPrevious)
+                    totalWidth += GetModelWidth(netStrip.ModelName);
             }
+            halfWidth = totalWidth / 2;
             var currentPosition = 0.5f * -totalWidth;
-            for (int i = 0; i < laneRecipes.Length; i++)
+            for (int i = 0; i < netStrips.Length; i++)
             {
-                var laneRecipe = laneRecipes[i];
-                var modelWidth = GetModelWidth(laneRecipe.ModelName);
-                currentPosition += 0.5f * (previousModelWidth + modelWidth);
-                previousModelWidth = modelWidth;
+                var netStrip = netStrips[i];
+                var modelWidth = GetModelWidth(netStrip.ModelName);
+                if (!netStrip.OverlayPrevious)
+                {
+                    currentPosition += 0.5f * (previousModelWidth + modelWidth);
+                    previousModelWidth = modelWidth;
+                }
+
                 var inverted = currentPosition > 0;
-                var segment = laneRecipe.TemplateSegment.ShallowClone();
-                segments[i] = segment.SetFlagsDefault().SetNetResources(laneRecipe.ModelName, laneRecipe.TextureName, currentPosition, inverted);
+                var segment = netStrip.TemplateSegment != null ? netStrip.TemplateSegment.ShallowClone() : defaultSegment.ShallowClone();
+                segments[i] = segment.SetFlagsDefault().SetNetResources(netStrip.ModelName, netStrip.TextureName, currentPosition, inverted);
             }
             return segments;
         }
