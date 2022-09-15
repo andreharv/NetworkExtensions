@@ -100,15 +100,10 @@ namespace Transit.Addon.RoadExtensions
 
                 Loading.QueueAction(() =>
                 {
-                    var props = host._props = host._container.AddComponent<PropCollection>();
-                    props.name = PROP_COLLECTION_NAME;
-                    if (newInfos.Count > 0)
-                    {
-                        props.m_prefabs = newInfos.ToArray();
-                        PrefabCollection<PropInfo>.InitializePrefabs(props.name, props.m_prefabs, new string[] { });
-                        PrefabCollection<PropInfo>.BindPrefabs();
-                    }
+                    PrefabCollection<PropInfo>.InitializePrefabs(PROP_COLLECTION_NAME, newInfos.ToArray(), null);
+                    PrefabCollection<PropInfo>.BindPrefabs();
                 });
+
             }
             private static readonly Dictionary<string, NetInfo> m_BasedPrefabs = new Dictionary<string, NetInfo>();
             private static readonly Dictionary<NetInfoVersion, NetInfo> m_Infos = new Dictionary<NetInfoVersion, NetInfo>();
@@ -239,14 +234,8 @@ namespace Transit.Addon.RoadExtensions
 
                 Loading.QueueAction(() =>
                 {
-                    var roads = host._roads = host._container.AddComponent<NetCollection>();
-                    roads.name = NET_COLLECTION_NAME;
-                    if (newInfos.Count > 0)
-                    {
-                        roads.m_prefabs = newInfos.ToArray();
-                        PrefabCollection<NetInfo>.InitializePrefabs(roads.name, roads.m_prefabs, new string[] { });
-                        PrefabCollection<NetInfo>.BindPrefabs();
-                    }
+                    PrefabCollection<NetInfo>.InitializePrefabs(NET_COLLECTION_NAME, newInfos.ToArray(), null);
+                    PrefabCollection<NetInfo>.BindPrefabs();
                 });
 
                 Loading.QueueAction(() =>

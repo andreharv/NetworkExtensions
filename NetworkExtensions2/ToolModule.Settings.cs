@@ -24,9 +24,9 @@ namespace Transit.Addon.Tools
         public override void OnSettingsUI(UIHelperBase helper)
         {
             var zoneModifierCheckbox = helper.AddCheckbox(
-                "Road Zone Modifier " + (Mod.FoundZoningAdjuster ? "(*disabled: Zoning Adjuster Detected*)" : ""),
-                Mod.FoundZoningAdjuster ? "Zoning Adjuster Detected. This feature will be disabled*":"Press SHIFT (or SHIFT+CTRL) on the Upgrade Road tool to use",
-                s_activeOptions.IsFlagSet(ModOptions.RoadZoneModifier) && !Mod.FoundZoningAdjuster, 
+                "Road Zone Modifier " + (Mod.FoundZoningAdjuster ? "*disabled: Zoning Adjuster Detected*" : ""),
+                Mod.FoundZoningAdjuster ? "Zoning Adjuster Detected. This feature will be disabled*" : "Press SHIFT (or SHIFT+CTRL) on the Upgrade Road tool to use",
+                s_activeOptions.IsFlagSet(ModOptions.RoadZoneModifier) && !Mod.FoundZoningAdjuster,
                 isChecked =>
                 {
                     if (isChecked && !Mod.FoundZoningAdjuster)
