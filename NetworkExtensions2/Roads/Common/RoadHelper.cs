@@ -297,7 +297,7 @@ namespace Transit.Addon.RoadExtensions.Roads.Common
                     totalWidth += GetModelWidth(netStrip.ModelName);
             }
             halfWidth = totalWidth / 2;
-            var currentPosition = 0.5f * -totalWidth;
+            var currentPosition = -halfWidth;
             for (int i = 0; i < netStrips.Length; i++)
             {
                 var netStrip = netStrips[i];

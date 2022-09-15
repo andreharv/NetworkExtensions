@@ -100,14 +100,15 @@ namespace Transit.Addon.RoadExtensions.Roads.SmallRoads.BasicRoadMdn
             }
 
             //// Setting up lanes
-            //info.SetRoadLanes(version, new LanesConfiguration
-            //{
-            //    IsTwoWay = true,
-            //    LaneWidth = 3.3f,
-            //    SpeedLimit = 0.8f,
-            //    CenterLane = CenterLaneType.Median,
-            //    CenterLaneWidth = 3.3f
-            //});
+            info.SetRoadLanes(version, new LanesConfiguration
+            {
+                IsTwoWay = true,
+                LaneWidth = 3.3f,
+                SpeedLimit = 0.8f,
+                CenterLane = CenterLaneType.Median,
+                CenterLaneWidth = 3.3f
+            });
+
             var leftPedLane = info.GetLeftRoadShoulder();
             var rightPedLane = info.GetRightRoadShoulder();
 

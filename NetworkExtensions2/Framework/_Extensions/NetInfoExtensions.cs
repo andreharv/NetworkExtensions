@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ColossalFramework;
 using ColossalFramework.Globalization;
+using NetworkExtensions2.Roads.Common;
 using UnityEngine;
 
 #if DEBUG
@@ -109,6 +110,92 @@ namespace Transit.Framework
                 }
             }
             return false;
+        }
+        public static void GenerateNetInfoProperties(this NetInfo info, NetInfo.Segment defaultSegment, params NetStrip[] netStrips)
+        {
+            
+            float previousModelWidth = 0;
+            var totalWidth = 0f;
+            for (int i = 0; i < netStrips.Length; i++)
+            {
+                var netStrip = netStrips[i];
+                if (!netStrip.OverlayPrevious)
+                    totalWidth += GetModelWidth(netStrip.ModelName);
+            }
+            info.m_halfWidth = totalWidth / 2;
+            var currentPosition = 0.5f * -totalWidth;
+            var segments = new NetInfo.Segment[netStrips.Length];
+            var lanes = new NetInfo.Lane[netStrips.Length];
+            var modelPedestrianLane = info.m_lanes.FirstOrDefault(l => l.m_laneProps != null && l.m_laneType == NetInfo.LaneType.Pedestrian);
+            var modelRoadLane = info.m_lanes.FirstOrDefault(l => l.m_laneProps != null && l.m_laneType == NetInfo.LaneType.Vehicle);
+            for (int i = 0; i < netStrips.Length; i++)
+            {
+                var netStrip = netStrips[i];
+                var modelWidth = GetModelWidth(netStrip.ModelName);
+                var laneType = GetModelLaneType(netStrip.ModelName);
+                if (!netStrip.OverlayPrevious)
+                {
+                    currentPosition += 0.5f * (previousModelWidth + modelWidth);
+                    previousModelWidth = modelWidth;
+                }
+
+                var inverted = currentPosition > 0;
+                var segment = netStrip.TemplateSegment != null ? netStrip.TemplateSegment.ShallowClone() : defaultSegment.ShallowClone();
+                segments[i] = segment.SetFlagsDefault().SetNetResources(netStrip.ModelName, netStrip.TextureName, currentPosition, inverted);
+
+                NetInfo.Lane lane = null;
+                switch (laneType)
+                {
+                    case NetInfo.LaneType.Vehicle:
+                        lane = modelRoadLane.CloneWithoutStops();
+                        break;
+                    case NetInfo.LaneType.Pedestrian:
+                        lane = modelPedestrianLane.CloneWithoutStops();
+                        break;
+                    default:
+                        lane = null;
+                        break;
+                }
+                if (lane != null)
+                {
+                    lane.m_direction = inverted ? NetInfo.Direction.Backward : NetInfo.Direction.Forward;
+                    lane.m_position = currentPosition;
+                    lane.m_width = modelWidth;
+                    lanes[i] = lane;
+                }
+
+            }
+            info.m_segments = segments;
+            info.m_lanes = lanes;
+
+
+        }
+        private static float GetModelWidth(string modelName)
+        {
+            if (modelName != null && modelName.Contains("_"))
+            {
+                var numString = modelName.Substring(modelName.LastIndexOf("_") + 1);
+                return float.Parse(numString);
+            }
+            return -1;
+        }
+        private static NetInfo.LaneType GetModelLaneType(string modelName)
+        {
+            if (modelName != null && modelName.Contains("_"))
+            {
+                var modelNamePrefix = modelName.Substring(0, modelName.IndexOf("_"));
+                switch (modelNamePrefix)
+                {
+                    case "Curb":
+                    case "Median":
+                        return NetInfo.LaneType.Pedestrian;
+                    case "Road":
+                        return NetInfo.LaneType.Vehicle;
+                    default:
+                        return NetInfo.LaneType.None;
+                }
+            }
+            return NetInfo.LaneType.None;
         }
     }
 }
