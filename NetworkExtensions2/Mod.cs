@@ -50,10 +50,8 @@ namespace NetworkExtensions
                 m_ConflictingModNeedPerformSearch = false;
                 foreach (PluginManager.PluginInfo plugin in PluginManager.instance.GetPluginsInfo())
                 {
-                    UnityEngine.Debug.Log("Plugin Namex: " + plugin.name);
                     foreach (Assembly assembly in plugin.GetAssemblies())
                     {
-                        UnityEngine.Debug.Log("Assembly Namex: " + assembly.GetName().Name);
                         switch (assembly.GetName().Name)
                         {
                             case "ZoningAdjuster":
