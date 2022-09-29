@@ -2,18 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
-using Transit.Addon.RoadExtensions.Compatibility;
 using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.Modularity;
 using UnityEngine;
 using System.Diagnostics;
-
-#if DEBUG
-using Debug = Transit.Framework.Debug;
-#else
 using Debug = UnityEngine.Debug;
-#endif
 
 namespace Transit.Addon.RoadExtensions
 {
@@ -52,7 +46,7 @@ namespace Transit.Addon.RoadExtensions
                 swAll.Start();
                 InstallNetInfos(host);
                 swAll.Stop();
-                UnityEngine.Debug.Log($"All RExModule NetInfos in {swAll.ElapsedMilliseconds}ms");
+                Debug.Log($"All RExModule NetInfos in {swAll.ElapsedMilliseconds}ms");
                 InstallNetInfosModifiers(host);
                 InstallCompatibilities(host);
             }
@@ -75,24 +69,24 @@ namespace Transit.Addon.RoadExtensions
                             sw.Start();
                             newInfos.Add(builder.Build());
                             sw.Stop();
-                            UnityEngine.Debug.Log(string.Format("REx: Prop {0} installed in {1}ms", builder.Name, sw.ElapsedMilliseconds));
+                            Debug.Log(string.Format("REx: Prop {0} installed in {1}ms", builder.Name, sw.ElapsedMilliseconds));
                         }
                         catch (Exception ex)
                         {
-                            UnityEngine.Debug.Log(string.Format("REx: Crashed-Prop builder {0}", builder.Name));
-                            UnityEngine.Debug.Log("REx: " + ex.Message);
-                            UnityEngine.Debug.Log("REx: " + ex.ToString());
+                            Debug.Log(string.Format("REx: Crashed-Prop builder {0}", builder.Name));
+                            Debug.Log("REx: " + ex.Message);
+                            Debug.Log("REx: " + ex.ToString());
 
-                            UnityEngine.Debug.Log(string.Format("REx: Fallbacking-Prop builder {0}", builder.Name));
+                            Debug.Log(string.Format("REx: Fallbacking-Prop builder {0}", builder.Name));
                             try
                             {
                                 newInfos.Add(builder.BuildEmergencyFallback());
                             }
                             catch (Exception exFallback)
                             {
-                                UnityEngine.Debug.Log(string.Format("REx: Crashed-Fallback Prop builder {0}", builder.Name));
-                                UnityEngine.Debug.Log("REx: " + exFallback.Message);
-                                UnityEngine.Debug.Log("REx: " + exFallback.ToString());
+                                Debug.Log(string.Format("REx: Crashed-Fallback Prop builder {0}", builder.Name));
+                                Debug.Log("REx: " + exFallback.Message);
+                                Debug.Log("REx: " + exFallback.ToString());
                             }
                         }
                     });
@@ -208,25 +202,25 @@ namespace Transit.Addon.RoadExtensions
                             newInfos.AddRange(m_Infos.Values);
                             sw.Stop();
 
-                            UnityEngine.Debug.Log(string.Format("REx: {0} installed in {1}ms", builder.Name, sw.ElapsedMilliseconds));
+                            Debug.Log(string.Format("REx: {0} installed in {1}ms", builder.Name, sw.ElapsedMilliseconds));
                         }
                         catch (Exception ex)
                         {
 
-                            UnityEngine.Debug.Log(string.Format("REx: Crashed-Network builder {0}", builder.Name));
-                            UnityEngine.Debug.Log("REx: " + ex.Message);
-                            UnityEngine.Debug.Log("REx: " + ex.ToString());
+                            Debug.Log(string.Format("REx: Crashed-Network builder {0}", builder.Name));
+                            Debug.Log("REx: " + ex.Message);
+                            Debug.Log("REx: " + ex.ToString());
 
-                            UnityEngine.Debug.Log(string.Format("REx: Fallbacking-Network builder {0}", builder.Name));
+                            Debug.Log(string.Format("REx: Fallbacking-Network builder {0}", builder.Name));
                             try
                             {
                                 newInfos.AddRange(builder.BuildEmergencyFallback());
                             }
                             catch (Exception exFallback)
                             {
-                                UnityEngine.Debug.Log(string.Format("REx: Crashed-Fallback Network builder {0}", builder.Name));
-                                UnityEngine.Debug.Log("REx: " + exFallback.Message);
-                                UnityEngine.Debug.Log("REx: " + exFallback.ToString());
+                                Debug.Log(string.Format("REx: Crashed-Fallback Network builder {0}", builder.Name));
+                                Debug.Log("REx: " + exFallback.Message);
+                                Debug.Log("REx: " + exFallback.ToString());
                             }
                         }
                     });
@@ -262,13 +256,13 @@ namespace Transit.Addon.RoadExtensions
                             sw.Start();
                             modifier.ModifyExistingNetInfo();
                             sw.Stop();
-                            UnityEngine.Debug.Log(string.Format("REx: {0} modifications applied in {1}ms", modifier.Name, sw.ElapsedMilliseconds));
+                            Debug.Log(string.Format("REx: {0} modifications applied in {1}ms", modifier.Name, sw.ElapsedMilliseconds));
                         }
                         catch (Exception ex)
                         {
-                            UnityEngine.Debug.Log(string.Format("REx: Crashed-Network modifiers {0}", modifier.Name));
-                            UnityEngine.Debug.Log("REx: " + ex.Message);
-                            UnityEngine.Debug.Log("REx: " + ex.ToString());
+                            Debug.Log(string.Format("REx: Crashed-Network modifiers {0}", modifier.Name));
+                            Debug.Log("REx: " + ex.Message);
+                            Debug.Log("REx: " + ex.ToString());
                         }
                     });
                 }
@@ -285,7 +279,7 @@ namespace Transit.Addon.RoadExtensions
                         .OfType<ICompatibilityPart>()
                         .ToArray();
                     sw.Stop();
-                    UnityEngine.Debug.Log($"Compatibilities got in {sw.ElapsedMilliseconds}ms");
+                    Debug.Log($"Compatibilities got in {sw.ElapsedMilliseconds}ms");
                     foreach (var compatibilityPart in compParts)
                     {
                         Stopwatch sw2 = new Stopwatch();
@@ -296,7 +290,7 @@ namespace Transit.Addon.RoadExtensions
                             {
                                 compatibilityPart.Setup(host._roads.m_prefabs);
                                 sw2.Stop();
-                                UnityEngine.Debug.Log(string.Format("REx: {0} compatibility activated in {1}", compatibilityPart.Name, sw2.ElapsedMilliseconds));
+                                Debug.Log(string.Format("REx: {0} compatibility activated in {1}", compatibilityPart.Name, sw2.ElapsedMilliseconds));
                             }
                             else
                             {
@@ -305,14 +299,14 @@ namespace Transit.Addon.RoadExtensions
                         }
                         catch (Exception ex)
                         {
-                            UnityEngine.Debug.Log(string.Format("REx: Crashed-CompatibilitySupport {0}", compatibilityPart.Name));
-                            UnityEngine.Debug.Log("REx: " + ex.Message);
-                            UnityEngine.Debug.Log("REx: " + ex.ToString());
+                            Debug.Log(string.Format("REx: Crashed-CompatibilitySupport {0}", compatibilityPart.Name));
+                            Debug.Log("REx: " + ex.Message);
+                            Debug.Log("REx: " + ex.ToString());
                         }
                     }
                 });
                 swAll.Stop();
-                UnityEngine.Debug.Log($"All Compatibilities in {swAll.ElapsedMilliseconds}ms");
+                Debug.Log($"All Compatibilities in {swAll.ElapsedMilliseconds}ms");
             }
         }
     }
