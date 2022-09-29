@@ -16,11 +16,6 @@ namespace Transit.Addon.Tools
         }
 
         // Hack For FileManager, deprecated
-        public override void OnCreated(ILoading loading)
-        {
-            if (!Mod.FoundZoningAdjuster)
-                CreateZoneBlocksPatch.Apply(harmony);
-        }
         public override void OnReleased()
         {
             harmony.UnpatchAll();
