@@ -4,22 +4,11 @@ using Transit.Framework.ExtensionPoints.UI;
 
 namespace NetworkExtensions2.Patching
 {
-    [HarmonyPatch(typeof(RoadsGroupPanel))]
-    [HarmonyPatch("GetCategoryOrder")]
+    [HarmonyPatch(typeof(RoadsGroupPanel), "GetCategoryOrder")]
     internal static class GetCategoryOrderPatch
     {
-        public static void Apply(Harmony harmony)
-        {
-            var prefix = typeof(GetCategoryOrderPatch).GetMethod(nameof(GetCategoryOrderPatch.Prefix), BindingFlags.NonPublic | BindingFlags.Static);
-            harmony.Patch(OriginalMethod, new HarmonyMethod(prefix));
-        }
-        public static void Revert(Harmony harmony)
-        {
-            harmony.Unpatch(OriginalMethod, HarmonyPatchType.Prefix);
-        }
-
-        static MethodInfo OriginalMethod => typeof(RoadsGroupPanel).GetMethod("GetCategoryOrder", BindingFlags.NonPublic | BindingFlags.Instance);
-        static bool Prefix(ref int __result, string name)
+        [HarmonyPrefix]
+        public static bool Prefix(ref int __result, string name)
         {
             int? order = RoadCategoryOrderManager.GetOrder(name);
 

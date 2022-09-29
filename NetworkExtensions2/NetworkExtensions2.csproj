@@ -176,7 +176,7 @@
     <Compile Include="Patching\AI\GetLengthSnapPatch.cs" />
     <Compile Include="Patching\Patcher.cs" />
     <Compile Include="Patching\UI\GetCategoryOrderPatch.cs" />
-    <Compile Include="Patching\UI\SpawnButtonEntryPatch.cs" />
+    <Compile Include="Patching\UI\CreateGroupItemPatch.cs" />
     <Compile Include="Props\MediumAvenueSideLightBuilder.cs" />
     <Compile Include="Props\LargeAvenueMedianLightBuilder.cs" />
     <Compile Include="Redirection\RedirectionHelper.cs" />

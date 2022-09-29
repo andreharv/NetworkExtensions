@@ -2,18 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
-using Transit.Addon.RoadExtensions.Compatibility;
 using Transit.Framework;
 using Transit.Framework.Builders;
 using Transit.Framework.Modularity;
 using UnityEngine;
 using System.Diagnostics;
-
-#if DEBUG
-using Debug = Transit.Framework.Debug;
-#else
 using Debug = UnityEngine.Debug;
-#endif
 
 namespace Transit.Addon.RoadExtensions
 {
