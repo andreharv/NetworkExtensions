@@ -31,15 +31,15 @@ namespace Transit.Addon.RoadExtensions.AI
 
             if (isCurve)
             {
-                CreateZoneBlocksTiny_Curve(info, randomizer, ref segment);
+                CreateZoneBlocksTiny_Curve(info, randomizer, segmentId, ref segment);
             }
             else
             {
-                CreateZoneBlocksTiny_Straight(info, randomizer, ref segment, startNode, endNode);
+                CreateZoneBlocksTiny_Straight(info, randomizer, segmentId, ref segment, startNode, endNode);
             }
         }
 
-        private static void CreateZoneBlocksTiny_Curve(NetInfo info, Randomizer randomizer, ref NetSegment segment)
+        private static void CreateZoneBlocksTiny_Curve(NetInfo info, Randomizer randomizer, ushort segmentID, ref NetSegment segment)
         {
             var minHalfWidth = MIN_HALFWIDTH_TINY_CURVE;
 
@@ -97,7 +97,8 @@ namespace Transit.Addon.RoadExtensions.AI
                 {
                     Singleton<ZoneManager>.instance.CreateBlock(
                         out segment.m_blockStartRight, 
-                        ref randomizer, 
+                        ref randomizer,
+                        segmentID,
                         position3, 
                         angle, 
                         num8, 
@@ -109,6 +110,7 @@ namespace Transit.Addon.RoadExtensions.AI
                     Singleton<ZoneManager>.instance.CreateBlock(
                         out segment.m_blockStartLeft, 
                         ref randomizer, 
+                        segmentID,
                         position3, 
                         angle, 
                         num8,
@@ -130,6 +132,7 @@ namespace Transit.Addon.RoadExtensions.AI
                         Singleton<ZoneManager>.instance.CreateBlock(
                             out segment.m_blockEndRight, 
                             ref randomizer, 
+                            segmentID,
                             position4, 
                             angle2, 
                             num8,
@@ -141,6 +144,7 @@ namespace Transit.Addon.RoadExtensions.AI
                         Singleton<ZoneManager>.instance.CreateBlock(
                             out segment.m_blockEndLeft, 
                             ref randomizer, 
+                            segmentID,
                             position4, 
                             angle2, 
                             num8,
@@ -189,6 +193,7 @@ namespace Transit.Addon.RoadExtensions.AI
                     Singleton<ZoneManager>.instance.CreateBlock(
                         out segment.m_blockStartLeft, 
                         ref randomizer, 
+                        segmentID,
                         position5, 
                         angle3, 
                         num12,
@@ -200,6 +205,7 @@ namespace Transit.Addon.RoadExtensions.AI
                     Singleton<ZoneManager>.instance.CreateBlock(
                         out segment.m_blockStartRight, 
                         ref randomizer, 
+                        segmentID,
                         position5, 
                         angle3, 
                         num12,
@@ -219,6 +225,7 @@ namespace Transit.Addon.RoadExtensions.AI
                     Singleton<ZoneManager>.instance.CreateBlock(
                         out segment.m_blockEndLeft, 
                         ref randomizer, 
+                        segmentID,
                         position6, 
                         angle4, 
                         num12,
@@ -230,6 +237,7 @@ namespace Transit.Addon.RoadExtensions.AI
                     Singleton<ZoneManager>.instance.CreateBlock(
                         out segment.m_blockEndRight, 
                         ref randomizer, 
+                        segmentID,
                         position6, 
                         angle4, 
                         num12,
@@ -239,7 +247,7 @@ namespace Transit.Addon.RoadExtensions.AI
             }
         }
 
-        private static void CreateZoneBlocksTiny_Straight(NetInfo info, Randomizer randomizer, ref NetSegment segment, NetNode startNode, NetNode endNode)
+        private static void CreateZoneBlocksTiny_Straight(NetInfo info, Randomizer randomizer, ushort segmentID, ref NetSegment segment, NetNode startNode, NetNode endNode)
         {
             var minHalfWidth = MIN_HALFWIDTH_TINY_STRAIGHT;
             float num2 = Mathf.Max(minHalfWidth, info.m_halfWidth) + 32f;
@@ -276,6 +284,7 @@ namespace Transit.Addon.RoadExtensions.AI
                 Singleton<ZoneManager>.instance.CreateBlock(
                     out segment.m_blockStartLeft, 
                     ref randomizer, 
+                    segmentID,
                     position, 
                     startAngle, 
                     startRows,
@@ -288,7 +297,8 @@ namespace Transit.Addon.RoadExtensions.AI
                     startDirection.z * (float)(startRows - 4) * 8f - startDirection.x * num2);
                 Singleton<ZoneManager>.instance.CreateBlock(
                     out segment.m_blockStartRight, 
-                    ref randomizer, 
+                    ref randomizer,
+                    segmentID,
                     position, 
                     startAngle + 3.14159274f, 
                     startRows,
@@ -307,6 +317,7 @@ namespace Transit.Addon.RoadExtensions.AI
                 Singleton<ZoneManager>.instance.CreateBlock(
                     out segment.m_blockEndLeft,
                     ref randomizer,
+                    segmentID,
                     position,
                     endAngle,
                     endRows,
@@ -320,6 +331,7 @@ namespace Transit.Addon.RoadExtensions.AI
                 Singleton<ZoneManager>.instance.CreateBlock(
                     out segment.m_blockEndRight,
                     ref randomizer,
+                    segmentID,
                     position,
                     endAngle + 3.14159274f,
                     endRows,
